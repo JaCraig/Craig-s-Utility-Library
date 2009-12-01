@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{57A7AF88-994B-46A5-BB9D-46ED06757B3F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Utilities</RootNamespace>
+    <AssemblyName>Utilities</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Utilities.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Speech">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataTypes\Bag.cs" />
+    <Compile Include="DataTypes\Patterns\Factory.cs" />
+    <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
+    <Compile Include="DataTypes\List.cs" />
+    <Compile Include="DataTypes\ListMapping.cs" />
+    <Compile Include="DataTypes\Pair.cs" />
+    <Compile Include="DataTypes\BTree.cs" />
+    <Compile Include="DataTypes\PriorityQueue.cs" />
+    <Compile Include="DataTypes\Triple.cs" />
+    <Compile Include="DataTypes\Vector.cs" />
+    <Compile Include="Events\EventArgs.cs" />
+    <Compile Include="Events\EventHelper.cs" />
+    <Compile Include="FileFormats\APMLHelper\APML.cs" />
+    <Compile Include="FileFormats\APMLHelper\Application.cs" />
+    <Compile Include="FileFormats\APMLHelper\Applications.cs" />
+    <Compile Include="FileFormats\APMLHelper\Author.cs" />
+    <Compile Include="FileFormats\APMLHelper\Body.cs" />
+    <Compile Include="FileFormats\APMLHelper\Concept.cs" />
+    <Compile Include="FileFormats\APMLHelper\Concepts.cs" />
+    <Compile Include="FileFormats\APMLHelper\Data.cs" />
+    <Compile Include="FileFormats\APMLHelper\Head.cs" />
+    <Compile Include="FileFormats\APMLHelper\Profile.cs" />
+    <Compile Include="FileFormats\APMLHelper\Source.cs" />
+    <Compile Include="FileFormats\APMLHelper\Sources.cs" />
+    <Compile Include="FileFormats\BlogML\Author.cs" />
+    <Compile Include="FileFormats\BlogML\Authors.cs" />
+    <Compile Include="FileFormats\BlogML\BlogML.cs" />
+    <Compile Include="FileFormats\BlogML\Categories.cs" />
+    <Compile Include="FileFormats\BlogML\Category.cs" />
+    <Compile Include="FileFormats\BlogML\Post.cs" />
+    <Compile Include="FileFormats\BlogML\Posts.cs" />
+    <Compile Include="FileFormats\BlogML\Tag.cs" />
+    <Compile Include="FileFormats\BlogML\Tags.cs" />
+    <Compile Include="Classifier\NaiveBayes\NaiveBayes.cs" />
+    <Compile Include="FileFormats\RSSHelper\GUID.cs" />
+    <Compile Include="FileFormats\RSSHelper\Thumbnail.cs" />
+    <Compile Include="Math\Math.cs" />
+    <Compile Include="Math\Set.cs" />
+    <Compile Include="Media\Sound\SpeechToText.cs" />
+    <Compile Include="Media\Sound\TextToSpeech.cs" />
+    <Compile Include="MultiThreading\Worker.cs" />
+    <Compile Include="OAuth\OAuth.cs" />
+    <Compile Include="Web\Craigslist\Craigslist.cs" />
+    <Compile Include="Web\CSS.cs" />
+    <Compile Include="FileFormats\CSV\Cell.cs" />
+    <Compile Include="FileFormats\CSV\CSV.cs" />
+    <Compile Include="FileFormats\CSV\Row.cs" />
+    <Compile Include="DataTypes\DataTypeConversion.cs" />
+    <Compile Include="Compression\Deflate.cs" />
+    <Compile Include="DataTypes\DateHelper.cs" />
+    <Compile Include="Web\Ebay\Ebay.cs" />
+    <Compile Include="Web\Email\SMTP\EmailSender.cs" />
+    <Compile Include="Web\Email\Message.cs" />
+    <Compile Include="Web\Email\MIME\Attribute.cs" />
+    <Compile Include="Web\Email\MIME\Code.cs" />
+    <Compile Include="Web\Email\MIME\CodeManager.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeAddress.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeBase.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeBase64.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeParameter.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeQP.cs" />
+    <Compile Include="Web\Email\MIME\Constants.cs" />
+    <Compile Include="Web\Email\MIME\Field.cs" />
+    <Compile Include="Web\Email\MIME\MediaEnum.cs" />
+    <Compile Include="Web\Email\MIME\MediaType.cs" />
+    <Compile Include="Web\Email\MIME\MIMEBody.cs" />
+    <Compile Include="Web\Email\MIME\MIMEHeader.cs" />
+    <Compile Include="Web\Email\MIME\MIMEMessage.cs" />
+    <Compile Include="Web\Email\MIME\MIMEType.cs" />
+    <Compile Include="Web\Email\Pop3\Message.cs" />
+    <Compile Include="Web\Email\Pop3\Pop3Client.cs" />
+    <Compile Include="Web\Email\Pop3\Pop3Exception.cs" />
+    <Compile Include="Encryption\AESEncryption.cs" />
+    <Compile Include="Encryption\CaesarEncryption.cs" />
+    <Compile Include="Encryption\DESEncryption.cs" />
+    <Compile Include="Encryption\MD5.cs" />
+    <Compile Include="Encryption\RSAEncryption.cs" />
+    <Compile Include="Encryption\SHA1.cs" />
+    <Compile Include="Encryption\TripleDESEncryption.cs" />
+    <Compile Include="Encryption\VernamEncryption.cs" />
+    <Compile Include="Environment\Environment.cs" />
+    <Compile Include="Environment\ProcessManager.cs" />
+    <Compile Include="Error\ErrorManager.cs" />
+    <Compile Include="Exchange\Appointment.cs" />
+    <Compile Include="Exchange\Exchange.cs" />
+    <Compile Include="FileFormats\VCalendar.cs" />
+    <Compile Include="FileFormats\VCard.cs" />
+    <Compile Include="FileManager.cs" />
+    <Compile Include="Compression\GZip.cs" />
+    <Compile Include="FileFormats\FOAF\FOAF.cs" />
+    <Compile Include="FileFormats\FOAF\Person.cs" />
+    <Compile Include="Web\HTML.cs" />
+    <Compile Include="FileFormats\INI\INI.cs" />
+    <Compile Include="Web\Hulu\Hulu.cs" />
+    <Compile Include="Web\Javascript.cs" />
+    <Compile Include="Math\Matrix.cs" />
+    <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Media\Image\ASCIIArt.cs" />
+    <Compile Include="Media\Image\BumpMap.cs" />
+    <Compile Include="Media\Image\Draw.cs" />
+    <Compile Include="Media\Image\Filter.cs" />
+    <Compile Include="Media\Image\Image.cs" />
+    <Compile Include="LDAP\Directory.cs" />
+    <Compile Include="LDAP\Entry.cs" />
+    <Compile Include="Media\Image\MotionDetection.cs" />
+    <Compile Include="Media\Image\NormalMap.cs" />
+    <Compile Include="Media\Image\OilPainting.cs" />
+    <Compile Include="Media\Image\Procedural\CellularMap.cs" />
+    <Compile Include="Media\Image\RGBHistogram.cs" />
+    <Compile Include="Media\Screenshot.cs" />
+    <Compile Include="FileFormats\OPMLHelper\Body.cs" />
+    <Compile Include="FileFormats\OPMLHelper\Head.cs" />
+    <Compile Include="FileFormats\OPMLHelper\OPML.cs" />
+    <Compile Include="FileFormats\OPMLHelper\Outline.cs" />
+    <Compile Include="Web\Netflix\BoxArt.cs" />
+    <Compile Include="Web\Netflix\Netflix.cs" />
+    <Compile Include="Web\Netflix\People.cs" />
+    <Compile Include="Web\Netflix\Person.cs" />
+    <Compile Include="Web\Netflix\Title.cs" />
+    <Compile Include="Web\Netflix\TitleInformation.cs" />
+    <Compile Include="Web\Netflix\Titles.cs" />
+    <Compile Include="Web\PingBack\Manager.cs" />
+    <Compile Include="Web\PingBack\PingBack.cs" />
+    <Compile Include="Web\PingBack\TrackBack.cs" />
+    <Compile Include="Profiler\Profiler.cs" />
+    <Compile Include="Profiler\ProfilerManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Random.cs" />
+    <Compile Include="Reflection.cs" />
+    <Compile Include="FileFormats\RSD\API.cs" />
+    <Compile Include="FileFormats\RSD\APIs.cs" />
+    <Compile Include="FileFormats\RSD\RSD.cs" />
+    <Compile Include="FileFormats\RSSHelper\Channel.cs" />
+    <Compile Include="FileFormats\RSSHelper\Document.cs" />
+    <Compile Include="FileFormats\RSSHelper\Enclosure.cs" />
+    <Compile Include="FileFormats\RSSHelper\Item.cs" />
+    <Compile Include="FileFormats\RSSHelper\RSS.cs" />
+    <Compile Include="Serialization.cs" />
+    <Compile Include="SQLHelper\SQLHelper.cs" />
+    <Compile Include="DataTypes\StringHelper.cs" />
+    <Compile Include="Web\Ping\Ping.cs" />
+    <Compile Include="Web\Web.cs" />
+    <Compile Include="Web\WebBrowserHelper\WebBrowserHelper.cs" />
+    <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
+    <Compile Include="FileFormats\XFN\People.cs" />
+    <Compile Include="FileFormats\XFN\XFNList.cs" />
+    <Compile Include="FileFormats\XMDP\Property.cs" />
+    <Compile Include="FileFormats\XMDP\XMDP.cs" />
+    <Compile Include="Web\Youtube\Youtube.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Utilities.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
