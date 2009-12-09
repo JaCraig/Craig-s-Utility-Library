@@ -23,7 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using Utilities.OAuth;
+using Utilities.Web.OAuth;
 
 #endregion
 
@@ -52,10 +52,9 @@ namespace Utilities.Web.Netflix
         /// <summary>
         /// Calls netflix's auto complete function
         /// </summary>
-        /// <param name="ConsumerKey">Consumer key</param>
         /// <param name="Term">Your search term</param>
         /// <returns>A list of possible matches</returns>
-        public List<string> AutoComplete(string ConsumerKey, string Term)
+        public List<string> AutoComplete(string Term)
         {
             List<string> Results = new List<string>();
             string Content = FileManager.GetFileContents(new Uri("http://api.netflix.com/catalog/titles/autocomplete?oauth_consumer_key=" + ConsumerKey + "&term=" + Term));
@@ -87,19 +86,15 @@ namespace Utilities.Web.Netflix
         /// <summary>
         /// Title search
         /// </summary>
-        /// <param name="ConsumerKey">Consumer key</param>
-        /// <param name="ConsumerKeySecret">Consumer key secret</param>
         /// <param name="Term">Term to search for</param>
         /// <param name="MaxResults">Max results to return</param>
         /// <param name="StartIndex">The starting index</param>
         /// <returns>List of title information</returns>
-        public Titles TitleSearch(string ConsumerKey, string ConsumerKeySecret, string Term, int MaxResults, int StartIndex)
+        public Titles TitleSearch(string Term, int MaxResults, int StartIndex)
         {
             AddParameter("term", Term);
             AddParameter("max_results", MaxResults.ToString());
             AddParameter("start_index", StartIndex.ToString());
-            this.ConsumerKey = ConsumerKey;
-            this.ConsumerKeySecret = ConsumerKeySecret;
             this.Token = "";
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
@@ -110,14 +105,10 @@ namespace Utilities.Web.Netflix
         /// <summary>
         /// Title synopsis
         /// </summary>
-        /// <param name="ConsumerKey">Consumer key</param>
-        /// <param name="ConsumerKeySecret">Consumer key secret</param>
         /// <param name="Title">Title to search for</param>
         /// <returns>The synopsis info</returns>
-        public string TitleSynopsis(string ConsumerKey, string ConsumerKeySecret, Title Title)
+        public string TitleSynopsis(Title Title)
         {
-            this.ConsumerKey = ConsumerKey;
-            this.ConsumerKeySecret = ConsumerKeySecret;
             this.Token = "";
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
@@ -140,14 +131,10 @@ namespace Utilities.Web.Netflix
         /// <summary>
         /// Cast search
         /// </summary>
-        /// <param name="ConsumerKey">Consumer key</param>
-        /// <param name="ConsumerKeySecret">Consumer key secret</param>
         /// <param name="Title">Title to search for</param>
         /// <returns>List of people information</returns>
-        public People CastLookup(string ConsumerKey, string ConsumerKeySecret, Title Title)
+        public People CastLookup(Title Title)
         {
-            this.ConsumerKey = ConsumerKey;
-            this.ConsumerKeySecret = ConsumerKeySecret;
             this.Token = "";
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
@@ -158,14 +145,10 @@ namespace Utilities.Web.Netflix
         /// <summary>
         /// Director search
         /// </summary>
-        /// <param name="ConsumerKey">Consumer key</param>
-        /// <param name="ConsumerKeySecret">Consumer key secret</param>
         /// <param name="Title">Title to search for</param>
         /// <returns>List of people information</returns>
-        public People DirectorLookup(string ConsumerKey, string ConsumerKeySecret, Title Title)
+        public People DirectorLookup(Title Title)
         {
-            this.ConsumerKey = ConsumerKey;
-            this.ConsumerKeySecret = ConsumerKeySecret;
             this.Token = "";
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
@@ -176,14 +159,10 @@ namespace Utilities.Web.Netflix
         /// <summary>
         /// Similar title search
         /// </summary>
-        /// <param name="ConsumerKey">Consumer key</param>
-        /// <param name="ConsumerKeySecret">Consumer key secret</param>
         /// <param name="Title">Title to use as our search base</param>
         /// <returns>List of title information</returns>
-        public Titles SimilarTitles(string ConsumerKey, string ConsumerKeySecret, Title Title)
+        public Titles SimilarTitles(Title Title)
         {
-            this.ConsumerKey = ConsumerKey;
-            this.ConsumerKeySecret = ConsumerKeySecret;
             this.Token = "";
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
@@ -194,14 +173,10 @@ namespace Utilities.Web.Netflix
         /// <summary>
         /// Formats available for the title
         /// </summary>
-        /// <param name="ConsumerKey">Consumer key</param>
-        /// <param name="ConsumerKeySecret">Consumer key secret</param>
         /// <param name="Title">Title to use as our search base</param>
         /// <returns>List of available formats</returns>
-        public List<string> FormatsAvailable(string ConsumerKey, string ConsumerKeySecret, Title Title)
+        public List<string> FormatsAvailable(Title Title)
         {
-            this.ConsumerKey = ConsumerKey;
-            this.ConsumerKeySecret = ConsumerKeySecret;
             this.Token = "";
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;

@@ -99,7 +99,7 @@
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
-    <Compile Include="OAuth\OAuth.cs" />
+    <Compile Include="Web\OAuth\OAuth.cs" />
     <Compile Include="Web\Craigslist\Craigslist.cs" />
     <Compile Include="Web\CSS.cs" />
     <Compile Include="FileFormats\CSV\Cell.cs" />
@@ -199,6 +199,8 @@
     <Compile Include="SQLHelper\SQLHelper.cs" />
     <Compile Include="DataTypes\StringHelper.cs" />
     <Compile Include="Web\Ping\Ping.cs" />
+    <Compile Include="Web\REST\REST.cs" />
+    <Compile Include="Web\Twitter\Twitter.cs" />
     <Compile Include="Web\Web.cs" />
     <Compile Include="Web\WebBrowserHelper\WebBrowserHelper.cs" />
     <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="Web\Youtube\Youtube.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Utilities.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,1198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Utilities.Classifier.NaiveBayes.NaiveBayes&lt;T&gt;" Collapsed="true">
+    <Position X="24.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAABAAAAAAEgAAAAAAAAAAAAAAQAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Classifier\NaiveBayes\NaiveBayes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Compression.Deflate" Collapsed="true">
+    <Position X="43.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compression\Deflate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Compression.GZip" Collapsed="true">
+    <Position X="33" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compression\GZip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.Bag&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAACBAQCAAABAQAAAAAAAAAAAAAAABQIAA=</HashCode>
+      <FileName>DataTypes\Bag.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.DataTypes.BinaryTree&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACJAAEAgAAAAADgQACAABAQAAAAIAAAAAAAgAABQIAA=</HashCode>
+      <FileName>DataTypes\BTree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.DataTypes.TreeNode&lt;T&gt;" Collapsed="true">
+    <Position X="24.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAEAAAAUAAAAAAAAAAACQCgAAAAAAA=</HashCode>
+      <FileName>DataTypes\BTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.DataTypeConversion" Collapsed="true">
+    <Position X="40" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAAAAAAgAAAAAAAAAEAAAAAAAAAAAACEQQAAAAAAA=</HashCode>
+      <FileName>DataTypes\DataTypeConversion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.DateHelper" Collapsed="true">
+    <Position X="41.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgBAAAACAAAAAAAAgAAAAAEAAAAAAAAkAAAIA=</HashCode>
+      <FileName>DataTypes\DateHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.List&lt;T&gt;" Collapsed="true">
+    <Position X="27.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAEAAAAAAAAAADAAABAAAAAAAAAAACAAAAABAAAA=</HashCode>
+      <FileName>DataTypes\List.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.ListMapping&lt;T1, T2&gt;" Collapsed="true">
+    <Position X="6.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAECAAACAAABAQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>DataTypes\ListMapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.Pair&lt;T1, T2&gt;" Collapsed="true">
+    <Position X="33" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAACACAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Pair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.PriorityQueue&lt;T&gt;" Collapsed="true">
+    <Position X="6.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAABAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\PriorityQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.StringHelper" Collapsed="true">
+    <Position X="27.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQCEAAAACAAAAAAAAABAAAIAAAAAAQKADEADAAQAA=</HashCode>
+      <FileName>DataTypes\StringHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.Triple&lt;T1, T2, T3&gt;" Collapsed="true">
+    <Position X="26" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAgAAAAAIAAAAAAIAAAAAAAAAAAQA=</HashCode>
+      <FileName>DataTypes\Triple.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.Vector&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGIAAMAAAAAACBAQDAAABAQAAAAAAAAACAAAAABQIAA=</HashCode>
+      <FileName>DataTypes\Vector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Utilities.DataTypes.Patterns.BaseClasses.Singleton&lt;T&gt;" Collapsed="true">
+    <Position X="40" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAQAAAAAAAACA=</HashCode>
+      <FileName>DataTypes\Patterns\BaseClasses\Singleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.DataTypes.Patterns.Factory&lt;Key, T&gt;" Collapsed="true">
+    <Position X="43.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAABAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataTypes\Patterns\Factory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Encryption.AESEncryption" Collapsed="true">
+    <Position X="24.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Encryption\AESEncryption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Encryption.CaesarEncryption" Collapsed="true">
+    <Position X="36.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Encryption\CaesarEncryption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Encryption.DESEncryption" Collapsed="true">
+    <Position X="24.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Encryption\DESEncryption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Encryption.MD5" Collapsed="true">
+    <Position X="34.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Encryption\MD5.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Encryption.RSAEncryption" Collapsed="true">
+    <Position X="29.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQAAAAgAAAAAAAAQAABAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Encryption\RSAEncryption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Encryption.SHA1" Collapsed="true">
+    <Position X="38.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Encryption\SHA1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Encryption.TripleDESEncryption" Collapsed="true">
+    <Position X="27.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Encryption\TripleDESEncryption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Encryption.VernamEncryption" Collapsed="true">
+    <Position X="34.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAEAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Encryption\VernamEncryption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Environment.Environment" Collapsed="true">
+    <Position X="36.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAQAAgAAAAAACAAIAAACAAQIiQAAAAAAAAA=</HashCode>
+      <FileName>Environment\Environment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Environment.ProcessManager" Collapsed="true">
+    <Position X="34.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAgAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Environment\ProcessManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Error.ErrorManager" Collapsed="true">
+    <Position X="38.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAIAAAAAAAAAgAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Error\ErrorManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.BaseEventArgs" Collapsed="true">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAgAAAAAAAAAAAAAgAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.SavedEventArgs" Collapsed="true">
+    <Position X="1.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.SavingEventArgs" Collapsed="true">
+    <Position X="3.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.DeletedEventArgs" Collapsed="true">
+    <Position X="6" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.DeletingEventArgs" Collapsed="true">
+    <Position X="8.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.ChangedEventArgs" Collapsed="true">
+    <Position X="10.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.LoadedEventArgs" Collapsed="true">
+    <Position X="12.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.LoadingEventArgs" Collapsed="true">
+    <Position X="15" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.OnStartEventArgs" Collapsed="true">
+    <Position X="17.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.OnEndEventArgs" Collapsed="true">
+    <Position X="19.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventArgs.OnErrorEventArgs" Collapsed="true">
+    <Position X="21.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Events.EventHelper" Collapsed="true">
+    <Position X="40" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Exchange.Appointment" Collapsed="true">
+    <Position X="34.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAABBAQAAADAGIAIIAABAgCAAQAAACAQhABEQAAAA=</HashCode>
+      <FileName>Exchange\Appointment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Exchange.Exchange" Collapsed="true">
+    <Position X="41.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACgAABAAEEAACAAAAAAAAAAAAAAAAIABABAA=</HashCode>
+      <FileName>Exchange\Exchange.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.APML" Collapsed="true">
+    <Position X="29.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAZAEAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\APML.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Application" Collapsed="true">
+    <Position X="31.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAIAQAAAAAABAAAAAEAAAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Application.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Applications" Collapsed="true">
+    <Position X="33" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAEAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Applications.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Author" Collapsed="true">
+    <Position X="41.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAACAAAAABQEAAAAECAAAAAAAAAAQAAgAAAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Author.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Body" Collapsed="true">
+    <Position X="31.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgCAABAAAgAEAAAAAAAAAAAAAAAAAAAgAAQAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Body.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Concept" Collapsed="true">
+    <Position X="27.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAACAAAAABQEAAAAECAAAAAAAAAAQAAgAAAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Concept.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Concepts" Collapsed="true">
+    <Position X="29.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Concepts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Data" Collapsed="true">
+    <Position X="38.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAIAAAGAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Data.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Head" Collapsed="true">
+    <Position X="34.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQIEAEAAAAAAAAAIAAAAAAAAAEGEAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Head.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Profile" Collapsed="true">
+    <Position X="36.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAYAAAAAAEAAAAEAAAAIAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Profile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Source" Collapsed="true">
+    <Position X="41.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAACAAAAABQEAAAAMCQAAABAAAAAQQAgAAACBAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Source.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.APMLHelper.Sources" Collapsed="true">
+    <Position X="43.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAEAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\APMLHelper\Sources.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.Author" Collapsed="true">
+    <Position X="40" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAgMAAAAAAAAAAAIEAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>FileFormats\BlogML\Author.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.Authors" Collapsed="true">
+    <Position X="43.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAACAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>FileFormats\BlogML\Authors.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.BlogML" Collapsed="true">
+    <Position X="27.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAEQABAAAAEAAAIBAEAAAAAAAAAACBAA=</HashCode>
+      <FileName>FileFormats\BlogML\BlogML.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.Categories" Collapsed="true">
+    <Position X="38.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAQACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\BlogML\Categories.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.Category" Collapsed="true">
+    <Position X="40" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAgMAAAAAAAAAAAIAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>FileFormats\BlogML\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.Post" Collapsed="true">
+    <Position X="31.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIEAAAAAAhEAgEQQAAAAAAQAAZBAEEAAAAAEEAAGAEA=</HashCode>
+      <FileName>FileFormats\BlogML\Post.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.Posts" Collapsed="true">
+    <Position X="33" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>FileFormats\BlogML\Posts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.Tag" Collapsed="true">
+    <Position X="29.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\BlogML\Tag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.BlogML.Tags" Collapsed="true">
+    <Position X="31.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\BlogML\Tags.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.CSV.Cell" Collapsed="true">
+    <Position X="41.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>FileFormats\CSV\Cell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.CSV.CSV" Collapsed="true">
+    <Position X="36.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAEAECAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\CSV\CSV.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.CSV.Row" Collapsed="true">
+    <Position X="27.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAECAIAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>FileFormats\CSV\Row.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.FOAF.FOAF" Collapsed="true">
+    <Position X="29.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>FileFormats\FOAF\FOAF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.FOAF.Person" Collapsed="true">
+    <Position X="38.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAjAAQEAUABBEKgQBAKGAAAEIAggAIBAIAAA=</HashCode>
+      <FileName>FileFormats\FOAF\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.INI.INI" Collapsed="true">
+    <Position X="43.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAICAAAAAAAAAAAAAAQAACAACABABAQ=</HashCode>
+      <FileName>FileFormats\INI\INI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.OPMLHelper.Body" Collapsed="true">
+    <Position X="29.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAIAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\OPMLHelper\Body.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.OPMLHelper.Head" Collapsed="true">
+    <Position X="36.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAEAEgEAAAAACQAA4AAIAAAAAAEEAAAAAA=</HashCode>
+      <FileName>FileFormats\OPMLHelper\Head.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.OPMLHelper.OPML" Collapsed="true">
+    <Position X="29.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAZAEAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\OPMLHelper\OPML.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.OPMLHelper.Outline" Collapsed="true">
+    <Position X="31.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAACAAACAQgAEAEAoAgAAQEAIAAAABEAQAACAAgBAA=</HashCode>
+      <FileName>FileFormats\OPMLHelper\Outline.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSD.API" Collapsed="true">
+    <Position X="26" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAABAAIEAAAAIARAAAAAAAAAAAASAAAAAAA=</HashCode>
+      <FileName>FileFormats\RSD\API.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSD.APIs" Collapsed="true">
+    <Position X="27.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAEAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\RSD\APIs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSD.RSD" Collapsed="true">
+    <Position X="31.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIEAAAABAAEAAAAAEAAAAAAAAIAAQAAGAAAAAA=</HashCode>
+      <FileName>FileFormats\RSD\RSD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSSHelper.Channel" Collapsed="true">
+    <Position X="24.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAQBABCBAgCE0EAJIhAAQQAIAAEAAEJAgAwAAAAAQ=</HashCode>
+      <FileName>FileFormats\RSSHelper\Channel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSSHelper.Document" Collapsed="true">
+    <Position X="27.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAEAAAAAAAgAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>FileFormats\RSSHelper\Document.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSSHelper.Enclosure" Collapsed="true">
+    <Position X="33" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAQAAAAAAAAEAAAAAABAAAAAAAAACQAAAAAABAA=</HashCode>
+      <FileName>FileFormats\RSSHelper\Enclosure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSSHelper.GUID" Collapsed="true">
+    <Position X="31.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAABAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>FileFormats\RSSHelper\GUID.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSSHelper.Item" Collapsed="true">
+    <Position X="24.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BABQAAAAAAGgAEUEgAIACAAAAIAAEAAEAAAAQAAAAEA=</HashCode>
+      <FileName>FileFormats\RSSHelper\Item.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSSHelper.RSS" Collapsed="true">
+    <Position X="33" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\RSSHelper\RSS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.RSSHelper.Thumbnail" Collapsed="true">
+    <Position X="34.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAABAAAAAAEAAAAAEAAAAAAAAAACAAAAIAAABA=</HashCode>
+      <FileName>FileFormats\RSSHelper\Thumbnail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.VCalendar" Collapsed="true">
+    <Position X="29.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAgAAAAAIIAQAAAIAAiAgAIAAAABEAAAAA=</HashCode>
+      <FileName>FileFormats\VCalendar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.VCard" Collapsed="true">
+    <Position X="31.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAACMAAACEAAEAGAAEQAAACAIEAABAACCIAAAIAYAw=</HashCode>
+      <FileName>FileFormats\VCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.XFN.People" Collapsed="true">
+    <Position X="36.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAEAAAAIAQAACAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>FileFormats\XFN\People.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.XFN.XFNList" Collapsed="true">
+    <Position X="43.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>FileFormats\XFN\XFNList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.XMDP.Property" Collapsed="true">
+    <Position X="41.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgABAEAAAAIAQAAAAAAAAEAAAAAAACAAA=</HashCode>
+      <FileName>FileFormats\XMDP\Property.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileFormats.XMDP.XMDP" Collapsed="true">
+    <Position X="24.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAEAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>FileFormats\XMDP\XMDP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.FileManager" Collapsed="true">
+    <Position X="26" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAYAAABACAAAAAAAWAgIAABQAAAQAAEQA=</HashCode>
+      <FileName>FileManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Random" Collapsed="true">
+    <Position X="43.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAABQAAAAAAMAAAAkAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Random.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Reflection" Collapsed="true">
+    <Position X="24.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAgAAAAAAAABAAAABAABACEAAAAAAAAAABgAAAA=</HashCode>
+      <FileName>Reflection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Serialization" Collapsed="true">
+    <Position X="36.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAJAAAAABAAAAAAAAAAAAAAAAAAACAAQAAA=</HashCode>
+      <FileName>Serialization.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.LDAP.Directory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIEQAAAEACAIBEIAAIIQUAIAAAAAAAgKARAAAAKAIAA=</HashCode>
+      <FileName>LDAP\Directory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.LDAP.Entry" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCAAEIAAIiAAAlAggACAIAQAACAAAAAAAAAEBAgAAAA=</HashCode>
+      <FileName>LDAP\Entry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.Math.MathHelper" Collapsed="true">
+    <Position X="31.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAABAAAAAAEgAAAAAAAAAQ=</HashCode>
+      <FileName>Math\Math.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Math.Matrix" Collapsed="true">
+    <Position X="33" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAE6AUAAEAAAAAAAKAAAAAgAIgAAjA=</HashCode>
+      <FileName>Math\Matrix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Math.Set&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAUQAEEAABAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Math\Set.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Math.Vector3" Collapsed="true">
+    <Position X="33" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAIAAACAAE8A2AAgQAAAQAAIBAAEAAAAEAZyE=</HashCode>
+      <FileName>Math\Vector3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Image.ASCIIArt" Collapsed="true">
+    <Position X="36.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Media\Image\ASCIIArt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Image.BumpMap" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAECAAAACAACAIAAAAAAAAABQIAQAAAAAAAAA=</HashCode>
+      <FileName>Media\Image\BumpMap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.Media.Image.Draw" Collapsed="true">
+    <Position X="29.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Media\Image\Draw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Image.Filter" Collapsed="true">
+    <Position X="27.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAgAAAAAAAAAQEAAAAAAAAAAAEAAEIAAgBA=</HashCode>
+      <FileName>Media\Image\Filter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Image.Image" Collapsed="true">
+    <Position X="41.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABAaAFBDAIIBEAAFVQAZEAsgkDjABgAAAgAQCAAJA=</HashCode>
+      <FileName>Media\Image\Image.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Image.MotionDetection" Collapsed="true">
+    <Position X="43.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Media\Image\MotionDetection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Image.NormalMap" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAEACAAIAAAAAACAABgAAAAABQAAQAAAAABAAA=</HashCode>
+      <FileName>Media\Image\NormalMap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.Media.Image.OilPainting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAADAAAAAAAAAAAAAAAAAAAAQAABAAAAAAAAA=</HashCode>
+      <FileName>Media\Image\OilPainting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.Media.Image.RGBHistogram" Collapsed="true">
+    <Position X="26" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAABAAAAAAAEAAQAEAACAAAAAAAAQAACAkAAQA=</HashCode>
+      <FileName>Media\Image\RGBHistogram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Image.Procedural.CellularMap" Collapsed="true">
+    <Position X="43.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAgAAAAAAAQAAAAAAAAABIAAAAAIAAABA=</HashCode>
+      <FileName>Media\Image\Procedural\CellularMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Image.Procedural.Point" Collapsed="true">
+    <Position X="26" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Media\Image\Procedural\CellularMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Screenshot" Collapsed="true">
+    <Position X="34.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Media\Screenshot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Media.Sound.SpeechToText" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAgAAAAAAAAAIAAAAAAAiAAAAAA=</HashCode>
+      <FileName>Media\Sound\SpeechToText.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.Media.Sound.TextToSpeech" Collapsed="true">
+    <Position X="33" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAABAAAAAAAAAAAAAAACAAAAACIAAAgA=</HashCode>
+      <FileName>Media\Sound\TextToSpeech.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.MultiThreading.Worker&lt;ResultType, InputParams&gt;" Collapsed="true">
+    <Position X="41.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgABAIAACYAAAAAAAQAAAQAAAIAAAAAYABAAAAAAAA=</HashCode>
+      <FileName>MultiThreading\Worker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.OAuth.OAuth" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIABAAAAAQQAAgEgBCACAAIAAACIAAAEABAAA=</HashCode>
+      <FileName>OAuth\OAuth.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Profiler.Profiler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAIIIAAAAAAIIAAAAAAAAAA=</HashCode>
+      <FileName>Profiler\Profiler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.Profiler.ProfilerManager" Collapsed="true">
+    <Position X="40" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAQEAAAAAAAAgAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Profiler\ProfilerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.SQLHelper.SQLHelper" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAACAAICGUAAAALFAiAAkAAAABAAAAAACAAAA=</HashCode>
+      <FileName>SQLHelper\SQLHelper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Utilities.Web.Craigslist.Craigslist" Collapsed="true">
+    <Position X="33" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Web\Craigslist\Craigslist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.CSS" Collapsed="true">
+    <Position X="34.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Web\CSS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.HTML" Collapsed="true">
+    <Position X="38.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAgCIAQAAACgHQAIgAAKAAAgEAIAAAgAIABCAI=</HashCode>
+      <FileName>Web\HTML.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Javascript" Collapsed="true">
+    <Position X="26" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Web\Javascript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Web" Collapsed="true">
+    <Position X="36.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Web.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Ebay.Ebay" Collapsed="true">
+    <Position X="31.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Web\Ebay\Ebay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.Message" Collapsed="true">
+    <Position X="6.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAIABAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Email\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.Attribute" Collapsed="true">
+    <Position X="38.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAIAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\Attribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.Code" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACA=</HashCode>
+      <FileName>Web\Email\MIME\Code.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.CodeManager" Collapsed="true">
+    <Position X="26" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAACAAEAAEAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\CodeManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.Constants" Collapsed="true">
+    <Position X="31.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQAIAAAAIABQgAAAIEAgQQAAAAIEAgAEACQAgBAJBA=</HashCode>
+      <FileName>Web\Email\MIME\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.Field" Collapsed="true">
+    <Position X="24.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAACAAAIAQQAAAAAAACAAAAAAAAACA=</HashCode>
+      <FileName>Web\Email\MIME\Field.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.MIMEBody" Collapsed="true">
+    <Position X="36.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAggEIAAQBAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\MIMEBody.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.MIMEHeader" Collapsed="true">
+    <Position X="38.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAACAAAAAgAA=</HashCode>
+      <FileName>Web\Email\MIME\MIMEHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.MIMEMessage" Collapsed="true">
+    <Position X="40" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgEAACAAAAQIABAFAIABAAAAAAAIAEAAAAAGAQAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\MIMEMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.MIMEType" Collapsed="true">
+    <Position X="41.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Web\Email\MIME\MIMEType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.CodeTypes.CodeAddress" Collapsed="true">
+    <Position X="0.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAQAAAABAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\CodeTypes\CodeAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.CodeTypes.CodeBase" Collapsed="true">
+    <Position X="1.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAQAAAAABAIACAAAAAQAAAABAAAAAAAQAAYAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\CodeTypes\CodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.CodeTypes.CodeBase64" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\CodeTypes\CodeBase64.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.CodeTypes.CodeParameter" Collapsed="true">
+    <Position X="3" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAQAAAABAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\CodeTypes\CodeParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.MIME.CodeTypes.CodeQP" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAABAAAAAAAAAAAAAgBAAAEAAAAAAQAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\CodeTypes\CodeQP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.Pop3.Message" Collapsed="true">
+    <Position X="5.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EoAAAAAABAAAAIAAAIABAAAAABAIAAAgAAAACAAAAEA=</HashCode>
+      <FileName>Web\Email\Pop3\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.Pop3.Pop3Client" Collapsed="true">
+    <Position X="27.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCRAAAAAAEAAAEAQAQIAAIAACAEEAAACAQAAAgAADAA=</HashCode>
+      <FileName>Web\Email\Pop3\Pop3Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.Pop3.Pop3Exception" Collapsed="true">
+    <Position X="29.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Email\Pop3\Pop3Exception.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Email.SMTP.EmailSender" Collapsed="true">
+    <Position X="7.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAIAAEUAAAAAAAACAAAAAACAQAAAgAAAAg=</HashCode>
+      <FileName>Web\Email\SMTP\EmailSender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Hulu.Hulu" Collapsed="true">
+    <Position X="40" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Hulu\Hulu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Netflix.BoxArt" Collapsed="true">
+    <Position X="33" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAgAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Netflix\BoxArt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Netflix.Netflix" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAQAAAAAAIAAAAIBAAAAAAAABAAAAgAAAAAAA=</HashCode>
+      <FileName>Web\Netflix\Netflix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Netflix.People" Collapsed="true">
+    <Position X="34.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAkAAAAAAAAAAAAAAAAAAAAAIAAAAAAAACAAAA=</HashCode>
+      <FileName>Web\Netflix\People.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Netflix.Person" Collapsed="true">
+    <Position X="40" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAICAAAAAQAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Netflix\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Netflix.Title" Collapsed="true">
+    <Position X="36.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAgAAAkAQAEEFAAAgImAAQEAEAAiAAgAEAAAA=</HashCode>
+      <FileName>Web\Netflix\Title.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Netflix.TitleInformation" Collapsed="true">
+    <Position X="38.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Netflix\TitleInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Netflix.Titles" Collapsed="true">
+    <Position X="40" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAEAAAAAAAAAAAAAAAIAAAAAAAACAAAA=</HashCode>
+      <FileName>Web\Netflix\Titles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Ping.Ping" Collapsed="true">
+    <Position X="41.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAgAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Ping\Ping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.PingBack.Manager" Collapsed="true">
+    <Position X="29.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\PingBack\Manager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.PingBack.PingBack" Collapsed="true">
+    <Position X="43.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAACAACARAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\PingBack\PingBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.PingBack.PingBackMessage" Collapsed="true">
+    <Position X="24.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQgAAAAAAAAAAACAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\PingBack\PingBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.PingBack.TrackBack" Collapsed="true">
+    <Position X="41.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAEAAAAAAAgACAAAARAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\PingBack\TrackBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.PingBack.TrackBackMessage" Collapsed="true">
+    <Position X="43.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAgABAAgEAEAAAgAAAAAJAAAABAAAAAAAAEgEA=</HashCode>
+      <FileName>Web\PingBack\TrackBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.WebBrowserHelper.WebBrowserHelper" Collapsed="true">
+    <Position X="38.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAgAAACAAAAAAAAAAAAgCAAAAAAAAAAAACCAAAAA=</HashCode>
+      <FileName>Web\WebBrowserHelper\WebBrowserHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.WebPageThumbnail.WebPageThumbnail" Collapsed="true">
+    <Position X="40" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAABAAAAAAAAAAAAEAAAAAAABAACAAAAABAQAQ=</HashCode>
+      <FileName>Web\WebPageThumbnail\WebPageThumbnail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Utilities.Web.Youtube.Youtube" Collapsed="true">
+    <Position X="26" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Youtube\Youtube.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Utilities.Web.Email.MIME.MediaType" Collapsed="true">
+    <Position X="24.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\MediaType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="Utilities.FileFormats.Relationship" Collapsed="true">
+    <Position X="34.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAIAAQACgIABKAQAQAIAAAAAAAABKAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\VCard.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Utilities.FileFormats.XFN.Relationship" Collapsed="true">
+    <Position X="33" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAIAAQACgIABKAQAQAIAAAAAAAABKAAAAAAAAAA=</HashCode>
+      <FileName>FileFormats\XFN\XFNList.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Utilities.CopyOptions" Collapsed="true">
+    <Position X="26" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAIABAAAAAAAAAAA=</HashCode>
+      <FileName>FileManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Utilities.Media.Image.Direction" Collapsed="true">
+    <Position X="27.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Media\Image\BumpMap.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Utilities.OAuth.HTTPMethod" Collapsed="true">
+    <Position X="29.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAEAQAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OAuth\OAuth.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Utilities.OAuth.Signature" Collapsed="true">
+    <Position X="36.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OAuth\OAuth.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Utilities.Web.Craigslist.Category" Collapsed="true">
+    <Position X="24.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQAAAEiAABOBAADBAIiAKEICcAAAAAAACAGAACBpMAQ=</HashCode>
+      <FileName>Web\Craigslist\Craigslist.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Utilities.Web.Email.MIME.MediaEnum" Collapsed="true">
+    <Position X="31.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAEAAQAAAIAAAAAAgAAAAgEAAAAAA=</HashCode>
+      <FileName>Web\Email\MIME\MediaEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
