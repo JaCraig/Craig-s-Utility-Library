@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2009 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -86,7 +86,7 @@ namespace Utilities.FileFormats.RSSHelper
         {
             if (!string.IsNullOrEmpty(GUIDText))
             {
-                return "<guid" + (string.IsNullOrEmpty(PermaLink) ? " IsPermaLink=" + PermaLink : " IsPermaLink=No") + ">" + GUIDText + "</guid>\r\n";
+                return "<guid" + (string.IsNullOrEmpty(PermaLink) ? " IsPermaLink=" + PermaLink : " IsPermaLink='False'") + ">" + GUIDText + "</guid>\r\n";
             }
             return string.Empty;
         }

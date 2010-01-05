@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2009 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,10 +33,10 @@ namespace Utilities.Encryption
     {
         #region Public Static Functions
         /// <summary>
-        /// Computes a hash using MD5
+        /// Computes a hash using SHA1
         /// </summary>
         /// <param name="Input">Input string</param>
-        /// <returns>A hash of the input string using MD5</returns>
+        /// <returns>A hash of the input string using SHA1</returns>
         public static string ComputeHash(string Input)
         {
             SHA1CryptoServiceProvider SHA1 = new SHA1CryptoServiceProvider();

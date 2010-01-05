@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2009 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -67,6 +67,7 @@ namespace Utilities.MultiThreading
         /// </summary>
         public void Start()
         {
+            Stopping = false;
             this.WorkerThread.Start();
         }
 
@@ -75,6 +76,7 @@ namespace Utilities.MultiThreading
         /// </summary>
         public void Stop()
         {
+            Stopping = true;
             if (WorkerThread != null && WorkerThread.IsAlive)
             {
                 this.WorkerThread.Join();
@@ -160,6 +162,8 @@ namespace Utilities.MultiThreading
         /// The thread used
         /// </summary>
         private Thread WorkerThread=null;
+
+        protected volatile bool Stopping = false;
 
         #endregion
     }

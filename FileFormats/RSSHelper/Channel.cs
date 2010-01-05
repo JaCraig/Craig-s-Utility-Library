@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2009 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -125,7 +125,7 @@ namespace Utilities.FileFormats.RSSHelper
         private DateTime _pubDate = DateTime.Now;
         private List<string> _Categories = null;
         private string _Docs = "http://blogs.law.harvard.edu/tech/rss";
-        private string _Cloud = HTML.AbsoluteRoot.AbsoluteUri;
+        private string _Cloud = string.Empty;
         private int _TTL = 5;
         private string _ImageUrl = string.Empty;
         private List<Item> _Items = null;
