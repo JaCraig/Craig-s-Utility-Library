@@ -45,6 +45,7 @@ namespace Utilities.MultiThreading
         {
             this.Params = Params;
             this.WorkerThread = new Thread(DoWork);
+            this.WorkerThread.IsBackground = true;
         }
 
         #endregion

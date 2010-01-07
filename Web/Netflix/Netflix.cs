@@ -182,23 +182,25 @@ namespace Utilities.Web.Netflix
             this.Method = HTTPMethod.GET;
             this.Url = new Uri(Title.FormatsAvailableLink);
             string Content = FileManager.GetFileContents(new Uri(GenerateRequest()));
-
             List<string> Results = new List<string>();
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(Content);
-            foreach (XmlNode Children in Document.ChildNodes)
+            if (!string.IsNullOrEmpty(Content))
             {
-                if (Children.Name.Equals("delivery_formats", StringComparison.CurrentCultureIgnoreCase))
+                XmlDocument Document = new XmlDocument();
+                Document.LoadXml(Content);
+                foreach (XmlNode Children in Document.ChildNodes)
                 {
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    if (Children.Name.Equals("delivery_formats", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (Child.Name.Equals("availability", StringComparison.CurrentCultureIgnoreCase))
+                        foreach (XmlNode Child in Children.ChildNodes)
                         {
-                            foreach (XmlNode Category in Child.ChildNodes)
+                            if (Child.Name.Equals("availability", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                if (Category.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
+                                foreach (XmlNode Category in Child.ChildNodes)
                                 {
-                                    Results.Add(Category.Attributes["term"].Value);
+                                    if (Category.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        Results.Add(Category.Attributes["term"].Value);
+                                    }
                                 }
                             }
                         }

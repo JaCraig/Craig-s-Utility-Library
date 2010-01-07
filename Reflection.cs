@@ -21,8 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.IO;
 using System.Reflection;
 using System.Text;
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities
@@ -244,6 +246,85 @@ namespace Utilities
             }
 
             return ClassInstance;
+        }
+
+        /// <summary>
+        /// Gets a list of types based on an interface
+        /// </summary>
+        /// <param name="Assembly">Assembly to check</param>
+        /// <param name="Interface">Interface to look for</param>
+        /// <returns>List of types that use the interface</returns>
+        public static System.Collections.Generic.List<Type> GetTypes(Assembly Assembly, string Interface)
+        {
+            System.Collections.Generic.List<Type> ReturnList = new System.Collections.Generic.List<Type>();
+            if (Assembly != null)
+            {
+                Type[] Types = Assembly.GetTypes();
+                foreach (Type Type in Types)
+                {
+                    if (Type.GetInterface(Interface, true) != null)
+                    {
+                        ReturnList.Add(Type);
+                    }
+                }
+            }
+            return ReturnList;
+        }
+
+        /// <summary>
+        /// Gets a list of types based on an interface
+        /// </summary>
+        /// <param name="AssemblyLocation">Location of the DLL</param>
+        /// <param name="Interface">Interface to look for</param>
+        /// <param name="Assembly">The assembly holding the types</param>
+        /// <returns>A list of types that use the interface</returns>
+        public static System.Collections.Generic.List<Type> GetTypes(string AssemblyLocation, string Interface,out Assembly Assembly)
+        {
+            Assembly = Assembly.LoadFile(AssemblyLocation);
+            return GetTypes(Assembly, Interface);
+        }
+
+        /// <summary>
+        /// Gets a list of types based on an interface from all assemblies found in a directory
+        /// </summary>
+        /// <param name="AssemblyDirectory">Directory to search in</param>
+        /// <param name="Interface">The interface to look for</param>
+        /// <returns>A list mapping using the assembly as the key and a list of types</returns>
+        public static ListMapping<Assembly, Type> GetTypesFromDirectory(string AssemblyDirectory, string Interface)
+        {
+            ListMapping<Assembly, Type> ReturnList = new ListMapping<Assembly,Type>();
+            System.Collections.Generic.List<Assembly> Assemblies = GetAssembliesFromDirectory(AssemblyDirectory);
+            foreach (Assembly Assembly in Assemblies)
+            {
+                Type[] Types = Assembly.GetTypes();
+                foreach (Type Type in Types)
+                {
+                    if (Type.GetInterface(Interface, true) != null)
+                    {
+                        ReturnList.Add(Assembly, Type);
+                    }
+                }
+            }
+            return ReturnList;
+        }
+
+        /// <summary>
+        /// Gets a list of assemblies from a directory
+        /// </summary>
+        /// <param name="Directory">The directory to search in</param>
+        /// <returns>List of assemblies in the directory</returns>
+        public static System.Collections.Generic.List<Assembly> GetAssembliesFromDirectory(string Directory)
+        {
+            System.Collections.Generic.List<Assembly> ReturnList = new System.Collections.Generic.List<Assembly>();
+            System.Collections.Generic.List<FileInfo> Files = FileManager.FileList(Directory);
+            foreach (FileInfo File in Files)
+            {
+                if (File.Extension.Equals(".dll", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    ReturnList.Add(Assembly.LoadFile(File.FullName));
+                }
+            }
+            return ReturnList;
         }
 
         #endregion
