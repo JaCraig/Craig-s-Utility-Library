@@ -35,6 +35,27 @@ namespace Utilities.DataTypes
         #region Static Public Functions
 
         /// <summary>
+        /// Calls the object's ToString function passing in the formatting
+        /// </summary>
+        /// <param name="Input">Input object</param>
+        /// <param name="Format">Format of the output string</param>
+        /// <returns>The formatted string</returns>
+        public static string FormatToString(object Input, string Format)
+        {
+            try
+            {
+                if (Input == null)
+                    return "";
+                if (!string.IsNullOrEmpty(Format))
+                {
+                    return (string)Reflection.CallMethod("ToString", Input, Format);
+                }
+                return Input.ToString();
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
         /// Gets the first x number of characters from the left hand side
         /// </summary>
         /// <param name="Input">Input string</param>
@@ -275,30 +296,3 @@ namespace Utilities.DataTypes
         #endregion
     }
 }
-
-/*void visit(int *Value, int N, int k)
-{
-  static level = -1;
-  level = level+1; Value[k] = level;
-
-  if (level == N)
-    print(Value, N);
-  else
-    for (int i = 0; i < N; i++)
-      if (Value[i] == 0)
-        visit(Value, N, i);
-
-  level = level-1; Value[k] = 0;
-}
-
-
-main()
-{
-  const int N = 4;
-  int Value[N];
-  for (int i = 0; i < N; i++) {
-    Value[i] = 0;
-  }
-  visit(Value, N, 0);
-}
-*/

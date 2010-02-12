@@ -25,6 +25,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Utilities.DataTypes;
+using System.Linq.Expressions;
 #endregion
 
 namespace Utilities
@@ -53,7 +54,7 @@ namespace Utilities
                 foreach (PropertyInfo Property in Properties)
                 {
                     TempValue.Append("<tr><td>" + Property.Name + "</td><td>");
-                    ParameterInfo []Parameters = Property.GetIndexParameters();
+                    ParameterInfo[] Parameters = Property.GetIndexParameters();
                     if (Property.CanRead && Parameters.Length == 0)
                     {
                         try
@@ -120,7 +121,7 @@ namespace Utilities
             foreach (Assembly Assembly in Assemblies)
             {
                 Builder.Append("<strong>" + Assembly.GetName().Name + "</strong><br />");
-                Builder.Append(DumpProperties(Assembly)+"<br /><br />");
+                Builder.Append(DumpProperties(Assembly) + "<br /><br />");
             }
             return Builder.ToString();
         }
@@ -132,9 +133,9 @@ namespace Utilities
         /// <returns>The assembly specified if it exists, otherwise it returns null</returns>
         public static System.Reflection.Assembly GetLoadedAssembly(string Name)
         {
-            foreach(Assembly TempAssembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (Assembly TempAssembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                if(TempAssembly.GetName().Name.Equals(Name,StringComparison.InvariantCultureIgnoreCase))
+                if (TempAssembly.GetName().Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return TempAssembly;
                 }
@@ -148,7 +149,7 @@ namespace Utilities
         /// <param name="Object">Object to copy</param>
         /// <param name="SimpleTypesOnly">If true, it only copies simple types (no classes, only items like int, string, etc.), false copies everything.</param>
         /// <returns>A copy of the object</returns>
-        public static object MakeShallowCopy(object Object,bool SimpleTypesOnly)
+        public static object MakeShallowCopy(object Object, bool SimpleTypesOnly)
         {
             Type ObjectType = Object.GetType();
             PropertyInfo[] Properties = ObjectType.GetProperties();
@@ -197,7 +198,7 @@ namespace Utilities
         /// <param name="Object">Object to copy</param>
         /// <param name="SimpleTypesOnly">If true, it only copies simple types (no classes, only items like int, string, etc.), false copies everything.</param>
         /// <returns>A copy of the object</returns>
-        public static object MakeShallowCopyInheritedClass(Type DerivedType,object Object, bool SimpleTypesOnly)
+        public static object MakeShallowCopyInheritedClass(Type DerivedType, object Object, bool SimpleTypesOnly)
         {
             Type ObjectType = Object.GetType();
             Type ReturnedObjectType = DerivedType;
@@ -278,7 +279,7 @@ namespace Utilities
         /// <param name="Interface">Interface to look for</param>
         /// <param name="Assembly">The assembly holding the types</param>
         /// <returns>A list of types that use the interface</returns>
-        public static System.Collections.Generic.List<Type> GetTypes(string AssemblyLocation, string Interface,out Assembly Assembly)
+        public static System.Collections.Generic.List<Type> GetTypes(string AssemblyLocation, string Interface, out Assembly Assembly)
         {
             Assembly = Assembly.LoadFile(AssemblyLocation);
             return GetTypes(Assembly, Interface);
@@ -292,7 +293,7 @@ namespace Utilities
         /// <returns>A list mapping using the assembly as the key and a list of types</returns>
         public static ListMapping<Assembly, Type> GetTypesFromDirectory(string AssemblyDirectory, string Interface)
         {
-            ListMapping<Assembly, Type> ReturnList = new ListMapping<Assembly,Type>();
+            ListMapping<Assembly, Type> ReturnList = new ListMapping<Assembly, Type>();
             System.Collections.Generic.List<Assembly> Assemblies = GetAssembliesFromDirectory(AssemblyDirectory);
             foreach (Assembly Assembly in Assemblies)
             {
@@ -327,6 +328,167 @@ namespace Utilities
             return ReturnList;
         }
 
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <returns>The returned value of the method</returns>
+        public static object CallMethod(string MethodName, object Object,params object[] InputVariables)
+        {
+            if(string.IsNullOrEmpty(MethodName)||Object==null)
+                return null;
+            Type ObjectType = Object.GetType();
+            MethodInfo Method = null;
+            if (InputVariables != null)
+            {
+                Type[] MethodInputTypes = new Type[InputVariables.Length];
+                for (int x = 0; x < InputVariables.Length; ++x)
+                {
+                    MethodInputTypes[x] = InputVariables[x].GetType();
+                }
+                Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+                if (Method != null)
+                {
+                    return Method.Invoke(Object, InputVariables);
+                }
+            }
+            Method = ObjectType.GetMethod(MethodName);
+            if (Method != null)
+            {
+                return Method.Invoke(Object, null);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Sets the value of destination property
+        /// </summary>
+        /// <param name="SourceValue">The source value</param>
+        /// <param name="DestinationObject">The destination object</param>
+        /// <param name="DestinationPropertyInfo">The destination property info</param>
+        /// <param name="Format">Allows for formatting if the destination is a string</param>
+        public static void SetValue(object SourceValue, object DestinationObject,
+            PropertyInfo DestinationPropertyInfo, string Format)
+        {
+            if (DestinationObject == null || DestinationPropertyInfo == null)
+                return;
+            Type DestinationPropertyType = DestinationPropertyInfo.PropertyType;
+            DestinationPropertyInfo.SetValue(DestinationObject,
+                Parse(SourceValue, DestinationPropertyType, Format),
+                null);
+        }
+
+        /// <summary>
+        /// Sets the value of destination property
+        /// </summary>
+        /// <param name="SourceValue">The source value</param>
+        /// <param name="DestinationObject">The destination object</param>
+        /// <param name="PropertyPath">The path to the property (ex: MyProp.SubProp.FinalProp
+        /// would look at the MyProp on the destination object, then find it's SubProp,
+        /// and finally copy the SourceValue to the FinalProp property on the destination
+        /// object)</param>
+        /// <param name="Format">Allows for formatting if the destination is a string</param>
+        public static void SetValue(object SourceValue, object DestinationObject, 
+            string PropertyPath, string Format)
+        {
+            string[] Splitter = { "." };
+            string[] DestinationProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+            object TempDestinationProperty = DestinationObject;
+            Type DestinationPropertyType = DestinationObject.GetType();
+            PropertyInfo DestinationProperty = null;
+            for (int x = 0; x < DestinationProperties.Length - 1; ++x)
+            {
+                DestinationProperty = DestinationPropertyType.GetProperty(DestinationProperties[x]);
+                DestinationPropertyType=DestinationProperty.PropertyType;
+                TempDestinationProperty = DestinationProperty.GetValue(TempDestinationProperty, null);
+                if (TempDestinationProperty == null)
+                    return;
+            }
+            DestinationProperty = DestinationPropertyType.GetProperty(DestinationProperties[DestinationProperties.Length - 1]);
+            SetValue(SourceValue, TempDestinationProperty, DestinationProperty, Format);
+        }
+
+        /// <summary>
+        /// Gets the name of the property held within the expression
+        /// </summary>
+        /// <typeparam name="T">The type of object used in the expression</typeparam>
+        /// <param name="Expression">The expression</param>
+        /// <returns>A string containing the name of the property</returns>
+        public static string GetPropertyName<T>(Expression<Func<T, object>> Expression)
+        {
+            if (Expression == null)
+                return "";
+            string Name = "";
+            if (Expression.Body.NodeType == ExpressionType.Convert)
+            {
+                Name = Expression.Body.ToString().Replace("Convert(", "").Replace(")", "");
+                Name = Name.Remove(0, Name.IndexOf(".") + 1);
+            }
+            else
+            {
+                Name = Expression.Body.ToString();
+                Name = Name.Remove(0, Name.IndexOf(".") + 1);
+            }
+            return Name;
+        }
+
+        /// <summary>
+        /// Gets a property's value
+        /// </summary>
+        /// <param name="SourceObject">object who contains the property</param>
+        /// <param name="PropertyPath">Path of the property (ex: Prop1.Prop2.Prop3 would be
+        /// the Prop1 of the source object, which then has a Prop2 on it, which in turn
+        /// has a Prop3 on it.)</param>
+        /// <returns>The value contained in the property or null if the property can not
+        /// be reached</returns>
+        public static object GetPropertyValue(object SourceObject, string PropertyPath)
+        {
+            if (SourceObject == null||string.IsNullOrEmpty(PropertyPath))
+                return null;
+            string[] Splitter = { "." };
+            string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+            object TempSourceProperty = SourceObject;
+            Type PropertyType = SourceObject.GetType();
+            for (int x = 0; x < SourceProperties.Length; ++x)
+            {
+                PropertyInfo SourcePropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                if (SourcePropertyInfo == null)
+                    return null;
+                TempSourceProperty = SourcePropertyInfo.GetValue(TempSourceProperty, null);
+                if (TempSourceProperty == null)
+                    return null;
+                PropertyType = SourcePropertyInfo.PropertyType;
+            }
+            return TempSourceProperty;
+        }
+
+        /// <summary>
+        /// Gets a property's type
+        /// </summary>
+        /// <param name="SourceObject">object who contains the property</param>
+        /// <param name="PropertyPath">Path of the property (ex: Prop1.Prop2.Prop3 would be
+        /// the Prop1 of the source object, which then has a Prop2 on it, which in turn
+        /// has a Prop3 on it.)</param>
+        /// <returns>The type of the property specified or null if it can not be reached.</returns>
+        public static Type GetPropertyType(object SourceObject, string PropertyPath)
+        {
+            if (SourceObject == null||string.IsNullOrEmpty(PropertyPath))
+                return null;
+            string[] Splitter = { "." };
+            string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+            object TempSourceProperty = SourceObject;
+            Type PropertyType = SourceObject.GetType();
+            PropertyInfo PropertyInfo = null;
+            for (int x = 0; x < SourceProperties.Length; ++x)
+            {
+                PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                PropertyType = PropertyInfo.PropertyType;
+            }
+            return PropertyType;
+        }
+
         #endregion
 
         #region Private Static Functions
@@ -341,10 +503,7 @@ namespace Utilities
         {
             try
             {
-                if (Field.IsPublic)
-                {
-                    Field.SetValue(ClassInstance, Field.GetValue(Object));
-                }
+                SetField(Field, Field, ClassInstance, Object);
             }
             catch { }
         }
@@ -357,16 +516,11 @@ namespace Utilities
         /// <param name="Object">Class to copy from</param>
         private static void SetFieldifSimpleType(FieldInfo Field, object ClassInstance, object Object)
         {
-            Type FieldType = Field.FieldType;
-            if(Field.FieldType.FullName.StartsWith("System.Collections.Generic.List", StringComparison.CurrentCultureIgnoreCase))
+            try
             {
-                FieldType=Field.FieldType.GetGenericArguments()[0];
+                SetFieldifSimpleType(Field, Field, ClassInstance, Object);
             }
-
-            if (FieldType.FullName.StartsWith("System"))
-            {
-                SetField(Field, ClassInstance, Object);
-            }
+            catch { }
         }
 
         /// <summary>
@@ -417,16 +571,11 @@ namespace Utilities
         /// <param name="Object">Class to copy from</param>
         private static void SetPropertyifSimpleType(PropertyInfo Property, object ClassInstance, object Object)
         {
-            Type PropertyType = Property.PropertyType;
-            if (Property.PropertyType.FullName.StartsWith("System.Collections.Generic.List", StringComparison.CurrentCultureIgnoreCase))
+            try
             {
-                PropertyType = Property.PropertyType.GetGenericArguments()[0];
+                SetPropertyifSimpleType(Property, Property, ClassInstance, Object);
             }
-
-            if (PropertyType.FullName.StartsWith("System"))
-            {
-                SetProperty(Property, ClassInstance, Object);
-            }
+            catch { }
         }
 
         /// <summary>
@@ -439,10 +588,7 @@ namespace Utilities
         {
             try
             {
-                if (Property.GetSetMethod() != null && Property.GetGetMethod() != null)
-                {
-                    Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
-                }
+                SetProperty(Property, Property, ClassInstance, Object);
             }
             catch { }
         }
@@ -487,6 +633,89 @@ namespace Utilities
             }
         }
 
+
+        /// <summary>
+        /// Parses the object and turns it into the requested output type
+        /// </summary>
+        /// <param name="Input">Input object</param>
+        /// <param name="OutputType">Output type</param>
+        /// <returns>An object with the requested output type</returns>
+        internal static object Parse(object Input, Type OutputType)
+        {
+            return Parse(Input, OutputType, "");
+        }
+
+        /// <summary>
+        /// Parses the string into the requested output type
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="OutputType">Output type</param>
+        /// <returns>An object with the requested output type</returns>
+        private static object Parse(string Input, Type OutputType)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Input))
+                    return null;
+                return Parse(Input, OutputType, "");
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Parses the object into the requested output type
+        /// </summary>
+        /// <param name="Input">Input object</param>
+        /// <param name="OutputType">Output object</param>
+        /// <param name="Format">format string (may be overridded if the conversion 
+        /// involves a floating point value to "f0")</param>
+        /// <returns>The object converted to the specified output type</returns>
+        private static object Parse(object Input, Type OutputType,string Format)
+        {
+            try
+            {
+                if (Input==null || OutputType == null)
+                    return null;
+                Type InputType = Input.GetType();
+                if (InputType == OutputType)
+                {
+                    return Input;
+                }
+                else if (OutputType == typeof(string))
+                {
+                    return StringHelper.FormatToString(Input, Format);
+                }
+                else
+                {
+                    return CallMethod("Parse", OutputType.Assembly.CreateInstance(OutputType.FullName), StringHelper.FormatToString(Input, DiscoverFormatString(InputType, OutputType, Format)));
+                }
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Used to find the format string to use
+        /// </summary>
+        /// <param name="InputType">Input type</param>
+        /// <param name="OutputType">Output type</param>
+        /// <param name="FormatString">the string format</param>
+        /// <returns>The format string to use</returns>
+        private static string DiscoverFormatString(Type InputType,
+            Type OutputType,string FormatString)
+        {
+            if (InputType == OutputType
+                || InputType == typeof(string)
+                || OutputType == typeof(string))
+                return FormatString;
+            if (InputType == typeof(float)
+                || InputType == typeof(double)
+                || InputType == typeof(decimal)
+                || OutputType == typeof(float)
+                || OutputType == typeof(double)
+                || OutputType == typeof(decimal))
+                return "f0";
+            return FormatString;
+        }
         #endregion
     }
 }
