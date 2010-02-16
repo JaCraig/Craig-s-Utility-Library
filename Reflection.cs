@@ -489,6 +489,57 @@ namespace Utilities
             return PropertyType;
         }
 
+        /// <summary>
+        /// Gets a property's parent object
+        /// </summary>
+        /// <param name="SourceObject">Source object</param>
+        /// <param name="PropertyPath">Path of the property (ex: Prop1.Prop2.Prop3 would be
+        /// the Prop1 of the source object, which then has a Prop2 on it, which in turn
+        /// has a Prop3 on it.)</param>
+        /// <param name="PropertyInfo">Property info that is sent back</param>
+        /// <returns>The property's parent object</returns>
+        public static object GetPropertyParent(object SourceObject, string PropertyPath, out PropertyInfo PropertyInfo)
+        {
+            if (SourceObject == null)
+            {
+                PropertyInfo = null;
+                return null;
+            }
+            string[] Splitter = { "." };
+            string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+            object TempSourceProperty = SourceObject;
+            Type PropertyType = SourceObject.GetType();
+            PropertyInfo = PropertyType.GetProperty(SourceProperties[0]);
+            PropertyType = PropertyInfo.PropertyType;
+            for (int x = 1; x < SourceProperties.Length; ++x)
+            {
+                if (TempSourceProperty != null)
+                {
+                    TempSourceProperty = PropertyInfo.GetValue(TempSourceProperty, null);
+                }
+                PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                PropertyType = PropertyInfo.PropertyType;
+            }
+            return TempSourceProperty;
+        }
+
+        public static PropertyInfo GetProperty<Source>(string PropertyPath)
+        {
+            if (string.IsNullOrEmpty(PropertyPath))
+                return null;
+            string[] Splitter = { "." };
+            string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+            Type PropertyType = typeof(Source);
+            PropertyInfo PropertyInfo= PropertyType.GetProperty(SourceProperties[0]);
+            PropertyType = PropertyInfo.PropertyType;
+            for (int x = 1; x < SourceProperties.Length; ++x)
+            {
+                PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                PropertyType = PropertyInfo.PropertyType;
+            }
+            return PropertyInfo;
+        }
+
         #endregion
 
         #region Private Static Functions
