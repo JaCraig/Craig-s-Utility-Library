@@ -268,8 +268,8 @@ namespace Utilities.Media.Image
                     OldMaxSide = OldHeight;
                 }
 
-                if (OldMaxSide > MaxSide)
-                {
+                //if (OldMaxSide > MaxSide)
+                //{
                     double Coefficient = (double)MaxSide / (double)OldMaxSide;
                     NewWidth = Convert.ToInt32(Coefficient * OldWidth);
                     NewHeight = Convert.ToInt32(Coefficient * OldHeight);
@@ -277,12 +277,12 @@ namespace Utilities.Media.Image
                         NewWidth = 1;
                     if (NewHeight <= 0)
                         NewHeight = 1;
-                }
-                else
-                {
-                    NewHeight = OldHeight;
-                    NewWidth = OldWidth;
-                }
+                //}
+                //else
+                //{
+                //    NewHeight = OldHeight;
+                //    NewWidth = OldWidth;
+                //}
 
                 System.Drawing.Bitmap TempBitmap = new System.Drawing.Bitmap(TempImage, NewWidth, NewHeight);
                 return TempBitmap;

@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Text;
 using Utilities.DataTypes;
 using System.Linq.Expressions;
+using System.Collections;
 #endregion
 
 namespace Utilities
@@ -37,6 +38,29 @@ namespace Utilities
     public static class Reflection
     {
         #region Public Static Functions
+
+        /// <summary>
+        /// Simple function to determine if an item is an IEnumerable
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsIEnumerable(Type ObjectType)
+        {
+            try
+            {
+                if (ObjectType.IsPrimitive)
+                    return false;
+                if (ObjectType.GetConstructor(System.Type.EmptyTypes) != null)
+                {
+                    object TempObject = Activator.CreateInstance(ObjectType);
+                    if (TempObject is IEnumerable)
+                        return true;
+                }
+                return false;
+            }
+            catch { throw; }
+        }
+
         /// <summary>
         /// Dumps the properties names and current values
         /// from an object
@@ -253,7 +277,7 @@ namespace Utilities
         /// Gets a list of types based on an interface
         /// </summary>
         /// <param name="Assembly">Assembly to check</param>
-        /// <param name="Interface">Interface to look for</param>
+        /// <param name="Interface">Interface to look for (also checks base class)</param>
         /// <returns>List of types that use the interface</returns>
         public static System.Collections.Generic.List<Type> GetTypes(Assembly Assembly, string Interface)
         {
@@ -264,6 +288,10 @@ namespace Utilities
                 foreach (Type Type in Types)
                 {
                     if (Type.GetInterface(Interface, true) != null)
+                    {
+                        ReturnList.Add(Type);
+                    }
+                    else if (Type.BaseType != null && Type.BaseType.FullName.StartsWith(Interface))
                     {
                         ReturnList.Add(Type);
                     }
@@ -487,6 +515,23 @@ namespace Utilities
                 PropertyType = PropertyInfo.PropertyType;
             }
             return PropertyType;
+        }
+
+        /// <summary>
+        /// Gets a property's type
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="PropertyPath">Path of the property (ex: Prop1.Prop2.Prop3 would be
+        /// the Prop1 of the source object, which then has a Prop2 on it, which in turn
+        /// has a Prop3 on it.)</param>
+        /// <returns>The type of the property specified or null if it can not be reached.</returns>
+        public static Type GetPropertyType<T>(string PropertyPath)
+        {
+            if (string.IsNullOrEmpty(PropertyPath))
+                return null;
+            Type ObjectType = typeof(T);
+            object Object = ObjectType.Assembly.CreateInstance(ObjectType.FullName);
+            return GetPropertyType(Object, PropertyPath);
         }
 
         /// <summary>

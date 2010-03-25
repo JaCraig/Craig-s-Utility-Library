@@ -20,60 +20,56 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Utilities.FileFormats.FixedLength.Interfaces;
 #endregion
 
-namespace Utilities.FileFormats.CSV
+namespace Utilities.FileFormats.FixedLength.BaseClasses
 {
-    /// <summary>
-    /// Cell within a CSV file
-    /// </summary>
-    public class Cell
+    public class FieldBase<T> : IField<T>
     {
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public Cell()
+        public FieldBase()
         {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Content">Value within the cell</param>
-        public Cell(string Content)
-        {
-            Value = Content.Replace("\"", "");
         }
 
         #endregion
 
-        #region Public Properties
+        #region IField Members
 
-        private string _Value = string.Empty;
-
-        /// <summary>
-        /// Value within the cell
-        /// </summary>
-        public string Value
+        public virtual void Parse(string Value)
         {
-            get { return _Value; }
-            set { _Value = value; }
+            throw new NotImplementedException();
         }
+
+        public virtual void Parse(string Value,int Length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Parse(string Value, int Length, string FillerCharacter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Length { get; set; }
+
+        public T Value { get; set; }
 
         #endregion
 
         #region Public Overridden Functions
 
-        /// <summary>
-        /// To string function
-        /// </summary>
-        /// <returns>The value of the cell</returns>
         public override string ToString()
         {
-            return "\"" + Value + "\"";
+            return Value.ToString();
         }
 
         #endregion

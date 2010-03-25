@@ -20,61 +20,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 #endregion
 
-namespace Utilities.FileFormats.CSV
+namespace Utilities.FileFormats.FixedLength.Interfaces
 {
     /// <summary>
-    /// Cell within a CSV file
+    /// Record interface
     /// </summary>
-    public class Cell
+    public interface IRecord<T>
     {
-        #region Constructors
+        #region Functions
 
         /// <summary>
-        /// Constructor
+        /// Parses the string into fields
         /// </summary>
-        public Cell()
-        {
-        }
+        /// <param name="Value">The string value</param>
+        void Parse(string Value);
 
         /// <summary>
-        /// Constructor
+        /// Parses the string into fields
         /// </summary>
-        /// <param name="Content">Value within the cell</param>
-        public Cell(string Content)
-        {
-            Value = Content.Replace("\"", "");
-        }
+        /// <param name="Value">The string value</param>
+        /// <param name="Length">Max length of the value</param>
+        void Parse(string Value,int Length);
 
         #endregion
 
-        #region Public Properties
-
-        private string _Value = string.Empty;
+        #region Properties
 
         /// <summary>
-        /// Value within the cell
+        /// Length of the record
         /// </summary>
-        public string Value
-        {
-            get { return _Value; }
-            set { _Value = value; }
-        }
-
-        #endregion
-
-        #region Public Overridden Functions
+        int Length { get; set; }
 
         /// <summary>
-        /// To string function
+        /// List of fields
         /// </summary>
-        /// <returns>The value of the cell</returns>
-        public override string ToString()
-        {
-            return "\"" + Value + "\"";
-        }
+        List<IField<T>> Fields { get; set; }
 
         #endregion
     }

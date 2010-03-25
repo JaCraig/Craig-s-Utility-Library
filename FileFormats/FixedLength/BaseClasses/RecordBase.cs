@@ -20,60 +20,60 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Utilities.FileFormats.FixedLength.Interfaces;
 #endregion
 
-namespace Utilities.FileFormats.CSV
+namespace Utilities.FileFormats.FixedLength.BaseClasses
 {
     /// <summary>
-    /// Cell within a CSV file
+    /// Record base class
     /// </summary>
-    public class Cell
+    public class RecordBase<T> : IRecord<T>
     {
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public Cell()
+        public RecordBase()
         {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Content">Value within the cell</param>
-        public Cell(string Content)
-        {
-            Value = Content.Replace("\"", "");
+            Fields = new List<IField<T>>();
         }
 
         #endregion
 
-        #region Public Properties
+        #region IRecord Members
 
-        private string _Value = string.Empty;
-
-        /// <summary>
-        /// Value within the cell
-        /// </summary>
-        public string Value
+        public virtual void Parse(string Value)
         {
-            get { return _Value; }
-            set { _Value = value; }
+            throw new NotImplementedException();
         }
+
+        public virtual void Parse(string Value,int Length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Length { get; set; }
+
+        public List<IField<T>> Fields { get; set; }
 
         #endregion
 
         #region Public Overridden Functions
 
-        /// <summary>
-        /// To string function
-        /// </summary>
-        /// <returns>The value of the cell</returns>
         public override string ToString()
         {
-            return "\"" + Value + "\"";
+            StringBuilder Builder = new StringBuilder();
+            foreach (IField<T> Field in Fields)
+            {
+                Builder.Append(Field.ToString());
+            }
+            return Builder.ToString();
         }
 
         #endregion

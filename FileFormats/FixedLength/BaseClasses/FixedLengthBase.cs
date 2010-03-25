@@ -20,60 +20,71 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Utilities.FileFormats.FixedLength.Interfaces;
 #endregion
 
-namespace Utilities.FileFormats.CSV
+namespace Utilities.FileFormats.FixedLength.BaseClasses
 {
     /// <summary>
-    /// Cell within a CSV file
+    /// Parses and creates a fixed length file
     /// </summary>
-    public class Cell
+    public class FixedLengthBase<T>
     {
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public Cell()
+        public FixedLengthBase()
         {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Content">Value within the cell</param>
-        public Cell(string Content)
-        {
-            Value = Content.Replace("\"", "");
+            Records = new List<IRecord<T>>();
         }
 
         #endregion
 
-        #region Public Properties
-
-        private string _Value = string.Empty;
+        #region Public Functions
 
         /// <summary>
-        /// Value within the cell
+        /// Parses the string into fields
         /// </summary>
-        public string Value
+        /// <param name="Value">The string value</param>
+        public virtual void Parse(string Value)
         {
-            get { return _Value; }
-            set { _Value = value; }
+            throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Parses the string into fields
+        /// </summary>
+        /// <param name="Value">The string value</param>
+        /// <param name="Length">Max length for the record</param>
+        public virtual void Parse(string Value, int Length)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Protected Variables
+
+        protected List<IRecord<T>> Records { get; set; }
 
         #endregion
 
         #region Public Overridden Functions
 
-        /// <summary>
-        /// To string function
-        /// </summary>
-        /// <returns>The value of the cell</returns>
         public override string ToString()
         {
-            return "\"" + Value + "\"";
+            StringBuilder Builder = new StringBuilder();
+            foreach (IRecord<T> Record in Records)
+            {
+                Builder.Append(Record.ToString());
+            }
+            return Builder.ToString();
         }
 
         #endregion
