@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.Cisco.Interfaces;
 #endregion
 
 namespace Utilities.Cisco
@@ -31,7 +32,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Phone menu class
     /// </summary>
-    public class Menu
+    public class Menu:IDisplay
     {
         #region Constructor
 
@@ -40,7 +41,8 @@ namespace Utilities.Cisco
         /// </summary>
         public Menu()
         {
-            MenuItems = new List<MenuItem>();
+            MenuItems = new List<IMenuItem>();
+            SoftKeys = new List<SoftKeyItem>();
         }
 
         #endregion
@@ -60,7 +62,24 @@ namespace Utilities.Cisco
         /// <summary>
         /// Menu items for the menu
         /// </summary>
-        public List<MenuItem> MenuItems { get; set; }
+        public List<IMenuItem> MenuItems { get; set; }
+
+        /// <summary>
+        /// X location of backgroun image (if present)
+        /// </summary>
+        public int X { get; set; }
+
+        /// <summary>
+        /// Y location of backgroun image (if present)
+        /// </summary>
+        public int Y { get; set; }
+
+        /// <summary>
+        /// URL for background image (if needed)
+        /// </summary>
+        public string ImageURL { get; set; }
+
+        public List<SoftKeyItem> SoftKeys { get; set; }
 
         #endregion
 
@@ -69,146 +88,40 @@ namespace Utilities.Cisco
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.Append("<CiscoIPPhoneMenu><Title>").Append(Title).Append("</Title><Prompt>")
+            if (string.IsNullOrEmpty(ImageURL))
+            {
+                Builder.Append("<CiscoIPPhoneMenu>");
+            }
+            else
+            {
+                Builder.Append("<CiscoIPPhoneGraphicFileMenu>");
+            }
+            Builder.Append("<Title>").Append(Title).Append("</Title><Prompt>")
                 .Append(Prompt).Append("</Prompt>");
+            if (!string.IsNullOrEmpty(ImageURL))
+            {
+                Builder.Append("<LocationX>").Append(X).Append("</LocationX><LocationY>").Append(Y)
+                    .Append("</LocationY><URL>").Append(ImageURL).Append("</URL>");
+            }
             for (int x = 0; x < MenuItems.Count; ++x)
             {
                 Builder.Append(MenuItems[x].ToString());
             }
-            Builder.Append("</CiscoIPPhoneMenu>");
+            for (int x = 0; x < SoftKeys.Count; ++x)
+            {
+                Builder.Append(SoftKeys[x].ToString());
+            }
+            if (string.IsNullOrEmpty(ImageURL))
+            {
+                Builder.Append("</CiscoIPPhoneMenu>");
+            }
+            else
+            {
+                Builder.Append("</CiscoIPPhoneGraphicFileMenu>");
+            }
             return Builder.ToString();
         }
 
         #endregion
     }
 }
-
-/*<CiscoIPPhoneGraphicMenu>
-
-  <Title>Menu title goes here</Title>
-
-  <Prompt>Prompt text goes here</Prompt>
-
-  <LocationX>Position information of graphic</LocationX>
-
-  <LocationY>Position information of graphic</LocationY>
-
-  <Width>Size information for the graphic</Width>
-
-  <Height>Size information for the graphic</Height>
-
-  <Depth>Number of bits per pixel</Depth>
-
-  <Data>Packed Pixel Data</Data>
-
-  <MenuItem>
-
-    <Name>The name of each menu item</Name>
-
-    <URL>The URL associated with the menu item</URL>
-
-  </MenuItem>
-
-</CiscoIPPhoneGraphicMenu> 
-
-
-*/
-
-/*<CiscoIPPhoneGraphicFileMenu>
-
-  <Title>Image Title goes here</Title>
-
-  <Prompt>Prompt text goes here</Prompt>
-
-  <LocationX>Horizontal position of graphic</LocationX>
-
-  <LocationY>Vertical position of graphic</LocationY>
-
-  <URL>Points to the PNG background image</URL>
-
-  <MenuItem>
-
-    <Name>Same as CiscoIPPhoneGraphicMenu</Name>
-
-    <URL>Invoked when the TouchArea is touched</URL>
-
-    <TouchArea X1="left edge" Y1="top edge" X2="right edge" Y2="bottom 
-edge"/>
-
-  </MenuItem>
-
-</CiscoIPPhoneGraphicFileMenu>
-
-*/
-
-/*<CiscoIPPhoneIconMenu>
-
-  <Title>Title text goes here</Title>
-
-  <Prompt>Prompt text goes here</Prompt>
-
-  <MenuItem>
-
-    <IconIndex>Indicates what IconItem to display</IconIndex>
-
-    <Name>The name of each menu item</Name>
-
-    <URL>The URL associated with the menu item</URL>
-
-  </MenuItem>
-
-  <SoftKeyItem>
-
-    <Name>Name of soft key</Name>
-
-    <URL>URL or URI of soft key</URL>
-
-    <Position>Position information of the soft key</Position>
-
-  </SoftKeyItem>
-
-  <IconItem>
-
-    <Index>A unique index from 0 to 9</Index>
-
-    <Height>Size information for the icon</Height>
-
-    <Width>Size information for the icon</Width>
-
-    <Depth>Number of bits per pixel</Depth>
-
-    <Data>Packed Pixel Data</Data>
-
-  </IconItem>
-
-</CiscoIPPhoneIconMenu>
-
-*/
-
-/*<CiscoIPPhoneIconFileMenu>
-
-  <Title>Title text goes here</Title>
-
-  <Prompt>Prompt text goes here</Prompt>
-
-  <MenuItem>
-
-    <IconIndex>Indicates what IconItem to display</IconIndex>
-
-    <Name>The name of each menu item</Name>
-
-    <URL>The URL associated with the menu item</URL>
-
-  </MenuItem>
-
-  <IconItem>
-
-    <Index>A unique index from 0 to 9</Index>
-
-    <URL>location of the PNG icon image</URL>
-
-  </IconItem>
-
-</CiscoIPPhoneIconFileMenu>
-
-*/

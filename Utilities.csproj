@@ -33,6 +33,14 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,10 +91,14 @@
     <Compile Include="Cisco\DirectoryEntry.cs" />
     <Compile Include="Cisco\Error.cs" />
     <Compile Include="Cisco\Execute.cs" />
+    <Compile Include="Cisco\ExecuteItem.cs" />
+    <Compile Include="Cisco\GraphicMenuItem.cs" />
     <Compile Include="Cisco\Image.cs" />
     <Compile Include="Cisco\Input.cs" />
     <Compile Include="Cisco\InputFlag.cs" />
     <Compile Include="Cisco\InputItem.cs" />
+    <Compile Include="Cisco\Interfaces\IDisplay.cs" />
+    <Compile Include="Cisco\Interfaces\IMenuItem.cs" />
     <Compile Include="Cisco\MenuItem.cs" />
     <Compile Include="Cisco\Menu.cs" />
     <Compile Include="Cisco\SoftKeyItem.cs" />

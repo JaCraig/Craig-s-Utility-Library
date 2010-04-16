@@ -24,51 +24,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.Cisco.Interfaces;
 #endregion
 
-namespace Utilities.Cisco
+namespace Utilities.Cisco.Interfaces
 {
     /// <summary>
-    /// Menu item class
+    /// Menu item interface
     /// </summary>
-    public class MenuItem:IMenuItem
+    public interface IMenuItem
     {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public MenuItem()
-        {
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Name
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// URL
-        /// </summary>
-        public string URL { get; set; }
-
-        #endregion
-
-        #region Public Overridden Function
-
-        public override string ToString()
-        {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<MenuItem><Name>").Append(Name).Append("</Name><URL>").Append(URL)
-                .Append("</URL></MenuItem>");
-            return Builder.ToString();
-        }
-
-        #endregion
     }
 }

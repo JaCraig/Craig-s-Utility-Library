@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.Cisco.Interfaces;
 #endregion
 
 namespace Utilities.Cisco
@@ -31,7 +32,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Text class
     /// </summary>
-    public class Text
+    public class Text:IDisplay
     {
         #region Constructor
 
@@ -40,6 +41,7 @@ namespace Utilities.Cisco
         /// </summary>
         public Text()
         {
+            SoftKeys = new List<SoftKeyItem>();
         }
 
         #endregion
@@ -61,6 +63,11 @@ namespace Utilities.Cisco
         /// </summary>
         public string Content { get; set; }
 
+        /// <summary>
+        /// Softkey list
+        /// </summary>
+        public List<SoftKeyItem> SoftKeys { get; set; }
+
         #endregion
 
         #region Public Overridden Functions
@@ -69,7 +76,12 @@ namespace Utilities.Cisco
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<CiscoIPPhoneText><Title>").Append(Title).Append("</Title><Prompt>")
-                .Append(Prompt).Append("</Prompt><Text>").Append(Content).Append("</Text></CiscoIPPhoneText>");
+                .Append(Prompt).Append("</Prompt><Text>").Append(Content).Append("</Text>");
+            foreach (SoftKeyItem Item in SoftKeys)
+            {
+                Builder.Append(Item.ToString());
+            }
+            Builder.Append("</CiscoIPPhoneText>");
             return Builder.ToString();
         }
 

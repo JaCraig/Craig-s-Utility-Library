@@ -59,7 +59,11 @@ namespace Utilities.Web
         /// <returns>The final, minified string</returns>
         public static string Minify(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             Input = Regex.Replace(Input, "/// <.+>", "");
+            if (string.IsNullOrEmpty(Input))
+                return "";
             Input = Regex.Replace(Input, @">[\s\S]*?<", new MatchEvaluator(Evaluate));
             return Input;
         }
@@ -434,6 +438,8 @@ namespace Utilities.Web
         private static string Evaluate(Match Matcher)
         {
             string MyString = Matcher.ToString();
+            if (string.IsNullOrEmpty(MyString))
+                return "";
             MyString = Regex.Replace(MyString, @"\r\n\s*", "");
             return MyString;
         }

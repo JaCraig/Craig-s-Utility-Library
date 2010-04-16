@@ -24,25 +24,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.Cisco.Interfaces;
 #endregion
 
 namespace Utilities.Cisco
 {
     /// <summary>
-    /// Directory class
+    /// Execute item
     /// </summary>
-    public class Directory:IDisplay
+    public class ExecuteItem
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public Directory()
+        public ExecuteItem()
         {
-            DirectoryEntries = new List<DirectoryEntry>();
-            SoftKeys = new List<SoftKeyItem>();
         }
 
         #endregion
@@ -50,43 +47,23 @@ namespace Utilities.Cisco
         #region Properties
 
         /// <summary>
-        /// Title
+        /// Priority
         /// </summary>
-        public string Title { get; set; }
+        public int Priority { get; set; }
 
         /// <summary>
-        /// Prompt
+        /// URL
         /// </summary>
-        public string Prompt { get; set; }
-
-        /// <summary>
-        /// Directory entries
-        /// </summary>
-        public List<DirectoryEntry> DirectoryEntries { get; set; }
-
-        /// <summary>
-        /// Softkey entries
-        /// </summary>
-        public List<SoftKeyItem> SoftKeys { get; set; }
+        public string URL { get; set; }
 
         #endregion
 
-        #region Overridden Functions
+        #region Overridden Function
 
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.Append("<CiscoIPPhoneDirectory><Title>").Append(Title).Append("</Title><Prompt>")
-                .Append(Prompt).Append("</Prompt>");
-            foreach (DirectoryEntry Entry in DirectoryEntries)
-            {
-                Builder.Append(Entry.ToString());
-            }
-            foreach (SoftKeyItem Item in SoftKeys)
-            {
-                Builder.Append(Item.ToString());
-            }
-            Builder.Append("</CiscoIPPhoneDirectory>");
+            Builder.Append("<ExecuteItem Priority=\"").Append(Priority).Append("\" URL=\"").Append(URL).Append("\"/>");
             return Builder.ToString();
         }
 

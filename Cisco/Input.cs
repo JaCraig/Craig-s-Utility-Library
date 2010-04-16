@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.Cisco.Interfaces;
 #endregion
 
 namespace Utilities.Cisco
@@ -31,7 +32,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Input class
     /// </summary>
-    public class Input
+    public class Input:IDisplay
     {
         #region Constructor
 
@@ -41,6 +42,7 @@ namespace Utilities.Cisco
         public Input()
         {
             InputItems = new List<InputItem>();
+            SoftKeys = new List<SoftKeyItem>();
         }
 
         #endregion
@@ -67,6 +69,11 @@ namespace Utilities.Cisco
         /// </summary>
         public List<InputItem> InputItems { get; set; }
 
+        /// <summary>
+        /// Softkeys list
+        /// </summary>
+        public List<SoftKeyItem> SoftKeys { get; set; }
+
         #endregion
 
         #region Overridden Functions
@@ -77,6 +84,10 @@ namespace Utilities.Cisco
             Builder.Append("<CiscoIPPhoneInput><Title>").Append(Title).Append("</Title><Prompt>")
                 .Append(Prompt).Append("</Prompt><URL>").Append(URL).Append("</URL>");
             foreach (InputItem Item in InputItems)
+            {
+                Builder.Append(Item.ToString());
+            }
+            foreach (SoftKeyItem Item in SoftKeys)
             {
                 Builder.Append(Item.ToString());
             }
