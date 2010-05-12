@@ -194,7 +194,11 @@ namespace Utilities.LDAP
         /// </summary>
         public void Save()
         {
-            _DirectoryEntry.CommitChanges();
+            try
+            {
+                _DirectoryEntry.CommitChanges();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -204,12 +208,16 @@ namespace Utilities.LDAP
         /// <returns>an object containing the property's information</returns>
         public object GetValue(string Property)
         {
-            PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
-            if (Collection != null)
+            try
             {
-                return Collection.Value;
+                PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
+                if (Collection != null)
+                {
+                    return Collection.Value;
+                }
+                return null;
             }
-            return null;
+            catch { throw; }
         }
 
         /// <summary>
@@ -219,11 +227,15 @@ namespace Utilities.LDAP
         /// <param name="Value">Value to set the property to</param>
         public void SetValue(string Property,object Value)
         {
-            PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
-            if (Collection != null)
+            try
             {
-                Collection.Value = Value;
+                PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
+                if (Collection != null)
+                {
+                    Collection.Value = Value;
+                }
             }
+            catch { throw; }
         }
         #endregion
 

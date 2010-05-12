@@ -21,42 +21,23 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Net.NetworkInformation;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Utilities.Environment.DataTypes;
 #endregion
 
-namespace Utilities.Web.Ping
+namespace Utilities.Environment
 {
-    /// <summary>
-    /// Class used to ping another computer
-    /// </summary>
-    public static class Ping
+    public static class WMI
     {
-        #region Public Static Functions
-
-        /// <summary>
-        /// Does a ping against the host specified
-        /// </summary>
-        /// <param name="Address">Address of the host</param>
-        /// <param name="TimeOut">Timeout in ms (optional)</param>
-        /// <returns>True if a response is received, false otherwise</returns>
-        public static bool PingHost(string Address,int TimeOut=1000)
+        public static Computer GetComputerInfo(string ComputerName,string UserName="",string Password="")
         {
-            using (System.Net.NetworkInformation.Ping PingSender = new System.Net.NetworkInformation.Ping())
+            try
             {
-                PingOptions Options = new PingOptions();
-                Options.DontFragment = true;
-                string Data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-                byte[] DataBuffer = Encoding.ASCII.GetBytes(Data);
-                PingReply Reply = PingSender.Send(Address, TimeOut, DataBuffer, Options);
-                if (Reply.Status == IPStatus.Success)
-                    return true;
-                return false;
+                return new Computer(ComputerName,UserName,Password);
             }
+            catch { throw; }
         }
-
-        #endregion
     }
 }

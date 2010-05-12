@@ -53,10 +53,7 @@ namespace Utilities
                     Output = Stream.ToArray();
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -77,10 +74,7 @@ namespace Utilities
                     Object = (T)Formatter.Deserialize(Stream);
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -97,10 +91,7 @@ namespace Utilities
                 FileManager.SaveFile(XML, FileName);
                 return XML;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -124,10 +115,7 @@ namespace Utilities
                     return UTF8Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -150,10 +138,7 @@ namespace Utilities
                 string FileContent = FileManager.GetFileContents(FileName);
                 Object = XMLToObject<T>(FileContent);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -176,10 +161,7 @@ namespace Utilities
                     return (T)Serializer.Deserialize(Stream);
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -202,10 +184,7 @@ namespace Utilities
                     return (T)Formatter.Deserialize(Stream);
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -229,10 +208,7 @@ namespace Utilities
                     return UTF8Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
         #endregion
     }

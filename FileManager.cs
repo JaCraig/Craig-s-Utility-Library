@@ -41,7 +41,8 @@ namespace Utilities
         /// </summary>
         /// <param name="Content">Content of the file</param>
         /// <param name="FileName">Path of the file</param>
-        public static void SaveFile(string Content, string FileName)
+        /// <param name="Append">Tells the system if you wish to append data or create a new document</param>
+        public static void SaveFile(string Content, string FileName,bool Append=false)
         {
             FileStream Writer = null;
             try
@@ -66,7 +67,14 @@ namespace Utilities
                 {
                     try
                     {
-                        Writer = File.Open(FileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                        if (Append)
+                        {
+                            Writer = File.Open(FileName, FileMode.Append, FileAccess.Write, FileShare.None);
+                        }
+                        else
+                        {
+                            Writer = File.Open(FileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                        }
                         Opened = true;
                     }
                     catch (System.IO.IOException e)
@@ -735,7 +743,8 @@ namespace Utilities
         /// </summary>
         /// <param name="Content">File content</param>
         /// <param name="FileName">File name to save this as (should include directories if applicable)</param>
-        public static void SaveFile(byte[]Content, string FileName)
+        /// <param name="Append">Tells the system if you wish to append data or create a new document</param>
+        public static void SaveFile(byte[]Content, string FileName,bool Append=false)
         {
             FileStream Writer = null;
             try
@@ -759,7 +768,14 @@ namespace Utilities
                 {
                     try
                     {
-                        Writer = File.Open(FileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                        if (Append)
+                        {
+                            Writer = File.Open(FileName, FileMode.Append, FileAccess.Write, FileShare.None);
+                        }
+                        else
+                        {
+                            Writer = File.Open(FileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                        }
                         Opened = true;
                     }
                     catch (System.IO.IOException e)

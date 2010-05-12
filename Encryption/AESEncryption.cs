@@ -34,6 +34,7 @@ namespace Utilities.Encryption
     public static class AESEncryption
     {
         #region Static Functions
+
         /// <summary>
         /// Encrypts a string
         /// </summary>
@@ -45,7 +46,10 @@ namespace Utilities.Encryption
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
         /// <param name="KeySize">Can be 128, 192, or 256</param>
         /// <returns>An encrypted string</returns>
-        public static string Encrypt(string PlainText, string Password, string Salt, string HashAlgorithm, int PasswordIterations, string InitialVector, int KeySize)
+        public static string Encrypt(string PlainText, string Password,
+            string Salt = "Kosher", string HashAlgorithm = "SHA1",
+            int PasswordIterations = 2, string InitialVector = "OFRna73m*aze01xY",
+            int KeySize = 256)
         {
             try
             {
@@ -73,10 +77,7 @@ namespace Utilities.Encryption
                 }
                 return Convert.ToBase64String(CipherTextBytes);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -90,7 +91,10 @@ namespace Utilities.Encryption
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
         /// <param name="KeySize">Can be 128, 192, or 256</param>
         /// <returns>A decrypted string</returns>
-        public static string Decrypt(string CipherText, string Password, string Salt, string HashAlgorithm, int PasswordIterations, string InitialVector, int KeySize)
+        public static string Decrypt(string CipherText, string Password,
+            string Salt = "Kosher", string HashAlgorithm = "SHA1",
+            int PasswordIterations = 2, string InitialVector = "OFRna73m*aze01xY",
+            int KeySize = 256)
         {
             try
             {
@@ -109,7 +113,7 @@ namespace Utilities.Encryption
                     {
                         using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
                         {
-                            
+
                             ByteCount = CryptoStream.Read(PlainTextBytes, 0, PlainTextBytes.Length);
                             MemStream.Close();
                             CryptoStream.Close();
@@ -118,11 +122,9 @@ namespace Utilities.Encryption
                 }
                 return Encoding.UTF8.GetString(PlainTextBytes, 0, ByteCount);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
         #endregion
     }
 }

@@ -114,6 +114,13 @@
     <Compile Include="DataTypes\PriorityQueue.cs" />
     <Compile Include="DataTypes\Triple.cs" />
     <Compile Include="DataTypes\Vector.cs" />
+    <Compile Include="Environment\DataTypes\Application.cs" />
+    <Compile Include="Environment\DataTypes\Applications.cs" />
+    <Compile Include="Environment\DataTypes\BIOS.cs" />
+    <Compile Include="Environment\DataTypes\Computer.cs" />
+    <Compile Include="Environment\DataTypes\Network.cs" />
+    <Compile Include="Environment\DataTypes\NetworkAddress.cs" />
+    <Compile Include="Environment\WMI.cs" />
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Events\EventHelper.cs" />
     <Compile Include="FileFormats\APMLHelper\APML.cs" />
@@ -295,6 +302,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

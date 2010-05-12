@@ -53,10 +53,7 @@ namespace Utilities.LDAP
                 Searcher.Filter = Query;
                 Searcher.PageSize = 1000;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
         #endregion
 
@@ -68,12 +65,16 @@ namespace Utilities.LDAP
         /// <returns>The user's entry</returns>
         public Entry FindUserByUserName(string UserName)
         {
-            List<Entry> Entries = FindUsers("samAccountName=" + UserName);
-            if (Entries.Count > 0)
+            try
             {
-                return Entries[0];
+                List<Entry> Entries = FindUsers("samAccountName=" + UserName);
+                if (Entries.Count > 0)
+                {
+                    return Entries[0];
+                }
+                return null;
             }
-            return null;
+            catch { throw; }
         }
 
         /// <summary>
@@ -84,9 +85,13 @@ namespace Utilities.LDAP
         /// <returns>A list of all active users' entries</returns>
         public List<Entry> FindActiveUsers(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
-            return FindUsers(Filter);
+            try
+            {
+                Filter = string.Format(Filter, args);
+                Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+                return FindUsers(Filter);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -97,10 +102,32 @@ namespace Utilities.LDAP
         /// <returns>A list of all users meeting the specified Filter</returns>
         public List<Entry> FindUsers(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(objectClass=User)(objectCategory=Person)({0}))", Filter);
-            Searcher.Filter = Filter;
-            return FindAll();
+            try
+            {
+                Filter = string.Format(Filter, args);
+                Filter = string.Format("(&(objectClass=User)(objectCategory=Person)({0}))", Filter);
+                Searcher.Filter = Filter;
+                return FindAll();
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Finds all computers
+        /// </summary>
+        /// <param name="Filter">Filter used to modify the query</param>
+        /// <param name="args">Additional arguments (used in string formatting</param>
+        /// <returns>A list of all computers meeting the specified Filter</returns>
+        public List<Entry> FindComputers(string Filter, params object[] args)
+        {
+            try
+            {
+                Filter = string.Format(Filter, args);
+                Filter = string.Format("(&(objectClass=computer)({0}))", Filter);
+                Searcher.Filter = Filter;
+                return FindAll();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -111,9 +138,13 @@ namespace Utilities.LDAP
         /// <returns>A list of all active groups' entries</returns>
         public List<Entry> FindActiveUsersAndGroups(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
-            return FindUsersAndGroups(Filter);
+            try
+            {
+                Filter = string.Format(Filter, args);
+                Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+                return FindUsersAndGroups(Filter);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -124,10 +155,14 @@ namespace Utilities.LDAP
         /// <returns>A list of all users and groups meeting the specified Filter</returns>
         public List<Entry> FindUsersAndGroups(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(|(&(objectClass=Group)(objectCategory=Group))(&(objectClass=User)(objectCategory=Person)))({0}))", Filter);
-            Searcher.Filter = Filter;
-            return FindAll();
+            try
+            {
+                Filter = string.Format(Filter, args);
+                Filter = string.Format("(&(|(&(objectClass=Group)(objectCategory=Group))(&(objectClass=User)(objectCategory=Person)))({0}))", Filter);
+                Searcher.Filter = Filter;
+                return FindAll();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -138,9 +173,13 @@ namespace Utilities.LDAP
         /// <returns>A list of all active groups' entries</returns>
         public List<Entry> FindActiveGroups(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
-            return FindGroups(Filter);
+            try
+            {
+                Filter = string.Format(Filter, args);
+                Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+                return FindGroups(Filter);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -151,10 +190,14 @@ namespace Utilities.LDAP
         /// <returns>A list of all groups meeting the specified Filter</returns>
         public List<Entry> FindGroups(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(objectClass=Group)(objectCategory=Group)({0}))", Filter);
-            Searcher.Filter = Filter;
-            return FindAll();
+            try
+            {
+                Filter = string.Format(Filter, args);
+                Filter = string.Format("(&(objectClass=Group)(objectCategory=Group)({0}))", Filter);
+                Searcher.Filter = Filter;
+                return FindAll();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -195,10 +238,7 @@ namespace Utilities.LDAP
                 Results.Dispose();
                 return ReturnedResults;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -212,10 +252,7 @@ namespace Utilities.LDAP
                 SearchResult Result = Searcher.FindOne();
                 return new Entry(Result.GetDirectoryEntry());
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -227,10 +264,7 @@ namespace Utilities.LDAP
             {
                 Entry.Close();
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -274,10 +308,7 @@ namespace Utilities.LDAP
                     Searcher.Filter = Query;
                     Searcher.PageSize = 1000;
                 }
-                catch (Exception a)
-                {
-                    throw a;
-                }
+                catch { throw; }
             }
         }
 
@@ -301,10 +332,7 @@ namespace Utilities.LDAP
                     Searcher.Filter = Query;
                     Searcher.PageSize = 1000;
                 }
-                catch (Exception a)
-                {
-                    throw a;
-                }
+                catch { throw; }
             }
         }
 
@@ -328,10 +356,7 @@ namespace Utilities.LDAP
                     Searcher.Filter = Query;
                     Searcher.PageSize = 1000;
                 }
-                catch (Exception a)
-                {
-                    throw a;
-                }
+                catch { throw; }
             }
         }
 
