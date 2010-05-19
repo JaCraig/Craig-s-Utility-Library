@@ -68,8 +68,23 @@ namespace Utilities.MultiThreading
         /// </summary>
         public void Start()
         {
-            Stopping = false;
-            this.WorkerThread.Start();
+            try
+            {
+                Stopping = false;
+                if (this.WorkerThread == null)
+                {
+                    this.WorkerThread = new Thread(DoWork);
+                    this.WorkerThread.IsBackground = true;
+                }
+                this.WorkerThread.Start();
+            }
+            catch (Exception e)
+            {
+                OnErrorEventArgs Error = new OnErrorEventArgs();
+                Error.Content = e;
+                EventHelper.Raise<OnErrorEventArgs>(Exception, this, Error);
+                throw;
+            }
         }
 
         /// <summary>
@@ -77,15 +92,25 @@ namespace Utilities.MultiThreading
         /// </summary>
         public void Stop()
         {
-            Stopping = true;
-            if (WorkerThread != null && WorkerThread.IsAlive)
+            try
             {
-                this.WorkerThread.Join();
-                this.WorkerThread = null;
+                Stopping = true;
+                if (WorkerThread != null && WorkerThread.IsAlive)
+                {
+                    this.WorkerThread.Join();
+                    this.WorkerThread = null;
+                }
+                OnEndEventArgs EndEvents = new OnEndEventArgs();
+                EndEvents.Content = Result;
+                EventHelper.Raise<OnEndEventArgs>(Finished, this, EndEvents);
             }
-            OnEndEventArgs EndEvents = new OnEndEventArgs();
-            EndEvents.Content = Result;
-            EventHelper.Raise<OnEndEventArgs>(Finished, this, EndEvents);
+            catch (Exception e)
+            {
+                OnErrorEventArgs Error = new OnErrorEventArgs();
+                Error.Content = e;
+                EventHelper.Raise<OnErrorEventArgs>(Exception, this, Error);
+                throw;
+            }
         }
 
         #endregion
@@ -99,13 +124,23 @@ namespace Utilities.MultiThreading
         /// </summary>
         private void DoWork()
         {
-            EventHelper.Raise<OnStartEventArgs>(Started, this, new OnStartEventArgs());
+            try
+            {
+                EventHelper.Raise<OnStartEventArgs>(Started, this, new OnStartEventArgs());
 
-            Result = Work(this.Params);
+                Result = Work(this.Params);
 
-            OnEndEventArgs EndEvents = new OnEndEventArgs();
-            EndEvents.Content = Result;
-            EventHelper.Raise<OnEndEventArgs>(Finished, this, EndEvents);
+                OnEndEventArgs EndEvents = new OnEndEventArgs();
+                EndEvents.Content = Result;
+                EventHelper.Raise<OnEndEventArgs>(Finished, this, EndEvents);
+            }
+            catch (Exception e)
+            {
+                OnErrorEventArgs Error = new OnErrorEventArgs();
+                Error.Content = e;
+                EventHelper.Raise<OnErrorEventArgs>(Exception, this, Error);
+                throw;
+            }
         }
 
         #endregion
@@ -164,6 +199,9 @@ namespace Utilities.MultiThreading
         /// </summary>
         private Thread WorkerThread=null;
 
+        /// <summary>
+        /// Can be used to determine if the thread needs to stop
+        /// </summary>
         protected volatile bool Stopping = false;
 
         #endregion

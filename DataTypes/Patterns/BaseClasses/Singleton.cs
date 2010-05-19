@@ -44,7 +44,6 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         #region Private Variables
 
         private static volatile T _Instance = null;
-        private static readonly object _Lock = new object();
 
         #endregion
 
@@ -59,7 +58,7 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
             {
                 if (_Instance == null)
                 {
-                    lock (_Lock)
+                    lock (typeof(T))
                     {
                         try
                         {
