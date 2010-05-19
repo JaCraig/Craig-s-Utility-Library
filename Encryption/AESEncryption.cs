@@ -53,6 +53,8 @@ namespace Utilities.Encryption
         {
             try
             {
+                if (string.IsNullOrEmpty(PlainText))
+                    return "";
                 byte[] InitialVectorBytes = Encoding.ASCII.GetBytes(InitialVector);
                 byte[] SaltValueBytes = Encoding.ASCII.GetBytes(Salt);
                 byte[] PlainTextBytes = Encoding.UTF8.GetBytes(PlainText);
@@ -98,6 +100,8 @@ namespace Utilities.Encryption
         {
             try
             {
+                if (string.IsNullOrEmpty(CipherText))
+                    return "";
                 byte[] InitialVectorBytes = Encoding.ASCII.GetBytes(InitialVector);
                 byte[] SaltValueBytes = Encoding.ASCII.GetBytes(Salt);
                 byte[] CipherTextBytes = Convert.FromBase64String(CipherText);

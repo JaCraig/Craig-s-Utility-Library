@@ -304,10 +304,7 @@ namespace Utilities
             {
                 return GetFileContents(FileName, 5000);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
