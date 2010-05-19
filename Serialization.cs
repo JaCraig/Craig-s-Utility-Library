@@ -165,6 +165,53 @@ namespace Utilities
         }
 
         /// <summary>
+        /// Takes an XML file and exports the Object it holds
+        /// </summary>
+        /// <param name="FileName">File name to use</param>
+        /// <param name="Object">Object to export to</param>
+        /// <param name="ObjectType">Object type to export</param>
+        public static void XMLToObject(string FileName, out object Object,Type ObjectType)
+        {
+            if (string.IsNullOrEmpty(FileName))
+            {
+                throw new ArgumentException("File name can not be null/empty");
+            }
+            if (!FileManager.FileExists(FileName))
+            {
+                throw new ArgumentException("File does not exist");
+            }
+            try
+            {
+                string FileContent = FileManager.GetFileContents(FileName);
+                Object = XMLToObject(FileContent,ObjectType);
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Converts an XML string to an object
+        /// </summary>
+        /// <param name="XML">XML string</param>
+        /// <param name="ObjectType">Object type to export</param>
+        /// <returns>The object of the specified type</returns>
+        public static object XMLToObject(string XML,Type ObjectType)
+        {
+            if (string.IsNullOrEmpty(XML))
+            {
+                throw new ArgumentException("XML can not be null/empty");
+            }
+            try
+            {
+                using (MemoryStream Stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(XML)))
+                {
+                    XmlSerializer Serializer = new XmlSerializer(ObjectType);
+                    return Serializer.Deserialize(Stream);
+                }
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
         /// Converts a SOAP string to an object
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
