@@ -33,67 +33,63 @@ namespace Utilities.FileFormats.XMDP
     public class Property
     {
         #region Constructors
+
         /// <summary>
         /// Constructors
         /// </summary>
         public Property()
         {
+            Properties = new List<Property>();
         }
+
         #endregion
 
         #region Properties
-        private string _Name;
-        private string _Description;
-        private List<Property> _Properties = new List<Property>();
+
         /// <summary>
         /// Name of the property
         /// </summary>
-        public string Name
-        {
-            get { return _Name; }
-            set { _Name = value; }
-        }
+        public string Name{get;set;}
 
         /// <summary>
         /// Description of the property
         /// </summary>
-        public string Description
-        {
-            get { return _Description; }
-            set { _Description = value; }
-        }
+        public string Description{get;set;}
 
         /// <summary>
         /// List of sub properties (only used for rel type when you need to
         /// define new link types)
         /// </summary>
-        public List<Property>Properties
-        {
-            get{return _Properties;}
-            set{_Properties=value;}
-        }
+        public List<Property>Properties{get;set;}
+
         #endregion
 
         #region Overridden Functions
+
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<dt id=\"" + Name + "\">" + Name + "</dt>");
-            if (Properties.Count > 0)
+            try
             {
-                Builder.Append("<dd><dl>");
-                foreach (Property Property in Properties)
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<dt id=\"" + Name + "\">" + Name + "</dt>");
+                if (Properties.Count > 0)
                 {
-                    Builder.Append(Property.ToString());
+                    Builder.Append("<dd><dl>");
+                    foreach (Property Property in Properties)
+                    {
+                        Builder.Append(Property.ToString());
+                    }
+                    Builder.Append("</dl></dd>");
                 }
-                Builder.Append("</dl></dd>");
+                else
+                {
+                    Builder.Append("<dd>" + Description + "</dd>");
+                }
+                return Builder.ToString();
             }
-            else
-            {
-                Builder.Append("<dd>" + Description + "</dd>");
-            }
-            return Builder.ToString();
+            catch { throw; }
         }
+
         #endregion
     }
 }

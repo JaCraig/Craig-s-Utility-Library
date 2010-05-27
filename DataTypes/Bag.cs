@@ -65,12 +65,20 @@ namespace Utilities.DataTypes
 
         public void Clear()
         {
-            Items.Clear();
+            try
+            {
+                Items.Clear();
+            }
+            catch { throw; }
         }
 
         public bool Contains(T item)
         {
-            return Items.ContainsKey(item);
+            try
+            {
+                return Items.ContainsKey(item);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -128,8 +136,8 @@ namespace Utilities.DataTypes
 
         public int this[T index]
         {
-            get { return Items[index]; }
-            set { Items[index] = value; }
+            get { try { return Items[index]; } catch { throw; } }
+            set { try { Items[index] = value; } catch { throw; } }
         }
 
         #endregion

@@ -34,6 +34,7 @@ namespace Utilities.Encryption
     public static class TripleDESEncryption
     {
         #region Public Static Functions
+
         /// <summary>
         /// Encrypts the string using Triple DES
         /// </summary>
@@ -60,25 +61,26 @@ namespace Utilities.Encryption
                 {
                     Key2Array[x] = Hash[x + 8];
                 }
-
+                byte[] Text = null;
                 TripleDESCryptoServiceProvider Encryptor = new TripleDESCryptoServiceProvider();
-                MemoryStream Stream = new MemoryStream();
-                CryptoStream DESStream = new CryptoStream(Stream, Encryptor.CreateEncryptor(KeyArray, Key2Array), CryptoStreamMode.Write);
-                StreamWriter Writer = new StreamWriter(DESStream);
-                Writer.Write(Input);
-                Writer.Flush();
-                DESStream.FlushFinalBlock();
-                Writer.Flush();
-                byte[] Text = Stream.GetBuffer();
-                Stream.Dispose();
-                DESStream.Dispose();
-                Writer.Dispose();
+                using (MemoryStream Stream = new MemoryStream())
+                {
+                    using (CryptoStream DESStream = new CryptoStream(Stream, Encryptor.CreateEncryptor(KeyArray, Key2Array), CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter Writer = new StreamWriter(DESStream))
+                        {
+                            Writer.Write(Input);
+                            Writer.Flush();
+                            DESStream.FlushFinalBlock();
+                            Writer.Flush();
+                            Text = Stream.GetBuffer();
+                        }
+                    }
+                }
+                Encryptor.Clear();
                 return Convert.ToBase64String(Text, 0, (int)Text.Length);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -107,21 +109,24 @@ namespace Utilities.Encryption
                 {
                     Key2Array[x] = Hash[x + 8];
                 }
+                string Text = "";
                 TripleDESCryptoServiceProvider Decryptor = new TripleDESCryptoServiceProvider();
-                MemoryStream Stream = new MemoryStream(Convert.FromBase64String(Input));
-                CryptoStream DESStream = new CryptoStream(Stream, Decryptor.CreateDecryptor(KeyArray, Key2Array), CryptoStreamMode.Read);
-                StreamReader Reader = new StreamReader(DESStream);
-                string Text = Reader.ReadToEnd();
-                Stream.Dispose();
-                DESStream.Dispose();
-                Reader.Dispose();
+                using (MemoryStream Stream = new MemoryStream(Convert.FromBase64String(Input)))
+                {
+                    using (CryptoStream DESStream = new CryptoStream(Stream, Decryptor.CreateDecryptor(KeyArray, Key2Array), CryptoStreamMode.Read))
+                    {
+                        using (StreamReader Reader = new StreamReader(DESStream))
+                        {
+                            Text = Reader.ReadToEnd();
+                        }
+                    }
+                }
+                Decryptor.Clear();
                 return Text;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
         #endregion
     }
 }

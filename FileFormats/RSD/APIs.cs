@@ -39,6 +39,7 @@ namespace Utilities.FileFormats.RSD
         /// </summary>
         public APIs()
         {
+            APIList = new List<API>();
         }
 
         /// <summary>
@@ -47,47 +48,47 @@ namespace Utilities.FileFormats.RSD
         /// <param name="Element">Element containing the info</param>
         public APIs(XmlElement Element)
         {
+            APIList = new List<API>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("API", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _APIList.Add(new API((XmlElement)Children));
+                    APIList.Add(new API((XmlElement)Children));
                 }
             }
         }
-        #endregion
-
-        #region Private Variables
-        private List<API> _APIList = new List<API>();
         #endregion
 
         #region Public Properties
         /// <summary>
         /// List of APIs
         /// </summary>
-        public List<API> APIList
-        {
-            get { return _APIList; }
-            set { _APIList = value; }
-        }
+        public List<API> APIList { get; set; }
+
         #endregion
 
         #region Public Overridden Function
+
         /// <summary>
         /// To string function
         /// </summary>
         /// <returns>APIs list</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<apis>");
-            foreach (API CurrentAPI in APIList)
+            try
             {
-                Builder.Append(CurrentAPI.ToString());
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<apis>");
+                foreach (API CurrentAPI in APIList)
+                {
+                    Builder.Append(CurrentAPI.ToString());
+                }
+                Builder.Append("</apis>");
+                return Builder.ToString();
             }
-            Builder.Append("</apis>");
-            return Builder.ToString();
+            catch { throw; }
         }
+
         #endregion
     }
 }

@@ -91,11 +91,7 @@ namespace Utilities.Exchange
                     + "</g:prop></g:set>"
                     + "</g:propertyupdate>";
 
-                System.IO.Stream PROPPATCHRequestStream;
-                System.Net.WebResponse PROPPATCHResponse = null;
-                System.Net.HttpWebRequest PROPPATCHRequest = null;
-                byte[] bytes = null;
-                PROPPATCHRequest = (System.Net.HttpWebRequest)HttpWebRequest.Create(ServerName + "/exchange/" + Directory + "/Calendar/" + MeetingGUID.ToString() + ".eml");
+                System.Net.HttpWebRequest PROPPATCHRequest = (System.Net.HttpWebRequest)HttpWebRequest.Create(ServerName + "/exchange/" + Directory + "/Calendar/" + MeetingGUID.ToString() + ".eml");
 
                 System.Net.CredentialCache MyCredentialCache = new System.Net.CredentialCache();
                 if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
@@ -112,43 +108,20 @@ namespace Utilities.Exchange
                 }
 
                 PROPPATCHRequest.Credentials = MyCredentialCache;
-
-                // Specify the PROPPATCH method.
                 PROPPATCHRequest.Method = "PROPPATCH";
-
-                // Encode the body using UTF-8.
-                bytes = Encoding.UTF8.GetBytes((string)AppointmentRequest);
-
-                // Set the content header length.  This must be
-                // done before writing data to the request stream.
+                byte[] bytes = Encoding.UTF8.GetBytes((string)AppointmentRequest);
                 PROPPATCHRequest.ContentLength = bytes.Length;
-
-                // Get a reference to the request stream.
-                PROPPATCHRequestStream = PROPPATCHRequest.GetRequestStream();
-
-                // Write the message body to the request stream.
-                PROPPATCHRequestStream.Write(bytes, 0, bytes.Length);
-
-                // Close the Stream object to release the connection
-                // for further use.
-                PROPPATCHRequestStream.Close();
-
-                // Set the content type header.
-                PROPPATCHRequest.ContentType = "text/xml";
-
-                // Create the appointment in the Calendar folder of the
-                // user's mailbox.
-                PROPPATCHResponse = (System.Net.HttpWebResponse)PROPPATCHRequest.GetResponse();
-
-                // Clean up.
-                PROPPATCHResponse.Close();
-                PROPPATCHRequestStream.Dispose();
+                using (System.IO.Stream PROPPATCHRequestStream = PROPPATCHRequest.GetRequestStream())
+                {
+                    PROPPATCHRequestStream.Write(bytes, 0, bytes.Length);
+                    PROPPATCHRequestStream.Close();
+                    PROPPATCHRequest.ContentType = "text/xml";
+                    System.Net.WebResponse PROPPATCHResponse = (System.Net.HttpWebResponse)PROPPATCHRequest.GetResponse();
+                    PROPPATCHResponse.Close();
+                }
 
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -156,50 +129,58 @@ namespace Utilities.Exchange
         /// </summary>
         public virtual void EmailAppointment()
         {
-            MailMessage Mail = new MailMessage();
-            System.Net.Mime.ContentType TextType = new System.Net.Mime.ContentType("text/plain");
-            AlternateView TextView = AlternateView.CreateAlternateViewFromString(GetText(), TextType);
-            System.Net.Mime.ContentType HTMLType = new System.Net.Mime.ContentType("text/html");
-            AlternateView HTMLView = AlternateView.CreateAlternateViewFromString(GetHTML(false), HTMLType);
-            System.Net.Mime.ContentType CalendarType = new System.Net.Mime.ContentType("text/calendar");
-            CalendarType.Parameters.Add("method", "REQUEST");
-            CalendarType.Parameters.Add("name", "meeting.ics");
-            AlternateView CalendarView = AlternateView.CreateAlternateViewFromString(GetCalendar(false), CalendarType);
-            CalendarView.TransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
-
-            Mail.AlternateViews.Add(TextView);
-            Mail.AlternateViews.Add(HTMLView);
-            Mail.AlternateViews.Add(CalendarView);
-
-            Mail.From = new MailAddress(OrganizerEmail);
-
-            foreach (MailAddress attendee in AttendeeList)
+            try
             {
-                Mail.To.Add(attendee);
+                using (MailMessage Mail = new MailMessage())
+                {
+                    System.Net.Mime.ContentType TextType = new System.Net.Mime.ContentType("text/plain");
+                    using (AlternateView TextView = AlternateView.CreateAlternateViewFromString(GetText(), TextType))
+                    {
+                        System.Net.Mime.ContentType HTMLType = new System.Net.Mime.ContentType("text/html");
+                        using (AlternateView HTMLView = AlternateView.CreateAlternateViewFromString(GetHTML(false), HTMLType))
+                        {
+                            System.Net.Mime.ContentType CalendarType = new System.Net.Mime.ContentType("text/calendar");
+                            CalendarType.Parameters.Add("method", "REQUEST");
+                            CalendarType.Parameters.Add("name", "meeting.ics");
+                            using (AlternateView CalendarView = AlternateView.CreateAlternateViewFromString(GetCalendar(false), CalendarType))
+                            {
+                                CalendarView.TransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
+
+                                Mail.AlternateViews.Add(TextView);
+                                Mail.AlternateViews.Add(HTMLView);
+                                Mail.AlternateViews.Add(CalendarView);
+
+                                Mail.From = new MailAddress(OrganizerEmail);
+
+                                foreach (MailAddress attendee in AttendeeList)
+                                {
+                                    Mail.To.Add(attendee);
+                                }
+
+
+                                Mail.Subject = Subject;
+
+                                foreach (Attachment Attachment in Attachments)
+                                {
+                                    Mail.Attachments.Add(Attachment);
+                                }
+
+
+                                SmtpClient Server = new SmtpClient(ServerName, Port);
+                                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                                {
+                                    Server.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                                }
+                                if (AttendeeList.Count > 0)
+                                {
+                                    Server.Send(Mail);
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
-
-            Mail.Subject = Subject;
-
-            foreach (Attachment Attachment in Attachments)
-            {
-                Mail.Attachments.Add(Attachment);
-            }
-
-
-            SmtpClient Server = new SmtpClient(ServerName, Port);
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-            {
-                Server.Credentials = new System.Net.NetworkCredential(UserName, Password);
-            }
-            if (AttendeeList.Count > 0)
-            {
-                Server.Send(Mail);
-            }
-            TextView.Dispose();
-            HTMLView.Dispose();
-            CalendarView.Dispose();
-            Mail.Dispose();
+            catch { throw; }
         }
 
         /// <summary>
@@ -207,50 +188,52 @@ namespace Utilities.Exchange
         /// </summary>
         public virtual void SendCancelEmails()
         {
-            MailMessage Mail = new MailMessage();
-            System.Net.Mime.ContentType TextType = new System.Net.Mime.ContentType("text/plain");
-            AlternateView TextView = AlternateView.CreateAlternateViewFromString(GetText(), TextType);
-            System.Net.Mime.ContentType HTMLType = new System.Net.Mime.ContentType("text/html");
-            AlternateView HTMLView = AlternateView.CreateAlternateViewFromString(GetHTML(true), HTMLType);
-            System.Net.Mime.ContentType CalendarType = new System.Net.Mime.ContentType("text/calendar");
-            CalendarType.Parameters.Add("method", "CANCEL");
-            CalendarType.Parameters.Add("name", "meeting.ics");
-            AlternateView CalendarView = AlternateView.CreateAlternateViewFromString(GetCalendar(true), CalendarType);
-            CalendarView.TransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
-
-            Mail.AlternateViews.Add(TextView);
-            Mail.AlternateViews.Add(HTMLView);
-            Mail.AlternateViews.Add(CalendarView);
-
-            Mail.From = new MailAddress(OrganizerEmail);
-
-            foreach (MailAddress attendee in AttendeeList)
+            try
             {
-                Mail.To.Add(attendee);
+                using (MailMessage Mail = new MailMessage())
+                {
+                    System.Net.Mime.ContentType TextType = new System.Net.Mime.ContentType("text/plain");
+                    using (AlternateView TextView = AlternateView.CreateAlternateViewFromString(GetText(), TextType))
+                    {
+                        System.Net.Mime.ContentType HTMLType = new System.Net.Mime.ContentType("text/html");
+                        using (AlternateView HTMLView = AlternateView.CreateAlternateViewFromString(GetHTML(true), HTMLType))
+                        {
+                            System.Net.Mime.ContentType CalendarType = new System.Net.Mime.ContentType("text/calendar");
+                            CalendarType.Parameters.Add("method", "CANCEL");
+                            CalendarType.Parameters.Add("name", "meeting.ics");
+                            using (AlternateView CalendarView = AlternateView.CreateAlternateViewFromString(GetCalendar(true), CalendarType))
+                            {
+                                CalendarView.TransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
+
+                                Mail.AlternateViews.Add(TextView);
+                                Mail.AlternateViews.Add(HTMLView);
+                                Mail.AlternateViews.Add(CalendarView);
+
+                                Mail.From = new MailAddress(OrganizerEmail);
+                                foreach (MailAddress attendee in AttendeeList)
+                                {
+                                    Mail.To.Add(attendee);
+                                }
+                                Mail.Subject = Subject + " - Cancelled";
+                                foreach (Attachment Attachment in Attachments)
+                                {
+                                    Mail.Attachments.Add(Attachment);
+                                }
+                                SmtpClient Server = new SmtpClient(ServerName, Port);
+                                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                                {
+                                    Server.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                                }
+                                if (AttendeeList.Count > 0)
+                                {
+                                    Server.Send(Mail);
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
-
-            Mail.Subject = Subject + " - Cancelled";
-
-            foreach (Attachment Attachment in Attachments)
-            {
-                Mail.Attachments.Add(Attachment);
-            }
-
-
-            SmtpClient Server = new SmtpClient(ServerName, Port);
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-            {
-                Server.Credentials = new System.Net.NetworkCredential(UserName, Password);
-            }
-            if (AttendeeList.Count > 0)
-            {
-                Server.Send(Mail);
-            }
-            TextView.Dispose();
-            HTMLView.Dispose();
-            CalendarView.Dispose();
-            Mail.Dispose();
+            catch { throw; }
         }
 
         /// <summary>
@@ -260,11 +243,7 @@ namespace Utilities.Exchange
         {
             try
             {
-                //System.IO.Stream PROPPATCHRequestStream;
-                System.Net.WebResponse PROPPATCHResponse = null;
-                System.Net.HttpWebRequest PROPPATCHRequest = null;
-                //byte[] bytes = null;
-                PROPPATCHRequest = (System.Net.HttpWebRequest)HttpWebRequest.Create(ServerName + "/exchange/" + Directory + "/Calendar/" + MeetingGUID.ToString() + ".eml");
+                System.Net.HttpWebRequest PROPPATCHRequest = (System.Net.HttpWebRequest)HttpWebRequest.Create(ServerName + "/exchange/" + Directory + "/Calendar/" + MeetingGUID.ToString() + ".eml");
 
                 System.Net.CredentialCache MyCredentialCache = new System.Net.CredentialCache();
                 if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
@@ -279,24 +258,13 @@ namespace Utilities.Exchange
                                            "Negotiate",
                                            (System.Net.NetworkCredential)CredentialCache.DefaultCredentials);
                 }
-                
 
                 PROPPATCHRequest.Credentials = MyCredentialCache;
-
-                // Specify the PROPPATCH method.
                 PROPPATCHRequest.Method = "DELETE";
-
-                // Create the appointment in the Calendar folder of the
-                // user's mailbox.
-                PROPPATCHResponse = (System.Net.HttpWebResponse)PROPPATCHRequest.GetResponse();
-
-                // Clean up.
+                System.Net.WebResponse PROPPATCHResponse = (System.Net.HttpWebResponse)PROPPATCHRequest.GetResponse();
                 PROPPATCHResponse.Close();
             }
-            catch
-            {
-                //throw a;
-            }
+            catch { throw; }
         }
         #endregion
 
@@ -308,15 +276,19 @@ namespace Utilities.Exchange
         /// <returns>A text version of the appointment</returns>
         private string GetText()
         {
-            string Body = "Type:Single Meeting\n" +
-                "Organizer:" + OrganizerName + "\n" +
-                "Start Time:" + StartDate.ToLongDateString() + " " + StartDate.ToLongTimeString() + "\n" +
-                "End Time:" + EndDate.ToLongDateString() + " " + EndDate.ToLongTimeString() + "\n" +
-                "Time Zone:" + System.TimeZone.CurrentTimeZone.StandardName + "\n" +
-                "Location: " + Location + "\n\n" +
-                "*~*~*~*~*~*~*~*~*~*\n\n" +
-                Summary;
-            return Body;
+            try
+            {
+                string Body = "Type:Single Meeting\n" +
+                    "Organizer:" + OrganizerName + "\n" +
+                    "Start Time:" + StartDate.ToLongDateString() + " " + StartDate.ToLongTimeString() + "\n" +
+                    "End Time:" + EndDate.ToLongDateString() + " " + EndDate.ToLongTimeString() + "\n" +
+                    "Time Zone:" + System.TimeZone.CurrentTimeZone.StandardName + "\n" +
+                    "Location: " + Location + "\n\n" +
+                    "*~*~*~*~*~*~*~*~*~*\n\n" +
+                    Summary;
+                return Body;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -326,20 +298,24 @@ namespace Utilities.Exchange
         /// <returns>An HTML version of the appointment</returns>
         private string GetHTML(bool Canceled)
         {
-            string bodyHTML = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\">\r\n<HTML>\r\n<HEAD>\r\n<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">\r\n<META NAME=\"Generator\" CONTENT=\"MS Exchange Server version 6.5.7652.24\">\r\n<TITLE>{0}</TITLE>\r\n</HEAD>\r\n<BODY>\r\n<!-- Converted from text/plain format -->\r\n<P><FONT SIZE=2>Type:Single Meeting<BR>\r\nOrganizer:{1}<BR>\r\nStart Time:{2}<BR>\r\nEnd Time:{3}<BR>\r\nTime Zone:{4}<BR>\r\nLocation:{5}<BR>\r\n<BR>\r\n*~*~*~*~*~*~*~*~*~*<BR>\r\n<BR>\r\n{6}<BR>\r\n</FONT>\r\n</P>\r\n\r\n</BODY>\r\n</HTML>";
-            string TempSummary = Summary;
-            if (Canceled)
+            try
             {
-                TempSummary += " - Canceled";
+                string bodyHTML = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\">\r\n<HTML>\r\n<HEAD>\r\n<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">\r\n<META NAME=\"Generator\" CONTENT=\"MS Exchange Server version 6.5.7652.24\">\r\n<TITLE>{0}</TITLE>\r\n</HEAD>\r\n<BODY>\r\n<!-- Converted from text/plain format -->\r\n<P><FONT SIZE=2>Type:Single Meeting<BR>\r\nOrganizer:{1}<BR>\r\nStart Time:{2}<BR>\r\nEnd Time:{3}<BR>\r\nTime Zone:{4}<BR>\r\nLocation:{5}<BR>\r\n<BR>\r\n*~*~*~*~*~*~*~*~*~*<BR>\r\n<BR>\r\n{6}<BR>\r\n</FONT>\r\n</P>\r\n\r\n</BODY>\r\n</HTML>";
+                string TempSummary = Summary;
+                if (Canceled)
+                {
+                    TempSummary += " - Canceled";
+                }
+                return string.Format(bodyHTML,
+                    TempSummary,
+                    OrganizerName,
+                    StartDate.ToLongDateString() + " " + StartDate.ToLongTimeString(),
+                    EndDate.ToLongDateString() + " " + EndDate.ToLongTimeString(),
+                    System.TimeZone.CurrentTimeZone.StandardName,
+                    Location,
+                    TempSummary);
             }
-            return string.Format(bodyHTML,
-                TempSummary,
-                OrganizerName,
-                StartDate.ToLongDateString() + " " + StartDate.ToLongTimeString(),
-                EndDate.ToLongDateString() + " " + EndDate.ToLongTimeString(),
-                System.TimeZone.CurrentTimeZone.StandardName,
-                Location,
-                TempSummary);
+            catch { throw; }
         }
 
         /// <summary>
@@ -350,26 +326,30 @@ namespace Utilities.Exchange
         /// <returns>An iCalendar version of the appointment</returns>
         private string GetCalendar(bool Canceled)
         {
-            string DateFormatUsing = "yyyyMMddTHHmmssZ";
-            string Method;
-            if(!Canceled)
-                Method = "REQUEST";
-            else
-                Method = "CANCEL";
-            string bodyCalendar = "BEGIN:VCALENDAR\r\nMETHOD:{10}\r\nPRODID:Microsoft CDO for Microsoft Exchange\r\nVERSION:2.0\r\nBEGIN:VTIMEZONE\r\nTZID:(GMT-06.00) Central Time (US & Canada)\r\nX-MICROSOFT-CDO-TZID:11\r\nBEGIN:STANDARD\r\nDTSTART:16010101T020000\r\nTZOFFSETFROM:-0500\r\nTZOFFSETTO:-0600\r\nRRULE:FREQ=YEARLY;WKST=MO;INTERVAL=1;BYMONTH=11;BYDAY=1SU\r\nEND:STANDARD\r\nBEGIN:DAYLIGHT\r\nDTSTART:16010101T020000\r\nTZOFFSETFROM:-0600\r\nTZOFFSETTO:-0500\r\nRRULE:FREQ=YEARLY;WKST=MO;INTERVAL=1;BYMONTH=3;BYDAY=2SU\r\nEND:DAYLIGHT\r\nEND:VTIMEZONE\r\nBEGIN:VEVENT\r\nDTSTAMP:{8}\r\nDTSTART:{0}\r\nSUMMARY:{7}\r\nUID:{5}\r\nATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=\"{9}\":MAILTO:{9}\r\nACTION;RSVP=TRUE;CN=\"{4}\":MAILTO:{4}\r\nORGANIZER;CN=\"{3}\":mailto:{4}\r\nLOCATION:{2}\r\nDTEND:{1}\r\nDESCRIPTION:{7}\\N\r\nSEQUENCE:1\r\nPRIORITY:5\r\nCLASS:\r\nCREATED:{8}\r\nLAST-MODIFIED:{8}\r\nSTATUS:CONFIRMED\r\nTRANSP:OPAQUE\r\nX-MICROSOFT-CDO-BUSYSTATUS:BUSY\r\nX-MICROSOFT-CDO-INSTTYPE:0\r\nX-MICROSOFT-CDO-INTENDEDSTATUS:BUSY\r\nX-MICROSOFT-CDO-ALLDAYEVENT:FALSE\r\nX-MICROSOFT-CDO-IMPORTANCE:1\r\nX-MICROSOFT-CDO-OWNERAPPTID:-1\r\nX-MICROSOFT-CDO-ATTENDEE-CRITICAL-CHANGE:{8}\r\nX-MICROSOFT-CDO-OWNER-CRITICAL-CHANGE:{8}\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:REMINDER\r\nTRIGGER;RELATED=START:-PT00H15M00S\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n";
-            bodyCalendar = string.Format(bodyCalendar,
-                StartDate.ToUniversalTime().ToString(DateFormatUsing),
-                EndDate.ToUniversalTime().ToString(DateFormatUsing),
-                Location,
-                OrganizerName,
-                OrganizerEmail,
-                MeetingGUID.ToString("B"),
-                Summary,
-                Subject,
-                DateTime.Now.ToUniversalTime().ToString(DateFormatUsing),
-                AttendeeList.ToString(),
-                Method);
-            return bodyCalendar;
+            try
+            {
+                string DateFormatUsing = "yyyyMMddTHHmmssZ";
+                string Method;
+                if (!Canceled)
+                    Method = "REQUEST";
+                else
+                    Method = "CANCEL";
+                string bodyCalendar = "BEGIN:VCALENDAR\r\nMETHOD:{10}\r\nPRODID:Microsoft CDO for Microsoft Exchange\r\nVERSION:2.0\r\nBEGIN:VTIMEZONE\r\nTZID:(GMT-06.00) Central Time (US & Canada)\r\nX-MICROSOFT-CDO-TZID:11\r\nBEGIN:STANDARD\r\nDTSTART:16010101T020000\r\nTZOFFSETFROM:-0500\r\nTZOFFSETTO:-0600\r\nRRULE:FREQ=YEARLY;WKST=MO;INTERVAL=1;BYMONTH=11;BYDAY=1SU\r\nEND:STANDARD\r\nBEGIN:DAYLIGHT\r\nDTSTART:16010101T020000\r\nTZOFFSETFROM:-0600\r\nTZOFFSETTO:-0500\r\nRRULE:FREQ=YEARLY;WKST=MO;INTERVAL=1;BYMONTH=3;BYDAY=2SU\r\nEND:DAYLIGHT\r\nEND:VTIMEZONE\r\nBEGIN:VEVENT\r\nDTSTAMP:{8}\r\nDTSTART:{0}\r\nSUMMARY:{7}\r\nUID:{5}\r\nATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=\"{9}\":MAILTO:{9}\r\nACTION;RSVP=TRUE;CN=\"{4}\":MAILTO:{4}\r\nORGANIZER;CN=\"{3}\":mailto:{4}\r\nLOCATION:{2}\r\nDTEND:{1}\r\nDESCRIPTION:{7}\\N\r\nSEQUENCE:1\r\nPRIORITY:5\r\nCLASS:\r\nCREATED:{8}\r\nLAST-MODIFIED:{8}\r\nSTATUS:CONFIRMED\r\nTRANSP:OPAQUE\r\nX-MICROSOFT-CDO-BUSYSTATUS:BUSY\r\nX-MICROSOFT-CDO-INSTTYPE:0\r\nX-MICROSOFT-CDO-INTENDEDSTATUS:BUSY\r\nX-MICROSOFT-CDO-ALLDAYEVENT:FALSE\r\nX-MICROSOFT-CDO-IMPORTANCE:1\r\nX-MICROSOFT-CDO-OWNERAPPTID:-1\r\nX-MICROSOFT-CDO-ATTENDEE-CRITICAL-CHANGE:{8}\r\nX-MICROSOFT-CDO-OWNER-CRITICAL-CHANGE:{8}\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:REMINDER\r\nTRIGGER;RELATED=START:-PT00H15M00S\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n";
+                bodyCalendar = string.Format(bodyCalendar,
+                    StartDate.ToUniversalTime().ToString(DateFormatUsing),
+                    EndDate.ToUniversalTime().ToString(DateFormatUsing),
+                    Location,
+                    OrganizerName,
+                    OrganizerEmail,
+                    MeetingGUID.ToString("B"),
+                    Summary,
+                    Subject,
+                    DateTime.Now.ToUniversalTime().ToString(DateFormatUsing),
+                    AttendeeList.ToString(),
+                    Method);
+                return bodyCalendar;
+            }
+            catch { throw; }
         }
 
         #endregion

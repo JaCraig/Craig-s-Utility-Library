@@ -119,11 +119,19 @@ namespace Utilities.DataTypes
         {
             get
             {
-                return Items[key];
+                try
+                {
+                    return Items[key];
+                }
+                catch { throw; }
             }
             set
             {
-                Items[key] = value;
+                try
+                {
+                    Items[key] = value;
+                }
+                catch { throw; }
             }
         }
 
@@ -132,7 +140,11 @@ namespace Utilities.DataTypes
         /// </summary>
         public virtual void Clear()
         {
-            Items.Clear();
+            try 
+            { 
+                Items.Clear();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -140,7 +152,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public virtual int Count
         {
-            get { return Items.Count; }
+            get { try { return Items.Count; } catch { throw; } }
         }
 
 

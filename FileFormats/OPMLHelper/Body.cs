@@ -39,6 +39,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// </summary>
         public Body()
         {
+            Outlines = new List<Outline>();
         }
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Element">XmlElement containing the body information</param>
         public Body(XmlElement Element)
         {
+            Outlines = new List<Outline>();
             if (Element.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)
@@ -65,36 +67,29 @@ namespace Utilities.FileFormats.OPMLHelper
         #endregion
 
         #region Properties
-        private List<Outline> _Outlines = null;
 
         /// <summary>
         /// List of outlines
         /// </summary>
-        public List<Outline> Outlines
-        {
-            get
-            {
-                if (_Outlines == null)
-                {
-                    _Outlines = new List<Outline>();
-                }
-                return _Outlines;
-            }
-            set { _Outlines = value; }
-        }
+        public List<Outline> Outlines{ get; set; }
+        
         #endregion
 
         #region Overridden Functions
         public override string ToString()
         {
-            StringBuilder BodyString=new StringBuilder();
-            BodyString.Append("<body>");
-            foreach (Outline Outline in Outlines)
+            try
             {
-                BodyString.Append(Outline.ToString());
+                StringBuilder BodyString = new StringBuilder();
+                BodyString.Append("<body>");
+                foreach (Outline Outline in Outlines)
+                {
+                    BodyString.Append(Outline.ToString());
+                }
+                BodyString.Append("</body>");
+                return BodyString.ToString();
             }
-            BodyString.Append("</body>");
-            return BodyString.ToString();
+            catch { throw; }
         }
         #endregion
     }

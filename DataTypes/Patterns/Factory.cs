@@ -52,10 +52,14 @@ namespace Utilities.DataTypes.Patterns
         /// <param name="Result">The object to be returned</param>
         public void Register(Key Key, T Result)
         {
-            if (Constructors.ContainsKey(Key))
-                Constructors[Key] = new Func<T>(() => Result);
-            else
-                Constructors.Add(Key, new Func<T>(() => Result));
+            try
+            {
+                if (Constructors.ContainsKey(Key))
+                    Constructors[Key] = new Func<T>(() => Result);
+                else
+                    Constructors.Add(Key, new Func<T>(() => Result));
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -65,10 +69,14 @@ namespace Utilities.DataTypes.Patterns
         /// <param name="Constructor">The function to call when creating the item</param>
         public void Register(Key Key, Func<T> Constructor)
         {
-            if (Constructors.ContainsKey(Key))
-                Constructors[Key] = Constructor;
-            else
-                Constructors.Add(Key, Constructor);
+            try
+            {
+                if (Constructors.ContainsKey(Key))
+                    Constructors[Key] = Constructor;
+                else
+                    Constructors.Add(Key, Constructor);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -78,9 +86,13 @@ namespace Utilities.DataTypes.Patterns
         /// <returns>The type returned by the initializer</returns>
         public T Create(Key Key)
         {
-            if (Constructors.ContainsKey(Key))
-                return Constructors[Key]();
-            return default(T);
+            try
+            {
+                if (Constructors.ContainsKey(Key))
+                    return Constructors[Key]();
+                return default(T);
+            }
+            catch { throw; }
         }
 
         #endregion

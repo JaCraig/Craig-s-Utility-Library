@@ -32,6 +32,7 @@ namespace Utilities.Encryption
     public static class SHA1
     {
         #region Public Static Functions
+
         /// <summary>
         /// Computes a hash using SHA1
         /// </summary>
@@ -42,8 +43,10 @@ namespace Utilities.Encryption
             SHA1CryptoServiceProvider SHA1 = new SHA1CryptoServiceProvider();
             byte[] InputArray = System.Text.Encoding.ASCII.GetBytes(Input);
             byte[] HashedArray = SHA1.ComputeHash(InputArray);
+            SHA1.Clear();
             return BitConverter.ToString(HashedArray).Replace("-", "");
         }
+
         #endregion
     }
 }

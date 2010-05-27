@@ -47,25 +47,29 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Location">Location of the OPML file</param>
         public OPML(string Location)
         {
-            XmlDocument Document = new XmlDocument();
-            Document.Load(Location);
-            foreach (XmlNode Children in Document.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
+                XmlDocument Document = new XmlDocument();
+                Document.Load(Location);
+                foreach (XmlNode Children in Document.ChildNodes)
                 {
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
+                        foreach (XmlNode Child in Children.ChildNodes)
                         {
-                            Body = new Body((XmlElement)Child);
-                        }
-                        else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Head = new Head((XmlElement)Child);
+                            if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                Body = new Body((XmlElement)Child);
+                            }
+                            else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                Head = new Head((XmlElement)Child);
+                            }
                         }
                     }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -74,58 +78,57 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Document">XmlDocument containing the OPML file</param>
         public OPML(XmlDocument Document)
         {
-            foreach (XmlNode Children in Document.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
+                foreach (XmlNode Children in Document.ChildNodes)
                 {
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
+                        foreach (XmlNode Child in Children.ChildNodes)
                         {
-                            Body=new Body((XmlElement)Child);
-                        }
-                        else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Head = new Head((XmlElement)Child);
+                            if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                Body = new Body((XmlElement)Child);
+                            }
+                            else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                Head = new Head((XmlElement)Child);
+                            }
                         }
                     }
                 }
             }
+            catch { throw; }
         }
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Body of the file
         /// </summary>
-        public Body Body
-        {
-            get { return _Body; }
-            set { _Body = value; }
-        }
+        public Body Body{get;set;}
 
         /// <summary>
         /// Header information
         /// </summary>
-        public Head Head
-        {
-            get { return _Head; }
-            set { _Head = value; }
-        }
+        public Head Head { get; set; }
 
-        private Body _Body;
-        private Head _Head;
         #endregion
 
         #region Overridden Functions
         public override string ToString()
         {
-            StringBuilder OPMLString = new StringBuilder();
-            OPMLString.Append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><opml version=\"2.0\">");
-            OPMLString.Append(Head.ToString());
-            OPMLString.Append(Body.ToString());
-            OPMLString.Append("</opml>");
-            return OPMLString.ToString();
+            try
+            {
+                StringBuilder OPMLString = new StringBuilder();
+                OPMLString.Append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><opml version=\"2.0\">");
+                OPMLString.Append(Head.ToString());
+                OPMLString.Append(Body.ToString());
+                OPMLString.Append("</opml>");
+                return OPMLString.ToString();
+            }
+            catch { throw; }
         }
         #endregion
     }

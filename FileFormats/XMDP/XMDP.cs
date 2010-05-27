@@ -32,38 +32,44 @@ namespace Utilities.FileFormats.XMDP
     public class XMDP
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         public XMDP()
         {
+            Properties = new List<Property>();
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Properties to be included
         /// </summary>
-        public List<Property> Properties
-        {
-            get { return _Properties; }
-            set { _Properties = value; }
-        }
-        private List<Property> _Properties;
+        public List<Property> Properties{get;set;}
+
         #endregion
 
         #region Overridden Functions
+
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<dl class=\"profile\">");
-            foreach (Property Property in Properties)
+            try
             {
-                Builder.Append(Property.ToString());
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<dl class=\"profile\">");
+                foreach (Property Property in Properties)
+                {
+                    Builder.Append(Property.ToString());
+                }
+                Builder.Append("</dl>");
+                return Builder.ToString();
             }
-            Builder.Append("</dl>");
-            return Builder.ToString();
+            catch { throw; }
         }
+
         #endregion
     }
 }

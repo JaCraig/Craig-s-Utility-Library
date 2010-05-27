@@ -63,10 +63,14 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<MenuItem><Name>").Append(Name).Append("</Name><URL>").Append(URL)
-                .Append("</URL></MenuItem>");
-            return Builder.ToString();
+            try
+            {
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<MenuItem><Name>").Append(Name).Append("</Name><URL>").Append(URL)
+                    .Append("</URL></MenuItem>");
+                return Builder.ToString();
+            }
+            catch { throw; }
         }
 
         #endregion

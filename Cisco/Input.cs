@@ -80,19 +80,23 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<CiscoIPPhoneInput><Title>").Append(Title).Append("</Title><Prompt>")
-                .Append(Prompt).Append("</Prompt><URL>").Append(URL).Append("</URL>");
-            foreach (InputItem Item in InputItems)
+            try
             {
-                Builder.Append(Item.ToString());
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<CiscoIPPhoneInput><Title>").Append(Title).Append("</Title><Prompt>")
+                    .Append(Prompt).Append("</Prompt><URL>").Append(URL).Append("</URL>");
+                foreach (InputItem Item in InputItems)
+                {
+                    Builder.Append(Item.ToString());
+                }
+                foreach (SoftKeyItem Item in SoftKeys)
+                {
+                    Builder.Append(Item.ToString());
+                }
+                Builder.Append("</CiscoIPPhoneInput>");
+                return Builder.ToString();
             }
-            foreach (SoftKeyItem Item in SoftKeys)
-            {
-                Builder.Append(Item.ToString());
-            }
-            Builder.Append("</CiscoIPPhoneInput>");
-            return Builder.ToString();
+            catch { throw; }
         }
 
         #endregion

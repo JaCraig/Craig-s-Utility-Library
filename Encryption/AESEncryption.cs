@@ -77,6 +77,7 @@ namespace Utilities.Encryption
                         }
                     }
                 }
+                SymmetricKey.Clear();
                 return Convert.ToBase64String(CipherTextBytes);
             }
             catch { throw; }
@@ -124,6 +125,7 @@ namespace Utilities.Encryption
                         }
                     }
                 }
+                SymmetricKey.Clear();
                 return Encoding.UTF8.GetString(PlainTextBytes, 0, ByteCount);
             }
             catch { throw; }

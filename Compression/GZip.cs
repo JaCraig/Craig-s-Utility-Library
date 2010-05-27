@@ -40,14 +40,15 @@ namespace Utilities.Compression
         /// <returns>A byte array of compressed data</returns>
         public static byte[] Compress(byte[] Bytes)
         {
-            MemoryStream Stream = new MemoryStream();
-            GZipStream ZipStream = new GZipStream(Stream, CompressionMode.Compress, true);
-            ZipStream.Write(Bytes, 0, Bytes.Length);
-            ZipStream.Close();
-            byte[] Values = Stream.ToArray();
-            Stream.Dispose();
-            ZipStream.Dispose();
-            return Values;
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                using (GZipStream ZipStream = new GZipStream(Stream, CompressionMode.Compress, true))
+                {
+                    ZipStream.Write(Bytes, 0, Bytes.Length);
+                    ZipStream.Close();
+                    return Stream.ToArray();
+                }
+            }
         }
 
         /// <summary>
@@ -57,27 +58,21 @@ namespace Utilities.Compression
         /// <returns>A byte array of decompressed data</returns>
         public static byte[] Decompress(byte[] Bytes)
         {
-            MemoryStream Stream = new MemoryStream();
-            GZipStream ZipStream = new GZipStream(new MemoryStream(Bytes), CompressionMode.Decompress, true);
-            byte[] Buffer = new byte[4096];
-            int Size;
-            while (true)
+            using (MemoryStream Stream = new MemoryStream())
             {
-                Size = ZipStream.Read(Buffer, 0, Buffer.Length);
-                if (Size > 0)
+                using (GZipStream ZipStream = new GZipStream(new MemoryStream(Bytes), CompressionMode.Decompress, true))
                 {
-                    Stream.Write(Buffer, 0, Size);
-                }
-                else
-                {
-                    break;
+                    byte[] Buffer = new byte[4096];
+                    while (true)
+                    {
+                        int Size = ZipStream.Read(Buffer, 0, Buffer.Length);
+                        if (Size > 0) Stream.Write(Buffer, 0, Size);
+                        else break;
+                    }
+                    ZipStream.Close();
+                    return Stream.ToArray();
                 }
             }
-            ZipStream.Close();
-            byte[] Values = Stream.ToArray();
-            Stream.Dispose();
-            ZipStream.Dispose();
-            return Values;
         }
 
         #endregion

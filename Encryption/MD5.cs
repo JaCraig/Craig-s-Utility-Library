@@ -32,6 +32,7 @@ namespace Utilities.Encryption
     public static class MD5
     {
         #region Public Static Functions
+
         /// <summary>
         /// Computes a hash using MD5
         /// </summary>
@@ -42,8 +43,10 @@ namespace Utilities.Encryption
             MD5CryptoServiceProvider MD5 = new MD5CryptoServiceProvider();
             byte[] InputArray = System.Text.Encoding.ASCII.GetBytes(Input);
             byte[] HashedArray = MD5.ComputeHash(InputArray);
+            MD5.Clear();
             return BitConverter.ToString(HashedArray).Replace("-","");
         }
+
         #endregion
     }
 }

@@ -62,10 +62,14 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<CiscoIPPhoneError Number=\"").Append(Number).Append("\">")
-                .Append(Text).Append("</CiscoIPPhoneError>");
-            return Builder.ToString();
+            try
+            {
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<CiscoIPPhoneError Number=\"").Append(Number).Append("\">")
+                    .Append(Text).Append("</CiscoIPPhoneError>");
+                return Builder.ToString();
+            }
+            catch { throw; }
         }
 
         #endregion

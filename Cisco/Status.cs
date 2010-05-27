@@ -84,16 +84,20 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<CiscoIPPhoneStatusFile><Text>").Append(Text).Append("</Text><Timer>").Append(Timer).Append("</Timer<LocationX>")
-                .Append(X).Append("</LocationX><LocationY>").Append(Y).Append("</LocationY><URL>").Append(URL)
-                .Append("</URL>");
-            foreach (SoftKeyItem Item in SoftKeys)
+            try
             {
-                Builder.Append(Item.ToString());
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<CiscoIPPhoneStatusFile><Text>").Append(Text).Append("</Text><Timer>").Append(Timer).Append("</Timer<LocationX>")
+                    .Append(X).Append("</LocationX><LocationY>").Append(Y).Append("</LocationY><URL>").Append(URL)
+                    .Append("</URL>");
+                foreach (SoftKeyItem Item in SoftKeys)
+                {
+                    Builder.Append(Item.ToString());
+                }
+                Builder.Append("</CiscoIPPhoneStatusFile>");
+                return Builder.ToString();
             }
-            Builder.Append("</CiscoIPPhoneStatusFile>");
-            return Builder.ToString();
+            catch { throw; }
         }
 
         #endregion

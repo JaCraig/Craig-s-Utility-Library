@@ -41,7 +41,11 @@ namespace Utilities.FileFormats.INI
         /// </summary>
         public INI()
         {
-            LoadFile();
+            try
+            {
+                LoadFile();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -50,8 +54,12 @@ namespace Utilities.FileFormats.INI
         /// <param name="FileName">Name of the file</param>
         public INI(string FileName)
         {
-            this.FileName=FileName;
-            LoadFile();
+            try
+            {
+                this.FileName = FileName;
+                LoadFile();
+            }
+            catch { throw; }
         }
         #endregion
 
@@ -64,24 +72,28 @@ namespace Utilities.FileFormats.INI
         /// <param name="Value">Value</param>
         public void WriteToINI(string Section, string Key, string Value)
         {
-            if (_FileContents.Keys.Contains(Section))
+            try
             {
-                if (_FileContents[Section].Keys.Contains(Key))
+                if (_FileContents.Keys.Contains(Section))
                 {
-                    _FileContents[Section][Key] = Value;
+                    if (_FileContents[Section].Keys.Contains(Key))
+                    {
+                        _FileContents[Section][Key] = Value;
+                    }
+                    else
+                    {
+                        _FileContents[Section].Add(Key, Value);
+                    }
                 }
                 else
                 {
-                    _FileContents[Section].Add(Key, Value);
+                    Dictionary<string, string> TempDictionary = new Dictionary<string, string>();
+                    TempDictionary.Add(Key, Value);
+                    _FileContents.Add(Section, TempDictionary);
                 }
+                WriteFile();
             }
-            else
-            {
-                Dictionary<string, string> TempDictionary = new Dictionary<string, string>();
-                TempDictionary.Add(Key, Value);
-                _FileContents.Add(Section, TempDictionary);
-            }
-            WriteFile();
+            catch { throw; }
         }
 
         /// <summary>
@@ -92,14 +104,18 @@ namespace Utilities.FileFormats.INI
         /// <param name="DefaultValue">Default value if it does not exist</param>
         public string ReadFromINI(string Section, string Key, string DefaultValue)
         {
-            if (_FileContents.Keys.Contains(Section))
+            try
             {
-                if (_FileContents[Section].Keys.Contains(Key))
+                if (_FileContents.Keys.Contains(Section))
                 {
-                    return _FileContents[Section][Key];
+                    if (_FileContents[Section].Keys.Contains(Key))
+                    {
+                        return _FileContents[Section][Key];
+                    }
                 }
+                return DefaultValue;
             }
-            return DefaultValue;
+            catch { throw; }
         }
 
         /// <summary>
@@ -108,22 +124,26 @@ namespace Utilities.FileFormats.INI
         /// <returns>An XML representation of the INI file</returns>
         public string ToXML()
         {
-            if (string.IsNullOrEmpty(this.FileName))
-                return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<INI>\r\n</INI>";
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n");
-            Builder.Append("<INI>\r\n");
-            foreach (string Header in _FileContents.Keys)
+            try
             {
-                Builder.Append("<section name=\"" + Header + "\">\r\n");
-                foreach (string Key in _FileContents[Header].Keys)
+                if (string.IsNullOrEmpty(this.FileName))
+                    return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<INI>\r\n</INI>";
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n");
+                Builder.Append("<INI>\r\n");
+                foreach (string Header in _FileContents.Keys)
                 {
-                    Builder.Append("<key name=\""+Key + "\">" + _FileContents[Header][Key] + "</key>\r\n");
+                    Builder.Append("<section name=\"" + Header + "\">\r\n");
+                    foreach (string Key in _FileContents[Header].Keys)
+                    {
+                        Builder.Append("<key name=\"" + Key + "\">" + _FileContents[Header][Key] + "</key>\r\n");
+                    }
+                    Builder.Append("</section>\r\n");
                 }
-                Builder.Append("</section>\r\n");
+                Builder.Append("</INI>");
+                return Builder.ToString();
             }
-            Builder.Append("</INI>");
-            return Builder.ToString();
+            catch { throw; }
         }
         #endregion
 
@@ -133,18 +153,22 @@ namespace Utilities.FileFormats.INI
         /// </summary>
         private void WriteFile()
         {
-            if (string.IsNullOrEmpty(this.FileName))
-                return;
-            StringBuilder Builder = new StringBuilder();
-            foreach (string Header in _FileContents.Keys)
+            try
             {
-                Builder.Append("[" + Header + "]\r\n");
-                foreach (string Key in _FileContents[Header].Keys)
+                if (string.IsNullOrEmpty(this.FileName))
+                    return;
+                StringBuilder Builder = new StringBuilder();
+                foreach (string Header in _FileContents.Keys)
                 {
-                    Builder.Append(Key + "=" + _FileContents[Header][Key] + "\r\n");
+                    Builder.Append("[" + Header + "]\r\n");
+                    foreach (string Key in _FileContents[Header].Keys)
+                    {
+                        Builder.Append(Key + "=" + _FileContents[Header][Key] + "\r\n");
+                    }
                 }
+                FileManager.SaveFile(Builder.ToString(), FileName);
             }
-            FileManager.SaveFile(Builder.ToString(), FileName);
+            catch { throw; }
         }
 
         /// <summary>
@@ -152,28 +176,32 @@ namespace Utilities.FileFormats.INI
         /// </summary>
         private void LoadFile()
         {
-            _FileContents = new Dictionary<string, Dictionary<string, string>>();
-            if (string.IsNullOrEmpty(this.FileName))
-                return;
-
-            string Contents=Utilities.FileManager.GetFileContents(FileName);
-            Regex Section=new Regex("["+Regex.Escape(" ")+"\t]*"+Regex.Escape("[")+".*"+Regex.Escape("]\r\n"));
-            string[] Sections=Section.Split(Contents);
-            MatchCollection SectionHeaders = Section.Matches(Contents);
-            int Counter=1;
-            foreach (Match SectionHeader in SectionHeaders)
+            try
             {
-                string[] Splitter = { "\r\n" };
-                string[] Splitter2 = { "=" };
-                string[] Items = Sections[Counter].Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
-                Dictionary<string, string> SectionValues = new Dictionary<string, string>();
-                foreach (string Item in Items)
+                _FileContents = new Dictionary<string, Dictionary<string, string>>();
+                if (string.IsNullOrEmpty(this.FileName))
+                    return;
+
+                string Contents = Utilities.FileManager.GetFileContents(FileName);
+                Regex Section = new Regex("[" + Regex.Escape(" ") + "\t]*" + Regex.Escape("[") + ".*" + Regex.Escape("]\r\n"));
+                string[] Sections = Section.Split(Contents);
+                MatchCollection SectionHeaders = Section.Matches(Contents);
+                int Counter = 1;
+                foreach (Match SectionHeader in SectionHeaders)
                 {
-                    SectionValues.Add(Item.Split(Splitter2, StringSplitOptions.None)[0], Item.Split(Splitter2, StringSplitOptions.None)[1]);
+                    string[] Splitter = { "\r\n" };
+                    string[] Splitter2 = { "=" };
+                    string[] Items = Sections[Counter].Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
+                    Dictionary<string, string> SectionValues = new Dictionary<string, string>();
+                    foreach (string Item in Items)
+                    {
+                        SectionValues.Add(Item.Split(Splitter2, StringSplitOptions.None)[0], Item.Split(Splitter2, StringSplitOptions.None)[1]);
+                    }
+                    _FileContents.Add(SectionHeader.Value.Replace("[", "").Replace("]\r\n", ""), SectionValues);
+                    ++Counter;
                 }
-                _FileContents.Add(SectionHeader.Value.Replace("[", "").Replace("]\r\n", ""), SectionValues);
-                ++Counter;
             }
+            catch { throw; }
         }
         #endregion
 
@@ -192,9 +220,8 @@ namespace Utilities.FileFormats.INI
             get { return _FileContents; }
             set { _FileContents = value; }
         }
-        private string _FileName=string.Empty;
+        private string _FileName = string.Empty;
         private Dictionary<string, Dictionary<string, string>> _FileContents = null;
         #endregion
-
     }
 }

@@ -140,14 +140,18 @@ namespace Utilities
         /// <returns>An HTML formatted string that contains the assemblies and their information</returns>
         public static string DumpAllAssembliesAndProperties()
         {
-            StringBuilder Builder = new StringBuilder();
-            Assembly[] Assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly Assembly in Assemblies)
+            try
             {
-                Builder.Append("<strong>" + Assembly.GetName().Name + "</strong><br />");
-                Builder.Append(DumpProperties(Assembly) + "<br /><br />");
+                StringBuilder Builder = new StringBuilder();
+                Assembly[] Assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (Assembly Assembly in Assemblies)
+                {
+                    Builder.Append("<strong>" + Assembly.GetName().Name + "</strong><br />");
+                    Builder.Append(DumpProperties(Assembly) + "<br /><br />");
+                }
+                return Builder.ToString();
             }
-            return Builder.ToString();
+            catch { throw; }
         }
 
         /// <summary>
@@ -157,14 +161,18 @@ namespace Utilities
         /// <returns>The assembly specified if it exists, otherwise it returns null</returns>
         public static System.Reflection.Assembly GetLoadedAssembly(string Name)
         {
-            foreach (Assembly TempAssembly in AppDomain.CurrentDomain.GetAssemblies())
+            try
             {
-                if (TempAssembly.GetName().Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase))
+                foreach (Assembly TempAssembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
-                    return TempAssembly;
+                    if (TempAssembly.GetName().Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return TempAssembly;
+                    }
                 }
+                return null;
             }
-            return null;
+            catch { throw; }
         }
 
         /// <summary>
@@ -175,44 +183,48 @@ namespace Utilities
         /// <returns>A copy of the object</returns>
         public static object MakeShallowCopy(object Object, bool SimpleTypesOnly)
         {
-            Type ObjectType = Object.GetType();
-            PropertyInfo[] Properties = ObjectType.GetProperties();
-            FieldInfo[] Fields = ObjectType.GetFields();
-            object ClassInstance = Activator.CreateInstance(ObjectType);
-
-            foreach (PropertyInfo Property in Properties)
+            try
             {
-                try
-                {
-                    if (SimpleTypesOnly)
-                    {
-                        SetPropertyifSimpleType(Property, ClassInstance, Object);
-                    }
-                    else
-                    {
-                        SetProperty(Property, ClassInstance, Object);
-                    }
-                }
-                catch { }
-            }
+                Type ObjectType = Object.GetType();
+                PropertyInfo[] Properties = ObjectType.GetProperties();
+                FieldInfo[] Fields = ObjectType.GetFields();
+                object ClassInstance = Activator.CreateInstance(ObjectType);
 
-            foreach (FieldInfo Field in Fields)
-            {
-                try
+                foreach (PropertyInfo Property in Properties)
                 {
-                    if (SimpleTypesOnly)
+                    try
                     {
-                        SetFieldifSimpleType(Field, ClassInstance, Object);
+                        if (SimpleTypesOnly)
+                        {
+                            SetPropertyifSimpleType(Property, ClassInstance, Object);
+                        }
+                        else
+                        {
+                            SetProperty(Property, ClassInstance, Object);
+                        }
                     }
-                    else
-                    {
-                        SetField(Field, ClassInstance, Object);
-                    }
+                    catch { }
                 }
-                catch { }
-            }
 
-            return ClassInstance;
+                foreach (FieldInfo Field in Fields)
+                {
+                    try
+                    {
+                        if (SimpleTypesOnly)
+                        {
+                            SetFieldifSimpleType(Field, ClassInstance, Object);
+                        }
+                        else
+                        {
+                            SetField(Field, ClassInstance, Object);
+                        }
+                    }
+                    catch { }
+                }
+
+                return ClassInstance;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -224,53 +236,57 @@ namespace Utilities
         /// <returns>A copy of the object</returns>
         public static object MakeShallowCopyInheritedClass(Type DerivedType, object Object, bool SimpleTypesOnly)
         {
-            Type ObjectType = Object.GetType();
-            Type ReturnedObjectType = DerivedType;
-            PropertyInfo[] Properties = ObjectType.GetProperties();
-            FieldInfo[] Fields = ObjectType.GetFields();
-            object ClassInstance = Activator.CreateInstance(ReturnedObjectType);
-
-            foreach (PropertyInfo Property in Properties)
+            try
             {
-                try
+                Type ObjectType = Object.GetType();
+                Type ReturnedObjectType = DerivedType;
+                PropertyInfo[] Properties = ObjectType.GetProperties();
+                FieldInfo[] Fields = ObjectType.GetFields();
+                object ClassInstance = Activator.CreateInstance(ReturnedObjectType);
+
+                foreach (PropertyInfo Property in Properties)
                 {
-                    PropertyInfo ChildProperty = ReturnedObjectType.GetProperty(Property.Name);
-                    if (ChildProperty != null)
+                    try
                     {
-                        if (SimpleTypesOnly)
+                        PropertyInfo ChildProperty = ReturnedObjectType.GetProperty(Property.Name);
+                        if (ChildProperty != null)
                         {
-                            SetPropertyifSimpleType(ChildProperty, Property, ClassInstance, Object);
-                        }
-                        else
-                        {
-                            SetProperty(ChildProperty, Property, ClassInstance, Object);
+                            if (SimpleTypesOnly)
+                            {
+                                SetPropertyifSimpleType(ChildProperty, Property, ClassInstance, Object);
+                            }
+                            else
+                            {
+                                SetProperty(ChildProperty, Property, ClassInstance, Object);
+                            }
                         }
                     }
+                    catch { }
                 }
-                catch { }
-            }
 
-            foreach (FieldInfo Field in Fields)
-            {
-                try
+                foreach (FieldInfo Field in Fields)
                 {
-                    FieldInfo ChildField = ReturnedObjectType.GetField(Field.Name);
-                    if (ChildField != null)
+                    try
                     {
-                        if (SimpleTypesOnly)
+                        FieldInfo ChildField = ReturnedObjectType.GetField(Field.Name);
+                        if (ChildField != null)
                         {
-                            SetFieldifSimpleType(ChildField, Field, ClassInstance, Object);
-                        }
-                        else
-                        {
-                            SetField(ChildField, Field, ClassInstance, Object);
+                            if (SimpleTypesOnly)
+                            {
+                                SetFieldifSimpleType(ChildField, Field, ClassInstance, Object);
+                            }
+                            else
+                            {
+                                SetField(ChildField, Field, ClassInstance, Object);
+                            }
                         }
                     }
+                    catch { }
                 }
-                catch { }
-            }
 
-            return ClassInstance;
+                return ClassInstance;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -281,23 +297,27 @@ namespace Utilities
         /// <returns>List of types that use the interface</returns>
         public static System.Collections.Generic.List<Type> GetTypes(Assembly Assembly, string Interface)
         {
-            System.Collections.Generic.List<Type> ReturnList = new System.Collections.Generic.List<Type>();
-            if (Assembly != null)
+            try
             {
-                Type[] Types = Assembly.GetTypes();
-                foreach (Type Type in Types)
+                System.Collections.Generic.List<Type> ReturnList = new System.Collections.Generic.List<Type>();
+                if (Assembly != null)
                 {
-                    if (Type.GetInterface(Interface, true) != null)
+                    Type[] Types = Assembly.GetTypes();
+                    foreach (Type Type in Types)
                     {
-                        ReturnList.Add(Type);
-                    }
-                    else if (Type.BaseType != null && Type.BaseType.FullName.StartsWith(Interface))
-                    {
-                        ReturnList.Add(Type);
+                        if (Type.GetInterface(Interface, true) != null)
+                        {
+                            ReturnList.Add(Type);
+                        }
+                        else if (Type.BaseType != null && Type.BaseType.FullName != null && Type.BaseType.FullName.StartsWith(Interface))
+                        {
+                            ReturnList.Add(Type);
+                        }
                     }
                 }
+                return ReturnList;
             }
-            return ReturnList;
+            catch { throw; }
         }
 
         /// <summary>
@@ -309,8 +329,12 @@ namespace Utilities
         /// <returns>A list of types that use the interface</returns>
         public static System.Collections.Generic.List<Type> GetTypes(string AssemblyLocation, string Interface, out Assembly Assembly)
         {
-            Assembly = Assembly.LoadFile(AssemblyLocation);
-            return GetTypes(Assembly, Interface);
+            try
+            {
+                Assembly = Assembly.LoadFile(AssemblyLocation);
+                return GetTypes(Assembly, Interface);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -321,20 +345,24 @@ namespace Utilities
         /// <returns>A list mapping using the assembly as the key and a list of types</returns>
         public static ListMapping<Assembly, Type> GetTypesFromDirectory(string AssemblyDirectory, string Interface)
         {
-            ListMapping<Assembly, Type> ReturnList = new ListMapping<Assembly, Type>();
-            System.Collections.Generic.List<Assembly> Assemblies = GetAssembliesFromDirectory(AssemblyDirectory);
-            foreach (Assembly Assembly in Assemblies)
+            try
             {
-                Type[] Types = Assembly.GetTypes();
-                foreach (Type Type in Types)
+                ListMapping<Assembly, Type> ReturnList = new ListMapping<Assembly, Type>();
+                System.Collections.Generic.List<Assembly> Assemblies = GetAssembliesFromDirectory(AssemblyDirectory);
+                foreach (Assembly Assembly in Assemblies)
                 {
-                    if (Type.GetInterface(Interface, true) != null)
+                    Type[] Types = Assembly.GetTypes();
+                    foreach (Type Type in Types)
                     {
-                        ReturnList.Add(Assembly, Type);
+                        if (Type.GetInterface(Interface, true) != null)
+                        {
+                            ReturnList.Add(Assembly, Type);
+                        }
                     }
                 }
+                return ReturnList;
             }
-            return ReturnList;
+            catch { throw; }
         }
 
         /// <summary>
@@ -344,16 +372,20 @@ namespace Utilities
         /// <returns>List of assemblies in the directory</returns>
         public static System.Collections.Generic.List<Assembly> GetAssembliesFromDirectory(string Directory)
         {
-            System.Collections.Generic.List<Assembly> ReturnList = new System.Collections.Generic.List<Assembly>();
-            System.Collections.Generic.List<FileInfo> Files = FileManager.FileList(Directory);
-            foreach (FileInfo File in Files)
+            try
             {
-                if (File.Extension.Equals(".dll", StringComparison.CurrentCultureIgnoreCase))
+                System.Collections.Generic.List<Assembly> ReturnList = new System.Collections.Generic.List<Assembly>();
+                System.Collections.Generic.List<FileInfo> Files = FileManager.FileList(Directory);
+                foreach (FileInfo File in Files)
                 {
-                    ReturnList.Add(Assembly.LoadFile(File.FullName));
+                    if (File.Extension.Equals(".dll", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        ReturnList.Add(Assembly.LoadFile(File.FullName));
+                    }
                 }
+                return ReturnList;
             }
-            return ReturnList;
+            catch { throw; }
         }
 
         /// <summary>
@@ -365,29 +397,33 @@ namespace Utilities
         /// <returns>The returned value of the method</returns>
         public static object CallMethod(string MethodName, object Object,params object[] InputVariables)
         {
-            if(string.IsNullOrEmpty(MethodName)||Object==null)
-                return null;
-            Type ObjectType = Object.GetType();
-            MethodInfo Method = null;
-            if (InputVariables != null)
+            try
             {
-                Type[] MethodInputTypes = new Type[InputVariables.Length];
-                for (int x = 0; x < InputVariables.Length; ++x)
+                if (string.IsNullOrEmpty(MethodName) || Object == null)
+                    return null;
+                Type ObjectType = Object.GetType();
+                MethodInfo Method = null;
+                if (InputVariables != null)
                 {
-                    MethodInputTypes[x] = InputVariables[x].GetType();
+                    Type[] MethodInputTypes = new Type[InputVariables.Length];
+                    for (int x = 0; x < InputVariables.Length; ++x)
+                    {
+                        MethodInputTypes[x] = InputVariables[x].GetType();
+                    }
+                    Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+                    if (Method != null)
+                    {
+                        return Method.Invoke(Object, InputVariables);
+                    }
                 }
-                Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+                Method = ObjectType.GetMethod(MethodName);
                 if (Method != null)
                 {
-                    return Method.Invoke(Object, InputVariables);
+                    return Method.Invoke(Object, null);
                 }
+                return null;
             }
-            Method = ObjectType.GetMethod(MethodName);
-            if (Method != null)
-            {
-                return Method.Invoke(Object, null);
-            }
-            return null;
+            catch { throw; }
         }
 
         /// <summary>
@@ -400,12 +436,16 @@ namespace Utilities
         public static void SetValue(object SourceValue, object DestinationObject,
             PropertyInfo DestinationPropertyInfo, string Format)
         {
-            if (DestinationObject == null || DestinationPropertyInfo == null)
-                return;
-            Type DestinationPropertyType = DestinationPropertyInfo.PropertyType;
-            DestinationPropertyInfo.SetValue(DestinationObject,
-                Parse(SourceValue, DestinationPropertyType, Format),
-                null);
+            try
+            {
+                if (DestinationObject == null || DestinationPropertyInfo == null)
+                    return;
+                Type DestinationPropertyType = DestinationPropertyInfo.PropertyType;
+                DestinationPropertyInfo.SetValue(DestinationObject,
+                    Parse(SourceValue, DestinationPropertyType, Format),
+                    null);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -421,21 +461,25 @@ namespace Utilities
         public static void SetValue(object SourceValue, object DestinationObject, 
             string PropertyPath, string Format)
         {
-            string[] Splitter = { "." };
-            string[] DestinationProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
-            object TempDestinationProperty = DestinationObject;
-            Type DestinationPropertyType = DestinationObject.GetType();
-            PropertyInfo DestinationProperty = null;
-            for (int x = 0; x < DestinationProperties.Length - 1; ++x)
+            try
             {
-                DestinationProperty = DestinationPropertyType.GetProperty(DestinationProperties[x]);
-                DestinationPropertyType=DestinationProperty.PropertyType;
-                TempDestinationProperty = DestinationProperty.GetValue(TempDestinationProperty, null);
-                if (TempDestinationProperty == null)
-                    return;
+                string[] Splitter = { "." };
+                string[] DestinationProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+                object TempDestinationProperty = DestinationObject;
+                Type DestinationPropertyType = DestinationObject.GetType();
+                PropertyInfo DestinationProperty = null;
+                for (int x = 0; x < DestinationProperties.Length - 1; ++x)
+                {
+                    DestinationProperty = DestinationPropertyType.GetProperty(DestinationProperties[x]);
+                    DestinationPropertyType = DestinationProperty.PropertyType;
+                    TempDestinationProperty = DestinationProperty.GetValue(TempDestinationProperty, null);
+                    if (TempDestinationProperty == null)
+                        return;
+                }
+                DestinationProperty = DestinationPropertyType.GetProperty(DestinationProperties[DestinationProperties.Length - 1]);
+                SetValue(SourceValue, TempDestinationProperty, DestinationProperty, Format);
             }
-            DestinationProperty = DestinationPropertyType.GetProperty(DestinationProperties[DestinationProperties.Length - 1]);
-            SetValue(SourceValue, TempDestinationProperty, DestinationProperty, Format);
+            catch { throw; }
         }
 
         /// <summary>
@@ -446,20 +490,24 @@ namespace Utilities
         /// <returns>A string containing the name of the property</returns>
         public static string GetPropertyName<T>(Expression<Func<T, object>> Expression)
         {
-            if (Expression == null)
-                return "";
-            string Name = "";
-            if (Expression.Body.NodeType == ExpressionType.Convert)
+            try
             {
-                Name = Expression.Body.ToString().Replace("Convert(", "").Replace(")", "");
-                Name = Name.Remove(0, Name.IndexOf(".") + 1);
+                if (Expression == null)
+                    return "";
+                string Name = "";
+                if (Expression.Body.NodeType == ExpressionType.Convert)
+                {
+                    Name = Expression.Body.ToString().Replace("Convert(", "").Replace(")", "");
+                    Name = Name.Remove(0, Name.IndexOf(".") + 1);
+                }
+                else
+                {
+                    Name = Expression.Body.ToString();
+                    Name = Name.Remove(0, Name.IndexOf(".") + 1);
+                }
+                return Name;
             }
-            else
-            {
-                Name = Expression.Body.ToString();
-                Name = Name.Remove(0, Name.IndexOf(".") + 1);
-            }
-            return Name;
+            catch { throw; }
         }
 
         /// <summary>
@@ -473,23 +521,27 @@ namespace Utilities
         /// be reached</returns>
         public static object GetPropertyValue(object SourceObject, string PropertyPath)
         {
-            if (SourceObject == null||string.IsNullOrEmpty(PropertyPath))
-                return null;
-            string[] Splitter = { "." };
-            string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
-            object TempSourceProperty = SourceObject;
-            Type PropertyType = SourceObject.GetType();
-            for (int x = 0; x < SourceProperties.Length; ++x)
+            try
             {
-                PropertyInfo SourcePropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
-                if (SourcePropertyInfo == null)
+                if (SourceObject == null || string.IsNullOrEmpty(PropertyPath))
                     return null;
-                TempSourceProperty = SourcePropertyInfo.GetValue(TempSourceProperty, null);
-                if (TempSourceProperty == null)
-                    return null;
-                PropertyType = SourcePropertyInfo.PropertyType;
+                string[] Splitter = { "." };
+                string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+                object TempSourceProperty = SourceObject;
+                Type PropertyType = SourceObject.GetType();
+                for (int x = 0; x < SourceProperties.Length; ++x)
+                {
+                    PropertyInfo SourcePropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                    if (SourcePropertyInfo == null)
+                        return null;
+                    TempSourceProperty = SourcePropertyInfo.GetValue(TempSourceProperty, null);
+                    if (TempSourceProperty == null)
+                        return null;
+                    PropertyType = SourcePropertyInfo.PropertyType;
+                }
+                return TempSourceProperty;
             }
-            return TempSourceProperty;
+            catch { throw; }
         }
 
         /// <summary>
@@ -502,19 +554,23 @@ namespace Utilities
         /// <returns>The type of the property specified or null if it can not be reached.</returns>
         public static Type GetPropertyType(object SourceObject, string PropertyPath)
         {
-            if (SourceObject == null||string.IsNullOrEmpty(PropertyPath))
-                return null;
-            string[] Splitter = { "." };
-            string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
-            object TempSourceProperty = SourceObject;
-            Type PropertyType = SourceObject.GetType();
-            PropertyInfo PropertyInfo = null;
-            for (int x = 0; x < SourceProperties.Length; ++x)
+            try
             {
-                PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
-                PropertyType = PropertyInfo.PropertyType;
+                if (SourceObject == null || string.IsNullOrEmpty(PropertyPath))
+                    return null;
+                string[] Splitter = { "." };
+                string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+                object TempSourceProperty = SourceObject;
+                Type PropertyType = SourceObject.GetType();
+                PropertyInfo PropertyInfo = null;
+                for (int x = 0; x < SourceProperties.Length; ++x)
+                {
+                    PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                    PropertyType = PropertyInfo.PropertyType;
+                }
+                return PropertyType;
             }
-            return PropertyType;
+            catch { throw; }
         }
 
         /// <summary>
@@ -527,11 +583,15 @@ namespace Utilities
         /// <returns>The type of the property specified or null if it can not be reached.</returns>
         public static Type GetPropertyType<T>(string PropertyPath)
         {
-            if (string.IsNullOrEmpty(PropertyPath))
-                return null;
-            Type ObjectType = typeof(T);
-            object Object = ObjectType.Assembly.CreateInstance(ObjectType.FullName);
-            return GetPropertyType(Object, PropertyPath);
+            try
+            {
+                if (string.IsNullOrEmpty(PropertyPath))
+                    return null;
+                Type ObjectType = typeof(T);
+                object Object = ObjectType.Assembly.CreateInstance(ObjectType.FullName);
+                return GetPropertyType(Object, PropertyPath);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -545,44 +605,52 @@ namespace Utilities
         /// <returns>The property's parent object</returns>
         public static object GetPropertyParent(object SourceObject, string PropertyPath, out PropertyInfo PropertyInfo)
         {
-            if (SourceObject == null)
+            try
             {
-                PropertyInfo = null;
-                return null;
-            }
-            string[] Splitter = { "." };
-            string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
-            object TempSourceProperty = SourceObject;
-            Type PropertyType = SourceObject.GetType();
-            PropertyInfo = PropertyType.GetProperty(SourceProperties[0]);
-            PropertyType = PropertyInfo.PropertyType;
-            for (int x = 1; x < SourceProperties.Length; ++x)
-            {
-                if (TempSourceProperty != null)
+                if (SourceObject == null)
                 {
-                    TempSourceProperty = PropertyInfo.GetValue(TempSourceProperty, null);
+                    PropertyInfo = null;
+                    return null;
                 }
-                PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                string[] Splitter = { "." };
+                string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+                object TempSourceProperty = SourceObject;
+                Type PropertyType = SourceObject.GetType();
+                PropertyInfo = PropertyType.GetProperty(SourceProperties[0]);
                 PropertyType = PropertyInfo.PropertyType;
+                for (int x = 1; x < SourceProperties.Length; ++x)
+                {
+                    if (TempSourceProperty != null)
+                    {
+                        TempSourceProperty = PropertyInfo.GetValue(TempSourceProperty, null);
+                    }
+                    PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                    PropertyType = PropertyInfo.PropertyType;
+                }
+                return TempSourceProperty;
             }
-            return TempSourceProperty;
+            catch { throw; }
         }
 
         public static PropertyInfo GetProperty<Source>(string PropertyPath)
         {
-            if (string.IsNullOrEmpty(PropertyPath))
-                return null;
-            string[] Splitter = { "." };
-            string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
-            Type PropertyType = typeof(Source);
-            PropertyInfo PropertyInfo= PropertyType.GetProperty(SourceProperties[0]);
-            PropertyType = PropertyInfo.PropertyType;
-            for (int x = 1; x < SourceProperties.Length; ++x)
+            try
             {
-                PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                if (string.IsNullOrEmpty(PropertyPath))
+                    return null;
+                string[] Splitter = { "." };
+                string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
+                Type PropertyType = typeof(Source);
+                PropertyInfo PropertyInfo = PropertyType.GetProperty(SourceProperties[0]);
                 PropertyType = PropertyInfo.PropertyType;
+                for (int x = 1; x < SourceProperties.Length; ++x)
+                {
+                    PropertyInfo = PropertyType.GetProperty(SourceProperties[x]);
+                    PropertyType = PropertyInfo.PropertyType;
+                }
+                return PropertyInfo;
             }
-            return PropertyInfo;
+            catch { throw; }
         }
 
         #endregion
@@ -647,16 +715,20 @@ namespace Utilities
         /// <param name="Object">Class to copy from</param>
         private static void SetFieldifSimpleType(FieldInfo ChildField, FieldInfo Field, object ClassInstance, object Object)
         {
-            Type FieldType = Field.FieldType;
-            if (Field.FieldType.FullName.StartsWith("System.Collections.Generic.List", StringComparison.CurrentCultureIgnoreCase))
+            try
             {
-                FieldType = Field.FieldType.GetGenericArguments()[0];
-            }
+                Type FieldType = Field.FieldType;
+                if (Field.FieldType.FullName.StartsWith("System.Collections.Generic.List", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    FieldType = Field.FieldType.GetGenericArguments()[0];
+                }
 
-            if (FieldType.FullName.StartsWith("System"))
-            {
-                SetField(ChildField, Field, ClassInstance, Object);
+                if (FieldType.FullName.StartsWith("System"))
+                {
+                    SetField(ChildField, Field, ClassInstance, Object);
+                }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -717,16 +789,20 @@ namespace Utilities
         /// <param name="Object">Class to copy from</param>
         private static void SetPropertyifSimpleType(PropertyInfo ChildProperty, PropertyInfo Property, object ClassInstance, object Object)
         {
-            Type PropertyType = Property.PropertyType;
-            if (Property.PropertyType.FullName.StartsWith("System.Collections.Generic.List", StringComparison.CurrentCultureIgnoreCase))
+            try
             {
-                PropertyType = Property.PropertyType.GetGenericArguments()[0];
-            }
+                Type PropertyType = Property.PropertyType;
+                if (Property.PropertyType.FullName.StartsWith("System.Collections.Generic.List", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    PropertyType = Property.PropertyType.GetGenericArguments()[0];
+                }
 
-            if (PropertyType.FullName.StartsWith("System"))
-            {
-                SetProperty(ChildProperty, Property, ClassInstance, Object);
+                if (PropertyType.FullName.StartsWith("System"))
+                {
+                    SetProperty(ChildProperty, Property, ClassInstance, Object);
+                }
             }
+            catch { throw; }
         }
 
 
@@ -738,7 +814,11 @@ namespace Utilities
         /// <returns>An object with the requested output type</returns>
         internal static object Parse(object Input, Type OutputType)
         {
-            return Parse(Input, OutputType, "");
+            try
+            {
+                return Parse(Input, OutputType, "");
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -799,18 +879,22 @@ namespace Utilities
         private static string DiscoverFormatString(Type InputType,
             Type OutputType,string FormatString)
         {
-            if (InputType == OutputType
-                || InputType == typeof(string)
-                || OutputType == typeof(string))
+            try
+            {
+                if (InputType == OutputType
+                    || InputType == typeof(string)
+                    || OutputType == typeof(string))
+                    return FormatString;
+                if (InputType == typeof(float)
+                    || InputType == typeof(double)
+                    || InputType == typeof(decimal)
+                    || OutputType == typeof(float)
+                    || OutputType == typeof(double)
+                    || OutputType == typeof(decimal))
+                    return "f0";
                 return FormatString;
-            if (InputType == typeof(float)
-                || InputType == typeof(double)
-                || InputType == typeof(decimal)
-                || OutputType == typeof(float)
-                || OutputType == typeof(double)
-                || OutputType == typeof(decimal))
-                return "f0";
-            return FormatString;
+            }
+            catch { throw; }
         }
         #endregion
     }

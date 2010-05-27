@@ -32,42 +32,46 @@ namespace Utilities.FileFormats.XFN
     public class XFNList
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         public XFNList()
         {
+            People = new List<People>();
         }
+
         #endregion
 
         #region Public Properties
 
-        private List<People> _People = new List<People>();
-
         /// <summary>
         /// List of people
         /// </summary>
-        public List<People> People
-        {
-            get { return _People; }
-            set { _People = value; }
-        }
+        public List<People> People{get;set;}
+
         #endregion
 
         #region Public Overridden Function
+
         /// <summary>
         /// Returns an HTML formatted string containing the information
         /// </summary>
         /// <returns>An HTML formatted string containing the information</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            foreach (People CurrentPerson in People)
+            try
             {
-                Builder.Append(CurrentPerson.ToString());
+                StringBuilder Builder = new StringBuilder();
+                foreach (People CurrentPerson in People)
+                {
+                    Builder.Append(CurrentPerson.ToString());
+                }
+                return Builder.ToString();
             }
-            return Builder.ToString();
+            catch { throw; }
         }
+
         #endregion
     }
 

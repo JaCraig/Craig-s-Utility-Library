@@ -36,6 +36,7 @@ namespace Utilities.Exchange
     public static class Exchange
     {
         #region Static Public Functions
+
         /// <summary>
         /// Checks if a person/group of people are free for a specified time
         /// </summary>
@@ -48,42 +49,28 @@ namespace Utilities.Exchange
         /// <param name="TimeZoneDifference">Time zone difference</param>
         /// <param name="Server">Server name</param>
         /// <returns>returns an array of bytes stating whether someone is free or not, a 1 means they are not free during that time and a 0 means they are free</returns>
-        public static byte[] GetFreeBusyData(StringDictionary People, DateTime StartTime, DateTime EndTime, int Interval, string UserName, string Password,string Server,string TimeZoneDifference)
+        public static byte[] GetFreeBusyData(StringDictionary People, DateTime StartTime, DateTime EndTime, int Interval,
+            string UserName, string Password,string Server,string TimeZoneDifference)
         {
-            if (People.Count < 1)
-                return null;
-            if (StartTime >= EndTime)
-                return null;
-            string EmailAddresses = "";
-            foreach (string Person in People.Values)
-            {
-                EmailAddresses += "&u=SMTP:" + Person;
-            }
-            string Url = Server + "/public/?cmd=freebusy&start=" + StartTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + TimeZoneDifference + "&end=" + EndTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + TimeZoneDifference+ "&interval=" + Interval.ToString() + EmailAddresses;
-
-            System.Net.HttpWebRequest Request;
-            System.Net.WebResponse Response = null;
-            System.Net.CredentialCache MyCredentialCache;
-
-            string strUserName = UserName;
-            string strPassword = Password;
-            string strDomain = "";
-            //string strQuery = "";
-
-            byte[] bytes = null;
-            //System.IO.Stream RequestStream = null;
-            System.IO.Stream ResponseStream = null;
-            XmlDocument ResponseXmlDoc = null;
-            XmlNodeList DisplayNameNodes = null;
-
             try
             {
-                MyCredentialCache = new System.Net.CredentialCache();
-                if (!string.IsNullOrEmpty(strUserName) && !string.IsNullOrEmpty(strPassword))
+                if (People.Count < 1)
+                    return null;
+                if (StartTime >= EndTime)
+                    return null;
+                string EmailAddresses = "";
+                foreach (string Person in People.Values)
+                {
+                    EmailAddresses += "&u=SMTP:" + Person;
+                }
+                string Url = Server + "/public/?cmd=freebusy&start=" + StartTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + TimeZoneDifference + "&end=" + EndTime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + TimeZoneDifference + "&interval=" + Interval.ToString() + EmailAddresses;
+
+                System.Net.CredentialCache MyCredentialCache = new System.Net.CredentialCache();
+                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                 {
                     MyCredentialCache.Add(new System.Uri(Url),
                                         "NTLM",
-                                        new System.Net.NetworkCredential(strUserName, strPassword, strDomain)
+                                        new System.Net.NetworkCredential(UserName, Password, "")
                                         );
                 }
                 else
@@ -93,66 +80,51 @@ namespace Utilities.Exchange
                                            (System.Net.NetworkCredential)CredentialCache.DefaultCredentials);
                 }
 
-                Request = (System.Net.HttpWebRequest)HttpWebRequest.Create(Url);
-
+                System.Net.HttpWebRequest Request = (System.Net.HttpWebRequest)HttpWebRequest.Create(Url);
                 Request.Credentials = MyCredentialCache;
-
                 Request.Method = "GET";
                 Request.ContentType = "text/xml; encoding='utf-8'";
-                Request.UserAgent = "Mozilla/4.0(compatible;MSIE 6.0; " +
-                    "Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; InfoPath.1)";
+                Request.UserAgent = "Mozilla/4.0(compatible;MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; InfoPath.1)";
                 Request.KeepAlive = true;
                 Request.AllowAutoRedirect = false;
 
-                Response = (HttpWebResponse)Request.GetResponse();
-                ResponseStream = Response.GetResponseStream();
-
-                ResponseXmlDoc = new XmlDocument();
-                ResponseXmlDoc.Load(ResponseStream);
-
-                DisplayNameNodes = ResponseXmlDoc.GetElementsByTagName("a:item");
-
-                if (DisplayNameNodes.Count > 0)
+                System.Net.WebResponse Response = (HttpWebResponse)Request.GetResponse();
+                byte[] bytes = null;
+                using (System.IO.Stream ResponseStream = Response.GetResponseStream())
                 {
-                    for (int i = 0; i < DisplayNameNodes.Count; i++)
+                    XmlDocument ResponseXmlDoc = new XmlDocument();
+                    ResponseXmlDoc.Load(ResponseStream);
+                    XmlNodeList DisplayNameNodes = ResponseXmlDoc.GetElementsByTagName("a:item");
+                    if (DisplayNameNodes.Count > 0)
                     {
-                        XmlNodeList Nodes = DisplayNameNodes[i].ChildNodes;
-                        foreach (XmlNode Node in Nodes)
+                        for (int i = 0; i < DisplayNameNodes.Count; i++)
                         {
-                            if (Node.Name == "a:fbdata")
+                            XmlNodeList Nodes = DisplayNameNodes[i].ChildNodes;
+                            foreach (XmlNode Node in Nodes)
                             {
-                                bytes = new byte[Node.InnerText.Length];
-                                for (int x = 0; x < Node.InnerText.Length; ++x)
+                                if (Node.Name == "a:fbdata")
                                 {
-                                    bytes[x] = byte.Parse(Node.InnerText[x].ToString());
+                                    bytes = new byte[Node.InnerText.Length];
+                                    for (int x = 0; x < Node.InnerText.Length; ++x)
+                                    {
+                                        bytes[x] = byte.Parse(Node.InnerText[x].ToString());
+                                    }
                                 }
                             }
                         }
                     }
+                    else
+                    {
+                        throw new Exception("Could not get free/busy data from the exchange server");
+                    }
+                    // Clean up.
+                    ResponseStream.Close();
+                    Response.Close();
                 }
-                else
-                {
-                    throw new Exception("Could not get free/busy data from the exchange server");
-                }
-                // Clean up.
-                ResponseStream.Close();
-                Response.Close();
-                ResponseStream.Dispose();
                 return bytes;
 
             }
-            catch (Exception ex)
-            {
-                if (ResponseStream != null)
-                {
-                    ResponseStream.Close();
-                }
-                if (Response != null)
-                {
-                    Response.Close();
-                }
-                throw new Exception(ex.ToString());
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -167,7 +139,8 @@ namespace Utilities.Exchange
         /// <param name="Server">Server name</param>
         /// <param name="TimeZoneDifference">Time zone difference in hh:mm format</param>
         /// <returns>return true if they are free, false otherwise</returns>
-        public static bool ArePeopleFree(StringDictionary People, DateTime StartTime, DateTime EndTime, int Interval, string UserName, string Password,string Server,string TimeZoneDifference)
+        public static bool ArePeopleFree(StringDictionary People, DateTime StartTime, DateTime EndTime, int Interval,
+            string UserName, string Password, string Server, string TimeZoneDifference)
         {
             try
             {
@@ -178,16 +151,11 @@ namespace Utilities.Exchange
                 for (int x = 0; x < FreeBusy.Length; ++x)
                 {
                     if (FreeBusy[x] > 0)
-                    {
                         return false;
-                    }
                 }
+                return true;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
-            return true;
+            catch { throw; }
         }
 
         /// <summary>
@@ -200,19 +168,16 @@ namespace Utilities.Exchange
         /// <returns>true if they can, false otherwise</returns>
         public static bool HasPermissionToCalendar(string UserName, string Password, string Directory,string Server)
         {
-            System.Net.WebResponse Response = null;
             try
             {
-                System.Net.HttpWebRequest Request = null;
-                Request = (System.Net.HttpWebRequest)HttpWebRequest.Create(Server + "exchange/" + Directory + "/Calendar/");
+                System.Net.HttpWebRequest Request = (System.Net.HttpWebRequest)HttpWebRequest.Create(Server + "exchange/" + Directory + "/Calendar/");
 
                 System.Net.CredentialCache MyCredentialCache = new System.Net.CredentialCache();
                 if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                 {
                     MyCredentialCache.Add(new System.Uri(Server + "exchange/" + Directory + "/Calendar/"),
                                        "NTLM",
-                                       new System.Net.NetworkCredential(UserName, Password)
-                                      );
+                                       new System.Net.NetworkCredential(UserName, Password));
                 }
                 else
                 {
@@ -225,23 +190,15 @@ namespace Utilities.Exchange
 
                 Request.Method = "GET";
                 Request.ContentType = "text/xml; encoding='utf-8'";
-                Request.UserAgent = "Mozilla/4.0(compatible;MSIE 6.0; " +
-                    "Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; InfoPath.1)";
+                Request.UserAgent = "Mozilla/4.0(compatible;MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; InfoPath.1)";
                 Request.KeepAlive = true;
                 Request.AllowAutoRedirect = false;
 
-                Response = (HttpWebResponse)Request.GetResponse();
+                System.Net.WebResponse Response = (HttpWebResponse)Request.GetResponse();
                 Response.Close();
                 return true;
             }
-            catch
-            {
-                if (Response != null)
-                {
-                    Response.Close();
-                }
-                return false;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -257,9 +214,9 @@ namespace Utilities.Exchange
             try
             {
                 List<VCard> ReturnArray = new List<VCard>();
-                string uri = string.Format("http://{0}/exchange/{1}/contacts/", Server, Directory);
+                string Uri = string.Format("http://{0}/exchange/{1}/contacts/", Server, Directory);
 
-                byte[] contents = System.Text.Encoding.UTF8.GetBytes(string.Format(
+                byte[] Contents = System.Text.Encoding.UTF8.GetBytes(string.Format(
                    @"<?xml version=""1.0""?>
                     <g:searchrequest xmlns:g=""DAV:"">
                         <g:sql>
@@ -276,72 +233,71 @@ namespace Utilities.Exchange
 
 
 
-                HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
+                HttpWebRequest Request = HttpWebRequest.Create(Uri) as HttpWebRequest;
                 System.Net.CredentialCache MyCredentialCache = new System.Net.CredentialCache();
                 if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                 {
-                    MyCredentialCache.Add(new System.Uri(uri),
+                    MyCredentialCache.Add(new System.Uri(Uri),
                                        "NTLM",
-                                       new System.Net.NetworkCredential(UserName, Password)
-                                      );
+                                       new System.Net.NetworkCredential(UserName, Password));
                 }
                 else
                 {
-                    MyCredentialCache.Add(new System.Uri(uri),
+                    MyCredentialCache.Add(new System.Uri(Uri),
                                            "Negotiate",
                                            (System.Net.NetworkCredential)CredentialCache.DefaultCredentials);
                 }
-                request.Credentials = MyCredentialCache;
-                request.Method = "SEARCH";
-                request.ContentLength = contents.Length;
-                request.ContentType = "text/xml";
+                Request.Credentials = MyCredentialCache;
+                Request.Method = "SEARCH";
+                Request.ContentLength = Contents.Length;
+                Request.ContentType = "text/xml";
 
-                using (System.IO.Stream requestStream = request.GetRequestStream())
-                    requestStream.Write(contents, 0, contents.Length);
-
-
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                using (System.IO.Stream RequestStream = Request.GetRequestStream())
                 {
-                    using (System.IO.Stream responseStream = response.GetResponseStream())
+                    RequestStream.Write(Contents, 0, Contents.Length);
+                    using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
                     {
-                        XmlDocument document = new XmlDocument();
-                        document.Load(responseStream);
-                        foreach (XmlElement PropStat in document.GetElementsByTagName("a:propstat"))
+                        using (System.IO.Stream ResponseStream = Response.GetResponseStream())
                         {
-                            if (PropStat.GetElementsByTagName("a:status")[0].InnerText.Contains("200 OK"))
+                            XmlDocument Document = new XmlDocument();
+                            Document.Load(ResponseStream);
+                            foreach (XmlElement PropStat in Document.GetElementsByTagName("a:propstat"))
                             {
-                                foreach (XmlElement element in PropStat.GetElementsByTagName("a:prop"))
+                                if (PropStat.GetElementsByTagName("a:status")[0].InnerText.Contains("200 OK"))
                                 {
-                                    VCard TempCard = new VCard();
-                                    if (element["d:sn"] != null)
+                                    foreach (XmlElement Element in PropStat.GetElementsByTagName("a:prop"))
                                     {
-                                        TempCard.LastName = element["d:sn"].InnerText;
+                                        VCard TempCard = new VCard();
+                                        if (Element["d:sn"] != null)
+                                        {
+                                            TempCard.LastName = Element["d:sn"].InnerText;
+                                        }
+                                        if (Element["d:givenName"] != null)
+                                        {
+                                            TempCard.FirstName = Element["d:givenName"].InnerText;
+                                        }
+                                        if (Element["d:email1"] != null)
+                                        {
+                                            TempCard.Email = Element["d:email1"].InnerText.Replace("\"", "");
+                                        }
+                                        if (Element["d:businesshomepage"] != null)
+                                        {
+                                            TempCard.Url = Element["d:businesshomepage"].InnerText;
+                                        }
+                                        if (Element["d:title"] != null)
+                                        {
+                                            TempCard.Title = Element["d:title"].InnerText;
+                                        }
+                                        if (Element["d:telephoneNumber"] != null)
+                                        {
+                                            TempCard.DirectDial = Element["d:telephoneNumber"].InnerText;
+                                        }
+                                        if (Element["d:o"] != null)
+                                        {
+                                            TempCard.Organization = Element["d:o"].InnerText;
+                                        }
+                                        ReturnArray.Add(TempCard);
                                     }
-                                    if (element["d:givenName"] != null)
-                                    {
-                                        TempCard.FirstName = element["d:givenName"].InnerText;
-                                    }
-                                    if (element["d:email1"] != null)
-                                    {
-                                        TempCard.Email = element["d:email1"].InnerText.Replace("\"", "");
-                                    }
-                                    if (element["d:businesshomepage"] != null)
-                                    {
-                                        TempCard.Url = element["d:businesshomepage"].InnerText;
-                                    }
-                                    if (element["d:title"] != null)
-                                    {
-                                        TempCard.Title = element["d:title"].InnerText;
-                                    }
-                                    if (element["d:telephoneNumber"] != null)
-                                    {
-                                        TempCard.DirectDial = element["d:telephoneNumber"].InnerText;
-                                    }
-                                    if (element["d:o"] != null)
-                                    {
-                                        TempCard.Organization = element["d:o"].InnerText;
-                                    }
-                                    ReturnArray.Add(TempCard);
                                 }
                             }
                         }
@@ -349,10 +305,7 @@ namespace Utilities.Exchange
                 }
                 return ReturnArray;
             }
-            catch
-            {
-                return new List<VCard>();
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -368,9 +321,9 @@ namespace Utilities.Exchange
             try
             {
                 List<Utilities.Web.Email.Message> ReturnArray = new List<Utilities.Web.Email.Message>();
-                string uri = string.Format("http://{0}/exchange/{1}/inbox", Server, Directory);
+                string Uri = string.Format("http://{0}/exchange/{1}/inbox", Server, Directory);
 
-                byte[] contents = System.Text.Encoding.UTF8.GetBytes(string.Format(
+                byte[] Contents = System.Text.Encoding.UTF8.GetBytes(string.Format(
                    @"<?xml version=""1.0""?>
                     <g:searchrequest xmlns:g=""DAV:"">
                         <g:sql>
@@ -387,65 +340,62 @@ namespace Utilities.Exchange
 
 
 
-                HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
+                HttpWebRequest Request = HttpWebRequest.Create(Uri) as HttpWebRequest;
                 System.Net.CredentialCache MyCredentialCache = new System.Net.CredentialCache();
                 if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                 {
-                    MyCredentialCache.Add(new System.Uri(uri),
+                    MyCredentialCache.Add(new System.Uri(Uri),
                                        "NTLM",
-                                       new System.Net.NetworkCredential(UserName, Password)
-                                      );
+                                       new System.Net.NetworkCredential(UserName, Password));
                 }
                 else
                 {
-                    MyCredentialCache.Add(new System.Uri(uri),
+                    MyCredentialCache.Add(new System.Uri(Uri),
                                            "Negotiate",
                                            (System.Net.NetworkCredential)CredentialCache.DefaultCredentials);
                 }
-                request.Credentials = MyCredentialCache;
-                request.Method = "SEARCH";
-                request.ContentLength = contents.Length;
-                request.ContentType = "text/xml";
+                Request.Credentials = MyCredentialCache;
+                Request.Method = "SEARCH";
+                Request.ContentLength = Contents.Length;
+                Request.ContentType = "text/xml";
 
-                using (System.IO.Stream requestStream = request.GetRequestStream())
-                    requestStream.Write(contents, 0, contents.Length);
-
-
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                using (System.IO.Stream RequestStream = Request.GetRequestStream())
                 {
-                    using (System.IO.Stream responseStream = response.GetResponseStream())
+                    RequestStream.Write(Contents, 0, Contents.Length);
+
+                    using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
                     {
-                        XmlDocument document = new XmlDocument();
-                        document.Load(responseStream);
-                        foreach (XmlElement element in document.GetElementsByTagName("a:prop"))
+                        using (System.IO.Stream ResponseStream = Response.GetResponseStream())
                         {
-                            Utilities.Web.Email.Message TempMessage = new Utilities.Web.Email.Message();
-                            if (element["d:subject"] != null)
+                            XmlDocument Document = new XmlDocument();
+                            Document.Load(ResponseStream);
+                            foreach (XmlElement Element in Document.GetElementsByTagName("a:prop"))
                             {
-                                TempMessage.Subject = element["d:subject"].InnerText;
+                                Utilities.Web.Email.Message TempMessage = new Utilities.Web.Email.Message();
+                                if (Element["d:subject"] != null)
+                                {
+                                    TempMessage.Subject = Element["d:subject"].InnerText;
+                                }
+                                if (Element["d:htmldescription"] != null)
+                                {
+                                    TempMessage.Body = Element["d:htmldescription"].InnerText;
+                                }
+                                if (Element["d:to"] != null)
+                                {
+                                    TempMessage.To = Element["d:to"].InnerText;
+                                }
+                                if (Element["d:from"] != null)
+                                {
+                                    TempMessage.From = Element["d:from"].InnerText;
+                                }
+                                ReturnArray.Add(TempMessage);
                             }
-                            if (element["d:htmldescription"] != null)
-                            {
-                                TempMessage.Body = element["d:htmldescription"].InnerText;
-                            }
-                            if (element["d:to"] != null)
-                            {
-                                TempMessage.To = element["d:to"].InnerText;
-                            }
-                            if (element["d:from"] != null)
-                            {
-                                TempMessage.From = element["d:from"].InnerText;
-                            }
-                            ReturnArray.Add(TempMessage);
                         }
                     }
                 }
                 return ReturnArray;
             }
-            catch
-            {
-                return new List<Utilities.Web.Email.Message>();
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -463,7 +413,7 @@ namespace Utilities.Exchange
             try
             {
                 List<VCalendar> ReturnArray = new List<VCalendar>();
-                string uri = string.Format("http://{0}/exchange/{1}/calendar/", Server, Directory);
+                string Uri = string.Format("http://{0}/exchange/{1}/calendar/", Server, Directory);
 
                 string Query = "<?xml version=\"1.0\"?>"
                      + "<g:searchrequest xmlns:g=\"DAV:\">"
@@ -471,7 +421,7 @@ namespace Utilities.Exchange
                      + "\"urn:schemas:httpmail:textdescription\", "
                      + "\"urn:schemas:calendar:dtstart\", \"urn:schemas:calendar:dtend\", "
                      + "\"urn:schemas:calendar:busystatus\", \"urn:schemas:calendar:instancetype\" "
-                     + "FROM Scope('SHALLOW TRAVERSAL OF \"" + uri + "\"') "
+                     + "FROM Scope('SHALLOW TRAVERSAL OF \"" + Uri + "\"') "
                      + "WHERE ((\"urn:schemas:calendar:dtstart\" &gt;= '" + StartDate.ToString("yyyy/MM/dd hh:mm:ss") + "' "
                      + "AND \"urn:schemas:calendar:dtstart\" &lt;= '" + EndDate.ToString("yyyy/MM/dd hh:mm:ss") + "') "
                      + "OR (\"urn:schemas:calendar:dtend\" &gt;= '" + StartDate.ToString("yyyy/MM/dd hh:mm:ss") + "' "
@@ -480,72 +430,68 @@ namespace Utilities.Exchange
                      + "AND NOT \"urn:schemas:calendar:instancetype\" = 1 "
                      + "ORDER BY \"urn:schemas:calendar:dtstart\" ASC"
                      + "</g:sql></g:searchrequest>";
-                byte[] contents = System.Text.Encoding.UTF8.GetBytes(Query);
+                byte[] Contents = System.Text.Encoding.UTF8.GetBytes(Query);
 
-
-
-                HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
+                HttpWebRequest Request = HttpWebRequest.Create(Uri) as HttpWebRequest;
                 System.Net.CredentialCache MyCredentialCache = new System.Net.CredentialCache();
                 if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                 {
-                    MyCredentialCache.Add(new System.Uri(uri),
+                    MyCredentialCache.Add(new System.Uri(Uri),
                                        "NTLM",
-                                       new System.Net.NetworkCredential(UserName, Password)
-                                      );
+                                       new System.Net.NetworkCredential(UserName, Password));
                 }
                 else
                 {
-                    MyCredentialCache.Add(new System.Uri(uri),
+                    MyCredentialCache.Add(new System.Uri(Uri),
                                            "Negotiate",
                                            (System.Net.NetworkCredential)CredentialCache.DefaultCredentials);
                 }
-                request.Credentials = MyCredentialCache;
-                request.Method = "SEARCH";
-                request.ContentLength = contents.Length;
-                request.ContentType = "text/xml";
+                Request.Credentials = MyCredentialCache;
+                Request.Method = "SEARCH";
+                Request.ContentLength = Contents.Length;
+                Request.ContentType = "text/xml";
 
-                using (System.IO.Stream requestStream = request.GetRequestStream())
-                    requestStream.Write(contents, 0, contents.Length);
-
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                using (System.IO.Stream RequestStream = Request.GetRequestStream())
                 {
-                    using (System.IO.Stream responseStream = response.GetResponseStream())
+                    RequestStream.Write(Contents, 0, Contents.Length);
+
+                    using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
                     {
-                        XmlDocument document = new XmlDocument();
-                        document.Load(responseStream);
-                        foreach (XmlElement element in document.GetElementsByTagName("a:prop"))
+                        using (System.IO.Stream ResponseStream = Response.GetResponseStream())
                         {
-                            VCalendar Cal = new VCalendar();
-                            if (element["e:textdescription"] != null)
+                            XmlDocument Document = new XmlDocument();
+                            Document.Load(ResponseStream);
+                            foreach (XmlElement Element in Document.GetElementsByTagName("a:prop"))
                             {
-                                Cal.Description = element["e:textdescription"].InnerText;
+                                VCalendar Cal = new VCalendar();
+                                if (Element["e:textdescription"] != null)
+                                {
+                                    Cal.Description = Element["e:textdescription"].InnerText;
+                                }
+                                if (Element["e:subject"] != null)
+                                {
+                                    Cal.Subject = Element["e:subject"].InnerText;
+                                }
+                                if (Element["d:location"] != null)
+                                {
+                                    Cal.Location = Element["d:location"].InnerText;
+                                }
+                                if (Element["d:dtstart"] != null)
+                                {
+                                    Cal.StartTime = DateTime.Parse(Element["d:dtstart"].InnerText);
+                                }
+                                if (Element["d:dtend"] != null)
+                                {
+                                    Cal.EndTime = DateTime.Parse(Element["d:dtend"].InnerText);
+                                }
+                                ReturnArray.Add(Cal);
                             }
-                            if (element["e:subject"] != null)
-                            {
-                                Cal.Subject = element["e:subject"].InnerText;
-                            }
-                            if (element["d:location"] != null)
-                            {
-                                Cal.Location = element["d:location"].InnerText;
-                            }
-                            if (element["d:dtstart"] != null)
-                            {
-                                Cal.StartTime = DateTime.Parse(element["d:dtstart"].InnerText);
-                            }
-                            if (element["d:dtend"] != null)
-                            {
-                                Cal.EndTime = DateTime.Parse(element["d:dtend"].InnerText);
-                            }
-                            ReturnArray.Add(Cal);
                         }
                     }
                 }
                 return ReturnArray;
             }
-            catch
-            {
-                return new List<VCalendar>();
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -561,20 +507,19 @@ namespace Utilities.Exchange
             try
             {
                 StringDictionary ReturnArray = new StringDictionary();
-                LDAP.Directory TempDirectory = new Utilities.LDAP.Directory("", UserName, Password, Server);
-                List<LDAP.Entry> Entries = TempDirectory.FindActiveUsersAndGroups("mail=*");
-                TempDirectory.Close();
-                TempDirectory.Dispose();
+                List<LDAP.Entry> Entries = null;
+                using (LDAP.Directory TempDirectory = new Utilities.LDAP.Directory("", UserName, Password, Server))
+                {
+                    Entries = TempDirectory.FindActiveUsersAndGroups("mail=*");
+                    TempDirectory.Close();
+                }
                 foreach (LDAP.Entry Entry in Entries)
                 {
                     ReturnArray.Add(Entry.Name, Entry.Email);
                 }
                 return ReturnArray;
             }
-            catch
-            {
-                return null;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -631,10 +576,7 @@ namespace Utilities.Exchange
                 }
                 return new DateTime(1900, 1, 1);
             }
-            catch
-            {
-                return new DateTime(1900, 1, 1);
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -698,10 +640,7 @@ namespace Utilities.Exchange
                 }
                 return new DateTime(1900, 1, 1);
             }
-            catch
-            {
-                return new DateTime(1900, 1, 1);
-            }
+            catch { throw; }
         }
         #endregion
     }

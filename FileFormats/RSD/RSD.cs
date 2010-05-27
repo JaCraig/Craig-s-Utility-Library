@@ -33,6 +33,7 @@ namespace Utilities.FileFormats.RSD
     public class RSD
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -47,99 +48,89 @@ namespace Utilities.FileFormats.RSD
         /// <param name="FileContent">Content of the RSD file</param>
         public RSD(string FileContent)
         {
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(FileContent);
-            foreach (XmlNode Children in Document.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("RSD", StringComparison.CurrentCultureIgnoreCase))
+                XmlDocument Document = new XmlDocument();
+                Document.LoadXml(FileContent);
+                foreach (XmlNode Children in Document.ChildNodes)
                 {
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    if (Children.Name.Equals("RSD", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (Child.Name.Equals("service", StringComparison.CurrentCultureIgnoreCase))
+                        foreach (XmlNode Child in Children.ChildNodes)
                         {
-                            foreach (XmlNode ServiceChild in Child.ChildNodes)
+                            if (Child.Name.Equals("service", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                if (ServiceChild.Name.Equals("engineName", StringComparison.CurrentCultureIgnoreCase))
+                                foreach (XmlNode ServiceChild in Child.ChildNodes)
                                 {
-                                    _EngineName = ServiceChild.InnerText;
-                                }
-                                else if (ServiceChild.Name.Equals("engineLink", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    _EngineLink = ServiceChild.InnerText;
-                                }
-                                else if (ServiceChild.Name.Equals("homePageLink", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    _HomePageLink = ServiceChild.InnerText;
-                                }
-                                else if (ServiceChild.Name.Equals("apis", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    _APIs = new APIs((XmlElement)ServiceChild);
+                                    if (ServiceChild.Name.Equals("engineName", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        EngineName = ServiceChild.InnerText;
+                                    }
+                                    else if (ServiceChild.Name.Equals("engineLink", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        EngineLink = ServiceChild.InnerText;
+                                    }
+                                    else if (ServiceChild.Name.Equals("homePageLink", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        HomePageLink = ServiceChild.InnerText;
+                                    }
+                                    else if (ServiceChild.Name.Equals("apis", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        APIs = new APIs((XmlElement)ServiceChild);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            catch { throw; }
         }
-        #endregion
-
-        #region Private Variables
-        private string _EngineName = "";
-        private string _EngineLink = "";
-        private string _HomePageLink = "";
-        private APIs _APIs = null;
         #endregion
 
         #region Public Properties
         /// <summary>
         /// Engine name
         /// </summary>
-        public string EngineName
-        {
-            get { return _EngineName; }
-            set { _EngineName = value; }
-        }
+        public string EngineName{get;set;}
 
         /// <summary>
         /// Link to the engine
         /// </summary>
-        public string EngineLink
-        {
-            get { return _EngineLink; }
-            set { _EngineLink = value; }
-        }
+        public string EngineLink{get;set;}
 
         /// <summary>
         /// Link to the home page
         /// </summary>
-        public string HomePageLink
-        {
-            get { return _HomePageLink; }
-            set { _HomePageLink = value; }
-        }
+        public string HomePageLink{get;set;}
 
         /// <summary>
         /// API definitions
         /// </summary>
-        public APIs APIs
-        {
-            get { return _APIs; }
-            set { _APIs = value; }
-        }
+        public APIs APIs{get;set;}
+
         #endregion
 
         #region Public Overridden Functions
+
         /// <summary>
         /// Outputs the RSD file
         /// </summary>
         /// <returns>return the properly formatted RSD file</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?><rsd version=\"1.0\"><service><engineName>" + EngineName + "</engineName><engineLink>" + EngineLink + "</engineLink><homePageLink>" + HomePageLink + "</homePageLink>");
-            Builder.Append(APIs.ToString());
-            Builder.Append("</service></rsd>");
-            return Builder.ToString();
+            try
+            {
+                StringBuilder Builder = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?><rsd version=\"1.0\"><service><engineName>");
+                Builder.Append(EngineName).Append("</engineName><engineLink>").Append(EngineLink).Append("</engineLink><homePageLink>")
+                    .Append(HomePageLink).Append("</homePageLink>");
+                Builder.Append(APIs.ToString());
+                Builder.Append("</service></rsd>");
+                return Builder.ToString();
+            }
+            catch { throw; }
         }
+
         #endregion
     }
 }

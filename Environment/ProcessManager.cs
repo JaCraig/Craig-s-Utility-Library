@@ -38,11 +38,15 @@ namespace Utilities.Environment
         /// <param name="ProcessName">Name of the process without the ending (ie iexplore instead of iexplore.exe)</param>
         public static void KillProcess(string ProcessName)
         {
-            Process[] Processes = Process.GetProcessesByName(ProcessName);
-            foreach (Process CurrentProcess in Processes)
+            try
             {
-                CurrentProcess.Kill();
+                Process[] Processes = Process.GetProcessesByName(ProcessName);
+                foreach (Process CurrentProcess in Processes)
+                {
+                    CurrentProcess.Kill();
+                }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -52,7 +56,11 @@ namespace Utilities.Environment
         /// <param name="TimeToKill">Amount of time (in ms) until the process is killed.</param>
         public static void KillProcess(string ProcessName, int TimeToKill)
         {
-            ThreadPool.QueueUserWorkItem(delegate { KillProcessAsync(ProcessName, TimeToKill); });
+            try
+            {
+                ThreadPool.QueueUserWorkItem(delegate { KillProcessAsync(ProcessName, TimeToKill); });
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -61,15 +69,19 @@ namespace Utilities.Environment
         /// <returns>An HTML formatted string</returns>
         public static string GetProcessInformation()
         {
-            StringBuilder Builder = new StringBuilder();
-            Process[] Processes = Process.GetProcesses();
-            foreach (Process TempProcess in Processes)
+            try
             {
-                Builder.Append("<strong>"+TempProcess.ProcessName+" Information</strong><br />");
-                Builder.Append(Reflection.DumpProperties(TempProcess));
-                Builder.Append("<br />");
+                StringBuilder Builder = new StringBuilder();
+                Process[] Processes = Process.GetProcesses();
+                foreach (Process TempProcess in Processes)
+                {
+                    Builder.Append("<strong>" + TempProcess.ProcessName + " Information</strong><br />");
+                    Builder.Append(Reflection.DumpProperties(TempProcess));
+                    Builder.Append("<br />");
+                }
+                return Builder.ToString();
             }
-            return Builder.ToString();
+            catch { throw; }
         }
         #endregion
 
@@ -81,13 +93,17 @@ namespace Utilities.Environment
         /// <param name="TimeToKill">Amount of time until the process is killed</param>
         private static void KillProcessAsync(string ProcessName, int TimeToKill)
         {
-            if(TimeToKill>0)
-                Thread.Sleep(TimeToKill);
-            Process[] Processes = Process.GetProcessesByName(ProcessName);
-            foreach (Process CurrentProcess in Processes)
+            try
             {
+                if (TimeToKill > 0)
+                    Thread.Sleep(TimeToKill);
+                Process[] Processes = Process.GetProcessesByName(ProcessName);
+                foreach (Process CurrentProcess in Processes)
+                {
                     CurrentProcess.Kill();
+                }
             }
+            catch { throw; }
         }
         #endregion
     }

@@ -46,77 +46,61 @@ namespace Utilities.FileFormats.RSD
         {
             if (Element.Attributes["name"] != null)
             {
-                _Name = Element.Attributes["name"].Value;
+                Name = Element.Attributes["name"].Value;
             }
             if (Element.Attributes["preferred"] != null)
             {
-                _Preferred = bool.Parse(Element.Attributes["preferred"].Value);
+                Preferred = bool.Parse(Element.Attributes["preferred"].Value);
             }
             if (Element.Attributes["apiLink"] != null)
             {
-                _APILink = Element.Attributes["apiLink"].Value;
+                APILink = Element.Attributes["apiLink"].Value;
             }
             if (Element.Attributes["blogID"] != null)
             {
-                _BlogID = Element.Attributes["blogID"].Value;
+                BlogID = Element.Attributes["blogID"].Value;
             }
         }
-        #endregion
-
-        #region Private Variables
-        private string _Name="";
-        private bool _Preferred=false;
-        private string _APILink = "";
-        private string _BlogID = "";
         #endregion
 
         #region Public Properties
         /// <summary>
         /// Name of the API
         /// </summary>
-        public string Name
-        {
-            get { return _Name; }
-            set { _Name = value; }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Is this API preferred?
         /// </summary>
-        public bool Preferred
-        {
-            get { return _Preferred; }
-            set { _Preferred = value; }
-        }
+        public bool Preferred { get; set; }
 
         /// <summary>
         /// Link to the API
         /// </summary>
-        public string APILink
-        {
-            get { return _APILink; }
-            set { _APILink = value; }
-        }
+        public string APILink { get; set; }
 
         /// <summary>
         /// Link to the blog
         /// </summary>
-        public string BlogID
-        {
-            get { return _BlogID; }
-            set { _BlogID = value; }
-        }
+        public string BlogID { get; set; }
+
         #endregion
 
         #region Public Overridden Function
+
         /// <summary>
         /// To string function
         /// </summary>
         /// <returns>The API info</returns>
         public override string ToString()
         {
-            return "<api name=\"" + Name + "\" preferred=\"" + Preferred.ToString() + "\" apiLink=\"" + APILink + "\" blogID=\"" + BlogID + "\"/>";
+            try
+            {
+                return "<api name=\"" + Name + "\" preferred=\"" + Preferred.ToString() + "\" apiLink=\"" + APILink + "\" blogID=\"" + BlogID + "\"/>";
+            }
+            catch { throw; }
         }
+
         #endregion
     }
 }

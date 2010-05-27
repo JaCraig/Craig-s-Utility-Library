@@ -35,29 +35,34 @@ namespace Utilities.Error
     public static class ErrorManager
     {
         #region Public Static Functions
+
         /// <summary>
         /// returns information specific to ASP.Net/IIS (Request, Response, Cache, etc.)
         /// </summary>
         /// <returns>An HTML formatted string containing the ASP.Net information</returns>
         public static string GetAllASPNetInformation()
         {
-            StringBuilder Builder = new StringBuilder();
-            HttpContext Current = HttpContext.Current;
-            Builder.Append("<strong>Request Variables</strong><br />");
-            Builder.Append(HTML.DumpRequestVariable(Current.Request));
-            Builder.Append("<br /><br /><strong>Response Variables</strong><br />");
-            Builder.Append(HTML.DumpResponseVariable(Current.Response));
-            Builder.Append("<br /><br /><strong>Server Variables</strong><br />");
-            Builder.Append(HTML.DumpServerVars(Current.Request));
-            Builder.Append("<br /><br /><strong>Session Variables</strong><br />");
-            Builder.Append(HTML.DumpSession(Current.Session));
-            Builder.Append("<br /><br /><strong>Cookie Variables</strong><br />");
-            Builder.Append(HTML.DumpCookies(Current.Request.Cookies));
-            Builder.Append("<br /><br /><strong>Cache Variables</strong><br />");
-            Builder.Append(HTML.DumpCache(Current.Cache));
-            Builder.Append("<br /><br /><strong>Application State Variables</strong><br />");
-            Builder.Append(HTML.DumpApplicationState(Current.Application));
-            return Builder.ToString();
+            try
+            {
+                StringBuilder Builder = new StringBuilder();
+                HttpContext Current = HttpContext.Current;
+                Builder.Append("<strong>Request Variables</strong><br />");
+                Builder.Append(HTML.DumpRequestVariable(Current.Request));
+                Builder.Append("<br /><br /><strong>Response Variables</strong><br />");
+                Builder.Append(HTML.DumpResponseVariable(Current.Response));
+                Builder.Append("<br /><br /><strong>Server Variables</strong><br />");
+                Builder.Append(HTML.DumpServerVars(Current.Request));
+                Builder.Append("<br /><br /><strong>Session Variables</strong><br />");
+                Builder.Append(HTML.DumpSession(Current.Session));
+                Builder.Append("<br /><br /><strong>Cookie Variables</strong><br />");
+                Builder.Append(HTML.DumpCookies(Current.Request.Cookies));
+                Builder.Append("<br /><br /><strong>Cache Variables</strong><br />");
+                Builder.Append(HTML.DumpCache(Current.Cache));
+                Builder.Append("<br /><br /><strong>Application State Variables</strong><br />");
+                Builder.Append(HTML.DumpApplicationState(Current.Application));
+                return Builder.ToString();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -66,10 +71,14 @@ namespace Utilities.Error
         /// <returns>An HTML formatted string containing the assembly information</returns>
         public static string GetAssemblyInformation()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<strong>Assembly Information</strong><br />");
-            Builder.Append(Reflection.DumpAllAssembliesAndProperties());
-            return Builder.ToString();
+            try
+            {
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<strong>Assembly Information</strong><br />");
+                Builder.Append(Reflection.DumpAllAssembliesAndProperties());
+                return Builder.ToString();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -78,10 +87,14 @@ namespace Utilities.Error
         /// <returns>An HTML formatted string containing the state of the system.</returns>
         public static string GetSystemInformation()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<strong>System Information</strong><br />");
-            Builder.Append(Reflection.DumpProperties(System.Type.GetType("Utilities.Environment.Environment")));
-            return Builder.ToString();
+            try
+            {
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<strong>System Information</strong><br />");
+                Builder.Append(Reflection.DumpProperties(System.Type.GetType("Utilities.Environment.Environment")));
+                return Builder.ToString();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -90,11 +103,16 @@ namespace Utilities.Error
         /// <returns>An HTML formatted string containing the process information</returns>
         public static string GetProcessInformation()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<strong>Process Information</strong><br />");
-            Builder.Append(Environment.ProcessManager.GetProcessInformation());
-            return Builder.ToString();
+            try
+            {
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<strong>Process Information</strong><br />");
+                Builder.Append(Environment.ProcessManager.GetProcessInformation());
+                return Builder.ToString();
+            }
+            catch { throw; }
         }
+
         #endregion
     }
 }

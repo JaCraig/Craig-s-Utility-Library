@@ -190,10 +190,14 @@ namespace Utilities.DataTypes
         /// <returns>normal string (non base 64)</returns>
         public static string Base64ToString(string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            byte[] TempArray = Convert.FromBase64String(Input);
-            return Encoding.UTF8.GetString(TempArray);
+            try
+            {
+                if (string.IsNullOrEmpty(Input))
+                    return "";
+                byte[] TempArray = Convert.FromBase64String(Input);
+                return Encoding.UTF8.GetString(TempArray);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -203,10 +207,14 @@ namespace Utilities.DataTypes
         /// <returns>A base 64 string</returns>
         public static string StringToBase64(string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            byte[] TempArray = Encoding.UTF8.GetBytes(Input);
-            return Convert.ToBase64String(TempArray);
+            try
+            {
+                if (string.IsNullOrEmpty(Input))
+                    return "";
+                byte[] TempArray = Encoding.UTF8.GetBytes(Input);
+                return Convert.ToBase64String(TempArray);
+            }
+            catch { throw; }
         }
         #endregion
     }

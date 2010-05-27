@@ -72,40 +72,44 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<InputItem><DisplayName>").Append(DisplayName).Append("</DisplayName><QueryStringParam>")
-                .Append(QueryStringParam).Append("</QueryStringParam><DefaultValue>").Append(DefaultValue)
-                .Append("</DefaultValue><InputFlags>");
-            if (InputFlags == InputFlag.ASCII)
+            try
             {
-                Builder.Append("A");
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<InputItem><DisplayName>").Append(DisplayName).Append("</DisplayName><QueryStringParam>")
+                    .Append(QueryStringParam).Append("</QueryStringParam><DefaultValue>").Append(DefaultValue)
+                    .Append("</DefaultValue><InputFlags>");
+                if (InputFlags == InputFlag.ASCII)
+                {
+                    Builder.Append("A");
+                }
+                else if (InputFlags == InputFlag.TelephoneNumber)
+                {
+                    Builder.Append("T");
+                }
+                else if (InputFlags == InputFlag.Numeric)
+                {
+                    Builder.Append("N");
+                }
+                else if (InputFlags == InputFlag.Equation)
+                {
+                    Builder.Append("E");
+                }
+                else if (InputFlags == InputFlag.Uppercase)
+                {
+                    Builder.Append("U");
+                }
+                else if (InputFlags == InputFlag.Lowercase)
+                {
+                    Builder.Append("L");
+                }
+                else if (InputFlags == InputFlag.Password)
+                {
+                    Builder.Append("P");
+                }
+                Builder.Append("</InputFlags></InputItem>");
+                return Builder.ToString();
             }
-            else if (InputFlags == InputFlag.TelephoneNumber)
-            {
-                Builder.Append("T");
-            }
-            else if (InputFlags == InputFlag.Numeric)
-            {
-                Builder.Append("N");
-            }
-            else if (InputFlags == InputFlag.Equation)
-            {
-                Builder.Append("E");
-            }
-            else if (InputFlags == InputFlag.Uppercase)
-            {
-                Builder.Append("U");
-            }
-            else if (InputFlags == InputFlag.Lowercase)
-            {
-                Builder.Append("L");
-            }
-            else if (InputFlags == InputFlag.Password)
-            {
-                Builder.Append("P");
-            }
-            Builder.Append("</InputFlags></InputItem>");
-            return Builder.ToString();
+            catch { throw; }
         }
 
         #endregion

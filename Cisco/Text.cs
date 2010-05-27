@@ -74,15 +74,19 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<CiscoIPPhoneText><Title>").Append(Title).Append("</Title><Prompt>")
-                .Append(Prompt).Append("</Prompt><Text>").Append(Content).Append("</Text>");
-            foreach (SoftKeyItem Item in SoftKeys)
+            try
             {
-                Builder.Append(Item.ToString());
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<CiscoIPPhoneText><Title>").Append(Title).Append("</Title><Prompt>")
+                    .Append(Prompt).Append("</Prompt><Text>").Append(Content).Append("</Text>");
+                foreach (SoftKeyItem Item in SoftKeys)
+                {
+                    Builder.Append(Item.ToString());
+                }
+                Builder.Append("</CiscoIPPhoneText>");
+                return Builder.ToString();
             }
-            Builder.Append("</CiscoIPPhoneText>");
-            return Builder.ToString();
+            catch { throw; }
         }
 
         #endregion

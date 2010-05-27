@@ -62,7 +62,11 @@ namespace Utilities.DataTypes
 
         public int IndexOf(T item)
         {
-            return Array.IndexOf<T>(this.Items, item, 0, this.NumberItems);
+            try
+            {
+                return Array.IndexOf<T>(this.Items, item, 0, this.NumberItems);
+            }
+            catch { throw; }
         }
 
         public void Insert(int index, T item)
@@ -83,7 +87,7 @@ namespace Utilities.DataTypes
                 ++this.NumberItems;
                 EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
             }
-            catch (Exception a) { throw a; }
+            catch { throw; }
         }
 
         public void RemoveAt(int index)
@@ -100,21 +104,29 @@ namespace Utilities.DataTypes
                 --this.NumberItems;
                 EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
             }
-            catch (Exception a) { throw a; }
+            catch { throw; }
         }
 
         public T this[int index]
         {
             get
             {
-                if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
-                return this.Items[index];
+                try
+                {
+                    if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
+                    return this.Items[index];
+                }
+                catch { throw; }
             }
             set
             {
-                if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
-                this.Items[index] = value;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                try
+                {
+                    if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
+                    this.Items[index] = value;
+                    EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                }
+                catch { throw; }
             }
         }
 
@@ -128,7 +140,7 @@ namespace Utilities.DataTypes
             {
                 Insert(this.NumberItems, item);
             }
-            catch (Exception a) { throw a; }
+            catch { throw; }
         }
 
         public void Clear()
@@ -139,17 +151,25 @@ namespace Utilities.DataTypes
                 this.NumberItems = 0;
                 EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
             }
-            catch (Exception a) { throw a; }
+            catch { throw; }
         }
 
         public bool Contains(T item)
         {
-            return (this.IndexOf(item) >= 0);
+            try
+            {
+                return (this.IndexOf(item) >= 0);
+            }
+            catch { throw; }
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            Array.Copy(this.Items, 0, array, arrayIndex, this.NumberItems);
+            try
+            {
+                Array.Copy(this.Items, 0, array, arrayIndex, this.NumberItems);
+            }
+            catch { throw; }
         }
 
         public int Count
@@ -164,13 +184,17 @@ namespace Utilities.DataTypes
 
         public bool Remove(T item)
         {
-            int Index = this.IndexOf(item);
-            if (Index > 0)
+            try
             {
-                this.RemoveAt(Index);
-                return true;
+                int Index = this.IndexOf(item);
+                if (Index > 0)
+                {
+                    this.RemoveAt(Index);
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch { throw; }
         }
 
         #endregion

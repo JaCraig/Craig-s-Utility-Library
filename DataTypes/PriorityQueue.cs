@@ -51,18 +51,26 @@ namespace Utilities.DataTypes
         /// <returns></returns>
         public virtual T Peek()
         {
-            if (Items.ContainsKey(HighestKey))
+            try
             {
-                return Items[HighestKey][0];
+                if (Items.ContainsKey(HighestKey))
+                {
+                    return Items[HighestKey][0];
+                }
+                return default(T);
             }
-            return default(T);
+            catch { throw; }
         }
 
         public override void Add(int Priority, T Value)
         {
-            if (Priority > HighestKey)
-                HighestKey = Priority;
-            base.Add(Priority, Value);
+            try
+            {
+                if (Priority > HighestKey)
+                    HighestKey = Priority;
+                base.Add(Priority, Value);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -71,23 +79,27 @@ namespace Utilities.DataTypes
         /// <returns>The next item in the queue</returns>
         public T Remove()
         {
-            T ReturnValue=default(T);
-            if (Items.ContainsKey(HighestKey)&&Items[HighestKey].Count >= 1)
+            try
             {
-                ReturnValue = Items[HighestKey][0];
-                Items[HighestKey].Remove(ReturnValue);
-                if (Items[HighestKey].Count == 0)
+                T ReturnValue = default(T);
+                if (Items.ContainsKey(HighestKey) && Items[HighestKey].Count >= 1)
                 {
-                    Items.Remove(HighestKey);
-                    HighestKey = int.MinValue;
-                    foreach (int Key in Items.Keys)
+                    ReturnValue = Items[HighestKey][0];
+                    Items[HighestKey].Remove(ReturnValue);
+                    if (Items[HighestKey].Count == 0)
                     {
-                        if (Key > HighestKey)
-                            HighestKey = Key;
+                        Items.Remove(HighestKey);
+                        HighestKey = int.MinValue;
+                        foreach (int Key in Items.Keys)
+                        {
+                            if (Key > HighestKey)
+                                HighestKey = Key;
+                        }
                     }
                 }
+                return ReturnValue;
             }
-            return ReturnValue;
+            catch { throw; }
         }
 
         #endregion

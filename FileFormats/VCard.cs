@@ -32,48 +32,58 @@ namespace Utilities.FileFormats
     public class VCard
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         public VCard()
         {
+            Relationships = new List<Relationship>();
         }
+
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// Gets the vCard
         /// </summary>
         /// <returns>A vCard in string format</returns>
         public string GetVCard()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("BEGIN:VCARD\r\nVERSION:2.1\r\n");
-            Builder.Append("FN:");
-            if (!string.IsNullOrEmpty(Prefix))
+            try
             {
-                Builder.Append(Prefix + " ");
-            }
-            Builder.Append(FirstName + " ");
-            if (!string.IsNullOrEmpty(MiddleName))
-            {
-                Builder.Append(MiddleName + " ");
-            }
-            Builder.Append(LastName);
-            if (!string.IsNullOrEmpty(Suffix))
-            {
-                Builder.Append(" " + Suffix);
-            }
-            Builder.Append("\r\n");
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("BEGIN:VCARD\r\nVERSION:2.1\r\n");
+                Builder.Append("FN:");
+                if (!string.IsNullOrEmpty(Prefix))
+                {
+                    Builder.Append(Prefix).Append(" ");
+                }
+                Builder.Append(FirstName + " ");
+                if (!string.IsNullOrEmpty(MiddleName))
+                {
+                    Builder.Append(MiddleName).Append(" ");
+                }
+                Builder.Append(LastName);
+                if (!string.IsNullOrEmpty(Suffix))
+                {
+                    Builder.Append(" ").Append(Suffix);
+                }
+                Builder.Append("\r\n");
 
-            Builder.Append("N:");
-            Builder.Append(LastName + ";" + FirstName + ";" + MiddleName + ";" + Prefix + ";" + Suffix + "\r\n");
-            Builder.Append("TEL;WORK:" + DirectDial + "\r\n");
-            Builder.Append("EMAIL;INTERNET:" + Email + "\r\n");
-            Builder.Append("TITLE:" + Title + "\r\n");
-            Builder.Append("ORG:" + Organization + "\r\n");
-            Builder.Append("END:VCARD\r\n");
-            return Builder.ToString();
+                Builder.Append("N:");
+                Builder.Append(LastName).Append(";").Append(FirstName).Append(";")
+                    .Append(MiddleName).Append(";").Append(Prefix).Append(";")
+                    .Append(Suffix).Append("\r\n");
+                Builder.Append("TEL;WORK:").Append(DirectDial).Append("\r\n");
+                Builder.Append("EMAIL;INTERNET:").Append(Utilities.Web.HTML.StripHTML(Email)).Append("\r\n");
+                Builder.Append("TITLE:").Append(Title).Append("\r\n");
+                Builder.Append("ORG:").Append(Organization).Append("\r\n");
+                Builder.Append("END:VCARD\r\n");
+                return Builder.ToString();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -82,195 +92,138 @@ namespace Utilities.FileFormats
         /// <returns>A hCard in string format</returns>
         public string GetHCard()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<div class=\"vcard\">");
-            if (string.IsNullOrEmpty(Url))
+            try
             {
-                Builder.Append("<div class=\"fn\">");
-                if (!string.IsNullOrEmpty(Prefix))
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<div class=\"vcard\">");
+                if (string.IsNullOrEmpty(Url))
                 {
-                    Builder.Append(Prefix + " ");
+                    Builder.Append("<div class=\"fn\">");
+                    if (!string.IsNullOrEmpty(Prefix))
+                    {
+                        Builder.Append(Prefix).Append(" ");
+                    }
+                    Builder.Append(FirstName).Append(" ");
+                    if (!string.IsNullOrEmpty(MiddleName))
+                    {
+                        Builder.Append(MiddleName).Append(" ");
+                    }
+                    Builder.Append(LastName);
+                    if (!string.IsNullOrEmpty(Suffix))
+                    {
+                        Builder.Append(" ").Append(Suffix);
+                    }
+                    Builder.Append("</div>");
                 }
-                Builder.Append(FirstName + " ");
-                if (!string.IsNullOrEmpty(MiddleName))
+                else
                 {
-                    Builder.Append(MiddleName + " ");
+                    Builder.Append("<a class=\"fn url\" href=\"").Append(Url).Append("\"");
+                    if (Relationships.Count > 0)
+                    {
+                        Builder.Append(" rel=\"");
+                        foreach (Relationship Relationship in Relationships)
+                        {
+                            Builder.Append(Relationship.ToString()).Append(" ");
+                        }
+                        Builder.Append("\"");
+                    }
+                    Builder.Append(">");
+                    if (!string.IsNullOrEmpty(Prefix))
+                    {
+                        Builder.Append(Prefix).Append(" ");
+                    }
+                    Builder.Append(FirstName).Append(" ");
+                    if (!string.IsNullOrEmpty(MiddleName))
+                    {
+                        Builder.Append(MiddleName).Append(" ");
+                    }
+                    Builder.Append(LastName);
+                    if (!string.IsNullOrEmpty(Suffix))
+                    {
+                        Builder.Append(" ").Append(Suffix);
+                    }
+                    Builder.Append("</a>");
                 }
-                Builder.Append(LastName);
-                if (!string.IsNullOrEmpty(Suffix))
+                Builder.Append("<span class=\"n\" style=\"display:none;\"><span class=\"family-name\">").Append(LastName).Append("</span><span class=\"given-name\">").Append(FirstName).Append("</span></span>");
+                if (!string.IsNullOrEmpty(DirectDial))
                 {
-                    Builder.Append(" " + Suffix);
+                    Builder.Append("<div class=\"tel\"><span class=\"type\">Work</span> ").Append(DirectDial).Append("</div>");
+                }
+                if (!string.IsNullOrEmpty(Email))
+                {
+                    Builder.Append("<div>Email: <a class=\"email\" href=\"mailto:").Append(Utilities.Web.HTML.StripHTML(Email)).Append("\">").Append(Utilities.Web.HTML.StripHTML(Email)).Append("</a></div>");
+                }
+                if (!string.IsNullOrEmpty(Organization))
+                {
+                    Builder.Append("<div>Organization: <span class=\"org\">").Append(Organization).Append("</span></div>");
+                }
+                if (!string.IsNullOrEmpty(Title))
+                {
+                    Builder.Append("<div>Title: <span class=\"title\">").Append(Title).Append("</span></div>");
                 }
                 Builder.Append("</div>");
+                return Builder.ToString();
             }
-            else
-            {
-                Builder.Append("<a class=\"fn url\" href=\""+Url+"\"");
-                if (Relationships.Count > 0)
-                {
-                    Builder.Append(" rel=\"");
-                    foreach (Relationship Relationship in Relationships)
-                    {
-                        Builder.Append(Relationship.ToString() + " ");
-                    }
-                    Builder.Append("\"");
-                }
-                Builder.Append(">");
-                if (!string.IsNullOrEmpty(Prefix))
-                {
-                    Builder.Append(Prefix + " ");
-                }
-                Builder.Append(FirstName + " ");
-                if (!string.IsNullOrEmpty(MiddleName))
-                {
-                    Builder.Append(MiddleName + " ");
-                }
-                Builder.Append(LastName);
-                if (!string.IsNullOrEmpty(Suffix))
-                {
-                    Builder.Append(" " + Suffix);
-                }
-                Builder.Append("</a>");
-            }
-            Builder.Append("<span class=\"n\" style=\"display:none;\"><span class=\"family-name\">" + LastName + "</span><span class=\"given-name\">" + FirstName + "</span></span>");
-            if (!string.IsNullOrEmpty(DirectDial))
-            {
-                Builder.Append("<div class=\"tel\"><span class=\"type\">Work</span> " + DirectDial + "</div>");
-            }
-            if (!string.IsNullOrEmpty(Email))
-            {
-                Builder.Append("<div>Email: <a class=\"email\" href=\"mailto:" + Email + "\">" + Email + "</a></div>");
-            }
-            if (!string.IsNullOrEmpty(Organization))
-            {
-                Builder.Append("<div>Organization: <span class=\"org\">" + Organization + "</span></div>");
-            }
-            if (!string.IsNullOrEmpty(Title))
-            {
-                Builder.Append("<div>Title: <span class=\"title\">" + Title + "</span></div>");
-            }
-            Builder.Append("</div>");
-            return Builder.ToString();
+            catch { throw; }
         }
-        #endregion
-
-        #region Private Variables
-        private string _FirstName;
-        private string _LastName;
-        private string _MiddleName;
-        private string _Prefix;
-        private string _Suffix;
-        private string _DirectDial;
-        private string _Email;
-        private string _Title;
-        private string _Organization;
-        private List<Relationship> _Relationships=new List<Relationship>();
-        private string _Url;
         #endregion
 
         #region Properties
         /// <summary>
         /// First name
         /// </summary>
-        public string FirstName
-        {
-            get { return _FirstName; }
-            set { _FirstName = value; }
-        }
+        public string FirstName{get;set;}
 
         /// <summary>
         /// Last name
         /// </summary>
-        public string LastName
-        {
-            get { return _LastName; }
-            set { _LastName = value; }
-        }
-
+        public string LastName{get;set;}
+        
         /// <summary>
         /// Middle name
         /// </summary>
-        public string MiddleName
-        {
-            get { return _MiddleName; }
-            set { _MiddleName = value; }
-        }
+        public string MiddleName{get;set;}
 
         /// <summary>
         /// Prefix
         /// </summary>
-        public string Prefix
-        {
-            get { return _Prefix; }
-            set { _Prefix = value; }
-        }
+        public string Prefix{get;set;}
 
         /// <summary>
         /// Suffix
         /// </summary>
-        public string Suffix
-        {
-            get { return _Suffix; }
-            set { _Suffix = value; }
-        }
+        public string Suffix{get;set;}
 
         /// <summary>
         /// Work phone number of the individual
         /// </summary>
-        public string DirectDial
-        {
-            get { return _DirectDial; }
-            set { _DirectDial = value; }
-        }
+        public string DirectDial{get;set;}
 
         /// <summary>
         /// Email of the individual
         /// </summary>
-        public string Email
-        {
-            get { return _Email; }
-            set 
-            { 
-                _Email = value;
-                _Email = Utilities.Web.HTML.StripHTML(_Email);
-            }
-        }
+        public string Email{get;set;}
 
         /// <summary>
         /// Title of the person
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+        public string Title{get;set;}
 
         /// <summary>
         /// Organization the person belongs to
         /// </summary>
-        public string Organization
-        {
-            get { return _Organization; }
-            set { _Organization = value; }
-        }
+        public string Organization{get;set;}
 
         /// <summary>
         /// Relationship to the person (uses XFN)
         /// </summary>
-        public List<Relationship> Relationships
-        {
-            get { return _Relationships; }
-            set { _Relationships = value; }
-        }
+        public List<Relationship> Relationships{get;set;}
 
         /// <summary>
         /// Url to the person's site
         /// </summary>
-        public string Url
-        {
-            get { return _Url; }
-            set { _Url = value; }
-        }
+        public string Url{get;set;}
+
         #endregion
     }
 

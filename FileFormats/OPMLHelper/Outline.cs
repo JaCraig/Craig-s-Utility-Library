@@ -34,11 +34,13 @@ namespace Utilities.FileFormats.OPMLHelper
     public class Outline
     {
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
         public Outline()
         {
+            Outlines = new List<Outline>();
         }
 
         /// <summary>
@@ -47,207 +49,167 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Element">Element containing outline information</param>
         public Outline(XmlElement Element)
         {
-            if (Element.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
+            try
             {
-                if (Element.Attributes["text"] != null)
+                if (Element.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    Text = Element.Attributes["text"].Value;
-                }
-                else if (Element.Attributes["description"] != null)
-                {
-                    Description = Element.Attributes["description"].Value;
-                }
-                else if (Element.Attributes["htmlUrl"] != null)
-                {
-                    HTMLUrl = Element.Attributes["htmlUrl"].Value;
-                }
-                else if (Element.Attributes["type"] != null)
-                {
-                    Type = Element.Attributes["type"].Value;
-                }
-                else if (Element.Attributes["language"] != null)
-                {
-                    Language = Element.Attributes["language"].Value;
-                }
-                else if (Element.Attributes["title"] != null)
-                {
-                    Title = Element.Attributes["title"].Value;
-                }
-                else if (Element.Attributes["version"] != null)
-                {
-                    Version = Element.Attributes["version"].Value;
-                }
-                else if (Element.Attributes["xmlUrl"] != null)
-                {
-                    XMLUrl = Element.Attributes["xmlUrl"].Value;
-                }
-                foreach (XmlNode Child in Element.ChildNodes)
-                {
-                    try
+                    if (Element.Attributes["text"] != null)
                     {
-                        if (Child.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Outlines.Add(new Outline((XmlElement)Child));
-                        }
+                        Text = Element.Attributes["text"].Value;
                     }
-                    catch { }
+                    else if (Element.Attributes["description"] != null)
+                    {
+                        Description = Element.Attributes["description"].Value;
+                    }
+                    else if (Element.Attributes["htmlUrl"] != null)
+                    {
+                        HTMLUrl = Element.Attributes["htmlUrl"].Value;
+                    }
+                    else if (Element.Attributes["type"] != null)
+                    {
+                        Type = Element.Attributes["type"].Value;
+                    }
+                    else if (Element.Attributes["language"] != null)
+                    {
+                        Language = Element.Attributes["language"].Value;
+                    }
+                    else if (Element.Attributes["title"] != null)
+                    {
+                        Title = Element.Attributes["title"].Value;
+                    }
+                    else if (Element.Attributes["version"] != null)
+                    {
+                        Version = Element.Attributes["version"].Value;
+                    }
+                    else if (Element.Attributes["xmlUrl"] != null)
+                    {
+                        XMLUrl = Element.Attributes["xmlUrl"].Value;
+                    }
+                    foreach (XmlNode Child in Element.ChildNodes)
+                    {
+                        try
+                        {
+                            if (Child.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                Outlines.Add(new Outline((XmlElement)Child));
+                            }
+                        }
+                        catch { }
+                    }
                 }
             }
+            catch { throw; }
         }
+
         #endregion
 
         #region Properties
-        private string _XMLUrl;
-        private string _Version;
-        private string _Title;
-        private string _Language;
-        private string _Text;
-        private string _Description;
-        private string _HTMLUrl;
-        private string _Type;
-        private List<Outline> _Outlines = null;
 
         /// <summary>
         /// Outline list
         /// </summary>
-        public List<Outline> Outlines
-        {
-            get
-            {
-                if (_Outlines == null)
-                {
-                    _Outlines = new List<Outline>();
-                }
-                return _Outlines;
-            }
-            set { _Outlines = value; }
-        }
+        public List<Outline> Outlines { get; set; }
         
         /// <summary>
         /// Url of the XML file
         /// </summary>
-        public string XMLUrl
-        {
-            get { return _XMLUrl; }
-            set { _XMLUrl = value; }
-        }
+        public string XMLUrl { get; set; }
 
         /// <summary>
         /// Version number
         /// </summary>
-        public string Version
-        {
-            get { return _Version; }
-            set { _Version = value; }
-        }
+        public string Version { get; set; }
 
         /// <summary>
         /// Title of the item
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+        public string Title { get; set; }
 
         /// <summary>
         /// Language used
         /// </summary>
-        public string Language
-        {
-            get { return _Language; }
-            set { _Language = value; }
-        }
+        public string Language { get; set; }
 
         /// <summary>
         /// Type
         /// </summary>
-        public string Type
-        {
-            get { return _Type; }
-            set { _Type = value; }
-        }
+        public string Type { get; set; }
 
         /// <summary>
         /// HTML Url
         /// </summary>
-        public string HTMLUrl
-        {
-            get { return _HTMLUrl; }
-            set { _HTMLUrl = value; }
-        }
+        public string HTMLUrl { get; set; }
 
         /// <summary>
         /// Text
         /// </summary>
-        public string Text
-        {
-            get { return _Text; }
-            set { _Text = value; }
-        }
+        public string Text { get; set; }
 
         /// <summary>
         /// Description
         /// </summary>
-        public string Description
-        {
-            get { return _Description; }
-            set { _Description = value; }
-        }
+        public string Description { get; set; }
+
         #endregion
 
         #region Overridden Functions
+
         public override string ToString()
         {
-            StringBuilder OutlineString = new StringBuilder();
-            OutlineString.Append("<outline text=\""+Text+"\"");
-            if (!string.IsNullOrEmpty(XMLUrl))
+            try
             {
-                OutlineString.Append(" xmlUrl=\"" + XMLUrl + "\"");
-            }
-            if (!string.IsNullOrEmpty(Version))
-            {
-                OutlineString.Append(" version=\"" + Version + "\"");
-            }
-            if (!string.IsNullOrEmpty(Title))
-            {
-                OutlineString.Append(" title=\"" + Title + "\"");
-            }
-            if (!string.IsNullOrEmpty(Language))
-            {
-                OutlineString.Append(" language=\"" + Language + "\"");
-            }
-            if (!string.IsNullOrEmpty(Type))
-            {
-                OutlineString.Append(" type=\"" + Type + "\"");
-            }
-            if (!string.IsNullOrEmpty(HTMLUrl))
-            {
-                OutlineString.Append(" htmlUrl=\"" + HTMLUrl + "\"");
-            }
-            if (!string.IsNullOrEmpty(Text))
-            {
-                OutlineString.Append(" text=\"" + Text + "\"");
-            }
-            if (!string.IsNullOrEmpty(Description))
-            {
-                OutlineString.Append(" description=\"" + Description + "\"");
-            }
-            if (Outlines.Count > 0)
-            {
-                OutlineString.Append(">\r\n");
-                foreach (Outline Outline in Outlines)
+                StringBuilder OutlineString = new StringBuilder();
+                OutlineString.Append("<outline text=\"" + Text + "\"");
+                if (!string.IsNullOrEmpty(XMLUrl))
                 {
-                    OutlineString.Append(Outline.ToString());
+                    OutlineString.Append(" xmlUrl=\"" + XMLUrl + "\"");
                 }
-                OutlineString.Append("</outline>\r\n");
+                if (!string.IsNullOrEmpty(Version))
+                {
+                    OutlineString.Append(" version=\"" + Version + "\"");
+                }
+                if (!string.IsNullOrEmpty(Title))
+                {
+                    OutlineString.Append(" title=\"" + Title + "\"");
+                }
+                if (!string.IsNullOrEmpty(Language))
+                {
+                    OutlineString.Append(" language=\"" + Language + "\"");
+                }
+                if (!string.IsNullOrEmpty(Type))
+                {
+                    OutlineString.Append(" type=\"" + Type + "\"");
+                }
+                if (!string.IsNullOrEmpty(HTMLUrl))
+                {
+                    OutlineString.Append(" htmlUrl=\"" + HTMLUrl + "\"");
+                }
+                if (!string.IsNullOrEmpty(Text))
+                {
+                    OutlineString.Append(" text=\"" + Text + "\"");
+                }
+                if (!string.IsNullOrEmpty(Description))
+                {
+                    OutlineString.Append(" description=\"" + Description + "\"");
+                }
+                if (Outlines.Count > 0)
+                {
+                    OutlineString.Append(">\r\n");
+                    foreach (Outline Outline in Outlines)
+                    {
+                        OutlineString.Append(Outline.ToString());
+                    }
+                    OutlineString.Append("</outline>\r\n");
+                }
+                else
+                {
+                    OutlineString.Append(" />\r\n");
+                }
+                return OutlineString.ToString();
             }
-            else
-            {
-                OutlineString.Append(" />\r\n");
-            }
-            return OutlineString.ToString();
+            catch { throw; }
         }
+
         #endregion
     }
 }

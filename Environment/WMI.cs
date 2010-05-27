@@ -29,8 +29,20 @@ using Utilities.Environment.DataTypes;
 
 namespace Utilities.Environment
 {
+    /// <summary>
+    /// WMI class helper
+    /// </summary>
     public static class WMI
     {
+        #region Public Static Functions
+
+        /// <summary>
+        /// Gets a computer's info using WMI
+        /// </summary>
+        /// <param name="ComputerName">Computer name</param>
+        /// <param name="UserName">User name (optional)</param>
+        /// <param name="Password">Password (optional)</param>
+        /// <returns>The computer's information</returns>
         public static Computer GetComputerInfo(string ComputerName,string UserName="",string Password="")
         {
             try
@@ -39,5 +51,7 @@ namespace Utilities.Environment
             }
             catch { throw; }
         }
+
+        #endregion
     }
 }

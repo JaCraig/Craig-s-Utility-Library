@@ -121,14 +121,15 @@ namespace Utilities.Environment
         {
             get 
             {
-                ObjectQuery TempQuery = new ObjectQuery("SELECT * FROM Win32_LogicalMemoryConfiguration");
-                ManagementObjectSearcher Searcher = new ManagementObjectSearcher(TempQuery);
                 long ReturnValue = 0;
-                foreach (ManagementObject TempObject in Searcher.Get())
+                ObjectQuery TempQuery = new ObjectQuery("SELECT * FROM Win32_LogicalMemoryConfiguration");
+                using (ManagementObjectSearcher Searcher = new ManagementObjectSearcher(TempQuery))
                 {
-                    ReturnValue = long.Parse(TempObject["TotalPhysicalMemory"].ToString()) * 1024;
+                    foreach (ManagementObject TempObject in Searcher.Get())
+                    {
+                        ReturnValue = long.Parse(TempObject["TotalPhysicalMemory"].ToString()) * 1024;
+                    }
                 }
-                Searcher.Dispose();
                 return ReturnValue;
             }
         }

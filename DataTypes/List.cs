@@ -38,47 +38,75 @@ namespace Utilities.DataTypes
         #endregion
 
         #region Public Functions
+
         public new void Add(T value)
         {
-            base.Add(value);
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            try
+            {
+                base.Add(value);
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            }
+            catch { throw; }
         }
 
         public new void Remove(T obj)
         {
-            base.Remove(obj);
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            try
+            {
+                base.Remove(obj);
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            }
+            catch { throw; }
         }
 
         public new void RemoveAt(int index)
         {
-            base.RemoveAt(index);
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            try
+            {
+                base.RemoveAt(index);
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            }
+            catch { throw; }
         }
 
         public new void Insert(int index, T value)
         {
-            base.Insert(index, value);
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            try
+            {
+                base.Insert(index, value);
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            }
+            catch { throw; }
         }
 
         public new void Clear()
         {
-            base.Clear();
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            try
+            {
+                base.Clear();
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            }
+            catch { throw; }
         }
+
         #endregion
 
         #region Properties
+
         public new T this[int index]
         {
-            get { return base[index]; }
+            get { try { return base[index]; } catch { throw; } }
             set
             {
-                base[index] = value;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                try
+                {
+                    base[index] = value;
+                    EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                }
+                catch { throw; }
             }
         }
+
         #endregion
     }
 }

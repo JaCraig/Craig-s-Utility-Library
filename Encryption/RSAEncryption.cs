@@ -38,6 +38,7 @@ namespace Utilities.Encryption
         #endregion
 
         #region Public Static Functions
+
         /// <summary>
         /// Encrypts a string using RSA
         /// </summary>
@@ -51,6 +52,7 @@ namespace Utilities.Encryption
             ASCIIEncoding Encoding = new ASCIIEncoding();
             byte[] InputArray = Encoding.GetBytes(Input);
             byte[] EncryptedBytes = RSA.Encrypt(InputArray, true);
+            RSA.Clear();
             return Convert.ToBase64String(EncryptedBytes);
         }
 
@@ -66,6 +68,7 @@ namespace Utilities.Encryption
             RSA.FromXmlString(Key);
             byte[] InputArray = Convert.FromBase64String(Input);
             byte[] EncryptedBytes = RSA.Decrypt(InputArray, true);
+            RSA.Clear();
             return Encoding.UTF8.GetString(EncryptedBytes);
         }
 
@@ -99,6 +102,8 @@ namespace Utilities.Encryption
             System.Security.Cryptography.SHA1 SHA = System.Security.Cryptography.SHA1.Create();
             byte[]HashBytes=SHA.ComputeHash(InputArray);
             byte[] SignedHash = RSA.SignHash(HashBytes, CryptoConfig.MapNameToOID("SHA1"));
+            SHA.Clear();
+            RSA.Clear();
             Hash = Convert.ToBase64String(HashBytes);
             return Convert.ToBase64String(SignedHash);
         }
@@ -116,7 +121,9 @@ namespace Utilities.Encryption
             RSA.FromXmlString(Key);
             byte[] InputArray = Convert.FromBase64String(SignedHash);
             byte[] HashArray = Convert.FromBase64String(Hash);
-            return RSA.VerifyHash(HashArray, CryptoConfig.MapNameToOID("SHA1"), InputArray);
+            bool Result=RSA.VerifyHash(HashArray, CryptoConfig.MapNameToOID("SHA1"), InputArray);
+            RSA.Clear();
+            return Result;
         }
         #endregion
     }

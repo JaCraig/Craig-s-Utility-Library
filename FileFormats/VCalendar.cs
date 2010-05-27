@@ -32,106 +32,80 @@ namespace Utilities.FileFormats
     public class VCalendar
     {
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
         public VCalendar()
         {
         }
-        #endregion
 
-        #region Variables
-        private int TimeZoneAdjustment_=0;
-        private DateTime StartTime_=DateTime.Now;
-        private DateTime EndTime_ = DateTime.Now;
-        private string Location_=string.Empty;
-        private string Subject_=string.Empty;
-        private string Description_=string.Empty;
         #endregion
 
         #region Properties
         /// <summary>
         /// The time zone adjustment for the calendar event
         /// </summary>
-        public int TimeZoneAdjustment
-        {
-            get { return TimeZoneAdjustment_; }
-            set { TimeZoneAdjustment_ = value; }
-        }
-
+        public int TimeZoneAdjustment{get;set;}
+        
         /// <summary>
         /// The start time
         /// </summary>
-        public DateTime StartTime
-        {
-            get { return StartTime_; }
-            set { StartTime_ = value; }
-        }
+        public DateTime StartTime{get;set;}
 
         /// <summary>
         /// The end time
         /// </summary>
-        public DateTime EndTime
-        {
-            get { return EndTime_; }
-            set { EndTime_ = value; }
-        }
+        public DateTime EndTime{get;set;}
 
         /// <summary>
         /// The location of the event
         /// </summary>
-        public string Location
-        {
-            get { return Location_; }
-            set { Location_ = value; }
-        }
+        public string Location{get;set;}
 
         /// <summary>
         /// The subject of the item to send
         /// </summary>
-        public string Subject
-        {
-            get { return Subject_; }
-            set { Subject_ = value; }
-        }
+        public string Subject{get;set;}
 
         /// <summary>
         /// The description of the event
         /// </summary>
-        public string Description
-        {
-            get { return Description_; }
-            set { Description_ = value; }
-        }
+        public string Description{get;set;}
+
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// Returns the VCalendar item
         /// </summary>
         /// <returns>a string output of the VCalendar item</returns>
         public string GetVCalendar()
         {
-            //Create the file for the calendar event.
-            StringBuilder FileOutput = new StringBuilder();
-            FileOutput.AppendLine("BEGIN:VCALENDAR\n");
-            FileOutput.AppendLine("VERSION:1.0\n");
-            FileOutput.AppendLine("BEGIN:VEVENT\n");
-            StartTime = StartTime.AddHours(-TimeZoneAdjustment);
-            EndTime = EndTime.AddHours(-TimeZoneAdjustment);
+            try
+            {
+                StringBuilder FileOutput = new StringBuilder();
+                FileOutput.AppendLine("BEGIN:VCALENDAR\n");
+                FileOutput.AppendLine("VERSION:1.0\n");
+                FileOutput.AppendLine("BEGIN:VEVENT\n");
+                StartTime = StartTime.AddHours(-TimeZoneAdjustment);
+                EndTime = EndTime.AddHours(-TimeZoneAdjustment);
 
-            string Start = StartTime.ToString("yyyyMMdd") + "T" + StartTime.ToString("HHmmss");
-            string End = EndTime.ToString("yyyyMMdd") + "T" + EndTime.ToString("HHmmss");
-            FileOutput.AppendLine("DTStart:" + Start + "\n");
-            FileOutput.AppendLine("DTEnd:" + End + "\n");
-            FileOutput.AppendLine("Location;ENCODING=QUOTED-PRINTABLE:" + Location + "\n");
-            FileOutput.AppendLine("SUMMARY;ENCODING=QUOTED-PRINTABLE:" + Subject + "\n");
-            FileOutput.AppendLine("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" + Description + "\n");
-            FileOutput.AppendLine("UID:" + Start + End + Subject + "\n");
-            FileOutput.AppendLine("PRIORITY:3\n");
-            FileOutput.AppendLine("End:VEVENT\n");
-            FileOutput.AppendLine("End:VCALENDAR\n");
-            return FileOutput.ToString();
+                string Start = StartTime.ToString("yyyyMMdd") + "T" + StartTime.ToString("HHmmss");
+                string End = EndTime.ToString("yyyyMMdd") + "T" + EndTime.ToString("HHmmss");
+                FileOutput.AppendLine("DTStart:" + Start + "\n");
+                FileOutput.AppendLine("DTEnd:" + End + "\n");
+                FileOutput.AppendLine("Location;ENCODING=QUOTED-PRINTABLE:" + Location + "\n");
+                FileOutput.AppendLine("SUMMARY;ENCODING=QUOTED-PRINTABLE:" + Subject + "\n");
+                FileOutput.AppendLine("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" + Description + "\n");
+                FileOutput.AppendLine("UID:" + Start + End + Subject + "\n");
+                FileOutput.AppendLine("PRIORITY:3\n");
+                FileOutput.AppendLine("End:VEVENT\n");
+                FileOutput.AppendLine("End:VCALENDAR\n");
+                return FileOutput.ToString();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -140,33 +114,38 @@ namespace Utilities.FileFormats
         /// <returns>A string output of the HCalendar item</returns>
         public string GetHCalendar()
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append("<div class=\"vevent\">");
-            Output.Append("<div class=\"summary\">" + Subject + "</div>");
-            Output.Append("<div>Date: <abbr class=\"dtstart\" title=\"" + StartTime.ToString("MM-dd-yyyy hh:mm tt") + "\">" + StartTime.ToString("MMMM dd, yyyy hh:mm tt") + "</abbr> to ");
-            Output.Append("<abbr class=\"dtend\" title=\"" + EndTime.ToString("MM-dd-yyyy hh:mm tt") + "\">");
-            if (EndTime.Year != StartTime.Year)
+            try
             {
-                Output.Append(EndTime.ToString("MMMM dd, yyyy hh:mm tt"));
+                StringBuilder Output = new StringBuilder();
+                Output.Append("<div class=\"vevent\">");
+                Output.Append("<div class=\"summary\">" + Subject + "</div>");
+                Output.Append("<div>Date: <abbr class=\"dtstart\" title=\"" + StartTime.ToString("MM-dd-yyyy hh:mm tt") + "\">" + StartTime.ToString("MMMM dd, yyyy hh:mm tt") + "</abbr> to ");
+                Output.Append("<abbr class=\"dtend\" title=\"" + EndTime.ToString("MM-dd-yyyy hh:mm tt") + "\">");
+                if (EndTime.Year != StartTime.Year)
+                {
+                    Output.Append(EndTime.ToString("MMMM dd, yyyy hh:mm tt"));
+                }
+                else if (EndTime.Month != StartTime.Month)
+                {
+                    Output.Append(EndTime.ToString("MMMM dd hh:mm tt"));
+                }
+                else if (EndTime.Day != StartTime.Day)
+                {
+                    Output.Append(EndTime.ToString("dd hh:mm tt"));
+                }
+                else
+                {
+                    Output.Append(EndTime.ToString("hh:mm tt"));
+                }
+                Output.Append("</abbr></div>");
+                Output.Append("<div>Location: <span class=\"location\">" + Location + "</span></div>");
+                Output.Append("<div class=\"description\">" + Description + "</div>");
+                Output.Append("</div>");
+                return Output.ToString();
             }
-            else if (EndTime.Month != StartTime.Month)
-            {
-                Output.Append(EndTime.ToString("MMMM dd hh:mm tt"));
-            }
-            else if (EndTime.Day != StartTime.Day)
-            {
-                Output.Append(EndTime.ToString("dd hh:mm tt"));
-            }
-            else
-            {
-                Output.Append(EndTime.ToString("hh:mm tt"));
-            }
-            Output.Append("</abbr></div>");
-            Output.Append("<div>Location: <span class=\"location\">" + Location + "</span></div>");
-            Output.Append("<div class=\"description\">" + Description + "</div>");
-            Output.Append("</div>");
-            return Output.ToString();
+            catch { throw; }
         }
+
         #endregion
     }
 }

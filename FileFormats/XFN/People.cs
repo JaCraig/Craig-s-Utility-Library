@@ -32,71 +32,65 @@ namespace Utilities.FileFormats.XFN
     public class People
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         public People()
         {
+            Relationships = new List<Relationship>();
         }
+
         #endregion
 
         #region Public Properties
 
-        private string _Name="";
-        private string _URL="";
-        private List<Relationship> _Relationships = new List<Relationship>();
-
         /// <summary>
         /// Person's name
         /// </summary>
-        public string Name
-        {
-            get { return _Name; }
-            set { _Name = value; }
-        }
+        public string Name{get;set;}
 
         /// <summary>
         /// Person's URL
         /// </summary>
-        public string URL
-        {
-            get { return _URL; }
-            set { _URL = value; }
-        }
+        public string URL{get;set;}
 
         /// <summary>
         /// Person's relationships
         /// </summary>
-        public List<Relationship> Relationships
-        {
-            get { return _Relationships; }
-            set { _Relationships = value; }
-        }
+        public List<Relationship> Relationships{get;set;}
+
         #endregion
 
         #region Public Overridden Function
+
         /// <summary>
         /// Returns an HTML formatted string containing the information
         /// </summary>
         /// <returns>An HTML formatted string containing the information</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<a href=\"" + URL + "\"");
-            if (Relationships.Count > 0)
+            try
             {
-                Builder.Append(" rel=\"");
-                foreach (Relationship Relationship in Relationships)
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<a href=\"" + URL + "\"");
+                if (Relationships.Count > 0)
                 {
-                    Builder.Append(Relationship.ToString() + " ");
+                    Builder.Append(" rel=\"");
+                    foreach (Relationship Relationship in Relationships)
+                    {
+                        Builder.Append(Relationship.ToString() + " ");
+                    }
+                    Builder.Append("\"");
                 }
-                Builder.Append("\"");
+                Builder.Append(">");
+                Builder.Append(Name);
+                Builder.Append("</a>");
+                return Builder.ToString();
             }
-            Builder.Append(">");
-            Builder.Append(Name);
-            Builder.Append("</a>");
-            return Builder.ToString();
+            catch { throw; }
         }
+
         #endregion
     }
 }

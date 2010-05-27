@@ -43,9 +43,13 @@ namespace Utilities.MultiThreading
         /// <param name="Params">Parameters used in the function</param>
         protected Worker(InputParams Params)
         {
-            this.Params = Params;
-            this.WorkerThread = new Thread(DoWork);
-            this.WorkerThread.IsBackground = true;
+            try
+            {
+                this.Params = Params;
+                this.WorkerThread = new Thread(DoWork);
+                this.WorkerThread.IsBackground = true;
+            }
+            catch { throw; }
         }
 
         #endregion
@@ -58,6 +62,29 @@ namespace Utilities.MultiThreading
         /// <param name="Params">Parameter used by the function</param>
         /// <returns>The result of the function</returns>
         protected abstract ResultType Work(InputParams Params);
+
+        #endregion
+
+        #region Protected Functions
+
+        /// <summary>
+        /// Causes the worker thread to sleep for a given number of milliseconds
+        /// </summary>
+        /// <param name="TimeInMs">Time to sleep in milliseconds</param>
+        protected void Sleep(int TimeInMs)
+        {
+            try
+            {
+                Thread.Sleep(TimeInMs);
+            }
+            catch (Exception e)
+            {
+                OnErrorEventArgs Error = new OnErrorEventArgs();
+                Error.Content = e;
+                EventHelper.Raise<OnErrorEventArgs>(Exception, this, Error);
+                throw;
+            }
+        }
 
         #endregion
 

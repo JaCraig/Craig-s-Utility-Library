@@ -43,7 +43,7 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
 
         #region Private Variables
 
-        private static volatile T _Instance = null;
+        private static T _Instance = null;
 
         #endregion
 

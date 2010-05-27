@@ -92,18 +92,22 @@ namespace Utilities.DataTypes
         /// <returns>String with the first character capitalized</returns>
         public static string ToFirstCharacterUpperCase(string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                return null;
-            char[] InputChars = Input.ToCharArray();
-            for(int x=0;x<InputChars.Length;++x)
+            try
             {
-                if(InputChars[x]!=' '&&InputChars[x]!='\t')
+                if (string.IsNullOrEmpty(Input))
+                    return null;
+                char[] InputChars = Input.ToCharArray();
+                for (int x = 0; x < InputChars.Length; ++x)
                 {
-                InputChars[x] = char.ToUpper(InputChars[x]);
-                break;
+                    if (InputChars[x] != ' ' && InputChars[x] != '\t')
+                    {
+                        InputChars[x] = char.ToUpper(InputChars[x]);
+                        break;
+                    }
                 }
+                return new string(InputChars);
             }
-            return new string(InputChars);
+            catch { throw; }
         }
 
         /// <summary>
@@ -113,18 +117,22 @@ namespace Utilities.DataTypes
         /// <returns>String with each sentence capitalized</returns>
         public static string ToSentenceCapitalize(string Input)
         {
-            string[] Seperator = { ".","?","!" };
-            string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
-            for (int x = 0; x < InputStrings.Length; ++x)
+            try
             {
-                if (!string.IsNullOrEmpty(InputStrings[x]))
+                string[] Seperator = { ".", "?", "!" };
+                string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
+                for (int x = 0; x < InputStrings.Length; ++x)
                 {
-                    Regex TempRegex = new Regex(InputStrings[x]);
-                    InputStrings[x] = ToFirstCharacterUpperCase(InputStrings[x]);
-                    Input = TempRegex.Replace(Input, InputStrings[x]);
+                    if (!string.IsNullOrEmpty(InputStrings[x]))
+                    {
+                        Regex TempRegex = new Regex(InputStrings[x]);
+                        InputStrings[x] = ToFirstCharacterUpperCase(InputStrings[x]);
+                        Input = TempRegex.Replace(Input, InputStrings[x]);
+                    }
                 }
+                return Input;
             }
-            return Input;
+            catch { throw; }
         }
 
         /// <summary>
@@ -134,18 +142,22 @@ namespace Utilities.DataTypes
         /// <returns>String with each word capitalized</returns>
         public static string ToTitleCase(string Input)
         {
-            string[] Seperator = { " ", ".", "\t", System.Environment.NewLine, "!", "?" };
-            string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
-            for (int x = 0; x < InputStrings.Length; ++x)
+            try
             {
-                if (!string.IsNullOrEmpty(InputStrings[x]))
+                string[] Seperator = { " ", ".", "\t", System.Environment.NewLine, "!", "?" };
+                string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
+                for (int x = 0; x < InputStrings.Length; ++x)
                 {
-                    Regex TempRegex = new Regex(InputStrings[x]);
-                    InputStrings[x] = ToFirstCharacterUpperCase(InputStrings[x]);
-                    Input = TempRegex.Replace(Input, InputStrings[x]);
+                    if (!string.IsNullOrEmpty(InputStrings[x]))
+                    {
+                        Regex TempRegex = new Regex(InputStrings[x]);
+                        InputStrings[x] = ToFirstCharacterUpperCase(InputStrings[x]);
+                        Input = TempRegex.Replace(Input, InputStrings[x]);
+                    }
                 }
+                return Input;
             }
-            return Input;
+            catch { throw; }
         }
 
         /// <summary>
@@ -155,12 +167,16 @@ namespace Utilities.DataTypes
         /// <returns>True if it is a valid email address, false otherwise</returns>
         public static bool IsValidEmail(string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                return false;
-            Regex TempReg = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
-                  @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
-                  @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
-            return TempReg.IsMatch(Input);
+            try
+            {
+                if (string.IsNullOrEmpty(Input))
+                    return false;
+                Regex TempReg = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
+                      @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
+                      @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+                return TempReg.IsMatch(Input);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -170,10 +186,14 @@ namespace Utilities.DataTypes
         /// <returns>True if it is a valid domain, false otherwise</returns>
         public static bool IsValidDomain(string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                return false;
-            Regex TempReg = new Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?");
-            return TempReg.IsMatch(Input);
+            try
+            {
+                if (string.IsNullOrEmpty(Input))
+                    return false;
+                Regex TempReg = new Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?");
+                return TempReg.IsMatch(Input);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -184,8 +204,12 @@ namespace Utilities.DataTypes
         /// <returns>The number of times the string occurs</returns>
         public static int NumberTimesOccurs(string Input, string Match)
         {
-            Regex TempRegex = new Regex(Match);
-            return TempRegex.Matches(Input).Count;
+            try
+            {
+                Regex TempRegex = new Regex(Match);
+                return TempRegex.Matches(Input).Count;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -195,9 +219,13 @@ namespace Utilities.DataTypes
         /// <returns>The reverse of the input string</returns>
         public static string ReverseString(string Input)
         {
-            char[] ArrayValues=Input.ToCharArray();
-            Array.Reverse(ArrayValues);
-            return new string(ArrayValues);
+            try
+            {
+                char[] ArrayValues = Input.ToCharArray();
+                Array.Reverse(ArrayValues);
+                return new string(ArrayValues);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -208,8 +236,12 @@ namespace Utilities.DataTypes
         /// <returns>The input text minus the filter text.</returns>
         public static string FilterOutText(string Input, string Filter)
         {
-            Regex TempRegex = new Regex(Filter);
-            return TempRegex.Replace(Input, "");
+            try
+            {
+                Regex TempRegex = new Regex(Filter);
+                return TempRegex.Replace(Input, "");
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -220,14 +252,18 @@ namespace Utilities.DataTypes
         /// <returns>The input text minus everything not in the filter text.</returns>
         public static string KeepFilterText(string Input, string Filter)
         {
-            Regex TempRegex = new Regex(Filter);
-            MatchCollection Collection = TempRegex.Matches(Input);
-            StringBuilder Builder=new StringBuilder();
-            foreach (Match Match in Collection)
+            try
             {
-                Builder.Append(Match.Value);
+                Regex TempRegex = new Regex(Filter);
+                MatchCollection Collection = TempRegex.Matches(Input);
+                StringBuilder Builder = new StringBuilder();
+                foreach (Match Match in Collection)
+                {
+                    Builder.Append(Match.Value);
+                }
+                return Builder.ToString();
             }
-            return Builder.ToString();
+            catch { throw; }
         }
 
         /// <summary>
@@ -237,7 +273,11 @@ namespace Utilities.DataTypes
         /// <returns>the string only containing alphanumeric characters</returns>
         public static string AlphaNumericOnly(string Input)
         {
-            return KeepFilterText(Input, "[a-zA-Z0-9]");
+            try
+            {
+                return KeepFilterText(Input, "[a-zA-Z0-9]");
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -247,7 +287,11 @@ namespace Utilities.DataTypes
         /// <returns>the string only containing alpha characters</returns>
         public static string AlphaCharactersOnly(string Input)
         {
-            return KeepFilterText(Input, "[a-zA-Z]");
+            try
+            {
+                return KeepFilterText(Input, "[a-zA-Z]");
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -258,11 +302,15 @@ namespace Utilities.DataTypes
         /// <returns>the string only containing numeric characters</returns>
         public static string NumericOnly(string Input,bool KeepNumericPunctuation)
         {
-            if (KeepNumericPunctuation)
+            try
             {
-                return KeepFilterText(Input,@"[0-9\.]");
+                if (KeepNumericPunctuation)
+                {
+                    return KeepFilterText(Input, @"[0-9\.]");
+                }
+                return KeepFilterText(Input, "[0-9]");
             }
-            return KeepFilterText(Input, "[0-9]");
+            catch { throw; }
         }
 
         /// <summary>
@@ -274,23 +322,27 @@ namespace Utilities.DataTypes
         /// </returns>
         public static Dictionary<string, System.Collections.Generic.List<string>> GetAnagramEquivalents(System.Collections.Generic.List<string> InputArray)
         {
-            Dictionary<string, System.Collections.Generic.List<string>> ReturnList = new Dictionary<string, System.Collections.Generic.List<string>>();
-            for (int x = 0; x < InputArray.Count; ++x)
+            try
             {
-                char[] InputCharArray=InputArray[x].ToCharArray();
-                Array.Sort(InputCharArray);
-                string InputString = new string(InputCharArray);
-                if (ReturnList.ContainsKey(InputString))
+                Dictionary<string, System.Collections.Generic.List<string>> ReturnList = new Dictionary<string, System.Collections.Generic.List<string>>();
+                for (int x = 0; x < InputArray.Count; ++x)
                 {
-                    ReturnList[InputString].Add(InputArray[x]);
+                    char[] InputCharArray = InputArray[x].ToCharArray();
+                    Array.Sort(InputCharArray);
+                    string InputString = new string(InputCharArray);
+                    if (ReturnList.ContainsKey(InputString))
+                    {
+                        ReturnList[InputString].Add(InputArray[x]);
+                    }
+                    else
+                    {
+                        ReturnList.Add(InputString, new System.Collections.Generic.List<string>());
+                        ReturnList[InputString].Add(InputArray[x]);
+                    }
                 }
-                else
-                {
-                    ReturnList.Add(InputString, new System.Collections.Generic.List<string>());
-                    ReturnList[InputString].Add(InputArray[x]);
-                }
+                return ReturnList;
             }
-            return ReturnList;
+            catch { throw; }
         }
 
         #endregion

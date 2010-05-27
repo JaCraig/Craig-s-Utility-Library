@@ -82,22 +82,30 @@ namespace Utilities.DataTypes
 
         public override int GetHashCode()
         {
-            if (First != null && Second != null && Third != null)
+            try
             {
-                return (First.GetHashCode() ^ Second.GetHashCode()) % Third.GetHashCode();
+                if (First != null && Second != null && Third != null)
+                {
+                    return (First.GetHashCode() ^ Second.GetHashCode()) % Third.GetHashCode();
+                }
+                return 0;
             }
-            return 0;
+            catch { throw; }
         }
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj is Triple<T1, T2, T3>)
+            try
             {
-                return Equals(First, ((Triple<T1, T2, T3>)obj).First)
-                    && Equals(Second, ((Triple<T1, T2, T3>)obj).Second)
-                    && Equals(Third, ((Triple<T1, T2, T3>)obj).Third);
+                if (obj != null && obj is Triple<T1, T2, T3>)
+                {
+                    return Equals(First, ((Triple<T1, T2, T3>)obj).First)
+                        && Equals(Second, ((Triple<T1, T2, T3>)obj).Second)
+                        && Equals(Third, ((Triple<T1, T2, T3>)obj).Third);
+                }
+                return false;
             }
-            return false;
+            catch { throw; }
         }
 
         #endregion

@@ -32,6 +32,7 @@ namespace Utilities.Encryption
     public static class CaesarEncryption
     {
         #region Public Static Functions
+
         /// <summary>
         /// Encrypts a string using Caesar encryption
         /// </summary>
@@ -44,10 +45,7 @@ namespace Utilities.Encryption
             {
                 return Process(Input, Key);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -62,11 +60,9 @@ namespace Utilities.Encryption
             {
                 return Process(Input, Key);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
         #endregion
 
         #region Private Static Functions
@@ -94,11 +90,9 @@ namespace Utilities.Encryption
                 }
                 return Encoding.GetString(OutputArray);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
         #endregion
     }
 }

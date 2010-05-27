@@ -32,6 +32,7 @@ namespace Utilities.Encryption
     public static class VernamEncryption
     {
         #region Public Static Functions
+
         /// <summary>
         /// Encrypts a string using Vernam encryption
         /// </summary>
@@ -44,10 +45,7 @@ namespace Utilities.Encryption
             {
                 return Process(Input, Key);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
         /// <summary>
         /// Decrypts a string using Vernam encryption
@@ -61,14 +59,12 @@ namespace Utilities.Encryption
             {
                 return Process(Input, Key);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
         #endregion
 
         #region Private Static Functions
+
         /// <summary>
         /// Actually does the encryption/decryption
         /// </summary>
@@ -90,11 +86,9 @@ namespace Utilities.Encryption
                 }
                 return Encoding.GetString(OutputArray);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
         #endregion
     }
 }
