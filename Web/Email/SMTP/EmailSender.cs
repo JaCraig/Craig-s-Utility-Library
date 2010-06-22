@@ -31,7 +31,7 @@ namespace Utilities.Web.Email.SMTP
     /// <summary>
     /// Utility for sending an email
     /// </summary>
-    public class EmailSender:Message
+    public class EmailSender : Message
     {
         #region Constructors
 
@@ -59,10 +59,7 @@ namespace Utilities.Web.Email.SMTP
                 Body = Message;
                 SendMail();
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.ToString());
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -76,10 +73,7 @@ namespace Utilities.Web.Email.SMTP
                 Body = Message;
                 ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.ToString());
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -89,50 +83,54 @@ namespace Utilities.Web.Email.SMTP
         {
             try
             {
-                System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-                char[] Splitter = { ',' };
-                string[] AddressCollection = To.Split(Splitter);
-                for (int x = 0; x < AddressCollection.Length; ++x)
+                using (System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage())
                 {
-                    message.To.Add(AddressCollection[x]);
+                    char[] Splitter = { ',' };
+                    string[] AddressCollection = To.Split(Splitter);
+                    for (int x = 0; x < AddressCollection.Length; ++x)
+                    {
+                        message.To.Add(AddressCollection[x]);
+                    }
+                    if (!string.IsNullOrEmpty(CC))
+                    {
+                        AddressCollection = CC.Split(Splitter);
+                        for (int x = 0; x < AddressCollection.Length; ++x)
+                        {
+                            message.CC.Add(AddressCollection[x]);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(Bcc))
+                    {
+                        AddressCollection = Bcc.Split(Splitter);
+                        for (int x = 0; x < AddressCollection.Length; ++x)
+                        {
+                            message.Bcc.Add(AddressCollection[x]);
+                        }
+                    }
+                    message.Subject = Subject;
+                    message.From = new System.Net.Mail.MailAddress((From));
+                    message.Body = Body;
+                    message.Priority = Priority;
+                    message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                    message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                    message.IsBodyHtml = true;
+                    foreach (Attachment TempAttachment in Attachments)
+                    {
+                        message.Attachments.Add(TempAttachment);
+                    }
+                    System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Server, Port);
+                    if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                    {
+                        smtp.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                    }
+                    if (UseSSL)
+                        smtp.EnableSsl = true;
+                    else
+                        smtp.EnableSsl = false;
+                    smtp.Send(message);
                 }
-                AddressCollection = CC.Split(Splitter);
-                for (int x = 0; x < AddressCollection.Length; ++x)
-                {
-                    message.CC.Add(AddressCollection[x]);
-                }
-                AddressCollection = Bcc.Split(Splitter);
-                for (int x = 0; x < AddressCollection.Length; ++x)
-                {
-                    message.Bcc.Add(AddressCollection[x]);
-                }
-                message.Subject = Subject;
-                message.From = new System.Net.Mail.MailAddress((From));
-                message.Body = Body;
-                message.Priority = Priority;
-                message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                message.IsBodyHtml = true;
-                foreach(Attachment TempAttachment in Attachments)
-                {
-                    message.Attachments.Add(TempAttachment);
-                }
-                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Server,Port);
-                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-                {
-                    smtp.Credentials = new System.Net.NetworkCredential(UserName,Password);
-                }
-                if (UseSSL)
-                    smtp.EnableSsl = true;
-                else
-                    smtp.EnableSsl = false;
-                smtp.Send(message);
-                message.Dispose();
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.ToString());
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -144,10 +142,7 @@ namespace Utilities.Web.Email.SMTP
             {
                 ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.ToString());
-            }
+            catch { throw; }
         }
 
         #endregion
@@ -158,37 +153,37 @@ namespace Utilities.Web.Email.SMTP
         /// Any attachments that are included with this
         /// message.
         /// </summary>
-        public List<Attachment> Attachments{get;set;}
+        public List<Attachment> Attachments { get; set; }
 
         /// <summary>
         /// The priority of this message
         /// </summary>
-        public MailPriority Priority{get;set;}
+        public MailPriority Priority { get; set; }
 
         /// <summary>
         /// Server Location
         /// </summary>
-        public string Server{get;set;}
+        public string Server { get; set; }
 
         /// <summary>
         /// User Name for the server
         /// </summary>
-        public string UserName{get;set;}
+        public string UserName { get; set; }
 
         /// <summary>
         /// Password for the server
         /// </summary>
-        public string Password{get;set;}
+        public string Password { get; set; }
 
         /// <summary>
         /// Port to send the information on
         /// </summary>
-        public int Port{get;set;}
+        public int Port { get; set; }
 
         /// <summary>
         /// Decides whether we are using STARTTLS (SSL) or not
         /// </summary>
-        public bool UseSSL{get;set;}
+        public bool UseSSL { get; set; }
 
         /// <summary>
         /// Carbon copy send (seperate email addresses with a comma)
@@ -199,7 +194,7 @@ namespace Utilities.Web.Email.SMTP
         /// Blind carbon copy send (seperate email addresses with a comma)
         /// </summary>
         public string Bcc { get; set; }
-        
+
         #endregion
     }
 }

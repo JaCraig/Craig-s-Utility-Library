@@ -32,19 +32,8 @@ namespace Utilities.Events.EventArgs
     /// </summary>
     public class BaseEventArgs : System.EventArgs
     {
-        public bool Stop
-        {
-            get { return _Stop; }
-            set { _Stop = value; }
-        }
-        private bool _Stop = false;
-
-        public object Content
-        {
-            get { return _Content; }
-            set { _Content = value; }
-        }
-        private object _Content = null;
+        public bool Stop { get; set; }
+        public object Content { get; set; }
     }
 
     /// <summary>

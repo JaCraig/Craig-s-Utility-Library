@@ -342,13 +342,14 @@ namespace Utilities
         /// </summary>
         /// <param name="AssemblyDirectory">Directory to search in</param>
         /// <param name="Interface">The interface to look for</param>
+        /// <param name="Recursive">Determines whether to search recursively or not</param>
         /// <returns>A list mapping using the assembly as the key and a list of types</returns>
-        public static ListMapping<Assembly, Type> GetTypesFromDirectory(string AssemblyDirectory, string Interface)
+        public static ListMapping<Assembly, Type> GetTypesFromDirectory(string AssemblyDirectory, string Interface, bool Recursive = false)
         {
             try
             {
                 ListMapping<Assembly, Type> ReturnList = new ListMapping<Assembly, Type>();
-                System.Collections.Generic.List<Assembly> Assemblies = GetAssembliesFromDirectory(AssemblyDirectory);
+                System.Collections.Generic.List<Assembly> Assemblies = GetAssembliesFromDirectory(AssemblyDirectory, Recursive);
                 foreach (Assembly Assembly in Assemblies)
                 {
                     Type[] Types = Assembly.GetTypes();
@@ -369,13 +370,14 @@ namespace Utilities
         /// Gets a list of assemblies from a directory
         /// </summary>
         /// <param name="Directory">The directory to search in</param>
+        /// <param name="Recursive">Determines whether to search recursively or not</param>
         /// <returns>List of assemblies in the directory</returns>
-        public static System.Collections.Generic.List<Assembly> GetAssembliesFromDirectory(string Directory)
+        public static System.Collections.Generic.List<Assembly> GetAssembliesFromDirectory(string Directory,bool Recursive=false)
         {
             try
             {
                 System.Collections.Generic.List<Assembly> ReturnList = new System.Collections.Generic.List<Assembly>();
-                System.Collections.Generic.List<FileInfo> Files = FileManager.FileList(Directory);
+                System.Collections.Generic.List<FileInfo> Files = FileManager.FileList(Directory, Recursive);
                 foreach (FileInfo File in Files)
                 {
                     if (File.Extension.Equals(".dll", StringComparison.CurrentCultureIgnoreCase))

@@ -12,7 +12,7 @@ namespace Utilities.Web.WebBrowserHelper
     /// <summary>
     /// Class for clearing the cache
     /// </summary>
-    static class WebBrowserHelper
+    public static class WebBrowserHelper
     {
         #region Definitions/DLL Imports
         /// <summary>

@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Management;
 #endregion
 
 namespace Utilities.Environment.DataTypes
@@ -60,6 +61,11 @@ namespace Utilities.Environment.DataTypes
         /// </summary>
         public List<NetworkAddress> NetworkAddresses { get; set; }
 
+        /// <summary>
+        /// MAC Address 
+        /// </summary>
+        public string MACAddress { get; set; }
+
         #endregion
 
         #region Private Functions
@@ -82,6 +88,38 @@ namespace Utilities.Environment.DataTypes
                     TempAddress.Type = Address.AddressFamily.ToString();
                     TempAddress.Address = Address.ToString();
                     NetworkAddresses.Add(TempAddress);
+                }
+            }
+            catch { throw; }
+        }
+
+        private void GetNetworkAdapterInfo(string Name, string UserName, string Password)
+        {
+            try
+            {
+                ManagementScope Scope = null;
+                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                {
+                    ConnectionOptions Options = new ConnectionOptions();
+                    Options.Username = UserName;
+                    Options.Password = Password;
+                    Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2", Options);
+                }
+                else
+                {
+                    Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2");
+                }
+                Scope.Connect();
+                ObjectQuery Query = new ObjectQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled=True");
+                using (ManagementObjectSearcher Searcher = new ManagementObjectSearcher(Scope, Query))
+                {
+                    using (ManagementObjectCollection Collection = Searcher.Get())
+                    {
+                        foreach (ManagementObject TempNetworkAdapter in Collection)
+                        {
+                            MACAddress = TempNetworkAdapter.Properties["MacAddress"].Value.ToString();
+                        }
+                    }
                 }
             }
             catch { throw; }

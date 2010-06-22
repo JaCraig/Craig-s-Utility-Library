@@ -229,43 +229,12 @@ namespace Utilities
         /// Gets a list of files
         /// </summary>
         /// <param name="DirectoryPath">Directory to check for files</param>
-        /// <returns>a list of files</returns>
-        public static List<FileInfo> FileList(string DirectoryPath)
-        {
-            try
-            {
-                List<FileInfo> Files = new List<FileInfo>();
-                if (DirectoryExists(DirectoryPath))
-                {
-                    DirectoryInfo Directory = new DirectoryInfo(DirectoryPath);
-                    FileInfo[] SubFiles = Directory.GetFiles();
-                    foreach (FileInfo SubFile in SubFiles)
-                    {
-                        Files.Add(SubFile);
-                    }
-                }
-                return Files;
-            }
-            catch (Exception a)
-            {
-                throw a;
-            }
-        }
-
-        /// <summary>
-        /// Gets a list of files
-        /// </summary>
-        /// <param name="DirectoryPath">Directory to check for files</param>
         /// <param name="Recursive">Determines if this is a recursive look at all directories under this one</param>
         /// <returns>a list of files</returns>
-        public static List<FileInfo> FileList(string DirectoryPath,bool Recursive)
+        public static List<FileInfo> FileList(string DirectoryPath,bool Recursive=false)
         {
             try
             {
-                if (!Recursive)
-                {
-                    return FileList(DirectoryPath);
-                }
                 List<FileInfo> Files = new List<FileInfo>();
                 if (DirectoryExists(DirectoryPath))
                 {
@@ -275,22 +244,22 @@ namespace Utilities
                     {
                         Files.Add(SubFile);
                     }
-                    DirectoryInfo[] SubDirectories = Directory.GetDirectories();
-                    foreach (DirectoryInfo SubDirectory in SubDirectories)
+                    if (Recursive)
                     {
-                        List<FileInfo> TempFiles = FileList(SubDirectory.FullName, Recursive);
-                        foreach (FileInfo File in TempFiles)
+                        DirectoryInfo[] SubDirectories = Directory.GetDirectories();
+                        foreach (DirectoryInfo SubDirectory in SubDirectories)
                         {
-                            Files.Add(File);
+                            List<FileInfo> TempFiles = FileList(SubDirectory.FullName, true);
+                            foreach (FileInfo File in TempFiles)
+                            {
+                                Files.Add(File);
+                            }
                         }
                     }
                 }
                 return Files;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
