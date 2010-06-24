@@ -86,7 +86,7 @@ namespace Utilities.FileFormats.FixedLength
             this.Length = Length;
             if (Value.Length > this.Length)
             {
-                Value = StringHelper.Left(Value, Length);
+                this.Value = StringHelper.Left(Value, Length);
                 return;
             }
             StringBuilder Builder = new StringBuilder();

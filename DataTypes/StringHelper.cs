@@ -65,7 +65,7 @@ namespace Utilities.DataTypes
         {
             try
             {
-                return Input.Substring(Length);
+                return Input.Substring(0, Length);
             }
             catch { throw; }
         }
