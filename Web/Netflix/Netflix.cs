@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Utilities.Web.OAuth;
+using Utilities.IO;
 
 #endregion
 

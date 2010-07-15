@@ -47,7 +47,7 @@ namespace Utilities.Web.OAuth
             AddParameter("oauth_signature_method", "");
             AddParameter("oauth_timestamp", "");
             AddParameter("oauth_version", "1.0");
-            RandomGenerator = new Random();
+            RandomGenerator = new Random.Random();
         }
 
         #endregion
@@ -246,7 +246,7 @@ namespace Utilities.Web.OAuth
 
         private string UnreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
         private System.Collections.Generic.List<Pair<string, string>> Parameters { get; set; }
-        private Random RandomGenerator { get; set; }
+        private Random.Random RandomGenerator { get; set; }
 
         #endregion
 

@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 #endregion
 
 namespace Utilities.FileFormats
@@ -77,7 +78,7 @@ namespace Utilities.FileFormats
                     .Append(MiddleName).Append(";").Append(Prefix).Append(";")
                     .Append(Suffix).Append("\r\n");
                 Builder.Append("TEL;WORK:").Append(DirectDial).Append("\r\n");
-                Builder.Append("EMAIL;INTERNET:").Append(Utilities.Web.HTML.StripHTML(Email)).Append("\r\n");
+                Builder.Append("EMAIL;INTERNET:").Append(StripHTML(Email)).Append("\r\n");
                 Builder.Append("TITLE:").Append(Title).Append("\r\n");
                 Builder.Append("ORG:").Append(Organization).Append("\r\n");
                 Builder.Append("END:VCARD\r\n");
@@ -151,7 +152,7 @@ namespace Utilities.FileFormats
                 }
                 if (!string.IsNullOrEmpty(Email))
                 {
-                    Builder.Append("<div>Email: <a class=\"email\" href=\"mailto:").Append(Utilities.Web.HTML.StripHTML(Email)).Append("\">").Append(Utilities.Web.HTML.StripHTML(Email)).Append("</a></div>");
+                    Builder.Append("<div>Email: <a class=\"email\" href=\"mailto:").Append(StripHTML(Email)).Append("\">").Append(StripHTML(Email)).Append("</a></div>");
                 }
                 if (!string.IsNullOrEmpty(Organization))
                 {
@@ -166,6 +167,22 @@ namespace Utilities.FileFormats
             }
             catch { throw; }
         }
+        #endregion
+
+        #region Private Functions
+
+        private static string StripHTML(string HTML)
+        {
+            if (string.IsNullOrEmpty(HTML))
+                return string.Empty;
+
+            HTML = STRIP_HTML_REGEX.Replace(HTML, string.Empty);
+            HTML = HTML.Replace("&nbsp;", " ");
+            return HTML.Replace("&#160;", string.Empty);
+        }
+
+        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
+
         #endregion
 
         #region Properties

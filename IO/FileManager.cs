@@ -28,7 +28,7 @@ using System.Text;
 
 #endregion
 
-namespace Utilities
+namespace Utilities.IO
 {
     /// <summary>
     /// Utility class for managing files

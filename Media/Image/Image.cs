@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Utilities.IO;
 #endregion
 
 namespace Utilities.Media.Image
@@ -1053,7 +1054,7 @@ namespace Utilities.Media.Image
             System.Drawing.Graphics NewGraphics = System.Drawing.Graphics.FromImage(NewBitmap);
             NewGraphics.DrawImage(TempBitmap, new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), System.Drawing.GraphicsUnit.Pixel);
             NewGraphics.Dispose();
-            Random TempRandom = new Random();
+            Random.Random TempRandom = new Random.Random();
             for (int x = 0; x < NewBitmap.Width; ++x)
             {
                 for (int y = 0; y < NewBitmap.Height; ++y)
@@ -1124,7 +1125,7 @@ namespace Utilities.Media.Image
             System.Drawing.Graphics NewGraphics = System.Drawing.Graphics.FromImage(NewBitmap);
             NewGraphics.DrawImage(TempBitmap, new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), System.Drawing.GraphicsUnit.Pixel);
             NewGraphics.Dispose();
-            Random TempRandom = new Random();
+            Random.Random TempRandom = new Random.Random();
             int ApetureMin = -(Size / 2);
             int ApetureMax = (Size / 2);
             for (int x = 0; x < NewBitmap.Width; ++x)
@@ -1273,7 +1274,7 @@ namespace Utilities.Media.Image
             System.Drawing.Graphics NewGraphics = System.Drawing.Graphics.FromImage(NewBitmap);
             NewGraphics.DrawImage(TempBitmap, new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), System.Drawing.GraphicsUnit.Pixel);
             NewGraphics.Dispose();
-            Random TempRandom = new Random();
+            Random.Random TempRandom = new Random.Random();
             int ApetureMin = -(Size / 2);
             int ApetureMax = (Size / 2);
             for (int x = 0; x < NewBitmap.Width; ++x)
@@ -1515,7 +1516,7 @@ namespace Utilities.Media.Image
             System.Drawing.Graphics NewGraphics = System.Drawing.Graphics.FromImage(NewBitmap);
             NewGraphics.DrawImage(TempBitmap, new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), System.Drawing.GraphicsUnit.Pixel);
             NewGraphics.Dispose();
-            Random TempRandom = new Random();
+            Random.Random TempRandom = new Random.Random();
             int[] ApetureMinX = { -(Size / 2), 0, -(Size / 2), 0 };
             int[] ApetureMaxX = { 0, (Size / 2), 0, (Size / 2) };
             int[] ApetureMinY = { -(Size / 2), -(Size / 2), 0, 0 };
@@ -1648,7 +1649,7 @@ namespace Utilities.Media.Image
             System.Drawing.Graphics NewGraphics = System.Drawing.Graphics.FromImage(NewBitmap);
             NewGraphics.DrawImage(TempBitmap, new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), System.Drawing.GraphicsUnit.Pixel);
             NewGraphics.Dispose();
-            Random TempRandom = new Random();
+            Random.Random TempRandom = new Random.Random();
             int ApetureMinX = -(Size / 2);
             int ApetureMaxX = (Size / 2);
             int ApetureMinY = -(Size / 2);
@@ -2459,7 +2460,7 @@ namespace Utilities.Media.Image
             System.Drawing.Graphics NewGraphics = System.Drawing.Graphics.FromImage(NewBitmap);
             NewGraphics.DrawImage(TempBitmap, new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), new System.Drawing.Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), System.Drawing.GraphicsUnit.Pixel);
             NewGraphics.Dispose();
-            Random TempRandom = new Random();
+            Random.Random TempRandom = new Random.Random();
             for (int x = 0; x < NewBitmap.Width; ++x)
             {
                 for (int y = 0; y < NewBitmap.Height; ++y)

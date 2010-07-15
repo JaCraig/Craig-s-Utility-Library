@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 #endregion
 
-namespace Utilities
+namespace Utilities.Random
 {
     /// <summary>
     /// Utility class for handling random

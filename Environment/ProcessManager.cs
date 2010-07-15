@@ -76,7 +76,7 @@ namespace Utilities.Environment
                 foreach (Process TempProcess in Processes)
                 {
                     Builder.Append("<strong>" + TempProcess.ProcessName + " Information</strong><br />");
-                    Builder.Append(Reflection.DumpProperties(TempProcess));
+                    Builder.Append(Reflection.Reflection.DumpProperties(TempProcess));
                     Builder.Append("<br />");
                 }
                 return Builder.ToString();

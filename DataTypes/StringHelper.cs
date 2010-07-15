@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Reflection;
 #endregion
 
 namespace Utilities.DataTypes
@@ -48,7 +49,7 @@ namespace Utilities.DataTypes
                     return "";
                 if (!string.IsNullOrEmpty(Format))
                 {
-                    return (string)Reflection.CallMethod("ToString", Input, Format);
+                    return (string)StringHelper.CallMethod("ToString", Input, Format);
                 }
                 return Input.ToString();
             }
@@ -341,6 +342,48 @@ namespace Utilities.DataTypes
                     }
                 }
                 return ReturnList;
+            }
+            catch { throw; }
+        }
+
+        #endregion
+
+        #region Private Static Functions
+
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <returns>The returned value of the method</returns>
+        private static object CallMethod(string MethodName, object Object, params object[] InputVariables)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(MethodName) || Object == null)
+                    return null;
+                Type ObjectType = Object.GetType();
+                MethodInfo Method = null;
+                if (InputVariables != null)
+                {
+                    Type[] MethodInputTypes = new Type[InputVariables.Length];
+                    for (int x = 0; x < InputVariables.Length; ++x)
+                    {
+                        MethodInputTypes[x] = InputVariables[x].GetType();
+                    }
+                    Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+                    if (Method != null)
+                    {
+                        return Method.Invoke(Object, InputVariables);
+                    }
+                }
+                Method = ObjectType.GetMethod(MethodName);
+                if (Method != null)
+                {
+                    return Method.Invoke(Object, null);
+                }
+                return null;
             }
             catch { throw; }
         }

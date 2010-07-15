@@ -75,7 +75,7 @@ namespace Utilities.Error
             {
                 StringBuilder Builder = new StringBuilder();
                 Builder.Append("<strong>Assembly Information</strong><br />");
-                Builder.Append(Reflection.DumpAllAssembliesAndProperties());
+                Builder.Append(Reflection.Reflection.DumpAllAssembliesAndProperties());
                 return Builder.ToString();
             }
             catch { throw; }
@@ -91,7 +91,7 @@ namespace Utilities.Error
             {
                 StringBuilder Builder = new StringBuilder();
                 Builder.Append("<strong>System Information</strong><br />");
-                Builder.Append(Reflection.DumpProperties(System.Type.GetType("Utilities.Environment.Environment")));
+                Builder.Append(Reflection.Reflection.DumpProperties(System.Type.GetType("Utilities.Environment.Environment")));
                 return Builder.ToString();
             }
             catch { throw; }

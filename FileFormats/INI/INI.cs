@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities.IO;
 
 #endregion
 
@@ -182,7 +183,7 @@ namespace Utilities.FileFormats.INI
                 if (string.IsNullOrEmpty(this.FileName))
                     return;
 
-                string Contents = Utilities.FileManager.GetFileContents(FileName);
+                string Contents = FileManager.GetFileContents(FileName);
                 Regex Section = new Regex("[" + Regex.Escape(" ") + "\t]*" + Regex.Escape("[") + ".*" + Regex.Escape("]\r\n"));
                 string[] Sections = Section.Split(Contents);
                 MatchCollection SectionHeaders = Section.Matches(Contents);

@@ -216,7 +216,7 @@
     <Compile Include="Exchange\Exchange.cs" />
     <Compile Include="FileFormats\VCalendar.cs" />
     <Compile Include="FileFormats\VCard.cs" />
-    <Compile Include="FileManager.cs" />
+    <Compile Include="IO\FileManager.cs" />
     <Compile Include="Compression\GZip.cs" />
     <Compile Include="FileFormats\FOAF\FOAF.cs" />
     <Compile Include="FileFormats\FOAF\Person.cs" />
@@ -257,8 +257,8 @@
     <Compile Include="Profiler\Profiler.cs" />
     <Compile Include="Profiler\ProfilerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Random.cs" />
-    <Compile Include="Reflection.cs" />
+    <Compile Include="Random\Random.cs" />
+    <Compile Include="Reflection\Reflection.cs" />
     <Compile Include="FileFormats\RSD\API.cs" />
     <Compile Include="FileFormats\RSD\APIs.cs" />
     <Compile Include="FileFormats\RSD\RSD.cs" />
@@ -267,7 +267,7 @@
     <Compile Include="FileFormats\RSSHelper\Enclosure.cs" />
     <Compile Include="FileFormats\RSSHelper\Item.cs" />
     <Compile Include="FileFormats\RSSHelper\RSS.cs" />
-    <Compile Include="Serialization.cs" />
+    <Compile Include="IO\Serialization.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="DataTypes\StringHelper.cs" />
     <Compile Include="Web\Ping\Ping.cs" />

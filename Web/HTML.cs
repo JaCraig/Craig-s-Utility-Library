@@ -243,7 +243,7 @@ namespace Utilities.Web
         public static string DumpRequestVariable(HttpRequest Request)
         {
             StringBuilder String = new StringBuilder();
-            String.Append(Reflection.DumpProperties(Request));
+            String.Append(Reflection.Reflection.DumpProperties(Request));
             return String.ToString();
         }
 
@@ -265,7 +265,7 @@ namespace Utilities.Web
         public static string DumpResponseVariable(HttpResponse Response)
         {
             StringBuilder String = new StringBuilder();
-            String.Append(Reflection.DumpProperties(Response));
+            String.Append(Reflection.Reflection.DumpProperties(Response));
             return String.ToString();
         }
 
@@ -299,7 +299,7 @@ namespace Utilities.Web
             StringBuilder String = new StringBuilder();
             foreach (string Key in Input.Keys)
             {
-                String.Append(Key + ": " + Input[Key].ToString() + "<br />Properties<br />" + Reflection.DumpProperties(Input[Key]) + "<br />");
+                String.Append(Key + ": " + Input[Key].ToString() + "<br />Properties<br />" + Reflection.Reflection.DumpProperties(Input[Key]) + "<br />");
             }
             return String.ToString();
         }
@@ -324,7 +324,7 @@ namespace Utilities.Web
             StringBuilder String = new StringBuilder();
             foreach (DictionaryEntry Entry in Input)
             {
-                String.Append(Entry.Key + ": " + Entry.Value.ToString() + "<br />Properties<br />" + Reflection.DumpProperties(Entry.Value) + "<br />");
+                String.Append(Entry.Key + ": " + Entry.Value.ToString() + "<br />Properties<br />" + Reflection.Reflection.DumpProperties(Entry.Value) + "<br />");
             }
             return String.ToString();
         }
@@ -349,7 +349,7 @@ namespace Utilities.Web
             StringBuilder String = new StringBuilder();
             foreach (string Key in Input.Keys)
             {
-                String.Append(Key + ": " + Input[Key].ToString() + "<br />Properties<br />" + Reflection.DumpProperties(Input[Key]) + "<br />");
+                String.Append(Key + ": " + Input[Key].ToString() + "<br />Properties<br />" + Reflection.Reflection.DumpProperties(Input[Key]) + "<br />");
             }
             return String.ToString();
         }

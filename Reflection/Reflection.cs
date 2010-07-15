@@ -27,9 +27,10 @@ using System.Text;
 using Utilities.DataTypes;
 using System.Linq.Expressions;
 using System.Collections;
+using Utilities.IO;
 #endregion
 
-namespace Utilities
+namespace Utilities.Reflection
 {
     /// <summary>
     /// Utility class that handles various

@@ -44,7 +44,7 @@ namespace Utilities.Media.Image.Procedural
         {
             _Width = Width;
             _Height = Height;
-            Random Rand = new Random(Seed);
+            Random.Random Rand = new Random.Random(Seed);
             Distances = new float[Width, Height];
             ClosestPoint = new int[Width, Height];
             for (int x = 0; x < NumberOfPoints; ++x)

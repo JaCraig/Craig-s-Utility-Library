@@ -28,7 +28,7 @@ using System.Text;
 using System.Xml.Serialization;
 #endregion
 
-namespace Utilities
+namespace Utilities.IO
 {
     /// <summary>
     /// Helps with serializing an object to XML and back again.
