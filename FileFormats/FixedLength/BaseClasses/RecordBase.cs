@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Utilities.FileFormats.FixedLength.Interfaces;
 #endregion

@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Threading;
+using System.Net.Mime;
 #endregion
 
 namespace Utilities.Web.Email.SMTP
@@ -41,6 +41,7 @@ namespace Utilities.Web.Email.SMTP
         public EmailSender()
         {
             Attachments = new List<Attachment>();
+            EmbeddedResources = new List<LinkedResource>();
             Priority = MailPriority.Normal;
         }
 
@@ -109,7 +110,13 @@ namespace Utilities.Web.Email.SMTP
                     }
                     message.Subject = Subject;
                     message.From = new System.Net.Mail.MailAddress((From));
-                    message.Body = Body;
+                    AlternateView BodyView = AlternateView.CreateAlternateViewFromString(Body, null, MediaTypeNames.Text.Html);
+                    foreach (LinkedResource Resource in EmbeddedResources)
+                    {
+                        BodyView.LinkedResources.Add(Resource);
+                    }
+                    message.AlternateViews.Add(BodyView);
+                    //message.Body = Body;
                     message.Priority = Priority;
                     message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
                     message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
@@ -154,6 +161,11 @@ namespace Utilities.Web.Email.SMTP
         /// message.
         /// </summary>
         public List<Attachment> Attachments { get; set; }
+
+        /// <summary>
+        /// Any attachment (usually images) that need to be embedded in the message
+        /// </summary>
+        public List<LinkedResource> EmbeddedResources { get; set; }
 
         /// <summary>
         /// The priority of this message

@@ -20,9 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Net;
-using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Text;
 #endregion

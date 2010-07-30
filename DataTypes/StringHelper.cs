@@ -21,9 +21,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Reflection;
 #endregion
 
 namespace Utilities.DataTypes

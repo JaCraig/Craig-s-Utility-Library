@@ -21,12 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections;
 using System.IO;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using Utilities.DataTypes;
-using System.Linq.Expressions;
-using System.Collections;
 using Utilities.IO;
 #endregion
 

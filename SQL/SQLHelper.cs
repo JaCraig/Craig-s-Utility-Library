@@ -51,6 +51,38 @@ namespace Utilities.SQL
         #endregion
 
         #region Public Functions
+
+        /// <summary>
+        /// Begins a transaction
+        /// </summary>
+        public void BeginTransaction()
+        {
+            Transaction = Connection.BeginTransaction();
+            Command = _Command;
+        }
+
+        /// <summary>
+        /// Commits a transaction
+        /// </summary>
+        public void Commit()
+        {
+            if (Transaction != null)
+            {
+                Transaction.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Rolls back a transaction
+        /// </summary>
+        public void Rollback()
+        {
+            if (Transaction != null)
+            {
+                Transaction.Rollback();
+            }
+        }
+
         /// <summary>
         /// Opens the connection
         /// </summary>
@@ -335,7 +367,19 @@ namespace Utilities.SQL
             set
             {
                 _Command = value;
-                _ExecutableCommand = new SqlCommand(_Command, Connection);
+                if (_ExecutableCommand != null)
+                {
+                    _ExecutableCommand.Dispose();
+                    _ExecutableCommand = null;
+                }
+                if (Transaction != null)
+                {
+                    _ExecutableCommand = new SqlCommand(_Command, Connection, Transaction);
+                }
+                else
+                {
+                    _ExecutableCommand = new SqlCommand(_Command, Connection);
+                }
                 _ExecutableCommand.CommandType = _CommandType;
             }
         }
@@ -349,7 +393,19 @@ namespace Utilities.SQL
             set
             {
                 _CommandType = value;
-                _ExecutableCommand = new SqlCommand(_Command, Connection);
+                if (_ExecutableCommand != null)
+                {
+                    _ExecutableCommand.Dispose();
+                    _ExecutableCommand = null;
+                }
+                if (Transaction != null)
+                {
+                    _ExecutableCommand = new SqlCommand(_Command, Connection, Transaction);
+                }
+                else
+                {
+                    _ExecutableCommand = new SqlCommand(_Command, Connection);
+                }
                 _ExecutableCommand.CommandType = _CommandType;
             }
         }
@@ -361,6 +417,7 @@ namespace Utilities.SQL
         private SqlCommand _ExecutableCommand = null;
         private SqlDataReader _Reader = null;
         private CommandType _CommandType;
+        private SqlTransaction Transaction = null;
         #endregion
 
         #region IDisposable Members
@@ -371,6 +428,11 @@ namespace Utilities.SQL
             {
                 Connection.Dispose();
                 Connection = null;
+            }
+            if (Transaction != null)
+            {
+                Transaction.Dispose();
+                Transaction = null;
             }
             if (_ExecutableCommand != null)
             {

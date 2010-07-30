@@ -21,13 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
-using Utilities.DataTypes;
-using Utilities.SQL.DataClasses;
+using System.Text;
 using System.Text.RegularExpressions;
+using Utilities.SQL.DataClasses;
 #endregion
 
 namespace Utilities.SQL.SQLServer
@@ -137,18 +134,21 @@ namespace Utilities.SQL.SQLServer
                     catch { throw; }
                     finally { Helper.Close(); }
                 }
-                for (int x = 1; x < Commands.Length; ++x)
+                using (SQLHelper Helper = new SQLHelper("", ConnectionString, CommandType.Text))
                 {
-                    using (SQLHelper Helper = new SQLHelper(Commands[x], ConnectionString, CommandType.Text))
+                    try
                     {
-                        try
+                        Helper.Open();
+                        Helper.BeginTransaction();
+                        for (int x = 0; x < Commands.Length; ++x)
                         {
-                            Helper.Open();
+                            Helper.Command = Commands[x];
                             Helper.ExecuteNonQuery();
                         }
-                        catch { throw; }
-                        finally { Helper.Close(); }
+                        Helper.Commit();
                     }
+                    catch { Helper.Rollback(); throw; }
+                    finally { Helper.Close(); }
                 }
             }
             catch { throw; }
@@ -172,18 +172,21 @@ namespace Utilities.SQL.SQLServer
                 string Command = BuildCommands(DesiredDatabase, CurrentDatabase);
                 string[] Splitter = { "\n" };
                 string[] Commands = Command.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
-                for (int x = 0; x < Commands.Length; ++x)
+                using (SQLHelper Helper = new SQLHelper("", ConnectionString, CommandType.Text))
                 {
-                    using (SQLHelper Helper = new SQLHelper(Commands[x], ConnectionString, CommandType.Text))
+                    try
                     {
-                        try
+                        Helper.Open();
+                        Helper.BeginTransaction();
+                        for (int x = 0; x < Commands.Length; ++x)
                         {
-                            Helper.Open();
+                            Helper.Command = Commands[x];
                             Helper.ExecuteNonQuery();
                         }
-                        catch { throw; }
-                        finally { Helper.Close(); }
+                        Helper.Commit();
                     }
+                    catch { Helper.Rollback(); throw; }
+                    finally { Helper.Close(); }
                 }
             }
             catch { throw; }
