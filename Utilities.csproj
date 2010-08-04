@@ -120,6 +120,7 @@
     <Compile Include="Environment\DataTypes\BIOS.cs" />
     <Compile Include="Environment\DataTypes\Computer.cs" />
     <Compile Include="Environment\DataTypes\Network.cs" />
+    <Compile Include="Environment\DataTypes\NetworkAdapter.cs" />
     <Compile Include="Environment\DataTypes\NetworkAddress.cs" />
     <Compile Include="Environment\WMI.cs" />
     <Compile Include="Events\EventArgs.cs" />

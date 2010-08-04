@@ -367,6 +367,12 @@ namespace Utilities.SQL
             set
             {
                 _Command = value;
+                if (_Reader != null)
+                {
+                    _Reader.Close();
+                    _Reader.Dispose();
+                    _Reader = null;
+                }
                 if (_ExecutableCommand != null)
                 {
                     _ExecutableCommand.Dispose();
@@ -393,6 +399,12 @@ namespace Utilities.SQL
             set
             {
                 _CommandType = value;
+                if (_Reader != null)
+                {
+                    _Reader.Close();
+                    _Reader.Dispose();
+                    _Reader = null;
+                }
                 if (_ExecutableCommand != null)
                 {
                     _ExecutableCommand.Dispose();

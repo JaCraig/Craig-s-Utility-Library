@@ -856,7 +856,18 @@ namespace Utilities.Reflection
                 if (Input==null || OutputType == null)
                     return null;
                 Type InputType = Input.GetType();
-                if (InputType == OutputType)
+                Type BaseType = InputType;
+                while (BaseType != OutputType)
+                {
+                    BaseType = BaseType.BaseType;
+                    if (BaseType == null)
+                        break;
+                }
+                if (BaseType == OutputType)
+                {
+                    return Input;
+                }
+                else if (InputType == OutputType)
                 {
                     return Input;
                 }

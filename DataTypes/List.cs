@@ -44,17 +44,34 @@ namespace Utilities.DataTypes
             try
             {
                 base.Add(value);
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
             }
             catch { throw; }
         }
 
-        public new void Remove(T obj)
+        public new void AddRange(System.Collections.Generic.IEnumerable<T> value)
         {
             try
             {
-                base.Remove(obj);
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                base.AddRange(value);
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            }
+            catch { throw; }
+        }
+
+        public new bool Remove(T obj)
+        {
+            try
+            {
+                bool ReturnValue = base.Remove(obj);
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+                return ReturnValue;
             }
             catch { throw; }
         }
@@ -64,7 +81,34 @@ namespace Utilities.DataTypes
             try
             {
                 base.RemoveAt(index);
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            }
+            catch { throw; }
+        }
+
+        public new int RemoveAll(Predicate<T> match)
+        {
+            try
+            {
+                int ReturnValue = base.RemoveAll(match);
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+                return ReturnValue;
+            }
+            catch { throw; }
+        }
+
+        public new void RemoveRange(int index, int count)
+        {
+            try
+            {
+                base.RemoveRange(index, count);
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
             }
             catch { throw; }
         }
@@ -74,7 +118,21 @@ namespace Utilities.DataTypes
             try
             {
                 base.Insert(index, value);
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            }
+            catch { throw; }
+        }
+
+        public new void InsertRange(int index, System.Collections.Generic.IEnumerable<T> collection)
+        {
+            try
+            {
+                base.InsertRange(index, collection);
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
             }
             catch { throw; }
         }
@@ -84,7 +142,9 @@ namespace Utilities.DataTypes
             try
             {
                 base.Clear();
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                ChangedEventArgs TempArgs = new ChangedEventArgs();
+                TempArgs.Content = PropertyName;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
             }
             catch { throw; }
         }
@@ -106,6 +166,8 @@ namespace Utilities.DataTypes
                 catch { throw; }
             }
         }
+
+        public string PropertyName { get; set; }
 
         #endregion
     }
