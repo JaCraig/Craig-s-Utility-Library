@@ -140,7 +140,7 @@ namespace Utilities.SQL.SQLServer
                     {
                         Helper.Open();
                         Helper.BeginTransaction();
-                        for (int x = 0; x < Commands.Length; ++x)
+                        for (int x = 1; x < Commands.Length; ++x)
                         {
                             Helper.Command = Commands[x];
                             Helper.ExecuteNonQuery();
