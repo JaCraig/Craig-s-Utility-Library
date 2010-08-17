@@ -229,6 +229,7 @@ namespace Utilities.SQL.SQLServer
                 if (CurrentTable == null)
                 {
                     Builder.Append(GetTableCommand(Table));
+                    Builder.Append(GetForeignKeyCommand(Table));
                 }
                 else
                 {

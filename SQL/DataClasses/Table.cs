@@ -70,7 +70,7 @@ namespace Utilities.SQL.DataClasses
 
         #endregion
 
-        #region Public Properties
+        #region Public Functions
 
         /// <summary>
         /// Adds a column
