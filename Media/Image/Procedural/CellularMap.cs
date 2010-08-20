@@ -42,19 +42,23 @@ namespace Utilities.Media.Image.Procedural
         /// <param name="NumberOfPoints">Number of cells</param>
         public CellularMap(int Seed, int Width, int Height,int NumberOfPoints)
         {
-            _Width = Width;
-            _Height = Height;
-            Random.Random Rand = new Random.Random(Seed);
-            Distances = new float[Width, Height];
-            ClosestPoint = new int[Width, Height];
-            for (int x = 0; x < NumberOfPoints; ++x)
+            try
             {
-                Point TempPoint = new Point();
-                TempPoint.X = Rand.Next(0, Width);
-                TempPoint.Y = Rand.Next(0, Height);
-                Points.Add(TempPoint);
+                _Width = Width;
+                _Height = Height;
+                Random.Random Rand = new Random.Random(Seed);
+                Distances = new float[Width, Height];
+                ClosestPoint = new int[Width, Height];
+                for (int x = 0; x < NumberOfPoints; ++x)
+                {
+                    Point TempPoint = new Point();
+                    TempPoint.X = Rand.Next(0, Width);
+                    TempPoint.Y = Rand.Next(0, Height);
+                    Points.Add(TempPoint);
+                }
+                CalculateDistances();
             }
-            CalculateDistances();
+            catch { throw; }
         }
 
         #endregion
@@ -66,13 +70,17 @@ namespace Utilities.Media.Image.Procedural
         /// </summary>
         private void CalculateDistances()
         {
-            for (int x = 0; x < _Width; ++x)
+            try
             {
-                for (int y = 0; y < _Height; ++y)
+                for (int x = 0; x < _Width; ++x)
                 {
-                    FindClosestPoint(x, y);
+                    for (int y = 0; y < _Height; ++y)
+                    {
+                        FindClosestPoint(x, y);
+                    }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -82,19 +90,23 @@ namespace Utilities.Media.Image.Procedural
         /// <param name="y">y axis</param>
         private void FindClosestPoint(int x, int y)
         {
-            float MaxDistance=float.MaxValue;
-            int Index = -1;
-            for (int z = 0; z < Points.Count; ++z)
+            try
             {
-                float Distance = (float)System.Math.Sqrt(((Points[z].X - x) * (Points[z].X - x)) + ((Points[z].Y - y) * (Points[z].Y - y)));
-                if (Distance < MaxDistance)
+                float MaxDistance = float.MaxValue;
+                int Index = -1;
+                for (int z = 0; z < Points.Count; ++z)
                 {
-                    MaxDistance = Distance;
-                    Index = z;
+                    float Distance = (float)System.Math.Sqrt(((Points[z].X - x) * (Points[z].X - x)) + ((Points[z].Y - y) * (Points[z].Y - y)));
+                    if (Distance < MaxDistance)
+                    {
+                        MaxDistance = Distance;
+                        Index = z;
+                    }
                 }
+                ClosestPoint[x, y] = Index;
+                Distances[x, y] = MaxDistance;
             }
-            ClosestPoint[x, y] = Index;
-            Distances[x, y] = MaxDistance;
+            catch { throw; }
         }
 
         #endregion

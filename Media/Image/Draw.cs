@@ -47,24 +47,31 @@ namespace Utilities.Media.Image
         public static Bitmap DrawRoundedRectangle(Bitmap Image, Color BoxColor, int XPosition, int YPosition,
             int Height, int Width, int CornerRadius)
         {
-            System.Drawing.Bitmap TempBitmap = Image;
-            System.Drawing.Bitmap NewBitmap = new System.Drawing.Bitmap(TempBitmap, TempBitmap.Width, TempBitmap.Height);
-            System.Drawing.Graphics NewGraphics = System.Drawing.Graphics.FromImage(NewBitmap);
-            
-            Pen BoxPen = new Pen(BoxColor);
-            GraphicsPath Path = new GraphicsPath();
-            Path.AddLine(XPosition + CornerRadius, YPosition, XPosition + Width - (CornerRadius * 2), YPosition);
-            Path.AddArc(XPosition + Width - (CornerRadius * 2), YPosition, CornerRadius * 2, CornerRadius * 2, 270, 90);
-            Path.AddLine(XPosition + Width, YPosition + CornerRadius, XPosition + Width, YPosition + Height - (CornerRadius * 2));
-            Path.AddArc(XPosition + Width - (CornerRadius * 2), YPosition + Height - (CornerRadius * 2), CornerRadius * 2, CornerRadius * 2, 0, 90);
-            Path.AddLine(XPosition + Width - (CornerRadius * 2), YPosition + Height, XPosition + CornerRadius, YPosition + Height);
-            Path.AddArc(XPosition, YPosition + Height - (CornerRadius * 2), CornerRadius * 2, CornerRadius * 2, 90, 90);
-            Path.AddLine(XPosition, YPosition + Height - (CornerRadius * 2), XPosition, YPosition + CornerRadius);
-            Path.AddArc(XPosition, YPosition, CornerRadius * 2, CornerRadius * 2, 180, 90);
-            Path.CloseFigure();
-            NewGraphics.DrawPath(BoxPen, Path);
-            NewGraphics.Dispose();
-            return NewBitmap;
+            try
+            {
+                Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
+                using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
+                {
+                    using (Pen BoxPen = new Pen(BoxColor))
+                    {
+                        using (GraphicsPath Path = new GraphicsPath())
+                        {
+                            Path.AddLine(XPosition + CornerRadius, YPosition, XPosition + Width - (CornerRadius * 2), YPosition);
+                            Path.AddArc(XPosition + Width - (CornerRadius * 2), YPosition, CornerRadius * 2, CornerRadius * 2, 270, 90);
+                            Path.AddLine(XPosition + Width, YPosition + CornerRadius, XPosition + Width, YPosition + Height - (CornerRadius * 2));
+                            Path.AddArc(XPosition + Width - (CornerRadius * 2), YPosition + Height - (CornerRadius * 2), CornerRadius * 2, CornerRadius * 2, 0, 90);
+                            Path.AddLine(XPosition + Width - (CornerRadius * 2), YPosition + Height, XPosition + CornerRadius, YPosition + Height);
+                            Path.AddArc(XPosition, YPosition + Height - (CornerRadius * 2), CornerRadius * 2, CornerRadius * 2, 90, 90);
+                            Path.AddLine(XPosition, YPosition + Height - (CornerRadius * 2), XPosition, YPosition + CornerRadius);
+                            Path.AddArc(XPosition, YPosition, CornerRadius * 2, CornerRadius * 2, 180, 90);
+                            Path.CloseFigure();
+                            NewGraphics.DrawPath(BoxPen, Path);
+                        }
+                    }
+                }
+                return NewBitmap;
+            }
+            catch { throw; }
         }
 
         #endregion

@@ -29,16 +29,10 @@ namespace Utilities.Media.Image
     /// <summary>
     /// Used for creating bump maps
     /// </summary>
-    public class BumpMap:IDisposable
+    public class BumpMap
     {
-        #region Private Variables
-        private System.Drawing.Bitmap _Image=null;
-        private Filter _EdgeDetectionFilter=null;
-        private bool _Invert = false;
-        private Direction _Direction=Direction.TopBottom;
-        #endregion
-
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -46,207 +40,128 @@ namespace Utilities.Media.Image
         {
             try
             {
-                CreateFilter();
+                Invert = false;
+                Direction=Direction.TopBottom;
             }
-            catch (Exception e) { throw e; }
+            catch { throw; }
         }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="FileName">Name of the file</param>
-        public BumpMap(string FileName)
-        {
-            try
-            {
-                _Image = (Bitmap)System.Drawing.Bitmap.FromFile(FileName);
-                CreateFilter();
-                CreateBumpMap();
-            }
-            catch (Exception e) { throw e; }
-        }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Image">Image to use</param>
-        public BumpMap(System.Drawing.Bitmap Image)
-        {
-            try
-            {
-                _Image = new Bitmap(Image);
-                CreateFilter();
-                CreateBumpMap();
-            }
-            catch (Exception e) { throw e; }
-        }
+
+        #endregion
+
+        #region Protected Properties
+
+        protected Filter EdgeDetectionFilter { get; set; }
+
         #endregion
 
         #region Public Properties
-        /// <summary>
-        /// The internal image
-        /// </summary>
-        public System.Drawing.Bitmap Image
-        {
-            get { return _Image; }
-            set
-            {
-                try
-                {
-                    if (_Image != null)
-                    {
-                        _Image.Dispose();
-                    }
-                    _Image = new Bitmap(value);
-                    CreateBumpMap();
-                }
-                catch (Exception e) { throw e; }
-            }
-        }
 
         /// <summary>
         /// Determines the direction of the bump map
         /// </summary>
-        public bool Invert
-        {
-            get { return _Invert; }
-            set
-            {
-                try
-                {
-                    if (_Invert != value)
-                    {
-                        _Invert = value;
-                        CreateFilter();
-                        CreateBumpMap();
-                    }
-                }
-                catch (Exception e) { throw e; }
-            }
-        }
+        public bool Invert { get; set; }
 
         /// <summary>
         /// Determines the direction of the bump map
         /// </summary>
-        public Direction Direction
-        {
-            get { return _Direction; }
-            set
-            {
-                try
-                {
-                    if (_Direction != value)
-                    {
-                        _Direction = value;
-                        CreateFilter();
-                        CreateBumpMap();
-                    }
-                }
-                catch (Exception e) { throw e; }
-            }
-        }
+        public Direction Direction { get; set; }
+
         #endregion
 
-        #region Private Functions
-        /// <summary>
-        /// Creates the bump map
-        /// </summary>
-        private void CreateBumpMap()
-        {
-            try
-            {
-                if (_Image != null)
-                {
-                    Bitmap TempImage = _EdgeDetectionFilter.ApplyFilter(_Image);
-                    Bitmap TempImage2 = Media.Image.Image.ConvertBlackAndWhite(TempImage);
-                    TempImage.Dispose();
-                    _Image.Dispose();
-                    _Image = TempImage2;
-                }
-            }
-            catch (Exception e) { throw e; }
-        }
+        #region Protected Functions
         
         /// <summary>
         /// Sets up the edge detection filter
         /// </summary>
-        private void CreateFilter()
+        protected void CreateFilter()
         {
             try
             {
-                _EdgeDetectionFilter = new Filter(3, 3);
-                if (_Direction == Direction.TopBottom)
+                EdgeDetectionFilter = new Filter(3, 3);
+                if (Direction == Direction.TopBottom)
                 {
-                    if (!_Invert)
+                    if (!Invert)
                     {
-                        _EdgeDetectionFilter.MyFilter[0, 0] = 1;
-                        _EdgeDetectionFilter.MyFilter[1, 0] = 2;
-                        _EdgeDetectionFilter.MyFilter[2, 0] = 1;
-                        _EdgeDetectionFilter.MyFilter[0, 1] = 0;
-                        _EdgeDetectionFilter.MyFilter[1, 1] = 0;
-                        _EdgeDetectionFilter.MyFilter[2, 1] = 0;
-                        _EdgeDetectionFilter.MyFilter[0, 2] = -1;
-                        _EdgeDetectionFilter.MyFilter[1, 2] = -2;
-                        _EdgeDetectionFilter.MyFilter[2, 2] = -1;
+                        EdgeDetectionFilter.MyFilter[0, 0] = 1;
+                        EdgeDetectionFilter.MyFilter[1, 0] = 2;
+                        EdgeDetectionFilter.MyFilter[2, 0] = 1;
+                        EdgeDetectionFilter.MyFilter[0, 1] = 0;
+                        EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                        EdgeDetectionFilter.MyFilter[2, 1] = 0;
+                        EdgeDetectionFilter.MyFilter[0, 2] = -1;
+                        EdgeDetectionFilter.MyFilter[1, 2] = -2;
+                        EdgeDetectionFilter.MyFilter[2, 2] = -1;
                     }
                     else
                     {
-                        _EdgeDetectionFilter.MyFilter[0, 0] = -1;
-                        _EdgeDetectionFilter.MyFilter[1, 0] = -2;
-                        _EdgeDetectionFilter.MyFilter[2, 0] = -1;
-                        _EdgeDetectionFilter.MyFilter[0, 1] = 0;
-                        _EdgeDetectionFilter.MyFilter[1, 1] = 0;
-                        _EdgeDetectionFilter.MyFilter[2, 1] = 0;
-                        _EdgeDetectionFilter.MyFilter[0, 2] = 1;
-                        _EdgeDetectionFilter.MyFilter[1, 2] = 2;
-                        _EdgeDetectionFilter.MyFilter[2, 2] = 1;
+                        EdgeDetectionFilter.MyFilter[0, 0] = -1;
+                        EdgeDetectionFilter.MyFilter[1, 0] = -2;
+                        EdgeDetectionFilter.MyFilter[2, 0] = -1;
+                        EdgeDetectionFilter.MyFilter[0, 1] = 0;
+                        EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                        EdgeDetectionFilter.MyFilter[2, 1] = 0;
+                        EdgeDetectionFilter.MyFilter[0, 2] = 1;
+                        EdgeDetectionFilter.MyFilter[1, 2] = 2;
+                        EdgeDetectionFilter.MyFilter[2, 2] = 1;
                     }
                 }
                 else
                 {
-                    if (!_Invert)
+                    if (!Invert)
                     {
-                        _EdgeDetectionFilter.MyFilter[0, 0] = -1;
-                        _EdgeDetectionFilter.MyFilter[0, 1] = -2;
-                        _EdgeDetectionFilter.MyFilter[0, 2] = -1;
-                        _EdgeDetectionFilter.MyFilter[1, 0] = 0;
-                        _EdgeDetectionFilter.MyFilter[1, 1] = 0;
-                        _EdgeDetectionFilter.MyFilter[1, 2] = 0;
-                        _EdgeDetectionFilter.MyFilter[2, 0] = 1;
-                        _EdgeDetectionFilter.MyFilter[2, 1] = 2;
-                        _EdgeDetectionFilter.MyFilter[2, 2] = 1;
+                        EdgeDetectionFilter.MyFilter[0, 0] = -1;
+                        EdgeDetectionFilter.MyFilter[0, 1] = -2;
+                        EdgeDetectionFilter.MyFilter[0, 2] = -1;
+                        EdgeDetectionFilter.MyFilter[1, 0] = 0;
+                        EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                        EdgeDetectionFilter.MyFilter[1, 2] = 0;
+                        EdgeDetectionFilter.MyFilter[2, 0] = 1;
+                        EdgeDetectionFilter.MyFilter[2, 1] = 2;
+                        EdgeDetectionFilter.MyFilter[2, 2] = 1;
                     }
                     else
                     {
-                        _EdgeDetectionFilter.MyFilter[0, 0] = 1;
-                        _EdgeDetectionFilter.MyFilter[0, 1] = 2;
-                        _EdgeDetectionFilter.MyFilter[0, 2] = 1;
-                        _EdgeDetectionFilter.MyFilter[1, 0] = 0;
-                        _EdgeDetectionFilter.MyFilter[1, 1] = 0;
-                        _EdgeDetectionFilter.MyFilter[1, 2] = 0;
-                        _EdgeDetectionFilter.MyFilter[2, 0] = -1;
-                        _EdgeDetectionFilter.MyFilter[2, 1] = -2;
-                        _EdgeDetectionFilter.MyFilter[2, 2] = -1;
+                        EdgeDetectionFilter.MyFilter[0, 0] = 1;
+                        EdgeDetectionFilter.MyFilter[0, 1] = 2;
+                        EdgeDetectionFilter.MyFilter[0, 2] = 1;
+                        EdgeDetectionFilter.MyFilter[1, 0] = 0;
+                        EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                        EdgeDetectionFilter.MyFilter[1, 2] = 0;
+                        EdgeDetectionFilter.MyFilter[2, 0] = -1;
+                        EdgeDetectionFilter.MyFilter[2, 1] = -2;
+                        EdgeDetectionFilter.MyFilter[2, 2] = -1;
                     }
                 }
-                _EdgeDetectionFilter.Offset = 127;
+                EdgeDetectionFilter.Offset = 127;
             }
-            catch (Exception e) { throw e; }
+            catch { throw; }
         }
+
         #endregion
 
-        #region IDisposable Members
+        #region Public Functions
 
-        public void Dispose()
+        /// <summary>
+        /// Creates the bump map
+        /// </summary>
+        public Bitmap Create(Bitmap Image)
         {
-            if (_Image != null)
+            try
             {
-                _Image.Dispose();
+                CreateFilter();
+                using (Bitmap TempImage = EdgeDetectionFilter.ApplyFilter(Image))
+                {
+                    return Media.Image.Image.ConvertBlackAndWhite(TempImage);
+                }
             }
+            catch { throw; }
         }
 
         #endregion
     }
 
     #region Enum
+
     /// <summary>
     /// Direction
     /// </summary>

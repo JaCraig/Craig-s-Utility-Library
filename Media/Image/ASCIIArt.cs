@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Text;
+using System.Drawing.Imaging;
 #endregion
 
 namespace Utilities.Media.Image
@@ -40,32 +41,40 @@ namespace Utilities.Media.Image
         /// <returns>A string containing the art</returns>
         public static string ConvertToASCII(Bitmap Input)
         {
-            bool ShowLine = true;
-            Bitmap TempImage = Image.ConvertBlackAndWhite(Input);
-            StringBuilder Builder = new StringBuilder();
-            for (int x = 0; x < TempImage.Height; ++x)
+            try
             {
-                for (int y = 0; y < TempImage.Width; ++y)
+                bool ShowLine = true;
+                using (Bitmap TempImage = Image.ConvertBlackAndWhite(Input))
                 {
-                    if (ShowLine)
+                    BitmapData OldData = Image.LockImage(TempImage);
+                    int OldPixelSize = Image.GetPixelSize(OldData);
+                    StringBuilder Builder = new StringBuilder();
+                    for (int x = 0; x < TempImage.Height; ++x)
                     {
-                        Color CurrentPixel = TempImage.GetPixel(y, x);
-                        Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length)/255)]);
-                    }
+                        for (int y = 0; y < TempImage.Width; ++y)
+                        {
+                            if (ShowLine)
+                            {
+                                Color CurrentPixel = Image.GetPixel(OldData, y, x, OldPixelSize);
+                                Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length) / 255)]);
+                            }
 
-                }
-                if (ShowLine)
-                {
-                    Builder.Append(System.Environment.NewLine);
-                    ShowLine = false;
-                }
-                else
-                {
-                    ShowLine = true;
+                        }
+                        if (ShowLine)
+                        {
+                            Builder.Append(System.Environment.NewLine);
+                            ShowLine = false;
+                        }
+                        else
+                        {
+                            ShowLine = true;
+                        }
+                    }
+                    Image.UnlockImage(TempImage, OldData);
+                    return Builder.ToString();
                 }
             }
-            TempImage.Dispose();
-            return Builder.ToString();
+            catch { throw; }
         }
 
         #endregion

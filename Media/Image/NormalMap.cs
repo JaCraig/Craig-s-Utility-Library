@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 #endregion
 
 namespace Utilities.Media.Image
@@ -29,180 +30,116 @@ namespace Utilities.Media.Image
     /// <summary>
     /// Class for creating a normal map
     /// </summary>
-    public class NormalMap : IDisposable
+    public class NormalMap
     {
-        #region Private Variables
-        private System.Drawing.Bitmap _Image = null;
-        private BumpMap _FilterX = null;
-        private BumpMap _FilterY = null;
-        private bool _InvertX = false;
-        private bool _InvertY = false;
-        #endregion
-
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
         public NormalMap()
         {
-            try
-            {
-                CreateFilter();
-            }
-            catch (Exception e) { throw e; }
+            InvertX = false;
+            InvertY = false;
         }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="FileName">Name of the file</param>
-        public NormalMap(string FileName)
-        {
-            try
-            {
-                _Image = (Bitmap)System.Drawing.Bitmap.FromFile(FileName);
-                CreateFilter();
-                CreateNormalMap();
-            }
-            catch (Exception e) { throw e; }
-        }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Image">Image to use</param>
-        public NormalMap(System.Drawing.Bitmap Image)
-        {
-            try
-            {
-                _Image = new Bitmap(Image);
-                CreateFilter();
-                CreateNormalMap();
-            }
-            catch (Exception e) { throw e; }
-        }
+
         #endregion
 
-        #region Public Properties
-        /// <summary>
-        /// The internal image
-        /// </summary>
-        public System.Drawing.Bitmap Image
-        {
-            get { return _Image; }
-            set
-            {
-                try
-                {
-                    _Image = value;
-                    CreateNormalMap();
-                }
-                catch (Exception e) { throw e; }
-            }
-        }
+        #region Properties
 
         /// <summary>
         /// Determines the direction of the normal map in the x direction
         /// </summary>
-        public bool InvertX
-        {
-            get { return _InvertX; }
-            set
-            {
-                try
-                {
-                    _InvertX = value;
-                    CreateFilter();
-                    CreateNormalMap();
-                }
-                catch (Exception e) { throw e; }
-            }
-        }
+        public bool InvertX { get; set; }
 
         /// <summary>
         /// Determines the direction of the normal map in the y direction
         /// </summary>
-        public bool InvertY
-        {
-            get { return _InvertY; }
-            set
-            {
-                try
-                {
-                    _InvertY = value;
-                    CreateFilter();
-                    CreateNormalMap();
-                }
-                catch (Exception e) { throw e; }
-            }
-        }
+        public bool InvertY { get; set; }
+
+        /// <summary>
+        /// X filter
+        /// </summary>
+        protected BumpMap FilterX { get; set; }
+
+        /// <summary>
+        /// Y filter
+        /// </summary>
+        protected BumpMap FilterY { get; set; }
+        
         #endregion
 
-        #region Private Functions
-        /// <summary>
-        /// Creates the bump map
-        /// </summary>
-        private void CreateNormalMap()
-        {
-            try
-            {
-                Bitmap TempImageX = _FilterX.Image;
-                Bitmap TempImageY = _FilterY.Image;
-                _Image.Dispose();
-                _Image = new Bitmap(TempImageX.Width, TempImageX.Height);
-                Math.Vector3 TempVector = new Utilities.Math.Vector3(0.0, 0.0, 0.0);
-                for (int y = 0; y < TempImageX.Height; ++y)
-                {
-                    for (int x = 0; x < TempImageX.Width; ++x)
-                    {
-                        Color TempPixelX = TempImageX.GetPixel(x, y);
-                        Color TempPixelY = TempImageY.GetPixel(x, y);
-                        TempVector.X = (double)(TempPixelX.R) / 255.0;
-                        TempVector.Y = (double)(TempPixelY.R) / 255.0;
-                        TempVector.Z = 1.0;
-                        TempVector.Normalize();
-                        TempVector.X = ((TempVector.X + 1.0) / 2.0) * 255.0;
-                        TempVector.Y = ((TempVector.Y + 1.0) / 2.0) * 255.0;
-                        TempVector.Z = ((TempVector.Z + 1.0) / 2.0) * 255.0;
-                        _Image.SetPixel(x, y, Color.FromArgb((int)TempVector.X, (int)TempVector.Y, (int)TempVector.Z));
-                    }
-                }
-            }
-            catch (Exception e) { throw e; }
-        }
+        #region Protected Functions
 
         /// <summary>
         /// Sets up the edge detection filter
         /// </summary>
-        private void CreateFilter()
+        protected void CreateFilter()
         {
             try
             {
-                _FilterX = new BumpMap(_Image);
-                _FilterY = new BumpMap(_Image);
-                _FilterX.Invert = InvertX;
-                _FilterY.Invert = InvertY;
-                _FilterX.Direction = Direction.LeftRight;
-                _FilterY.Direction = Direction.TopBottom;
+                FilterX = new BumpMap();
+                FilterY = new BumpMap();
+                FilterX.Invert = InvertX;
+                FilterY.Invert = InvertY;
+                FilterX.Direction = Direction.LeftRight;
+                FilterY.Direction = Direction.TopBottom;
             }
-            catch (Exception e) { throw e; }
+            catch { throw; }
         }
+
         #endregion
 
-        #region IDisposable Members
+        #region Public Functions
 
-        public void Dispose()
+        /// <summary>
+        /// Creates the bump map
+        /// </summary>
+        public Bitmap Create(Bitmap ImageUsing)
         {
-            if (_FilterX != null)
+            try
             {
-                _FilterX.Dispose();
+                CreateFilter();
+                using (Bitmap TempImageX = FilterX.Create(ImageUsing))
+                {
+                    using (Bitmap TempImageY = FilterY.Create(ImageUsing))
+                    {
+                        Bitmap ReturnImage = new Bitmap(TempImageX.Width, TempImageX.Height);
+                        Math.Vector3 TempVector = new Utilities.Math.Vector3(0.0, 0.0, 0.0);
+                        BitmapData TempImageXData=Image.LockImage(TempImageX);
+                        BitmapData TempImageYData = Image.LockImage(TempImageY);
+                        BitmapData ReturnImageData = Image.LockImage(ReturnImage);
+                        int TempImageXPixelSize = Image.GetPixelSize(TempImageXData);
+                        int TempImageYPixelSize = Image.GetPixelSize(TempImageYData);
+                        int ReturnImagePixelSize = Image.GetPixelSize(ReturnImageData);
+                        for (int y = 0; y < TempImageX.Height; ++y)
+                        {
+                            for (int x = 0; x < TempImageX.Width; ++x)
+                            {
+                                Color TempPixelX = Image.GetPixel(TempImageXData, x, y, TempImageXPixelSize);
+                                Color TempPixelY = Image.GetPixel(TempImageYData, x, y, TempImageYPixelSize);
+                                TempVector.X = (double)(TempPixelX.R) / 255.0;
+                                TempVector.Y = (double)(TempPixelY.R) / 255.0;
+                                TempVector.Z = 1.0;
+                                TempVector.Normalize();
+                                TempVector.X = ((TempVector.X + 1.0) / 2.0) * 255.0;
+                                TempVector.Y = ((TempVector.Y + 1.0) / 2.0) * 255.0;
+                                TempVector.Z = ((TempVector.Z + 1.0) / 2.0) * 255.0;
+                                Image.SetPixel(ReturnImageData, x, y,
+                                    Color.FromArgb((int)TempVector.X,
+                                        (int)TempVector.Y,
+                                        (int)TempVector.Z),
+                                    ReturnImagePixelSize);
+                            }
+                        }
+                        Image.UnlockImage(TempImageX, TempImageXData);
+                        Image.UnlockImage(TempImageY, TempImageYData);
+                        Image.UnlockImage(ReturnImage, ReturnImageData);
+                        return ReturnImage;
+                    }
+                }
             }
-            if (_FilterY != null)
-            {
-                _FilterY.Dispose();
-            }
-            if (_Image != null)
-            {
-                _Image.Dispose();
-            }
+            catch { throw; }
         }
 
         #endregion

@@ -34,6 +34,7 @@ namespace Utilities.Media
     public static class Screenshot
     {
         #region Public Static Functions
+
         /// <summary>
         /// Takes a screenshot of the screen as a whole
         /// (if multiple screens are attached, it takes an image containing them all)
@@ -43,14 +44,12 @@ namespace Utilities.Media
         {
             try
             {
-                Bitmap TempBitmap=Screenshot.TakeScreenShot();
-                TempBitmap.Save(FileName);
-                TempBitmap.Dispose();
+                using (Bitmap TempBitmap = Screenshot.TakeScreenShot())
+                {
+                    TempBitmap.Save(FileName);
+                }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -68,15 +67,13 @@ namespace Utilities.Media
                     TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);
                 }
                 Bitmap TempBitmap = new Bitmap(TotalScreenRect.Width, TotalScreenRect.Height, PixelFormat.Format32bppArgb);
-                Graphics TempGraphics = Graphics.FromImage(TempBitmap);
-                TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);
-                TempGraphics.Dispose();
+                using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
+                {
+                    TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);
+                }
                 return TempBitmap;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
         #endregion
     }

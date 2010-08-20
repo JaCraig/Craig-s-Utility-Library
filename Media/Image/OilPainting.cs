@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Drawing;
 using Utilities.Media.Image.Procedural;
+using System.Drawing.Imaging;
 #endregion
 
 namespace Utilities.Media.Image
@@ -32,6 +33,14 @@ namespace Utilities.Media.Image
     /// </summary>
     public class OilPainting:IDisposable
     {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Image">Input image</param>
+        /// <param name="Seed">Randomization seed</param>
+        /// <param name="NumberOfPoints">Number of points for the painting</param>
         public OilPainting(Bitmap Image,int Seed,int NumberOfPoints)
         {
             _Image = new Bitmap(Image);
@@ -40,8 +49,14 @@ namespace Utilities.Media.Image
             SetupImage();
         }
 
+        #endregion
+
+        #region Private Functions
+
         private void SetupImage()
         {
+            BitmapData ImageData = Image.LockImage(_Image);
+            int ImagePixelSize = Image.GetPixelSize(ImageData);
             for (int i = 0; i < _NumberOfPoints; ++i)
             {
                 int Red=0;
@@ -54,7 +69,7 @@ namespace Utilities.Media.Image
                     {
                         if (Map.ClosestPoint[x, y] == i)
                         {
-                            Color Pixel = _Image.GetPixel(x, y);
+                            Color Pixel = Image.GetPixel(ImageData, x, y, ImagePixelSize);
                             Red += Pixel.R;
                             Green += Pixel.G;
                             Blue += Pixel.B;
@@ -69,7 +84,7 @@ namespace Utilities.Media.Image
                     {
                         if (Map.ClosestPoint[x, y] == i)
                         {
-                            _Image.SetPixel(x, y, Color.FromArgb(Red / Counter, Green / Counter, Blue / Counter));
+                            Image.SetPixel(ImageData, x, y, Color.FromArgb(Red / Counter, Green / Counter, Blue / Counter), ImagePixelSize);
                             ++Counter2;
                             if (Counter2 == Counter)
                                 break;
@@ -79,11 +94,23 @@ namespace Utilities.Media.Image
                         break;
                 }
             }
+            Image.UnlockImage(_Image, ImageData);
         }
 
+        #endregion
+
+        #region Properties
+
         private CellularMap Map = null;
+
+        /// <summary>
+        /// Final Bitmap Image
+        /// </summary>
         public Bitmap _Image { get; set; }
+
         private int _NumberOfPoints = 0;
+
+        #endregion
 
         #region IDisposable Members
 
