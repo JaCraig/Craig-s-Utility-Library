@@ -61,6 +61,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -157,6 +158,7 @@
     <Compile Include="FileFormats\RSSHelper\Thumbnail.cs" />
     <Compile Include="Math\Math.cs" />
     <Compile Include="Math\Set.cs" />
+    <Compile Include="Media\Image\ColorMatrix.cs" />
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />

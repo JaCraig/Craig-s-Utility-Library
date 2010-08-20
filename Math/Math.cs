@@ -137,6 +137,48 @@ namespace Utilities.Math
             return System.Math.Sqrt(Variance(Values));
         }
 
+        /// <summary>
+        /// Clamps a value between two values
+        /// </summary>
+        /// <param name="Value">Value sent in</param>
+        /// <param name="Max">Max value it can be (inclusive)</param>
+        /// <param name="Min">Min value it can be (inclusive)</param>
+        /// <returns>The value set between Min and Max</returns>
+        public static int Clamp(int Value, int Max, int Min)
+        {
+            Value = Value > Max ? Max : Value;
+            Value = Value < Min ? Min : Value;
+            return Value;
+        }
+
+        /// <summary>
+        /// Clamps a value between two values
+        /// </summary>
+        /// <param name="Value">Value sent in</param>
+        /// <param name="Max">Max value it can be (inclusive)</param>
+        /// <param name="Min">Min value it can be (inclusive)</param>
+        /// <returns>The value set between Min and Max</returns>
+        public static double Clamp(double Value, double Max, double Min)
+        {
+            Value = Value > Max ? Max : Value;
+            Value = Value < Min ? Min : Value;
+            return Value;
+        }
+
+        /// <summary>
+        /// Clamps a value between two values
+        /// </summary>
+        /// <param name="Value">Value sent in</param>
+        /// <param name="Max">Max value it can be (inclusive)</param>
+        /// <param name="Min">Min value it can be (inclusive)</param>
+        /// <returns>The value set between Min and Max</returns>
+        public static float Clamp(float Value, float Max, float Min)
+        {
+            Value = Value > Max ? Max : Value;
+            Value = Value < Min ? Min : Value;
+            return Value;
+        }
+
         #endregion
     }
 }
