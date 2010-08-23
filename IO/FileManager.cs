@@ -36,6 +36,9 @@ namespace Utilities.IO
     public static class FileManager
     {
         #region Public Static Functions
+
+        #region SaveFile
+
         /// <summary>
         /// Saves a file
         /// </summary>
@@ -77,18 +80,12 @@ namespace Utilities.IO
                         }
                         Opened = true;
                     }
-                    catch (System.IO.IOException e)
-                    {
-                        throw e;
-                    }
+                    catch (System.IO.IOException) { throw; }
                 }
                 Writer.Write(ContentBytes, 0, ContentBytes.Length);
                 Writer.Close();
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
             finally
             {
                 if (Writer != null)
@@ -100,6 +97,97 @@ namespace Utilities.IO
         }
 
         /// <summary>
+        /// Saves a file to an FTP server
+        /// </summary>
+        /// <param name="Content">File content</param>
+        /// <param name="FileName">File name to save this as (should include directories if applicable)</param>
+        /// <param name="FTPServer">Location of the ftp server</param>
+        /// <param name="UserName">User name to log in</param>
+        /// <param name="Password">Password to log in</param>
+        public static void SaveFile(string Content, string FileName, Uri FTPServer, string UserName, string Password)
+        {
+            try
+            {
+                Uri TempURI = new Uri(Path.Combine(FTPServer.ToString(), FileName));
+                FtpWebRequest FTPRequest = (FtpWebRequest)FtpWebRequest.Create(TempURI);
+                FTPRequest.Credentials = new NetworkCredential(UserName, Password);
+                FTPRequest.KeepAlive = false;
+                FTPRequest.Method = WebRequestMethods.Ftp.UploadFile;
+                FTPRequest.UseBinary = true;
+                FTPRequest.ContentLength = Content.Length;
+                FTPRequest.Proxy = null;
+                using (Stream TempStream = FTPRequest.GetRequestStream())
+                {
+                    System.Text.ASCIIEncoding TempEncoding = new System.Text.ASCIIEncoding();
+                    byte[] TempBytes = TempEncoding.GetBytes(Content);
+                    TempStream.Write(TempBytes, 0, TempBytes.Length);
+                }
+                FTPRequest.GetResponse();
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Saves a file
+        /// </summary>
+        /// <param name="Content">File content</param>
+        /// <param name="FileName">File name to save this as (should include directories if applicable)</param>
+        /// <param name="Append">Tells the system if you wish to append data or create a new document</param>
+        public static void SaveFile(byte[] Content, string FileName, bool Append = false)
+        {
+            FileStream Writer = null;
+            try
+            {
+                int Index = FileName.LastIndexOf('/');
+                if (Index <= 0)
+                {
+                    Index = FileName.LastIndexOf('\\');
+                }
+                if (Index <= 0)
+                {
+                    throw new Exception("Directory must be specified for the file");
+                }
+                string Directory = FileName.Remove(Index) + "/";
+                if (!DirectoryExists(Directory))
+                {
+                    CreateDirectory(Directory);
+                }
+                bool Opened = false;
+                while (!Opened)
+                {
+                    try
+                    {
+                        if (Append)
+                        {
+                            Writer = File.Open(FileName, FileMode.Append, FileAccess.Write, FileShare.None);
+                        }
+                        else
+                        {
+                            Writer = File.Open(FileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                        }
+                        Opened = true;
+                    }
+                    catch (System.IO.IOException) { throw; }
+                }
+                Writer.Write(Content, 0, Content.Length);
+                Writer.Close();
+            }
+            catch { throw; }
+            finally
+            {
+                if (Writer != null)
+                {
+                    Writer.Close();
+                    Writer.Dispose();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Delete
+
+        /// <summary>
         /// Deletes a file
         /// </summary>
         /// <param name="FileName">Path of the file</param>
@@ -109,11 +197,12 @@ namespace Utilities.IO
             {
                 File.Delete(FileName);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region RenameFile
 
         /// <summary>
         /// Renames a file
@@ -126,11 +215,12 @@ namespace Utilities.IO
             {
                 File.Move(FileName, NewFileName);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region DirectoryExists
 
         /// <summary>
         /// Determines if a directory exists
@@ -143,11 +233,12 @@ namespace Utilities.IO
             {
                 return Directory.Exists(DirectoryPath);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region FileExists
 
         /// <summary>
         /// Determines if a file exists
@@ -160,11 +251,12 @@ namespace Utilities.IO
             {
                 return File.Exists(FileName);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region DirectoryList
 
         /// <summary>
         /// Directory listing
@@ -187,11 +279,12 @@ namespace Utilities.IO
                 }
                 return Directories;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region CreateDirectory
 
         /// <summary>
         /// Creates a directory
@@ -203,11 +296,12 @@ namespace Utilities.IO
             {
                 Directory.CreateDirectory(DirectoryPath);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region DeleteDirectory
 
         /// <summary>
         /// Deletes a directory and all files found within it.
@@ -219,11 +313,12 @@ namespace Utilities.IO
             {
                 Directory.Delete(DirectoryPath, true);
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region FileList
 
         /// <summary>
         /// Gets a list of files
@@ -261,6 +356,10 @@ namespace Utilities.IO
             }
             catch { throw; }
         }
+
+        #endregion
+
+        #region GetFileContents
 
         /// <summary>
         /// Gets a files' contents
@@ -300,19 +399,13 @@ namespace Utilities.IO
                         Reader = File.OpenText(FileName);
                         Opened = true;
                     }
-                    catch (System.IO.IOException e)
-                    {
-                        throw e;
-                    }
+                    catch (System.IO.IOException) { throw; }
                 }
                 string Contents = Reader.ReadToEnd();
                 Reader.Close();
                 return Contents;
             }
-            catch
-            {
-                return "";
-            }
+            catch { throw; }
             finally
             {
                 if (Reader != null)
@@ -332,7 +425,6 @@ namespace Utilities.IO
         public static void GetFileContents(string FileName, out byte[]Output, int TimeOut)
         {
             FileStream Reader = null;
-            MemoryStream TempReader=null;
             int StartTime = System.Environment.TickCount;
             try
             {
@@ -351,25 +443,24 @@ namespace Utilities.IO
                         Reader = File.OpenRead(FileName);
                         Opened = true;
                     }
-                    catch (System.IO.IOException e)
-                    {
-                        throw e;
-                    }
+                    catch (System.IO.IOException) { throw; }
                 }
                 byte[] Buffer = new byte[1024];
-                TempReader=new MemoryStream();
-                while(Reader.Read(Buffer,0,1024)==1024)
+                using (MemoryStream TempReader = new MemoryStream())
                 {
-                    TempReader.Write(Buffer,0,Buffer.Length);
+                    while (Reader.Read(Buffer, 0, 1024) == 1024)
+                    {
+                        TempReader.Write(Buffer, 0, Buffer.Length);
+                    }
+                    Reader.Close();
+                    Output = TempReader.ToArray();
+                    TempReader.Close();
                 }
-                Reader.Close();
-                Output=TempReader.ToArray();
-                TempReader.Close();
             }
             catch
             {
                 Output = null;
-                return;
+                throw;
             }
             finally
             {
@@ -377,11 +468,6 @@ namespace Utilities.IO
                 {
                     Reader.Close();
                     Reader.Dispose();
-                }
-                if (TempReader != null)
-                {
-                    TempReader.Close();
-                    TempReader.Dispose();
                 }
             }
         }
@@ -393,32 +479,19 @@ namespace Utilities.IO
         /// <returns>a string containing the file's contents</returns>
         public static string GetFileContents(Uri FileName)
         {
-            WebClient Client = null;
-            StreamReader Reader = null;
             try
             {
-                Client = new WebClient();
-                Reader = new StreamReader(Client.OpenRead(FileName));
-                string Contents = Reader.ReadToEnd();
-                Reader.Close();
-                return Contents;
-            }
-            catch
-            {
-                return "";
-            }
-            finally
-            {
-                if (Reader != null)
+                using (WebClient Client = new WebClient())
                 {
-                    Reader.Close();
-                    Reader.Dispose();
-                }
-                if (Client != null)
-                {
-                    Client.Dispose();
+                    using (StreamReader Reader = new StreamReader(Client.OpenRead(FileName)))
+                    {
+                        string Contents = Reader.ReadToEnd();
+                        Reader.Close();
+                        return Contents;
+                    }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -427,18 +500,16 @@ namespace Utilities.IO
         /// <param name="FileName">File name</param>
         /// <param name="OutputStream">The output stream of the file</param>
         /// <returns>a string containing the file's contents</returns>
-        public static void GetFileContents(Uri FileName,out Stream OutputStream)
+        public static void GetFileContents(Uri FileName,out Stream OutputStream,out WebClient Client)
         {
-            WebClient Client = null;
+            Client = null;
             OutputStream = null;
             try
             {
                 Client = new WebClient();
                 OutputStream = Client.OpenRead(FileName);
             }
-            catch
-            {
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -450,33 +521,20 @@ namespace Utilities.IO
         /// <returns>A string containing the file's contents</returns>
         public static string GetFileContents(Uri FileName, string UserName, string Password)
         {
-            WebClient Client = null;
-            StreamReader Reader = null;
             try
             {
-                Client = new WebClient();
-                Client.Credentials = new NetworkCredential(UserName, Password);
-                Reader = new StreamReader(Client.OpenRead(FileName));
-                string Contents = Reader.ReadToEnd();
-                Reader.Close();
-                return Contents;
-            }
-            catch
-            {
-                return "";
-            }
-            finally
-            {
-                if (Reader != null)
+                using (WebClient Client = new WebClient())
                 {
-                    Reader.Close();
-                    Reader.Dispose();
-                }
-                if (Client != null)
-                {
-                    Client.Dispose();
+                    Client.Credentials = new NetworkCredential(UserName, Password);
+                    using (StreamReader Reader = new StreamReader(Client.OpenRead(FileName)))
+                    {
+                        string Contents = Reader.ReadToEnd();
+                        Reader.Close();
+                        return Contents;
+                    }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -486,10 +544,11 @@ namespace Utilities.IO
         /// <param name="UserName">User name to log in</param>
         /// <param name="Password">Password to log in</param>
         /// <param name="OutputStream">The output stream of the file</param>
+        /// <param name="Client">WebClient that is opened by the system</param>
         /// <returns>a string containing the file's contents</returns>
-        public static void GetFileContents(Uri FileName, string UserName, string Password, out Stream OutputStream)
+        public static void GetFileContents(Uri FileName, string UserName, string Password, out Stream OutputStream,out WebClient Client)
         {
-            WebClient Client = null;
+            Client = null;
             OutputStream = null;
             try
             {
@@ -497,9 +556,7 @@ namespace Utilities.IO
                 Client.Credentials = new NetworkCredential(UserName, Password);
                 OutputStream = Client.OpenRead(FileName);
             }
-            catch
-            {
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -509,8 +566,16 @@ namespace Utilities.IO
         /// <param name="Output">Contents of the file in bytes</param>
         public static void GetFileContents(string FileName, out byte[] Output)
         {
-            GetFileContents(FileName, out Output, 5000);
+            try
+            {
+                GetFileContents(FileName, out Output, 5000);
+            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region CopyDirectory
 
         /// <summary>
         /// Copies a directory to a new location
@@ -565,18 +630,19 @@ namespace Utilities.IO
                     }
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region GetDirectorySize
 
         /// <summary>
         /// Gets the size of all files within a directory
         /// </summary>
         /// <param name="Directory">Directory path</param>
         /// <param name="Recursive">determines if this is a recursive call or not</param>
-        /// <returns></returns>
+        /// <returns>The directory size</returns>
         public static long GetDirectorySize(string Directory, bool Recursive)
         {
             try
@@ -589,11 +655,12 @@ namespace Utilities.IO
                 }
                 return Size;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region DeleteFilesOlderThan
 
         /// <summary>
         /// Deletes files older than the specified date
@@ -614,11 +681,12 @@ namespace Utilities.IO
                     }
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region DeleteFilesNewerThan
 
         /// <summary>
         /// Deletes files newer than the specified date
@@ -639,11 +707,12 @@ namespace Utilities.IO
                     }
                 }
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region CompareFiles
 
         /// <summary>
         /// Compares 2 files and determines if they are the same or not
@@ -667,104 +736,11 @@ namespace Utilities.IO
                     return false;
                 return true;
             }
-            catch (Exception a)
-            {
-                throw a;
-            }
+            catch { throw; }
         }
 
-        /// <summary>
-        /// Saves a file to an FTP server
-        /// </summary>
-        /// <param name="Content">File content</param>
-        /// <param name="FileName">File name to save this as (should include directories if applicable)</param>
-        /// <param name="FTPServer">Location of the ftp server</param>
-        /// <param name="UserName">User name to log in</param>
-        /// <param name="Password">Password to log in</param>
-        public static void SaveFile(string Content, string FileName, Uri FTPServer, string UserName, string Password)
-        {
-            try
-            {
-                Uri TempURI = new Uri(Path.Combine(FTPServer.ToString(), FileName));
-                FtpWebRequest FTPRequest = (FtpWebRequest)FtpWebRequest.Create(TempURI);
-                FTPRequest.Credentials = new NetworkCredential(UserName, Password);
-                FTPRequest.KeepAlive = false;
-                FTPRequest.Method = WebRequestMethods.Ftp.UploadFile;
-                FTPRequest.UseBinary = true;
-                FTPRequest.ContentLength = Content.Length;
-                FTPRequest.Proxy = null;
-                using (Stream TempStream = FTPRequest.GetRequestStream())
-                {
-                    System.Text.ASCIIEncoding TempEncoding = new System.Text.ASCIIEncoding();
-                    byte[] TempBytes = TempEncoding.GetBytes(Content);
-                    TempStream.Write(TempBytes, 0, TempBytes.Length);
-                }
-                FTPRequest.GetResponse();
-            }
-            catch { }
-        }
+        #endregion
 
-        /// <summary>
-        /// Saves a file
-        /// </summary>
-        /// <param name="Content">File content</param>
-        /// <param name="FileName">File name to save this as (should include directories if applicable)</param>
-        /// <param name="Append">Tells the system if you wish to append data or create a new document</param>
-        public static void SaveFile(byte[]Content, string FileName,bool Append=false)
-        {
-            FileStream Writer = null;
-            try
-            {
-                int Index = FileName.LastIndexOf('/');
-                if (Index <= 0)
-                {
-                    Index = FileName.LastIndexOf('\\');
-                }
-                if (Index <= 0)
-                {
-                    throw new Exception("Directory must be specified for the file");
-                }
-                string Directory = FileName.Remove(Index) + "/";
-                if (!DirectoryExists(Directory))
-                {
-                    CreateDirectory(Directory);
-                }
-                bool Opened = false;
-                while (!Opened)
-                {
-                    try
-                    {
-                        if (Append)
-                        {
-                            Writer = File.Open(FileName, FileMode.Append, FileAccess.Write, FileShare.None);
-                        }
-                        else
-                        {
-                            Writer = File.Open(FileName, FileMode.Create, FileAccess.Write, FileShare.None);
-                        }
-                        Opened = true;
-                    }
-                    catch (System.IO.IOException e)
-                    {
-                        throw e;
-                    }
-                }
-                Writer.Write(Content, 0, Content.Length);
-                Writer.Close();
-            }
-            catch (Exception a)
-            {
-                throw a;
-            }
-            finally
-            {
-                if (Writer != null)
-                {
-                    Writer.Close();
-                    Writer.Dispose();
-                }
-            }
-        }
         #endregion
     }
 

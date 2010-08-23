@@ -34,6 +34,7 @@ namespace Utilities.SQL
     public class SQLHelper:IDisposable
     {
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -42,12 +43,17 @@ namespace Utilities.SQL
         /// <param name="CommandType">The command type of the command sent in</param>
         public SQLHelper(string Command, string ConnectionUsing,CommandType CommandType)
         {
-            Connection = new SqlConnection(ConnectionUsing);
-            _Command = Command;
-            _ExecutableCommand = new SqlCommand(_Command, Connection);
-            _ExecutableCommand.CommandType = CommandType;
-            this._CommandType = CommandType;
+            try
+            {
+                Connection = new SqlConnection(ConnectionUsing);
+                _Command = Command;
+                _ExecutableCommand = new SqlCommand(_Command, Connection);
+                _ExecutableCommand.CommandType = CommandType;
+                this._CommandType = CommandType;
+            }
+            catch { throw; }
         }
+
         #endregion
 
         #region Public Functions
@@ -57,8 +63,12 @@ namespace Utilities.SQL
         /// </summary>
         public void BeginTransaction()
         {
-            Transaction = Connection.BeginTransaction();
-            Command = _Command;
+            try
+            {
+                Transaction = Connection.BeginTransaction();
+                Command = _Command;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -66,10 +76,14 @@ namespace Utilities.SQL
         /// </summary>
         public void Commit()
         {
-            if (Transaction != null)
+            try
             {
-                Transaction.Commit();
+                if (Transaction != null)
+                {
+                    Transaction.Commit();
+                }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -77,10 +91,14 @@ namespace Utilities.SQL
         /// </summary>
         public void Rollback()
         {
-            if (Transaction != null)
+            try
             {
-                Transaction.Rollback();
+                if (Transaction != null)
+                {
+                    Transaction.Rollback();
+                }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -88,13 +106,17 @@ namespace Utilities.SQL
         /// </summary>
         public void Open()
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                if (_ExecutableCommand.Connection != null)
+                if (_ExecutableCommand != null)
                 {
-                    _ExecutableCommand.Connection.Open();
+                    if (_ExecutableCommand.Connection != null)
+                    {
+                        _ExecutableCommand.Connection.Open();
+                    }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -102,13 +124,17 @@ namespace Utilities.SQL
         /// </summary>
         public void Close()
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                if (_ExecutableCommand.Connection != null)
+                if (_ExecutableCommand != null)
                 {
-                    _ExecutableCommand.Connection.Close();
+                    if (_ExecutableCommand.Connection != null)
+                    {
+                        _ExecutableCommand.Connection.Close();
+                    }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -119,38 +145,42 @@ namespace Utilities.SQL
         /// <param name="Length">Size of the string(either -1 or 5000 should be used to indicate nvarchar(max))</param>
         public void AddParameter(string ID, string Value, int Length)
         {
-            if (Length == 5000)
+            try
             {
-                Length = -1;
-            }
-            if (_ExecutableCommand != null)
-            {
-                if (_ExecutableCommand.Parameters.Contains(ID))
+                if (Length == 5000)
                 {
-                    if (string.IsNullOrEmpty(Value))
+                    Length = -1;
+                }
+                if (_ExecutableCommand != null)
+                {
+                    if (_ExecutableCommand.Parameters.Contains(ID))
                     {
-                        _ExecutableCommand.Parameters[ID].IsNullable = true;
-                        _ExecutableCommand.Parameters[ID].Value = System.DBNull.Value;
+                        if (string.IsNullOrEmpty(Value))
+                        {
+                            _ExecutableCommand.Parameters[ID].IsNullable = true;
+                            _ExecutableCommand.Parameters[ID].Value = System.DBNull.Value;
+                        }
+                        else
+                        {
+                            _ExecutableCommand.Parameters[ID].Value = Value;
+                        }
                     }
                     else
                     {
-                        _ExecutableCommand.Parameters[ID].Value = Value;
-                    }
-                }
-                else
-                {
-                    SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, SqlDbType.NVarChar, Length);
-                    if (string.IsNullOrEmpty(Value))
-                    {
-                        Parameter.IsNullable = true;
-                        Parameter.Value = System.DBNull.Value;
-                    }
-                    else
-                    {
-                        Parameter.Value = Value;
+                        SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, SqlDbType.NVarChar, Length);
+                        if (string.IsNullOrEmpty(Value))
+                        {
+                            Parameter.IsNullable = true;
+                            Parameter.Value = System.DBNull.Value;
+                        }
+                        else
+                        {
+                            Parameter.Value = Value;
+                        }
                     }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -160,20 +190,24 @@ namespace Utilities.SQL
         /// <param name="Type">SQL type of the parameter</param>
         public void AddOutputParameter(string ID, SqlDbType Type)
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                if (_ExecutableCommand.Parameters.Contains(ID))
+                if (_ExecutableCommand != null)
                 {
-                    _ExecutableCommand.Parameters[ID].Value = null;
-                    _ExecutableCommand.Parameters[ID].Direction = ParameterDirection.Output;
-                }
-                else
-                {
-                    SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, Type);
-                    Parameter.Value = null;
-                    Parameter.Direction = ParameterDirection.Output;
+                    if (_ExecutableCommand.Parameters.Contains(ID))
+                    {
+                        _ExecutableCommand.Parameters[ID].Value = null;
+                        _ExecutableCommand.Parameters[ID].Direction = ParameterDirection.Output;
+                    }
+                    else
+                    {
+                        SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, Type);
+                        Parameter.Value = null;
+                        Parameter.Direction = ParameterDirection.Output;
+                    }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -183,24 +217,28 @@ namespace Utilities.SQL
         /// <param name="Length">Length of the string (either -1 or 5000 should be used to indicate nvarchar(max))</param>
         public void AddOutputParameter(string ID, int Length)
         {
-            if (Length == 5000)
+            try
             {
-                Length = -1;
-            }
-            if (_ExecutableCommand != null)
-            {
-                if (_ExecutableCommand.Parameters.Contains(ID))
+                if (Length == 5000)
                 {
-                    _ExecutableCommand.Parameters[ID].Value = null;
-                    _ExecutableCommand.Parameters[ID].Direction = ParameterDirection.Output;
+                    Length = -1;
                 }
-                else
+                if (_ExecutableCommand != null)
                 {
-                    SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, SqlDbType.NVarChar, Length);
-                    Parameter.Value = null;
-                    Parameter.Direction = ParameterDirection.Output;
+                    if (_ExecutableCommand.Parameters.Contains(ID))
+                    {
+                        _ExecutableCommand.Parameters[ID].Value = null;
+                        _ExecutableCommand.Parameters[ID].Direction = ParameterDirection.Output;
+                    }
+                    else
+                    {
+                        SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, SqlDbType.NVarChar, Length);
+                        Parameter.Value = null;
+                        Parameter.Direction = ParameterDirection.Output;
+                    }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -211,34 +249,38 @@ namespace Utilities.SQL
         /// <param name="Type">SQL type of the parameter</param>
         public void AddParameter(string ID, object Value, SqlDbType Type)
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                if (_ExecutableCommand.Parameters.Contains(ID))
+                if (_ExecutableCommand != null)
                 {
-                    if (Value == null)
+                    if (_ExecutableCommand.Parameters.Contains(ID))
                     {
-                        _ExecutableCommand.Parameters[ID].IsNullable = true;
-                        _ExecutableCommand.Parameters[ID].Value = System.DBNull.Value;
+                        if (Value == null)
+                        {
+                            _ExecutableCommand.Parameters[ID].IsNullable = true;
+                            _ExecutableCommand.Parameters[ID].Value = System.DBNull.Value;
+                        }
+                        else
+                        {
+                            _ExecutableCommand.Parameters[ID].Value = Value;
+                        }
                     }
                     else
                     {
-                        _ExecutableCommand.Parameters[ID].Value = Value;
-                    }
-                }
-                else
-                {
-                    SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, Type);
-                    if (Value == null)
-                    {
-                        Parameter.IsNullable = true;
-                        Parameter.Value = System.DBNull.Value;
-                    }
-                    else
-                    {
-                        Parameter.Value = Value;
+                        SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, Type);
+                        if (Value == null)
+                        {
+                            Parameter.IsNullable = true;
+                            Parameter.Value = System.DBNull.Value;
+                        }
+                        else
+                        {
+                            Parameter.Value = Value;
+                        }
                     }
                 }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -246,10 +288,14 @@ namespace Utilities.SQL
         /// </summary>
         public void ExecuteReader()
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                _Reader = _ExecutableCommand.ExecuteReader();
+                if (_ExecutableCommand != null)
+                {
+                    _Reader = _ExecutableCommand.ExecuteReader();
+                }
             }
+            catch { throw; }
         }
 
         /// <summary>
@@ -258,11 +304,15 @@ namespace Utilities.SQL
         /// <returns>Number of rows effected</returns>
         public int ExecuteNonQuery()
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                return _ExecutableCommand.ExecuteNonQuery();
+                if (_ExecutableCommand != null)
+                {
+                    return _ExecutableCommand.ExecuteNonQuery();
+                }
+                return 0;
             }
-            return 0;
+            catch { throw; }
         }
 
         /// <summary>
@@ -271,11 +321,15 @@ namespace Utilities.SQL
         /// <returns>The object of the first row and first column</returns>
         public object ExecuteScalar()
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                return _ExecutableCommand.ExecuteScalar();
+                if (_ExecutableCommand != null)
+                {
+                    return _ExecutableCommand.ExecuteScalar();
+                }
+                return null;
             }
-            return null;
+            catch { throw; }
         }
 
         /// <summary>
@@ -284,11 +338,15 @@ namespace Utilities.SQL
         /// <returns>True if there is more rows, false otherwise</returns>
         public bool Read()
         {
-            if (_Reader != null)
+            try
             {
-                return _Reader.Read();
+                if (_Reader != null)
+                {
+                    return _Reader.Read();
+                }
+                return false;
             }
-            return false;
+            catch { throw; }
         }
 
         /// <summary>
@@ -299,14 +357,18 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public object GetOutputParameter(string ID, object Default)
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                if (_ExecutableCommand.Parameters[ID] != null && !string.IsNullOrEmpty(_ExecutableCommand.Parameters[ID].ToString()))
+                if (_ExecutableCommand != null)
                 {
-                    return _ExecutableCommand.Parameters[ID].Value;
+                    if (_ExecutableCommand.Parameters[ID] != null && !string.IsNullOrEmpty(_ExecutableCommand.Parameters[ID].ToString()))
+                    {
+                        return _ExecutableCommand.Parameters[ID].Value;
+                    }
                 }
+                return Default;
             }
-            return Default;
+            catch { throw; }
         }
 
         /// <summary>
@@ -317,14 +379,18 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public object GetParameter(string ID, object Default)
         {
-            if (_Reader != null)
+            try
             {
-                if (_Reader[ID] != null && !string.IsNullOrEmpty(_Reader[ID].ToString()))
+                if (_Reader != null)
                 {
-                    return _Reader[ID];
+                    if (_Reader[ID] != null && !string.IsNullOrEmpty(_Reader[ID].ToString()))
+                    {
+                        return _Reader[ID];
+                    }
                 }
+                return Default;
             }
-            return Default;
+            catch { throw; }
         }
 
         /// <summary>
@@ -335,14 +401,18 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public object GetParameter(int Position, object Default)
         {
-            if (_Reader != null)
+            try
             {
-                if (_Reader[Position] != null && !string.IsNullOrEmpty(_Reader[Position].ToString()))
+                if (_Reader != null)
                 {
-                    return _Reader[Position];
+                    if (_Reader[Position] != null && !string.IsNullOrEmpty(_Reader[Position].ToString()))
+                    {
+                        return _Reader[Position];
+                    }
                 }
+                return Default;
             }
-            return Default;
+            catch { throw; }
         }
 
         /// <summary>
@@ -350,14 +420,20 @@ namespace Utilities.SQL
         /// </summary>
         public void ClearParameters()
         {
-            if (_ExecutableCommand != null)
+            try
             {
-                _ExecutableCommand.Parameters.Clear();
+                if (_ExecutableCommand != null)
+                {
+                    _ExecutableCommand.Parameters.Clear();
+                }
             }
+            catch { throw; }
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Stored procedure's name or SQL Text
         /// </summary>
@@ -366,27 +442,31 @@ namespace Utilities.SQL
             get { return _Command; }
             set
             {
-                _Command = value;
-                if (_Reader != null)
+                try
                 {
-                    _Reader.Close();
-                    _Reader.Dispose();
-                    _Reader = null;
+                    _Command = value;
+                    if (_Reader != null)
+                    {
+                        _Reader.Close();
+                        _Reader.Dispose();
+                        _Reader = null;
+                    }
+                    if (_ExecutableCommand != null)
+                    {
+                        _ExecutableCommand.Dispose();
+                        _ExecutableCommand = null;
+                    }
+                    if (Transaction != null)
+                    {
+                        _ExecutableCommand = new SqlCommand(_Command, Connection, Transaction);
+                    }
+                    else
+                    {
+                        _ExecutableCommand = new SqlCommand(_Command, Connection);
+                    }
+                    _ExecutableCommand.CommandType = _CommandType;
                 }
-                if (_ExecutableCommand != null)
-                {
-                    _ExecutableCommand.Dispose();
-                    _ExecutableCommand = null;
-                }
-                if (Transaction != null)
-                {
-                    _ExecutableCommand = new SqlCommand(_Command, Connection, Transaction);
-                }
-                else
-                {
-                    _ExecutableCommand = new SqlCommand(_Command, Connection);
-                }
-                _ExecutableCommand.CommandType = _CommandType;
+                catch { throw; }
             }
         }
 
@@ -398,29 +478,34 @@ namespace Utilities.SQL
             get { return _CommandType; }
             set
             {
-                _CommandType = value;
-                if (_Reader != null)
+                try
                 {
-                    _Reader.Close();
-                    _Reader.Dispose();
-                    _Reader = null;
+                    _CommandType = value;
+                    if (_Reader != null)
+                    {
+                        _Reader.Close();
+                        _Reader.Dispose();
+                        _Reader = null;
+                    }
+                    if (_ExecutableCommand != null)
+                    {
+                        _ExecutableCommand.Dispose();
+                        _ExecutableCommand = null;
+                    }
+                    if (Transaction != null)
+                    {
+                        _ExecutableCommand = new SqlCommand(_Command, Connection, Transaction);
+                    }
+                    else
+                    {
+                        _ExecutableCommand = new SqlCommand(_Command, Connection);
+                    }
+                    _ExecutableCommand.CommandType = _CommandType;
                 }
-                if (_ExecutableCommand != null)
-                {
-                    _ExecutableCommand.Dispose();
-                    _ExecutableCommand = null;
-                }
-                if (Transaction != null)
-                {
-                    _ExecutableCommand = new SqlCommand(_Command, Connection, Transaction);
-                }
-                else
-                {
-                    _ExecutableCommand = new SqlCommand(_Command, Connection);
-                }
-                _ExecutableCommand.CommandType = _CommandType;
+                catch { throw; }
             }
         }
+        
         #endregion
 
         #region Private Variables
@@ -436,26 +521,30 @@ namespace Utilities.SQL
 
         public void Dispose()
         {
-            if (Connection != null)
+            try
             {
-                Connection.Dispose();
-                Connection = null;
+                if (Connection != null)
+                {
+                    Connection.Dispose();
+                    Connection = null;
+                }
+                if (Transaction != null)
+                {
+                    Transaction.Dispose();
+                    Transaction = null;
+                }
+                if (_ExecutableCommand != null)
+                {
+                    _ExecutableCommand.Dispose();
+                    _ExecutableCommand = null;
+                }
+                if (_Reader != null)
+                {
+                    _Reader.Dispose();
+                    _Reader = null;
+                }
             }
-            if (Transaction != null)
-            {
-                Transaction.Dispose();
-                Transaction = null;
-            }
-            if (_ExecutableCommand != null)
-            {
-                _ExecutableCommand.Dispose();
-                _ExecutableCommand = null;
-            }
-            if (_Reader != null)
-            {
-                _Reader.Dispose();
-                _Reader = null;
-            }
+            catch { throw; }
         }
 
         #endregion

@@ -43,6 +43,7 @@ namespace Utilities.Profiler
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -58,6 +59,7 @@ namespace Utilities.Profiler
         {
             Function=FunctionName;
         }
+
         #endregion
 
         #region Public Functions
@@ -67,7 +69,11 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Dispose()
         {
-            Stop();
+            try
+            {
+                Stop();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -75,13 +81,18 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Stop()
         {
-            if (Running)
+            try
             {
-                Running = false;
-                StopTime = System.Environment.TickCount;
-                ProfilerManager.Manager.AddItem(Function, StartTime, StopTime);
+                if (Running)
+                {
+                    Running = false;
+                    StopTime = System.Environment.TickCount;
+                    ProfilerManager.Instance.AddItem(Function, StartTime, StopTime);
+                }
             }
+            catch { throw; }
         }
+
         #endregion
     }
 }

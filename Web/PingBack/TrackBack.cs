@@ -36,6 +36,7 @@ namespace Utilities.Web.PingBack
     public static class TrackBack
     {
         #region Public Static Functions
+
         /// <summary>
         /// Sends a track back message
         /// </summary>
@@ -76,10 +77,7 @@ namespace Utilities.Web.PingBack
                     throw new Exception("HTTP Error occurred: " + Response.StatusCode.ToString());
                 }
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -89,7 +87,11 @@ namespace Utilities.Web.PingBack
         /// <returns>A trackback message</returns>
         public static TrackBackMessage GetTrackBack(HttpContext Context)
         {
-            return GetTrackBack(Context.Request);
+            try
+            {
+                return GetTrackBack(Context.Request);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -99,14 +101,18 @@ namespace Utilities.Web.PingBack
         /// <returns>A trackback message</returns>
         public static TrackBackMessage GetTrackBack(HttpRequest Request)
         {
-            TrackBackMessage Message = new TrackBackMessage();
-            Message.Title = Request.Params["title"];
-            Message.ID = Request.Params["id"];
-            Message.Excerpt = Request.Params["excerpt"];
-            Message.BlogName = Request.Params["blog_name"];
-            if (Request.Params["url"] != null)
-                Message.PostUrl = new Uri(Request.Params["url"].Split(',')[0]);
-            return Message;
+            try
+            {
+                TrackBackMessage Message = new TrackBackMessage();
+                Message.Title = Request.Params["title"];
+                Message.ID = Request.Params["id"];
+                Message.Excerpt = Request.Params["excerpt"];
+                Message.BlogName = Request.Params["blog_name"];
+                if (Request.Params["url"] != null)
+                    Message.PostUrl = new Uri(Request.Params["url"].Split(',')[0]);
+                return Message;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -115,7 +121,11 @@ namespace Utilities.Web.PingBack
         /// <param name="Context">Context object</param>
         public static void SendSuccess(HttpContext Context)
         {
-            SendSuccess(Context.Response);
+            try
+            {
+                SendSuccess(Context.Response);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -124,9 +134,13 @@ namespace Utilities.Web.PingBack
         /// <param name="Response">Response object</param>
         public static void SendSuccess(HttpResponse Response)
         {
-            Response.Write("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><response><error>0</error></response>");
+            try
+            {
+                Response.Write("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><response><error>0</error></response>");
+            }
+            catch { throw; }
         }
-        
+
         /// <summary>
         /// Sends an error message
         /// </summary>
@@ -134,7 +148,11 @@ namespace Utilities.Web.PingBack
         /// <param name="ErrorMessage">Error message to send</param>
         public static void SendError(HttpContext Context, string ErrorMessage)
         {
-            SendError(Context.Response, ErrorMessage);
+            try
+            {
+                SendError(Context.Response, ErrorMessage);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -144,29 +162,40 @@ namespace Utilities.Web.PingBack
         /// <param name="ErrorMessage">Error message to send</param>
         public static void SendError(HttpResponse Response, string ErrorMessage)
         {
-            Response.Write("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><response><error>" + ErrorMessage + "</error></response>");
+            try
+            {
+                Response.Write("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><response><error>" + ErrorMessage + "</error></response>");
+            }
+            catch { throw; }
         }
+
         #endregion
 
         #region Private Static Functions
+
         private static readonly Regex TrackBackLink = new Regex("trackback:ping=\"([^\"]+)\"", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex TrackBackID = new Regex("id=([^\"]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static void GetTrackBackURL(TrackBackMessage Message)
         {
-            using (WebClient Client = new WebClient())
+            try
             {
-                Client.Headers.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)");
-                string TempContent = Client.DownloadString(Message.NotificationURL);
-                string TempURL =TrackBackLink.Match(TempContent).Groups[1].ToString().Trim();
-                Uri TempURI;
-                Uri.TryCreate(TempURL,UriKind.Absolute,out TempURI);
-                Message.NotificationURL=TempURI;
+                using (WebClient Client = new WebClient())
+                {
+                    Client.Headers.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)");
+                    string TempContent = Client.DownloadString(Message.NotificationURL);
+                    string TempURL = TrackBackLink.Match(TempContent).Groups[1].ToString().Trim();
+                    Uri TempURI;
+                    Uri.TryCreate(TempURL, UriKind.Absolute, out TempURI);
+                    Message.NotificationURL = TempURI;
 
-                TempURL = TrackBackID.Match(TempURL).Groups[1].ToString().Trim();
-                Message.ID = TempURL;
+                    TempURL = TrackBackID.Match(TempURL).Groups[1].ToString().Trim();
+                    Message.ID = TempURL;
+                }
             }
+            catch { throw; }
         }
+
         #endregion
     }
 
@@ -176,93 +205,70 @@ namespace Utilities.Web.PingBack
     public class TrackBackMessage
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         public TrackBackMessage()
         {
         }
-        #endregion
 
-        #region Private Variables
-        private string _Title="";
-        private Uri _PostURL=null;
-        private string _Excerpt="";
-        private string _BlogName="";
-        private Uri _NotificationURL=null;
-        private object _ID=null;
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// ID of the item (most likely this is not set)
         /// </summary>
-        public object ID
-        {
-            get { return _ID; }
-            set { _ID = value; }
-        }
+        public object ID { get; set; }
 
         /// <summary>
         /// Title of the post linking to you
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+        public string Title { get; set; }
 
         /// <summary>
         /// URL of the post linking to you
         /// </summary>
-        public Uri PostUrl
-        {
-            get { return _PostURL; }
-            set { _PostURL = value; }
-        }
-        
+        public Uri PostUrl { get; set; }
+
         /// <summary>
         /// Excerpt from the post linking to you
         /// </summary>
-        public string Excerpt
-        {
-            get { return _Excerpt; }
-            set { _Excerpt = value; }
-        }
+        public string Excerpt { get; set; }
 
         /// <summary>
         /// Name of the blog linking to you
         /// </summary>
-        public string BlogName
-        {
-            get { return _BlogName; }
-            set { _BlogName = value; }
-        }
+        public string BlogName { get; set; }
 
         /// <summary>
         /// URL to send the message notification to.
         /// Only used for sending the message and filled in
         /// automatically.
         /// </summary>
-        public Uri NotificationURL
-        {
-            get { return _NotificationURL; }
-            set { _NotificationURL = value; }
-        }
+        public Uri NotificationURL { get; set; }
+
         #endregion
 
         #region Public Overridden Functions
+
         /// <summary>
         /// Writes out the message (used for sending)
         /// </summary>
         /// <returns>A string with the message information</returns>
         public override string ToString()
         {
-            string First = "&";
-            if (string.IsNullOrEmpty(NotificationURL.Query))
-                First = "?";
-            return First + "title=" + Title + "&url=" + PostUrl + "&excerpt=" + Excerpt + "&blog_name=" + BlogName;
+            try
+            {
+                string First = "&";
+                if (string.IsNullOrEmpty(NotificationURL.Query))
+                    First = "?";
+                return First + "title=" + Title + "&url=" + PostUrl + "&excerpt=" + Excerpt + "&blog_name=" + BlogName;
+            }
+            catch { throw; }
         }
+
         #endregion
     }
 }

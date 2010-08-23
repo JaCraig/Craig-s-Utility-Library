@@ -53,12 +53,16 @@ namespace Utilities.Media.Sound
         /// <returns>The text found in the wave file</returns>
         public string Recognize(string InputFile)
         {
-            this.InputFile = InputFile;
-            Thread TempThread = new Thread(new ThreadStart(RecognizeAsync));
-            TempThread.SetApartmentState(ApartmentState.STA);
-            TempThread.Start();
-            TempThread.Join();
-            return Text;
+            try
+            {
+                this.InputFile = InputFile;
+                Thread TempThread = new Thread(new ThreadStart(RecognizeAsync));
+                TempThread.SetApartmentState(ApartmentState.STA);
+                TempThread.Start();
+                TempThread.Join();
+                return Text;
+            }
+            catch { throw; }
         }
 
         #endregion
@@ -81,7 +85,7 @@ namespace Utilities.Media.Sound
                 }
                 Text = Output.ToString();
             }
-            catch { }
+            catch { throw; }
         }
 
         #endregion
@@ -98,11 +102,15 @@ namespace Utilities.Media.Sound
 
         public void Dispose()
         {
-            if (RecognitionEngine != null)
+            try
             {
-                RecognitionEngine.Dispose();
-                RecognitionEngine = null;
+                if (RecognitionEngine != null)
+                {
+                    RecognitionEngine.Dispose();
+                    RecognitionEngine = null;
+                }
             }
+            catch { throw; }
         }
 
         #endregion

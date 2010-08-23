@@ -39,14 +39,18 @@ namespace Utilities.Math
         /// <returns>The mean/average of the list</returns>
         public static double Mean(System.Collections.Generic.List<int> Values)
         {
-            if (Values.Count == 0)
-                return 0.0;
-            double ReturnValue = 0.0;
-            for (int x = 0; x < Values.Count; ++x)
+            try
             {
-                ReturnValue += Values[x];
+                if (Values.Count == 0)
+                    return 0.0;
+                double ReturnValue = 0.0;
+                for (int x = 0; x < Values.Count; ++x)
+                {
+                    ReturnValue += Values[x];
+                }
+                return ReturnValue / (double)Values.Count;
             }
-            return ReturnValue / (double)Values.Count;
+            catch { throw; }
         }
 
         /// <summary>
@@ -56,14 +60,18 @@ namespace Utilities.Math
         /// <returns>The mean/average of the list</returns>
         public static double Mean(System.Collections.Generic.List<double> Values)
         {
-            if (Values.Count == 0)
-                return 0.0;
-            double ReturnValue = 0.0;
-            for (int x = 0; x < Values.Count; ++x)
+            try
             {
-                ReturnValue += Values[x];
+                if (Values.Count == 0)
+                    return 0.0;
+                double ReturnValue = 0.0;
+                for (int x = 0; x < Values.Count; ++x)
+                {
+                    ReturnValue += Values[x];
+                }
+                return ReturnValue / (double)Values.Count;
             }
-            return ReturnValue / (double)Values.Count;
+            catch { throw; }
         }
 
         /// <summary>
@@ -74,10 +82,14 @@ namespace Utilities.Math
         /// <returns>The median value</returns>
         public static T Median<T>(System.Collections.Generic.List<T> Values)
         {
-            if (Values.Count == 0)
-                return default(T);
-            Values.Sort();
-            return Values[(Values.Count / 2)];
+            try
+            {
+                if (Values.Count == 0)
+                    return default(T);
+                Values.Sort();
+                return Values[(Values.Count / 2)];
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -88,25 +100,29 @@ namespace Utilities.Math
         /// <returns>The median value</returns>
         public static T Mode<T>(System.Collections.Generic.List<T> Values)
         {
-            if (Values.Count == 0)
-                return default(T);
-            Bag<T> Items = new Bag<T>();
-            for(int x=0;x<Values.Count;++x)
+            try
             {
-                Items.Add(Values[x]);
-            }
-
-            int MaxValue = 0;
-            T MaxIndex = default(T);
-            foreach(T Key in Items)
-            {
-                if(Items[Key]>MaxValue)
+                if (Values.Count == 0)
+                    return default(T);
+                Bag<T> Items = new Bag<T>();
+                for (int x = 0; x < Values.Count; ++x)
                 {
-                    MaxValue = Items[Key];
-                    MaxIndex = Key;
+                    Items.Add(Values[x]);
                 }
+
+                int MaxValue = 0;
+                T MaxIndex = default(T);
+                foreach (T Key in Items)
+                {
+                    if (Items[Key] > MaxValue)
+                    {
+                        MaxValue = Items[Key];
+                        MaxIndex = Key;
+                    }
+                }
+                return MaxIndex;
             }
-            return MaxIndex;
+            catch { throw; }
         }
 
         /// <summary>
@@ -116,15 +132,19 @@ namespace Utilities.Math
         /// <returns>The variance</returns>
         public static double Variance(System.Collections.Generic.List<double> Values)
         {
-            if (Values == null || Values.Count == 0)
-                return 0;
-            double MeanValue = Mean(Values);
-            double Sum = 0;
-            for (int x = 0; x < Values.Count; ++x)
+            try
             {
-                Sum += System.Math.Pow(Values[x] - MeanValue, 2);
+                if (Values == null || Values.Count == 0)
+                    return 0;
+                double MeanValue = Mean(Values);
+                double Sum = 0;
+                for (int x = 0; x < Values.Count; ++x)
+                {
+                    Sum += System.Math.Pow(Values[x] - MeanValue, 2);
+                }
+                return Sum / (double)Values.Count;
             }
-            return Sum / (double)Values.Count;
+            catch { throw; }
         }
 
         /// <summary>
@@ -134,7 +154,11 @@ namespace Utilities.Math
         /// <returns>The standard deviation</returns>
         public static double StandardDeviation(System.Collections.Generic.List<double> Values)
         {
-            return System.Math.Sqrt(Variance(Values));
+            try
+            {
+                return System.Math.Sqrt(Variance(Values));
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -146,9 +170,13 @@ namespace Utilities.Math
         /// <returns>The value set between Min and Max</returns>
         public static int Clamp(int Value, int Max, int Min)
         {
-            Value = Value > Max ? Max : Value;
-            Value = Value < Min ? Min : Value;
-            return Value;
+            try
+            {
+                Value = Value > Max ? Max : Value;
+                Value = Value < Min ? Min : Value;
+                return Value;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -160,9 +188,13 @@ namespace Utilities.Math
         /// <returns>The value set between Min and Max</returns>
         public static double Clamp(double Value, double Max, double Min)
         {
-            Value = Value > Max ? Max : Value;
-            Value = Value < Min ? Min : Value;
-            return Value;
+            try
+            {
+                Value = Value > Max ? Max : Value;
+                Value = Value < Min ? Min : Value;
+                return Value;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -174,9 +206,13 @@ namespace Utilities.Math
         /// <returns>The value set between Min and Max</returns>
         public static float Clamp(float Value, float Max, float Min)
         {
-            Value = Value > Max ? Max : Value;
-            Value = Value < Min ? Min : Value;
-            return Value;
+            try
+            {
+                Value = Value > Max ? Max : Value;
+                Value = Value < Min ? Min : Value;
+                return Value;
+            }
+            catch { throw; }
         }
 
         #endregion

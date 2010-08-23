@@ -40,120 +40,124 @@ namespace Utilities.Web.Netflix
         /// <param name="Element">Title information</param>
         public Title(XmlElement Element)
         {
-            Categories = new List<string>();
-            foreach (XmlNode Children in Element.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("id", StringComparison.CurrentCultureIgnoreCase))
+                Categories = new List<string>();
+                foreach (XmlNode Children in Element.ChildNodes)
                 {
-                    ID = Children.InnerText;
-                }
-                else if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    TitleInformation = new TitleInformation((XmlElement)Children);
-                }
-                else if (Children.Name.Equals("box_art", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    BoxArt = new BoxArt((XmlElement)Children);
-                }
-                else if (Children.Name.Equals("release_year", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    ReleaseYear = Children.InnerText;
-                }
-                else if (Children.Name.Equals("runtime", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    RunTime = int.Parse(Children.InnerText);
-                }
-                else if (Children.Name.Equals("average_rating", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    AverageRating = double.Parse(Children.InnerText);
-                }
+                    if (Children.Name.Equals("id", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        ID = Children.InnerText;
+                    }
+                    else if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        TitleInformation = new TitleInformation((XmlElement)Children);
+                    }
+                    else if (Children.Name.Equals("box_art", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        BoxArt = new BoxArt((XmlElement)Children);
+                    }
+                    else if (Children.Name.Equals("release_year", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        ReleaseYear = Children.InnerText;
+                    }
+                    else if (Children.Name.Equals("runtime", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        RunTime = int.Parse(Children.InnerText);
+                    }
+                    else if (Children.Name.Equals("average_rating", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        AverageRating = double.Parse(Children.InnerText);
+                    }
 
-                else if (Children.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    if (Children.Attributes["scheme"] != null
-                        && (Children.Attributes["scheme"].Value.Equals("http://api.netflix.com/categories/mpaa_ratings",
-                            StringComparison.CurrentCultureIgnoreCase)
-                            || Children.Attributes["scheme"].Value.Equals("http://api.netflix.com/categories/tv_ratingss",
-                            StringComparison.CurrentCultureIgnoreCase)))
+                    else if (Children.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        Rating = Children.Attributes["label"].Value;
-                    }
-                    else if (Children.Attributes["scheme"].Value.Equals("http://api.netflix.com/categories/genres",
-                        StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        Categories.Add(Children.Attributes["label"].Value);
-                    }
-                }
-                else if (Children.Name.Equals("link", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/synopsis",
+                        if (Children.Attributes["scheme"] != null
+                            && (Children.Attributes["scheme"].Value.Equals("http://api.netflix.com/categories/mpaa_ratings",
+                                StringComparison.CurrentCultureIgnoreCase)
+                                || Children.Attributes["scheme"].Value.Equals("http://api.netflix.com/categories/tv_ratingss",
+                                StringComparison.CurrentCultureIgnoreCase)))
+                        {
+                            Rating = Children.Attributes["label"].Value;
+                        }
+                        else if (Children.Attributes["scheme"].Value.Equals("http://api.netflix.com/categories/genres",
                             StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        SynopsisLink = Children.Attributes["href"].Value;
+                        {
+                            Categories.Add(Children.Attributes["label"].Value);
+                        }
                     }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/people.cast",
-                            StringComparison.CurrentCultureIgnoreCase))
+                    else if (Children.Name.Equals("link", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        CastLink = Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/people.directors",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        DirectorsLink = Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/format_availability",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        FormatsAvailableLink = Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/screen_formats",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        ScreenFormatsLink = Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/languages_and_audio",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        LanguagesLink = Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles.similars",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        SimilarTitleLink = Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("alternate",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                         this.NetflixWebPage= Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles.series",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        this.SeriesLink = Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/programs",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        this.EpisodeLink = Children.Attributes["href"].Value;
-                    }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/official_url",
-                            StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        this.StudioWebPage = Children.Attributes["href"].Value;
+                        if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/synopsis",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            SynopsisLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/people.cast",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            CastLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/people.directors",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            DirectorsLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/format_availability",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            FormatsAvailableLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/screen_formats",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            ScreenFormatsLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/languages_and_audio",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            LanguagesLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles.similars",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            SimilarTitleLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("alternate",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            this.NetflixWebPage = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles.series",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            this.SeriesLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/programs",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            this.EpisodeLink = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catalog/titles/official_url",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            this.StudioWebPage = Children.Attributes["href"].Value;
+                        }
                     }
                 }
             }
+            catch { throw; }
         }
 
         #endregion

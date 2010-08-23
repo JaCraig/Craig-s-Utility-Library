@@ -78,7 +78,7 @@ namespace Utilities.Reflection
                 PropertyInfo[] Properties = ObjectType.GetProperties();
                 foreach (PropertyInfo Property in Properties)
                 {
-                    TempValue.Append("<tr><td>" + Property.Name + "</td><td>");
+                    TempValue.Append("<tr><td>").Append(Property.Name).Append("</td><td>");
                     ParameterInfo[] Parameters = Property.GetIndexParameters();
                     if (Property.CanRead && Parameters.Length == 0)
                     {
@@ -94,10 +94,7 @@ namespace Utilities.Reflection
                 TempValue.Append("</tbody></table>");
                 return TempValue.ToString();
             }
-            catch (Exception e)
-            {
-                return e.ToString();
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -115,7 +112,7 @@ namespace Utilities.Reflection
                 PropertyInfo[] Properties = ObjectType.GetProperties();
                 foreach (PropertyInfo Property in Properties)
                 {
-                    TempValue.Append("<tr><td>" + Property.Name + "</td><td>");
+                    TempValue.Append("<tr><td>").Append(Property.Name).Append("</td><td>");
                     if (Property.GetIndexParameters().Length == 0)
                     {
                         try
@@ -129,10 +126,7 @@ namespace Utilities.Reflection
                 TempValue.Append("</tbody></table>");
                 return TempValue.ToString();
             }
-            catch (Exception e)
-            {
-                return e.ToString();
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -147,8 +141,8 @@ namespace Utilities.Reflection
                 Assembly[] Assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 foreach (Assembly Assembly in Assemblies)
                 {
-                    Builder.Append("<strong>" + Assembly.GetName().Name + "</strong><br />");
-                    Builder.Append(DumpProperties(Assembly) + "<br /><br />");
+                    Builder.Append("<strong>").Append(Assembly.GetName().Name).Append("</strong><br />");
+                    Builder.Append(DumpProperties(Assembly)).Append("<br /><br />");
                 }
                 return Builder.ToString();
             }
@@ -635,6 +629,12 @@ namespace Utilities.Reflection
             catch { throw; }
         }
 
+        /// <summary>
+        /// Gets a property based on a path
+        /// </summary>
+        /// <typeparam name="Source">Source type</typeparam>
+        /// <param name="PropertyPath">Path to the property</param>
+        /// <returns>The property info</returns>
         public static PropertyInfo GetProperty<Source>(string PropertyPath)
         {
             try

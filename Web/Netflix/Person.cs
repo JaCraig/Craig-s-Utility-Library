@@ -39,36 +39,40 @@ namespace Utilities.Web.Netflix
         /// <param name="Element">person node</param>
         public Person(XmlElement Element)
         {
-            foreach (XmlNode Children in Element.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("id", StringComparison.CurrentCultureIgnoreCase))
+                foreach (XmlNode Children in Element.ChildNodes)
                 {
-                    ID = Children.InnerText;
-                }
-                else if (Children.Name.Equals("name", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Name = Children.InnerText;
-                }
-                else if (Children.Name.Equals("bio", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Bio = Children.InnerText;
-                }
-                else if (Children.Name.Equals("link", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catlog/person/filmography",
-                            StringComparison.CurrentCultureIgnoreCase))
+                    if (Children.Name.Equals("id", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        Filmography = Children.Attributes["href"].Value;
+                        ID = Children.InnerText;
                     }
-                    else if (Children.Attributes["rel"] != null
-                        && Children.Attributes["rel"].Value.Equals("alternate",
-                            StringComparison.CurrentCultureIgnoreCase))
+                    else if (Children.Name.Equals("name", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        Webpage = Children.Attributes["href"].Value;
+                        Name = Children.InnerText;
+                    }
+                    else if (Children.Name.Equals("bio", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        Bio = Children.InnerText;
+                    }
+                    else if (Children.Name.Equals("link", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("http://schemas.netflix.com/catlog/person/filmography",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Filmography = Children.Attributes["href"].Value;
+                        }
+                        else if (Children.Attributes["rel"] != null
+                            && Children.Attributes["rel"].Value.Equals("alternate",
+                                StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Webpage = Children.Attributes["href"].Value;
+                        }
                     }
                 }
             }
+            catch { throw; }
         }
 
         #endregion

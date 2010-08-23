@@ -32,6 +32,7 @@ namespace Utilities.Math
     public class Vector3
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,48 +45,45 @@ namespace Utilities.Math
             this.Y = Y;
             this.Z = Z;
         }
-        #endregion
 
-        #region Public Variables
-        /// <summary>
-        /// X direction
-        /// </summary>
-        private double _X = 0.0;
-        /// <summary>
-        /// Y direction
-        /// </summary>
-        private double _Y = 0.0;
-        /// <summary>
-        /// Z direction
-        /// </summary>
-        private double _Z = 0.0;
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// Normalizes the vector
         /// </summary>
         public void Normalize()
         {
-            double Normal = Magnitude;
-            if (Normal > 0)
+            try
             {
-                Normal = 1 / Normal;
-                X *= Normal;
-                Y *= Normal;
-                Z *= Normal;
+                double Normal = Magnitude;
+                if (Normal > 0)
+                {
+                    Normal = 1 / Normal;
+                    X *= Normal;
+                    Y *= Normal;
+                    Z *= Normal;
+                }
             }
+            catch { throw; }
         }
+
         #endregion
 
         #region Public Overridden Functions
+
         /// <summary>
         /// To string function
         /// </summary>
         /// <returns>String representation of the vector</returns>
         public override string ToString()
         {
-            return "(" + X + "," + Y + "," + Z + ")";
+            try
+            {
+                return "(" + X + "," + Y + "," + Z + ")";
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -94,7 +92,11 @@ namespace Utilities.Math
         /// <returns>The hash code</returns>
         public override int GetHashCode()
         {
-            return (int)(X + Y + Z) % Int32.MaxValue;
+            try
+            {
+                return (int)(X + Y + Z) % Int32.MaxValue;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -104,29 +106,39 @@ namespace Utilities.Math
         /// <returns>true if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Vector3)
+            try
             {
-                return this == (Vector3)obj;
+                if (obj is Vector3)
+                {
+                    return this == (Vector3)obj;
+                }
+                return false;
             }
-            return false;
+            catch { throw; }
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Used for converting this to an array and back
         /// </summary>
         public double[] Array
         {
-            get { return new double[] { X, Y, Z }; }
+            get { try { return new double[] { X, Y, Z }; } catch { throw; } }
             set
             {
-                if (value.Length == 3)
+                try
                 {
-                    X = value[0];
-                    Y = value[1];
-                    Z = value[2];
+                    if (value.Length == 3)
+                    {
+                        X = value[0];
+                        Y = value[1];
+                        Z = value[2];
+                    }
                 }
+                catch { throw; }
             }
         }
 
@@ -135,108 +147,152 @@ namespace Utilities.Math
         /// </summary>
         public double Magnitude
         {
-            get { return System.Math.Sqrt((X * X) + (Y * Y) + (Z * Z)); }
+            get { try { return System.Math.Sqrt((X * X) + (Y * Y) + (Z * Z)); } catch { throw; } }
         }
+
         /// <summary>
         /// X value
         /// </summary>
         [XmlElement]
-        public double X
-        {
-            get { return _X; }
-            set { _X = value; }
-        }
+        public double X { get; set; }
+
         /// <summary>
         /// Y Value
         /// </summary>
         [XmlElement]
-        public double Y
-        {
-            get { return _Y; }
-            set { _Y = value; }
-        }
+        public double Y { get; set; }
 
         /// <summary>
         /// Z value
         /// </summary>
         [XmlElement]
-        public double Z
-        {
-            get { return _Z; }
-            set { _Z = value; }
-        }
+        public double Z { get; set; }
+
         #endregion
 
         #region Public Static Functions
+
         public static Vector3 operator +(Vector3 V1, Vector3 V2)
         {
-            return new Vector3(V1.X + V2.X, V1.Y + V2.Y, V1.Z + V2.Z);
+            try
+            {
+                return new Vector3(V1.X + V2.X, V1.Y + V2.Y, V1.Z + V2.Z);
+            }
+            catch { throw; }
         }
 
         public static Vector3 operator -(Vector3 V1, Vector3 V2)
         {
-            return new Vector3(V1.X - V2.X, V1.Y - V2.Y, V1.Z - V2.Z);
+            try
+            {
+                return new Vector3(V1.X - V2.X, V1.Y - V2.Y, V1.Z - V2.Z);
+            }
+            catch { throw; }
         }
 
         public static Vector3 operator -(Vector3 V1)
         {
-            return new Vector3(-V1.X, -V1.Y, -V1.Z);
+            try
+            {
+                return new Vector3(-V1.X, -V1.Y, -V1.Z);
+            }
+            catch { throw; }
         }
 
         public static bool operator <(Vector3 V1, Vector3 V2)
         {
-            return V1.Magnitude < V2.Magnitude;
+            try
+            {
+                return V1.Magnitude < V2.Magnitude;
+            }
+            catch { throw; }
         }
 
         public static bool operator <=(Vector3 V1, Vector3 V2)
         {
-            return V1.Magnitude <= V2.Magnitude;
+            try
+            {
+                return V1.Magnitude <= V2.Magnitude;
+            }
+            catch { throw; }
         }
 
         public static bool operator >(Vector3 V1, Vector3 V2)
         {
-            return V1.Magnitude > V2.Magnitude;
+            try
+            {
+                return V1.Magnitude > V2.Magnitude;
+            }
+            catch { throw; }
         }
 
         public static bool operator >=(Vector3 V1, Vector3 V2)
         {
-            return V1.Magnitude >= V2.Magnitude;
+            try
+            {
+                return V1.Magnitude >= V2.Magnitude;
+            }
+            catch { throw; }
         }
 
         public static bool operator ==(Vector3 V1, Vector3 V2)
         {
-            return V1.X == V2.X && V1.Y == V2.Y && V1.Z == V2.Z;
+            try
+            {
+                return V1.X == V2.X && V1.Y == V2.Y && V1.Z == V2.Z;
+            }
+            catch { throw; }
         }
 
         public static bool operator !=(Vector3 V1, Vector3 V2)
         {
-            return !(V1 == V2);
+            try
+            {
+                return !(V1 == V2);
+            }
+            catch { throw; }
         }
 
         public static Vector3 operator /(Vector3 V1, double D)
         {
-            return new Vector3(V1.X / D, V1.Y / D, V1.Z / D);
+            try
+            {
+                return new Vector3(V1.X / D, V1.Y / D, V1.Z / D);
+            }
+            catch { throw; }
         }
 
         public static Vector3 operator *(Vector3 V1, double D)
         {
-            return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
+            try
+            {
+                return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
+            }
+            catch { throw; }
         }
 
         public static Vector3 operator *(double D, Vector3 V1)
         {
-            return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
+            try
+            {
+                return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
+            }
+            catch { throw; }
         }
         /// <summary>
         /// Does a cross product
         /// </summary>
         public static Vector3 operator *(Vector3 V1, Vector3 V2)
         {
-            Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
-            TempVector.X = (V1.Y * V2.Z) - (V1.Z * V2.Y);
-            TempVector.Y = (V1.Z * V2.X) - (V1.X * V2.Z);
-            TempVector.Z = (V1.X * V2.Y) - (V1.Y * V2.X);
-            return TempVector;
+            try
+            {
+                Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
+                TempVector.X = (V1.Y * V2.Z) - (V1.Z * V2.Y);
+                TempVector.Y = (V1.Z * V2.X) - (V1.X * V2.Z);
+                TempVector.Z = (V1.X * V2.Y) - (V1.Y * V2.X);
+                return TempVector;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -247,7 +303,11 @@ namespace Utilities.Math
         /// <returns>a dot product</returns>
         public static double DotProduct(Vector3 V1, Vector3 V2)
         {
-            return (V1.X * V2.X) + (V1.Y * V2.Y) + (V1.Z * V2.Z);
+            try
+            {
+                return (V1.X * V2.X) + (V1.Y * V2.Y) + (V1.Z * V2.Z);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -259,11 +319,15 @@ namespace Utilities.Math
         /// <returns>The interpolated vector</returns>
         public static Vector3 Interpolate(Vector3 V1, Vector3 V2, double Control)
         {
-            Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
-            TempVector.X = (V1.X * (1 - Control)) + (V2.X * Control);
-            TempVector.Y = (V1.Y * (1 - Control)) + (V2.Y * Control);
-            TempVector.Z = (V1.Z * (1 - Control)) - (V2.Z * Control);
-            return TempVector;
+            try
+            {
+                Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
+                TempVector.X = (V1.X * (1 - Control)) + (V2.X * Control);
+                TempVector.Y = (V1.Y * (1 - Control)) + (V2.Y * Control);
+                TempVector.Z = (V1.Z * (1 - Control)) - (V2.Z * Control);
+                return TempVector;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -274,7 +338,11 @@ namespace Utilities.Math
         /// <returns>Distance between the vectors</returns>
         public static double Distance(Vector3 V1, Vector3 V2)
         {
-            return System.Math.Sqrt(((V1.X - V2.X) * (V1.X - V2.X)) + ((V1.Y - V2.Y) * (V1.Y - V2.Y)) + ((V1.Z - V2.Z) * (V1.Z - V2.Z)));
+            try
+            {
+                return System.Math.Sqrt(((V1.X - V2.X) * (V1.X - V2.X)) + ((V1.Y - V2.Y) * (V1.Y - V2.Y)) + ((V1.Z - V2.Z) * (V1.Z - V2.Z)));
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -285,9 +353,13 @@ namespace Utilities.Math
         /// <returns>Angle between the vectors</returns>
         public static double Angle(Vector3 V1, Vector3 V2)
         {
-            V1.Normalize();
-            V2.Normalize();
-            return System.Math.Acos(Vector3.DotProduct(V1, V2));
+            try
+            {
+                V1.Normalize();
+                V2.Normalize();
+                return System.Math.Acos(Vector3.DotProduct(V1, V2));
+            }
+            catch { throw; }
         }
         #endregion
     }

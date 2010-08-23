@@ -42,60 +42,47 @@ namespace Utilities.Web.Email.Pop3
         #endregion
 
         #region Properties
+
         /// <summary>
         /// The number associated with the message
         /// </summary>
-        public long MessageNumber
-        {
-            get { return _MessageNumber; }
-            set { _MessageNumber = value; }
-        }
-        private long _MessageNumber = 0;
+        public long MessageNumber{get;set;}
 
         /// <summary>
         /// Size of the message in bytes
         /// </summary>
-        public long MessageSize
-        {
-            get { return _MessageSize; }
-            set { _MessageSize = value; }
-        }
-        private long _MessageSize = 0;
+        public long MessageSize{get;set;}
 
         /// <summary>
         /// If true, we've retrieved this message from the server
         /// </summary>
-        public bool Retrieved
-        {
-            get { return _Retrieved; }
-            set { _Retrieved = value; }
-        }
-        private bool _Retrieved = false;
+        public bool Retrieved{get;set;}
 
         /// <summary>
         /// MIME version of the email
         /// </summary>
-        public MIME.MIMEMessage MessageBody
-        {
-            get { return _Message; }
-            set { _Message = value; }
-        }
-        private MIME.MIMEMessage _Message = null;
+        public MIME.MIMEMessage MessageBody{get;set;}
+
         #endregion
 
         #region Public Overridden Properties
+
         public override string Body
         {
             get
             {
-                string ReturnValue=_Message.HTMLBodyText;
-                if (string.IsNullOrEmpty(ReturnValue))
-                    ReturnValue = _Message.PlainBodyText;
-                if (string.IsNullOrEmpty(ReturnValue))
-                    ReturnValue = _Message.BodyText;
+                try
+                {
+                    string ReturnValue = MessageBody.HTMLBodyText;
+                    if (string.IsNullOrEmpty(ReturnValue))
+                        ReturnValue = MessageBody.PlainBodyText;
+                    if (string.IsNullOrEmpty(ReturnValue))
+                        ReturnValue = MessageBody.BodyText;
 
-                ReturnValue = ReturnValue.Replace("\r\n", "<br />");
-                return ReturnValue;
+                    ReturnValue = ReturnValue.Replace("\r\n", "<br />");
+                    return ReturnValue;
+                }
+                catch { throw; }
             }
         }
 
@@ -103,7 +90,8 @@ namespace Utilities.Web.Email.Pop3
         {
             get
             {
-                return _Message.From;
+                try { return MessageBody.From; }
+                catch { throw; }
             }
         }
 
@@ -111,7 +99,8 @@ namespace Utilities.Web.Email.Pop3
         {
             get
             {
-                return _Message.To;
+                try { return MessageBody.To; }
+                catch { throw; }
             }
         }
 
@@ -119,7 +108,8 @@ namespace Utilities.Web.Email.Pop3
         {
             get
             {
-                return _Message.Subject;
+                try { return MessageBody.Subject; }
+                catch { throw; }
             }
         }
         #endregion

@@ -40,37 +40,41 @@ namespace Utilities.Web.Netflix
         /// <param name="XMLContent">XML Content</param>
         public Titles(string XMLContent)
         {
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(XMLContent);
-            TitleList = new List<Title>();
-
-            foreach (XmlNode Children in Document.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("catalog_titles", StringComparison.CurrentCultureIgnoreCase)
-                    || Children.Name.Equals("similars", StringComparison.CurrentCultureIgnoreCase))
+                XmlDocument Document = new XmlDocument();
+                Document.LoadXml(XMLContent);
+                TitleList = new List<Title>();
+
+                foreach (XmlNode Children in Document.ChildNodes)
                 {
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    if (Children.Name.Equals("catalog_titles", StringComparison.CurrentCultureIgnoreCase)
+                        || Children.Name.Equals("similars", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (Child.Name.Equals("catalog_title", StringComparison.CurrentCultureIgnoreCase)
-                            || Child.Name.Equals("similars_item", StringComparison.CurrentCultureIgnoreCase))
+                        foreach (XmlNode Child in Children.ChildNodes)
                         {
-                            TitleList.Add(new Title((XmlElement)Child));
-                        }
-                        else if (Child.Name.Equals("number_of_results", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            NumberOfResults = int.Parse(Child.InnerText);
-                        }
-                        else if (Child.Name.Equals("start_index", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            StartIndex = int.Parse(Child.InnerText);
-                        }
-                        else if (Child.Name.Equals("results_per_page", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            ResultsPerPage = int.Parse(Child.InnerText);
+                            if (Child.Name.Equals("catalog_title", StringComparison.CurrentCultureIgnoreCase)
+                                || Child.Name.Equals("similars_item", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                TitleList.Add(new Title((XmlElement)Child));
+                            }
+                            else if (Child.Name.Equals("number_of_results", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                NumberOfResults = int.Parse(Child.InnerText);
+                            }
+                            else if (Child.Name.Equals("start_index", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                StartIndex = int.Parse(Child.InnerText);
+                            }
+                            else if (Child.Name.Equals("results_per_page", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                ResultsPerPage = int.Parse(Child.InnerText);
+                            }
                         }
                     }
                 }
             }
+            catch { throw; }
         }
 
         #endregion

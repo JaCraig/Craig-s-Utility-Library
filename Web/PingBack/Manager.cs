@@ -37,6 +37,7 @@ namespace Utilities.Web.PingBack
     public static class Manager
     {
         #region Public Static Functions
+
         /// <summary>
         /// Pings services such as technorati, etc.
         /// </summary>
@@ -45,7 +46,7 @@ namespace Utilities.Web.PingBack
         /// <param name="BlogName">Name of the blog</param>
         /// <param name="Threaded">If true this is done in a seperate thread,
         /// if false it will wait for it to end</param>
-        public static void PingServices(List<Uri> Services,Uri Blog,string BlogName, bool Threaded)
+        public static void PingServices(List<Uri> Services, Uri Blog, string BlogName, bool Threaded)
         {
             try
             {
@@ -58,47 +59,47 @@ namespace Utilities.Web.PingBack
                     PingServices(Services, Blog, BlogName);
                 }
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            catch { throw; }
         }
+
+        #endregion
+
+        #region Private Static Functions
 
         private static void PingServices(List<Uri> Services, Uri Blog, string BlogName)
         {
-            foreach (Uri Service in Services)
+            try
             {
-                try
+                foreach (Uri Service in Services)
                 {
                     HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(Service);
                     Request.Credentials = CredentialCache.DefaultNetworkCredentials;
                     Request.ContentType = "text/xml";
                     Request.Method = "POST";
                     Request.Timeout = 10000;
-                    Stream Stream = (Stream)Request.GetRequestStream();
-                    using (XmlTextWriter XMLWriter = new XmlTextWriter(Stream, Encoding.ASCII))
+                    using (Stream Stream = (Stream)Request.GetRequestStream())
                     {
-                        XMLWriter.WriteStartDocument();
-                        XMLWriter.WriteStartElement("methodCall");
-                        XMLWriter.WriteElementString("methodName", "weblogUpdates.ping");
-                        XMLWriter.WriteStartElement("params");
-                        XMLWriter.WriteStartElement("param");
-                        XMLWriter.WriteElementString("value", BlogName);
-                        XMLWriter.WriteEndElement();
-                        XMLWriter.WriteStartElement("param");
-                        XMLWriter.WriteElementString("value", Blog.ToString());
-                        XMLWriter.WriteEndElement();
-                        XMLWriter.WriteEndElement();
-                        XMLWriter.WriteEndElement();
+                        using (XmlTextWriter XMLWriter = new XmlTextWriter(Stream, Encoding.ASCII))
+                        {
+                            XMLWriter.WriteStartDocument();
+                            XMLWriter.WriteStartElement("methodCall");
+                            XMLWriter.WriteElementString("methodName", "weblogUpdates.ping");
+                            XMLWriter.WriteStartElement("params");
+                            XMLWriter.WriteStartElement("param");
+                            XMLWriter.WriteElementString("value", BlogName);
+                            XMLWriter.WriteEndElement();
+                            XMLWriter.WriteStartElement("param");
+                            XMLWriter.WriteElementString("value", Blog.ToString());
+                            XMLWriter.WriteEndElement();
+                            XMLWriter.WriteEndElement();
+                            XMLWriter.WriteEndElement();
+                        }
                     }
-                    Request.GetResponse();
-                }
-                catch (Exception e)
-                {
-                    throw e;
                 }
             }
+            catch { throw; }
         }
+
         #endregion
     }
 }

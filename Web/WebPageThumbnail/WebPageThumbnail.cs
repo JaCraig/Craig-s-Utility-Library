@@ -44,7 +44,6 @@ namespace Utilities.Web.WebPageThumbnail
         #endregion
 
         #region Private Variables
-        private Bitmap Image;
         private string FileName;
         private string Url;
         private int Width;
@@ -52,6 +51,7 @@ namespace Utilities.Web.WebPageThumbnail
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// Generates a screen shot of a web site
         /// </summary>
@@ -61,44 +61,49 @@ namespace Utilities.Web.WebPageThumbnail
         /// <param name="Height">Height of the image (-1 for full size)</param>
         public void GenerateBitmap(string FileName, string Url, int Width, int Height)
         {
-            this.Url = Url;
-            this.FileName = FileName;
-            this.Width = Width;
-            this.Height = Height;
-            Thread TempThread = new Thread(new ThreadStart(CreateBrowser));
-            TempThread.SetApartmentState(ApartmentState.STA);
-            TempThread.Start();
-            TempThread.Join();
+            try
+            {
+                this.Url = Url;
+                this.FileName = FileName;
+                this.Width = Width;
+                this.Height = Height;
+                Thread TempThread = new Thread(new ThreadStart(CreateBrowser));
+                TempThread.SetApartmentState(ApartmentState.STA);
+                TempThread.Start();
+                TempThread.Join();
+            }
+            catch { throw; }
         }
+
         #endregion
 
         #region Private Functions
+
         /// <summary>
         /// Creates the browser
         /// </summary>
         private void CreateBrowser()
         {
-            WebBrowser Browser = new WebBrowser();
             try
             {
-                Browser.ScrollBarsEnabled = false;
-                DateTime TimeoutStart = DateTime.Now;
-                TimeSpan Timeout = new TimeSpan(0, 0, 10);
-                Browser.Navigate(Url);
-                Browser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(Browser_DocumentCompleted);
-                while (Browser.ReadyState != WebBrowserReadyState.Complete)
+                using (WebBrowser Browser = new WebBrowser())
                 {
-                    if (DateTime.Now - TimeoutStart > Timeout)
-                        break;
-                    Application.DoEvents();
+                    Browser.ScrollBarsEnabled = false;
+                    DateTime TimeoutStart = DateTime.Now;
+                    TimeSpan Timeout = new TimeSpan(0, 0, 10);
+                    Browser.Navigate(Url);
+                    Browser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(Browser_DocumentCompleted);
+                    while (Browser.ReadyState != WebBrowserReadyState.Complete)
+                    {
+                        if (DateTime.Now - TimeoutStart > Timeout)
+                            break;
+                        Application.DoEvents();
+                    }
                 }
             }
-            catch { }
-            finally
-            {
-                Browser.Dispose();
-            }
+            catch { throw; }
         }
+
         /// <summary>
         /// Called when the browser is completed
         /// </summary>
@@ -106,30 +111,37 @@ namespace Utilities.Web.WebPageThumbnail
         /// <param name="e"></param>
         void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            WebBrowser Browser = (WebBrowser)sender;
-            Browser.ScriptErrorsSuppressed = true;
-            Browser.ScrollBarsEnabled = false;
-            if (Width == -1)
+            try
             {
-                Browser.Width = Browser.Document.Body.ScrollRectangle.Width;
+                WebBrowser Browser = (WebBrowser)sender;
+                Browser.ScriptErrorsSuppressed = true;
+                Browser.ScrollBarsEnabled = false;
+                if (Width == -1)
+                {
+                    Browser.Width = Browser.Document.Body.ScrollRectangle.Width;
+                }
+                else
+                {
+                    Browser.Width = Width;
+                }
+                if (Height == -1)
+                {
+                    Browser.Height = Browser.Document.Body.ScrollRectangle.Height;
+                }
+                else
+                {
+                    Browser.Height = Height;
+                }
+                using (Bitmap Image = new Bitmap(Browser.Width, Browser.Height))
+                {
+                    Browser.BringToFront();
+                    Browser.DrawToBitmap(Image, new Rectangle(0, 0, Browser.Width, Browser.Height));
+                    Image.Save(FileName, ImageFormat.Bmp);
+                }
             }
-            else
-            {
-                Browser.Width = Width;
-            }
-            if (Height == -1)
-            {
-                Browser.Height = Browser.Document.Body.ScrollRectangle.Height;
-            }
-            else
-            {
-                Browser.Height = Height;
-            }
-            Image = new Bitmap(Browser.Width, Browser.Height);
-            Browser.BringToFront();
-            Browser.DrawToBitmap(Image, new Rectangle(0, 0, Browser.Width, Browser.Height));
-            Image.Save(FileName,ImageFormat.Bmp);
+            catch { throw; }
         }
+
         #endregion
     }
 }

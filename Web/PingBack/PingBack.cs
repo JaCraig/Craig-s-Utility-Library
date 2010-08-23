@@ -36,6 +36,7 @@ namespace Utilities.Web.PingBack
     public static class PingBack
     {
         #region Public Static Functions
+
         /// <summary>
         /// Sends a ping back
         /// </summary>
@@ -60,34 +61,32 @@ namespace Utilities.Web.PingBack
                     Request.ContentType = "text/xml";
                     Request.ProtocolVersion = HttpVersion.Version11;
                     Request.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 6.0)";
-                    Stream StreamUsing = (Stream)Request.GetRequestStream();
-                    using (XmlTextWriter Writer = new XmlTextWriter(StreamUsing, Encoding.ASCII))
+                    using (Stream StreamUsing = (Stream)Request.GetRequestStream())
                     {
-                        Writer.WriteStartDocument(true);
-                        Writer.WriteStartElement("methodCall");
-                        Writer.WriteElementString("methodName", "pingback.ping");
-                        Writer.WriteStartElement("params");
-                        Writer.WriteStartElement("param");
-                        Writer.WriteStartElement("value");
-                        Writer.WriteElementString("string", Message.Source);
-                        Writer.WriteEndElement();
-                        Writer.WriteEndElement();
-                        Writer.WriteStartElement("param");
-                        Writer.WriteStartElement("value");
-                        Writer.WriteElementString("string", Message.Target);
-                        Writer.WriteEndElement();
-                        Writer.WriteEndElement();
-                        Writer.WriteEndElement();
-                        Writer.WriteEndElement();
+                        using (XmlTextWriter Writer = new XmlTextWriter(StreamUsing, Encoding.ASCII))
+                        {
+                            Writer.WriteStartDocument(true);
+                            Writer.WriteStartElement("methodCall");
+                            Writer.WriteElementString("methodName", "pingback.ping");
+                            Writer.WriteStartElement("params");
+                            Writer.WriteStartElement("param");
+                            Writer.WriteStartElement("value");
+                            Writer.WriteElementString("string", Message.Source);
+                            Writer.WriteEndElement();
+                            Writer.WriteEndElement();
+                            Writer.WriteStartElement("param");
+                            Writer.WriteStartElement("value");
+                            Writer.WriteElementString("string", Message.Target);
+                            Writer.WriteEndElement();
+                            Writer.WriteEndElement();
+                            Writer.WriteEndElement();
+                            Writer.WriteEndElement();
+                        }
+                        Request.GetResponse();
                     }
-                    Request.GetResponse();
-                    StreamUsing.Dispose();
                 }
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -101,10 +100,7 @@ namespace Utilities.Web.PingBack
             {
                 return GetPingBack(Context.Request);
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -138,10 +134,7 @@ namespace Utilities.Web.PingBack
                 }
                 return TempMessage;
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -150,7 +143,11 @@ namespace Utilities.Web.PingBack
         /// <param name="Context">HttpContext of the item</param>
         public static void SendSuccess(HttpContext Context)
         {
-            SendSuccess(Context.Response);
+            try
+            {
+                SendSuccess(Context.Response);
+            }
+            catch { throw; }
         }
         /// <summary>
         /// Sends an error message
@@ -160,7 +157,11 @@ namespace Utilities.Web.PingBack
         /// <param name="ErrorMessage">Error Message</param>
         public static void SendError(HttpContext Context, int Code, string ErrorMessage)
         {
-            SendError(Context.Response, Code, ErrorMessage);
+            try
+            {
+                SendError(Context.Response, Code, ErrorMessage);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -169,7 +170,11 @@ namespace Utilities.Web.PingBack
         /// <param name="Response">Response for the item</param>
         public static void SendSuccess(HttpResponse Response)
         {
-            Response.Write("<methodResponse><params><param><value><string>Success</string></value></param></params></methodResponse>");
+            try
+            {
+                Response.Write("<methodResponse><params><param><value><string>Success</string></value></param></params></methodResponse>");
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -180,26 +185,41 @@ namespace Utilities.Web.PingBack
         /// <param name="ErrorMessage">Error message</param>
         public static void SendError(HttpResponse Response, int Code, string ErrorMessage)
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<?xml version=\"1.0\"?><methodResponse><fault><value><struct><member><name>faultCode</name>");
-            Builder.Append("<value><int>" + Code + "</int></value></member><member><name>faultString</name>");
-            Builder.Append("<value><string>" + ErrorMessage + "</string></value></member></struct></value></fault></methodResponse>");
-            Response.Write(Builder.ToString());
+            try
+            {
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<?xml version=\"1.0\"?><methodResponse><fault><value><struct><member><name>faultCode</name>");
+                Builder.Append("<value><int>").Append(Code).Append("</int></value></member><member><name>faultString</name>");
+                Builder.Append("<value><string>").Append(ErrorMessage).Append("</string></value></member></struct></value></fault></methodResponse>");
+                Response.Write(Builder.ToString());
+            }
+            catch { throw; }
         }
+
         #endregion
 
         #region Private Functions
+
         private static string GetRequest(HttpContext Context)
         {
-            return GetRequest(Context.Request);
+            try
+            {
+                return GetRequest(Context.Request);
+            }
+            catch { throw; }
         }
 
         private static string GetRequest(HttpRequest Request)
         {
-            byte[] TempBuffer = new byte[Request.InputStream.Length];
-            Request.InputStream.Read(TempBuffer, 0, TempBuffer.Length);
-            return System.Text.Encoding.Default.GetString(TempBuffer);
+            try
+            {
+                byte[] TempBuffer = new byte[Request.InputStream.Length];
+                Request.InputStream.Read(TempBuffer, 0, TempBuffer.Length);
+                return System.Text.Encoding.Default.GetString(TempBuffer);
+            }
+            catch { throw; }
         }
+
         #endregion
     }
 
@@ -209,37 +229,28 @@ namespace Utilities.Web.PingBack
     public class PingBackMessage
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         public PingBackMessage()
         {
         }
-        #endregion
 
-        #region Private Variables
-        private string _Source="";
-        private string _Target="";
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Source Location
         /// </summary>
-        public string Source
-        {
-            get { return _Source; }
-            set { _Source = value; }
-        }
+        public string Source { get; set; }
 
         /// <summary>
         /// Target location
         /// </summary>
-        public string Target
-        {
-            get { return _Target; }
-            set { _Target = value; }
-        }
+        public string Target { get; set; }
+
         #endregion
     }
 }

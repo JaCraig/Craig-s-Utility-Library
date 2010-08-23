@@ -57,31 +57,35 @@ namespace Utilities.Web.Netflix
         /// <returns>A list of possible matches</returns>
         public List<string> AutoComplete(string Term)
         {
-            List<string> Results = new List<string>();
-            string Content = FileManager.GetFileContents(new Uri("http://api.netflix.com/catalog/titles/autocomplete?oauth_consumer_key=" + ConsumerKey + "&term=" + Term));
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(Content);
-            foreach (XmlNode Children in Document.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("autocomplete", StringComparison.CurrentCultureIgnoreCase))
+                List<string> Results = new List<string>();
+                string Content = FileManager.GetFileContents(new Uri("http://api.netflix.com/catalog/titles/autocomplete?oauth_consumer_key=" + ConsumerKey + "&term=" + Term));
+                XmlDocument Document = new XmlDocument();
+                Document.LoadXml(Content);
+                foreach (XmlNode Children in Document.ChildNodes)
                 {
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    if (Children.Name.Equals("autocomplete", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (Child.Name.Equals("autocomplete_item", StringComparison.CurrentCultureIgnoreCase))
+                        foreach (XmlNode Child in Children.ChildNodes)
                         {
-
-                            foreach (XmlNode Title in Child.ChildNodes)
+                            if (Child.Name.Equals("autocomplete_item", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                if (Title.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
+
+                                foreach (XmlNode Title in Child.ChildNodes)
                                 {
-                                    Results.Add(Title.Attributes["short"].Value);
+                                    if (Title.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        Results.Add(Title.Attributes["short"].Value);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                return Results;
             }
-            return Results;  
+            catch { throw; }
         }
 
         /// <summary>
@@ -93,14 +97,18 @@ namespace Utilities.Web.Netflix
         /// <returns>List of title information</returns>
         public Titles TitleSearch(string Term, int MaxResults, int StartIndex)
         {
-            AddParameter("term", Term);
-            AddParameter("max_results", MaxResults.ToString());
-            AddParameter("start_index", StartIndex.ToString());
-            this.Token = "";
-            this.TokenSecret = "";
-            this.Method = HTTPMethod.GET;
-            this.Url = new Uri("http://api.netflix.com/catalog/titles/");
-            return new Titles(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            try
+            {
+                AddParameter("term", Term);
+                AddParameter("max_results", MaxResults.ToString());
+                AddParameter("start_index", StartIndex.ToString());
+                this.Token = "";
+                this.TokenSecret = "";
+                this.Method = HTTPMethod.GET;
+                this.Url = new Uri("http://api.netflix.com/catalog/titles/");
+                return new Titles(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -110,23 +118,27 @@ namespace Utilities.Web.Netflix
         /// <returns>The synopsis info</returns>
         public string TitleSynopsis(Title Title)
         {
-            this.Token = "";
-            this.TokenSecret = "";
-            this.Method = HTTPMethod.GET;
-            this.Url = new Uri(Title.SynopsisLink);
-            string Content = FileManager.GetFileContents(new Uri(GenerateRequest()));
-
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(Content);
-            foreach (XmlNode Children in Document.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("synopsis", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    return Children.InnerText;
-                }
-            }
+                this.Token = "";
+                this.TokenSecret = "";
+                this.Method = HTTPMethod.GET;
+                this.Url = new Uri(Title.SynopsisLink);
+                string Content = FileManager.GetFileContents(new Uri(GenerateRequest()));
 
-            return "";
+                XmlDocument Document = new XmlDocument();
+                Document.LoadXml(Content);
+                foreach (XmlNode Children in Document.ChildNodes)
+                {
+                    if (Children.Name.Equals("synopsis", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return Children.InnerText;
+                    }
+                }
+
+                return "";
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -136,11 +148,15 @@ namespace Utilities.Web.Netflix
         /// <returns>List of people information</returns>
         public People CastLookup(Title Title)
         {
-            this.Token = "";
-            this.TokenSecret = "";
-            this.Method = HTTPMethod.GET;
-            this.Url = new Uri(Title.CastLink);
-            return new People(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            try
+            {
+                this.Token = "";
+                this.TokenSecret = "";
+                this.Method = HTTPMethod.GET;
+                this.Url = new Uri(Title.CastLink);
+                return new People(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -150,11 +166,15 @@ namespace Utilities.Web.Netflix
         /// <returns>List of people information</returns>
         public People DirectorLookup(Title Title)
         {
-            this.Token = "";
-            this.TokenSecret = "";
-            this.Method = HTTPMethod.GET;
-            this.Url = new Uri(Title.DirectorsLink);
-            return new People(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            try
+            {
+                this.Token = "";
+                this.TokenSecret = "";
+                this.Method = HTTPMethod.GET;
+                this.Url = new Uri(Title.DirectorsLink);
+                return new People(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -164,11 +184,15 @@ namespace Utilities.Web.Netflix
         /// <returns>List of title information</returns>
         public Titles SimilarTitles(Title Title)
         {
-            this.Token = "";
-            this.TokenSecret = "";
-            this.Method = HTTPMethod.GET;
-            this.Url = new Uri(Title.SimilarTitleLink);
-            return new Titles(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            try
+            {
+                this.Token = "";
+                this.TokenSecret = "";
+                this.Method = HTTPMethod.GET;
+                this.Url = new Uri(Title.SimilarTitleLink);
+                return new Titles(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -178,37 +202,41 @@ namespace Utilities.Web.Netflix
         /// <returns>List of available formats</returns>
         public List<string> FormatsAvailable(Title Title)
         {
-            this.Token = "";
-            this.TokenSecret = "";
-            this.Method = HTTPMethod.GET;
-            this.Url = new Uri(Title.FormatsAvailableLink);
-            string Content = FileManager.GetFileContents(new Uri(GenerateRequest()));
-            List<string> Results = new List<string>();
-            if (!string.IsNullOrEmpty(Content))
+            try
             {
-                XmlDocument Document = new XmlDocument();
-                Document.LoadXml(Content);
-                foreach (XmlNode Children in Document.ChildNodes)
+                this.Token = "";
+                this.TokenSecret = "";
+                this.Method = HTTPMethod.GET;
+                this.Url = new Uri(Title.FormatsAvailableLink);
+                string Content = FileManager.GetFileContents(new Uri(GenerateRequest()));
+                List<string> Results = new List<string>();
+                if (!string.IsNullOrEmpty(Content))
                 {
-                    if (Children.Name.Equals("delivery_formats", StringComparison.CurrentCultureIgnoreCase))
+                    XmlDocument Document = new XmlDocument();
+                    Document.LoadXml(Content);
+                    foreach (XmlNode Children in Document.ChildNodes)
                     {
-                        foreach (XmlNode Child in Children.ChildNodes)
+                        if (Children.Name.Equals("delivery_formats", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            if (Child.Name.Equals("availability", StringComparison.CurrentCultureIgnoreCase))
+                            foreach (XmlNode Child in Children.ChildNodes)
                             {
-                                foreach (XmlNode Category in Child.ChildNodes)
+                                if (Child.Name.Equals("availability", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    if (Category.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
+                                    foreach (XmlNode Category in Child.ChildNodes)
                                     {
-                                        Results.Add(Category.Attributes["term"].Value);
+                                        if (Category.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            Results.Add(Category.Attributes["term"].Value);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                return Results;
             }
-            return Results;
+            catch { throw; }
         }
 
         #endregion

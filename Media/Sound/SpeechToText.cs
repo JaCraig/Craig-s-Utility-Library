@@ -52,11 +52,15 @@ namespace Utilities.Media.Sound
         /// <param name="Text">Text to convert</param>
         public void Speak(string Text)
         {
-            this.Text=Text;
-            Thread TempThread = new Thread(new ThreadStart(SpeakAsync));
-            TempThread.SetApartmentState(ApartmentState.STA);
-            TempThread.Start();
-            TempThread.Join();
+            try
+            {
+                this.Text = Text;
+                Thread TempThread = new Thread(new ThreadStart(SpeakAsync));
+                TempThread.SetApartmentState(ApartmentState.STA);
+                TempThread.Start();
+                TempThread.Join();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -66,12 +70,16 @@ namespace Utilities.Media.Sound
         /// <param name="OutputFile">Output file</param>
         public void Speak(string Text, string OutputFile)
         {
-            this.Text = Text;
-            this.OutputFile = OutputFile;
-            Thread TempThread = new Thread(new ThreadStart(SpeakAsync));
-            TempThread.SetApartmentState(ApartmentState.STA);
-            TempThread.Start();
-            TempThread.Join();
+            try
+            {
+                this.Text = Text;
+                this.OutputFile = OutputFile;
+                Thread TempThread = new Thread(new ThreadStart(SpeakAsync));
+                TempThread.SetApartmentState(ApartmentState.STA);
+                TempThread.Start();
+                TempThread.Join();
+            }
+            catch { throw; }
         }
 
         #endregion
@@ -83,17 +91,21 @@ namespace Utilities.Media.Sound
         /// </summary>
         void SpeakAsync()
         {
-            if (!string.IsNullOrEmpty(OutputFile))
+            try
             {
-                this.Synthesizer.SetOutputToWaveFile(OutputFile);
+                if (!string.IsNullOrEmpty(OutputFile))
+                {
+                    this.Synthesizer.SetOutputToWaveFile(OutputFile);
+                }
+                this.Synthesizer.SpeakAsync(Text);
+                if (!string.IsNullOrEmpty(OutputFile))
+                {
+                    this.Synthesizer.SetOutputToDefaultAudioDevice();
+                }
+                this.Text = "";
+                this.OutputFile = "";
             }
-            this.Synthesizer.SpeakAsync(Text);
-            if (!string.IsNullOrEmpty(OutputFile))
-            {
-                this.Synthesizer.SetOutputToDefaultAudioDevice();
-            }
-            this.Text = "";
-            this.OutputFile = "";
+            catch { throw; }
         }
 
         #endregion
@@ -110,11 +122,15 @@ namespace Utilities.Media.Sound
 
         public void Dispose()
         {
-            if (Synthesizer != null)
+            try
             {
-                Synthesizer.Dispose();
-                Synthesizer = null;
+                if (Synthesizer != null)
+                {
+                    Synthesizer.Dispose();
+                    Synthesizer = null;
+                }
             }
+            catch { throw; }
         }
 
         #endregion

@@ -42,7 +42,11 @@ namespace Utilities.Web.Craigslist
         /// <returns>RSS feed object</returns>
         public static Document Search(string Site, Category Category, string SearchString)
         {
-            return new Document(Site + "/search/" + Names[(int)Category] + "?query=" + HttpUtility.UrlEncode(SearchString) + "&catAbbreviation=" + Names[(int)Category] + "&minAsk=min&maxAsk=max&format=rss");
+            try
+            {
+                return new Document(Site + "/search/" + Names[(int)Category] + "?query=" + HttpUtility.UrlEncode(SearchString) + "&catAbbreviation=" + Names[(int)Category] + "&minAsk=min&maxAsk=max&format=rss");
+            }
+            catch { throw; }
         }
 
         #endregion

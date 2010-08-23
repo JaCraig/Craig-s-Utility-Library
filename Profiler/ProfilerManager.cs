@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using System.Text;
+using Utilities.DataTypes.Patterns.BaseClasses;
 #endregion
 
 namespace Utilities.Profiler
@@ -29,38 +30,19 @@ namespace Utilities.Profiler
     /// <summary>
     /// Actual location that profiler information is stored
     /// </summary>
-    public class ProfilerManager
+    public class ProfilerManager:Singleton<ProfilerManager>
     {
-        #region Private Variables
-        private static ProfilerManager _Manager=null;
-        private List<ProfilerInfo>Profilers=null;
-        #endregion
-
-        #region Public Static Members
-        /// <summary>
-        /// Uses singleton method to create the item
-        /// </summary>
-        public static ProfilerManager Manager
-        {
-            get
-            {
-                if (_Manager == null)
-                {
-                    _Manager = new ProfilerManager();
-                }
-                return _Manager;
-            }
-        }
-        #endregion
-
         #region Constuctors
-        private ProfilerManager()
+        
+        protected ProfilerManager()
         {
             Profilers=new List<ProfilerInfo>();
         }
+
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// Adds an item to the manager (used by Profiler class)
         /// </summary>
@@ -69,25 +51,27 @@ namespace Utilities.Profiler
         /// <param name="StopTime">Stop time (in ms)</param>
         public void AddItem(string FunctionName, int StartTime, int StopTime)
         {
-            for(int x=0;x<Profilers.Count;++x)
+            try
             {
-                if (Profilers[x].FunctionName.Equals(FunctionName))
+                ProfilerInfo Profiler = Profilers.Find(x => x.FunctionName == FunctionName);
+                if (Profiler != null)
                 {
-                    int Time=(StopTime - StartTime);
-                    Profilers[x].TotalTime += Time;
-                    if (Profilers[x].MaxTime < Time)
-                        Profilers[x].MaxTime = Time;
-                    else if (Profilers[x].MinTime > Time)
-                        Profilers[x].MinTime = Time;
-                    ++Profilers[x].TimesCalled;
+                    int Time = (StopTime - StartTime);
+                    Profiler.TotalTime += Time;
+                    if (Profiler.MaxTime < Time)
+                        Profiler.MaxTime = Time;
+                    else if (Profiler.MinTime > Time)
+                        Profiler.MinTime = Time;
+                    ++Profiler.TimesCalled;
                     return;
                 }
+                ProfilerInfo Info = new ProfilerInfo();
+                Info.FunctionName = FunctionName;
+                Info.TotalTime = Info.MaxTime = Info.MinTime = StopTime - StartTime;
+                Info.TimesCalled = 1;
+                Profilers.Add(Info);
             }
-            ProfilerInfo Info = new ProfilerInfo();
-            Info.FunctionName = FunctionName;
-            Info.TotalTime = Info.MaxTime = Info.MinTime = StopTime - StartTime;
-            Info.TimesCalled = 1;
-            Profilers.Add(Info);
+            catch { throw; }
         }
 
         /// <summary>
@@ -96,18 +80,32 @@ namespace Utilities.Profiler
         /// <returns>an html string containing the information</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<table><tr><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
-            foreach (ProfilerInfo Info in Profilers)
+            try
             {
-                Builder.Append("<tr><td>" + Info.FunctionName + "</td><td>" + Info.TotalTime.ToString() + "</td><td>" + Info.MaxTime + "</td><td>" + Info.MinTime + "</td><td>" + ((double)Info.TotalTime / (double)Info.TimesCalled) + "</td><td>" + Info.TimesCalled + "</td></tr>");
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append("<table><tr><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
+                foreach (ProfilerInfo Info in Profilers)
+                {
+                    Builder.Append("<tr><td>").Append(Info.FunctionName).Append("</td><td>")
+                        .Append(Info.TotalTime.ToString()).Append("</td><td>").Append(Info.MaxTime)
+                        .Append("</td><td>").Append(Info.MinTime).Append("</td><td>")
+                        .Append(((double)Info.TotalTime / (double)Info.TimesCalled)).Append("</td><td>")
+                        .Append(Info.TimesCalled).Append("</td></tr>");
+                }
+                Builder.Append("</table>");
+                return Builder.ToString();
             }
-            Builder.Append("</table>");
-            return Builder.ToString();
+            catch { throw; }
         }
+
+        #endregion
+
+        #region Private Properties
+        private List<ProfilerInfo> Profilers { get; set; }
         #endregion
 
         #region Private Classes
+
         /// <summary>
         /// Holds the profiler information
         /// </summary>
@@ -119,6 +117,7 @@ namespace Utilities.Profiler
             public int MaxTime;
             public int MinTime;
         }
+
         #endregion
     }
 }

@@ -36,6 +36,7 @@ namespace Utilities.Random
     public class Random:System.Random
     {
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -52,9 +53,11 @@ namespace Utilities.Random
             : base(Seed)
         {
         }
+
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// returns a random date/time for a specific date range.
         /// </summary>
@@ -63,11 +66,15 @@ namespace Utilities.Random
         /// <returns>A random date/time between the start and end times</returns>
         public DateTime NextDate(DateTime Start, DateTime End)
         {
-            if (Start > End)
+            try
             {
-                throw new ArgumentException("The start value must be earlier than the end value");
+                if (Start > End)
+                {
+                    throw new ArgumentException("The start value must be earlier than the end value");
+                }
+                return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
             }
-            return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
+            catch { throw; }
         }
 
         /// <summary>
@@ -77,9 +84,13 @@ namespace Utilities.Random
         /// <returns>a randomly generated string of the specified length</returns>
         public string NextString(int Length)
         {
-            if(Length<1)
-                return "";
-            return NextString(Length, ".");
+            try
+            {
+                if (Length < 1)
+                    return "";
+                return NextString(Length, ".");
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -91,9 +102,13 @@ namespace Utilities.Random
         /// <returns>A randomly generated string of the specified length, containing only the allowed characters.</returns>
         public string NextString(int Length,string AllowedCharacters)
         {
-            if (Length < 1)
-                return "";
-            return NextString(Length, AllowedCharacters, Length);
+            try
+            {
+                if (Length < 1)
+                    return "";
+                return NextString(Length, AllowedCharacters, Length);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -106,29 +121,33 @@ namespace Utilities.Random
         /// <returns>A randomly generated string of a specified length, containing only a set of characters, and at max a specified number of non alpha numeric characters.</returns>
         public string NextString(int Length, string AllowedCharacters,int NumberOfNonAlphaNumericsAllowed)
         {
-            if (Length < 1)
-                return "";
-            StringBuilder TempBuilder = new StringBuilder();
-            Regex Comparer = new Regex(AllowedCharacters);
-            Regex AlphaNumbericComparer=new Regex("[0-9a-zA-z]");
-            int Counter = 0;
-            while (TempBuilder.Length < Length)
+            try
             {
-                string TempValue = new string(Convert.ToChar(Convert.ToInt32(System.Math.Floor(94 * NextDouble() + 32))), 1);
-                if (Comparer.IsMatch(TempValue))
+                if (Length < 1)
+                    return "";
+                StringBuilder TempBuilder = new StringBuilder();
+                Regex Comparer = new Regex(AllowedCharacters);
+                Regex AlphaNumbericComparer = new Regex("[0-9a-zA-z]");
+                int Counter = 0;
+                while (TempBuilder.Length < Length)
                 {
-                    if (!AlphaNumbericComparer.IsMatch(TempValue) && NumberOfNonAlphaNumericsAllowed > Counter)
+                    string TempValue = new string(Convert.ToChar(Convert.ToInt32(System.Math.Floor(94 * NextDouble() + 32))), 1);
+                    if (Comparer.IsMatch(TempValue))
                     {
-                        TempBuilder.Append(TempValue);
-                        ++Counter;
-                    }
-                    else if (AlphaNumbericComparer.IsMatch(TempValue))
-                    {
-                        TempBuilder.Append(TempValue);
+                        if (!AlphaNumbericComparer.IsMatch(TempValue) && NumberOfNonAlphaNumericsAllowed > Counter)
+                        {
+                            TempBuilder.Append(TempValue);
+                            ++Counter;
+                        }
+                        else if (AlphaNumbericComparer.IsMatch(TempValue))
+                        {
+                            TempBuilder.Append(TempValue);
+                        }
                     }
                 }
+                return TempBuilder.ToString();
             }
-            return TempBuilder.ToString();
+            catch { throw; }
         }
 
         /// <summary>
@@ -138,14 +157,18 @@ namespace Utilities.Random
         /// <returns>A string containing Lorem Ipsum text</returns>
         public string NextLoremIpsum(int NumberOfWords)
         {
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append(StringHelper.ToFirstCharacterUpperCase(Words[Next(Words.Length)]));
-            for (int x = 1; x < NumberOfWords; ++x)
+            try
             {
-                Builder.Append(" " + Words[Next(Words.Length)]);
+                StringBuilder Builder = new StringBuilder();
+                Builder.Append(StringHelper.ToFirstCharacterUpperCase(Words[Next(Words.Length)]));
+                for (int x = 1; x < NumberOfWords; ++x)
+                {
+                    Builder.Append(" ").Append(Words[Next(Words.Length)]);
+                }
+                Builder.Append(".");
+                return Builder.ToString();
             }
-            Builder.Append(".");
-            return Builder.ToString();
+            catch { throw; }
         }
 
         /// <summary>
@@ -159,30 +182,34 @@ namespace Utilities.Random
         /// <returns>A string containing Lorem Ipsum text</returns>
         public string NextLoremIpsum(int NumberOfParagraphs, int NumberOfSentences, int MinSentenceLength, int MaxSentenceLength, bool HTMLFormatting)
         {
-            StringBuilder Builder = new StringBuilder();
-            if (HTMLFormatting)
-                Builder.Append("<p>");
-            Builder.Append("Lorem ipsum dolor sit amet. ");
-            for (int y = 0; y < NumberOfSentences; ++y)
+            try
             {
-                Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength)) + " ");
-            }
-            if (HTMLFormatting)
-                Builder.Append("</p>");
-            for (int x = 1; x < NumberOfParagraphs; ++x)
-            {
+                StringBuilder Builder = new StringBuilder();
                 if (HTMLFormatting)
                     Builder.Append("<p>");
+                Builder.Append("Lorem ipsum dolor sit amet. ");
                 for (int y = 0; y < NumberOfSentences; ++y)
                 {
-                    Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength)) + " ");
+                    Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength))).Append(" ");
                 }
                 if (HTMLFormatting)
                     Builder.Append("</p>");
-                else
-                    Builder.Append(System.Environment.NewLine + System.Environment.NewLine);
+                for (int x = 1; x < NumberOfParagraphs; ++x)
+                {
+                    if (HTMLFormatting)
+                        Builder.Append("<p>");
+                    for (int y = 0; y < NumberOfSentences; ++y)
+                    {
+                        Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength))).Append(" ");
+                    }
+                    if (HTMLFormatting)
+                        Builder.Append("</p>");
+                    else
+                        Builder.Append(System.Environment.NewLine).Append(System.Environment.NewLine);
+                }
+                return Builder.ToString();
             }
-            return Builder.ToString();
+            catch { throw; }
         }
 
         /// <summary>
@@ -195,7 +222,11 @@ namespace Utilities.Random
         /// <returns>A string containing Lorem Ipsum text</returns>
         public string NextLoremIpsum(int NumberOfParagraphs,int NumberOfSentences,int MinSentenceLength,int MaxSentenceLength)
         {
-            return NextLoremIpsum(NumberOfParagraphs, NumberOfSentences, MinSentenceLength, MaxSentenceLength, false);
+            try
+            {
+                return NextLoremIpsum(NumberOfParagraphs, NumberOfSentences, MinSentenceLength, MaxSentenceLength, false);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -204,9 +235,13 @@ namespace Utilities.Random
         /// <returns>returns a boolean</returns>
         public bool NextBool()
         {
-            if (Next(0, 2) == 1)
-                return true;
-            return false;
+            try
+            {
+                if (Next(0, 2) == 1)
+                    return true;
+                return false;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -216,9 +251,13 @@ namespace Utilities.Random
         /// <returns>A random value from an enum</returns>
         public T NextEnum<T>()
         {
-            Array Values = Enum.GetValues(typeof(T));
-            int Index = Next(0, Values.Length);
-            return (T)Values.GetValue(Index);
+            try
+            {
+                Array Values = Enum.GetValues(typeof(T));
+                int Index = Next(0, Values.Length);
+                return (T)Values.GetValue(Index);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -229,11 +268,15 @@ namespace Utilities.Random
         /// <returns>A time span between the start and end</returns>
         public TimeSpan NextTimeSpan(TimeSpan Start, TimeSpan End)
         {
-            if (Start > End)
+            try
             {
-                throw new ArgumentException("The start value must be earlier than the end value");
+                if (Start > End)
+                {
+                    throw new ArgumentException("The start value must be earlier than the end value");
+                }
+                return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
             }
-            return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
+            catch { throw; }
         }
 
         /// <summary>
@@ -242,7 +285,11 @@ namespace Utilities.Random
         /// <returns>A random color between black and white</returns>
         public Color NextColor()
         {
-            return NextColor(Color.Black, Color.White);
+            try
+            {
+                return NextColor(Color.Black, Color.White);
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -253,15 +300,20 @@ namespace Utilities.Random
         /// <returns>A random color between the min and max values</returns>
         public Color NextColor(Color MinColor, Color MaxColor)
         {
-            return Color.FromArgb(Next(MinColor.A, MaxColor.A + 1),
-                Next(MinColor.R, MaxColor.R + 1),
-                Next(MinColor.G, MaxColor.G + 1),
-                Next(MinColor.B, MaxColor.B + 1));
+            try
+            {
+                return Color.FromArgb(Next(MinColor.A, MaxColor.A + 1),
+                    Next(MinColor.R, MaxColor.R + 1),
+                    Next(MinColor.G, MaxColor.G + 1),
+                    Next(MinColor.B, MaxColor.B + 1));
+            }
+            catch { throw; }
         }
 
         #endregion
 
         #region Private Variables
+
         private string[] Words = new string[] { "consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod",
         "tempor", "invidunt", "ut", "labore", "et", "dolore", "magna", "aliquyam", "erat", "sed", "diam", "voluptua",
         "at", "vero", "eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea", "rebum", "stet", "clita",
@@ -307,6 +359,7 @@ namespace Utilities.Random
         "nonumy", "eirmod", "tempor", "invidunt", "ut", "labore", "et", "dolore", "magna", "aliquyam", "erat", "sed",
         "diam", "voluptua", "at", "vero", "eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea",
         "rebum", "stet", "clita", "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum" };
+
         #endregion
     }
 }

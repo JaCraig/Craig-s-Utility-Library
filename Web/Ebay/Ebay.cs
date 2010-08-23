@@ -40,7 +40,11 @@ namespace Utilities.Web.Ebay
         /// <returns>An RSS document object</returns>
         public static Document Search(string SearchString)
         {
-            return new Document("http://shop.ebay.com/i.html?_nkw="+HttpUtility.UrlEncode(SearchString)+"&_rss=1");
+            try
+            {
+                return new Document("http://shop.ebay.com/i.html?_nkw=" + HttpUtility.UrlEncode(SearchString) + "&_rss=1");
+            }
+            catch { throw; }
         }
 
         #endregion

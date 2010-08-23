@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Utilities.IO;
+using System.Net;
 #endregion
 
 namespace Utilities.Web.Youtube
@@ -62,7 +63,8 @@ namespace Utilities.Web.Youtube
                 Match = TempRegex.Match(Content);
                 VideoLocation += Match.Groups[1].Value.Replace("\"", "");
                 Stream TempStream;
-                FileManager.GetFileContents(new Uri(VideoLocation), out TempStream);
+                WebClient Client;
+                FileManager.GetFileContents(new Uri(VideoLocation), out TempStream, out Client);
                 BinaryReader TempReader = new BinaryReader(TempStream);
                 List<byte> Bytes = new List<byte>();
                 while (true)
@@ -77,9 +79,10 @@ namespace Utilities.Web.Youtube
                     }
                 }
                 TempStream.Dispose();
+                Client.Dispose();
                 FileManager.SaveFile(Bytes.ToArray(), FileLocation);
             }
-            catch { }
+            catch { throw; }
         }
 
         #endregion

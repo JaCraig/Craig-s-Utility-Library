@@ -55,19 +55,23 @@ namespace Utilities.Web.Twitter
         /// <param name="TokenSecret">The request token secret</param>
         public void GetRequestToken(out string Token,out string TokenSecret)
         {
-            this.Token = "";
-            this.TokenSecret = "";
-            this.Method = HTTPMethod.GET;
-            this.Url = new Uri("http://twitter.com/oauth/request_token");
-            REST.REST RestHelper = new Utilities.Web.REST.REST();
-            RestHelper.Url = new Uri(GenerateRequest());
-            string Value = RestHelper.GET();
-            Regex TokenRegex = new Regex("oauth_token=(?<Value>[^&]*)");
-            Match TempToken = TokenRegex.Match(Value);
-            Token = TempToken.Groups["Value"].Value;
-            Regex TokenSecretRegex = new Regex("oauth_token_secret=(?<Value>[^&]*)");
-            Match TempTokenSecret = TokenSecretRegex.Match(Value);
-            TokenSecret = TempTokenSecret.Groups["Value"].Value;
+            try
+            {
+                this.Token = "";
+                this.TokenSecret = "";
+                this.Method = HTTPMethod.GET;
+                this.Url = new Uri("http://twitter.com/oauth/request_token");
+                REST.REST RestHelper = new Utilities.Web.REST.REST();
+                RestHelper.Url = new Uri(GenerateRequest());
+                string Value = RestHelper.GET();
+                Regex TokenRegex = new Regex("oauth_token=(?<Value>[^&]*)");
+                Match TempToken = TokenRegex.Match(Value);
+                Token = TempToken.Groups["Value"].Value;
+                Regex TokenSecretRegex = new Regex("oauth_token_secret=(?<Value>[^&]*)");
+                Match TempTokenSecret = TokenSecretRegex.Match(Value);
+                TokenSecret = TempTokenSecret.Groups["Value"].Value;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -78,10 +82,14 @@ namespace Utilities.Web.Twitter
         /// authorize the app and get the authorization PIN</returns>
         public string GetAuthorizationSite()
         {
-            this.Method = HTTPMethod.GET;
-            this.Url = new Uri("http://twitter.com/oauth/authorize");
-            this.AddParameter("oauth_callback", "oob");
-            return new Uri(GenerateRequest()).ToString();
+            try
+            {
+                this.Method = HTTPMethod.GET;
+                this.Url = new Uri("http://twitter.com/oauth/authorize");
+                this.AddParameter("oauth_callback", "oob");
+                return new Uri(GenerateRequest()).ToString();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -94,18 +102,22 @@ namespace Utilities.Web.Twitter
         /// <param name="AccessTokenSecret">The access token secret</param>
         public void GetAccessToken(string PIN, out string AccessToken, out string AccessTokenSecret)
         {
-            this.Url = new Uri("http://twitter.com/oauth/access_token");
-            this.AddParameter("oauth_verifier", PIN);
-            this.Method = HTTPMethod.POST;
-            REST.REST RestHelper = new Utilities.Web.REST.REST();
-            RestHelper.Url = new Uri(GenerateRequest());
-            string Value = RestHelper.POST();
-            Regex TokenRegex = new Regex("oauth_token=(?<Value>[^&]*)");
-            Match TempToken = TokenRegex.Match(Value);
-            AccessToken = TempToken.Groups["Value"].Value;
-            Regex TokenSecretRegex = new Regex("oauth_token_secret=(?<Value>[^&]*)");
-            Match TempTokenSecret = TokenSecretRegex.Match(Value);
-            AccessTokenSecret = TempTokenSecret.Groups["Value"].Value;
+            try
+            {
+                this.Url = new Uri("http://twitter.com/oauth/access_token");
+                this.AddParameter("oauth_verifier", PIN);
+                this.Method = HTTPMethod.POST;
+                REST.REST RestHelper = new Utilities.Web.REST.REST();
+                RestHelper.Url = new Uri(GenerateRequest());
+                string Value = RestHelper.POST();
+                Regex TokenRegex = new Regex("oauth_token=(?<Value>[^&]*)");
+                Match TempToken = TokenRegex.Match(Value);
+                AccessToken = TempToken.Groups["Value"].Value;
+                Regex TokenSecretRegex = new Regex("oauth_token_secret=(?<Value>[^&]*)");
+                Match TempTokenSecret = TokenSecretRegex.Match(Value);
+                AccessTokenSecret = TempTokenSecret.Groups["Value"].Value;
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -115,12 +127,16 @@ namespace Utilities.Web.Twitter
         /// <returns>The XML doc returned from the Twitter service</returns>
         public string UpdateStatus(string Status)
         {
-            this.Method = HTTPMethod.POST;
-            this.Url = new Uri("http://twitter.com/statuses/update.xml");
-            this.AddParameter("status", Status);
-            REST.REST RestHelper = new Utilities.Web.REST.REST();
-            RestHelper.Url = new Uri(GenerateRequest());
-            return RestHelper.POST();
+            try
+            {
+                this.Method = HTTPMethod.POST;
+                this.Url = new Uri("http://twitter.com/statuses/update.xml");
+                this.AddParameter("status", Status);
+                REST.REST RestHelper = new Utilities.Web.REST.REST();
+                RestHelper.Url = new Uri(GenerateRequest());
+                return RestHelper.POST();
+            }
+            catch { throw; }
         }
 
         /// <summary>
@@ -131,12 +147,16 @@ namespace Utilities.Web.Twitter
         /// contatining the timeline</returns>
         public string GetTimeline(string UserName)
         {
-            this.Method = HTTPMethod.POST;
-            this.Url = new Uri("http://twitter.com/statuses/user_timeline.xml");
-            this.AddParameter("screen_name", UserName);
-            REST.REST RestHelper = new Utilities.Web.REST.REST();
-            RestHelper.Url = new Uri(GenerateRequest());
-            return RestHelper.GET();
+            try
+            {
+                this.Method = HTTPMethod.POST;
+                this.Url = new Uri("http://twitter.com/statuses/user_timeline.xml");
+                this.AddParameter("screen_name", UserName);
+                REST.REST RestHelper = new Utilities.Web.REST.REST();
+                RestHelper.Url = new Uri(GenerateRequest());
+                return RestHelper.GET();
+            }
+            catch { throw; }
         }
 
         #endregion
