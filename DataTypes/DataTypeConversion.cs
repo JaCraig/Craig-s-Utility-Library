@@ -216,6 +216,67 @@ namespace Utilities.DataTypes
             }
             catch { throw; }
         }
+
+        /// <summary>
+        /// Converts a byte array to ASCII string
+        /// </summary>
+        /// <param name="Input">input array</param>
+        /// <returns>ASCII string of the byte array</returns>
+        public static string ByteArrayToASCIIString(byte[] Input)
+        {
+            try
+            {
+                ASCIIEncoding Encoding = new ASCIIEncoding();
+                return Encoding.GetString(Input);
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Converts a byte array to unicode string
+        /// </summary>
+        /// <param name="Input">Input array</param>
+        /// <returns>Unicode string of the byte array</returns>
+        public static string ByteArrayToUnicodeString(byte[] Input)
+        {
+            try
+            {
+                UnicodeEncoding Encoding = new UnicodeEncoding();
+                return Encoding.GetString(Input);
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Converts an ASCII string to a byte array
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>Byte array of the string</returns>
+        public static byte[] ASCIIStringToByteArray(string Input)
+        {
+            try
+            {
+                ASCIIEncoding Encoding = new ASCIIEncoding();
+                return Encoding.GetBytes(Input);
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Converts a unicode string to a byte array
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>Byte array of the string</returns>
+        public static byte[] UnicodeStringToByteArray(string Input)
+        {
+            try
+            {
+                UnicodeEncoding Encoding = new UnicodeEncoding();
+                return Encoding.GetBytes(Input);
+            }
+            catch { throw; }
+        }
+
         #endregion
     }
 }

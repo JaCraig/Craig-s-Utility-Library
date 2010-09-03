@@ -346,6 +346,46 @@ namespace Utilities.DataTypes
             catch { throw; }
         }
 
+        /// <summary>
+        /// Determines if a string is unicode
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>True if it's unicode, false otherwise</returns>
+        public static bool IsUnicode(string Input)
+        {
+            try
+            {
+                UnicodeEncoding Encoding = new UnicodeEncoding();
+                string UniInput = Encoding.GetString(Encoding.GetBytes(Input));
+                ASCIIEncoding Encoding2 = new ASCIIEncoding();
+                string ASCIIInput = Encoding2.GetString(Encoding2.GetBytes(Input));
+                if (UniInput == ASCIIInput)
+                    return false;
+                return true;
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Determines if a byte array is unicode
+        /// </summary>
+        /// <param name="Input">Input array</param>
+        /// <returns>True if it's unicode, false otherwise</returns>
+        public static bool IsUnicode(byte[] Input)
+        {
+            try
+            {
+                UnicodeEncoding Encoding = new UnicodeEncoding();
+                byte[] UniInput = Encoding.GetBytes(Encoding.GetString(Input));
+                ASCIIEncoding Encoding2 = new ASCIIEncoding();
+                byte[] ASCIIInput = Encoding2.GetBytes(Encoding2.GetString(Input));
+                if (UniInput[0] == ASCIIInput[0])
+                    return false;
+                return true;
+            }
+            catch { throw; }
+        }
+
         #endregion
 
         #region Private Static Functions

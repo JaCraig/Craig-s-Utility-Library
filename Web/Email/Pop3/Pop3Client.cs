@@ -37,6 +37,7 @@ namespace Utilities.Web.Email.Pop3
     public class Pop3Client:TcpClient
     {
         #region Public Functions
+
         /// <summary>
         /// Connects to a server
         /// </summary>
@@ -117,9 +118,12 @@ namespace Utilities.Web.Email.Pop3
                 while (!Done)
                 {
                     Regex TempRegex = new Regex(Regex.Escape("+") + "OK.*\r\n");
+                    if (!ResponseString.EndsWith("\r\n.\r\n"))
+                    {
+                        while (!ResponseString.EndsWith("\r\n.\r\n"))
+                            ResponseString += GetResponse();
+                    }
                     ResponseString = TempRegex.Replace(ResponseString, "");
-                    while (!ResponseString.EndsWith("\r\n.\r\n"))
-                        ResponseString += GetResponse();
                     string[] Seperator = { "\r\n" };
                     string[] Values = ResponseString.Split(Seperator, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string Value in Values)

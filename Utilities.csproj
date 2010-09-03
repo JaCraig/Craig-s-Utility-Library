@@ -156,7 +156,9 @@
     <Compile Include="FileFormats\FixedLength\StringField.cs" />
     <Compile Include="FileFormats\RSSHelper\GUID.cs" />
     <Compile Include="FileFormats\RSSHelper\Thumbnail.cs" />
+    <Compile Include="Math\Conversion.cs" />
     <Compile Include="Math\Math.cs" />
+    <Compile Include="Math\Permutation.cs" />
     <Compile Include="Math\Set.cs" />
     <Compile Include="Media\Image\ColorMatrix.cs" />
     <Compile Include="Media\Sound\SpeechToText.cs" />
