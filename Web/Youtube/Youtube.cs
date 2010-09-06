@@ -26,6 +26,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Utilities.IO;
 using System.Net;
+using System.Text;
 #endregion
 
 namespace Utilities.Web.Youtube
@@ -83,6 +84,47 @@ namespace Utilities.Web.Youtube
                 FileManager.SaveFile(Bytes.ToArray(), FileLocation);
             }
             catch { throw; }
+        }
+
+        /// <summary>
+        /// Generates an HTML embed for a youtube video
+        /// </summary>
+        /// <param name="ID">ID of the video</param>
+        /// <returns>The needed embed html tag for the video</returns>
+        public static string GenerateEmbed(string ID)
+        {
+            return GenerateEmbed(ID, false, 320, 240);
+        }
+
+        /// <summary>
+        /// Generates an HTML embed tag for a youtube video
+        /// </summary>
+        /// <param name="ID">ID of the video</param>
+        /// <param name="AutoPlay">Should the video auto play?</param>
+        /// <returns>The needed embed html tag</returns>
+        public static string GenerateEmbed(string ID, bool AutoPlay)
+        {
+            return GenerateEmbed(ID, AutoPlay, 320, 240);
+        }
+
+        /// <summary>
+        /// Generates an HTML embed tag for a youtube video
+        /// </summary>
+        /// <param name="ID">ID of the video</param>
+        /// <param name="AutoPlay">Should the video auto play?</param>
+        /// <param name="Height">Height of the video</param>
+        /// <param name="Width">Width of the video</param>
+        /// <returns>The needed embed html tag</returns>
+        public static string GenerateEmbed(string ID,bool AutoPlay,int Width,int Height)
+        {
+ 	        StringBuilder Builder=new StringBuilder();
+            Builder.Append(@"<embed src='http://www.youtube.com/v/")
+                .Append(ID).Append("&autoplay=").Append(AutoPlay?1:0)
+                .Append(@"' type='application/x-shockwave-flash' 
+                        allowscriptaccess='never' enableJavascript ='false' 
+                        allowfullscreen='true' width='").Append(Width)
+                .Append("' height='").Append(Height).Append(@"'></embed>");
+            return Builder.ToString();
         }
 
         #endregion

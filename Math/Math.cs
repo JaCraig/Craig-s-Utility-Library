@@ -215,6 +215,21 @@ namespace Utilities.Math
             catch { throw; }
         }
 
+        /// <summary>
+        /// Calculates the factorial for a number
+        /// </summary>
+        /// <param name="Input">Input value (N!)</param>
+        /// <returns>The factorial specified</returns>
+        public static int Factorial(int Input)
+        {
+            int Value1 = 1;
+            for (int x = 2; x <= Input; ++x)
+            {
+                Value1 = Value1 * x;
+            }
+            return Value1;
+        }
+
         #endregion
     }
 }
