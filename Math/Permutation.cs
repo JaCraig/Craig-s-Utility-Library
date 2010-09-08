@@ -31,7 +31,6 @@ namespace Utilities.Math
     /// <summary>
     /// Class that creates permutations (not implemented yet)
     /// </summary>
-    /// <typeparam name="T">Data type</typeparam>
     public static class Permutation
     {
         #region Public Static Functions
