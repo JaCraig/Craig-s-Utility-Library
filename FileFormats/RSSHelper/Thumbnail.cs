@@ -32,6 +32,7 @@ namespace Utilities.FileFormats.RSSHelper
     public class Thumbnail
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,26 +46,26 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML element holding info for the enclosure</param>
         public Thumbnail(XmlElement Element)
         {
+            if (!Element.Name.Equals("media:thumbnail", StringComparison.CurrentCultureIgnoreCase))
+                throw new ArgumentException("Element is not a thumbnail");
             try
             {
-                if (Element.Name.Equals("media:thumbnail", StringComparison.CurrentCultureIgnoreCase))
+                if (Element.Attributes["url"] != null)
                 {
-                    if (Element.Attributes["url"] != null)
-                    {
-                        Url = Element.Attributes["url"].Value;
-                    }
-                    if (Element.Attributes["width"] != null)
-                    {
-                        Width = int.Parse(Element.Attributes["width"].Value);
-                    }
-                    if (Element.Attributes["height"] != null)
-                    {
-                        Height = int.Parse(Element.Attributes["height"].Value);
-                    }
+                    Url = Element.Attributes["url"].Value;
+                }
+                if (Element.Attributes["width"] != null)
+                {
+                    Width = int.Parse(Element.Attributes["width"].Value);
+                }
+                if (Element.Attributes["height"] != null)
+                {
+                    Height = int.Parse(Element.Attributes["height"].Value);
                 }
             }
-            catch { }
+            catch { throw; }
         }
+
         #endregion
 
         #region Private Variables
@@ -114,11 +115,15 @@ namespace Utilities.FileFormats.RSSHelper
         /// <returns>A string formatted for RSS output</returns>
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(_Url))
+            try
             {
-                return "<media:thumbnail url=\"" + _Url + "\" width=\"" + _Width.ToString() + "\" height=\"" + _Height + "\" />\r\n";
+                if (!string.IsNullOrEmpty(_Url))
+                {
+                    return "<media:thumbnail url=\"" + _Url + "\" width=\"" + _Width.ToString() + "\" height=\"" + _Height + "\" />\r\n";
+                }
+                return string.Empty;
             }
-            return string.Empty;
+            catch { throw; }
         }
 
         #endregion

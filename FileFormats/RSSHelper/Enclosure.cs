@@ -32,6 +32,7 @@ namespace Utilities.FileFormats.RSSHelper
     public class Enclosure
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,26 +46,26 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML element holding info for the enclosure</param>
         public Enclosure(XmlElement Element)
         {
+            if (!Element.Name.Equals("enclosure", StringComparison.CurrentCultureIgnoreCase))
+                throw new ArgumentException("Element is not an enclosure");
             try
             {
-                if (Element.Name.Equals("enclosure", StringComparison.CurrentCultureIgnoreCase))
+                if (Element.Attributes["url"] != null)
                 {
-                    if (Element.Attributes["url"] != null)
-                    {
-                        Url = Element.Attributes["url"].Value;
-                    }
-                    if (Element.Attributes["length"] != null)
-                    {
-                        Length = Element.Attributes["length"].Value;
-                    }
-                    if (Element.Attributes["type"] != null)
-                    {
-                        Type = Element.Attributes["type"].Value;
-                    }
+                    Url = Element.Attributes["url"].Value;
+                }
+                if (Element.Attributes["length"] != null)
+                {
+                    Length = Element.Attributes["length"].Value;
+                }
+                if (Element.Attributes["type"] != null)
+                {
+                    Type = Element.Attributes["type"].Value;
                 }
             }
-            catch { }
+            catch { throw; }
         }
+
         #endregion
 
         #region Private Variables
@@ -103,20 +104,26 @@ namespace Utilities.FileFormats.RSSHelper
         #endregion
 
         #region Public Overridden Functions
+
         /// <summary>
         /// to string item. Used for outputting the item to RSS.
         /// </summary>
         /// <returns>A string formatted for RSS output</returns>
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(_Url) && !string.IsNullOrEmpty(_Type) && !string.IsNullOrEmpty(_Length))
+            try
             {
-                return "<enclosure url=\"" + _Url + "\" length=\"" + _Length + "\" type=\"" + _Type + "\" />\r\n"
-                    + "<media:content url=\"" + _Url + "\" fileSize=\"" + _Length + "\" type=\"" + _Type + "\" />";
+                if (!string.IsNullOrEmpty(_Url) && !string.IsNullOrEmpty(_Type) && !string.IsNullOrEmpty(_Length))
+                {
+                    return "<enclosure url=\"" + _Url + "\" length=\"" + _Length + "\" type=\"" + _Type + "\" />\r\n"
+                        + "<media:content url=\"" + _Url + "\" fileSize=\"" + _Length + "\" type=\"" + _Type + "\" />";
 
+                }
+                return string.Empty;
             }
-            return string.Empty;
+            catch { throw; }
         }
+
         #endregion
     }
 }

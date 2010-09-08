@@ -46,18 +46,17 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML element holding info for the enclosure</param>
         public GUID(XmlElement Element)
         {
+            if (!Element.Name.Equals("guid", StringComparison.CurrentCultureIgnoreCase))
+                throw new ArgumentException("Element is not a guid");
             try
             {
-                if (Element.Name.Equals("guid", StringComparison.CurrentCultureIgnoreCase))
+                if (Element.Attributes["isPermaLink"] != null)
                 {
-                    if (Element.Attributes["isPermaLink"] != null)
-                    {
-                        PermaLink = Element.Attributes["isPermaLink"].Value;
-                    }
-                    GUIDText = Element.InnerText;
+                    PermaLink = Element.Attributes["isPermaLink"].Value;
                 }
+                GUIDText = Element.InnerText;
             }
-            catch { }
+            catch { throw; }
         }
 
         #endregion
@@ -84,11 +83,15 @@ namespace Utilities.FileFormats.RSSHelper
         /// <returns>A string formatted for RSS output</returns>
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(GUIDText))
+            try
             {
-                return "<guid" + (string.IsNullOrEmpty(PermaLink) ? " IsPermaLink=" + PermaLink : " IsPermaLink='False'") + ">" + GUIDText + "</guid>\r\n";
+                if (!string.IsNullOrEmpty(GUIDText))
+                {
+                    return "<guid" + (string.IsNullOrEmpty(PermaLink) ? " IsPermaLink=" + PermaLink : " IsPermaLink='False'") + ">" + GUIDText + "</guid>\r\n";
+                }
+                return string.Empty;
             }
-            return string.Empty;
+            catch { throw; }
         }
 
         #endregion

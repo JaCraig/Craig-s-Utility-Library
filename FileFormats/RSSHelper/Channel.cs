@@ -35,6 +35,7 @@ namespace Utilities.FileFormats.RSSHelper
     public class Channel
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -48,71 +49,75 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML representation of the channel</param>
         public Channel(XmlElement Element)
         {
-            if (Element.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
+            if (!Element.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
+                throw new ArgumentException("Element is not a channel");
+            try
             {
-                foreach (XmlNode Child in Element.ChildNodes)
+                XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Element.OwnerDocument.NameTable);
+                XmlNode Node = Element.SelectSingleNode("./title", NamespaceManager);
+                if (Node != null)
                 {
-                    try
-                    {
-                        if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Title = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("link", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Link = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("description", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Description = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("copyright", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Copyright = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("language", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Language = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("webmaster", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            WebMaster = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("pubdate", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            PubDate = DateTime.Parse(Child.InnerText);
-                        }
-                        else if (Child.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Categories.Add(RSS.StripIllegalCharacters(Child.InnerText));
-                        }
-                        else if (Child.Name.Equals("docs", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Docs = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("ttl", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            TTL = int.Parse(Child.InnerText);
-                        }
-                        else if (Child.Name.Equals("image", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            foreach (XmlNode SubChild in Child.ChildNodes)
-                            {
-                                if (SubChild.Name.Equals("url", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    ImageUrl = SubChild.InnerText;
-                                }
-                            }
-                        }
-                        else if (Child.Name.Equals("item", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Items.Add(new Item((XmlElement)Child));
-                        }
-                    }
-                    catch { }
+                    Title = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./link", NamespaceManager);
+                if (Node != null)
+                {
+                    Link = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./description", NamespaceManager);
+                if (Node != null)
+                {
+                    Description = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./copyright", NamespaceManager);
+                if (Node != null)
+                {
+                    Copyright = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./language", NamespaceManager);
+                if (Node != null)
+                {
+                    Language = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./webmaster", NamespaceManager);
+                if (Node != null)
+                {
+                    WebMaster = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./pubdate", NamespaceManager);
+                if (Node != null)
+                {
+                    PubDate = DateTime.Parse(Node.InnerText);
+                }
+                XmlNodeList Nodes = Element.SelectNodes("./category", NamespaceManager);
+                foreach (XmlNode TempNode in Nodes)
+                {
+                    Categories.Add(RSS.StripIllegalCharacters(TempNode.InnerText));
+                }
+                Node = Element.SelectSingleNode("./docs", NamespaceManager);
+                if (Node != null)
+                {
+                    Docs = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./ttl", NamespaceManager);
+                if (Node != null)
+                {
+                    TTL = int.Parse(Node.InnerText);
+                }
+                Node = Element.SelectSingleNode("./image/url", NamespaceManager);
+                if (Node != null)
+                {
+                    ImageUrl = Node.InnerText;
+                }
+                Nodes = Element.SelectNodes("./item", NamespaceManager);
+                foreach (XmlNode TempNode in Nodes)
+                {
+                    Items.Add(new Item((XmlElement)TempNode));
                 }
             }
+            catch { throw; }
         }
+
         #endregion
 
         #region Private Variables
@@ -275,40 +280,48 @@ namespace Utilities.FileFormats.RSSHelper
         }
         #endregion
 
+        #region Overridden Functions
+
         public override string ToString()
         {
-            StringBuilder ChannelString = new StringBuilder();
-            ChannelString.Append("<channel>");
-            ChannelString.Append("<title>" + Title + "</title>\r\n");
-            ChannelString.Append("<link>" + Link + "</link>\r\n");
-            ChannelString.Append("<atom:link xmlns:atom=\"http://www.w3.org/2005/Atom\" rel=\"self\" href=\"" + Link + "\" type=\"application/rss+xml\" />");
+            try
+            {
+                StringBuilder ChannelString = new StringBuilder();
+                ChannelString.Append("<channel>");
+                ChannelString.Append("<title>").Append(Title).Append("</title>\r\n");
+                ChannelString.Append("<link>").Append(Link).Append("</link>\r\n");
+                ChannelString.Append("<atom:link xmlns:atom=\"http://www.w3.org/2005/Atom\" rel=\"self\" href=\"").Append(Link).Append("\" type=\"application/rss).Append(xml\" />");
 
-            ChannelString.Append("<description><![CDATA[" + Description + "]]></description>\r\n");
-            ChannelString.Append("<language>" + Language + "</language>\r\n");
-            ChannelString.Append("<copyright>" + Copyright + "</copyright>\r\n");
-            ChannelString.Append("<webMaster>" + WebMaster + "</webMaster>\r\n");
-            ChannelString.Append("<pubDate>" + PubDate.ToString("Ddd, dd MMM yyyy HH':'mm':'ss") + "</pubDate>\r\n");
-            ChannelString.Append("<itunes:explicit>" + (Explicit ? "yes" : "no") + "</itunes:explicit>");
-            ChannelString.Append("<itunes:subtitle>" + Title + "</itunes:subtitle>");
-            ChannelString.Append("<itunes:summary><![CDATA[" + Description + "]]></itunes:summary>");
-            
-            foreach (string Category in Categories)
-            {
-                ChannelString.Append("<category>" + Category + "</category>\r\n");
-                ChannelString.Append("<itunes:category text=\"" + Category + "\" />\r\n");
+                ChannelString.Append("<description><![CDATA[").Append(Description).Append("]]></description>\r\n");
+                ChannelString.Append("<language>").Append(Language).Append("</language>\r\n");
+                ChannelString.Append("<copyright>").Append(Copyright).Append("</copyright>\r\n");
+                ChannelString.Append("<webMaster>").Append(WebMaster).Append("</webMaster>\r\n");
+                ChannelString.Append("<pubDate>").Append(PubDate.ToString("Ddd, dd MMM yyyy HH':'mm':'ss")).Append("</pubDate>\r\n");
+                ChannelString.Append("<itunes:explicit>").Append((Explicit ? "yes" : "no")).Append("</itunes:explicit>");
+                ChannelString.Append("<itunes:subtitle>").Append(Title).Append("</itunes:subtitle>");
+                ChannelString.Append("<itunes:summary><![CDATA[").Append(Description).Append("]]></itunes:summary>");
+
+                foreach (string Category in Categories)
+                {
+                    ChannelString.Append("<category>").Append(Category).Append("</category>\r\n");
+                    ChannelString.Append("<itunes:category text=\"").Append(Category).Append("\" />\r\n");
+                }
+                ChannelString.Append("<docs>").Append(Docs).Append("</docs>\r\n");
+                ChannelString.Append("<ttl>").Append(TTL.ToString()).Append("</ttl>\r\n");
+                if (!string.IsNullOrEmpty(ImageUrl))
+                {
+                    ChannelString.Append("<image><url>").Append(ImageUrl).Append("</url>\r\n<title>").Append(Title).Append("</title>\r\n<link>").Append(Link).Append("</link>\r\n</image>\r\n");
+                }
+                foreach (Item CurrentItem in Items)
+                {
+                    ChannelString.Append(CurrentItem.ToString());
+                }
+                ChannelString.Append("</channel>\r\n");
+                return ChannelString.ToString();
             }
-            ChannelString.Append("<docs>" + Docs + "</docs>\r\n");
-            ChannelString.Append("<ttl>" + TTL.ToString() + "</ttl>\r\n");
-            if (!string.IsNullOrEmpty(ImageUrl))
-            {
-                ChannelString.Append("<image><url>" + ImageUrl + "</url>\r\n<title>" + Title + "</title>\r\n<link>" + Link + "</link>\r\n</image>\r\n");
-            }
-            foreach (Item CurrentItem in Items)
-            {
-                ChannelString.Append(CurrentItem.ToString());
-            }
-            ChannelString.Append("</channel>\r\n");
-            return ChannelString.ToString();
+            catch { throw; }
         }
+
+        #endregion
     }
 }

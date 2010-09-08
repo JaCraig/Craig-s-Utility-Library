@@ -48,52 +48,59 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML element containing the item content</param>
         public Item(XmlElement Element)
         {
-            if (Element.Name.Equals("item", StringComparison.CurrentCultureIgnoreCase))
+            if (!Element.Name.Equals("item", StringComparison.CurrentCultureIgnoreCase))
+                throw new ArgumentException("Element is not an item");
+            try
             {
-                foreach (XmlNode Child in Element.ChildNodes)
+                XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Element.OwnerDocument.NameTable);
+                NamespaceManager.AddNamespace("media", "http://search.yahoo.com/mrss/");
+                XmlNode Node = Element.SelectSingleNode("./title", NamespaceManager);
+                if (Node != null)
                 {
-                    try
-                    {
-                        if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Title = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("link", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Link = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("description", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Description = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("author", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Author = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Categories.Add(RSS.StripIllegalCharacters(Child.InnerText));
-                        }
-                        else if (Child.Name.Equals("enclosure", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            _Enclosure = new Enclosure((XmlElement)Child);
-                        }
-                        else if (Child.Name.Equals("pubDate", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            PubDate = DateTime.Parse(Child.InnerText);
-                        }
-                        else if (Child.Name.Equals("media:thumbnail", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Thumbnail = new Thumbnail((XmlElement)Child);
-                        }
-                        else if (Child.Name.Equals("guid", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            GUID = new GUID((XmlElement)Child);
-                        }
-                    }
-                    catch { }
+                    Title = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./link", NamespaceManager);
+                if (Node != null)
+                {
+                    Link = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./description", NamespaceManager);
+                if (Node != null)
+                {
+                    Description = Node.InnerText;
+                }
+                Node = Element.SelectSingleNode("./author", NamespaceManager);
+                if (Node != null)
+                {
+                    Author = Node.InnerText;
+                }
+                XmlNodeList Nodes = Element.SelectNodes("./category", NamespaceManager);
+                foreach (XmlNode TempNode in Nodes)
+                {
+                    Categories.Add(RSS.StripIllegalCharacters(TempNode.InnerText));
+                }
+                Node = Element.SelectSingleNode("./enclosure", NamespaceManager);
+                if (Node != null)
+                {
+                    Enclosure = new Enclosure((XmlElement)Node);
+                }
+                Node = Element.SelectSingleNode("./pubdate", NamespaceManager);
+                if (Node != null)
+                {
+                    PubDate = DateTime.Parse(Node.InnerText);
+                }
+                Node = Element.SelectSingleNode("./media:thumbnail", NamespaceManager);
+                if (Node != null)
+                {
+                    Thumbnail = new Thumbnail((XmlElement)Node);
+                }
+                Node = Element.SelectSingleNode("./guid", NamespaceManager);
+                if (Node != null)
+                {
+                    GUID = new GUID((XmlElement)Node);
                 }
             }
+            catch { throw; }
         }
 
         #endregion
@@ -211,28 +218,36 @@ namespace Utilities.FileFormats.RSSHelper
         #endregion
 
         #region Public Overridden Function
+
         /// <summary>
         /// Outputs a string ready for RSS
         /// </summary>
         /// <returns>A string formatted for RSS</returns>
         public override string ToString()
         {
-            StringBuilder ItemString = new StringBuilder();
-            ItemString.Append("<item><title>" + Title + "</title>\r\n<link>" + Link + "</link>\r\n<author>" + Author + "</author>\r\n");
-            foreach (string Category in Categories)
+            try
             {
-                ItemString.Append("<category>" + Category + "</category>\r\n");
+                StringBuilder ItemString = new StringBuilder();
+                ItemString.Append("<item><title>").Append(Title).Append("</title>\r\n<link>")
+                    .Append(Link).Append("</link>\r\n<author>").Append(Author)
+                    .Append("</author>\r\n");
+                foreach (string Category in Categories)
+                {
+                    ItemString.Append("<category>").Append(Category).Append("</category>\r\n");
+                }
+                ItemString.Append("<pubDate>").Append(PubDate.ToString("r")).Append("</pubDate>\r\n");
+                ItemString.Append(Enclosure.ToString());
+                ItemString.Append(Thumbnail.ToString());
+                ItemString.Append("<description><![CDATA[").Append(Description).Append("]]></description>\r\n");
+                ItemString.Append(GUID.ToString());
+                ItemString.Append("<itunes:subtitle>").Append(Title).Append("</itunes:subtitle>");
+                ItemString.Append("<itunes:summary><![CDATA[").Append(Description).Append("]]></itunes:summary>");
+                ItemString.Append("</item>\r\n");
+                return ItemString.ToString();
             }
-            ItemString.Append("<pubDate>" + PubDate.ToString("r") + "</pubDate>\r\n");
-            ItemString.Append(Enclosure.ToString());
-            ItemString.Append(Thumbnail.ToString());
-            ItemString.Append("<description><![CDATA[" + Description + "]]></description>\r\n");
-            ItemString.Append(GUID.ToString());
-            ItemString.Append("<itunes:subtitle>" + Title + "</itunes:subtitle>");
-            ItemString.Append("<itunes:summary><![CDATA[" + Description + "]]></itunes:summary>");
-            ItemString.Append("</item>\r\n");
-            return ItemString.ToString();
+            catch { throw; }
         }
+
         #endregion
     }
 }

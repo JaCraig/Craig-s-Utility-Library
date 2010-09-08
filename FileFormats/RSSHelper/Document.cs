@@ -34,6 +34,7 @@ namespace Utilities.FileFormats.RSSHelper
     public class Document
     {
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -51,40 +52,9 @@ namespace Utilities.FileFormats.RSSHelper
             {
                 XmlDocument Document = new XmlDocument();
                 Document.Load(Location);
-                foreach (XmlNode Children in Document.ChildNodes)
-                {
-                    if (Children.Name.Equals("rss", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        foreach (XmlNode Child in Children.ChildNodes)
-                        {
-                            if (Child.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Channels.Add(new Channel((XmlElement)Child));
-                            }
-                        }
-                    }
-                    else if (Children.Name.Equals("rdf:rdf", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        List<Item> Items = new List<Item>();
-                        foreach (XmlNode Child in Children.ChildNodes)
-                        {
-                            if (Child.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Channels.Add(new Channel((XmlElement)Child));
-                            }
-                            else if (Child.Name.Equals("item", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Items.Add(new Item((XmlElement)Child));
-                            }
-                        }
-                        if (Channels.Count > 0)
-                        {
-                            Channels[0].Items = Items;
-                        }
-                    }
-                }
+                Load(Document);
             }
-            catch { }
+            catch { throw; }
         }
 
         /// <summary>
@@ -93,46 +63,23 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Document">XML document containing an RSS feed</param>
         public Document(XmlDocument Document)
         {
-            foreach (XmlNode Children in Document.ChildNodes)
+            try
             {
-                if (Children.Name.Equals("rss", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    foreach (XmlNode Child in Children.ChildNodes)
-                    {
-                        if (Child.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Channels.Add(new Channel((XmlElement)Child));
-                        }
-                    }
-                }
-                else if (Children.Name.Equals("rdf:rdf", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    List<Item> Items = new List<Item>();
-                    foreach (XmlNode Child in Children.ChildNodes)
-                    {
-                        if (Child.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Channels.Add(new Channel((XmlElement)Child));
-                        }
-                        else if (Child.Name.Equals("item", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Items.Add(new Item((XmlElement)Child));
-                        }
-                    }
-                    if (Channels.Count > 0)
-                    {
-                        Channels[0].Items = Items;
-                    }
-                }
+                Load(Document);
             }
+            catch { throw; }
         }
+
         #endregion
 
         #region Private Variables
+
         private List<Channel> _Channels = null;
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Channels for the RSS feed
         /// </summary>
@@ -148,38 +95,86 @@ namespace Utilities.FileFormats.RSSHelper
             }
             set { _Channels = value; }
         }
+
         #endregion
 
         #region Public Overridden Functions
+
         /// <summary>
         /// string representation of the RSS feed.
         /// </summary>
         /// <returns>An rss formatted string</returns>
         public override string ToString()
         {
-            StringBuilder DocumentString = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<rss xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:media=\"http://search.yahoo.com/mrss/\" version=\"2.0\">\r\n");
-            foreach(Channel CurrentChannel in Channels)
+            try
             {
-                DocumentString.Append(CurrentChannel.ToString());
+                StringBuilder DocumentString = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<rss xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:media=\"http://search.yahoo.com/mrss/\" version=\"2.0\">\r\n");
+                foreach (Channel CurrentChannel in Channels)
+                {
+                    DocumentString.Append(CurrentChannel.ToString());
+                }
+                DocumentString.Append("</rss>");
+                return DocumentString.ToString();
             }
-            DocumentString.Append("</rss>");
-            return DocumentString.ToString();
+            catch { throw; }
         }
+
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// Copies one document's channels to another
         /// </summary>
         /// <param name="CopyFrom">RSS document to copy from</param>
         public void Copy(Document CopyFrom)
         {
-            foreach (Channel CurrentChannel in CopyFrom.Channels)
+            try
             {
-                Channels.Add(CurrentChannel);
+                foreach (Channel CurrentChannel in CopyFrom.Channels)
+                {
+                    Channels.Add(CurrentChannel);
+                }
             }
+            catch { throw; }
         }
+
         #endregion
 
+        #region Private Functions
+
+        private void Load(XmlDocument Document)
+        {
+            try
+            {
+                XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Document.NameTable);
+                XmlNodeList Nodes = Document.DocumentElement.SelectNodes("./channel", NamespaceManager);
+                foreach (XmlNode Element in Nodes)
+                {
+                    Channels.Add(new Channel((XmlElement)Element));
+                }
+                if (Channels.Count == 0)
+                {
+                    Nodes = Document.DocumentElement.SelectNodes(".//channel", NamespaceManager);
+                    foreach (XmlNode Element in Nodes)
+                    {
+                        Channels.Add(new Channel((XmlElement)Element));
+                    }
+                    List<Item> Items = new List<Item>();
+                    Nodes = Document.DocumentElement.SelectNodes(".//item", NamespaceManager);
+                    foreach (XmlNode Element in Nodes)
+                    {
+                        Items.Add(new Item((XmlElement)Element));
+                    }
+                    if (Channels.Count > 0)
+                    {
+                        Channels[0].Items = Items;
+                    }
+                }
+            }
+            catch { throw; }
+        }
+
+        #endregion
     }
 }
