@@ -1977,6 +1977,96 @@ namespace Utilities.Media.Image
 
         #endregion
 
+        #region LaplaceEdgeDetection
+
+        /// <summary>
+        /// Laplace edge detection function
+        /// </summary>
+        /// <param name="FileName">Image to manipulate</param>
+        /// <param name="NewFileName">Location to save the image to</param>
+        public static void LaplaceEdgeDetection(string FileName, string NewFileName)
+        {
+            try
+            {
+                if (!IsGraphic(FileName))
+                    return;
+                ImageFormat FormatUsing = GetFormat(NewFileName);
+                using (Bitmap NewBitmap = Image.LaplaceEdgeDetection(FileName))
+                {
+                    NewBitmap.Save(NewFileName, FormatUsing);
+                }
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Laplace edge detection function function
+        /// </summary>
+        /// <param name="FileName">Image to manipulate</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap LaplaceEdgeDetection(string FileName)
+        {
+            try
+            {
+                if (!IsGraphic(FileName))
+                    return new Bitmap(1, 1);
+                using (Bitmap TempBitmap = new Bitmap(FileName))
+                {
+                    Bitmap ReturnBitmap = Image.LaplaceEdgeDetection(TempBitmap);
+                    return ReturnBitmap;
+                }
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Laplace edge detection function
+        /// </summary>
+        /// <param name="Image">Image to manipulate</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap LaplaceEdgeDetection(Bitmap Image)
+        {
+            try
+            {
+                using (Bitmap TempImage = ConvertBlackAndWhite(Image))
+                {
+                    Filter TempFilter = new Filter(5, 5);
+                    TempFilter.MyFilter[0, 0] = -1;
+                    TempFilter.MyFilter[0, 1] = -1;
+                    TempFilter.MyFilter[0, 2] = -1;
+                    TempFilter.MyFilter[0, 3] = -1;
+                    TempFilter.MyFilter[0, 4] = -1;
+                    TempFilter.MyFilter[1, 0] = -1;
+                    TempFilter.MyFilter[1, 1] = -1;
+                    TempFilter.MyFilter[1, 2] = -1;
+                    TempFilter.MyFilter[1, 3] = -1;
+                    TempFilter.MyFilter[1, 4] = -1;
+                    TempFilter.MyFilter[2, 0] = -1;
+                    TempFilter.MyFilter[2, 1] = -1;
+                    TempFilter.MyFilter[2, 2] = 24;
+                    TempFilter.MyFilter[2, 3] = -1;
+                    TempFilter.MyFilter[2, 4] = -1;
+                    TempFilter.MyFilter[3, 0] = -1;
+                    TempFilter.MyFilter[3, 1] = -1;
+                    TempFilter.MyFilter[3, 2] = -1;
+                    TempFilter.MyFilter[3, 3] = -1;
+                    TempFilter.MyFilter[3, 4] = -1;
+                    TempFilter.MyFilter[4, 0] = -1;
+                    TempFilter.MyFilter[4, 1] = -1;
+                    TempFilter.MyFilter[4, 2] = -1;
+                    TempFilter.MyFilter[4, 3] = -1;
+                    TempFilter.MyFilter[4, 4] = -1;
+                    using (Bitmap NewImage = TempFilter.ApplyFilter(TempImage))
+                    {
+                        return Negative(NewImage);
+                    }
+                }
+            }
+            catch { throw; }
+        }
+
+        #endregion
+
         #region MedianFilter
 
         /// <summary>
@@ -2876,6 +2966,119 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
+            }
+            catch { throw; }
+        }
+
+        #endregion
+
+        #region SobelEdgeDetection
+
+        /// <summary>
+        /// Sobel edge detection function
+        /// </summary>
+        /// <param name="FileName">Image to manipulate</param>
+        /// <param name="NewFileName">Location to save final image</param>
+        public static void SobelEdgeDetection(string FileName, string NewFileName)
+        {
+            try
+            {
+                if (!IsGraphic(FileName))
+                    return;
+                ImageFormat FormatUsing = GetFormat(NewFileName);
+                using (Bitmap NewBitmap = Image.SobelEdgeDetection(FileName))
+                {
+                    NewBitmap.Save(NewFileName, FormatUsing);
+                }
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Sobel edge detection function
+        /// </summary>
+        /// <param name="FileName">Image to manipulate</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap SobelEdgeDetection(string FileName)
+        {
+            try
+            {
+                if (!IsGraphic(FileName))
+                    return new Bitmap(1, 1);
+                using (Bitmap TempBitmap = new Bitmap(FileName))
+                {
+                    Bitmap ReturnBitmap = Image.SobelEdgeDetection(TempBitmap);
+                    return ReturnBitmap;
+                }
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Sobel edge detection function
+        /// </summary>
+        /// <param name="Image">Image to manipulate</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap SobelEdgeDetection(Bitmap Input)
+        {
+            try
+            {
+                using (Bitmap TempImage = ConvertBlackAndWhite(Input))
+                {
+                    Filter TempFilter = new Filter(3, 3);
+                    TempFilter.MyFilter[0, 0] = -1;
+                    TempFilter.MyFilter[0, 1] = 0;
+                    TempFilter.MyFilter[0, 2] = 1;
+                    TempFilter.MyFilter[1, 0] = -2;
+                    TempFilter.MyFilter[1, 1] = 0;
+                    TempFilter.MyFilter[1, 2] = 2;
+                    TempFilter.MyFilter[2, 0] = -1;
+                    TempFilter.MyFilter[2, 1] = 0;
+                    TempFilter.MyFilter[2, 2] = 1;
+                    TempFilter.Absolute = true;
+                    using (Bitmap TempImageX = TempFilter.ApplyFilter(TempImage))
+                    {
+                        TempFilter = new Filter(3, 3);
+                        TempFilter.MyFilter[0, 0] = 1;
+                        TempFilter.MyFilter[0, 1] = 2;
+                        TempFilter.MyFilter[0, 2] = 1;
+                        TempFilter.MyFilter[1, 0] = 0;
+                        TempFilter.MyFilter[1, 1] = 0;
+                        TempFilter.MyFilter[1, 2] = 0;
+                        TempFilter.MyFilter[2, 0] = -1;
+                        TempFilter.MyFilter[2, 1] = -2;
+                        TempFilter.MyFilter[2, 2] = -1;
+                        using (Bitmap TempImageY = TempFilter.ApplyFilter(TempImage))
+                        {
+                            using (Bitmap NewBitmap = new Bitmap(TempImage.Width, TempImage.Height))
+                            {
+                                BitmapData NewData = Image.LockImage(NewBitmap);
+                                BitmapData OldData1 = Image.LockImage(TempImageX);
+                                BitmapData OldData2 = Image.LockImage(TempImageY);
+                                int NewPixelSize = Image.GetPixelSize(NewData);
+                                int OldPixelSize1 = Image.GetPixelSize(OldData1);
+                                int OldPixelSize2 = Image.GetPixelSize(OldData2);
+                                for (int x = 0; x < NewBitmap.Width; ++x)
+                                {
+                                    for (int y = 0; y < NewBitmap.Height; ++y)
+                                    {
+                                        Color Pixel1 = Image.GetPixel(OldData1, x, y, OldPixelSize1);
+                                        Color Pixel2 = Image.GetPixel(OldData2, x, y, OldPixelSize2);
+                                        Image.SetPixel(NewData, x, y,
+                                            Color.FromArgb(Math.MathHelper.Clamp(Pixel1.R + Pixel2.R, 255, 0),
+                                                Math.MathHelper.Clamp(Pixel1.G + Pixel2.G, 255, 0),
+                                                Math.MathHelper.Clamp(Pixel1.B + Pixel2.B, 255, 0)),
+                                            NewPixelSize);
+                                    }
+                                }
+                                Image.UnlockImage(NewBitmap, NewData);
+                                Image.UnlockImage(TempImageX, OldData1);
+                                Image.UnlockImage(TempImageY, OldData2);
+                                return Image.Negative(NewBitmap);
+                            }
+                        }
+                    }
+                }
             }
             catch { throw; }
         }

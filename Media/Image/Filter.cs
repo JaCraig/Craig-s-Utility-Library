@@ -34,6 +34,7 @@ namespace Utilities.Media.Image
     public class Filter
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,6 +46,7 @@ namespace Utilities.Media.Image
                 Width = 3;
                 Height = 3;
                 Offset = 0;
+                Absolute = false;
             }
             catch { throw; }
         }
@@ -62,9 +64,11 @@ namespace Utilities.Media.Image
                 this.Width = Width;
                 this.Height = Height;
                 Offset = 0;
+                Absolute = false;
             }
             catch { throw; }
         }
+
         #endregion
 
         #region Public Properties
@@ -88,6 +92,11 @@ namespace Utilities.Media.Image
         /// Amount to add to the red, blue, and green values
         /// </summary>
         public int Offset{get;set;}
+
+        /// <summary>
+        /// Determines if we should take the absolute value prior to clamping
+        /// </summary>
+        public bool Absolute { get; set; }
 
         #endregion
 
@@ -141,6 +150,12 @@ namespace Utilities.Media.Image
                             Weight = 1;
                         if (Weight > 0)
                         {
+                            if (Absolute)
+                            {
+                                RValue = System.Math.Abs(RValue);
+                                GValue = System.Math.Abs(GValue);
+                                BValue = System.Math.Abs(BValue);
+                            }
                             RValue = (RValue / Weight) + Offset;
                             RValue = MathHelper.Clamp(RValue, 255, 0);
                             GValue = (GValue / Weight) + Offset;
