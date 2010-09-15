@@ -3048,6 +3048,7 @@ namespace Utilities.Media.Image
                         TempFilter.MyFilter[2, 0] = -1;
                         TempFilter.MyFilter[2, 1] = -2;
                         TempFilter.MyFilter[2, 2] = -1;
+                        TempFilter.Absolute = true;
                         using (Bitmap TempImageY = TempFilter.ApplyFilter(TempImage))
                         {
                             using (Bitmap NewBitmap = new Bitmap(TempImage.Width, TempImage.Height))
