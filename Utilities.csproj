@@ -255,6 +255,11 @@
     <Compile Include="Web\Netflix\Title.cs" />
     <Compile Include="Web\Netflix\TitleInformation.cs" />
     <Compile Include="Web\Netflix\Titles.cs" />
+    <Compile Include="Web\OpenID\Extensions\AttributeExchange.cs" />
+    <Compile Include="Web\OpenID\Extensions\Enums\Attributes.cs" />
+    <Compile Include="Web\OpenID\Extensions\Interfaces\IExtension.cs" />
+    <Compile Include="Web\OpenID\GenericProvider.cs" />
+    <Compile Include="Web\OpenID\OpenID.cs" />
     <Compile Include="Web\OpenSearch\OpenSearch.cs" />
     <Compile Include="Web\PingBack\Manager.cs" />
     <Compile Include="Web\PingBack\PingBack.cs" />
@@ -313,8 +318,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>$(SolutionDir)UtilitiesSplitter\bin\Release\UtilitiesSplitter.exe</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
