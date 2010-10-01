@@ -85,7 +85,7 @@ namespace Utilities.Web.Twitter
             try
             {
                 this.Method = HTTPMethod.GET;
-                this.Url = new Uri("http://twitter.com/oauth/authorize");
+                this.Url = new Uri("https://twitter.com/oauth/authorize");
                 this.AddParameter("oauth_callback", "oob");
                 return new Uri(GenerateRequest()).ToString();
             }
@@ -104,7 +104,7 @@ namespace Utilities.Web.Twitter
         {
             try
             {
-                this.Url = new Uri("http://twitter.com/oauth/access_token");
+                this.Url = new Uri("https://twitter.com/oauth/access_token");
                 this.AddParameter("oauth_verifier", PIN);
                 this.Method = HTTPMethod.POST;
                 REST.REST RestHelper = new Utilities.Web.REST.REST();
