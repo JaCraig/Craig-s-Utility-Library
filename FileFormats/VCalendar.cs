@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 #endregion
 
 namespace Utilities.FileFormats
@@ -73,6 +74,38 @@ namespace Utilities.FileFormats
         /// </summary>
         public string Description{get;set;}
 
+        private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
+
+        #endregion
+
+        #region Private Functions
+
+        private string StripHTML(string HTML)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(HTML))
+                    return string.Empty;
+
+                HTML = STRIP_HTML_REGEX.Replace(HTML, string.Empty);
+                HTML = HTML.Replace("&nbsp;", " ");
+                return HTML.Replace("&#160;", string.Empty);
+            }
+            catch { throw; }
+        }
+
+        private bool ContainsHTML(string Input)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Input))
+                    return false;
+
+                return STRIP_HTML_REGEX.IsMatch(Input);
+            }
+            catch { throw; }
+        }
+
         #endregion
 
         #region Public Functions
@@ -86,23 +119,69 @@ namespace Utilities.FileFormats
             try
             {
                 StringBuilder FileOutput = new StringBuilder();
-                FileOutput.AppendLine("BEGIN:VCALENDAR\n");
-                FileOutput.AppendLine("VERSION:1.0\n");
-                FileOutput.AppendLine("BEGIN:VEVENT\n");
+                FileOutput.AppendLine("BEGIN:VCALENDAR");
+                FileOutput.AppendLine("VERSION:1.0");
+                FileOutput.AppendLine("BEGIN:VEVENT");
                 StartTime = StartTime.AddHours(-TimeZoneAdjustment);
                 EndTime = EndTime.AddHours(-TimeZoneAdjustment);
 
                 string Start = StartTime.ToString("yyyyMMdd") + "T" + StartTime.ToString("HHmmss");
                 string End = EndTime.ToString("yyyyMMdd") + "T" + EndTime.ToString("HHmmss");
-                FileOutput.AppendLine("DTStart:" + Start + "\n");
-                FileOutput.AppendLine("DTEnd:" + End + "\n");
-                FileOutput.AppendLine("Location;ENCODING=QUOTED-PRINTABLE:" + Location + "\n");
-                FileOutput.AppendLine("SUMMARY;ENCODING=QUOTED-PRINTABLE:" + Subject + "\n");
-                FileOutput.AppendLine("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" + Description + "\n");
-                FileOutput.AppendLine("UID:" + Start + End + Subject + "\n");
-                FileOutput.AppendLine("PRIORITY:3\n");
-                FileOutput.AppendLine("End:VEVENT\n");
-                FileOutput.AppendLine("End:VCALENDAR\n");
+                FileOutput.Append("DTStart:").AppendLine(Start);
+                FileOutput.Append("DTEnd:").AppendLine(End);
+                FileOutput.Append("Location;ENCODING=QUOTED-PRINTABLE:").AppendLine(Location);
+                FileOutput.Append("SUMMARY;ENCODING=QUOTED-PRINTABLE:").AppendLine(Subject);
+                FileOutput.Append("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:").AppendLine(Description);
+                FileOutput.Append("UID:").Append(Start).Append(End).AppendLine(Subject);
+                FileOutput.AppendLine("PRIORITY:3");
+                FileOutput.AppendLine("End:VEVENT");
+                FileOutput.AppendLine("End:VCALENDAR");
+                return FileOutput.ToString();
+            }
+            catch { throw; }
+        }
+
+        /// <summary>
+        /// Returns the ICalendar item
+        /// </summary>
+        /// <returns>a string output of the ICalendar item</returns>
+        public string GetICalendar()
+        {
+            try
+            {
+                StringBuilder FileOutput = new StringBuilder();
+                FileOutput.AppendLine("BEGIN:VCALENDAR");
+                FileOutput.AppendLine("PRODID:-//Craigs Utility Library//EN");
+                FileOutput.AppendLine("VERSION:2.0");
+                FileOutput.AppendLine("METHOD:PUBLISH");
+                StartTime = StartTime.AddHours(-TimeZoneAdjustment);
+                EndTime = EndTime.AddHours(-TimeZoneAdjustment);
+                string Start = StartTime.ToString("yyyyMMdd") + "T" + StartTime.ToString("HHmmss");
+                string End = EndTime.ToString("yyyyMMdd") + "T" + EndTime.ToString("HHmmss");
+                FileOutput.AppendLine("BEGIN:VEVENT");
+                FileOutput.AppendLine("CLASS:PUBLIC");
+                FileOutput.Append("CREATED:").AppendLine(DateTime.Now.ToString("yyyyMMddTHHmmssZ"));
+                FileOutput.AppendLine(StripHTML(Description.Replace("<br />", "\\n")));
+                FileOutput.Append("DTEND:").AppendLine(Start);
+                FileOutput.Append("DTSTART:").AppendLine(End);
+                FileOutput.Append("LOCATION:").AppendLine(Location);
+                FileOutput.Append("SUMMARY;LANGUAGE=en-us:").AppendLine(Subject);
+                FileOutput.Append("UID:").Append(Start).Append(End).AppendLine(Subject);
+                if (ContainsHTML(Description))
+                {
+                    FileOutput.Append("X-ALT-DESC;FMTTYPE=text/html:").AppendLine(Description.Replace("\n", ""));
+                }
+                else
+                {
+                    FileOutput.Append("DESCRIPTION:").AppendLine(Description);
+                }
+                FileOutput.AppendLine("BEGIN:VALARM");
+                FileOutput.AppendLine("TRIGGER:-PT15M");
+                FileOutput.AppendLine("ACTION:DISPLAY");
+                FileOutput.AppendLine("DESCRIPTION:Reminder");
+                FileOutput.AppendLine("END:VALARM");
+                FileOutput.AppendLine("END:VEVENT");
+                FileOutput.AppendLine("END:VCALENDAR");
                 return FileOutput.ToString();
             }
             catch { throw; }
@@ -117,10 +196,13 @@ namespace Utilities.FileFormats
             try
             {
                 StringBuilder Output = new StringBuilder();
-                Output.Append("<div class=\"vevent\">");
-                Output.Append("<div class=\"summary\">" + Subject + "</div>");
-                Output.Append("<div>Date: <abbr class=\"dtstart\" title=\"" + StartTime.ToString("MM-dd-yyyy hh:mm tt") + "\">" + StartTime.ToString("MMMM dd, yyyy hh:mm tt") + "</abbr> to ");
-                Output.Append("<abbr class=\"dtend\" title=\"" + EndTime.ToString("MM-dd-yyyy hh:mm tt") + "\">");
+                Output.Append("<div class=\"vevent\">")
+                    .Append("<div class=\"summary\">").Append(Subject).Append("</div>")
+                    .Append("<div>Date: <abbr class=\"dtstart\" title=\"")
+                    .Append(StartTime.ToString("MM-dd-yyyy hh:mm tt")).Append("\">")
+                    .Append(StartTime.ToString("MMMM dd, yyyy hh:mm tt")).Append("</abbr> to ")
+                    .Append("<abbr class=\"dtend\" title=\"").Append(EndTime.ToString("MM-dd-yyyy hh:mm tt"))
+                    .Append("\">");
                 if (EndTime.Year != StartTime.Year)
                 {
                     Output.Append(EndTime.ToString("MMMM dd, yyyy hh:mm tt"));
@@ -138,8 +220,8 @@ namespace Utilities.FileFormats
                     Output.Append(EndTime.ToString("hh:mm tt"));
                 }
                 Output.Append("</abbr></div>");
-                Output.Append("<div>Location: <span class=\"location\">" + Location + "</span></div>");
-                Output.Append("<div class=\"description\">" + Description + "</div>");
+                Output.Append("<div>Location: <span class=\"location\">").Append(Location).Append("</span></div>");
+                Output.Append("<div class=\"description\">").Append(Description).Append("</div>");
                 Output.Append("</div>");
                 return Output.ToString();
             }
