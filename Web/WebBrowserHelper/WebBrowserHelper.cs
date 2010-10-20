@@ -132,88 +132,84 @@ namespace Utilities.Web.WebBrowserHelper
         /// </summary>
         public static void ClearCache()
         {
-            try
+            // Indicates that all of the cache groups in the user's system should be enumerated
+            const int CACHEGROUP_SEARCH_ALL = 0x0;
+            // Indicates that all the cache entries that are associated with the cache group
+            // should be deleted, unless the entry belongs to another cache group.
+            const int CACHEGROUP_FLAG_FLUSHURL_ONDELETE = 0x2;
+            // File not found.
+            const int ERROR_FILE_NOT_FOUND = 0x2;
+            // No more items have been found.
+            const int ERROR_NO_MORE_ITEMS = 259;
+            // Pointer to a GROUPID variable
+            long groupId = 0;
+
+            // Local variables
+            int cacheEntryInfoBufferSizeInitial = 0;
+            int cacheEntryInfoBufferSize = 0;
+            IntPtr cacheEntryInfoBuffer = IntPtr.Zero;
+            INTERNET_CACHE_ENTRY_INFOA internetCacheEntry;
+            IntPtr enumHandle = IntPtr.Zero;
+            bool returnValue = false;
+
+            // Delete the groups first.
+            // Groups may not always exist on the system.
+            // For more information, visit the following Microsoft Web site:
+            // http://msdn.microsoft.com/library/?url=/workshop/networking/wininet/overview/cache.asp			
+            // By default, a URL does not belong to any group. Therefore, that cache may become
+            // empty even when the CacheGroup APIs are not used because the existing URL does not belong to any group.			
+            enumHandle = FindFirstUrlCacheGroup(0, CACHEGROUP_SEARCH_ALL, IntPtr.Zero, 0, ref groupId, IntPtr.Zero);
+            // If there are no items in the Cache, you are finished.
+            if (enumHandle != IntPtr.Zero && ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error())
+                return;
+
+            // Loop through Cache Group, and then delete entries.
+            while (true)
             {
-                // Indicates that all of the cache groups in the user's system should be enumerated
-                const int CACHEGROUP_SEARCH_ALL = 0x0;
-                // Indicates that all the cache entries that are associated with the cache group
-                // should be deleted, unless the entry belongs to another cache group.
-                const int CACHEGROUP_FLAG_FLUSHURL_ONDELETE = 0x2;
-                // File not found.
-                const int ERROR_FILE_NOT_FOUND = 0x2;
-                // No more items have been found.
-                const int ERROR_NO_MORE_ITEMS = 259;
-                // Pointer to a GROUPID variable
-                long groupId = 0;
-
-                // Local variables
-                int cacheEntryInfoBufferSizeInitial = 0;
-                int cacheEntryInfoBufferSize = 0;
-                IntPtr cacheEntryInfoBuffer = IntPtr.Zero;
-                INTERNET_CACHE_ENTRY_INFOA internetCacheEntry;
-                IntPtr enumHandle = IntPtr.Zero;
-                bool returnValue = false;
-
-                // Delete the groups first.
-                // Groups may not always exist on the system.
-                // For more information, visit the following Microsoft Web site:
-                // http://msdn.microsoft.com/library/?url=/workshop/networking/wininet/overview/cache.asp			
-                // By default, a URL does not belong to any group. Therefore, that cache may become
-                // empty even when the CacheGroup APIs are not used because the existing URL does not belong to any group.			
-                enumHandle = FindFirstUrlCacheGroup(0, CACHEGROUP_SEARCH_ALL, IntPtr.Zero, 0, ref groupId, IntPtr.Zero);
-                // If there are no items in the Cache, you are finished.
-                if (enumHandle != IntPtr.Zero && ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error())
-                    return;
-
-                // Loop through Cache Group, and then delete entries.
-                while (true)
+                if (ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error() || ERROR_FILE_NOT_FOUND == Marshal.GetLastWin32Error()) { break; }
+                // Delete a particular Cache Group.
+                returnValue = DeleteUrlCacheGroup(groupId, CACHEGROUP_FLAG_FLUSHURL_ONDELETE, IntPtr.Zero);
+                if (!returnValue && ERROR_FILE_NOT_FOUND == Marshal.GetLastWin32Error())
                 {
-                    if (ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error() || ERROR_FILE_NOT_FOUND == Marshal.GetLastWin32Error()) { break; }
-                    // Delete a particular Cache Group.
-                    returnValue = DeleteUrlCacheGroup(groupId, CACHEGROUP_FLAG_FLUSHURL_ONDELETE, IntPtr.Zero);
-                    if (!returnValue && ERROR_FILE_NOT_FOUND == Marshal.GetLastWin32Error())
-                    {
-                        returnValue = FindNextUrlCacheGroup(enumHandle, ref groupId, IntPtr.Zero);
-                    }
-
-                    if (!returnValue && (ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error() || ERROR_FILE_NOT_FOUND == Marshal.GetLastWin32Error()))
-                        break;
+                    returnValue = FindNextUrlCacheGroup(enumHandle, ref groupId, IntPtr.Zero);
                 }
 
-                // Start to delete URLs that do not belong to any group.
-                enumHandle = FindFirstUrlCacheEntry(null, IntPtr.Zero, ref cacheEntryInfoBufferSizeInitial);
-                if (enumHandle != IntPtr.Zero && ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error())
-                    return;
-
-                cacheEntryInfoBufferSize = cacheEntryInfoBufferSizeInitial;
-                cacheEntryInfoBuffer = Marshal.AllocHGlobal(cacheEntryInfoBufferSize);
-                enumHandle = FindFirstUrlCacheEntry(null, cacheEntryInfoBuffer, ref cacheEntryInfoBufferSizeInitial);
-
-                while (true)
-                {
-                    internetCacheEntry = (INTERNET_CACHE_ENTRY_INFOA)Marshal.PtrToStructure(cacheEntryInfoBuffer, typeof(INTERNET_CACHE_ENTRY_INFOA));
-                    if (ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error()) { break; }
-
-                    cacheEntryInfoBufferSizeInitial = cacheEntryInfoBufferSize;
-                    returnValue = DeleteUrlCacheEntry(internetCacheEntry.lpszSourceUrlName);
-                    if (!returnValue)
-                    {
-                        returnValue = FindNextUrlCacheEntry(enumHandle, cacheEntryInfoBuffer, ref cacheEntryInfoBufferSizeInitial);
-                    }
-                    if (!returnValue && ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error())
-                    {
-                        break;
-                    }
-                    if (!returnValue && cacheEntryInfoBufferSizeInitial > cacheEntryInfoBufferSize)
-                    {
-                        cacheEntryInfoBufferSize = cacheEntryInfoBufferSizeInitial;
-                        cacheEntryInfoBuffer = Marshal.ReAllocHGlobal(cacheEntryInfoBuffer, (IntPtr)cacheEntryInfoBufferSize);
-                        returnValue = FindNextUrlCacheEntry(enumHandle, cacheEntryInfoBuffer, ref cacheEntryInfoBufferSizeInitial);
-                    }
-                }
-                Marshal.FreeHGlobal(cacheEntryInfoBuffer);
+                if (!returnValue && (ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error() || ERROR_FILE_NOT_FOUND == Marshal.GetLastWin32Error()))
+                    break;
             }
-            catch { throw; }
+
+            // Start to delete URLs that do not belong to any group.
+            enumHandle = FindFirstUrlCacheEntry(null, IntPtr.Zero, ref cacheEntryInfoBufferSizeInitial);
+            if (enumHandle != IntPtr.Zero && ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error())
+                return;
+
+            cacheEntryInfoBufferSize = cacheEntryInfoBufferSizeInitial;
+            cacheEntryInfoBuffer = Marshal.AllocHGlobal(cacheEntryInfoBufferSize);
+            enumHandle = FindFirstUrlCacheEntry(null, cacheEntryInfoBuffer, ref cacheEntryInfoBufferSizeInitial);
+
+            while (true)
+            {
+                internetCacheEntry = (INTERNET_CACHE_ENTRY_INFOA)Marshal.PtrToStructure(cacheEntryInfoBuffer, typeof(INTERNET_CACHE_ENTRY_INFOA));
+                if (ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error()) { break; }
+
+                cacheEntryInfoBufferSizeInitial = cacheEntryInfoBufferSize;
+                returnValue = DeleteUrlCacheEntry(internetCacheEntry.lpszSourceUrlName);
+                if (!returnValue)
+                {
+                    returnValue = FindNextUrlCacheEntry(enumHandle, cacheEntryInfoBuffer, ref cacheEntryInfoBufferSizeInitial);
+                }
+                if (!returnValue && ERROR_NO_MORE_ITEMS == Marshal.GetLastWin32Error())
+                {
+                    break;
+                }
+                if (!returnValue && cacheEntryInfoBufferSizeInitial > cacheEntryInfoBufferSize)
+                {
+                    cacheEntryInfoBufferSize = cacheEntryInfoBufferSizeInitial;
+                    cacheEntryInfoBuffer = Marshal.ReAllocHGlobal(cacheEntryInfoBuffer, (IntPtr)cacheEntryInfoBufferSize);
+                    returnValue = FindNextUrlCacheEntry(enumHandle, cacheEntryInfoBuffer, ref cacheEntryInfoBufferSizeInitial);
+                }
+            }
+            Marshal.FreeHGlobal(cacheEntryInfoBuffer);
         }
         #endregion
     }

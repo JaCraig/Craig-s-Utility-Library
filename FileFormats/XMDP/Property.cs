@@ -49,18 +49,18 @@ namespace Utilities.FileFormats.XMDP
         /// <summary>
         /// Name of the property
         /// </summary>
-        public string Name{get;set;}
+        public string Name { get; set; }
 
         /// <summary>
         /// Description of the property
         /// </summary>
-        public string Description{get;set;}
+        public string Description { get; set; }
 
         /// <summary>
         /// List of sub properties (only used for rel type when you need to
         /// define new link types)
         /// </summary>
-        public List<Property>Properties{get;set;}
+        public List<Property> Properties { get; set; }
 
         #endregion
 
@@ -68,26 +68,22 @@ namespace Utilities.FileFormats.XMDP
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<dt id=\"" + Name + "\">" + Name + "</dt>");
+            if (Properties.Count > 0)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<dt id=\"" + Name + "\">" + Name + "</dt>");
-                if (Properties.Count > 0)
+                Builder.Append("<dd><dl>");
+                foreach (Property Property in Properties)
                 {
-                    Builder.Append("<dd><dl>");
-                    foreach (Property Property in Properties)
-                    {
-                        Builder.Append(Property.ToString());
-                    }
-                    Builder.Append("</dl></dd>");
+                    Builder.Append(Property.ToString());
                 }
-                else
-                {
-                    Builder.Append("<dd>" + Description + "</dd>");
-                }
-                return Builder.ToString();
+                Builder.Append("</dl></dd>");
             }
-            catch { throw; }
+            else
+            {
+                Builder.Append("<dd>" + Description + "</dd>");
+            }
+            return Builder.ToString();
         }
 
         #endregion

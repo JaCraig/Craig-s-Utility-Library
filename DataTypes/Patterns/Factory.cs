@@ -32,7 +32,7 @@ namespace Utilities.DataTypes.Patterns
     /// </summary>
     /// <typeparam name="Key">The "message" type</typeparam>
     /// <typeparam name="T">The class type that you want created</typeparam>
-    public class Factory<Key,T>
+    public class Factory<Key, T>
     {
         #region Protected Variables
 
@@ -52,14 +52,10 @@ namespace Utilities.DataTypes.Patterns
         /// <param name="Result">The object to be returned</param>
         public void Register(Key Key, T Result)
         {
-            try
-            {
-                if (Constructors.ContainsKey(Key))
-                    Constructors[Key] = new Func<T>(() => Result);
-                else
-                    Constructors.Add(Key, new Func<T>(() => Result));
-            }
-            catch { throw; }
+            if (Constructors.ContainsKey(Key))
+                Constructors[Key] = new Func<T>(() => Result);
+            else
+                Constructors.Add(Key, new Func<T>(() => Result));
         }
 
         /// <summary>
@@ -69,14 +65,10 @@ namespace Utilities.DataTypes.Patterns
         /// <param name="Constructor">The function to call when creating the item</param>
         public void Register(Key Key, Func<T> Constructor)
         {
-            try
-            {
-                if (Constructors.ContainsKey(Key))
-                    Constructors[Key] = Constructor;
-                else
-                    Constructors.Add(Key, Constructor);
-            }
-            catch { throw; }
+            if (Constructors.ContainsKey(Key))
+                Constructors[Key] = Constructor;
+            else
+                Constructors.Add(Key, Constructor);
         }
 
         /// <summary>
@@ -86,13 +78,9 @@ namespace Utilities.DataTypes.Patterns
         /// <returns>The type returned by the initializer</returns>
         public T Create(Key Key)
         {
-            try
-            {
-                if (Constructors.ContainsKey(Key))
-                    return Constructors[Key]();
-                return default(T);
-            }
-            catch { throw; }
+            if (Constructors.ContainsKey(Key))
+                return Constructors[Key]();
+            return default(T);
         }
 
         #endregion

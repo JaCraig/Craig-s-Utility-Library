@@ -44,11 +44,7 @@ namespace Utilities.DataTypes
         /// <returns>True if they overlap, false otherwise</returns>
         public static bool DatePeriodsOverlap(DateTime Start1, DateTime End1, DateTime Start2, DateTime End2)
         {
-            try
-            {
-                return ((Start1 >= Start2 && Start1 < End2) || (End1 <= End2 && End1 > Start2) || (Start1 <= Start2 && End1 >= End2));
-            }
-            catch { throw; }
+            return ((Start1 >= Start2 && Start1 < End2) || (End1 <= End2 && End1 > Start2) || (Start1 <= Start2 && End1 >= End2));
         }
 
         /// <summary>
@@ -58,13 +54,9 @@ namespace Utilities.DataTypes
         /// <returns>True if it is, false otherwise</returns>
         public static bool IsInFuture(DateTime Date)
         {
-            try
-            {
-                if (Date == null)
-                    throw new ArgumentNullException();
-                return DateTime.Now < Date;
-            }
-            catch { throw; }
+            if (Date == null)
+                throw new ArgumentNullException();
+            return DateTime.Now < Date;
         }
 
         /// <summary>
@@ -74,13 +66,9 @@ namespace Utilities.DataTypes
         /// <returns>True if it is, false otherwise</returns>
         public static bool IsInPast(DateTime Date)
         {
-            try
-            {
-                if (Date == null)
-                    throw new ArgumentNullException();
-                return DateTime.Now > Date;
-            }
-            catch { throw; }
+            if (Date == null)
+                throw new ArgumentNullException();
+            return DateTime.Now > Date;
         }
 
         /// <summary>
@@ -90,11 +78,7 @@ namespace Utilities.DataTypes
         /// <returns>The number of days left in a month</returns>
         public static int DaysLeftInMonth(DateTime Date)
         {
-            try
-            {
-                return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInMonth(Date.Year, Date.Month) - Date.Day;
-            }
-            catch { throw; }
+            return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInMonth(Date.Year, Date.Month) - Date.Day;
         }
 
         /// <summary>
@@ -104,11 +88,7 @@ namespace Utilities.DataTypes
         /// <returns>The number of days left in a year</returns>
         public static int DaysLeftInYear(DateTime Date)
         {
-            try
-            {
-                return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInYear(Date.Year) - Date.DayOfYear;
-            }
-            catch { throw; }
+            return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInYear(Date.Year) - Date.DayOfYear;
         }
 
         /// <summary>
@@ -118,11 +98,7 @@ namespace Utilities.DataTypes
         /// <returns>The number of days left in a week</returns>
         public static int DaysLeftInWeek(DateTime Date)
         {
-            try
-            {
-                return 7 - DataTypeConversion.DayToInt(Date.DayOfWeek.ToString());
-            }
-            catch { throw; }
+            return 7 - DataTypeConversion.DayToInt(Date.DayOfWeek.ToString());
         }
 
         /// <summary>
@@ -132,13 +108,9 @@ namespace Utilities.DataTypes
         /// <returns>Whether this is a week day or not</returns>
         public static bool IsWeekDay(DateTime Date)
         {
-            try
-            {
-                if (DataTypeConversion.DayToInt(Date.DayOfWeek.ToString()) < 6)
-                    return true;
-                return false;
-            }
-            catch { throw; }
+            if (DataTypeConversion.DayToInt(Date.DayOfWeek.ToString()) < 6)
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -148,11 +120,7 @@ namespace Utilities.DataTypes
         /// <returns>Whether this is a week end or not</returns>
         public static bool IsWeekEnd(DateTime Date)
         {
-            try
-            {
-                return !IsWeekDay(Date);
-            }
-            catch { throw; }
+            return !IsWeekDay(Date);
         }
 
         #endregion

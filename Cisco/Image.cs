@@ -30,7 +30,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Image class
     /// </summary>
-    public class Image:IDisplay
+    public class Image : IDisplay
     {
         #region Constructor
 
@@ -82,20 +82,16 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<CiscoIPPhoneImageFile><Title>").Append(Title).Append("</Title><Prompt>").Append(Prompt).Append("</Prompt><LocationX>")
+                .Append(X.ToString()).Append("</LocationX><LocationY>").Append(Y.ToString()).Append("</LocationY><URL>")
+                .Append(URL).Append("</URL>");
+            foreach (SoftKeyItem Item in SoftKeys)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<CiscoIPPhoneImageFile><Title>").Append(Title).Append("</Title><Prompt>").Append(Prompt).Append("</Prompt><LocationX>")
-                    .Append(X.ToString()).Append("</LocationX><LocationY>").Append(Y.ToString()).Append("</LocationY><URL>")
-                    .Append(URL).Append("</URL>");
-                foreach (SoftKeyItem Item in SoftKeys)
-                {
-                    Builder.Append(Item.ToString());
-                }
-                Builder.Append("</CiscoIPPhoneImageFile>");
-                return Builder.ToString();
+                Builder.Append(Item.ToString());
             }
-            catch { throw; }
+            Builder.Append("</CiscoIPPhoneImageFile>");
+            return Builder.ToString();
         }
 
         #endregion

@@ -56,18 +56,14 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<CiscoIPPhoneExecute>");
+            foreach (ExecuteItem Item in ExecuteItems)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<CiscoIPPhoneExecute>");
-                foreach (ExecuteItem Item in ExecuteItems)
-                {
-                    Builder.Append(Item.ToString());
-                }
-                Builder.Append("</CiscoIPPhoneExecute>");
-                return Builder.ToString();
+                Builder.Append(Item.ToString());
             }
-            catch { throw; }
+            Builder.Append("</CiscoIPPhoneExecute>");
+            return Builder.ToString();
         }
 
         #endregion

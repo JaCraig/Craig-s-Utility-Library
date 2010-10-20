@@ -45,39 +45,36 @@ namespace Utilities.Web.PingBack
         {
             if (Message == null)
                 throw new ArgumentException("Message can not be null.");
-            try
+
+            GetTrackBackURL(Message);
+            HttpWebRequest Request = (HttpWebRequest)System.Net.HttpWebRequest.Create(Message.NotificationURL);
+            Request.Credentials = CredentialCache.DefaultNetworkCredentials;
+            Request.Timeout = 10000;
+            Request.Method = "POST";
+            Request.ContentType = "application/x-www-form-urlencoded";
+            Request.ContentLength = Message.ToString().Length;
+            Request.KeepAlive = false;
+            using (StreamWriter Writer = new StreamWriter(Request.GetRequestStream()))
             {
-                GetTrackBackURL(Message);
-                HttpWebRequest Request = (HttpWebRequest)System.Net.HttpWebRequest.Create(Message.NotificationURL);
-                Request.Credentials = CredentialCache.DefaultNetworkCredentials;
-                Request.Timeout = 10000;
-                Request.Method = "POST";
-                Request.ContentType = "application/x-www-form-urlencoded";
-                Request.ContentLength = Message.ToString().Length;
-                Request.KeepAlive = false;
-                using (StreamWriter Writer = new StreamWriter(Request.GetRequestStream()))
+                Writer.Write(Message.ToString());
+            }
+            HttpWebResponse Response = (HttpWebResponse)Request.GetResponse();
+            string ResponseText = "";
+            using (System.IO.StreamReader Reader = new System.IO.StreamReader(Response.GetResponseStream()))
+            {
+                ResponseText = Reader.ReadToEnd();
+            }
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+                if (!ResponseText.Contains("<error>0</error>"))
                 {
-                    Writer.Write(Message.ToString());
-                }
-                HttpWebResponse Response = (HttpWebResponse)Request.GetResponse();
-                string ResponseText = "";
-                using (System.IO.StreamReader Reader = new System.IO.StreamReader(Response.GetResponseStream()))
-                {
-                    ResponseText = Reader.ReadToEnd();
-                }
-                if (Response.StatusCode == HttpStatusCode.OK)
-                {
-                    if (!ResponseText.Contains("<error>0</error>"))
-                    {
-                        throw new Exception(ResponseText);
-                    }
-                }
-                else
-                {
-                    throw new Exception("HTTP Error occurred: " + Response.StatusCode.ToString());
+                    throw new Exception(ResponseText);
                 }
             }
-            catch { throw; }
+            else
+            {
+                throw new Exception("HTTP Error occurred: " + Response.StatusCode.ToString());
+            }
         }
 
         /// <summary>
@@ -87,11 +84,7 @@ namespace Utilities.Web.PingBack
         /// <returns>A trackback message</returns>
         public static TrackBackMessage GetTrackBack(HttpContext Context)
         {
-            try
-            {
-                return GetTrackBack(Context.Request);
-            }
-            catch { throw; }
+            return GetTrackBack(Context.Request);
         }
 
         /// <summary>
@@ -101,18 +94,14 @@ namespace Utilities.Web.PingBack
         /// <returns>A trackback message</returns>
         public static TrackBackMessage GetTrackBack(HttpRequest Request)
         {
-            try
-            {
-                TrackBackMessage Message = new TrackBackMessage();
-                Message.Title = Request.Params["title"];
-                Message.ID = Request.Params["id"];
-                Message.Excerpt = Request.Params["excerpt"];
-                Message.BlogName = Request.Params["blog_name"];
-                if (Request.Params["url"] != null)
-                    Message.PostUrl = new Uri(Request.Params["url"].Split(',')[0]);
-                return Message;
-            }
-            catch { throw; }
+            TrackBackMessage Message = new TrackBackMessage();
+            Message.Title = Request.Params["title"];
+            Message.ID = Request.Params["id"];
+            Message.Excerpt = Request.Params["excerpt"];
+            Message.BlogName = Request.Params["blog_name"];
+            if (Request.Params["url"] != null)
+                Message.PostUrl = new Uri(Request.Params["url"].Split(',')[0]);
+            return Message;
         }
 
         /// <summary>
@@ -121,11 +110,7 @@ namespace Utilities.Web.PingBack
         /// <param name="Context">Context object</param>
         public static void SendSuccess(HttpContext Context)
         {
-            try
-            {
-                SendSuccess(Context.Response);
-            }
-            catch { throw; }
+            SendSuccess(Context.Response);
         }
 
         /// <summary>
@@ -134,11 +119,7 @@ namespace Utilities.Web.PingBack
         /// <param name="Response">Response object</param>
         public static void SendSuccess(HttpResponse Response)
         {
-            try
-            {
-                Response.Write("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><response><error>0</error></response>");
-            }
-            catch { throw; }
+            Response.Write("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><response><error>0</error></response>");
         }
 
         /// <summary>
@@ -148,11 +129,7 @@ namespace Utilities.Web.PingBack
         /// <param name="ErrorMessage">Error message to send</param>
         public static void SendError(HttpContext Context, string ErrorMessage)
         {
-            try
-            {
-                SendError(Context.Response, ErrorMessage);
-            }
-            catch { throw; }
+            SendError(Context.Response, ErrorMessage);
         }
 
         /// <summary>
@@ -162,11 +139,7 @@ namespace Utilities.Web.PingBack
         /// <param name="ErrorMessage">Error message to send</param>
         public static void SendError(HttpResponse Response, string ErrorMessage)
         {
-            try
-            {
-                Response.Write("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><response><error>" + ErrorMessage + "</error></response>");
-            }
-            catch { throw; }
+            Response.Write("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><response><error>" + ErrorMessage + "</error></response>");
         }
 
         #endregion
@@ -178,22 +151,18 @@ namespace Utilities.Web.PingBack
 
         private static void GetTrackBackURL(TrackBackMessage Message)
         {
-            try
+            using (WebClient Client = new WebClient())
             {
-                using (WebClient Client = new WebClient())
-                {
-                    Client.Headers.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)");
-                    string TempContent = Client.DownloadString(Message.NotificationURL);
-                    string TempURL = TrackBackLink.Match(TempContent).Groups[1].ToString().Trim();
-                    Uri TempURI;
-                    Uri.TryCreate(TempURL, UriKind.Absolute, out TempURI);
-                    Message.NotificationURL = TempURI;
+                Client.Headers.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)");
+                string TempContent = Client.DownloadString(Message.NotificationURL);
+                string TempURL = TrackBackLink.Match(TempContent).Groups[1].ToString().Trim();
+                Uri TempURI;
+                Uri.TryCreate(TempURL, UriKind.Absolute, out TempURI);
+                Message.NotificationURL = TempURI;
 
-                    TempURL = TrackBackID.Match(TempURL).Groups[1].ToString().Trim();
-                    Message.ID = TempURL;
-                }
+                TempURL = TrackBackID.Match(TempURL).Groups[1].ToString().Trim();
+                Message.ID = TempURL;
             }
-            catch { throw; }
         }
 
         #endregion
@@ -259,14 +228,10 @@ namespace Utilities.Web.PingBack
         /// <returns>A string with the message information</returns>
         public override string ToString()
         {
-            try
-            {
-                string First = "&";
-                if (string.IsNullOrEmpty(NotificationURL.Query))
-                    First = "?";
-                return First + "title=" + Title + "&url=" + PostUrl + "&excerpt=" + Excerpt + "&blog_name=" + BlogName;
-            }
-            catch { throw; }
+            string First = "&";
+            if (string.IsNullOrEmpty(NotificationURL.Query))
+                First = "?";
+            return First + "title=" + Title + "&url=" + PostUrl + "&excerpt=" + Excerpt + "&blog_name=" + BlogName;
         }
 
         #endregion

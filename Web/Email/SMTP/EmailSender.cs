@@ -22,8 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using System.Net.Mail;
-using System.Threading;
 using System.Net.Mime;
+using System.Threading;
 #endregion
 
 namespace Utilities.Web.Email.SMTP
@@ -55,12 +55,8 @@ namespace Utilities.Web.Email.SMTP
         /// <param name="Message">The body of the message</param>
         public void SendMail(string Message)
         {
-            try
-            {
-                Body = Message;
-                SendMail();
-            }
-            catch { throw; }
+            Body = Message;
+            SendMail();
         }
 
         /// <summary>
@@ -69,12 +65,8 @@ namespace Utilities.Web.Email.SMTP
         /// <param name="Message">Message to be sent</param>
         public void SendMailAsync(string Message)
         {
-            try
-            {
-                Body = Message;
-                ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
-            }
-            catch { throw; }
+            Body = Message;
+            ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
         }
 
         /// <summary>
@@ -82,62 +74,58 @@ namespace Utilities.Web.Email.SMTP
         /// </summary>
         public void SendMail()
         {
-            try
+            using (System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage())
             {
-                using (System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage())
+                char[] Splitter = { ',' };
+                string[] AddressCollection = To.Split(Splitter);
+                for (int x = 0; x < AddressCollection.Length; ++x)
                 {
-                    char[] Splitter = { ',' };
-                    string[] AddressCollection = To.Split(Splitter);
+                    message.To.Add(AddressCollection[x]);
+                }
+                if (!string.IsNullOrEmpty(CC))
+                {
+                    AddressCollection = CC.Split(Splitter);
                     for (int x = 0; x < AddressCollection.Length; ++x)
                     {
-                        message.To.Add(AddressCollection[x]);
+                        message.CC.Add(AddressCollection[x]);
                     }
-                    if (!string.IsNullOrEmpty(CC))
-                    {
-                        AddressCollection = CC.Split(Splitter);
-                        for (int x = 0; x < AddressCollection.Length; ++x)
-                        {
-                            message.CC.Add(AddressCollection[x]);
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(Bcc))
-                    {
-                        AddressCollection = Bcc.Split(Splitter);
-                        for (int x = 0; x < AddressCollection.Length; ++x)
-                        {
-                            message.Bcc.Add(AddressCollection[x]);
-                        }
-                    }
-                    message.Subject = Subject;
-                    message.From = new System.Net.Mail.MailAddress((From));
-                    AlternateView BodyView = AlternateView.CreateAlternateViewFromString(Body, null, MediaTypeNames.Text.Html);
-                    foreach (LinkedResource Resource in EmbeddedResources)
-                    {
-                        BodyView.LinkedResources.Add(Resource);
-                    }
-                    message.AlternateViews.Add(BodyView);
-                    //message.Body = Body;
-                    message.Priority = Priority;
-                    message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                    message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                    message.IsBodyHtml = true;
-                    foreach (Attachment TempAttachment in Attachments)
-                    {
-                        message.Attachments.Add(TempAttachment);
-                    }
-                    System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Server, Port);
-                    if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-                    {
-                        smtp.Credentials = new System.Net.NetworkCredential(UserName, Password);
-                    }
-                    if (UseSSL)
-                        smtp.EnableSsl = true;
-                    else
-                        smtp.EnableSsl = false;
-                    smtp.Send(message);
                 }
+                if (!string.IsNullOrEmpty(Bcc))
+                {
+                    AddressCollection = Bcc.Split(Splitter);
+                    for (int x = 0; x < AddressCollection.Length; ++x)
+                    {
+                        message.Bcc.Add(AddressCollection[x]);
+                    }
+                }
+                message.Subject = Subject;
+                message.From = new System.Net.Mail.MailAddress((From));
+                AlternateView BodyView = AlternateView.CreateAlternateViewFromString(Body, null, MediaTypeNames.Text.Html);
+                foreach (LinkedResource Resource in EmbeddedResources)
+                {
+                    BodyView.LinkedResources.Add(Resource);
+                }
+                message.AlternateViews.Add(BodyView);
+                //message.Body = Body;
+                message.Priority = Priority;
+                message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                message.IsBodyHtml = true;
+                foreach (Attachment TempAttachment in Attachments)
+                {
+                    message.Attachments.Add(TempAttachment);
+                }
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Server, Port);
+                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                {
+                    smtp.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                }
+                if (UseSSL)
+                    smtp.EnableSsl = true;
+                else
+                    smtp.EnableSsl = false;
+                smtp.Send(message);
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -145,11 +133,7 @@ namespace Utilities.Web.Email.SMTP
         /// </summary>
         public void SendMailAsync()
         {
-            try
-            {
-                ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
-            }
-            catch { throw; }
+            ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
         }
 
         #endregion

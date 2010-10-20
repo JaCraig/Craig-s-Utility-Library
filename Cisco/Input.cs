@@ -30,7 +30,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Input class
     /// </summary>
-    public class Input:IDisplay
+    public class Input : IDisplay
     {
         #region Constructor
 
@@ -78,23 +78,19 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<CiscoIPPhoneInput><Title>").Append(Title).Append("</Title><Prompt>")
+                .Append(Prompt).Append("</Prompt><URL>").Append(URL).Append("</URL>");
+            foreach (InputItem Item in InputItems)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<CiscoIPPhoneInput><Title>").Append(Title).Append("</Title><Prompt>")
-                    .Append(Prompt).Append("</Prompt><URL>").Append(URL).Append("</URL>");
-                foreach (InputItem Item in InputItems)
-                {
-                    Builder.Append(Item.ToString());
-                }
-                foreach (SoftKeyItem Item in SoftKeys)
-                {
-                    Builder.Append(Item.ToString());
-                }
-                Builder.Append("</CiscoIPPhoneInput>");
-                return Builder.ToString();
+                Builder.Append(Item.ToString());
             }
-            catch { throw; }
+            foreach (SoftKeyItem Item in SoftKeys)
+            {
+                Builder.Append(Item.ToString());
+            }
+            Builder.Append("</CiscoIPPhoneInput>");
+            return Builder.ToString();
         }
 
         #endregion

@@ -34,7 +34,7 @@ namespace Utilities.Web.Email.Pop3
     /// Class for implemented basic Pop3 client
     /// functionality.
     /// </summary>
-    public class Pop3Client:TcpClient
+    public class Pop3Client : TcpClient
     {
         #region Public Functions
 
@@ -45,38 +45,34 @@ namespace Utilities.Web.Email.Pop3
         /// <param name="Password">Password used to log into the server</param>
         /// <param name="Server">Server location</param>
         /// <param name="Port">Port on the server to use</param>
-        public void Connect(string UserName, string Password,string Server,int Port)
+        public void Connect(string UserName, string Password, string Server, int Port)
         {
-            try
+            this.UserName = UserName;
+            this.Password = Password;
+            this.Server = Server;
+            this.Port = Port;
+            string ResponseString;
+
+            Connect(Server, Port);
+            ResponseString = GetResponse();
+            if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
             {
-                this.UserName = UserName;
-                this.Password = Password;
-                this.Server = Server;
-                this.Port = Port;
-                string ResponseString;
-
-                Connect(Server, Port);
-                ResponseString = GetResponse();
-                if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    throw new Pop3Exception(ResponseString);
-                }
-
-                WriteMessage("USER " + UserName + "\r\n");
-                ResponseString = GetResponse();
-                if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    throw new Pop3Exception(ResponseString);
-                }
-
-                WriteMessage("PASS " + Password + "\r\n");
-                ResponseString = GetResponse();
-                if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    throw new Pop3Exception(ResponseString);
-                }
+                throw new Pop3Exception(ResponseString);
             }
-            catch { throw; }
+
+            WriteMessage("USER " + UserName + "\r\n");
+            ResponseString = GetResponse();
+            if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new Pop3Exception(ResponseString);
+            }
+
+            WriteMessage("PASS " + Password + "\r\n");
+            ResponseString = GetResponse();
+            if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new Pop3Exception(ResponseString);
+            }
         }
 
         /// <summary>
@@ -84,17 +80,13 @@ namespace Utilities.Web.Email.Pop3
         /// </summary>
         public void Disconnect()
         {
-            try
+            string ResponseString;
+            WriteMessage("QUIT\r\n");
+            ResponseString = GetResponse();
+            if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
             {
-                string ResponseString;
-                WriteMessage("QUIT\r\n");
-                ResponseString = GetResponse();
-                if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    throw new Pop3Exception(ResponseString);
-                }
+                throw new Pop3Exception(ResponseString);
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -103,51 +95,47 @@ namespace Utilities.Web.Email.Pop3
         /// <returns>A list of messages (only contains message number and size)</returns>
         public List<Message> GetMessageList()
         {
-            try
-            {
-                string ResponseString;
+            string ResponseString;
 
-                List<Message> ReturnArray = new List<Message>();
-                WriteMessage("LIST\r\n");
-                ResponseString = GetResponse();
-                if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    throw new Pop3Exception(ResponseString);
-                }
-                bool Done = false;
-                while (!Done)
-                {
-                    Regex TempRegex = new Regex(Regex.Escape("+") + "OK.*\r\n");
-                    if (!ResponseString.EndsWith("\r\n.\r\n"))
-                    {
-                        while (!ResponseString.EndsWith("\r\n.\r\n"))
-                            ResponseString += GetResponse();
-                    }
-                    ResponseString = TempRegex.Replace(ResponseString, "");
-                    string[] Seperator = { "\r\n" };
-                    string[] Values = ResponseString.Split(Seperator, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string Value in Values)
-                    {
-                        string[] NewSeperator = { " " };
-                        string[] Pair = Value.Split(NewSeperator, StringSplitOptions.RemoveEmptyEntries);
-                        if (Pair.Length > 1)
-                        {
-                            Message TempMessage = new Message();
-                            TempMessage.MessageNumber = Int32.Parse(Pair[0]);
-                            TempMessage.MessageSize = Int32.Parse(Pair[1]);
-                            TempMessage.Retrieved = false;
-                            ReturnArray.Add(TempMessage);
-                        }
-                        else
-                        {
-                            Done = true;
-                            break;
-                        }
-                    }
-                }
-                return ReturnArray;
+            List<Message> ReturnArray = new List<Message>();
+            WriteMessage("LIST\r\n");
+            ResponseString = GetResponse();
+            if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new Pop3Exception(ResponseString);
             }
-            catch { throw; }
+            bool Done = false;
+            while (!Done)
+            {
+                Regex TempRegex = new Regex(Regex.Escape("+") + "OK.*\r\n");
+                if (!ResponseString.EndsWith("\r\n.\r\n"))
+                {
+                    while (!ResponseString.EndsWith("\r\n.\r\n"))
+                        ResponseString += GetResponse();
+                }
+                ResponseString = TempRegex.Replace(ResponseString, "");
+                string[] Seperator = { "\r\n" };
+                string[] Values = ResponseString.Split(Seperator, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string Value in Values)
+                {
+                    string[] NewSeperator = { " " };
+                    string[] Pair = Value.Split(NewSeperator, StringSplitOptions.RemoveEmptyEntries);
+                    if (Pair.Length > 1)
+                    {
+                        Message TempMessage = new Message();
+                        TempMessage.MessageNumber = Int32.Parse(Pair[0]);
+                        TempMessage.MessageSize = Int32.Parse(Pair[1]);
+                        TempMessage.Retrieved = false;
+                        ReturnArray.Add(TempMessage);
+                    }
+                    else
+                    {
+                        Done = true;
+                        break;
+                    }
+                }
+            }
+            return ReturnArray;
         }
 
         /// <summary>
@@ -157,44 +145,40 @@ namespace Utilities.Web.Email.Pop3
         /// <returns>A new message containing the content</returns>
         public Message GetMessage(Message MessageWanted)
         {
-            try
+            string ResponseString;
+
+            Message TempMessage = new Message();
+            TempMessage.MessageSize = MessageWanted.MessageSize;
+            TempMessage.MessageNumber = MessageWanted.MessageNumber;
+
+            WriteMessage("RETR " + MessageWanted.MessageNumber + "\r\n");
+            ResponseString = GetResponse();
+            if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
             {
-                string ResponseString;
-
-                Message TempMessage = new Message();
-                TempMessage.MessageSize = MessageWanted.MessageSize;
-                TempMessage.MessageNumber = MessageWanted.MessageNumber;
-
-                WriteMessage("RETR " + MessageWanted.MessageNumber + "\r\n");
-                ResponseString = GetResponse();
-                if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    throw new Pop3Exception(ResponseString);
-                }
-                Regex TempRegex = new Regex(Regex.Escape("+") + "OK.*\r\n");
-                ResponseString = TempRegex.Replace(ResponseString, "");
-                TempRegex = new Regex("\r\n.\r\n$");
-                TempMessage.Retrieved = true;
-                string BodyText = "";
-                while (true)
-                {
-                    if (TempRegex.Match(ResponseString).Success || string.IsNullOrEmpty(ResponseString))
-                    {
-                        BodyText += ResponseString;
-                        BodyText = TempRegex.Replace(BodyText, "");
-                        break;
-                    }
-                    else
-                    {
-                        BodyText += ResponseString;
-                    }
-                    ResponseString = GetResponse();
-                }
-                TempMessage.MessageBody = new Utilities.Web.Email.MIME.MIMEMessage(BodyText);
-
-                return TempMessage;
+                throw new Pop3Exception(ResponseString);
             }
-            catch { throw; }
+            Regex TempRegex = new Regex(Regex.Escape("+") + "OK.*\r\n");
+            ResponseString = TempRegex.Replace(ResponseString, "");
+            TempRegex = new Regex("\r\n.\r\n$");
+            TempMessage.Retrieved = true;
+            string BodyText = "";
+            while (true)
+            {
+                if (TempRegex.Match(ResponseString).Success || string.IsNullOrEmpty(ResponseString))
+                {
+                    BodyText += ResponseString;
+                    BodyText = TempRegex.Replace(BodyText, "");
+                    break;
+                }
+                else
+                {
+                    BodyText += ResponseString;
+                }
+                ResponseString = GetResponse();
+            }
+            TempMessage.MessageBody = new Utilities.Web.Email.MIME.MIMEMessage(BodyText);
+
+            return TempMessage;
         }
 
         /// <summary>
@@ -203,17 +187,13 @@ namespace Utilities.Web.Email.Pop3
         /// <param name="MessageToDelete">Message to delete</param>
         public void Delete(Message MessageToDelete)
         {
-            try
+            string ResponseString;
+            WriteMessage("DELE " + MessageToDelete.MessageNumber + "\r\n");
+            ResponseString = GetResponse();
+            if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
             {
-                string ResponseString;
-                WriteMessage("DELE " + MessageToDelete.MessageNumber + "\r\n");
-                ResponseString = GetResponse();
-                if (!ResponseString.StartsWith("+OK", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    throw new Pop3Exception(ResponseString);
-                }
+                throw new Pop3Exception(ResponseString);
             }
-            catch { throw; }
         }
         #endregion
 
@@ -224,27 +204,23 @@ namespace Utilities.Web.Email.Pop3
         /// <param name="Message">Information to send to the server</param>
         private void WriteMessage(string Message)
         {
-            try
+            System.Text.ASCIIEncoding Encoding = new System.Text.ASCIIEncoding();
+            byte[] Buffer = new byte[Message.Length];
+            Buffer = Encoding.GetBytes(Message);
+            if (!UseSSL)
             {
-                System.Text.ASCIIEncoding Encoding = new System.Text.ASCIIEncoding();
-                byte[] Buffer = new byte[Message.Length];
-                Buffer = Encoding.GetBytes(Message);
-                if (!UseSSL)
-                {
-                    NetworkStream Stream = GetStream();
-                    Stream.Write(Buffer, 0, Buffer.Length);
-                }
-                else
-                {
-                    if (SSLStreamUsing == null)
-                    {
-                        SSLStreamUsing = new SslStream(GetStream());
-                        SSLStreamUsing.AuthenticateAsClient(Server);
-                    }
-                    SSLStreamUsing.Write(Buffer, 0, Buffer.Length);
-                }
+                NetworkStream Stream = GetStream();
+                Stream.Write(Buffer, 0, Buffer.Length);
             }
-            catch { throw; }
+            else
+            {
+                if (SSLStreamUsing == null)
+                {
+                    SSLStreamUsing = new SslStream(GetStream());
+                    SSLStreamUsing.AuthenticateAsClient(Server);
+                }
+                SSLStreamUsing.Write(Buffer, 0, Buffer.Length);
+            }
         }
 
         /// <summary>
@@ -257,45 +233,42 @@ namespace Utilities.Web.Email.Pop3
         /// <returns>The response from the server</returns>
         private string GetResponse()
         {
-            try
+            byte[] Buffer = new byte[1024];
+            System.Text.ASCIIEncoding Encoding = new System.Text.ASCIIEncoding();
+            string Response = "";
+            if (!UseSSL)
             {
-                byte[] Buffer = new byte[1024];
-                System.Text.ASCIIEncoding Encoding = new System.Text.ASCIIEncoding();
-                string Response = "";
-                if (!UseSSL)
+                NetworkStream ResponseStream = GetStream();
+                while (true)
                 {
-                    NetworkStream ResponseStream = GetStream();
-                    while (true)
+                    int Bytes = ResponseStream.Read(Buffer, 0, 1024);
+                    Response += Encoding.GetString(Buffer, 0, Bytes);
+                    if (Bytes != 1024)
                     {
-                        int Bytes = ResponseStream.Read(Buffer, 0, 1024);
-                        Response += Encoding.GetString(Buffer, 0, Bytes);
-                        if (Bytes != 1024)
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
-                else
-                {
-                    if (SSLStreamUsing == null)
-                    {
-                        SSLStreamUsing = new SslStream(GetStream());
-                        SSLStreamUsing.AuthenticateAsClient(Server);
-                    }
-                    while (true)
-                    {
-                        int Bytes = SSLStreamUsing.Read(Buffer, 0, 1024);
-                        Response += Encoding.GetString(Buffer, 0, Bytes);
-                        if (Bytes != 1024)
-                        {
-                            break;
-                        }
-                    }
-                }
-                return Response;
             }
-            catch { throw; }
+            else
+            {
+                if (SSLStreamUsing == null)
+                {
+                    SSLStreamUsing = new SslStream(GetStream());
+                    SSLStreamUsing.AuthenticateAsClient(Server);
+                }
+                while (true)
+                {
+                    int Bytes = SSLStreamUsing.Read(Buffer, 0, 1024);
+                    Response += Encoding.GetString(Buffer, 0, Bytes);
+                    if (Bytes != 1024)
+                    {
+                        break;
+                    }
+                }
+            }
+            return Response;
         }
+
         #endregion
 
         #region Properties

@@ -47,40 +47,36 @@ namespace Utilities.Encryption
             {
                 throw new ArgumentNullException("The input/key string can not be empty.");
             }
-            try
+            ASCIIEncoding Encoding = new ASCIIEncoding();
+            byte[] Hash = Encoding.GetBytes(Key);
+            byte[] KeyArray = new byte[24];
+            byte[] Key2Array = new byte[8];
+            for (int x = 0; x < 24; ++x)
             {
-                ASCIIEncoding Encoding = new ASCIIEncoding();
-                byte[] Hash = Encoding.GetBytes(Key);
-                byte[] KeyArray = new byte[24];
-                byte[] Key2Array = new byte[8];
-                for (int x = 0; x < 24; ++x)
+                KeyArray[x] = Hash[x];
+            }
+            for (int x = 0; x < 8; ++x)
+            {
+                Key2Array[x] = Hash[x + 8];
+            }
+            byte[] Text = null;
+            TripleDESCryptoServiceProvider Encryptor = new TripleDESCryptoServiceProvider();
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                using (CryptoStream DESStream = new CryptoStream(Stream, Encryptor.CreateEncryptor(KeyArray, Key2Array), CryptoStreamMode.Write))
                 {
-                    KeyArray[x] = Hash[x];
-                }
-                for (int x = 0; x < 8; ++x)
-                {
-                    Key2Array[x] = Hash[x + 8];
-                }
-                byte[] Text = null;
-                TripleDESCryptoServiceProvider Encryptor = new TripleDESCryptoServiceProvider();
-                using (MemoryStream Stream = new MemoryStream())
-                {
-                    using (CryptoStream DESStream = new CryptoStream(Stream, Encryptor.CreateEncryptor(KeyArray, Key2Array), CryptoStreamMode.Write))
+                    using (StreamWriter Writer = new StreamWriter(DESStream))
                     {
-                        using (StreamWriter Writer = new StreamWriter(DESStream))
-                        {
-                            Writer.Write(Input);
-                            Writer.Flush();
-                            DESStream.FlushFinalBlock();
-                            Writer.Flush();
-                            Text = Stream.GetBuffer();
-                        }
+                        Writer.Write(Input);
+                        Writer.Flush();
+                        DESStream.FlushFinalBlock();
+                        Writer.Flush();
+                        Text = Stream.GetBuffer();
                     }
                 }
-                Encryptor.Clear();
-                return Convert.ToBase64String(Text, 0, (int)Text.Length);
             }
-            catch { throw; }
+            Encryptor.Clear();
+            return Convert.ToBase64String(Text, 0, (int)Text.Length);
         }
 
         /// <summary>
@@ -95,36 +91,32 @@ namespace Utilities.Encryption
             {
                 throw new ArgumentNullException("The input/key string can not be empty.");
             }
-            try
+            ASCIIEncoding Encoding = new ASCIIEncoding();
+            byte[] Hash = Encoding.GetBytes(Key);
+            byte[] KeyArray = new byte[24];
+            byte[] Key2Array = new byte[8];
+            for (int x = 0; x < 24; ++x)
             {
-                ASCIIEncoding Encoding = new ASCIIEncoding();
-                byte[] Hash = Encoding.GetBytes(Key);
-                byte[] KeyArray = new byte[24];
-                byte[] Key2Array = new byte[8];
-                for (int x = 0; x < 24; ++x)
+                KeyArray[x] = Hash[x];
+            }
+            for (int x = 0; x < 8; ++x)
+            {
+                Key2Array[x] = Hash[x + 8];
+            }
+            string Text = "";
+            TripleDESCryptoServiceProvider Decryptor = new TripleDESCryptoServiceProvider();
+            using (MemoryStream Stream = new MemoryStream(Convert.FromBase64String(Input)))
+            {
+                using (CryptoStream DESStream = new CryptoStream(Stream, Decryptor.CreateDecryptor(KeyArray, Key2Array), CryptoStreamMode.Read))
                 {
-                    KeyArray[x] = Hash[x];
-                }
-                for (int x = 0; x < 8; ++x)
-                {
-                    Key2Array[x] = Hash[x + 8];
-                }
-                string Text = "";
-                TripleDESCryptoServiceProvider Decryptor = new TripleDESCryptoServiceProvider();
-                using (MemoryStream Stream = new MemoryStream(Convert.FromBase64String(Input)))
-                {
-                    using (CryptoStream DESStream = new CryptoStream(Stream, Decryptor.CreateDecryptor(KeyArray, Key2Array), CryptoStreamMode.Read))
+                    using (StreamReader Reader = new StreamReader(DESStream))
                     {
-                        using (StreamReader Reader = new StreamReader(DESStream))
-                        {
-                            Text = Reader.ReadToEnd();
-                        }
+                        Text = Reader.ReadToEnd();
                     }
                 }
-                Decryptor.Clear();
-                return Text;
             }
-            catch { throw; }
+            Decryptor.Clear();
+            return Text;
         }
 
         #endregion

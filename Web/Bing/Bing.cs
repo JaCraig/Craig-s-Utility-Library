@@ -29,7 +29,7 @@ namespace Utilities.Web.Bing
     /// <summary>
     /// Bing helper class
     /// </summary>
-    public class Bing:OpenSearch.OpenSearch
+    public class Bing : OpenSearch.OpenSearch
     {
         #region Constructor
 
@@ -54,24 +54,20 @@ namespace Utilities.Web.Bing
         /// <returns>List of words that may be correct spellings</returns>
         public List<string> CheckSpelling(string Item)
         {
-            try
+            List<string> ReturnList = new List<string>();
+            string AdditionalInfo = "&sources={0}&appid={1}";
+            AdditionalInfo = string.Format(AdditionalInfo, "spell", APPID);
+            XmlDocument Doc = new XmlDocument();
+            Doc.LoadXml(Search(Item, AdditionalInfo));
+            XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Doc.NameTable);
+            NamespaceManager.AddNamespace("api", "http://schemas.microsoft.com/LiveSearch/2008/04/XML/element");
+            NamespaceManager.AddNamespace("spl", "http://schemas.microsoft.com/LiveSearch/2008/04/XML/spell");
+            XmlNodeList Nodes = Doc.DocumentElement.SelectNodes("./spl:Spell/spl:Results/spl:SpellResult/spl:Value", NamespaceManager);
+            foreach (XmlNode Element in Nodes)
             {
-                List<string> ReturnList = new List<string>();
-                string AdditionalInfo = "&sources={0}&appid={1}";
-                AdditionalInfo = string.Format(AdditionalInfo, "spell", APPID);
-                XmlDocument Doc = new XmlDocument();
-                Doc.LoadXml(Search(Item, AdditionalInfo));
-                XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Doc.NameTable);
-                NamespaceManager.AddNamespace("api", "http://schemas.microsoft.com/LiveSearch/2008/04/XML/element");
-                NamespaceManager.AddNamespace("spl", "http://schemas.microsoft.com/LiveSearch/2008/04/XML/spell");
-                XmlNodeList Nodes = Doc.DocumentElement.SelectNodes("./spl:Spell/spl:Results/spl:SpellResult/spl:Value", NamespaceManager);
-                foreach (XmlNode Element in Nodes)
-                {
-                    ReturnList.Add(Element.InnerText);
-                }
-                return ReturnList;
+                ReturnList.Add(Element.InnerText);
             }
-            catch { throw; }
+            return ReturnList;
         }
 
         #endregion

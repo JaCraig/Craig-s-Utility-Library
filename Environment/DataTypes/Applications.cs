@@ -31,7 +31,7 @@ namespace Utilities.Environment.DataTypes
     /// <summary>
     /// Application list
     /// </summary>
-    public class Applications:IEnumerable
+    public class Applications : IEnumerable
     {
         #region Constructor
 
@@ -43,11 +43,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">User Name</param>
         public Applications(string Name = "", string UserName = "", string Password = "")
         {
-            try
-            {
-                LoadApplications(Name, UserName, Password);
-            }
-            catch { throw; }
+            LoadApplications(Name, UserName, Password);
         }
 
         #endregion
@@ -68,49 +64,45 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password</param>
         private void LoadApplications(string Name, string UserName, string Password)
         {
-            try
+            ApplicationList = new List<Application>();
+            ManagementScope Scope = null;
+            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {
-                ApplicationList = new List<Application>();
-                ManagementScope Scope = null;
-                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                ConnectionOptions Options = new ConnectionOptions();
+                Options.Username = UserName;
+                Options.Password = Password;
+                Scope = new ManagementScope("\\\\" + Name + "\\root\\default", Options);
+            }
+            else
+            {
+                Scope = new ManagementScope("\\\\" + Name + "\\root\\default");
+            }
+            ManagementPath Path = new ManagementPath("StdRegProv");
+            using (ManagementClass Registry = new ManagementClass(Scope, Path, null))
+            {
+                const uint HKEY_LOCAL_MACHINE = unchecked((uint)0x80000002);
+                object[] Args = new object[] { HKEY_LOCAL_MACHINE, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", null };
+                uint MethodValue = (uint)Registry.InvokeMethod("EnumKey", Args);
+                string[] Keys = Args[2] as String[];
+                using (ManagementBaseObject MethodParams = Registry.GetMethodParameters("GetStringValue"))
                 {
-                    ConnectionOptions Options = new ConnectionOptions();
-                    Options.Username = UserName;
-                    Options.Password = Password;
-                    Scope = new ManagementScope("\\\\" + Name + "\\root\\default", Options);
-                }
-                else
-                {
-                    Scope = new ManagementScope("\\\\" + Name + "\\root\\default");
-                }
-                ManagementPath Path = new ManagementPath("StdRegProv");
-                using (ManagementClass Registry = new ManagementClass(Scope, Path, null))
-                {
-                    const uint HKEY_LOCAL_MACHINE = unchecked((uint)0x80000002);
-                    object[] Args = new object[] { HKEY_LOCAL_MACHINE, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", null };
-                    uint MethodValue = (uint)Registry.InvokeMethod("EnumKey", Args);
-                    string[] Keys = Args[2] as String[];
-                    using (ManagementBaseObject MethodParams = Registry.GetMethodParameters("GetStringValue"))
+                    MethodParams["hDefKey"] = HKEY_LOCAL_MACHINE;
+                    foreach (string SubKey in Keys)
                     {
-                        MethodParams["hDefKey"] = HKEY_LOCAL_MACHINE;
-                        foreach (string SubKey in Keys)
+                        MethodParams["sSubKeyName"] = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + SubKey;
+                        MethodParams["sValueName"] = "DisplayName";
+                        using (ManagementBaseObject Results = Registry.InvokeMethod("GetStringValue", MethodParams, null))
                         {
-                            MethodParams["sSubKeyName"] = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + SubKey;
-                            MethodParams["sValueName"] = "DisplayName";
-                            using (ManagementBaseObject Results = Registry.InvokeMethod("GetStringValue", MethodParams, null))
+                            if (Results != null && (uint)Results["ReturnValue"] == 0)
                             {
-                                if (Results != null && (uint)Results["ReturnValue"] == 0)
-                                {
-                                    Application Temp = new Application();
-                                    Temp.Name = Results["sValue"].ToString();
-                                    ApplicationList.Add(Temp);
-                                }
+                                Application Temp = new Application();
+                                Temp.Name = Results["sValue"].ToString();
+                                ApplicationList.Add(Temp);
                             }
                         }
                     }
                 }
             }
-            catch { throw; }
         }
 
         #endregion

@@ -39,23 +39,19 @@ namespace Utilities.Web.Ping
         /// <param name="Address">Address of the host</param>
         /// <param name="TimeOut">Timeout in ms (optional)</param>
         /// <returns>True if a response is received, false otherwise</returns>
-        public static bool PingHost(string Address,int TimeOut=1000)
+        public static bool PingHost(string Address, int TimeOut = 1000)
         {
-            try
+            using (System.Net.NetworkInformation.Ping PingSender = new System.Net.NetworkInformation.Ping())
             {
-                using (System.Net.NetworkInformation.Ping PingSender = new System.Net.NetworkInformation.Ping())
-                {
-                    PingOptions Options = new PingOptions();
-                    Options.DontFragment = true;
-                    string Data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-                    byte[] DataBuffer = Encoding.ASCII.GetBytes(Data);
-                    PingReply Reply = PingSender.Send(Address, TimeOut, DataBuffer, Options);
-                    if (Reply.Status == IPStatus.Success)
-                        return true;
-                    return false;
-                }
+                PingOptions Options = new PingOptions();
+                Options.DontFragment = true;
+                string Data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                byte[] DataBuffer = Encoding.ASCII.GetBytes(Data);
+                PingReply Reply = PingSender.Send(Address, TimeOut, DataBuffer, Options);
+                if (Reply.Status == IPStatus.Success)
+                    return true;
+                return false;
             }
-            catch { throw; }
         }
 
         #endregion

@@ -21,15 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.Specialized;
-using System.Web;
-using System.Text.RegularExpressions;
 using System.Net;
-using System.Xml;
-using Utilities.Web.OpenID.Extensions.Enums;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 using Utilities.DataTypes;
 using Utilities.Web.OpenID.Extensions;
 using Utilities.Web.OpenID.Extensions.Interfaces;
@@ -49,14 +44,10 @@ namespace Utilities.Web.OpenID
         /// </summary>
         public OpenID()
         {
-            try
-            {
-                Extensions = new System.Collections.Generic.List<IExtension>();
-                Extensions.Add(new AttributeExchange());
-                if (NonceList == null)
-                    NonceList = new System.Collections.Generic.List<string>();
-            }
-            catch { throw; }
+            Extensions = new System.Collections.Generic.List<IExtension>();
+            Extensions.Add(new AttributeExchange());
+            if (NonceList == null)
+                NonceList = new System.Collections.Generic.List<string>();
         }
 
         #endregion
@@ -93,12 +84,8 @@ namespace Utilities.Web.OpenID
         /// <returns>The login URL based on request</returns>
         public string GenerateLoginURL()
         {
-            try
-            {
-                EndpointURL = GetServerURL();
-                return CreateLoginRedirectUrl();
-            }
-            catch { throw; }
+            EndpointURL = GetServerURL();
+            return CreateLoginRedirectUrl();
         }
 
         /// <summary>
@@ -108,19 +95,15 @@ namespace Utilities.Web.OpenID
         /// <returns></returns>
         public System.Collections.Generic.List<Pair<string, string>> GetAttributes(string URL)
         {
-            try
+            System.Collections.Generic.List<Pair<string, string>> Pairs = new System.Collections.Generic.List<Pair<string, string>>();
+            MatchCollection Matches = Keys.Matches(URL);
+            foreach (Match Match in Matches)
             {
-                System.Collections.Generic.List<Pair<string, string>> Pairs = new System.Collections.Generic.List<Pair<string, string>>();
-                MatchCollection Matches = Keys.Matches(URL);
-                foreach (Match Match in Matches)
-                {
-                    Pairs.Add(new Pair<string, string>(Match.Groups["Left"].Value, Match.Groups["Right"].Value));
-                }
-                if (Verify(URL, Pairs))
-                    return Pairs;
-                return null;
+                Pairs.Add(new Pair<string, string>(Match.Groups["Left"].Value, Match.Groups["Right"].Value));
             }
-            catch { throw; }
+            if (Verify(URL, Pairs))
+                return Pairs;
+            return null;
         }
 
         #endregion
@@ -133,29 +116,25 @@ namespace Utilities.Web.OpenID
         /// <returns>A redirect URL</returns>
         protected string CreateLoginRedirectUrl()
         {
-            try
+            System.Collections.Generic.List<Pair<string, string>> Pairs = new System.Collections.Generic.List<Pair<string, string>>();
+            Pairs.Add(new Pair<string, string>("openid.ns", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0")));
+            Pairs.Add(new Pair<string, string>("openid.mode", "checkid_setup"));
+            Pairs.Add(new Pair<string, string>("openid.identity", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0/identifier_select")));
+            Pairs.Add(new Pair<string, string>("openid.claimed_id", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0/identifier_select")));
+            Pairs.Add(new Pair<string, string>("openid.return_to", HttpUtility.UrlEncode(RedirectURL)));
+            foreach (IExtension Extension in Extensions)
             {
-                System.Collections.Generic.List<Pair<string, string>> Pairs = new System.Collections.Generic.List<Pair<string, string>>();
-                Pairs.Add(new Pair<string, string>("openid.ns", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0")));
-                Pairs.Add(new Pair<string, string>("openid.mode", "checkid_setup"));
-                Pairs.Add(new Pair<string, string>("openid.identity", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0/identifier_select")));
-                Pairs.Add(new Pair<string, string>("openid.claimed_id", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0/identifier_select")));
-                Pairs.Add(new Pair<string, string>("openid.return_to", HttpUtility.UrlEncode(RedirectURL)));
-                foreach (IExtension Extension in Extensions)
-                {
-                    Pairs.AddRange(Extension.GenerateURLAttributes());
-                }
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append(EndpointURL);
-                string Splitter = "?";
-                foreach (Pair<string, string> Pair in Pairs)
-                {
-                    Builder.Append(Splitter).Append(Pair.Left).Append("=").Append(Pair.Right);
-                    Splitter = "&";
-                }
-                return Builder.ToString();
+                Pairs.AddRange(Extension.GenerateURLAttributes());
             }
-            catch { throw; }
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append(EndpointURL);
+            string Splitter = "?";
+            foreach (Pair<string, string> Pair in Pairs)
+            {
+                Builder.Append(Splitter).Append(Pair.Left).Append("=").Append(Pair.Right);
+                Splitter = "&";
+            }
+            return Builder.ToString();
         }
 
         /// <summary>
@@ -164,27 +143,23 @@ namespace Utilities.Web.OpenID
         /// <returns>Endpoint URL</returns>
         protected string GetServerURL()
         {
-            try
+            if (!string.IsNullOrEmpty(EndpointURL))
+                return EndpointURL;
+            using (WebClient Client = new WebClient())
             {
-                if (!string.IsNullOrEmpty(EndpointURL))
-                    return EndpointURL;
-                using (WebClient Client = new WebClient())
-                {
-                    string Html = Client.DownloadString(ServerURL);
+                string Html = Client.DownloadString(ServerURL);
 
-                    foreach (Match Match in Links.Matches(Html))
-                    {
-                        string Temp = GetLink(Match);
-                        if (!string.IsNullOrEmpty(Temp))
-                            return Temp;
-                    }
-                    Match TempURI = Uri.Match(Html);
-                    if (TempURI != null)
-                        return TempURI.Groups["URI"].Value;
-                    return "";
+                foreach (Match Match in Links.Matches(Html))
+                {
+                    string Temp = GetLink(Match);
+                    if (!string.IsNullOrEmpty(Temp))
+                        return Temp;
                 }
+                Match TempURI = Uri.Match(Html);
+                if (TempURI != null)
+                    return TempURI.Groups["URI"].Value;
+                return "";
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -194,19 +169,15 @@ namespace Utilities.Web.OpenID
         /// <returns>The end point or empty string</returns>
         protected static string GetLink(Match Match)
         {
-            try
+            if (Match.Value.IndexOf("openid.server") > 0)
             {
-                if (Match.Value.IndexOf("openid.server") > 0)
+                Match = Href.Match(Match.Value);
+                if (Match.Success)
                 {
-                    Match = Href.Match(Match.Value);
-                    if (Match.Success)
-                    {
-                        return Match.Groups[1].Value;
-                    }
+                    return Match.Groups[1].Value;
                 }
-                return "";
             }
-            catch { throw; }
+            return "";
         }
 
         /// <summary>
@@ -217,45 +188,41 @@ namespace Utilities.Web.OpenID
         /// <returns>true if it is valid, false otherwise</returns>
         protected bool Verify(string URL, System.Collections.Generic.List<Pair<string, string>> Pairs)
         {
-            try
+            Pair<string, string> Mode = Pairs.Find(x => x.Left.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase));
+            if (Mode.Right.Equals("cancel", StringComparison.CurrentCultureIgnoreCase))
+                return false;
+            Pair<string, string> ReturnTo = Pairs.Find(x => x.Left.Equals("openid.return_to", StringComparison.CurrentCultureIgnoreCase));
+            if (ReturnTo == null)
+                return false;
+            Match PartialUrl = Regex.Match(URL, "^" + ReturnTo.Right, RegexOptions.IgnoreCase);
+            if (!PartialUrl.Success)
+                return false;
+            if (Pairs.Find(x => x.Left.Equals("openid.identity", StringComparison.CurrentCultureIgnoreCase)) == null
+                || Pairs.Find(x => x.Left.Equals("openid.claimed_id", StringComparison.CurrentCultureIgnoreCase)) == null)
+                return false;
+            foreach (IExtension Extension in Extensions)
             {
-                Pair<string, string> Mode = Pairs.Find(x => x.Left.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase));
-                if (Mode.Right.Equals("cancel", StringComparison.CurrentCultureIgnoreCase))
+                if (!Extension.Verify(URL, Pairs))
                     return false;
-                Pair<string, string> ReturnTo = Pairs.Find(x => x.Left.Equals("openid.return_to", StringComparison.CurrentCultureIgnoreCase));
-                if (ReturnTo == null)
-                    return false;
-                Match PartialUrl = Regex.Match(URL, "^" + ReturnTo.Right, RegexOptions.IgnoreCase);
-                if (!PartialUrl.Success)
-                    return false;
-                if (Pairs.Find(x => x.Left.Equals("openid.identity", StringComparison.CurrentCultureIgnoreCase)) == null
-                    || Pairs.Find(x => x.Left.Equals("openid.claimed_id", StringComparison.CurrentCultureIgnoreCase)) == null)
-                    return false;
-                foreach (IExtension Extension in Extensions)
-                {
-                    if (!Extension.Verify(URL, Pairs))
-                        return false;
-                }
-                Pair<string, string> Nonce = Pairs.Find(x => x.Left.Equals("openid.response_nonce", StringComparison.CurrentCultureIgnoreCase));
-                if (Nonce == null)
-                    return false;
-                string CurrentNonce = Nonce.Right;
-                foreach (string TempNonce in NonceList)
-                {
-                    if (CurrentNonce == TempNonce)
-                        return false;
-                }
-                NonceList.Add(CurrentNonce);
-                string VerificationURL = GenerateVerificationUrl(Pairs);
-                using (WebClient Client = new WebClient())
-                {
-                    string Html = Client.DownloadString(VerificationURL);
-                    if (!Html.Contains("is_valid:true"))
-                        return false;
-                }
-                return true;
             }
-            catch { throw; }
+            Pair<string, string> Nonce = Pairs.Find(x => x.Left.Equals("openid.response_nonce", StringComparison.CurrentCultureIgnoreCase));
+            if (Nonce == null)
+                return false;
+            string CurrentNonce = Nonce.Right;
+            foreach (string TempNonce in NonceList)
+            {
+                if (CurrentNonce == TempNonce)
+                    return false;
+            }
+            NonceList.Add(CurrentNonce);
+            string VerificationURL = GenerateVerificationUrl(Pairs);
+            using (WebClient Client = new WebClient())
+            {
+                string Html = Client.DownloadString(VerificationURL);
+                if (!Html.Contains("is_valid:true"))
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -265,20 +232,16 @@ namespace Utilities.Web.OpenID
         /// <returns>The appropriate verification URL</returns>
         protected string GenerateVerificationUrl(System.Collections.Generic.List<Pair<string, string>> Pairs)
         {
-            try
+            Pairs.Find(x => x.Left.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase)).Right = "check_authentication";
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append(Pairs.Find(x => x.Left.Equals("openid.op_endpoint", StringComparison.CurrentCultureIgnoreCase)).Right);
+            string Splitter = "?";
+            foreach (Pair<string, string> Pair in Pairs)
             {
-                Pairs.Find(x => x.Left.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase)).Right = "check_authentication";
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append(Pairs.Find(x => x.Left.Equals("openid.op_endpoint", StringComparison.CurrentCultureIgnoreCase)).Right);
-                string Splitter = "?";
-                foreach (Pair<string, string> Pair in Pairs)
-                {
-                    Builder.Append(Splitter).Append(Pair.Left).Append("=").Append(Pair.Right);
-                    Splitter = "&";
-                }
-                return Builder.ToString();
+                Builder.Append(Splitter).Append(Pair.Left).Append("=").Append(Pair.Right);
+                Splitter = "&";
             }
-            catch { throw; }
+            return Builder.ToString();
         }
 
         #endregion

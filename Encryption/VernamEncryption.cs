@@ -41,11 +41,7 @@ namespace Utilities.Encryption
         /// <returns>An encrypted string</returns>
         public static string Encrypt(string Input, string Key)
         {
-            try
-            {
-                return Process(Input, Key);
-            }
-            catch { throw; }
+            return Process(Input, Key);
         }
         /// <summary>
         /// Decrypts a string using Vernam encryption
@@ -55,11 +51,7 @@ namespace Utilities.Encryption
         /// <returns>A decrypted string</returns>
         public static string Dencrypt(string Input, string Key)
         {
-            try
-            {
-                return Process(Input, Key);
-            }
-            catch { throw; }
+            return Process(Input, Key);
         }
         #endregion
 
@@ -68,25 +60,21 @@ namespace Utilities.Encryption
         /// <summary>
         /// Actually does the encryption/decryption
         /// </summary>
-        private static string Process(string Input,string Key)
+        private static string Process(string Input, string Key)
         {
             if (Input.Length != Key.Length)
             {
                 throw new ArgumentException("Key is not the same length as the input string");
             }
-            try
+            ASCIIEncoding Encoding = new ASCIIEncoding();
+            byte[] InputArray = Encoding.GetBytes(Input);
+            byte[] KeyArray = Encoding.GetBytes(Key);
+            byte[] OutputArray = new byte[InputArray.Length];
+            for (int x = 0; x < InputArray.Length; ++x)
             {
-                ASCIIEncoding Encoding = new ASCIIEncoding();
-                byte[] InputArray = Encoding.GetBytes(Input);
-                byte[] KeyArray = Encoding.GetBytes(Key);
-                byte[] OutputArray = new byte[InputArray.Length];
-                for (int x = 0; x < InputArray.Length; ++x)
-                {
-                    OutputArray[x] = (byte)(InputArray[x] ^ Key[x]);
-                }
-                return Encoding.GetString(OutputArray);
+                OutputArray[x] = (byte)(InputArray[x] ^ Key[x]);
             }
-            catch { throw; }
+            return Encoding.GetString(OutputArray);
         }
 
         #endregion

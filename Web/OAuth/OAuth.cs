@@ -41,17 +41,13 @@ namespace Utilities.Web.OAuth
         /// </summary>
         public OAuth()
         {
-            try
-            {
-                Parameters = new System.Collections.Generic.List<Pair<string, string>>();
-                AddParameter("oauth_consumer_key", "");
-                AddParameter("oauth_nonce", "");
-                AddParameter("oauth_signature_method", "");
-                AddParameter("oauth_timestamp", "");
-                AddParameter("oauth_version", "1.0");
-                RandomGenerator = new Random.Random();
-            }
-            catch { throw; }
+            Parameters = new System.Collections.Generic.List<Pair<string, string>>();
+            AddParameter("oauth_consumer_key", "");
+            AddParameter("oauth_nonce", "");
+            AddParameter("oauth_signature_method", "");
+            AddParameter("oauth_timestamp", "");
+            AddParameter("oauth_version", "1.0");
+            RandomGenerator = new Random.Random();
         }
 
         #endregion
@@ -64,15 +60,11 @@ namespace Utilities.Web.OAuth
         /// <returns>The string containing the request</returns>
         protected string GenerateRequest()
         {
-            try
-            {
-                string Url = "";
-                string Parameters = "";
-                string Signature = GenerateSignature(out Url, out Parameters);
-                string ReturnUrl = Url.ToString() + "?" + Parameters + "&oauth_signature=" + UrlEncode(Signature);
-                return ReturnUrl;
-            }
-            catch { throw; }
+            string Url = "";
+            string Parameters = "";
+            string Signature = GenerateSignature(out Url, out Parameters);
+            string ReturnUrl = Url.ToString() + "?" + Parameters + "&oauth_signature=" + UrlEncode(Signature);
+            return ReturnUrl;
         }
 
         /// <summary>
@@ -81,31 +73,27 @@ namespace Utilities.Web.OAuth
         /// <param name="Url">Url</param>
         /// <param name="Parameters">Parameters</param>
         /// <returns>The signature</returns>
-        protected string GenerateSignature(out string Url,out string Parameters)
+        protected string GenerateSignature(out string Url, out string Parameters)
         {
-            try
-            {
-                Parameters = "";
-                Url = "";
+            Parameters = "";
+            Url = "";
 
-                if (this.SignatureType == Signature.HMACSHA1)
-                {
-                    string Base = GenerateBase(out Url, out Parameters);
-                    HMACSHA1 SHA1 = new HMACSHA1();
-                    SHA1.Key = Encoding.ASCII.GetBytes(UrlEncode(ConsumerKeySecret) + "&" + (string.IsNullOrEmpty(TokenSecret) ? "" : UrlEncode(TokenSecret)));
-                    return Convert.ToBase64String(SHA1.ComputeHash(System.Text.Encoding.ASCII.GetBytes(Base)));
-                }
-                else if (this.SignatureType == Signature.RSASHA1)
-                {
-                    throw new NotImplementedException();
-                }
-                else if (this.SignatureType == Signature.PLAINTEXT)
-                {
-                    return UrlEncode(ConsumerKeySecret + "&" + TokenSecret);
-                }
-                return "";
+            if (this.SignatureType == Signature.HMACSHA1)
+            {
+                string Base = GenerateBase(out Url, out Parameters);
+                HMACSHA1 SHA1 = new HMACSHA1();
+                SHA1.Key = Encoding.ASCII.GetBytes(UrlEncode(ConsumerKeySecret) + "&" + (string.IsNullOrEmpty(TokenSecret) ? "" : UrlEncode(TokenSecret)));
+                return Convert.ToBase64String(SHA1.ComputeHash(System.Text.Encoding.ASCII.GetBytes(Base)));
             }
-            catch { throw; }
+            else if (this.SignatureType == Signature.RSASHA1)
+            {
+                throw new NotImplementedException();
+            }
+            else if (this.SignatureType == Signature.PLAINTEXT)
+            {
+                return UrlEncode(ConsumerKeySecret + "&" + TokenSecret);
+            }
+            return "";
         }
 
         /// <summary>
@@ -115,19 +103,15 @@ namespace Utilities.Web.OAuth
         /// <returns>Url encoded string</returns>
         protected string UrlEncode(string Input)
         {
-            try
+            StringBuilder Result = new StringBuilder();
+            for (int x = 0; x < Input.Length; ++x)
             {
-                StringBuilder Result = new StringBuilder();
-                for (int x = 0; x < Input.Length; ++x)
-                {
-                    if (UnreservedChars.IndexOf(Input[x]) != -1)
-                        Result.Append(Input[x]);
-                    else
-                        Result.Append("%").Append(String.Format("{0:X2}", (int)Input[x]));
-                }
-                return Result.ToString();
+                if (UnreservedChars.IndexOf(Input[x]) != -1)
+                    Result.Append(Input[x]);
+                else
+                    Result.Append("%").Append(String.Format("{0:X2}", (int)Input[x]));
             }
-            catch { throw; }
+            return Result.ToString();
         }
 
         /// <summary>
@@ -137,24 +121,20 @@ namespace Utilities.Web.OAuth
         /// <param name="Value">Value text</param>
         protected void AddParameter(string Key, string Value)
         {
-            try
+            bool Found = false;
+            foreach (Pair<string, string> Pair in Parameters)
             {
-                bool Found = false;
-                foreach (Pair<string, string> Pair in Parameters)
+                if (Pair.Left == Key)
                 {
-                    if (Pair.Left == Key)
-                    {
-                        Pair.Right = Value;
-                        Found = true;
-                        break;
-                    }
-                }
-                if (!Found)
-                {
-                    Parameters.Add(new Pair<string, string>(Key, Value));
+                    Pair.Right = Value;
+                    Found = true;
+                    break;
                 }
             }
-            catch { throw; }
+            if (!Found)
+            {
+                Parameters.Add(new Pair<string, string>(Key, Value));
+            }
         }
 
         #endregion
@@ -169,60 +149,56 @@ namespace Utilities.Web.OAuth
         /// <returns>The base information for the signature</returns>
         private string GenerateBase(out string UrlString, out string ParameterString)
         {
-            try
+            StringBuilder UrlBuilder = new StringBuilder();
+            StringBuilder Builder = new StringBuilder();
+            StringBuilder ParameterBuilder = new StringBuilder();
+
+            string SignatureMethod = "";
+            if (this.SignatureType == Signature.HMACSHA1)
+                SignatureMethod = "HMAC-SHA1";
+            else if (this.SignatureType == Signature.RSASHA1)
+                SignatureMethod = "RSA-SHA1";
+            else if (this.SignatureType == Signature.PLAINTEXT)
+                SignatureMethod = "PLAINTEXT";
+
+            AddParameter("oauth_consumer_key", this.ConsumerKey);
+            AddParameter("oauth_nonce", RandomGenerator.Next(123400, 9999999).ToString());
+            AddParameter("oauth_signature_method", SignatureMethod);
+            AddParameter("oauth_timestamp", Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds).ToString());
+            AddParameter("oauth_version", "1.0");
+
+            if (!string.IsNullOrEmpty(this.Token))
+                AddParameter("oauth_token", this.Token);
+            if (!string.IsNullOrEmpty(this.TokenSecret))
+                AddParameter("oauth_token_secret", this.TokenSecret);
+
+            Parameters.Sort(new PairComparer());
+
+            string Splitter = "";
+            foreach (Pair<string, string> Key in Parameters)
             {
-                StringBuilder UrlBuilder = new StringBuilder();
-                StringBuilder Builder = new StringBuilder();
-                StringBuilder ParameterBuilder = new StringBuilder();
-
-                string SignatureMethod = "";
-                if (this.SignatureType == Signature.HMACSHA1)
-                    SignatureMethod = "HMAC-SHA1";
-                else if (this.SignatureType == Signature.RSASHA1)
-                    SignatureMethod = "RSA-SHA1";
-                else if (this.SignatureType == Signature.PLAINTEXT)
-                    SignatureMethod = "PLAINTEXT";
-
-                AddParameter("oauth_consumer_key", this.ConsumerKey);
-                AddParameter("oauth_nonce", RandomGenerator.Next(123400, 9999999).ToString());
-                AddParameter("oauth_signature_method", SignatureMethod);
-                AddParameter("oauth_timestamp", Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds).ToString());
-                AddParameter("oauth_version", "1.0");
-
-                if (!string.IsNullOrEmpty(this.Token))
-                    AddParameter("oauth_token", this.Token);
-                if (!string.IsNullOrEmpty(this.TokenSecret))
-                    AddParameter("oauth_token_secret", this.TokenSecret);
-
-                Parameters.Sort(new PairComparer());
-
-                string Splitter = "";
-                foreach (Pair<string, string> Key in Parameters)
-                {
-                    ParameterBuilder.Append(Splitter)
-                        .Append(Key.Left)
-                        .Append("=")
-                        .Append(UrlEncode(Key.Right));
-                    Splitter = "&";
-                }
-
-                UrlBuilder.Append(Url.Scheme).Append("://").Append(Url.Host);
-                if ((Url.Scheme == "http" && Url.Port != 80) || (Url.Scheme == "https" && Url.Port != 443))
-                    UrlBuilder.Append(":").Append(Url.Port);
-                UrlBuilder.Append(Url.AbsolutePath);
-
-                UrlString = UrlBuilder.ToString();
-                ParameterString = ParameterBuilder.ToString();
-
-                Builder.Append(this.Method.ToString().ToUpper())
-                    .Append("&")
-                    .Append(UrlEncode(UrlBuilder.ToString()))
-                    .Append("&")
-                    .Append(UrlEncode(ParameterBuilder.ToString()));
-
-                return Builder.ToString();
+                ParameterBuilder.Append(Splitter)
+                    .Append(Key.Left)
+                    .Append("=")
+                    .Append(UrlEncode(Key.Right));
+                Splitter = "&";
             }
-            catch { throw; }
+
+            UrlBuilder.Append(Url.Scheme).Append("://").Append(Url.Host);
+            if ((Url.Scheme == "http" && Url.Port != 80) || (Url.Scheme == "https" && Url.Port != 443))
+                UrlBuilder.Append(":").Append(Url.Port);
+            UrlBuilder.Append(Url.AbsolutePath);
+
+            UrlString = UrlBuilder.ToString();
+            ParameterString = ParameterBuilder.ToString();
+
+            Builder.Append(this.Method.ToString().ToUpper())
+                .Append("&")
+                .Append(UrlEncode(UrlBuilder.ToString()))
+                .Append("&")
+                .Append(UrlEncode(ParameterBuilder.ToString()));
+
+            return Builder.ToString();
         }
 
         #endregion
@@ -253,7 +229,7 @@ namespace Utilities.Web.OAuth
         /// Token secret
         /// </summary>
         public virtual string TokenSecret { get; set; }
-        
+
         /// <summary>
         /// HTTP Method
         /// </summary>
@@ -279,22 +255,18 @@ namespace Utilities.Web.OAuth
         /// <summary>
         /// Comparer class for the pair type
         /// </summary>
-        private class PairComparer : IComparer<Pair<string,string>>
+        private class PairComparer : IComparer<Pair<string, string>>
         {
             public int Compare(Pair<string, string> x, Pair<string, string> y)
             {
-                try
+                if (x.Left == y.Left)
                 {
-                    if (x.Left == y.Left)
-                    {
-                        return string.Compare(x.Right, y.Right);
-                    }
-                    else
-                    {
-                        return string.Compare(x.Left, y.Left);
-                    }
+                    return string.Compare(x.Right, y.Right);
                 }
-                catch { throw; }
+                else
+                {
+                    return string.Compare(x.Left, y.Left);
+                }
             }
         }
 

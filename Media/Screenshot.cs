@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
@@ -42,14 +41,10 @@ namespace Utilities.Media
         /// <param name="FileName">Name of the file to save the screenshot.</param>
         public static void TakeScreenShot(string FileName)
         {
-            try
+            using (Bitmap TempBitmap = Screenshot.TakeScreenShot())
             {
-                using (Bitmap TempBitmap = Screenshot.TakeScreenShot())
-                {
-                    TempBitmap.Save(FileName);
-                }
+                TempBitmap.Save(FileName);
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -59,21 +54,17 @@ namespace Utilities.Media
         /// <returns>Returns the bitmap object containing the screenshot</returns>
         public static Bitmap TakeScreenShot()
         {
-            try
+            Rectangle TotalScreenRect = Rectangle.Empty;
+            foreach (Screen CurrentScreen in Screen.AllScreens)
             {
-                Rectangle TotalScreenRect = Rectangle.Empty;
-                foreach (Screen CurrentScreen in Screen.AllScreens)
-                {
-                    TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);
-                }
-                Bitmap TempBitmap = new Bitmap(TotalScreenRect.Width, TotalScreenRect.Height, PixelFormat.Format32bppArgb);
-                using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
-                {
-                    TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);
-                }
-                return TempBitmap;
+                TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);
             }
-            catch { throw; }
+            Bitmap TempBitmap = new Bitmap(TotalScreenRect.Width, TotalScreenRect.Height, PixelFormat.Format32bppArgb);
+            using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
+            {
+                TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);
+            }
+            return TempBitmap;
         }
         #endregion
     }

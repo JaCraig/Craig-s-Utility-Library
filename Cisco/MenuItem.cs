@@ -29,7 +29,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Menu item class
     /// </summary>
-    public class MenuItem:IMenuItem
+    public class MenuItem : IMenuItem
     {
         #region Constructor
 
@@ -60,14 +60,10 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
-            {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<MenuItem><Name>").Append(Name).Append("</Name><URL>").Append(URL)
-                    .Append("</URL></MenuItem>");
-                return Builder.ToString();
-            }
-            catch { throw; }
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<MenuItem><Name>").Append(Name).Append("</Name><URL>").Append(URL)
+                .Append("</URL></MenuItem>");
+            return Builder.ToString();
         }
 
         #endregion

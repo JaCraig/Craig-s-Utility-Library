@@ -42,38 +42,34 @@ namespace Utilities.Web
         /// <returns>A minified javascript string</returns>
         public static string Minify(string Input)
         {
-            try
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            string[] CodeLines = Input.Split(new string[] { System.Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder Builder = new StringBuilder();
+            foreach (string Line in CodeLines)
             {
-                if (string.IsNullOrEmpty(Input))
-                    return "";
-                string[] CodeLines = Input.Split(new string[] { System.Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                StringBuilder Builder = new StringBuilder();
-                foreach (string Line in CodeLines)
-                {
-                    string Temp = Line.Trim();
-                    if (Temp.Length > 0 && !Temp.StartsWith("//"))
-                        Builder.AppendLine(Temp);
-                }
-
-                Input = Builder.ToString();
-                Input = Regex.Replace(Input, "(/" + Regex.Escape("*") + ".*?" + Regex.Escape("*") + "/)", string.Empty);
-                Input = Regex.Replace(Input, @"^[\s]+|[ \f\r\t\v]+$", String.Empty);
-                Input = Regex.Replace(Input, @"^[\s]+|[ \f\r\t\v]+$", String.Empty);
-                Input = Regex.Replace(Input, @"([+-])\n\1", "$1 $1");
-                Input = Regex.Replace(Input, @"([^+-][+-])\n", "$1");
-                Input = Regex.Replace(Input, @"([^+]) ?(\+)", "$1$2");
-                Input = Regex.Replace(Input, @"(\+) ?([^+])", "$1$2");
-                Input = Regex.Replace(Input, @"([^-]) ?(\-)", "$1$2");
-                Input = Regex.Replace(Input, @"(\-) ?([^-])", "$1$2");
-                Input = Regex.Replace(Input, @"\n([{}()[\],<>/*%&|^!~?:=.;+-])", "$1");
-                Input = Regex.Replace(Input, @"(\W(if|while|for)\([^{]*?\))\n", "$1");
-                Input = Regex.Replace(Input, @"(\W(if|while|for)\([^{]*?\))((if|while|for)\([^{]*?\))\n", "$1$3");
-                Input = Regex.Replace(Input, @"([;}]else)\n", "$1 ");
-                Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&ndsp;)\s{2,}(?=[<])", String.Empty);
-
-                return Input;
+                string Temp = Line.Trim();
+                if (Temp.Length > 0 && !Temp.StartsWith("//"))
+                    Builder.AppendLine(Temp);
             }
-            catch { throw; }
+
+            Input = Builder.ToString();
+            Input = Regex.Replace(Input, "(/" + Regex.Escape("*") + ".*?" + Regex.Escape("*") + "/)", string.Empty);
+            Input = Regex.Replace(Input, @"^[\s]+|[ \f\r\t\v]+$", String.Empty);
+            Input = Regex.Replace(Input, @"^[\s]+|[ \f\r\t\v]+$", String.Empty);
+            Input = Regex.Replace(Input, @"([+-])\n\1", "$1 $1");
+            Input = Regex.Replace(Input, @"([^+-][+-])\n", "$1");
+            Input = Regex.Replace(Input, @"([^+]) ?(\+)", "$1$2");
+            Input = Regex.Replace(Input, @"(\+) ?([^+])", "$1$2");
+            Input = Regex.Replace(Input, @"([^-]) ?(\-)", "$1$2");
+            Input = Regex.Replace(Input, @"(\-) ?([^-])", "$1$2");
+            Input = Regex.Replace(Input, @"\n([{}()[\],<>/*%&|^!~?:=.;+-])", "$1");
+            Input = Regex.Replace(Input, @"(\W(if|while|for)\([^{]*?\))\n", "$1");
+            Input = Regex.Replace(Input, @"(\W(if|while|for)\([^{]*?\))((if|while|for)\([^{]*?\))\n", "$1$3");
+            Input = Regex.Replace(Input, @"([;}]else)\n", "$1 ");
+            Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&ndsp;)\s{2,}(?=[<])", String.Empty);
+
+            return Input;
         }
 
         /// <summary>
@@ -83,16 +79,12 @@ namespace Utilities.Web
         /// <returns>A minified/packed javascript string</returns>
         public static string Combine(List<string> Input)
         {
-            try
+            StringBuilder Output = new StringBuilder();
+            foreach (string Temp in Input)
             {
-                StringBuilder Output = new StringBuilder();
-                foreach (string Temp in Input)
-                {
-                    Output.Append(Temp).Append("\n");
-                }
-                return Minify(Output.ToString());
+                Output.Append(Temp).Append("\n");
             }
-            catch { throw; }
+            return Minify(Output.ToString());
         }
 
         #endregion

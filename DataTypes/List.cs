@@ -41,112 +41,76 @@ namespace Utilities.DataTypes
 
         public new void Add(T value)
         {
-            try
-            {
-                base.Add(value);
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-            }
-            catch { throw; }
+            base.Add(value);
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
         }
 
         public new void AddRange(System.Collections.Generic.IEnumerable<T> value)
         {
-            try
-            {
-                base.AddRange(value);
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-            }
-            catch { throw; }
+            base.AddRange(value);
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
         }
 
         public new bool Remove(T obj)
         {
-            try
-            {
-                bool ReturnValue = base.Remove(obj);
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-                return ReturnValue;
-            }
-            catch { throw; }
+            bool ReturnValue = base.Remove(obj);
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            return ReturnValue;
         }
 
         public new void RemoveAt(int index)
         {
-            try
-            {
-                base.RemoveAt(index);
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-            }
-            catch { throw; }
+            base.RemoveAt(index);
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
         }
 
         public new int RemoveAll(Predicate<T> match)
         {
-            try
-            {
-                int ReturnValue = base.RemoveAll(match);
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-                return ReturnValue;
-            }
-            catch { throw; }
+            int ReturnValue = base.RemoveAll(match);
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            return ReturnValue;
         }
 
         public new void RemoveRange(int index, int count)
         {
-            try
-            {
-                base.RemoveRange(index, count);
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-            }
-            catch { throw; }
+            base.RemoveRange(index, count);
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
         }
 
         public new void Insert(int index, T value)
         {
-            try
-            {
-                base.Insert(index, value);
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-            }
-            catch { throw; }
+            base.Insert(index, value);
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
         }
 
         public new void InsertRange(int index, System.Collections.Generic.IEnumerable<T> collection)
         {
-            try
-            {
-                base.InsertRange(index, collection);
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-            }
-            catch { throw; }
+            base.InsertRange(index, collection);
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
         }
 
         public new void Clear()
         {
-            try
-            {
-                base.Clear();
-                ChangedEventArgs TempArgs = new ChangedEventArgs();
-                TempArgs.Content = PropertyName;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
-            }
-            catch { throw; }
+            base.Clear();
+            ChangedEventArgs TempArgs = new ChangedEventArgs();
+            TempArgs.Content = PropertyName;
+            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
         }
 
         #endregion
@@ -155,15 +119,11 @@ namespace Utilities.DataTypes
 
         public new T this[int index]
         {
-            get { try { return base[index]; } catch { throw; } }
+            get { return base[index]; }
             set
             {
-                try
-                {
-                    base[index] = value;
-                    EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
-                }
-                catch { throw; }
+                base[index] = value;
+                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
             }
         }
 

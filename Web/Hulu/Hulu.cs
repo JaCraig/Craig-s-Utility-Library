@@ -40,12 +40,8 @@ namespace Utilities.Web.Hulu
         /// <returns>An RSS document holding the information</returns>
         public static Document SearchHulu(string SearchTerm)
         {
-            try
-            {
-                Document Results = new Document("http://www.hulu.com/feed/search?query=" + HttpUtility.UrlEncode(SearchTerm) + "&sort_by=relevance");
-                return Results;
-            }
-            catch { throw; }
+            Document Results = new Document("http://www.hulu.com/feed/search?query=" + HttpUtility.UrlEncode(SearchTerm) + "&sort_by=relevance");
+            return Results;
         }
 
         #endregion

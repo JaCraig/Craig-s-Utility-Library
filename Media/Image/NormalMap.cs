@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 #endregion
@@ -66,7 +65,7 @@ namespace Utilities.Media.Image
         /// Y filter
         /// </summary>
         protected BumpMap FilterY { get; set; }
-        
+
         #endregion
 
         #region Protected Functions
@@ -76,16 +75,12 @@ namespace Utilities.Media.Image
         /// </summary>
         protected void CreateFilter()
         {
-            try
-            {
-                FilterX = new BumpMap();
-                FilterY = new BumpMap();
-                FilterX.Invert = InvertX;
-                FilterY.Invert = InvertY;
-                FilterX.Direction = Direction.LeftRight;
-                FilterY.Direction = Direction.TopBottom;
-            }
-            catch { throw; }
+            FilterX = new BumpMap();
+            FilterY = new BumpMap();
+            FilterX.Invert = InvertX;
+            FilterY.Invert = InvertY;
+            FilterX.Direction = Direction.LeftRight;
+            FilterY.Direction = Direction.TopBottom;
         }
 
         #endregion
@@ -97,49 +92,45 @@ namespace Utilities.Media.Image
         /// </summary>
         public Bitmap Create(Bitmap ImageUsing)
         {
-            try
+            CreateFilter();
+            using (Bitmap TempImageX = FilterX.Create(ImageUsing))
             {
-                CreateFilter();
-                using (Bitmap TempImageX = FilterX.Create(ImageUsing))
+                using (Bitmap TempImageY = FilterY.Create(ImageUsing))
                 {
-                    using (Bitmap TempImageY = FilterY.Create(ImageUsing))
+                    Bitmap ReturnImage = new Bitmap(TempImageX.Width, TempImageX.Height);
+                    Math.Vector3 TempVector = new Utilities.Math.Vector3(0.0, 0.0, 0.0);
+                    BitmapData TempImageXData = Image.LockImage(TempImageX);
+                    BitmapData TempImageYData = Image.LockImage(TempImageY);
+                    BitmapData ReturnImageData = Image.LockImage(ReturnImage);
+                    int TempImageXPixelSize = Image.GetPixelSize(TempImageXData);
+                    int TempImageYPixelSize = Image.GetPixelSize(TempImageYData);
+                    int ReturnImagePixelSize = Image.GetPixelSize(ReturnImageData);
+                    for (int y = 0; y < TempImageX.Height; ++y)
                     {
-                        Bitmap ReturnImage = new Bitmap(TempImageX.Width, TempImageX.Height);
-                        Math.Vector3 TempVector = new Utilities.Math.Vector3(0.0, 0.0, 0.0);
-                        BitmapData TempImageXData=Image.LockImage(TempImageX);
-                        BitmapData TempImageYData = Image.LockImage(TempImageY);
-                        BitmapData ReturnImageData = Image.LockImage(ReturnImage);
-                        int TempImageXPixelSize = Image.GetPixelSize(TempImageXData);
-                        int TempImageYPixelSize = Image.GetPixelSize(TempImageYData);
-                        int ReturnImagePixelSize = Image.GetPixelSize(ReturnImageData);
-                        for (int y = 0; y < TempImageX.Height; ++y)
+                        for (int x = 0; x < TempImageX.Width; ++x)
                         {
-                            for (int x = 0; x < TempImageX.Width; ++x)
-                            {
-                                Color TempPixelX = Image.GetPixel(TempImageXData, x, y, TempImageXPixelSize);
-                                Color TempPixelY = Image.GetPixel(TempImageYData, x, y, TempImageYPixelSize);
-                                TempVector.X = (double)(TempPixelX.R) / 255.0;
-                                TempVector.Y = (double)(TempPixelY.R) / 255.0;
-                                TempVector.Z = 1.0;
-                                TempVector.Normalize();
-                                TempVector.X = ((TempVector.X + 1.0) / 2.0) * 255.0;
-                                TempVector.Y = ((TempVector.Y + 1.0) / 2.0) * 255.0;
-                                TempVector.Z = ((TempVector.Z + 1.0) / 2.0) * 255.0;
-                                Image.SetPixel(ReturnImageData, x, y,
-                                    Color.FromArgb((int)TempVector.X,
-                                        (int)TempVector.Y,
-                                        (int)TempVector.Z),
-                                    ReturnImagePixelSize);
-                            }
+                            Color TempPixelX = Image.GetPixel(TempImageXData, x, y, TempImageXPixelSize);
+                            Color TempPixelY = Image.GetPixel(TempImageYData, x, y, TempImageYPixelSize);
+                            TempVector.X = (double)(TempPixelX.R) / 255.0;
+                            TempVector.Y = (double)(TempPixelY.R) / 255.0;
+                            TempVector.Z = 1.0;
+                            TempVector.Normalize();
+                            TempVector.X = ((TempVector.X + 1.0) / 2.0) * 255.0;
+                            TempVector.Y = ((TempVector.Y + 1.0) / 2.0) * 255.0;
+                            TempVector.Z = ((TempVector.Z + 1.0) / 2.0) * 255.0;
+                            Image.SetPixel(ReturnImageData, x, y,
+                                Color.FromArgb((int)TempVector.X,
+                                    (int)TempVector.Y,
+                                    (int)TempVector.Z),
+                                ReturnImagePixelSize);
                         }
-                        Image.UnlockImage(TempImageX, TempImageXData);
-                        Image.UnlockImage(TempImageY, TempImageYData);
-                        Image.UnlockImage(ReturnImage, ReturnImageData);
-                        return ReturnImage;
                     }
+                    Image.UnlockImage(TempImageX, TempImageXData);
+                    Image.UnlockImage(TempImageY, TempImageYData);
+                    Image.UnlockImage(ReturnImage, ReturnImageData);
+                    return ReturnImage;
                 }
             }
-            catch { throw; }
         }
 
         #endregion

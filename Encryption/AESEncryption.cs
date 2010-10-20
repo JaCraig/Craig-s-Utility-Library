@@ -51,36 +51,32 @@ namespace Utilities.Encryption
             int PasswordIterations = 2, string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
-            try
+            if (string.IsNullOrEmpty(PlainText))
+                return "";
+            byte[] InitialVectorBytes = Encoding.ASCII.GetBytes(InitialVector);
+            byte[] SaltValueBytes = Encoding.ASCII.GetBytes(Salt);
+            byte[] PlainTextBytes = Encoding.UTF8.GetBytes(PlainText);
+            PasswordDeriveBytes DerivedPassword = new PasswordDeriveBytes(Password, SaltValueBytes, HashAlgorithm, PasswordIterations);
+            byte[] KeyBytes = DerivedPassword.GetBytes(KeySize / 8);
+            RijndaelManaged SymmetricKey = new RijndaelManaged();
+            SymmetricKey.Mode = CipherMode.CBC;
+            byte[] CipherTextBytes = null;
+            using (ICryptoTransform Encryptor = SymmetricKey.CreateEncryptor(KeyBytes, InitialVectorBytes))
             {
-                if (string.IsNullOrEmpty(PlainText))
-                    return "";
-                byte[] InitialVectorBytes = Encoding.ASCII.GetBytes(InitialVector);
-                byte[] SaltValueBytes = Encoding.ASCII.GetBytes(Salt);
-                byte[] PlainTextBytes = Encoding.UTF8.GetBytes(PlainText);
-                PasswordDeriveBytes DerivedPassword = new PasswordDeriveBytes(Password, SaltValueBytes, HashAlgorithm, PasswordIterations);
-                byte[] KeyBytes = DerivedPassword.GetBytes(KeySize / 8);
-                RijndaelManaged SymmetricKey = new RijndaelManaged();
-                SymmetricKey.Mode = CipherMode.CBC;
-                byte[] CipherTextBytes = null;
-                using (ICryptoTransform Encryptor = SymmetricKey.CreateEncryptor(KeyBytes, InitialVectorBytes))
+                using (MemoryStream MemStream = new MemoryStream())
                 {
-                    using (MemoryStream MemStream = new MemoryStream())
+                    using (CryptoStream CryptoStream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write))
                     {
-                        using (CryptoStream CryptoStream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write))
-                        {
-                            CryptoStream.Write(PlainTextBytes, 0, PlainTextBytes.Length);
-                            CryptoStream.FlushFinalBlock();
-                            CipherTextBytes = MemStream.ToArray();
-                            MemStream.Close();
-                            CryptoStream.Close();
-                        }
+                        CryptoStream.Write(PlainTextBytes, 0, PlainTextBytes.Length);
+                        CryptoStream.FlushFinalBlock();
+                        CipherTextBytes = MemStream.ToArray();
+                        MemStream.Close();
+                        CryptoStream.Close();
                     }
                 }
-                SymmetricKey.Clear();
-                return Convert.ToBase64String(CipherTextBytes);
             }
-            catch { throw; }
+            SymmetricKey.Clear();
+            return Convert.ToBase64String(CipherTextBytes);
         }
 
         /// <summary>
@@ -99,36 +95,32 @@ namespace Utilities.Encryption
             int PasswordIterations = 2, string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
-            try
+            if (string.IsNullOrEmpty(CipherText))
+                return "";
+            byte[] InitialVectorBytes = Encoding.ASCII.GetBytes(InitialVector);
+            byte[] SaltValueBytes = Encoding.ASCII.GetBytes(Salt);
+            byte[] CipherTextBytes = Convert.FromBase64String(CipherText);
+            PasswordDeriveBytes DerivedPassword = new PasswordDeriveBytes(Password, SaltValueBytes, HashAlgorithm, PasswordIterations);
+            byte[] KeyBytes = DerivedPassword.GetBytes(KeySize / 8);
+            RijndaelManaged SymmetricKey = new RijndaelManaged();
+            SymmetricKey.Mode = CipherMode.CBC;
+            byte[] PlainTextBytes = new byte[CipherTextBytes.Length];
+            int ByteCount = 0;
+            using (ICryptoTransform Decryptor = SymmetricKey.CreateDecryptor(KeyBytes, InitialVectorBytes))
             {
-                if (string.IsNullOrEmpty(CipherText))
-                    return "";
-                byte[] InitialVectorBytes = Encoding.ASCII.GetBytes(InitialVector);
-                byte[] SaltValueBytes = Encoding.ASCII.GetBytes(Salt);
-                byte[] CipherTextBytes = Convert.FromBase64String(CipherText);
-                PasswordDeriveBytes DerivedPassword = new PasswordDeriveBytes(Password, SaltValueBytes, HashAlgorithm, PasswordIterations);
-                byte[] KeyBytes = DerivedPassword.GetBytes(KeySize / 8);
-                RijndaelManaged SymmetricKey = new RijndaelManaged();
-                SymmetricKey.Mode = CipherMode.CBC;
-                byte[] PlainTextBytes = new byte[CipherTextBytes.Length];
-                int ByteCount = 0;
-                using (ICryptoTransform Decryptor = SymmetricKey.CreateDecryptor(KeyBytes, InitialVectorBytes))
+                using (MemoryStream MemStream = new MemoryStream(CipherTextBytes))
                 {
-                    using (MemoryStream MemStream = new MemoryStream(CipherTextBytes))
+                    using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
                     {
-                        using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
-                        {
 
-                            ByteCount = CryptoStream.Read(PlainTextBytes, 0, PlainTextBytes.Length);
-                            MemStream.Close();
-                            CryptoStream.Close();
-                        }
+                        ByteCount = CryptoStream.Read(PlainTextBytes, 0, PlainTextBytes.Length);
+                        MemStream.Close();
+                        CryptoStream.Close();
                     }
                 }
-                SymmetricKey.Clear();
-                return Encoding.UTF8.GetString(PlainTextBytes, 0, ByteCount);
             }
-            catch { throw; }
+            SymmetricKey.Clear();
+            return Encoding.UTF8.GetString(PlainTextBytes, 0, ByteCount);
         }
 
         #endregion

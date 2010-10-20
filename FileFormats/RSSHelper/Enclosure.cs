@@ -48,22 +48,18 @@ namespace Utilities.FileFormats.RSSHelper
         {
             if (!Element.Name.Equals("enclosure", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not an enclosure");
-            try
+            if (Element.Attributes["url"] != null)
             {
-                if (Element.Attributes["url"] != null)
-                {
-                    Url = Element.Attributes["url"].Value;
-                }
-                if (Element.Attributes["length"] != null)
-                {
-                    Length = Element.Attributes["length"].Value;
-                }
-                if (Element.Attributes["type"] != null)
-                {
-                    Type = Element.Attributes["type"].Value;
-                }
+                Url = Element.Attributes["url"].Value;
             }
-            catch { throw; }
+            if (Element.Attributes["length"] != null)
+            {
+                Length = Element.Attributes["length"].Value;
+            }
+            if (Element.Attributes["type"] != null)
+            {
+                Type = Element.Attributes["type"].Value;
+            }
         }
 
         #endregion
@@ -111,17 +107,13 @@ namespace Utilities.FileFormats.RSSHelper
         /// <returns>A string formatted for RSS output</returns>
         public override string ToString()
         {
-            try
+            if (!string.IsNullOrEmpty(_Url) && !string.IsNullOrEmpty(_Type) && !string.IsNullOrEmpty(_Length))
             {
-                if (!string.IsNullOrEmpty(_Url) && !string.IsNullOrEmpty(_Type) && !string.IsNullOrEmpty(_Length))
-                {
-                    return "<enclosure url=\"" + _Url + "\" length=\"" + _Length + "\" type=\"" + _Type + "\" />\r\n"
-                        + "<media:content url=\"" + _Url + "\" fileSize=\"" + _Length + "\" type=\"" + _Type + "\" />";
+                return "<enclosure url=\"" + _Url + "\" length=\"" + _Length + "\" type=\"" + _Type + "\" />\r\n"
+                    + "<media:content url=\"" + _Url + "\" fileSize=\"" + _Length + "\" type=\"" + _Type + "\" />";
 
-                }
-                return string.Empty;
             }
-            catch { throw; }
+            return string.Empty;
         }
 
         #endregion

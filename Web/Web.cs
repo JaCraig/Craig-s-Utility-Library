@@ -39,11 +39,7 @@ namespace Utilities.Web
         /// <returns>the host name associated with the IP</returns>
         public static string GetHostFromIP(string IP)
         {
-            try
-            {
-                return Dns.GetHostEntry(IP).HostName;
-            }
-            catch { throw; }
+            return Dns.GetHostEntry(IP).HostName;
         }
 
         #endregion

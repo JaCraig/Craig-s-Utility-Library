@@ -41,14 +41,10 @@ namespace Utilities.Events
         /// <param name="EventArgs">The event args</param>
         public static void Raise<T>(T EventArgs, Action<T> Delegate) where T : class
         {
-            try
+            if (Delegate != null)
             {
-                if (Delegate != null)
-                {
-                    Delegate(EventArgs);
-                }
+                Delegate(EventArgs);
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -60,14 +56,10 @@ namespace Utilities.Events
         /// <param name="EventArg">The event args</param>
         public static void Raise<T>(EventHandler<T> Delegate, object Sender, T EventArg) where T : System.EventArgs
         {
-            try
+            if (Delegate != null)
             {
-                if (Delegate != null)
-                {
-                    Delegate(Sender, EventArg);
-                }
+                Delegate(Sender, EventArg);
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -80,15 +72,11 @@ namespace Utilities.Events
         /// <returns>The value returned by the function</returns>
         public static T2 Raise<T1, T2>(T1 EventArgs, Func<T1, T2> Delegate) where T1 : class
         {
-            try
+            if (Delegate != null)
             {
-                if (Delegate != null)
-                {
-                    return Delegate(EventArgs);
-                }
-                return default(T2);
+                return Delegate(EventArgs);
             }
-            catch { throw; }
+            return default(T2);
         }
 
         #endregion

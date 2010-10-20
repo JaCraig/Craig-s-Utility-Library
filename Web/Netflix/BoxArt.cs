@@ -38,22 +38,18 @@ namespace Utilities.Web.Netflix
         /// <param name="Element">Element information</param>
         public BoxArt(XmlElement Element)
         {
-            try
+            if (Element.Attributes["small"] != null)
             {
-                if (Element.Attributes["small"] != null)
-                {
-                    SmallPicture = Element.Attributes["small"].Value;
-                }
-                if (Element.Attributes["medium"] != null)
-                {
-                    MediumPicture = Element.Attributes["medium"].Value;
-                }
-                if (Element.Attributes["large"] != null)
-                {
-                    LargePicture = Element.Attributes["large"].Value;
-                }
+                SmallPicture = Element.Attributes["small"].Value;
             }
-            catch { throw; }
+            if (Element.Attributes["medium"] != null)
+            {
+                MediumPicture = Element.Attributes["medium"].Value;
+            }
+            if (Element.Attributes["large"] != null)
+            {
+                LargePicture = Element.Attributes["large"].Value;
+            }
         }
 
         #endregion

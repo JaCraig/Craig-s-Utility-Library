@@ -48,7 +48,7 @@ namespace Utilities.FileFormats.XFN
         /// <summary>
         /// List of people
         /// </summary>
-        public List<People> People{get;set;}
+        public List<People> People { get; set; }
 
         #endregion
 
@@ -60,16 +60,12 @@ namespace Utilities.FileFormats.XFN
         /// <returns>An HTML formatted string containing the information</returns>
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            foreach (People CurrentPerson in People)
             {
-                StringBuilder Builder = new StringBuilder();
-                foreach (People CurrentPerson in People)
-                {
-                    Builder.Append(CurrentPerson.ToString());
-                }
-                return Builder.ToString();
+                Builder.Append(CurrentPerson.ToString());
             }
-            catch { throw; }
+            return Builder.ToString();
         }
 
         #endregion

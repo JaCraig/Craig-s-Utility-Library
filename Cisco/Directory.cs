@@ -30,7 +30,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Directory class
     /// </summary>
-    public class Directory:IDisplay
+    public class Directory : IDisplay
     {
         #region Constructor
 
@@ -73,23 +73,19 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<CiscoIPPhoneDirectory><Title>").Append(Title).Append("</Title><Prompt>")
+                .Append(Prompt).Append("</Prompt>");
+            foreach (DirectoryEntry Entry in DirectoryEntries)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<CiscoIPPhoneDirectory><Title>").Append(Title).Append("</Title><Prompt>")
-                    .Append(Prompt).Append("</Prompt>");
-                foreach (DirectoryEntry Entry in DirectoryEntries)
-                {
-                    Builder.Append(Entry.ToString());
-                }
-                foreach (SoftKeyItem Item in SoftKeys)
-                {
-                    Builder.Append(Item.ToString());
-                }
-                Builder.Append("</CiscoIPPhoneDirectory>");
-                return Builder.ToString();
+                Builder.Append(Entry.ToString());
             }
-            catch { throw; }
+            foreach (SoftKeyItem Item in SoftKeys)
+            {
+                Builder.Append(Item.ToString());
+            }
+            Builder.Append("</CiscoIPPhoneDirectory>");
+            return Builder.ToString();
         }
 
         #endregion

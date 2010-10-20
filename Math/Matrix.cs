@@ -40,15 +40,11 @@ namespace Utilities.Math
         /// </summary>
         /// <param name="Width">Width of the matrix</param>
         /// <param name="Height">Height of the matrix</param>
-        public Matrix(int Width,int Height)
+        public Matrix(int Width, int Height)
         {
-            try
-            {
-                _Width = Width;
-                _Height = Height;
-                _Values = new double[Width, Height];
-            }
-            catch { throw; }
+            _Width = Width;
+            _Height = Height;
+            _Values = new double[Width, Height];
         }
 
         #endregion
@@ -62,7 +58,7 @@ namespace Utilities.Math
         public int Width
         {
             get { return _Width; }
-            set { try { _Width = value; _Values = new double[Width, Height]; } catch { throw; } }
+            set { _Width = value; _Values = new double[Width, Height]; }
         }
 
         /// <summary>
@@ -72,7 +68,7 @@ namespace Utilities.Math
         public int Height
         {
             get { return _Height; }
-            set { try { _Height = value; _Values = new double[Width, Height]; } catch { throw; } }
+            set { _Height = value; _Values = new double[Width, Height]; }
         }
         /// <summary>
         /// Sets the values of the matrix
@@ -84,29 +80,21 @@ namespace Utilities.Math
         {
             get
             {
-                try
+                if (X < _Width && X >= 0 && Y < _Height && Y >= 0)
                 {
-                    if (X < _Width && X >= 0 && Y < _Height && Y >= 0)
-                    {
-                        return _Values[X, Y];
-                    }
-                    throw new Exception("Index out of bounds");
+                    return _Values[X, Y];
                 }
-                catch { throw; }
+                throw new Exception("Index out of bounds");
             }
 
             set
             {
-                try
+                if (X < _Width && X >= 0 && Y < _Height && Y >= 0)
                 {
-                    if (X < _Width && X >= 0 && Y < _Height && Y >= 0)
-                    {
-                        _Values[X, Y] = value;
-                        return;
-                    }
-                    throw new Exception("Index out of bounds");
+                    _Values[X, Y] = value;
+                    return;
                 }
-                catch { throw; }
+                throw new Exception("Index out of bounds");
             }
         }
 
@@ -132,164 +120,124 @@ namespace Utilities.Math
 
         public static bool operator ==(Matrix M1, Matrix M2)
         {
-            try
+            if (M1.Width != M2.Width || M1.Height != M2.Height)
+                return false;
+            for (int x = 0; x <= M1.Width; ++x)
             {
-                if (M1.Width != M2.Width || M1.Height != M2.Height)
-                    return false;
-                for (int x = 0; x <= M1.Width; ++x)
+                for (int y = 0; y <= M1.Height; ++y)
                 {
-                    for (int y = 0; y <= M1.Height; ++y)
-                    {
-                        if (M1[x, y] != M2[x, y])
-                            return false;
-                    }
+                    if (M1[x, y] != M2[x, y])
+                        return false;
                 }
-                return true;
             }
-            catch { throw; }
+            return true;
         }
 
         public static bool operator !=(Matrix M1, Matrix M2)
         {
-            try
-            {
-                return !(M1 == M2);
-            }
-            catch { throw; }
+            return !(M1 == M2);
         }
 
         public static Matrix operator +(Matrix M1, Matrix M2)
         {
-            try
+            if (M1.Width != M2.Width || M1.Height != M2.Height)
+                throw new ArgumentException("Both matrices must be the same dimensions.");
+            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            for (int x = 0; x < M1.Width; ++x)
             {
-                if (M1.Width != M2.Width || M1.Height != M2.Height)
-                    throw new ArgumentException("Both matrices must be the same dimensions.");
-                Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
-                for (int x = 0; x < M1.Width; ++x)
+                for (int y = 0; y < M1.Height; ++y)
                 {
-                    for (int y = 0; y < M1.Height; ++y)
-                    {
-                        TempMatrix[x, y] = M1[x, y] + M2[x, y];
-                    }
+                    TempMatrix[x, y] = M1[x, y] + M2[x, y];
                 }
-                return TempMatrix;
             }
-            catch { throw; }
+            return TempMatrix;
         }
 
         public static Matrix operator -(Matrix M1, Matrix M2)
         {
-            try
+            if (M1.Width != M2.Width || M1.Height != M2.Height)
+                throw new ArgumentException("Both matrices must be the same dimensions.");
+            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            for (int x = 0; x < M1.Width; ++x)
             {
-                if (M1.Width != M2.Width || M1.Height != M2.Height)
-                    throw new ArgumentException("Both matrices must be the same dimensions.");
-                Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
-                for (int x = 0; x < M1.Width; ++x)
+                for (int y = 0; y < M1.Height; ++y)
                 {
-                    for (int y = 0; y < M1.Height; ++y)
-                    {
-                        TempMatrix[x, y] = M1[x, y] - M2[x, y];
-                    }
+                    TempMatrix[x, y] = M1[x, y] - M2[x, y];
                 }
-                return TempMatrix;
             }
-            catch { throw; }
+            return TempMatrix;
         }
 
         public static Matrix operator -(Matrix M1)
         {
-            try
+            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            for (int x = 0; x < M1.Width; ++x)
             {
-                Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
-                for (int x = 0; x < M1.Width; ++x)
+                for (int y = 0; y < M1.Height; ++y)
                 {
-                    for (int y = 0; y < M1.Height; ++y)
-                    {
-                        TempMatrix[x, y] = -M1[x, y];
-                    }
+                    TempMatrix[x, y] = -M1[x, y];
                 }
-                return TempMatrix;
             }
-            catch { throw; }
+            return TempMatrix;
         }
 
         public static Matrix operator *(Matrix M1, Matrix M2)
         {
-            try
-            {
-                if (M1.Width != M2.Width || M1.Height != M2.Height)
-                    throw new ArgumentException("Dimensions for the matrices are incorrect.");
-                Matrix TempMatrix = new Matrix(M2.Width, M1.Height);
+            if (M1.Width != M2.Width || M1.Height != M2.Height)
+                throw new ArgumentException("Dimensions for the matrices are incorrect.");
+            Matrix TempMatrix = new Matrix(M2.Width, M1.Height);
 
-                for (int x = 0; x < M2.Width; ++x)
+            for (int x = 0; x < M2.Width; ++x)
+            {
+                for (int y = 0; y < M1.Height; ++y)
                 {
-                    for (int y = 0; y < M1.Height; ++y)
+                    TempMatrix[x, y] = 0.0;
+                    for (int i = 0; i < M1.Width; ++i)
                     {
-                        TempMatrix[x, y] = 0.0;
-                        for (int i = 0; i < M1.Width; ++i)
+                        for (int j = 0; j < M2.Height; ++j)
                         {
-                            for (int j = 0; j < M2.Height; ++j)
-                            {
-                                TempMatrix[x, y] += (M1[i, y] * M2[x, j]);
-                            }
+                            TempMatrix[x, y] += (M1[i, y] * M2[x, j]);
                         }
                     }
                 }
-                return TempMatrix;
             }
-            catch { throw; }
+            return TempMatrix;
         }
 
-        public static Matrix operator *(Matrix M1,double D)
+        public static Matrix operator *(Matrix M1, double D)
         {
-            try
+            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            for (int x = 0; x < M1.Width; ++x)
             {
-                Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
-                for (int x = 0; x < M1.Width; ++x)
+                for (int y = 0; y < M1.Height; ++y)
                 {
-                    for (int y = 0; y < M1.Height; ++y)
-                    {
-                        TempMatrix[x, y] = M1[x, y] * D;
-                    }
+                    TempMatrix[x, y] = M1[x, y] * D;
                 }
-                return TempMatrix;
             }
-            catch { throw; }
+            return TempMatrix;
         }
 
         public static Matrix operator *(double D, Matrix M1)
         {
-            try
+            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            for (int x = 0; x < M1.Width; ++x)
             {
-                Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
-                for (int x = 0; x < M1.Width; ++x)
+                for (int y = 0; y < M1.Height; ++y)
                 {
-                    for (int y = 0; y < M1.Height; ++y)
-                    {
-                        TempMatrix[x, y] = M1[x, y] * D;
-                    }
+                    TempMatrix[x, y] = M1[x, y] * D;
                 }
-                return TempMatrix;
             }
-            catch { throw; }
+            return TempMatrix;
         }
 
         public static Matrix operator /(Matrix M1, double D)
         {
-            try
-            {
-                return M1 * (1 / D);
-            }
-            catch { throw; }
+            return M1 * (1 / D);
         }
 
         public static Matrix operator /(double D, Matrix M1)
         {
-            try
-            {
-                return M1 * (1 / D);
-            }
-            catch { throw; }
+            return M1 * (1 / D);
         }
 
         #endregion
@@ -298,56 +246,44 @@ namespace Utilities.Math
 
         public override bool Equals(object obj)
         {
-            try
+            if (obj is Matrix)
             {
-                if (obj is Matrix)
-                {
-                    return this == (Matrix)obj;
-                }
-                return false;
+                return this == (Matrix)obj;
             }
-            catch { throw; }
+            return false;
         }
 
         public override int GetHashCode()
         {
-            try
+            double Hash = 0;
+            for (int x = 0; x < Width; ++x)
             {
-                double Hash = 0;
-                for (int x = 0; x < Width; ++x)
+                for (int y = 0; y < Height; ++y)
                 {
-                    for (int y = 0; y < Height; ++y)
-                    {
-                        Hash += this[x, y];
-                    }
+                    Hash += this[x, y];
                 }
-                return (int)Hash;
             }
-            catch { throw; }
+            return (int)Hash;
         }
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            string Seperator = "";
+            Builder.Append("{").Append(System.Environment.NewLine);
+            for (int x = 0; x < Width; ++x)
             {
-                StringBuilder Builder = new StringBuilder();
-                string Seperator = "";
-                Builder.Append("{").Append(System.Environment.NewLine);
-                for (int x = 0; x < Width; ++x)
+                Builder.Append("{");
+                for (int y = 0; y < Height; ++y)
                 {
-                    Builder.Append("{");
-                    for (int y = 0; y < Height; ++y)
-                    {
-                        Builder.Append(Seperator).Append(this[x, y]);
-                        Seperator = ",";
-                    }
-                    Builder.Append("}").Append(System.Environment.NewLine);
-                    Seperator = "";
+                    Builder.Append(Seperator).Append(this[x, y]);
+                    Seperator = ",";
                 }
-                Builder.Append("}");
-                return Builder.ToString();
+                Builder.Append("}").Append(System.Environment.NewLine);
+                Seperator = "";
             }
-            catch { throw; }
+            Builder.Append("}");
+            return Builder.ToString();
         }
 
         #endregion
@@ -360,19 +296,15 @@ namespace Utilities.Math
         /// <returns>Returns a new transposed matrix</returns>
         public Matrix Transpose()
         {
-            try
+            Matrix TempValues = new Matrix(Height, Width);
+            for (int x = 0; x < Width; ++x)
             {
-                Matrix TempValues = new Matrix(Height, Width);
-                for (int x = 0; x < Width; ++x)
+                for (int y = 0; y < Height; ++y)
                 {
-                    for (int y = 0; y < Height; ++y)
-                    {
-                        TempValues[y, x] = _Values[x, y];
-                    }
+                    TempValues[y, x] = _Values[x, y];
                 }
-                return TempValues;
             }
-            catch { throw; }
+            return TempValues;
         }
 
         /// <summary>
@@ -381,42 +313,38 @@ namespace Utilities.Math
         /// <returns>The determinant of a square matrix</returns>
         public double Determinant()
         {
-            try
+            if (Width != Height)
+                throw new Exception("The determinant can not be calculated for a non square matrix");
+            if (Width == 2)
             {
-                if (Width != Height)
-                    throw new Exception("The determinant can not be calculated for a non square matrix");
-                if (Width == 2)
-                {
-                    return (this[0, 0] * this[1, 1]) - (this[0, 1] * this[1, 0]);
-                }
-                double Answer = 0.0;
-                for (int x = 0; x < Width; ++x)
-                {
-                    Matrix TempMatrix = new Matrix(Width - 1, Height - 1);
-                    int WidthCounter = 0;
-                    for (int y = 0; y < Width; ++y)
-                    {
-                        if (y != x)
-                        {
-                            for (int z = 1; z < Height; ++z)
-                            {
-                                TempMatrix[WidthCounter, z - 1] = this[y, z];
-                            }
-                            ++WidthCounter;
-                        }
-                    }
-                    if (x % 2 == 0)
-                    {
-                        Answer += TempMatrix.Determinant();
-                    }
-                    else
-                    {
-                        Answer -= TempMatrix.Determinant();
-                    }
-                }
-                return Answer;
+                return (this[0, 0] * this[1, 1]) - (this[0, 1] * this[1, 0]);
             }
-            catch { throw; }
+            double Answer = 0.0;
+            for (int x = 0; x < Width; ++x)
+            {
+                Matrix TempMatrix = new Matrix(Width - 1, Height - 1);
+                int WidthCounter = 0;
+                for (int y = 0; y < Width; ++y)
+                {
+                    if (y != x)
+                    {
+                        for (int z = 1; z < Height; ++z)
+                        {
+                            TempMatrix[WidthCounter, z - 1] = this[y, z];
+                        }
+                        ++WidthCounter;
+                    }
+                }
+                if (x % 2 == 0)
+                {
+                    Answer += TempMatrix.Determinant();
+                }
+                else
+                {
+                    Answer -= TempMatrix.Determinant();
+                }
+            }
+            return Answer;
         }
 
         #endregion

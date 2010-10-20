@@ -38,18 +38,14 @@ namespace Utilities.Web.Netflix
         /// <param name="Element">Element information</param>
         public TitleInformation(XmlElement Element)
         {
-            try
+            if (Element.Attributes["short"] != null)
             {
-                if (Element.Attributes["short"] != null)
-                {
-                    ShortName = Element.Attributes["short"].Value;
-                }
-                if (Element.Attributes["regular"] != null)
-                {
-                    RegularName = Element.Attributes["regular"].Value;
-                }
+                ShortName = Element.Attributes["short"].Value;
             }
-            catch { throw; }
+            if (Element.Attributes["regular"] != null)
+            {
+                RegularName = Element.Attributes["regular"].Value;
+            }
         }
 
         #endregion

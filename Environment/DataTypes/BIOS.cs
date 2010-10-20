@@ -38,13 +38,9 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Name">Computer Name</param>
         /// <param name="Password">Password</param>
         /// <param name="UserName">User Name</param>
-        public BIOS(string Name="",string UserName="",string Password="")
+        public BIOS(string Name = "", string UserName = "", string Password = "")
         {
-            try
-            {
-                LoadBIOS(Name, UserName, Password);
-            }
-            catch { throw; }
+            LoadBIOS(Name, UserName, Password);
         }
 
         #endregion
@@ -68,34 +64,30 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password</param>
         private void LoadBIOS(string Name, string UserName, string Password)
         {
-            try
+            ManagementScope Scope = null;
+            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {
-                ManagementScope Scope = null;
-                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                ConnectionOptions Options = new ConnectionOptions();
+                Options.Username = UserName;
+                Options.Password = Password;
+                Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2", Options);
+            }
+            else
+            {
+                Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2");
+            }
+            Scope.Connect();
+            ObjectQuery Query = new ObjectQuery("SELECT * FROM Win32_BIOS");
+            using (ManagementObjectSearcher Searcher = new ManagementObjectSearcher(Scope, Query))
+            {
+                using (ManagementObjectCollection Collection = Searcher.Get())
                 {
-                    ConnectionOptions Options = new ConnectionOptions();
-                    Options.Username = UserName;
-                    Options.Password = Password;
-                    Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2", Options);
-                }
-                else
-                {
-                    Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2");
-                }
-                Scope.Connect();
-                ObjectQuery Query = new ObjectQuery("SELECT * FROM Win32_BIOS");
-                using (ManagementObjectSearcher Searcher = new ManagementObjectSearcher(Scope, Query))
-                {
-                    using (ManagementObjectCollection Collection = Searcher.Get())
+                    foreach (ManagementObject TempBIOS in Collection)
                     {
-                        foreach (ManagementObject TempBIOS in Collection)
-                        {
-                            SerialNumber = TempBIOS.Properties["Serialnumber"].Value.ToString();
-                        }
+                        SerialNumber = TempBIOS.Properties["Serialnumber"].Value.ToString();
                     }
                 }
             }
-            catch { throw; }
         }
 
         #endregion

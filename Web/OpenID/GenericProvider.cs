@@ -23,16 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.Specialized;
-using System.Web;
-using System.Text.RegularExpressions;
-using System.Net;
-using System.Xml;
-using Utilities.Web.OpenID.Extensions.Enums;
 using Utilities.DataTypes;
 using Utilities.Web.OpenID.Extensions;
-using Utilities.Web.OpenID.Extensions.Interfaces;
+using Utilities.Web.OpenID.Extensions.Enums;
+
 #endregion
 
 namespace Utilities.Web.OpenID
@@ -40,7 +34,7 @@ namespace Utilities.Web.OpenID
     /// <summary>
     /// Generic OpenID provider
     /// </summary>
-    public class GenericProvider:OpenID
+    public class GenericProvider : OpenID
     {
         #region Constructor
 
@@ -60,19 +54,15 @@ namespace Utilities.Web.OpenID
         /// Generates login URL
         /// </summary>
         /// <returns>The login URL based on request</returns>
-        public string GenerateLoginURL(string Redirect,string Server,Attributes Required)
+        public string GenerateLoginURL(string Redirect, string Server, Attributes Required)
         {
-            try
+            this.RedirectURL = Redirect;
+            this.ServerURL = Server;
+            foreach (AttributeExchange Extension in Extensions.OfType<AttributeExchange>())
             {
-                this.RedirectURL = Redirect;
-                this.ServerURL = Server;
-                foreach (AttributeExchange Extension in Extensions.OfType<AttributeExchange>())
-                {
-                    Extension.Required = Required;
-                }
-                return GenerateLoginURL();
+                Extension.Required = Required;
             }
-            catch { throw; }
+            return GenerateLoginURL();
         }
 
         /// <summary>
@@ -83,27 +73,23 @@ namespace Utilities.Web.OpenID
         /// <returns>A list of attributes based on what was requested or an exception if the login failed</returns>
         public Dictionary<Attributes, string> GetRequestedAttributes(string URL, Attributes Required)
         {
-            try
+            foreach (AttributeExchange Extension in Extensions.OfType<AttributeExchange>())
             {
-                foreach (AttributeExchange Extension in Extensions.OfType<AttributeExchange>())
-                {
-                    Extension.Required = Required;
-                }
-                System.Collections.Generic.List<Pair<string, string>> AttributesList = this.GetAttributes(URL);
-                if (AttributesList == null)
-                    throw new Exception("The information requested was not received");
-                Dictionary<Attributes, string> FinalValues = new Dictionary<Attributes, string>();
-                foreach (AttributeExchange Extension in Extensions.OfType<AttributeExchange>())
-                {
-                    FinalValues=Extension.GetValues(AttributesList);
-                }
-                Pair<string, string> ID = AttributesList.Find(x => x.Left.Equals("openid.claimed_id", StringComparison.CurrentCultureIgnoreCase));
-                FinalValues.Add(Attributes.ID, ID.Right);
-                return FinalValues;
+                Extension.Required = Required;
             }
-            catch { throw; }
+            System.Collections.Generic.List<Pair<string, string>> AttributesList = this.GetAttributes(URL);
+            if (AttributesList == null)
+                throw new Exception("The information requested was not received");
+            Dictionary<Attributes, string> FinalValues = new Dictionary<Attributes, string>();
+            foreach (AttributeExchange Extension in Extensions.OfType<AttributeExchange>())
+            {
+                FinalValues = Extension.GetValues(AttributesList);
+            }
+            Pair<string, string> ID = AttributesList.Find(x => x.Left.Equals("openid.claimed_id", StringComparison.CurrentCultureIgnoreCase));
+            FinalValues.Add(Attributes.ID, ID.Right);
+            return FinalValues;
         }
-        
+
         #endregion
     }
 }

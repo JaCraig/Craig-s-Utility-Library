@@ -48,17 +48,17 @@ namespace Utilities.FileFormats.XFN
         /// <summary>
         /// Person's name
         /// </summary>
-        public string Name{get;set;}
+        public string Name { get; set; }
 
         /// <summary>
         /// Person's URL
         /// </summary>
-        public string URL{get;set;}
+        public string URL { get; set; }
 
         /// <summary>
         /// Person's relationships
         /// </summary>
-        public List<Relationship> Relationships{get;set;}
+        public List<Relationship> Relationships { get; set; }
 
         #endregion
 
@@ -70,25 +70,21 @@ namespace Utilities.FileFormats.XFN
         /// <returns>An HTML formatted string containing the information</returns>
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<a href=\"" + URL + "\"");
+            if (Relationships.Count > 0)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<a href=\"" + URL + "\"");
-                if (Relationships.Count > 0)
+                Builder.Append(" rel=\"");
+                foreach (Relationship Relationship in Relationships)
                 {
-                    Builder.Append(" rel=\"");
-                    foreach (Relationship Relationship in Relationships)
-                    {
-                        Builder.Append(Relationship.ToString() + " ");
-                    }
-                    Builder.Append("\"");
+                    Builder.Append(Relationship.ToString() + " ");
                 }
-                Builder.Append(">");
-                Builder.Append(Name);
-                Builder.Append("</a>");
-                return Builder.ToString();
+                Builder.Append("\"");
             }
-            catch { throw; }
+            Builder.Append(">");
+            Builder.Append(Name);
+            Builder.Append("</a>");
+            return Builder.ToString();
         }
 
         #endregion

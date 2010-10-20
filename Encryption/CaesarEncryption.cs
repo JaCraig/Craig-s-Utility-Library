@@ -40,11 +40,7 @@ namespace Utilities.Encryption
         /// <returns>An encrypted string</returns>
         public static string Encrypt(string Input, string Key)
         {
-            try
-            {
-                return Process(Input, Key);
-            }
-            catch { throw; }
+            return Process(Input, Key);
         }
 
         /// <summary>
@@ -55,11 +51,7 @@ namespace Utilities.Encryption
         /// <returns>A decrypted string</returns>
         public static string Decrypt(string Input, string Key)
         {
-            try
-            {
-                return Process(Input, Key);
-            }
-            catch { throw; }
+            return Process(Input, Key);
         }
 
         #endregion
@@ -71,25 +63,21 @@ namespace Utilities.Encryption
         /// </summary>
         private static string Process(string Input, string Key)
         {
-            try
+            ASCIIEncoding Encoding = new ASCIIEncoding();
+            byte[] InputArray = Encoding.GetBytes(Input);
+            byte[] KeyArray = Encoding.GetBytes(Key);
+            byte[] OutputArray = new byte[InputArray.Length];
+            int Position = 0;
+            for (int x = 0; x < InputArray.Length; ++x)
             {
-                ASCIIEncoding Encoding = new ASCIIEncoding();
-                byte[] InputArray = Encoding.GetBytes(Input);
-                byte[] KeyArray = Encoding.GetBytes(Key);
-                byte[] OutputArray = new byte[InputArray.Length];
-                int Position = 0;
-                for (int x = 0; x < InputArray.Length; ++x)
+                OutputArray[x] = (byte)(InputArray[x] ^ Key[Position]);
+                ++Position;
+                if (Position >= Key.Length)
                 {
-                    OutputArray[x] = (byte)(InputArray[x] ^ Key[Position]);
-                    ++Position;
-                    if (Position >= Key.Length)
-                    {
-                        Position = 0;
-                    }
+                    Position = 0;
                 }
-                return Encoding.GetString(OutputArray);
             }
-            catch { throw; }
+            return Encoding.GetString(OutputArray);
         }
 
         #endregion

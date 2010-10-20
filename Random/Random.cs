@@ -33,7 +33,7 @@ namespace Utilities.Random
     /// Utility class for handling random
     /// information.
     /// </summary>
-    public class Random:System.Random
+    public class Random : System.Random
     {
         #region Constructors
 
@@ -66,15 +66,11 @@ namespace Utilities.Random
         /// <returns>A random date/time between the start and end times</returns>
         public DateTime NextDate(DateTime Start, DateTime End)
         {
-            try
+            if (Start > End)
             {
-                if (Start > End)
-                {
-                    throw new ArgumentException("The start value must be earlier than the end value");
-                }
-                return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
+                throw new ArgumentException("The start value must be earlier than the end value");
             }
-            catch { throw; }
+            return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
         }
 
         /// <summary>
@@ -84,13 +80,9 @@ namespace Utilities.Random
         /// <returns>a randomly generated string of the specified length</returns>
         public string NextString(int Length)
         {
-            try
-            {
-                if (Length < 1)
-                    return "";
-                return NextString(Length, ".");
-            }
-            catch { throw; }
+            if (Length < 1)
+                return "";
+            return NextString(Length, ".");
         }
 
         /// <summary>
@@ -100,15 +92,11 @@ namespace Utilities.Random
         /// <param name="Length">length of the string</param>
         /// <param name="AllowedCharacters">Characters that are allowed in the string</param>
         /// <returns>A randomly generated string of the specified length, containing only the allowed characters.</returns>
-        public string NextString(int Length,string AllowedCharacters)
+        public string NextString(int Length, string AllowedCharacters)
         {
-            try
-            {
-                if (Length < 1)
-                    return "";
-                return NextString(Length, AllowedCharacters, Length);
-            }
-            catch { throw; }
+            if (Length < 1)
+                return "";
+            return NextString(Length, AllowedCharacters, Length);
         }
 
         /// <summary>
@@ -119,35 +107,31 @@ namespace Utilities.Random
         /// <param name="AllowedCharacters">Characters allowed in the string</param>
         /// <param name="NumberOfNonAlphaNumericsAllowed">Number of non alpha numeric characters allowed.</param>
         /// <returns>A randomly generated string of a specified length, containing only a set of characters, and at max a specified number of non alpha numeric characters.</returns>
-        public string NextString(int Length, string AllowedCharacters,int NumberOfNonAlphaNumericsAllowed)
+        public string NextString(int Length, string AllowedCharacters, int NumberOfNonAlphaNumericsAllowed)
         {
-            try
+            if (Length < 1)
+                return "";
+            StringBuilder TempBuilder = new StringBuilder();
+            Regex Comparer = new Regex(AllowedCharacters);
+            Regex AlphaNumbericComparer = new Regex("[0-9a-zA-z]");
+            int Counter = 0;
+            while (TempBuilder.Length < Length)
             {
-                if (Length < 1)
-                    return "";
-                StringBuilder TempBuilder = new StringBuilder();
-                Regex Comparer = new Regex(AllowedCharacters);
-                Regex AlphaNumbericComparer = new Regex("[0-9a-zA-z]");
-                int Counter = 0;
-                while (TempBuilder.Length < Length)
+                string TempValue = new string(Convert.ToChar(Convert.ToInt32(System.Math.Floor(94 * NextDouble() + 32))), 1);
+                if (Comparer.IsMatch(TempValue))
                 {
-                    string TempValue = new string(Convert.ToChar(Convert.ToInt32(System.Math.Floor(94 * NextDouble() + 32))), 1);
-                    if (Comparer.IsMatch(TempValue))
+                    if (!AlphaNumbericComparer.IsMatch(TempValue) && NumberOfNonAlphaNumericsAllowed > Counter)
                     {
-                        if (!AlphaNumbericComparer.IsMatch(TempValue) && NumberOfNonAlphaNumericsAllowed > Counter)
-                        {
-                            TempBuilder.Append(TempValue);
-                            ++Counter;
-                        }
-                        else if (AlphaNumbericComparer.IsMatch(TempValue))
-                        {
-                            TempBuilder.Append(TempValue);
-                        }
+                        TempBuilder.Append(TempValue);
+                        ++Counter;
+                    }
+                    else if (AlphaNumbericComparer.IsMatch(TempValue))
+                    {
+                        TempBuilder.Append(TempValue);
                     }
                 }
-                return TempBuilder.ToString();
             }
-            catch { throw; }
+            return TempBuilder.ToString();
         }
 
         /// <summary>
@@ -157,18 +141,14 @@ namespace Utilities.Random
         /// <returns>A string containing Lorem Ipsum text</returns>
         public string NextLoremIpsum(int NumberOfWords)
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append(StringHelper.ToFirstCharacterUpperCase(Words[Next(Words.Length)]));
+            for (int x = 1; x < NumberOfWords; ++x)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append(StringHelper.ToFirstCharacterUpperCase(Words[Next(Words.Length)]));
-                for (int x = 1; x < NumberOfWords; ++x)
-                {
-                    Builder.Append(" ").Append(Words[Next(Words.Length)]);
-                }
-                Builder.Append(".");
-                return Builder.ToString();
+                Builder.Append(" ").Append(Words[Next(Words.Length)]);
             }
-            catch { throw; }
+            Builder.Append(".");
+            return Builder.ToString();
         }
 
         /// <summary>
@@ -182,34 +162,30 @@ namespace Utilities.Random
         /// <returns>A string containing Lorem Ipsum text</returns>
         public string NextLoremIpsum(int NumberOfParagraphs, int NumberOfSentences, int MinSentenceLength, int MaxSentenceLength, bool HTMLFormatting)
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            if (HTMLFormatting)
+                Builder.Append("<p>");
+            Builder.Append("Lorem ipsum dolor sit amet. ");
+            for (int y = 0; y < NumberOfSentences; ++y)
             {
-                StringBuilder Builder = new StringBuilder();
+                Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength))).Append(" ");
+            }
+            if (HTMLFormatting)
+                Builder.Append("</p>");
+            for (int x = 1; x < NumberOfParagraphs; ++x)
+            {
                 if (HTMLFormatting)
                     Builder.Append("<p>");
-                Builder.Append("Lorem ipsum dolor sit amet. ");
                 for (int y = 0; y < NumberOfSentences; ++y)
                 {
                     Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength))).Append(" ");
                 }
                 if (HTMLFormatting)
                     Builder.Append("</p>");
-                for (int x = 1; x < NumberOfParagraphs; ++x)
-                {
-                    if (HTMLFormatting)
-                        Builder.Append("<p>");
-                    for (int y = 0; y < NumberOfSentences; ++y)
-                    {
-                        Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength))).Append(" ");
-                    }
-                    if (HTMLFormatting)
-                        Builder.Append("</p>");
-                    else
-                        Builder.Append(System.Environment.NewLine).Append(System.Environment.NewLine);
-                }
-                return Builder.ToString();
+                else
+                    Builder.Append(System.Environment.NewLine).Append(System.Environment.NewLine);
             }
-            catch { throw; }
+            return Builder.ToString();
         }
 
         /// <summary>
@@ -220,13 +196,9 @@ namespace Utilities.Random
         /// <param name="MinSentenceLength">Minimum sentence length</param>
         /// <param name="NumberOfSentences">Number of sentences per paragraph</param>
         /// <returns>A string containing Lorem Ipsum text</returns>
-        public string NextLoremIpsum(int NumberOfParagraphs,int NumberOfSentences,int MinSentenceLength,int MaxSentenceLength)
+        public string NextLoremIpsum(int NumberOfParagraphs, int NumberOfSentences, int MinSentenceLength, int MaxSentenceLength)
         {
-            try
-            {
-                return NextLoremIpsum(NumberOfParagraphs, NumberOfSentences, MinSentenceLength, MaxSentenceLength, false);
-            }
-            catch { throw; }
+            return NextLoremIpsum(NumberOfParagraphs, NumberOfSentences, MinSentenceLength, MaxSentenceLength, false);
         }
 
         /// <summary>
@@ -235,13 +207,9 @@ namespace Utilities.Random
         /// <returns>returns a boolean</returns>
         public bool NextBool()
         {
-            try
-            {
-                if (Next(0, 2) == 1)
-                    return true;
-                return false;
-            }
-            catch { throw; }
+            if (Next(0, 2) == 1)
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -251,13 +219,9 @@ namespace Utilities.Random
         /// <returns>A random value from an enum</returns>
         public T NextEnum<T>()
         {
-            try
-            {
-                Array Values = Enum.GetValues(typeof(T));
-                int Index = Next(0, Values.Length);
-                return (T)Values.GetValue(Index);
-            }
-            catch { throw; }
+            Array Values = Enum.GetValues(typeof(T));
+            int Index = Next(0, Values.Length);
+            return (T)Values.GetValue(Index);
         }
 
         /// <summary>
@@ -268,15 +232,11 @@ namespace Utilities.Random
         /// <returns>A time span between the start and end</returns>
         public TimeSpan NextTimeSpan(TimeSpan Start, TimeSpan End)
         {
-            try
+            if (Start > End)
             {
-                if (Start > End)
-                {
-                    throw new ArgumentException("The start value must be earlier than the end value");
-                }
-                return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
+                throw new ArgumentException("The start value must be earlier than the end value");
             }
-            catch { throw; }
+            return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
         }
 
         /// <summary>
@@ -285,11 +245,7 @@ namespace Utilities.Random
         /// <returns>A random color between black and white</returns>
         public Color NextColor()
         {
-            try
-            {
-                return NextColor(Color.Black, Color.White);
-            }
-            catch { throw; }
+            return NextColor(Color.Black, Color.White);
         }
 
         /// <summary>
@@ -300,14 +256,10 @@ namespace Utilities.Random
         /// <returns>A random color between the min and max values</returns>
         public Color NextColor(Color MinColor, Color MaxColor)
         {
-            try
-            {
-                return Color.FromArgb(Next(MinColor.A, MaxColor.A + 1),
-                    Next(MinColor.R, MaxColor.R + 1),
-                    Next(MinColor.G, MaxColor.G + 1),
-                    Next(MinColor.B, MaxColor.B + 1));
-            }
-            catch { throw; }
+            return Color.FromArgb(Next(MinColor.A, MaxColor.A + 1),
+                Next(MinColor.R, MaxColor.R + 1),
+                Next(MinColor.G, MaxColor.G + 1),
+                Next(MinColor.B, MaxColor.B + 1));
         }
 
         #endregion

@@ -48,22 +48,18 @@ namespace Utilities.FileFormats.RSSHelper
         {
             if (!Element.Name.Equals("media:thumbnail", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not a thumbnail");
-            try
+            if (Element.Attributes["url"] != null)
             {
-                if (Element.Attributes["url"] != null)
-                {
-                    Url = Element.Attributes["url"].Value;
-                }
-                if (Element.Attributes["width"] != null)
-                {
-                    Width = int.Parse(Element.Attributes["width"].Value);
-                }
-                if (Element.Attributes["height"] != null)
-                {
-                    Height = int.Parse(Element.Attributes["height"].Value);
-                }
+                Url = Element.Attributes["url"].Value;
             }
-            catch { throw; }
+            if (Element.Attributes["width"] != null)
+            {
+                Width = int.Parse(Element.Attributes["width"].Value);
+            }
+            if (Element.Attributes["height"] != null)
+            {
+                Height = int.Parse(Element.Attributes["height"].Value);
+            }
         }
 
         #endregion
@@ -115,15 +111,11 @@ namespace Utilities.FileFormats.RSSHelper
         /// <returns>A string formatted for RSS output</returns>
         public override string ToString()
         {
-            try
+            if (!string.IsNullOrEmpty(_Url))
             {
-                if (!string.IsNullOrEmpty(_Url))
-                {
-                    return "<media:thumbnail url=\"" + _Url + "\" width=\"" + _Width.ToString() + "\" height=\"" + _Height + "\" />\r\n";
-                }
-                return string.Empty;
+                return "<media:thumbnail url=\"" + _Url + "\" width=\"" + _Width.ToString() + "\" height=\"" + _Height + "\" />\r\n";
             }
-            catch { throw; }
+            return string.Empty;
         }
 
         #endregion

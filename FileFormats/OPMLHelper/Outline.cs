@@ -49,56 +49,52 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Element">Element containing outline information</param>
         public Outline(XmlElement Element)
         {
-            try
+            if (Element.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (Element.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
+                if (Element.Attributes["text"] != null)
                 {
-                    if (Element.Attributes["text"] != null)
+                    Text = Element.Attributes["text"].Value;
+                }
+                else if (Element.Attributes["description"] != null)
+                {
+                    Description = Element.Attributes["description"].Value;
+                }
+                else if (Element.Attributes["htmlUrl"] != null)
+                {
+                    HTMLUrl = Element.Attributes["htmlUrl"].Value;
+                }
+                else if (Element.Attributes["type"] != null)
+                {
+                    Type = Element.Attributes["type"].Value;
+                }
+                else if (Element.Attributes["language"] != null)
+                {
+                    Language = Element.Attributes["language"].Value;
+                }
+                else if (Element.Attributes["title"] != null)
+                {
+                    Title = Element.Attributes["title"].Value;
+                }
+                else if (Element.Attributes["version"] != null)
+                {
+                    Version = Element.Attributes["version"].Value;
+                }
+                else if (Element.Attributes["xmlUrl"] != null)
+                {
+                    XMLUrl = Element.Attributes["xmlUrl"].Value;
+                }
+                foreach (XmlNode Child in Element.ChildNodes)
+                {
+                    try
                     {
-                        Text = Element.Attributes["text"].Value;
-                    }
-                    else if (Element.Attributes["description"] != null)
-                    {
-                        Description = Element.Attributes["description"].Value;
-                    }
-                    else if (Element.Attributes["htmlUrl"] != null)
-                    {
-                        HTMLUrl = Element.Attributes["htmlUrl"].Value;
-                    }
-                    else if (Element.Attributes["type"] != null)
-                    {
-                        Type = Element.Attributes["type"].Value;
-                    }
-                    else if (Element.Attributes["language"] != null)
-                    {
-                        Language = Element.Attributes["language"].Value;
-                    }
-                    else if (Element.Attributes["title"] != null)
-                    {
-                        Title = Element.Attributes["title"].Value;
-                    }
-                    else if (Element.Attributes["version"] != null)
-                    {
-                        Version = Element.Attributes["version"].Value;
-                    }
-                    else if (Element.Attributes["xmlUrl"] != null)
-                    {
-                        XMLUrl = Element.Attributes["xmlUrl"].Value;
-                    }
-                    foreach (XmlNode Child in Element.ChildNodes)
-                    {
-                        try
+                        if (Child.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            if (Child.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Outlines.Add(new Outline((XmlElement)Child));
-                            }
+                            Outlines.Add(new Outline((XmlElement)Child));
                         }
-                        catch { }
                     }
+                    catch { }
                 }
             }
-            catch { throw; }
         }
 
         #endregion
@@ -109,7 +105,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// Outline list
         /// </summary>
         public List<Outline> Outlines { get; set; }
-        
+
         /// <summary>
         /// Url of the XML file
         /// </summary>
@@ -156,58 +152,54 @@ namespace Utilities.FileFormats.OPMLHelper
 
         public override string ToString()
         {
-            try
+            StringBuilder OutlineString = new StringBuilder();
+            OutlineString.Append("<outline text=\"" + Text + "\"");
+            if (!string.IsNullOrEmpty(XMLUrl))
             {
-                StringBuilder OutlineString = new StringBuilder();
-                OutlineString.Append("<outline text=\"" + Text + "\"");
-                if (!string.IsNullOrEmpty(XMLUrl))
-                {
-                    OutlineString.Append(" xmlUrl=\"" + XMLUrl + "\"");
-                }
-                if (!string.IsNullOrEmpty(Version))
-                {
-                    OutlineString.Append(" version=\"" + Version + "\"");
-                }
-                if (!string.IsNullOrEmpty(Title))
-                {
-                    OutlineString.Append(" title=\"" + Title + "\"");
-                }
-                if (!string.IsNullOrEmpty(Language))
-                {
-                    OutlineString.Append(" language=\"" + Language + "\"");
-                }
-                if (!string.IsNullOrEmpty(Type))
-                {
-                    OutlineString.Append(" type=\"" + Type + "\"");
-                }
-                if (!string.IsNullOrEmpty(HTMLUrl))
-                {
-                    OutlineString.Append(" htmlUrl=\"" + HTMLUrl + "\"");
-                }
-                if (!string.IsNullOrEmpty(Text))
-                {
-                    OutlineString.Append(" text=\"" + Text + "\"");
-                }
-                if (!string.IsNullOrEmpty(Description))
-                {
-                    OutlineString.Append(" description=\"" + Description + "\"");
-                }
-                if (Outlines.Count > 0)
-                {
-                    OutlineString.Append(">\r\n");
-                    foreach (Outline Outline in Outlines)
-                    {
-                        OutlineString.Append(Outline.ToString());
-                    }
-                    OutlineString.Append("</outline>\r\n");
-                }
-                else
-                {
-                    OutlineString.Append(" />\r\n");
-                }
-                return OutlineString.ToString();
+                OutlineString.Append(" xmlUrl=\"" + XMLUrl + "\"");
             }
-            catch { throw; }
+            if (!string.IsNullOrEmpty(Version))
+            {
+                OutlineString.Append(" version=\"" + Version + "\"");
+            }
+            if (!string.IsNullOrEmpty(Title))
+            {
+                OutlineString.Append(" title=\"" + Title + "\"");
+            }
+            if (!string.IsNullOrEmpty(Language))
+            {
+                OutlineString.Append(" language=\"" + Language + "\"");
+            }
+            if (!string.IsNullOrEmpty(Type))
+            {
+                OutlineString.Append(" type=\"" + Type + "\"");
+            }
+            if (!string.IsNullOrEmpty(HTMLUrl))
+            {
+                OutlineString.Append(" htmlUrl=\"" + HTMLUrl + "\"");
+            }
+            if (!string.IsNullOrEmpty(Text))
+            {
+                OutlineString.Append(" text=\"" + Text + "\"");
+            }
+            if (!string.IsNullOrEmpty(Description))
+            {
+                OutlineString.Append(" description=\"" + Description + "\"");
+            }
+            if (Outlines.Count > 0)
+            {
+                OutlineString.Append(">\r\n");
+                foreach (Outline Outline in Outlines)
+                {
+                    OutlineString.Append(Outline.ToString());
+                }
+                OutlineString.Append("</outline>\r\n");
+            }
+            else
+            {
+                OutlineString.Append(" />\r\n");
+            }
+            return OutlineString.ToString();
         }
 
         #endregion

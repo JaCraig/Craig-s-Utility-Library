@@ -141,7 +141,7 @@ namespace Utilities.DataTypes
                 case 12:
                     return "December";
                 default:
-                    return "";       
+                    return "";
             }
         }
 
@@ -190,14 +190,10 @@ namespace Utilities.DataTypes
         /// <returns>normal string (non base 64)</returns>
         public static string Base64ToString(string Input)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(Input))
-                    return "";
-                byte[] TempArray = Convert.FromBase64String(Input);
-                return Encoding.UTF8.GetString(TempArray);
-            }
-            catch { throw; }
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            byte[] TempArray = Convert.FromBase64String(Input);
+            return Encoding.UTF8.GetString(TempArray);
         }
 
         /// <summary>
@@ -207,14 +203,10 @@ namespace Utilities.DataTypes
         /// <returns>A base 64 string</returns>
         public static string StringToBase64(string Input)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(Input))
-                    return "";
-                byte[] TempArray = Encoding.UTF8.GetBytes(Input);
-                return Convert.ToBase64String(TempArray);
-            }
-            catch { throw; }
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            byte[] TempArray = Encoding.UTF8.GetBytes(Input);
+            return Convert.ToBase64String(TempArray);
         }
 
         /// <summary>
@@ -224,12 +216,8 @@ namespace Utilities.DataTypes
         /// <returns>ASCII string of the byte array</returns>
         public static string ByteArrayToASCIIString(byte[] Input)
         {
-            try
-            {
-                ASCIIEncoding Encoding = new ASCIIEncoding();
-                return Encoding.GetString(Input);
-            }
-            catch { throw; }
+            ASCIIEncoding Encoding = new ASCIIEncoding();
+            return Encoding.GetString(Input);
         }
 
         /// <summary>
@@ -239,12 +227,8 @@ namespace Utilities.DataTypes
         /// <returns>Unicode string of the byte array</returns>
         public static string ByteArrayToUnicodeString(byte[] Input)
         {
-            try
-            {
-                UnicodeEncoding Encoding = new UnicodeEncoding();
-                return Encoding.GetString(Input);
-            }
-            catch { throw; }
+            UnicodeEncoding Encoding = new UnicodeEncoding();
+            return Encoding.GetString(Input);
         }
 
         /// <summary>
@@ -254,12 +238,8 @@ namespace Utilities.DataTypes
         /// <returns>Byte array of the string</returns>
         public static byte[] ASCIIStringToByteArray(string Input)
         {
-            try
-            {
-                ASCIIEncoding Encoding = new ASCIIEncoding();
-                return Encoding.GetBytes(Input);
-            }
-            catch { throw; }
+            ASCIIEncoding Encoding = new ASCIIEncoding();
+            return Encoding.GetBytes(Input);
         }
 
         /// <summary>
@@ -269,12 +249,8 @@ namespace Utilities.DataTypes
         /// <returns>Byte array of the string</returns>
         public static byte[] UnicodeStringToByteArray(string Input)
         {
-            try
-            {
-                UnicodeEncoding Encoding = new UnicodeEncoding();
-                return Encoding.GetBytes(Input);
-            }
-            catch { throw; }
+            UnicodeEncoding Encoding = new UnicodeEncoding();
+            return Encoding.GetBytes(Input);
         }
 
         #endregion

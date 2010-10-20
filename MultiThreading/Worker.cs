@@ -33,7 +33,7 @@ namespace Utilities.MultiThreading
     /// </summary>
     /// <typeparam name="ResultType">Result type</typeparam>
     /// <typeparam name="InputParams">The input parameter type</typeparam>
-    public abstract class Worker<ResultType,InputParams>
+    public abstract class Worker<ResultType, InputParams>
     {
         #region Constructor
 
@@ -43,13 +43,9 @@ namespace Utilities.MultiThreading
         /// <param name="Params">Parameters used in the function</param>
         protected Worker(InputParams Params)
         {
-            try
-            {
-                this.Params = Params;
-                this.WorkerThread = new Thread(DoWork);
-                this.WorkerThread.IsBackground = true;
-            }
-            catch { throw; }
+            this.Params = Params;
+            this.WorkerThread = new Thread(DoWork);
+            this.WorkerThread.IsBackground = true;
         }
 
         #endregion
@@ -201,13 +197,13 @@ namespace Utilities.MultiThreading
         /// <summary>
         /// Indicates whether or not the thread is stopped/started
         /// </summary>
-        public bool Stopped 
-        { 
-            get 
-            { 
+        public bool Stopped
+        {
+            get
+            {
                 if (WorkerThread != null && WorkerThread.IsAlive)
                     return false;
-                return true; 
+                return true;
             }
         }
 
@@ -224,7 +220,7 @@ namespace Utilities.MultiThreading
         /// <summary>
         /// The thread used
         /// </summary>
-        private Thread WorkerThread=null;
+        private Thread WorkerThread = null;
 
         /// <summary>
         /// Can be used to determine if the thread needs to stop

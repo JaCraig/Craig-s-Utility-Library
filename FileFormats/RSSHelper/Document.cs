@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
@@ -48,13 +47,9 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Location">Location of the RSS feed to load</param>
         public Document(string Location)
         {
-            try
-            {
-                XmlDocument Document = new XmlDocument();
-                Document.Load(Location);
-                Load(Document);
-            }
-            catch { throw; }
+            XmlDocument Document = new XmlDocument();
+            Document.Load(Location);
+            Load(Document);
         }
 
         /// <summary>
@@ -63,11 +58,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Document">XML document containing an RSS feed</param>
         public Document(XmlDocument Document)
         {
-            try
-            {
-                Load(Document);
-            }
-            catch { throw; }
+            Load(Document);
         }
 
         #endregion
@@ -106,17 +97,13 @@ namespace Utilities.FileFormats.RSSHelper
         /// <returns>An rss formatted string</returns>
         public override string ToString()
         {
-            try
+            StringBuilder DocumentString = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<rss xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:media=\"http://search.yahoo.com/mrss/\" version=\"2.0\">\r\n");
+            foreach (Channel CurrentChannel in Channels)
             {
-                StringBuilder DocumentString = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<rss xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:media=\"http://search.yahoo.com/mrss/\" version=\"2.0\">\r\n");
-                foreach (Channel CurrentChannel in Channels)
-                {
-                    DocumentString.Append(CurrentChannel.ToString());
-                }
-                DocumentString.Append("</rss>");
-                return DocumentString.ToString();
+                DocumentString.Append(CurrentChannel.ToString());
             }
-            catch { throw; }
+            DocumentString.Append("</rss>");
+            return DocumentString.ToString();
         }
 
         #endregion
@@ -129,14 +116,10 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="CopyFrom">RSS document to copy from</param>
         public void Copy(Document CopyFrom)
         {
-            try
+            foreach (Channel CurrentChannel in CopyFrom.Channels)
             {
-                foreach (Channel CurrentChannel in CopyFrom.Channels)
-                {
-                    Channels.Add(CurrentChannel);
-                }
+                Channels.Add(CurrentChannel);
             }
-            catch { throw; }
         }
 
         #endregion
@@ -145,34 +128,30 @@ namespace Utilities.FileFormats.RSSHelper
 
         private void Load(XmlDocument Document)
         {
-            try
+            XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Document.NameTable);
+            XmlNodeList Nodes = Document.DocumentElement.SelectNodes("./channel", NamespaceManager);
+            foreach (XmlNode Element in Nodes)
             {
-                XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Document.NameTable);
-                XmlNodeList Nodes = Document.DocumentElement.SelectNodes("./channel", NamespaceManager);
+                Channels.Add(new Channel((XmlElement)Element));
+            }
+            if (Channels.Count == 0)
+            {
+                Nodes = Document.DocumentElement.SelectNodes(".//channel", NamespaceManager);
                 foreach (XmlNode Element in Nodes)
                 {
                     Channels.Add(new Channel((XmlElement)Element));
                 }
-                if (Channels.Count == 0)
+                List<Item> Items = new List<Item>();
+                Nodes = Document.DocumentElement.SelectNodes(".//item", NamespaceManager);
+                foreach (XmlNode Element in Nodes)
                 {
-                    Nodes = Document.DocumentElement.SelectNodes(".//channel", NamespaceManager);
-                    foreach (XmlNode Element in Nodes)
-                    {
-                        Channels.Add(new Channel((XmlElement)Element));
-                    }
-                    List<Item> Items = new List<Item>();
-                    Nodes = Document.DocumentElement.SelectNodes(".//item", NamespaceManager);
-                    foreach (XmlNode Element in Nodes)
-                    {
-                        Items.Add(new Item((XmlElement)Element));
-                    }
-                    if (Channels.Count > 0)
-                    {
-                        Channels[0].Items = Items;
-                    }
+                    Items.Add(new Item((XmlElement)Element));
+                }
+                if (Channels.Count > 0)
+                {
+                    Channels[0].Items = Items;
                 }
             }
-            catch { throw; }
         }
 
         #endregion

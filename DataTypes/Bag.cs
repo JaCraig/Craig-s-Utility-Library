@@ -30,7 +30,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Used to count the number of times something is added to the list
     /// </summary>
-    public class Bag<T>:ICollection<T>
+    public class Bag<T> : ICollection<T>
     {
         #region Constructors
 
@@ -53,32 +53,20 @@ namespace Utilities.DataTypes
 
         public void Add(T item)
         {
-            try
-            {
-                if (Items.ContainsKey(item))
-                    ++Items[item];
-                else
-                    Items.Add(item,1);
-            }
-            catch { throw; }
+            if (Items.ContainsKey(item))
+                ++Items[item];
+            else
+                Items.Add(item, 1);
         }
 
         public void Clear()
         {
-            try
-            {
-                Items.Clear();
-            }
-            catch { throw; }
+            Items.Clear();
         }
 
         public bool Contains(T item)
         {
-            try
-            {
-                return Items.ContainsKey(item);
-            }
-            catch { throw; }
+            return Items.ContainsKey(item);
         }
 
         /// <summary>
@@ -136,8 +124,8 @@ namespace Utilities.DataTypes
 
         public int this[T index]
         {
-            get { try { return Items[index]; } catch { throw; } }
-            set { try { Items[index] = value; } catch { throw; } }
+            get { return Items[index]; }
+            set { Items[index] = value; }
         }
 
         #endregion

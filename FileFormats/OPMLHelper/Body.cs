@@ -71,26 +71,24 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// List of outlines
         /// </summary>
-        public List<Outline> Outlines{ get; set; }
-        
+        public List<Outline> Outlines { get; set; }
+
         #endregion
 
         #region Overridden Functions
+
         public override string ToString()
         {
-            try
+            StringBuilder BodyString = new StringBuilder();
+            BodyString.Append("<body>");
+            foreach (Outline Outline in Outlines)
             {
-                StringBuilder BodyString = new StringBuilder();
-                BodyString.Append("<body>");
-                foreach (Outline Outline in Outlines)
-                {
-                    BodyString.Append(Outline.ToString());
-                }
-                BodyString.Append("</body>");
-                return BodyString.ToString();
+                BodyString.Append(Outline.ToString());
             }
-            catch { throw; }
+            BodyString.Append("</body>");
+            return BodyString.ToString();
         }
+
         #endregion
     }
 }

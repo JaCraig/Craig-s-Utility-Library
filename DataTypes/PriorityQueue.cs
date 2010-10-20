@@ -29,7 +29,7 @@ namespace Utilities.DataTypes
     /// Helper class that implements a priority queue
     /// </summary>
     /// <typeparam name="T">The type of the values placed in the queue</typeparam>
-    public class PriorityQueue<T>:ListMapping<int,T>
+    public class PriorityQueue<T> : ListMapping<int, T>
     {
         #region Constructor
 
@@ -51,26 +51,18 @@ namespace Utilities.DataTypes
         /// <returns></returns>
         public virtual T Peek()
         {
-            try
+            if (Items.ContainsKey(HighestKey))
             {
-                if (Items.ContainsKey(HighestKey))
-                {
-                    return Items[HighestKey][0];
-                }
-                return default(T);
+                return Items[HighestKey][0];
             }
-            catch { throw; }
+            return default(T);
         }
 
         public override void Add(int Priority, T Value)
         {
-            try
-            {
-                if (Priority > HighestKey)
-                    HighestKey = Priority;
-                base.Add(Priority, Value);
-            }
-            catch { throw; }
+            if (Priority > HighestKey)
+                HighestKey = Priority;
+            base.Add(Priority, Value);
         }
 
         /// <summary>
@@ -79,27 +71,23 @@ namespace Utilities.DataTypes
         /// <returns>The next item in the queue</returns>
         public T Remove()
         {
-            try
+            T ReturnValue = default(T);
+            if (Items.ContainsKey(HighestKey) && Items[HighestKey].Count >= 1)
             {
-                T ReturnValue = default(T);
-                if (Items.ContainsKey(HighestKey) && Items[HighestKey].Count >= 1)
+                ReturnValue = Items[HighestKey][0];
+                Items[HighestKey].Remove(ReturnValue);
+                if (Items[HighestKey].Count == 0)
                 {
-                    ReturnValue = Items[HighestKey][0];
-                    Items[HighestKey].Remove(ReturnValue);
-                    if (Items[HighestKey].Count == 0)
+                    Items.Remove(HighestKey);
+                    HighestKey = int.MinValue;
+                    foreach (int Key in Items.Keys)
                     {
-                        Items.Remove(HighestKey);
-                        HighestKey = int.MinValue;
-                        foreach (int Key in Items.Keys)
-                        {
-                            if (Key > HighestKey)
-                                HighestKey = Key;
-                        }
+                        if (Key > HighestKey)
+                            HighestKey = Key;
                     }
                 }
-                return ReturnValue;
             }
-            catch { throw; }
+            return ReturnValue;
         }
 
         #endregion

@@ -39,13 +39,9 @@ namespace Utilities.Environment
         /// <param name="UserName">User name (optional)</param>
         /// <param name="Password">Password (optional)</param>
         /// <returns>The computer's information</returns>
-        public static Computer GetComputerInfo(string ComputerName,string UserName="",string Password="")
+        public static Computer GetComputerInfo(string ComputerName, string UserName = "", string Password = "")
         {
-            try
-            {
-                return new Computer(ComputerName,UserName,Password);
-            }
-            catch { throw; }
+            return new Computer(ComputerName, UserName, Password);
         }
 
         #endregion

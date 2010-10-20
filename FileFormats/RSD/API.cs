@@ -94,11 +94,7 @@ namespace Utilities.FileFormats.RSD
         /// <returns>The API info</returns>
         public override string ToString()
         {
-            try
-            {
-                return "<api name=\"" + Name + "\" preferred=\"" + Preferred.ToString() + "\" apiLink=\"" + APILink + "\" blogID=\"" + BlogID + "\"/>";
-            }
-            catch { throw; }
+            return "<api name=\"" + Name + "\" preferred=\"" + Preferred.ToString() + "\" apiLink=\"" + APILink + "\" blogID=\"" + BlogID + "\"/>";
         }
 
         #endregion

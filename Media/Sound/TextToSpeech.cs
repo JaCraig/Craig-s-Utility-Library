@@ -53,16 +53,12 @@ namespace Utilities.Media.Sound
         /// <returns>The text found in the wave file</returns>
         public string Recognize(string InputFile)
         {
-            try
-            {
-                this.InputFile = InputFile;
-                Thread TempThread = new Thread(new ThreadStart(RecognizeAsync));
-                TempThread.SetApartmentState(ApartmentState.STA);
-                TempThread.Start();
-                TempThread.Join();
-                return Text;
-            }
-            catch { throw; }
+            this.InputFile = InputFile;
+            Thread TempThread = new Thread(new ThreadStart(RecognizeAsync));
+            TempThread.SetApartmentState(ApartmentState.STA);
+            TempThread.Start();
+            TempThread.Join();
+            return Text;
         }
 
         #endregion
@@ -74,18 +70,14 @@ namespace Utilities.Media.Sound
         /// </summary>
         void RecognizeAsync()
         {
-            try
+            RecognitionEngine.LoadGrammar(new DictationGrammar());
+            RecognitionResult Result = RecognitionEngine.Recognize();
+            StringBuilder Output = new StringBuilder();
+            foreach (RecognizedWordUnit Word in Result.Words)
             {
-                RecognitionEngine.LoadGrammar(new DictationGrammar());
-                RecognitionResult Result = RecognitionEngine.Recognize();
-                StringBuilder Output = new StringBuilder();
-                foreach (RecognizedWordUnit Word in Result.Words)
-                {
-                    Output.Append(Word.Text);
-                }
-                Text = Output.ToString();
+                Output.Append(Word.Text);
             }
-            catch { throw; }
+            Text = Output.ToString();
         }
 
         #endregion
@@ -94,7 +86,7 @@ namespace Utilities.Media.Sound
 
         private SpeechRecognitionEngine RecognitionEngine = new SpeechRecognitionEngine();
         private string InputFile = "";
-        private string Text="";
+        private string Text = "";
 
         #endregion
 
@@ -102,15 +94,11 @@ namespace Utilities.Media.Sound
 
         public void Dispose()
         {
-            try
+            if (RecognitionEngine != null)
             {
-                if (RecognitionEngine != null)
-                {
-                    RecognitionEngine.Dispose();
-                    RecognitionEngine = null;
-                }
+                RecognitionEngine.Dispose();
+                RecognitionEngine = null;
             }
-            catch { throw; }
         }
 
         #endregion

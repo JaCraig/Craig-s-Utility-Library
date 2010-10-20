@@ -48,18 +48,14 @@ namespace Utilities.Web.PingBack
         /// if false it will wait for it to end</param>
         public static void PingServices(List<Uri> Services, Uri Blog, string BlogName, bool Threaded)
         {
-            try
+            if (Threaded)
             {
-                if (Threaded)
-                {
-                    ThreadPool.QueueUserWorkItem(delegate { PingServices(Services, Blog, BlogName); });
-                }
-                else
-                {
-                    PingServices(Services, Blog, BlogName);
-                }
+                ThreadPool.QueueUserWorkItem(delegate { PingServices(Services, Blog, BlogName); });
             }
-            catch { throw; }
+            else
+            {
+                PingServices(Services, Blog, BlogName);
+            }
         }
 
         #endregion
@@ -68,36 +64,32 @@ namespace Utilities.Web.PingBack
 
         private static void PingServices(List<Uri> Services, Uri Blog, string BlogName)
         {
-            try
+            foreach (Uri Service in Services)
             {
-                foreach (Uri Service in Services)
+                HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(Service);
+                Request.Credentials = CredentialCache.DefaultNetworkCredentials;
+                Request.ContentType = "text/xml";
+                Request.Method = "POST";
+                Request.Timeout = 10000;
+                using (Stream Stream = (Stream)Request.GetRequestStream())
                 {
-                    HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(Service);
-                    Request.Credentials = CredentialCache.DefaultNetworkCredentials;
-                    Request.ContentType = "text/xml";
-                    Request.Method = "POST";
-                    Request.Timeout = 10000;
-                    using (Stream Stream = (Stream)Request.GetRequestStream())
+                    using (XmlTextWriter XMLWriter = new XmlTextWriter(Stream, Encoding.ASCII))
                     {
-                        using (XmlTextWriter XMLWriter = new XmlTextWriter(Stream, Encoding.ASCII))
-                        {
-                            XMLWriter.WriteStartDocument();
-                            XMLWriter.WriteStartElement("methodCall");
-                            XMLWriter.WriteElementString("methodName", "weblogUpdates.ping");
-                            XMLWriter.WriteStartElement("params");
-                            XMLWriter.WriteStartElement("param");
-                            XMLWriter.WriteElementString("value", BlogName);
-                            XMLWriter.WriteEndElement();
-                            XMLWriter.WriteStartElement("param");
-                            XMLWriter.WriteElementString("value", Blog.ToString());
-                            XMLWriter.WriteEndElement();
-                            XMLWriter.WriteEndElement();
-                            XMLWriter.WriteEndElement();
-                        }
+                        XMLWriter.WriteStartDocument();
+                        XMLWriter.WriteStartElement("methodCall");
+                        XMLWriter.WriteElementString("methodName", "weblogUpdates.ping");
+                        XMLWriter.WriteStartElement("params");
+                        XMLWriter.WriteStartElement("param");
+                        XMLWriter.WriteElementString("value", BlogName);
+                        XMLWriter.WriteEndElement();
+                        XMLWriter.WriteStartElement("param");
+                        XMLWriter.WriteElementString("value", Blog.ToString());
+                        XMLWriter.WriteEndElement();
+                        XMLWriter.WriteEndElement();
+                        XMLWriter.WriteEndElement();
                     }
                 }
             }
-            catch { throw; }
         }
 
         #endregion

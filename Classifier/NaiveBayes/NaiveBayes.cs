@@ -71,29 +71,25 @@ namespace Utilities.Classifier.NaiveBayes
         /// <param name="SetBTokens">Set B</param>
         public void LoadTokens(System.Collections.Generic.List<T> SetATokens, System.Collections.Generic.List<T> SetBTokens)
         {
-            try
+            foreach (T TokenA in SetATokens)
             {
-                foreach (T TokenA in SetATokens)
-                {
-                    SetA.Add(TokenA);
-                }
-                foreach (T TokenB in SetBTokens)
-                {
-                    SetB.Add(TokenB);
-                }
-                TotalA = 0;
-                TotalB = 0;
-                foreach (T Token in SetA)
-                {
-                    TotalA += SetA[Token];
-                }
-                foreach (T Token in SetB)
-                {
-                    TotalB += SetB[Token];
-                }
-                Total = TotalA + TotalB;
+                SetA.Add(TokenA);
             }
-            catch { throw; }
+            foreach (T TokenB in SetBTokens)
+            {
+                SetB.Add(TokenB);
+            }
+            TotalA = 0;
+            TotalB = 0;
+            foreach (T Token in SetA)
+            {
+                TotalA += SetA[Token];
+            }
+            foreach (T Token in SetB)
+            {
+                TotalB += SetB[Token];
+            }
+            Total = TotalA + TotalB;
         }
 
         /// <summary>
@@ -103,19 +99,15 @@ namespace Utilities.Classifier.NaiveBayes
         /// <returns>The probability that the tokens are from set A</returns>
         public double CalculateProbabilityOfTokens(System.Collections.Generic.List<T> Items)
         {
-            try
+            double TotalProbability = 1.0;
+            double NegativeTotalProbability = 1.0;
+            for (int x = 0; x < Items.Count; ++x)
             {
-                double TotalProbability = 1.0;
-                double NegativeTotalProbability = 1.0;
-                for (int x = 0; x < Items.Count; ++x)
-                {
-                    double Probability = CalculateProbabilityOfToken(Items[x]);
-                    TotalProbability *= Probability;
-                    NegativeTotalProbability *= (1 - Probability);
-                }
-                return TotalProbability / (TotalProbability + NegativeTotalProbability);
+                double Probability = CalculateProbabilityOfToken(Items[x]);
+                TotalProbability *= Probability;
+                NegativeTotalProbability *= (1 - Probability);
             }
-            catch { throw; }
+            return TotalProbability / (TotalProbability + NegativeTotalProbability);
         }
 
         #endregion
@@ -129,23 +121,19 @@ namespace Utilities.Classifier.NaiveBayes
         /// <returns>The probability that the token is from set A</returns>
         private double CalculateProbabilityOfToken(T Item)
         {
-            try
+            if (Total == 0.0 || TotalA == 0.0)
+                return 0.0;
+            double Percent = 0.0;
+            if (SetA.Contains(Item) && SetB.Contains(Item))
             {
-                if (Total == 0.0 || TotalA == 0.0)
-                    return 0.0;
-                double Percent = 0.0;
-                if (SetA.Contains(Item) && SetB.Contains(Item))
-                {
-                    Percent = (double)SetA[Item] / (double)(SetA[Item] + SetB[Item]);
-                }
-                else if (SetA.Contains(Item))
-                {
-                    Percent = 1.0;
-                }
-                double PriorPercent = (double)TotalA / (double)Total;
-                return Percent * PriorPercent;
+                Percent = (double)SetA[Item] / (double)(SetA[Item] + SetB[Item]);
             }
-            catch { throw; }
+            else if (SetA.Contains(Item))
+            {
+                Percent = 1.0;
+            }
+            double PriorPercent = (double)TotalA / (double)Total;
+            return Percent * PriorPercent;
         }
 
         #endregion

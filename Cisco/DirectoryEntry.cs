@@ -59,14 +59,10 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
-            {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<DirectoryEntry><Name>").Append(Name).Append("</Name><Telephone>")
-                    .Append(Telephone).Append("</Telephone></DirectoryEntry>");
-                return Builder.ToString();
-            }
-            catch { throw; }
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<DirectoryEntry><Name>").Append(Name).Append("</Name><Telephone>")
+                .Append(Telephone).Append("</Telephone></DirectoryEntry>");
+            return Builder.ToString();
         }
 
         #endregion

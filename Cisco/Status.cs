@@ -30,7 +30,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Status class
     /// </summary>
-    public class Status:IDisplay
+    public class Status : IDisplay
     {
         #region Constructor
 
@@ -82,20 +82,16 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<CiscoIPPhoneStatusFile><Text>").Append(Text).Append("</Text><Timer>").Append(Timer).Append("</Timer<LocationX>")
+                .Append(X).Append("</LocationX><LocationY>").Append(Y).Append("</LocationY><URL>").Append(URL)
+                .Append("</URL>");
+            foreach (SoftKeyItem Item in SoftKeys)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<CiscoIPPhoneStatusFile><Text>").Append(Text).Append("</Text><Timer>").Append(Timer).Append("</Timer<LocationX>")
-                    .Append(X).Append("</LocationX><LocationY>").Append(Y).Append("</LocationY><URL>").Append(URL)
-                    .Append("</URL>");
-                foreach (SoftKeyItem Item in SoftKeys)
-                {
-                    Builder.Append(Item.ToString());
-                }
-                Builder.Append("</CiscoIPPhoneStatusFile>");
-                return Builder.ToString();
+                Builder.Append(Item.ToString());
             }
-            catch { throw; }
+            Builder.Append("</CiscoIPPhoneStatusFile>");
+            return Builder.ToString();
         }
 
         #endregion

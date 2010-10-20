@@ -38,7 +38,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// </summary>
         public Head()
         {
-            Docs="http://www.opml.org/spec2";
+            Docs = "http://www.opml.org/spec2";
             DateCreated = DateTime.Now;
             DateModified = DateTime.Now;
         }
@@ -49,45 +49,42 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Element">XmlElement containing the header information</param>
         public Head(XmlElement Element)
         {
-            try
+            if (Element.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (Element.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
+                foreach (XmlNode Child in Element.ChildNodes)
                 {
-                    foreach (XmlNode Child in Element.ChildNodes)
+                    try
                     {
-                        try
+                        if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Title = Child.InnerText;
-                            }
-                            else if (Child.Name.Equals("ownerName", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                OwnerName = Child.InnerText;
-                            }
-                            else if (Child.Name.Equals("ownerEmail", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                OwnerEmail = Child.InnerText;
-                            }
-                            else if (Child.Name.Equals("dateCreated", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                DateCreated = DateTime.Parse(Child.InnerText);
-                            }
-                            else if (Child.Name.Equals("dateModified", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                DateModified = DateTime.Parse(Child.InnerText);
-                            }
-                            else if (Child.Name.Equals("docs", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Docs = Child.InnerText;
-                            }
+                            Title = Child.InnerText;
                         }
-                        catch { }
+                        else if (Child.Name.Equals("ownerName", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            OwnerName = Child.InnerText;
+                        }
+                        else if (Child.Name.Equals("ownerEmail", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            OwnerEmail = Child.InnerText;
+                        }
+                        else if (Child.Name.Equals("dateCreated", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            DateCreated = DateTime.Parse(Child.InnerText);
+                        }
+                        else if (Child.Name.Equals("dateModified", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            DateModified = DateTime.Parse(Child.InnerText);
+                        }
+                        else if (Child.Name.Equals("docs", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Docs = Child.InnerText;
+                        }
                     }
+                    catch { }
                 }
             }
-            catch { throw; }
         }
+
         #endregion
 
         #region Properties
@@ -123,23 +120,21 @@ namespace Utilities.FileFormats.OPMLHelper
         #endregion
 
         #region Overridden Functions
+
         public override string ToString()
         {
-            try
-            {
-                StringBuilder HeadString = new StringBuilder();
-                HeadString.Append("<head>");
-                HeadString.Append("<title>" + Title + "</title>\r\n");
-                HeadString.Append("<dateCreated>" + DateCreated.ToString("R") + "</dateCreated>\r\n");
-                HeadString.Append("<dateModified>" + DateModified.ToString("R") + "</dateModified>\r\n");
-                HeadString.Append("<ownerName>" + OwnerName + "</ownerName>\r\n");
-                HeadString.Append("<ownerEmail>" + OwnerEmail + "</ownerEmail>\r\n");
-                HeadString.Append("<docs>" + Docs + "</docs>\r\n");
-                HeadString.Append("</head>\r\n");
-                return HeadString.ToString();
-            }
-            catch { throw; }
+            StringBuilder HeadString = new StringBuilder();
+            HeadString.Append("<head>");
+            HeadString.Append("<title>" + Title + "</title>\r\n");
+            HeadString.Append("<dateCreated>" + DateCreated.ToString("R") + "</dateCreated>\r\n");
+            HeadString.Append("<dateModified>" + DateModified.ToString("R") + "</dateModified>\r\n");
+            HeadString.Append("<ownerName>" + OwnerName + "</ownerName>\r\n");
+            HeadString.Append("<ownerEmail>" + OwnerEmail + "</ownerEmail>\r\n");
+            HeadString.Append("<docs>" + Docs + "</docs>\r\n");
+            HeadString.Append("</head>\r\n");
+            return HeadString.ToString();
         }
+
         #endregion
     }
 }

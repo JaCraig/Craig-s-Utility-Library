@@ -33,13 +33,13 @@ namespace Utilities.Profiler
     /// (if stop isn't called first that is) which leaves it up to garbage collection...
     /// ie. call Stop...
     /// </summary>
-    public class Profiler:IDisposable
+    public class Profiler : IDisposable
     {
         #region Private Variables
         private int StartTime = System.Environment.TickCount;
         private int StopTime = System.Environment.TickCount;
-        private bool Running=true;
-        private string Function="";
+        private bool Running = true;
+        private string Function = "";
         #endregion
 
         #region Constructors
@@ -57,7 +57,7 @@ namespace Utilities.Profiler
         /// <param name="FunctionName">Takes in the function name/identifier</param>
         public Profiler(string FunctionName)
         {
-            Function=FunctionName;
+            Function = FunctionName;
         }
 
         #endregion
@@ -69,11 +69,7 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Dispose()
         {
-            try
-            {
-                Stop();
-            }
-            catch { throw; }
+            Stop();
         }
 
         /// <summary>
@@ -81,16 +77,12 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Stop()
         {
-            try
+            if (Running)
             {
-                if (Running)
-                {
-                    Running = false;
-                    StopTime = System.Environment.TickCount;
-                    ProfilerManager.Instance.AddItem(Function, StartTime, StopTime);
-                }
+                Running = false;
+                StopTime = System.Environment.TickCount;
+                ProfilerManager.Instance.AddItem(Function, StartTime, StopTime);
             }
-            catch { throw; }
         }
 
         #endregion

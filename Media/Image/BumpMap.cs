@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Drawing;
 #endregion
 
@@ -38,12 +37,8 @@ namespace Utilities.Media.Image
         /// </summary>
         public BumpMap()
         {
-            try
-            {
-                Invert = false;
-                Direction=Direction.TopBottom;
-            }
-            catch { throw; }
+            Invert = false;
+            Direction = Direction.TopBottom;
         }
 
         #endregion
@@ -69,72 +64,68 @@ namespace Utilities.Media.Image
         #endregion
 
         #region Protected Functions
-        
+
         /// <summary>
         /// Sets up the edge detection filter
         /// </summary>
         protected void CreateFilter()
         {
-            try
+            EdgeDetectionFilter = new Filter(3, 3);
+            if (Direction == Direction.TopBottom)
             {
-                EdgeDetectionFilter = new Filter(3, 3);
-                if (Direction == Direction.TopBottom)
+                if (!Invert)
                 {
-                    if (!Invert)
-                    {
-                        EdgeDetectionFilter.MyFilter[0, 0] = 1;
-                        EdgeDetectionFilter.MyFilter[1, 0] = 2;
-                        EdgeDetectionFilter.MyFilter[2, 0] = 1;
-                        EdgeDetectionFilter.MyFilter[0, 1] = 0;
-                        EdgeDetectionFilter.MyFilter[1, 1] = 0;
-                        EdgeDetectionFilter.MyFilter[2, 1] = 0;
-                        EdgeDetectionFilter.MyFilter[0, 2] = -1;
-                        EdgeDetectionFilter.MyFilter[1, 2] = -2;
-                        EdgeDetectionFilter.MyFilter[2, 2] = -1;
-                    }
-                    else
-                    {
-                        EdgeDetectionFilter.MyFilter[0, 0] = -1;
-                        EdgeDetectionFilter.MyFilter[1, 0] = -2;
-                        EdgeDetectionFilter.MyFilter[2, 0] = -1;
-                        EdgeDetectionFilter.MyFilter[0, 1] = 0;
-                        EdgeDetectionFilter.MyFilter[1, 1] = 0;
-                        EdgeDetectionFilter.MyFilter[2, 1] = 0;
-                        EdgeDetectionFilter.MyFilter[0, 2] = 1;
-                        EdgeDetectionFilter.MyFilter[1, 2] = 2;
-                        EdgeDetectionFilter.MyFilter[2, 2] = 1;
-                    }
+                    EdgeDetectionFilter.MyFilter[0, 0] = 1;
+                    EdgeDetectionFilter.MyFilter[1, 0] = 2;
+                    EdgeDetectionFilter.MyFilter[2, 0] = 1;
+                    EdgeDetectionFilter.MyFilter[0, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[2, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[0, 2] = -1;
+                    EdgeDetectionFilter.MyFilter[1, 2] = -2;
+                    EdgeDetectionFilter.MyFilter[2, 2] = -1;
                 }
                 else
                 {
-                    if (!Invert)
-                    {
-                        EdgeDetectionFilter.MyFilter[0, 0] = -1;
-                        EdgeDetectionFilter.MyFilter[0, 1] = -2;
-                        EdgeDetectionFilter.MyFilter[0, 2] = -1;
-                        EdgeDetectionFilter.MyFilter[1, 0] = 0;
-                        EdgeDetectionFilter.MyFilter[1, 1] = 0;
-                        EdgeDetectionFilter.MyFilter[1, 2] = 0;
-                        EdgeDetectionFilter.MyFilter[2, 0] = 1;
-                        EdgeDetectionFilter.MyFilter[2, 1] = 2;
-                        EdgeDetectionFilter.MyFilter[2, 2] = 1;
-                    }
-                    else
-                    {
-                        EdgeDetectionFilter.MyFilter[0, 0] = 1;
-                        EdgeDetectionFilter.MyFilter[0, 1] = 2;
-                        EdgeDetectionFilter.MyFilter[0, 2] = 1;
-                        EdgeDetectionFilter.MyFilter[1, 0] = 0;
-                        EdgeDetectionFilter.MyFilter[1, 1] = 0;
-                        EdgeDetectionFilter.MyFilter[1, 2] = 0;
-                        EdgeDetectionFilter.MyFilter[2, 0] = -1;
-                        EdgeDetectionFilter.MyFilter[2, 1] = -2;
-                        EdgeDetectionFilter.MyFilter[2, 2] = -1;
-                    }
+                    EdgeDetectionFilter.MyFilter[0, 0] = -1;
+                    EdgeDetectionFilter.MyFilter[1, 0] = -2;
+                    EdgeDetectionFilter.MyFilter[2, 0] = -1;
+                    EdgeDetectionFilter.MyFilter[0, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[2, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[0, 2] = 1;
+                    EdgeDetectionFilter.MyFilter[1, 2] = 2;
+                    EdgeDetectionFilter.MyFilter[2, 2] = 1;
                 }
-                EdgeDetectionFilter.Offset = 127;
             }
-            catch { throw; }
+            else
+            {
+                if (!Invert)
+                {
+                    EdgeDetectionFilter.MyFilter[0, 0] = -1;
+                    EdgeDetectionFilter.MyFilter[0, 1] = -2;
+                    EdgeDetectionFilter.MyFilter[0, 2] = -1;
+                    EdgeDetectionFilter.MyFilter[1, 0] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 2] = 0;
+                    EdgeDetectionFilter.MyFilter[2, 0] = 1;
+                    EdgeDetectionFilter.MyFilter[2, 1] = 2;
+                    EdgeDetectionFilter.MyFilter[2, 2] = 1;
+                }
+                else
+                {
+                    EdgeDetectionFilter.MyFilter[0, 0] = 1;
+                    EdgeDetectionFilter.MyFilter[0, 1] = 2;
+                    EdgeDetectionFilter.MyFilter[0, 2] = 1;
+                    EdgeDetectionFilter.MyFilter[1, 0] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 2] = 0;
+                    EdgeDetectionFilter.MyFilter[2, 0] = -1;
+                    EdgeDetectionFilter.MyFilter[2, 1] = -2;
+                    EdgeDetectionFilter.MyFilter[2, 2] = -1;
+                }
+            }
+            EdgeDetectionFilter.Offset = 127;
         }
 
         #endregion
@@ -146,15 +137,11 @@ namespace Utilities.Media.Image
         /// </summary>
         public Bitmap Create(Bitmap Image)
         {
-            try
+            CreateFilter();
+            using (Bitmap TempImage = EdgeDetectionFilter.ApplyFilter(Image))
             {
-                CreateFilter();
-                using (Bitmap TempImage = EdgeDetectionFilter.ApplyFilter(Image))
-                {
-                    return Media.Image.Image.ConvertBlackAndWhite(TempImage);
-                }
+                return Media.Image.Image.ConvertBlackAndWhite(TempImage);
             }
-            catch { throw; }
         }
 
         #endregion

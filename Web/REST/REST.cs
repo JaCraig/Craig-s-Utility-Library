@@ -52,16 +52,12 @@ namespace Utilities.Web.REST
         /// <returns>a string containing the data returned by the service</returns>
         public string GET()
         {
-            try
-            {
-                HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
-                Request.Method = "GET";
-                Request.ContentType = "text/xml";
-                SetupData(Request);
-                SetupCredentials(Request);
-                return SendRequest(Request);
-            }
-            catch { throw; }
+            HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
+            Request.Method = "GET";
+            Request.ContentType = "text/xml";
+            SetupData(Request);
+            SetupCredentials(Request);
+            return SendRequest(Request);
         }
 
         /// <summary>
@@ -70,16 +66,12 @@ namespace Utilities.Web.REST
         /// <returns>a string containing the data returned by the service</returns>
         public string POST()
         {
-            try
-            {
-                HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
-                Request.Method = "POST";
-                Request.ContentType = "application/x-www-form-urlencoded";
-                SetupData(Request);
-                SetupCredentials(Request);
-                return SendRequest(Request);
-            }
-            catch { throw; }
+            HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
+            Request.Method = "POST";
+            Request.ContentType = "application/x-www-form-urlencoded";
+            SetupData(Request);
+            SetupCredentials(Request);
+            return SendRequest(Request);
         }
 
         /// <summary>
@@ -88,16 +80,12 @@ namespace Utilities.Web.REST
         /// <returns>a string containing the data returned by the service</returns>
         public string DELETE()
         {
-            try
-            {
-                HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
-                Request.Method = "DELETE";
-                Request.ContentType = "application/x-www-form-urlencoded";
-                SetupData(Request);
-                SetupCredentials(Request);
-                return SendRequest(Request);
-            }
-            catch { throw; }
+            HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
+            Request.Method = "DELETE";
+            Request.ContentType = "application/x-www-form-urlencoded";
+            SetupData(Request);
+            SetupCredentials(Request);
+            return SendRequest(Request);
         }
 
         /// <summary>
@@ -106,16 +94,12 @@ namespace Utilities.Web.REST
         /// <returns>a string containing the data returned by the service</returns>
         public string PUT()
         {
-            try
-            {
-                HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
-                Request.Method = "PUT";
-                Request.ContentType = "application/x-www-form-urlencoded";
-                SetupData(Request);
-                SetupCredentials(Request);
-                return SendRequest(Request);
-            }
-            catch { throw; }
+            HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
+            Request.Method = "PUT";
+            Request.ContentType = "application/x-www-form-urlencoded";
+            SetupData(Request);
+            SetupCredentials(Request);
+            return SendRequest(Request);
         }
 
         #endregion
@@ -133,16 +117,12 @@ namespace Utilities.Web.REST
                 Request.ContentLength = 0;
                 return;
             }
-            try
+            byte[] ByteData = UTF8Encoding.UTF8.GetBytes(Data);
+            Request.ContentLength = ByteData.Length;
+            using (Stream RequestStream = Request.GetRequestStream())
             {
-                byte[] ByteData = UTF8Encoding.UTF8.GetBytes(Data);
-                Request.ContentLength = ByteData.Length;
-                using (Stream RequestStream = Request.GetRequestStream())
-                {
-                    RequestStream.Write(ByteData, 0, ByteData.Length);
-                }
+                RequestStream.Write(ByteData, 0, ByteData.Length);
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -153,14 +133,10 @@ namespace Utilities.Web.REST
         /// <param name="Request">The web request object</param>
         private void SetupCredentials(HttpWebRequest Request)
         {
-            try
+            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {
-                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-                {
-                    Request.Credentials = new NetworkCredential(UserName, Password);
-                }
+                Request.Credentials = new NetworkCredential(UserName, Password);
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -170,19 +146,15 @@ namespace Utilities.Web.REST
         /// <returns>The string returned by the service</returns>
         private string SendRequest(HttpWebRequest Request)
         {
-            try
+            using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
             {
-                using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
+                if (Response.StatusCode != HttpStatusCode.OK)
+                    throw new Exception("The request did not complete successfully and returned status code " + Response.StatusCode);
+                using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
                 {
-                    if (Response.StatusCode != HttpStatusCode.OK)
-                        throw new Exception("The request did not complete successfully and returned status code " + Response.StatusCode);
-                    using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
-                    {
-                        return Reader.ReadToEnd();
-                    }
+                    return Reader.ReadToEnd();
                 }
             }
-            catch { throw; }
         }
 
         #endregion

@@ -29,7 +29,7 @@ namespace Utilities.Web.Email.Pop3
     /// Class for containing the messages
     /// returned by the Pop3Client class.
     /// </summary>
-    public class Message:Utilities.Web.Email.Message
+    public class Message : Utilities.Web.Email.Message
     {
         #region Constructors
         /// <summary>
@@ -46,22 +46,22 @@ namespace Utilities.Web.Email.Pop3
         /// <summary>
         /// The number associated with the message
         /// </summary>
-        public long MessageNumber{get;set;}
+        public long MessageNumber { get; set; }
 
         /// <summary>
         /// Size of the message in bytes
         /// </summary>
-        public long MessageSize{get;set;}
+        public long MessageSize { get; set; }
 
         /// <summary>
         /// If true, we've retrieved this message from the server
         /// </summary>
-        public bool Retrieved{get;set;}
+        public bool Retrieved { get; set; }
 
         /// <summary>
         /// MIME version of the email
         /// </summary>
-        public MIME.MIMEMessage MessageBody{get;set;}
+        public MIME.MIMEMessage MessageBody { get; set; }
 
         #endregion
 
@@ -71,18 +71,14 @@ namespace Utilities.Web.Email.Pop3
         {
             get
             {
-                try
-                {
-                    string ReturnValue = MessageBody.HTMLBodyText;
-                    if (string.IsNullOrEmpty(ReturnValue))
-                        ReturnValue = MessageBody.PlainBodyText;
-                    if (string.IsNullOrEmpty(ReturnValue))
-                        ReturnValue = MessageBody.BodyText;
+                string ReturnValue = MessageBody.HTMLBodyText;
+                if (string.IsNullOrEmpty(ReturnValue))
+                    ReturnValue = MessageBody.PlainBodyText;
+                if (string.IsNullOrEmpty(ReturnValue))
+                    ReturnValue = MessageBody.BodyText;
 
-                    ReturnValue = ReturnValue.Replace("\r\n", "<br />");
-                    return ReturnValue;
-                }
-                catch { throw; }
+                ReturnValue = ReturnValue.Replace("\r\n", "<br />");
+                return ReturnValue;
             }
         }
 
@@ -90,8 +86,7 @@ namespace Utilities.Web.Email.Pop3
         {
             get
             {
-                try { return MessageBody.From; }
-                catch { throw; }
+                return MessageBody.From;
             }
         }
 
@@ -99,8 +94,7 @@ namespace Utilities.Web.Email.Pop3
         {
             get
             {
-                try { return MessageBody.To; }
-                catch { throw; }
+                return MessageBody.To;
             }
         }
 
@@ -108,8 +102,7 @@ namespace Utilities.Web.Email.Pop3
         {
             get
             {
-                try { return MessageBody.Subject; }
-                catch { throw; }
+                return MessageBody.Subject;
             }
         }
         #endregion

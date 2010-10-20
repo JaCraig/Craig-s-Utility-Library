@@ -46,47 +46,43 @@ namespace Utilities.Web.PingBack
             if (string.IsNullOrEmpty(Message.Source) || string.IsNullOrEmpty(Message.Target))
                 return;
 
-            try
+            HttpWebRequest Request = (HttpWebRequest)HttpWebRequest.Create(Message.Target);
+            Request.Credentials = CredentialCache.DefaultNetworkCredentials;
+            HttpWebResponse Response = (HttpWebResponse)Request.GetResponse();
+            string PingURL = (!string.IsNullOrEmpty(Response.Headers["x-pingback"])) ? Response.Headers["x-pingback"] : Response.Headers["pingback"];
+            Uri URIUsing;
+            if (!string.IsNullOrEmpty(PingURL) && Uri.TryCreate(PingURL, UriKind.Absolute, out URIUsing))
             {
-                HttpWebRequest Request = (HttpWebRequest)HttpWebRequest.Create(Message.Target);
-                Request.Credentials = CredentialCache.DefaultNetworkCredentials;
-                HttpWebResponse Response = (HttpWebResponse)Request.GetResponse();
-                string PingURL = (!string.IsNullOrEmpty(Response.Headers["x-pingback"])) ? Response.Headers["x-pingback"] : Response.Headers["pingback"];
-                Uri URIUsing;
-                if (!string.IsNullOrEmpty(PingURL) && Uri.TryCreate(PingURL, UriKind.Absolute, out URIUsing))
+                Request = (HttpWebRequest)HttpWebRequest.Create(URIUsing);
+                Request.Method = "POST";
+                Request.Timeout = 10000;
+                Request.ContentType = "text/xml";
+                Request.ProtocolVersion = HttpVersion.Version11;
+                Request.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 6.0)";
+                using (Stream StreamUsing = (Stream)Request.GetRequestStream())
                 {
-                    Request = (HttpWebRequest)HttpWebRequest.Create(URIUsing);
-                    Request.Method = "POST";
-                    Request.Timeout = 10000;
-                    Request.ContentType = "text/xml";
-                    Request.ProtocolVersion = HttpVersion.Version11;
-                    Request.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 6.0)";
-                    using (Stream StreamUsing = (Stream)Request.GetRequestStream())
+                    using (XmlTextWriter Writer = new XmlTextWriter(StreamUsing, Encoding.ASCII))
                     {
-                        using (XmlTextWriter Writer = new XmlTextWriter(StreamUsing, Encoding.ASCII))
-                        {
-                            Writer.WriteStartDocument(true);
-                            Writer.WriteStartElement("methodCall");
-                            Writer.WriteElementString("methodName", "pingback.ping");
-                            Writer.WriteStartElement("params");
-                            Writer.WriteStartElement("param");
-                            Writer.WriteStartElement("value");
-                            Writer.WriteElementString("string", Message.Source);
-                            Writer.WriteEndElement();
-                            Writer.WriteEndElement();
-                            Writer.WriteStartElement("param");
-                            Writer.WriteStartElement("value");
-                            Writer.WriteElementString("string", Message.Target);
-                            Writer.WriteEndElement();
-                            Writer.WriteEndElement();
-                            Writer.WriteEndElement();
-                            Writer.WriteEndElement();
-                        }
-                        Request.GetResponse();
+                        Writer.WriteStartDocument(true);
+                        Writer.WriteStartElement("methodCall");
+                        Writer.WriteElementString("methodName", "pingback.ping");
+                        Writer.WriteStartElement("params");
+                        Writer.WriteStartElement("param");
+                        Writer.WriteStartElement("value");
+                        Writer.WriteElementString("string", Message.Source);
+                        Writer.WriteEndElement();
+                        Writer.WriteEndElement();
+                        Writer.WriteStartElement("param");
+                        Writer.WriteStartElement("value");
+                        Writer.WriteElementString("string", Message.Target);
+                        Writer.WriteEndElement();
+                        Writer.WriteEndElement();
+                        Writer.WriteEndElement();
+                        Writer.WriteEndElement();
                     }
+                    Request.GetResponse();
                 }
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -96,11 +92,7 @@ namespace Utilities.Web.PingBack
         /// <returns>The ping back message</returns>
         public static PingBackMessage GetPingBack(HttpContext Context)
         {
-            try
-            {
-                return GetPingBack(Context.Request);
-            }
-            catch { throw; }
+            return GetPingBack(Context.Request);
         }
 
         /// <summary>
@@ -110,31 +102,27 @@ namespace Utilities.Web.PingBack
         /// <returns>The ping back message</returns>
         public static PingBackMessage GetPingBack(HttpRequest Request)
         {
-            try
+            PingBackMessage TempMessage = new PingBackMessage();
+            TempMessage.Source = "";
+            TempMessage.Target = "";
+            string RequestText = GetRequest(Request);
+            if (!RequestText.Contains("<methodName>pingback.ping</methodName>"))
             {
-                PingBackMessage TempMessage = new PingBackMessage();
-                TempMessage.Source = "";
-                TempMessage.Target = "";
-                string RequestText = GetRequest(Request);
-                if (!RequestText.Contains("<methodName>pingback.ping</methodName>"))
-                {
-                    return TempMessage;
-                }
-                XmlDocument XMLDocument = new XmlDocument();
-                XMLDocument.LoadXml(RequestText);
-                XmlNodeList Nodes = XMLDocument.SelectNodes("methodCall/params/param/value/string");
-                if (Nodes == null)
-                {
-                    Nodes = XMLDocument.SelectNodes("methodCall/params/param/value");
-                }
-                if (Nodes != null)
-                {
-                    TempMessage.Source = Nodes[0].InnerText.Trim();
-                    TempMessage.Target = Nodes[1].InnerText.Trim();
-                }
                 return TempMessage;
             }
-            catch { throw; }
+            XmlDocument XMLDocument = new XmlDocument();
+            XMLDocument.LoadXml(RequestText);
+            XmlNodeList Nodes = XMLDocument.SelectNodes("methodCall/params/param/value/string");
+            if (Nodes == null)
+            {
+                Nodes = XMLDocument.SelectNodes("methodCall/params/param/value");
+            }
+            if (Nodes != null)
+            {
+                TempMessage.Source = Nodes[0].InnerText.Trim();
+                TempMessage.Target = Nodes[1].InnerText.Trim();
+            }
+            return TempMessage;
         }
 
         /// <summary>
@@ -143,11 +131,7 @@ namespace Utilities.Web.PingBack
         /// <param name="Context">HttpContext of the item</param>
         public static void SendSuccess(HttpContext Context)
         {
-            try
-            {
-                SendSuccess(Context.Response);
-            }
-            catch { throw; }
+            SendSuccess(Context.Response);
         }
         /// <summary>
         /// Sends an error message
@@ -157,11 +141,7 @@ namespace Utilities.Web.PingBack
         /// <param name="ErrorMessage">Error Message</param>
         public static void SendError(HttpContext Context, int Code, string ErrorMessage)
         {
-            try
-            {
-                SendError(Context.Response, Code, ErrorMessage);
-            }
-            catch { throw; }
+            SendError(Context.Response, Code, ErrorMessage);
         }
 
         /// <summary>
@@ -170,11 +150,7 @@ namespace Utilities.Web.PingBack
         /// <param name="Response">Response for the item</param>
         public static void SendSuccess(HttpResponse Response)
         {
-            try
-            {
-                Response.Write("<methodResponse><params><param><value><string>Success</string></value></param></params></methodResponse>");
-            }
-            catch { throw; }
+            Response.Write("<methodResponse><params><param><value><string>Success</string></value></param></params></methodResponse>");
         }
 
         /// <summary>
@@ -185,15 +161,11 @@ namespace Utilities.Web.PingBack
         /// <param name="ErrorMessage">Error message</param>
         public static void SendError(HttpResponse Response, int Code, string ErrorMessage)
         {
-            try
-            {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<?xml version=\"1.0\"?><methodResponse><fault><value><struct><member><name>faultCode</name>");
-                Builder.Append("<value><int>").Append(Code).Append("</int></value></member><member><name>faultString</name>");
-                Builder.Append("<value><string>").Append(ErrorMessage).Append("</string></value></member></struct></value></fault></methodResponse>");
-                Response.Write(Builder.ToString());
-            }
-            catch { throw; }
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<?xml version=\"1.0\"?><methodResponse><fault><value><struct><member><name>faultCode</name>");
+            Builder.Append("<value><int>").Append(Code).Append("</int></value></member><member><name>faultString</name>");
+            Builder.Append("<value><string>").Append(ErrorMessage).Append("</string></value></member></struct></value></fault></methodResponse>");
+            Response.Write(Builder.ToString());
         }
 
         #endregion
@@ -202,22 +174,14 @@ namespace Utilities.Web.PingBack
 
         private static string GetRequest(HttpContext Context)
         {
-            try
-            {
-                return GetRequest(Context.Request);
-            }
-            catch { throw; }
+            return GetRequest(Context.Request);
         }
 
         private static string GetRequest(HttpRequest Request)
         {
-            try
-            {
-                byte[] TempBuffer = new byte[Request.InputStream.Length];
-                Request.InputStream.Read(TempBuffer, 0, TempBuffer.Length);
-                return System.Text.Encoding.Default.GetString(TempBuffer);
-            }
-            catch { throw; }
+            byte[] TempBuffer = new byte[Request.InputStream.Length];
+            Request.InputStream.Read(TempBuffer, 0, TempBuffer.Length);
+            return System.Text.Encoding.Default.GetString(TempBuffer);
         }
 
         #endregion

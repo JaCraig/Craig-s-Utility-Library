@@ -41,46 +41,42 @@ namespace Utilities.Encryption
         /// <param name="Input">String to encrypt</param>
         /// <param name="Key">Key to encrypt with (must be at least 8 bytes)</param>
         /// <returns>An encrypted string</returns>
-        public static string Encrypt(string Input,string Key)
+        public static string Encrypt(string Input, string Key)
         {
             if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Key))
             {
                 throw new ArgumentNullException("The input/key string can not be empty.");
             }
-            try
+            ASCIIEncoding Encoding = new ASCIIEncoding();
+            byte[] KeyHashArray = Encoding.GetBytes(Key);
+            byte[] KeyArray = new byte[8];
+            byte[] Key2Array = new byte[8];
+            SHA1CryptoServiceProvider SHA = new SHA1CryptoServiceProvider();
+            byte[] Hash = SHA.ComputeHash(KeyHashArray);
+            SHA.Clear();
+            for (int x = 0; x < 8; ++x)
             {
-                ASCIIEncoding Encoding = new ASCIIEncoding();
-                byte[] KeyHashArray = Encoding.GetBytes(Key);
-                byte[] KeyArray = new byte[8];
-                byte[] Key2Array = new byte[8];
-                SHA1CryptoServiceProvider SHA = new SHA1CryptoServiceProvider();
-                byte[] Hash = SHA.ComputeHash(KeyHashArray);
-                SHA.Clear();
-                for (int x = 0; x < 8; ++x)
+                KeyArray[x] = Hash[x];
+                Key2Array[x] = Hash[x + 8];
+            }
+            byte[] Text = null;
+            DESCryptoServiceProvider Encryptor = new DESCryptoServiceProvider();
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                using (CryptoStream DESStream = new CryptoStream(Stream, Encryptor.CreateEncryptor(KeyArray, Key2Array), CryptoStreamMode.Write))
                 {
-                    KeyArray[x] = Hash[x];
-                    Key2Array[x] = Hash[x + 8];
-                }
-                byte[] Text = null;
-                DESCryptoServiceProvider Encryptor = new DESCryptoServiceProvider();
-                using (MemoryStream Stream = new MemoryStream())
-                {
-                    using (CryptoStream DESStream = new CryptoStream(Stream, Encryptor.CreateEncryptor(KeyArray, Key2Array), CryptoStreamMode.Write))
+                    using (StreamWriter Writer = new StreamWriter(DESStream))
                     {
-                        using (StreamWriter Writer = new StreamWriter(DESStream))
-                        {
-                            Writer.Write(Input);
-                            Writer.Flush();
-                            DESStream.FlushFinalBlock();
-                            Writer.Flush();
-                            Text = Stream.GetBuffer();
-                        }
+                        Writer.Write(Input);
+                        Writer.Flush();
+                        DESStream.FlushFinalBlock();
+                        Writer.Flush();
+                        Text = Stream.GetBuffer();
                     }
                 }
-                Encryptor.Clear();
-                return Convert.ToBase64String(Text, 0, (int)Text.Length);
             }
-            catch { throw; }
+            Encryptor.Clear();
+            return Convert.ToBase64String(Text, 0, (int)Text.Length);
         }
 
         /// <summary>
@@ -89,42 +85,38 @@ namespace Utilities.Encryption
         /// <param name="Input">Input string</param>
         /// <param name="Key">Key to use in decryption (must be at least 8 bytes)</param>
         /// <returns>A decrypted string</returns>
-        public static string Decrypt(string Input,string Key)
+        public static string Decrypt(string Input, string Key)
         {
             if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Key))
             {
                 throw new ArgumentNullException("The input/key string can not be empty.");
             }
-            try
+            ASCIIEncoding Encoding = new ASCIIEncoding();
+            byte[] KeyHashArray = Encoding.GetBytes(Key);
+            byte[] KeyArray = new byte[8];
+            byte[] Key2Array = new byte[8];
+            SHA1CryptoServiceProvider SHA = new SHA1CryptoServiceProvider();
+            byte[] Hash = SHA.ComputeHash(KeyHashArray);
+            SHA.Clear();
+            for (int x = 0; x < 8; ++x)
             {
-                ASCIIEncoding Encoding = new ASCIIEncoding();
-                byte[] KeyHashArray = Encoding.GetBytes(Key);
-                byte[] KeyArray = new byte[8];
-                byte[] Key2Array = new byte[8];
-                SHA1CryptoServiceProvider SHA = new SHA1CryptoServiceProvider();
-                byte[] Hash = SHA.ComputeHash(KeyHashArray);
-                SHA.Clear();
-                for (int x = 0; x < 8; ++x)
+                KeyArray[x] = Hash[x];
+                Key2Array[x] = Hash[x + 8];
+            }
+            string Text = null;
+            DESCryptoServiceProvider Decryptor = new DESCryptoServiceProvider();
+            using (MemoryStream Stream = new MemoryStream(Convert.FromBase64String(Input)))
+            {
+                using (CryptoStream DESStream = new CryptoStream(Stream, Decryptor.CreateDecryptor(KeyArray, Key2Array), CryptoStreamMode.Read))
                 {
-                    KeyArray[x] = Hash[x];
-                    Key2Array[x] = Hash[x + 8];
-                }
-                string Text = null;
-                DESCryptoServiceProvider Decryptor = new DESCryptoServiceProvider();
-                using (MemoryStream Stream = new MemoryStream(Convert.FromBase64String(Input)))
-                {
-                    using (CryptoStream DESStream = new CryptoStream(Stream, Decryptor.CreateDecryptor(KeyArray, Key2Array), CryptoStreamMode.Read))
+                    using (StreamReader Reader = new StreamReader(DESStream))
                     {
-                        using (StreamReader Reader = new StreamReader(DESStream))
-                        {
-                            Text = Reader.ReadToEnd();
-                        }
+                        Text = Reader.ReadToEnd();
                     }
                 }
-                Decryptor.Clear();
-                return Text;
             }
-            catch { throw; }
+            Decryptor.Clear();
+            return Text;
         }
 
         #endregion

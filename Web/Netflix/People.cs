@@ -40,39 +40,35 @@ namespace Utilities.Web.Netflix
         /// <param name="XMLContent">XML content</param>
         public People(string XMLContent)
         {
-            try
-            {
-                XmlDocument Document = new XmlDocument();
-                Document.LoadXml(XMLContent);
-                PeopleList = new List<Person>();
+            XmlDocument Document = new XmlDocument();
+            Document.LoadXml(XMLContent);
+            PeopleList = new List<Person>();
 
-                foreach (XmlNode Children in Document.ChildNodes)
+            foreach (XmlNode Children in Document.ChildNodes)
+            {
+                if (Children.Name.Equals("people", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (Children.Name.Equals("people", StringComparison.CurrentCultureIgnoreCase))
+                    foreach (XmlNode Child in Children.ChildNodes)
                     {
-                        foreach (XmlNode Child in Children.ChildNodes)
+                        if (Child.Name.Equals("person", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            if (Child.Name.Equals("person", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                PeopleList.Add(new Person((XmlElement)Child));
-                            }
-                            else if (Child.Name.Equals("number_of_results", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                NumberOfResults = int.Parse(Child.InnerText);
-                            }
-                            else if (Child.Name.Equals("start_index", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                StartIndex = int.Parse(Child.InnerText);
-                            }
-                            else if (Child.Name.Equals("results_per_page", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                ResultsPerPage = int.Parse(Child.InnerText);
-                            }
+                            PeopleList.Add(new Person((XmlElement)Child));
+                        }
+                        else if (Child.Name.Equals("number_of_results", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            NumberOfResults = int.Parse(Child.InnerText);
+                        }
+                        else if (Child.Name.Equals("start_index", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            StartIndex = int.Parse(Child.InnerText);
+                        }
+                        else if (Child.Name.Equals("results_per_page", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            ResultsPerPage = int.Parse(Child.InnerText);
                         }
                     }
                 }
             }
-            catch { throw; }
         }
 
         #endregion

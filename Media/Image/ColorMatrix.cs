@@ -20,10 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 #endregion
@@ -64,25 +60,21 @@ namespace Utilities.Media.Image
         /// <returns>An image with the color matrix applied</returns>
         public Bitmap Apply(Bitmap OriginalImage)
         {
-            try
+            Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
+            using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
             {
-                Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
-                using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
+                System.Drawing.Imaging.ColorMatrix NewColorMatrix = new System.Drawing.Imaging.ColorMatrix(Matrix);
+                using (ImageAttributes Attributes = new ImageAttributes())
                 {
-                    System.Drawing.Imaging.ColorMatrix NewColorMatrix = new System.Drawing.Imaging.ColorMatrix(Matrix);
-                    using (ImageAttributes Attributes = new ImageAttributes())
-                    {
-                        Attributes.SetColorMatrix(NewColorMatrix);
-                        NewGraphics.DrawImage(OriginalImage,
-                            new System.Drawing.Rectangle(0, 0, OriginalImage.Width, OriginalImage.Height),
-                            0, 0, OriginalImage.Width, OriginalImage.Height,
-                            GraphicsUnit.Pixel,
-                            Attributes);
-                    }
+                    Attributes.SetColorMatrix(NewColorMatrix);
+                    NewGraphics.DrawImage(OriginalImage,
+                        new System.Drawing.Rectangle(0, 0, OriginalImage.Width, OriginalImage.Height),
+                        0, 0, OriginalImage.Width, OriginalImage.Height,
+                        GraphicsUnit.Pixel,
+                        Attributes);
                 }
-                return NewBitmap;
             }
-            catch { throw; }
+            return NewBitmap;
         }
 
         #endregion

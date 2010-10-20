@@ -22,8 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Drawing;
-using Utilities.Media.Image.Procedural;
 using System.Drawing.Imaging;
+using Utilities.Media.Image.Procedural;
 #endregion
 
 namespace Utilities.Media.Image

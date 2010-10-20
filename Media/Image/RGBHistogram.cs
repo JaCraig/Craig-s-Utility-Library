@@ -38,13 +38,9 @@ namespace Utilities.Media.Image
         /// </summary>
         public RGBHistogram()
         {
-            try
-            {
-                R = new float[256];
-                G = new float[256];
-                B = new float[256];
-            }
-            catch { throw; }
+            R = new float[256];
+            G = new float[256];
+            B = new float[256];
         }
 
         /// <summary>
@@ -53,14 +49,10 @@ namespace Utilities.Media.Image
         /// <param name="Image">Image to load</param>
         public RGBHistogram(Bitmap Image)
         {
-            try
-            {
-                R = new float[256];
-                G = new float[256];
-                B = new float[256];
-                LoadImage(Image);
-            }
-            catch { throw; }
+            R = new float[256];
+            G = new float[256];
+            B = new float[256];
+            LoadImage(Image);
         }
 
         #endregion
@@ -73,31 +65,27 @@ namespace Utilities.Media.Image
         /// <param name="ImageUsing">Image to load</param>
         public void LoadImage(Bitmap ImageUsing)
         {
-            try
+            BitmapData OldData = Image.LockImage(ImageUsing);
+            int PixelSize = Image.GetPixelSize(OldData);
+            Width = ImageUsing.Width;
+            Height = ImageUsing.Height;
+            for (int x = 0; x < 256; ++x)
             {
-                BitmapData OldData = Image.LockImage(ImageUsing);
-                int PixelSize = Image.GetPixelSize(OldData);
-                Width = ImageUsing.Width;
-                Height = ImageUsing.Height;
-                for (int x = 0; x < 256; ++x)
-                {
-                    R[x] = 0;
-                    G[x] = 0;
-                    B[x] = 0;
-                }
-                for (int x = 0; x < ImageUsing.Width; ++x)
-                {
-                    for (int y = 0; y < ImageUsing.Height; ++y)
-                    {
-                        Color TempColor = Image.GetPixel(OldData, x, y, PixelSize);
-                        ++R[(int)TempColor.R];
-                        ++G[(int)TempColor.G];
-                        ++B[(int)TempColor.B];
-                    }
-                }
-                Image.UnlockImage(ImageUsing, OldData);
+                R[x] = 0;
+                G[x] = 0;
+                B[x] = 0;
             }
-            catch { throw; }
+            for (int x = 0; x < ImageUsing.Width; ++x)
+            {
+                for (int y = 0; y < ImageUsing.Height; ++y)
+                {
+                    Color TempColor = Image.GetPixel(OldData, x, y, PixelSize);
+                    ++R[(int)TempColor.R];
+                    ++G[(int)TempColor.G];
+                    ++B[(int)TempColor.B];
+                }
+            }
+            Image.UnlockImage(ImageUsing, OldData);
         }
 
         /// <summary>
@@ -105,17 +93,13 @@ namespace Utilities.Media.Image
         /// </summary>
         public void Normalize()
         {
-            try
+            float TotalPixels = Width * Height;
+            for (int x = 0; x < 256; ++x)
             {
-                float TotalPixels = Width * Height;
-                for (int x = 0; x < 256; ++x)
-                {
-                    R[x] /= TotalPixels;
-                    G[x] /= TotalPixels;
-                    B[x] /= TotalPixels;
-                }
+                R[x] /= TotalPixels;
+                G[x] /= TotalPixels;
+                B[x] /= TotalPixels;
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -123,29 +107,25 @@ namespace Utilities.Media.Image
         /// </summary>
         public void Equalize()
         {
-            try
-            {
-                float TotalPixels = Width * Height;
+            float TotalPixels = Width * Height;
 
-                float PreviousR = R[0];
-                R[0] = R[0] * 256 / TotalPixels;
-                float PreviousG = G[0];
-                G[0] = G[0] * 256 / TotalPixels;
-                float PreviousB = B[0];
-                B[0] = B[0] * 256 / TotalPixels;
-                for (int x = 1; x < 256; ++x)
-                {
-                    PreviousR += R[x];
-                    PreviousG += G[x];
-                    PreviousB += B[x];
-                    R[x] = PreviousR * 256 / TotalPixels;
-                    G[x] = PreviousG * 256 / TotalPixels;
-                    B[x] = PreviousB * 256 / TotalPixels;
-                }
-                Width = 256;
-                Height = 1;
+            float PreviousR = R[0];
+            R[0] = R[0] * 256 / TotalPixels;
+            float PreviousG = G[0];
+            G[0] = G[0] * 256 / TotalPixels;
+            float PreviousB = B[0];
+            B[0] = B[0] * 256 / TotalPixels;
+            for (int x = 1; x < 256; ++x)
+            {
+                PreviousR += R[x];
+                PreviousG += G[x];
+                PreviousB += B[x];
+                R[x] = PreviousR * 256 / TotalPixels;
+                G[x] = PreviousG * 256 / TotalPixels;
+                B[x] = PreviousB * 256 / TotalPixels;
             }
-            catch { throw; }
+            Width = 256;
+            Height = 1;
         }
 
         #endregion
@@ -160,17 +140,17 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Red values
         /// </summary>
-        public float[] R{get;set;}
+        public float[] R { get; set; }
 
         /// <summary>
         /// Green values
         /// </summary>
-        public float[] G{get;set;}
+        public float[] G { get; set; }
 
         /// <summary>
         /// Blue values
         /// </summary>
-        public float[] B{get;set;}
+        public float[] B { get; set; }
 
         #endregion
     }

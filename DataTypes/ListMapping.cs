@@ -31,7 +31,7 @@ namespace Utilities.DataTypes
     /// </summary>
     /// <typeparam name="T1">Key value</typeparam>
     /// <typeparam name="T2">Type that the list should contain</typeparam>
-    public class ListMapping<T1,T2>
+    public class ListMapping<T1, T2>
     {
         #region Constructors
 
@@ -59,19 +59,15 @@ namespace Utilities.DataTypes
         /// <param name="Value">The value to add</param>
         public virtual void Add(T1 Key, T2 Value)
         {
-            try
+            if (Items.ContainsKey(Key))
             {
-                if (Items.ContainsKey(Key))
-                {
-                    Items[Key].Add(Value);
-                }
-                else
-                {
-                    Items.Add(Key, new List<T2>());
-                    Items[Key].Add(Value);
-                }
+                Items[Key].Add(Value);
             }
-            catch { throw; }
+            else
+            {
+                Items.Add(Key, new List<T2>());
+                Items[Key].Add(Value);
+            }
         }
 
         /// <summary>
@@ -81,11 +77,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it exists, false otherwise</returns>
         public virtual bool ContainsKey(T1 key)
         {
-            try
-            {
-                return Items.ContainsKey(key);
-            }
-            catch { throw; }
+            return Items.ContainsKey(key);
         }
 
         /// <summary>
@@ -93,7 +85,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public virtual ICollection<T1> Keys
         {
-            get { try { return Items.Keys; } catch { throw; } }
+            get { return Items.Keys; }
         }
 
         /// <summary>
@@ -103,11 +95,7 @@ namespace Utilities.DataTypes
         /// <returns>True if the key is found, false otherwise</returns>
         public virtual bool Remove(T1 key)
         {
-            try
-            {
-                return Items.Remove(key);
-            }
-            catch { throw; }
+            return Items.Remove(key);
         }
 
         /// <summary>
@@ -119,19 +107,11 @@ namespace Utilities.DataTypes
         {
             get
             {
-                try
-                {
-                    return Items[key];
-                }
-                catch { throw; }
+                return Items[key];
             }
             set
             {
-                try
-                {
-                    Items[key] = value;
-                }
-                catch { throw; }
+                Items[key] = value;
             }
         }
 
@@ -140,11 +120,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public virtual void Clear()
         {
-            try 
-            { 
-                Items.Clear();
-            }
-            catch { throw; }
+            Items.Clear();
         }
 
         /// <summary>
@@ -152,7 +128,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public virtual int Count
         {
-            get { try { return Items.Count; } catch { throw; } }
+            get { return Items.Count; }
         }
 
 

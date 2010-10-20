@@ -30,7 +30,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Phone menu class
     /// </summary>
-    public class Menu:IDisplay
+    public class Menu : IDisplay
     {
         #region Constructor
 
@@ -85,43 +85,39 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            if (string.IsNullOrEmpty(ImageURL))
             {
-                StringBuilder Builder = new StringBuilder();
-                if (string.IsNullOrEmpty(ImageURL))
-                {
-                    Builder.Append("<CiscoIPPhoneMenu>");
-                }
-                else
-                {
-                    Builder.Append("<CiscoIPPhoneGraphicFileMenu>");
-                }
-                Builder.Append("<Title>").Append(Title).Append("</Title><Prompt>")
-                    .Append(Prompt).Append("</Prompt>");
-                if (!string.IsNullOrEmpty(ImageURL))
-                {
-                    Builder.Append("<LocationX>").Append(X).Append("</LocationX><LocationY>").Append(Y)
-                        .Append("</LocationY><URL>").Append(ImageURL).Append("</URL>");
-                }
-                for (int x = 0; x < MenuItems.Count; ++x)
-                {
-                    Builder.Append(MenuItems[x].ToString());
-                }
-                for (int x = 0; x < SoftKeys.Count; ++x)
-                {
-                    Builder.Append(SoftKeys[x].ToString());
-                }
-                if (string.IsNullOrEmpty(ImageURL))
-                {
-                    Builder.Append("</CiscoIPPhoneMenu>");
-                }
-                else
-                {
-                    Builder.Append("</CiscoIPPhoneGraphicFileMenu>");
-                }
-                return Builder.ToString();
+                Builder.Append("<CiscoIPPhoneMenu>");
             }
-            catch { throw; }
+            else
+            {
+                Builder.Append("<CiscoIPPhoneGraphicFileMenu>");
+            }
+            Builder.Append("<Title>").Append(Title).Append("</Title><Prompt>")
+                .Append(Prompt).Append("</Prompt>");
+            if (!string.IsNullOrEmpty(ImageURL))
+            {
+                Builder.Append("<LocationX>").Append(X).Append("</LocationX><LocationY>").Append(Y)
+                    .Append("</LocationY><URL>").Append(ImageURL).Append("</URL>");
+            }
+            for (int x = 0; x < MenuItems.Count; ++x)
+            {
+                Builder.Append(MenuItems[x].ToString());
+            }
+            for (int x = 0; x < SoftKeys.Count; ++x)
+            {
+                Builder.Append(SoftKeys[x].ToString());
+            }
+            if (string.IsNullOrEmpty(ImageURL))
+            {
+                Builder.Append("</CiscoIPPhoneMenu>");
+            }
+            else
+            {
+                Builder.Append("</CiscoIPPhoneGraphicFileMenu>");
+            }
+            return Builder.ToString();
         }
 
         #endregion

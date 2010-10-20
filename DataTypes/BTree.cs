@@ -31,7 +31,7 @@ namespace Utilities.DataTypes
     /// Binary tree
     /// </summary>
     /// <typeparam name="T">The type held by the nodes</typeparam>
-    public class BinaryTree<T> : ICollection<T>,IEnumerable<T> where T : IComparable<T>
+    public class BinaryTree<T> : ICollection<T>, IEnumerable<T> where T : IComparable<T>
     {
         #region Constructor
 
@@ -108,9 +108,9 @@ namespace Utilities.DataTypes
 
         public IEnumerator<T> GetEnumerator()
         {
-            foreach (TreeNode<T> TempNode in Traversal(Root)) 
-            { 
-                yield return TempNode.Value; 
+            foreach (TreeNode<T> TempNode in Traversal(Root))
+            {
+                yield return TempNode.Value;
             }
         }
 
@@ -120,9 +120,9 @@ namespace Utilities.DataTypes
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            foreach (TreeNode<T> TempNode in Traversal(Root)) 
+            foreach (TreeNode<T> TempNode in Traversal(Root))
             {
-                yield return TempNode.Value; 
+                yield return TempNode.Value;
             }
         }
 
@@ -132,19 +132,15 @@ namespace Utilities.DataTypes
 
         public void Add(T item)
         {
-            try
+            if (Root == null)
             {
-                if (Root == null)
-                {
-                    Root = new TreeNode<T>(item);
-                    ++NumberOfNodes;
-                }
-                else
-                {
-                    Insert(item);
-                }
+                Root = new TreeNode<T>(item);
+                ++NumberOfNodes;
             }
-            catch { throw; }
+            else
+            {
+                Insert(item);
+            }
         }
 
         public void Clear()
@@ -155,41 +151,33 @@ namespace Utilities.DataTypes
 
         public bool Contains(T item)
         {
-            try
-            {
-                if (IsEmpty)
-                    return false;
-
-                TreeNode<T> TempNode = Root;
-                while (TempNode != null)
-                {
-                    int ComparedValue = TempNode.Value.CompareTo(item);
-                    if (ComparedValue == 0)
-                        return true;
-                    else if (ComparedValue < 0)
-                        TempNode = TempNode.Left;
-                    else
-                        TempNode = TempNode.Right;
-                }
+            if (IsEmpty)
                 return false;
+
+            TreeNode<T> TempNode = Root;
+            while (TempNode != null)
+            {
+                int ComparedValue = TempNode.Value.CompareTo(item);
+                if (ComparedValue == 0)
+                    return true;
+                else if (ComparedValue < 0)
+                    TempNode = TempNode.Left;
+                else
+                    TempNode = TempNode.Right;
             }
-            catch { throw; }
+            return false;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            try
+            T[] TempArray = new T[NumberOfNodes];
+            int Counter = 0;
+            foreach (T Value in this)
             {
-                T[] TempArray = new T[NumberOfNodes];
-                int Counter = 0;
-                foreach (T Value in this)
-                {
-                    TempArray[Counter] = Value;
-                    ++Counter;
-                }
-                Array.Copy(TempArray, 0, array, arrayIndex, this.NumberOfNodes);
+                TempArray[Counter] = Value;
+                ++Counter;
             }
-            catch { throw; }
+            Array.Copy(TempArray, 0, array, arrayIndex, this.NumberOfNodes);
         }
 
         public int Count
@@ -204,44 +192,40 @@ namespace Utilities.DataTypes
 
         public bool Remove(T item)
         {
-            try
+            TreeNode<T> Item = Find(item);
+            if (Item == null)
+                return false;
+            --NumberOfNodes;
+            List<T> Values = new List<T>();
+            foreach (TreeNode<T> TempNode in Traversal(Item.Left))
             {
-                TreeNode<T> Item = Find(item);
-                if (Item == null)
-                    return false;
-                --NumberOfNodes;
-                List<T> Values = new List<T>();
-                foreach (TreeNode<T> TempNode in Traversal(Item.Left))
+                Values.Add(TempNode.Value);
+            }
+            foreach (TreeNode<T> TempNode in Traversal(Item.Right))
+            {
+                Values.Add(TempNode.Value);
+            }
+            if (Item.Parent != null)
+            {
+                if (Item.Parent.Left == Item)
                 {
-                    Values.Add(TempNode.Value);
-                }
-                foreach (TreeNode<T> TempNode in Traversal(Item.Right))
-                {
-                    Values.Add(TempNode.Value);
-                }
-                if (Item.Parent != null)
-                {
-                    if (Item.Parent.Left == Item)
-                    {
-                        Item.Parent.Left = null;
-                    }
-                    else
-                    {
-                        Item.Parent.Right = null;
-                    }
-                    Item.Parent = null;
+                    Item.Parent.Left = null;
                 }
                 else
                 {
-                    Root = null;
+                    Item.Parent.Right = null;
                 }
-                foreach (T Value in Values)
-                {
-                    this.Add(Value);
-                }
-                return true;
+                Item.Parent = null;
             }
-            catch { throw; }
+            else
+            {
+                Root = null;
+            }
+            foreach (T Value in Values)
+            {
+                this.Add(Value);
+            }
+            return true;
         }
 
         #endregion
@@ -255,16 +239,12 @@ namespace Utilities.DataTypes
         /// <returns>The node if it is found</returns>
         protected TreeNode<T> Find(T item)
         {
-            try
-            {
-                foreach (TreeNode<T> Item in Traversal(Root))
-                    if (Item.Value.Equals(item))
-                        return Item;
-                return null;
-            }
-            catch { throw; }
+            foreach (TreeNode<T> Item in Traversal(Root))
+                if (Item.Value.Equals(item))
+                    return Item;
+            return null;
         }
-        
+
         /// <summary>
         /// Traverses the list
         /// </summary>
@@ -291,46 +271,42 @@ namespace Utilities.DataTypes
         /// <param name="item">item to insert</param>
         protected void Insert(T item)
         {
-            try
+            TreeNode<T> TempNode = Root;
+            bool Found = false;
+            while (!Found)
             {
-                TreeNode<T> TempNode = Root;
-                bool Found = false;
-                while (!Found)
+                int ComparedValue = TempNode.Value.CompareTo(item);
+                if (ComparedValue < 0)
                 {
-                    int ComparedValue = TempNode.Value.CompareTo(item);
-                    if (ComparedValue < 0)
+                    if (TempNode.Left == null)
                     {
-                        if (TempNode.Left == null)
-                        {
-                            TempNode.Left = new TreeNode<T>(item, TempNode);
-                            ++NumberOfNodes;
-                            return;
-                        }
-                        else
-                        {
-                            TempNode = TempNode.Left;
-                        }
+                        TempNode.Left = new TreeNode<T>(item, TempNode);
+                        ++NumberOfNodes;
+                        return;
                     }
-                    else if (ComparedValue > 0)
+                    else
                     {
-                        if (TempNode.Right == null)
-                        {
-                            TempNode.Right = new TreeNode<T>(item, TempNode);
-                            ++NumberOfNodes;
-                            return;
-                        }
-                        else
-                        {
-                            TempNode = TempNode.Right;
-                        }
+                        TempNode = TempNode.Left;
+                    }
+                }
+                else if (ComparedValue > 0)
+                {
+                    if (TempNode.Right == null)
+                    {
+                        TempNode.Right = new TreeNode<T>(item, TempNode);
+                        ++NumberOfNodes;
+                        return;
                     }
                     else
                     {
                         TempNode = TempNode.Right;
                     }
                 }
+                else
+                {
+                    TempNode = TempNode.Right;
+                }
             }
-            catch { throw; }
         }
 
         #endregion

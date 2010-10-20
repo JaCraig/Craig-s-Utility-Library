@@ -57,11 +57,7 @@ namespace Utilities.Math
         /// <returns>True if it is, false otherwise</returns>
         public bool Contains(Set<T> Set)
         {
-            try
-            {
-                return Set.IsSubset(this);
-            }
-            catch { throw; }
+            return Set.IsSubset(this);
         }
 
         /// <summary>
@@ -71,19 +67,15 @@ namespace Utilities.Math
         /// <returns>True if it is, false otherwise</returns>
         public bool IsSubset(Set<T> Set)
         {
-            try
-            {
-                if (Set == null || this.NumberItems > Set.NumberItems)
-                    return false;
+            if (Set == null || this.NumberItems > Set.NumberItems)
+                return false;
 
-                for (int x = 0; x < this.NumberItems; ++x)
-                {
-                    if (!Set.Contains(this.Items[x]))
-                        return false;
-                }
-                return true;
+            for (int x = 0; x < this.NumberItems; ++x)
+            {
+                if (!Set.Contains(this.Items[x]))
+                    return false;
             }
-            catch { throw; }
+            return true;
         }
 
         /// <summary>
@@ -93,18 +85,14 @@ namespace Utilities.Math
         /// <returns>True if they do, false otherwise</returns>
         public bool Intersect(Set<T> Set)
         {
-            try
-            {
-                if (Set == null)
-                    return false;
-                for (int x = 0; x < this.NumberItems; ++x)
-                {
-                    if (Set.Contains(this.Items[x]))
-                        return true;
-                }
+            if (Set == null)
                 return false;
+            for (int x = 0; x < this.NumberItems; ++x)
+            {
+                if (Set.Contains(this.Items[x]))
+                    return true;
             }
-            catch { throw; }
+            return false;
         }
 
         #endregion
@@ -119,26 +107,22 @@ namespace Utilities.Math
         /// <returns>The intersection of the two sets</returns>
         public static Set<T> GetIntersection(Set<T> Set1, Set<T> Set2)
         {
-            try
+            if (Set1 == null || Set2 == null || !Set1.Intersect(Set2))
+                return null;
+            Set<T> ReturnValue = new Set<T>();
+            for (int x = 0; x < Set1.NumberItems; ++x)
             {
-                if (Set1 == null || Set2 == null || !Set1.Intersect(Set2))
-                    return null;
-                Set<T> ReturnValue = new Set<T>();
-                for (int x = 0; x < Set1.NumberItems; ++x)
-                {
-                    if (Set2.Contains(Set1.Items[x]))
-                        ReturnValue.Add(Set1.Items[x]);
-                }
-
-                for (int x = 0; x < Set2.NumberItems; ++x)
-                {
-                    if (Set1.Contains(Set2.Items[x]))
-                        ReturnValue.Add(Set2.Items[x]);
-                }
-
-                return ReturnValue;
+                if (Set2.Contains(Set1.Items[x]))
+                    ReturnValue.Add(Set1.Items[x]);
             }
-            catch { throw; }
+
+            for (int x = 0; x < Set2.NumberItems; ++x)
+            {
+                if (Set1.Contains(Set2.Items[x]))
+                    ReturnValue.Add(Set2.Items[x]);
+            }
+
+            return ReturnValue;
         }
 
         /// <summary>
@@ -149,23 +133,19 @@ namespace Utilities.Math
         /// <returns>The joined sets</returns>
         public static Set<T> operator +(Set<T> Set1, Set<T> Set2)
         {
-            try
-            {
-                if (Set1 == null || Set2 == null)
-                    throw new ArgumentNullException();
+            if (Set1 == null || Set2 == null)
+                throw new ArgumentNullException();
 
-                Set<T> ReturnValue = new Set<T>();
-                for (int x = 0; x < Set1.NumberItems; ++x)
-                {
-                    ReturnValue.Add(Set1.Items[x]); ;
-                }
-                for (int x = 0; x < Set2.NumberItems; ++x)
-                {
-                    ReturnValue.Add(Set2.Items[x]); ;
-                }
-                return ReturnValue;
+            Set<T> ReturnValue = new Set<T>();
+            for (int x = 0; x < Set1.NumberItems; ++x)
+            {
+                ReturnValue.Add(Set1.Items[x]); ;
             }
-            catch { throw; }
+            for (int x = 0; x < Set2.NumberItems; ++x)
+            {
+                ReturnValue.Add(Set2.Items[x]); ;
+            }
+            return ReturnValue;
         }
 
         /// <summary>
@@ -176,20 +156,16 @@ namespace Utilities.Math
         /// <returns>The resulting set</returns>
         public static Set<T> operator -(Set<T> Set1, Set<T> Set2)
         {
-            try
-            {
-                if (Set1 == null || Set2 == null)
-                    throw new ArgumentNullException();
+            if (Set1 == null || Set2 == null)
+                throw new ArgumentNullException();
 
-                Set<T> ReturnValue = new Set<T>();
-                for (int x = 0; x < Set1.NumberItems; ++x)
-                {
-                    if (!Set2.Contains(Set1.Items[x]))
-                        ReturnValue.Add(Set1.Items[x]);
-                }
-                return ReturnValue;
+            Set<T> ReturnValue = new Set<T>();
+            for (int x = 0; x < Set1.NumberItems; ++x)
+            {
+                if (!Set2.Contains(Set1.Items[x]))
+                    ReturnValue.Add(Set1.Items[x]);
             }
-            catch { throw; }
+            return ReturnValue;
         }
 
         #endregion
@@ -198,21 +174,17 @@ namespace Utilities.Math
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("{ ");
+            string Splitter = "";
+            for (int x = 0; x < this.NumberItems; ++x)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("{ ");
-                string Splitter = "";
-                for (int x = 0; x < this.NumberItems; ++x)
-                {
-                    Builder.Append(Splitter);
-                    Builder.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, "{0}", this.Items[x]);
-                    Splitter = ",  ";
-                }
-                Builder.Append(" }");
-                return Builder.ToString();
+                Builder.Append(Splitter);
+                Builder.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, "{0}", this.Items[x]);
+                Splitter = ",  ";
             }
-            catch { throw; }
+            Builder.Append(" }");
+            return Builder.ToString();
         }
 
         #endregion

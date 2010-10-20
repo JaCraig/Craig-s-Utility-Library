@@ -37,7 +37,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Name">Computer Name</param>
         /// <param name="UserName">User name</param>
         /// <param name="Password">Password</param>
-        public Computer(string Name,string UserName="",string Password="")
+        public Computer(string Name, string UserName = "", string Password = "")
         {
             this.Name = Name;
             this.UserName = UserName;
@@ -70,15 +70,11 @@ namespace Utilities.Environment.DataTypes
         {
             get
             {
-                try
+                if (_BIOS == null)
                 {
-                    if (_BIOS == null)
-                    {
-                        _BIOS = new BIOS(Name, UserName, Password);
-                    }
-                    return _BIOS;
+                    _BIOS = new BIOS(Name, UserName, Password);
                 }
-                catch { throw; }
+                return _BIOS;
             }
         }
 
@@ -91,33 +87,28 @@ namespace Utilities.Environment.DataTypes
         {
             get
             {
-                try
+                if (_Applications == null)
                 {
-                    if (_Applications == null)
-                    {
-                        _Applications = new Applications(Name, UserName, Password);
-                    }
-                    return _Applications;
+                    _Applications = new Applications(Name, UserName, Password);
                 }
-                catch { throw; }
+                return _Applications;
             }
         }
 
         private Applications _Applications = null;
 
+        /// <summary>
+        /// Network info
+        /// </summary>
         public Network Network
         {
             get
             {
-                try
+                if (_Network == null)
                 {
-                    if (_Network == null)
-                    {
-                        _Network = new Network(Name, UserName, Password);
-                    }
-                    return _Network;
+                    _Network = new Network(Name, UserName, Password);
                 }
-                catch { throw; }
+                return _Network;
             }
         }
 

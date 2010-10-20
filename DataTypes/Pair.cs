@@ -73,28 +73,20 @@ namespace Utilities.DataTypes
 
         public override int GetHashCode()
         {
-            try
+            if (Left != null && Right != null)
             {
-                if (Left != null && Right != null)
-                {
-                    return Left.GetHashCode() ^ Right.GetHashCode();
-                }
-                return 0;
+                return Left.GetHashCode() ^ Right.GetHashCode();
             }
-            catch { throw; }
+            return 0;
         }
 
         public override bool Equals(object obj)
         {
-            try
+            if (obj != null && obj is Pair<T1, T2>)
             {
-                if (obj != null && obj is Pair<T1, T2>)
-                {
-                    return Equals(Left, ((Pair<T1, T2>)obj).Left) && Equals(Right, ((Pair<T1, T2>)obj).Right);
-                }
-                return false;
+                return Equals(Left, ((Pair<T1, T2>)obj).Left) && Equals(Right, ((Pair<T1, T2>)obj).Right);
             }
-            catch { throw; }
+            return false;
         }
 
         #endregion

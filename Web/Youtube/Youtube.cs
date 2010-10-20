@@ -23,10 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
-using Utilities.IO;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
+using Utilities.IO;
 #endregion
 
 namespace Utilities.Web.Youtube
@@ -45,45 +45,41 @@ namespace Utilities.Web.Youtube
         /// <param name="Url">The youtube url for the movie</param>
         public static void GetMovie(string FileLocation, string Url)
         {
-            try
+            string Content = FileManager.GetFileContents(new Uri(Url));
+            Regex TempRegex = new Regex("'SWF_ARGS': {(.*)}");
+            Match Match = TempRegex.Match(Content);
+            Content = Match.Value;
+            TempRegex = new Regex("\"video_id\": \"(.*?\")");
+            string VideoLocation = "http://www.youtube.com/get_video?video_id=";
+            Match = TempRegex.Match(Content);
+            VideoLocation += Match.Groups[1].Value.Replace("\"", "");
+            VideoLocation += "&l=";
+            TempRegex = new Regex("\"length_seconds\": \"(.*?\")");
+            Match = TempRegex.Match(Content);
+            VideoLocation += Match.Groups[1].Value.Replace("\"", "");
+            VideoLocation += "&t=";
+            TempRegex = new Regex("\"t\": \"(.*?\")");
+            Match = TempRegex.Match(Content);
+            VideoLocation += Match.Groups[1].Value.Replace("\"", "");
+            Stream TempStream;
+            WebClient Client;
+            FileManager.GetFileContents(new Uri(VideoLocation), out TempStream, out Client);
+            BinaryReader TempReader = new BinaryReader(TempStream);
+            List<byte> Bytes = new List<byte>();
+            while (true)
             {
-                string Content = FileManager.GetFileContents(new Uri(Url));
-                Regex TempRegex = new Regex("'SWF_ARGS': {(.*)}");
-                Match Match = TempRegex.Match(Content);
-                Content = Match.Value;
-                TempRegex = new Regex("\"video_id\": \"(.*?\")");
-                string VideoLocation = "http://www.youtube.com/get_video?video_id=";
-                Match = TempRegex.Match(Content);
-                VideoLocation += Match.Groups[1].Value.Replace("\"", "");
-                VideoLocation += "&l=";
-                TempRegex = new Regex("\"length_seconds\": \"(.*?\")");
-                Match = TempRegex.Match(Content);
-                VideoLocation += Match.Groups[1].Value.Replace("\"", "");
-                VideoLocation += "&t=";
-                TempRegex = new Regex("\"t\": \"(.*?\")");
-                Match = TempRegex.Match(Content);
-                VideoLocation += Match.Groups[1].Value.Replace("\"", "");
-                Stream TempStream;
-                WebClient Client;
-                FileManager.GetFileContents(new Uri(VideoLocation), out TempStream, out Client);
-                BinaryReader TempReader = new BinaryReader(TempStream);
-                List<byte> Bytes = new List<byte>();
-                while (true)
+                byte[] Buffer = new byte[1024];
+                int Length = TempReader.Read(Buffer, 0, 1024);
+                if (Length == 0)
+                    break;
+                for (int x = 0; x < Length; ++x)
                 {
-                    byte[] Buffer = new byte[1024];
-                    int Length = TempReader.Read(Buffer, 0, 1024);
-                    if (Length == 0)
-                        break;
-                    for (int x = 0; x < Length; ++x)
-                    {
-                        Bytes.Add(Buffer[x]);
-                    }
+                    Bytes.Add(Buffer[x]);
                 }
-                TempStream.Dispose();
-                Client.Dispose();
-                FileManager.SaveFile(Bytes.ToArray(), FileLocation);
             }
-            catch { throw; }
+            TempStream.Dispose();
+            Client.Dispose();
+            FileManager.SaveFile(Bytes.ToArray(), FileLocation);
         }
 
         /// <summary>
@@ -115,11 +111,11 @@ namespace Utilities.Web.Youtube
         /// <param name="Height">Height of the video</param>
         /// <param name="Width">Width of the video</param>
         /// <returns>The needed embed html tag</returns>
-        public static string GenerateEmbed(string ID,bool AutoPlay,int Width,int Height)
+        public static string GenerateEmbed(string ID, bool AutoPlay, int Width, int Height)
         {
- 	        StringBuilder Builder=new StringBuilder();
+            StringBuilder Builder = new StringBuilder();
             Builder.Append(@"<embed src='http://www.youtube.com/v/")
-                .Append(ID).Append("&autoplay=").Append(AutoPlay?1:0)
+                .Append(ID).Append("&autoplay=").Append(AutoPlay ? 1 : 0)
                 .Append(@"' type='application/x-shockwave-flash' 
                         allowscriptaccess='never' enableJavascript ='false' 
                         allowfullscreen='true' width='").Append(Width)

@@ -40,14 +40,10 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Name">Computer name</param>
         /// <param name="Password">Password</param>
         /// <param name="UserName">Username</param>
-        public Network(string Name="",string UserName="",string Password="")
+        public Network(string Name = "", string UserName = "", string Password = "")
         {
-            try
-            {
-                GetNetworkInfo(Name, UserName, Password);
-                GetNetworkAdapterInfo(Name, UserName, Password);
-            }
-            catch { throw; }
+            GetNetworkInfo(Name, UserName, Password);
+            GetNetworkAdapterInfo(Name, UserName, Password);
         }
 
         #endregion
@@ -76,58 +72,50 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">Username</param>
         private void GetNetworkInfo(string Name, string UserName, string Password)
         {
-            try
+            NetworkAddresses = new List<NetworkAddress>();
+            IPHostEntry HostEntry = Dns.GetHostEntry(Name);
+            foreach (IPAddress Address in HostEntry.AddressList)
             {
-                NetworkAddresses = new List<NetworkAddress>();
-                IPHostEntry HostEntry = Dns.GetHostEntry(Name);
-                foreach (IPAddress Address in HostEntry.AddressList)
-                {
-                    NetworkAddress TempAddress = new NetworkAddress();
-                    TempAddress.Type = Address.AddressFamily.ToString();
-                    TempAddress.Address = Address.ToString();
-                    NetworkAddresses.Add(TempAddress);
-                }
+                NetworkAddress TempAddress = new NetworkAddress();
+                TempAddress.Type = Address.AddressFamily.ToString();
+                TempAddress.Address = Address.ToString();
+                NetworkAddresses.Add(TempAddress);
             }
-            catch { throw; }
         }
 
         private void GetNetworkAdapterInfo(string Name, string UserName, string Password)
         {
-            try
+            MACAddresses = new List<NetworkAdapter>();
+            ManagementScope Scope = null;
+            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {
-                MACAddresses = new List<NetworkAdapter>();
-                ManagementScope Scope = null;
-                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                ConnectionOptions Options = new ConnectionOptions();
+                Options.Username = UserName;
+                Options.Password = Password;
+                Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2", Options);
+            }
+            else
+            {
+                Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2");
+            }
+            Scope.Connect();
+            ObjectQuery Query = new ObjectQuery("SELECT * FROM Win32_NetworkAdapterConfiguration");
+            using (ManagementObjectSearcher Searcher = new ManagementObjectSearcher(Scope, Query))
+            {
+                using (ManagementObjectCollection Collection = Searcher.Get())
                 {
-                    ConnectionOptions Options = new ConnectionOptions();
-                    Options.Username = UserName;
-                    Options.Password = Password;
-                    Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2", Options);
-                }
-                else
-                {
-                    Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2");
-                }
-                Scope.Connect();
-                ObjectQuery Query = new ObjectQuery("SELECT * FROM Win32_NetworkAdapterConfiguration");
-                using (ManagementObjectSearcher Searcher = new ManagementObjectSearcher(Scope, Query))
-                {
-                    using (ManagementObjectCollection Collection = Searcher.Get())
+                    foreach (ManagementObject TempNetworkAdapter in Collection)
                     {
-                        foreach (ManagementObject TempNetworkAdapter in Collection)
+                        if (TempNetworkAdapter.Properties["MACAddress"].Value != null)
                         {
-                            if (TempNetworkAdapter.Properties["MACAddress"].Value != null)
-                            {
-                                NetworkAdapter Adapter = new NetworkAdapter();
-                                Adapter.Description = TempNetworkAdapter.Properties["Description"].Value.ToString();
-                                Adapter.MACAddress = TempNetworkAdapter.Properties["MACAddress"].Value.ToString();
-                                MACAddresses.Add(Adapter);
-                            }
+                            NetworkAdapter Adapter = new NetworkAdapter();
+                            Adapter.Description = TempNetworkAdapter.Properties["Description"].Value.ToString();
+                            Adapter.MACAddress = TempNetworkAdapter.Properties["MACAddress"].Value.ToString();
+                            MACAddresses.Add(Adapter);
                         }
                     }
                 }
             }
-            catch { throw; }
         }
 
         #endregion

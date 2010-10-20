@@ -36,7 +36,7 @@ namespace Utilities.Web.OpenSearch
         /// <summary>
         /// Constructor
         /// </summary>
-        public OpenSearch() 
+        public OpenSearch()
         {
             RestHelper = new Utilities.Web.REST.REST();
         }
@@ -51,16 +51,12 @@ namespace Utilities.Web.OpenSearch
         /// <param name="QueryString">Query string</param>
         /// <param name="AdditionalInfo">Additional info</param>
         /// <returns>The returned data</returns>
-        public string Search(string QueryString,string AdditionalInfo)
+        public string Search(string QueryString, string AdditionalInfo)
         {
-            try
-            {
-                StringBuilder Builder = new StringBuilder();
-                Builder.AppendFormat(APILocation, QueryString, AdditionalInfo);
-                RestHelper.Url = new Uri(Builder.ToString());
-                return RestHelper.GET();
-            }
-            catch { throw; }
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendFormat(APILocation, QueryString, AdditionalInfo);
+            RestHelper.Url = new Uri(Builder.ToString());
+            return RestHelper.GET();
         }
 
         #endregion

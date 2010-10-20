@@ -59,13 +59,9 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
-            {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<ExecuteItem Priority=\"").Append(Priority).Append("\" URL=\"").Append(URL).Append("\"/>");
-                return Builder.ToString();
-            }
-            catch { throw; }
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<ExecuteItem Priority=\"").Append(Priority).Append("\" URL=\"").Append(URL).Append("\"/>");
+            return Builder.ToString();
         }
 
         #endregion

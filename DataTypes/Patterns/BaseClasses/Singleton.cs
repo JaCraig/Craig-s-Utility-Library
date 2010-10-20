@@ -60,17 +60,13 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
                 {
                     lock (typeof(T))
                     {
-                        try
+                        ConstructorInfo Constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
+                            null, new Type[0], null);
+                        if (Constructor == null || Constructor.IsAssembly)
                         {
-                            ConstructorInfo Constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
-                                null, new Type[0], null);
-                            if (Constructor == null || Constructor.IsAssembly)
-                            {
-                                throw new Exception("Constructor is not private or protected for type " + typeof(T).Name);
-                            }
-                            _Instance = (T)Constructor.Invoke(null);
+                            throw new Exception("Constructor is not private or protected for type " + typeof(T).Name);
                         }
-                        catch { throw; }
+                        _Instance = (T)Constructor.Invoke(null);
                     }
                 }
                 return _Instance;

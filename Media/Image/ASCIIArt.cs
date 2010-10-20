@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Drawing;
-using System.Text;
 using System.Drawing.Imaging;
+using System.Text;
 #endregion
 
 namespace Utilities.Media.Image
@@ -41,40 +41,36 @@ namespace Utilities.Media.Image
         /// <returns>A string containing the art</returns>
         public static string ConvertToASCII(Bitmap Input)
         {
-            try
+            bool ShowLine = true;
+            using (Bitmap TempImage = Image.ConvertBlackAndWhite(Input))
             {
-                bool ShowLine = true;
-                using (Bitmap TempImage = Image.ConvertBlackAndWhite(Input))
+                BitmapData OldData = Image.LockImage(TempImage);
+                int OldPixelSize = Image.GetPixelSize(OldData);
+                StringBuilder Builder = new StringBuilder();
+                for (int x = 0; x < TempImage.Height; ++x)
                 {
-                    BitmapData OldData = Image.LockImage(TempImage);
-                    int OldPixelSize = Image.GetPixelSize(OldData);
-                    StringBuilder Builder = new StringBuilder();
-                    for (int x = 0; x < TempImage.Height; ++x)
+                    for (int y = 0; y < TempImage.Width; ++y)
                     {
-                        for (int y = 0; y < TempImage.Width; ++y)
-                        {
-                            if (ShowLine)
-                            {
-                                Color CurrentPixel = Image.GetPixel(OldData, y, x, OldPixelSize);
-                                Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length) / 255)]);
-                            }
-
-                        }
                         if (ShowLine)
                         {
-                            Builder.Append(System.Environment.NewLine);
-                            ShowLine = false;
+                            Color CurrentPixel = Image.GetPixel(OldData, y, x, OldPixelSize);
+                            Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length) / 255)]);
                         }
-                        else
-                        {
-                            ShowLine = true;
-                        }
+
                     }
-                    Image.UnlockImage(TempImage, OldData);
-                    return Builder.ToString();
+                    if (ShowLine)
+                    {
+                        Builder.Append(System.Environment.NewLine);
+                        ShowLine = false;
+                    }
+                    else
+                    {
+                        ShowLine = true;
+                    }
                 }
+                Image.UnlockImage(TempImage, OldData);
+                return Builder.ToString();
             }
-            catch { throw; }
         }
 
         #endregion

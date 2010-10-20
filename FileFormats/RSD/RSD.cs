@@ -48,43 +48,39 @@ namespace Utilities.FileFormats.RSD
         /// <param name="FileContent">Content of the RSD file</param>
         public RSD(string FileContent)
         {
-            try
+            XmlDocument Document = new XmlDocument();
+            Document.LoadXml(FileContent);
+            foreach (XmlNode Children in Document.ChildNodes)
             {
-                XmlDocument Document = new XmlDocument();
-                Document.LoadXml(FileContent);
-                foreach (XmlNode Children in Document.ChildNodes)
+                if (Children.Name.Equals("RSD", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (Children.Name.Equals("RSD", StringComparison.CurrentCultureIgnoreCase))
+                    foreach (XmlNode Child in Children.ChildNodes)
                     {
-                        foreach (XmlNode Child in Children.ChildNodes)
+                        if (Child.Name.Equals("service", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            if (Child.Name.Equals("service", StringComparison.CurrentCultureIgnoreCase))
+                            foreach (XmlNode ServiceChild in Child.ChildNodes)
                             {
-                                foreach (XmlNode ServiceChild in Child.ChildNodes)
+                                if (ServiceChild.Name.Equals("engineName", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    if (ServiceChild.Name.Equals("engineName", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        EngineName = ServiceChild.InnerText;
-                                    }
-                                    else if (ServiceChild.Name.Equals("engineLink", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        EngineLink = ServiceChild.InnerText;
-                                    }
-                                    else if (ServiceChild.Name.Equals("homePageLink", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        HomePageLink = ServiceChild.InnerText;
-                                    }
-                                    else if (ServiceChild.Name.Equals("apis", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        APIs = new APIs((XmlElement)ServiceChild);
-                                    }
+                                    EngineName = ServiceChild.InnerText;
+                                }
+                                else if (ServiceChild.Name.Equals("engineLink", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    EngineLink = ServiceChild.InnerText;
+                                }
+                                else if (ServiceChild.Name.Equals("homePageLink", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    HomePageLink = ServiceChild.InnerText;
+                                }
+                                else if (ServiceChild.Name.Equals("apis", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    APIs = new APIs((XmlElement)ServiceChild);
                                 }
                             }
                         }
                     }
                 }
             }
-            catch { throw; }
         }
         #endregion
 
@@ -92,22 +88,22 @@ namespace Utilities.FileFormats.RSD
         /// <summary>
         /// Engine name
         /// </summary>
-        public string EngineName{get;set;}
+        public string EngineName { get; set; }
 
         /// <summary>
         /// Link to the engine
         /// </summary>
-        public string EngineLink{get;set;}
+        public string EngineLink { get; set; }
 
         /// <summary>
         /// Link to the home page
         /// </summary>
-        public string HomePageLink{get;set;}
+        public string HomePageLink { get; set; }
 
         /// <summary>
         /// API definitions
         /// </summary>
-        public APIs APIs{get;set;}
+        public APIs APIs { get; set; }
 
         #endregion
 
@@ -119,16 +115,12 @@ namespace Utilities.FileFormats.RSD
         /// <returns>return the properly formatted RSD file</returns>
         public override string ToString()
         {
-            try
-            {
-                StringBuilder Builder = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?><rsd version=\"1.0\"><service><engineName>");
-                Builder.Append(EngineName).Append("</engineName><engineLink>").Append(EngineLink).Append("</engineLink><homePageLink>")
-                    .Append(HomePageLink).Append("</homePageLink>");
-                Builder.Append(APIs.ToString());
-                Builder.Append("</service></rsd>");
-                return Builder.ToString();
-            }
-            catch { throw; }
+            StringBuilder Builder = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?><rsd version=\"1.0\"><service><engineName>");
+            Builder.Append(EngineName).Append("</engineName><engineLink>").Append(EngineLink).Append("</engineLink><homePageLink>")
+                .Append(HomePageLink).Append("</homePageLink>");
+            Builder.Append(APIs.ToString());
+            Builder.Append("</service></rsd>");
+            return Builder.ToString();
         }
 
         #endregion

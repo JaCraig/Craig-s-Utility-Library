@@ -30,13 +30,13 @@ namespace Utilities.Profiler
     /// <summary>
     /// Actual location that profiler information is stored
     /// </summary>
-    public class ProfilerManager:Singleton<ProfilerManager>
+    public class ProfilerManager : Singleton<ProfilerManager>
     {
         #region Constuctors
-        
+
         protected ProfilerManager()
         {
-            Profilers=new List<ProfilerInfo>();
+            Profilers = new List<ProfilerInfo>();
         }
 
         #endregion
@@ -51,27 +51,23 @@ namespace Utilities.Profiler
         /// <param name="StopTime">Stop time (in ms)</param>
         public void AddItem(string FunctionName, int StartTime, int StopTime)
         {
-            try
+            ProfilerInfo Profiler = Profilers.Find(x => x.FunctionName == FunctionName);
+            if (Profiler != null)
             {
-                ProfilerInfo Profiler = Profilers.Find(x => x.FunctionName == FunctionName);
-                if (Profiler != null)
-                {
-                    int Time = (StopTime - StartTime);
-                    Profiler.TotalTime += Time;
-                    if (Profiler.MaxTime < Time)
-                        Profiler.MaxTime = Time;
-                    else if (Profiler.MinTime > Time)
-                        Profiler.MinTime = Time;
-                    ++Profiler.TimesCalled;
-                    return;
-                }
-                ProfilerInfo Info = new ProfilerInfo();
-                Info.FunctionName = FunctionName;
-                Info.TotalTime = Info.MaxTime = Info.MinTime = StopTime - StartTime;
-                Info.TimesCalled = 1;
-                Profilers.Add(Info);
+                int Time = (StopTime - StartTime);
+                Profiler.TotalTime += Time;
+                if (Profiler.MaxTime < Time)
+                    Profiler.MaxTime = Time;
+                else if (Profiler.MinTime > Time)
+                    Profiler.MinTime = Time;
+                ++Profiler.TimesCalled;
+                return;
             }
-            catch { throw; }
+            ProfilerInfo Info = new ProfilerInfo();
+            Info.FunctionName = FunctionName;
+            Info.TotalTime = Info.MaxTime = Info.MinTime = StopTime - StartTime;
+            Info.TimesCalled = 1;
+            Profilers.Add(Info);
         }
 
         /// <summary>
@@ -80,22 +76,18 @@ namespace Utilities.Profiler
         /// <returns>an html string containing the information</returns>
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<table><tr><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
+            foreach (ProfilerInfo Info in Profilers)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<table><tr><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
-                foreach (ProfilerInfo Info in Profilers)
-                {
-                    Builder.Append("<tr><td>").Append(Info.FunctionName).Append("</td><td>")
-                        .Append(Info.TotalTime.ToString()).Append("</td><td>").Append(Info.MaxTime)
-                        .Append("</td><td>").Append(Info.MinTime).Append("</td><td>")
-                        .Append(((double)Info.TotalTime / (double)Info.TimesCalled)).Append("</td><td>")
-                        .Append(Info.TimesCalled).Append("</td></tr>");
-                }
-                Builder.Append("</table>");
-                return Builder.ToString();
+                Builder.Append("<tr><td>").Append(Info.FunctionName).Append("</td><td>")
+                    .Append(Info.TotalTime.ToString()).Append("</td><td>").Append(Info.MaxTime)
+                    .Append("</td><td>").Append(Info.MinTime).Append("</td><td>")
+                    .Append(((double)Info.TotalTime / (double)Info.TimesCalled)).Append("</td><td>")
+                    .Append(Info.TimesCalled).Append("</td></tr>");
             }
-            catch { throw; }
+            Builder.Append("</table>");
+            return Builder.ToString();
         }
 
         #endregion

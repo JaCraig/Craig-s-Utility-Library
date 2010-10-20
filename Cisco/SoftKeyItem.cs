@@ -69,14 +69,10 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-            try
-            {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<SoftKeyItem><Name>").Append(Name).Append("</Name><URL>").Append(URL).Append("</URL><URLDown>")
-                    .Append(URLDown).Append("</URLDown><Position>").Append(Position).Append("</Position></SoftKeyItem>");
-                return Builder.ToString();
-            }
-            catch { throw; }
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<SoftKeyItem><Name>").Append(Name).Append("</Name><URL>").Append(URL).Append("</URL><URLDown>")
+                .Append(URLDown).Append("</URLDown><Position>").Append(Position).Append("</Position></SoftKeyItem>");
+            return Builder.ToString();
         }
 
         #endregion

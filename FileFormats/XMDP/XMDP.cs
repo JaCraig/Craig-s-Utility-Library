@@ -48,7 +48,7 @@ namespace Utilities.FileFormats.XMDP
         /// <summary>
         /// Properties to be included
         /// </summary>
-        public List<Property> Properties{get;set;}
+        public List<Property> Properties { get; set; }
 
         #endregion
 
@@ -56,18 +56,14 @@ namespace Utilities.FileFormats.XMDP
 
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<dl class=\"profile\">");
+            foreach (Property Property in Properties)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<dl class=\"profile\">");
-                foreach (Property Property in Properties)
-                {
-                    Builder.Append(Property.ToString());
-                }
-                Builder.Append("</dl>");
-                return Builder.ToString();
+                Builder.Append(Property.ToString());
             }
-            catch { throw; }
+            Builder.Append("</dl>");
+            return Builder.ToString();
         }
 
         #endregion

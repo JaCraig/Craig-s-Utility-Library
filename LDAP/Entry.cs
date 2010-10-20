@@ -30,7 +30,7 @@ namespace Utilities.LDAP
     /// <summary>
     /// Directory entry class
     /// </summary>
-    public class Entry:IDisposable
+    public class Entry : IDisposable
     {
         #region Constructors
         /// <summary>
@@ -94,7 +94,7 @@ namespace Utilities.LDAP
         /// </summary>
         public List<string> MemberOf
         {
-            get 
+            get
             {
                 List<string> Values = new List<string>();
                 PropertyValueCollection Collection = DirectoryEntry.Properties["memberof"];
@@ -194,11 +194,7 @@ namespace Utilities.LDAP
         /// </summary>
         public void Save()
         {
-            try
-            {
-                _DirectoryEntry.CommitChanges();
-            }
-            catch { throw; }
+            _DirectoryEntry.CommitChanges();
         }
 
         /// <summary>
@@ -208,16 +204,12 @@ namespace Utilities.LDAP
         /// <returns>an object containing the property's information</returns>
         public object GetValue(string Property)
         {
-            try
+            PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
+            if (Collection != null)
             {
-                PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
-                if (Collection != null)
-                {
-                    return Collection.Value;
-                }
-                return null;
+                return Collection.Value;
             }
-            catch { throw; }
+            return null;
         }
 
         /// <summary>
@@ -225,17 +217,13 @@ namespace Utilities.LDAP
         /// </summary>
         /// <param name="Property">Property of the entry to set</param>
         /// <param name="Value">Value to set the property to</param>
-        public void SetValue(string Property,object Value)
+        public void SetValue(string Property, object Value)
         {
-            try
+            PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
+            if (Collection != null)
             {
-                PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
-                if (Collection != null)
-                {
-                    Collection.Value = Value;
-                }
+                Collection.Value = Value;
             }
-            catch { throw; }
         }
         #endregion
 

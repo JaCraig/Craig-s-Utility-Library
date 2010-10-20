@@ -60,17 +60,13 @@ namespace Utilities.Web
         /// <returns>The final, minified string</returns>
         public static string Minify(string Input)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(Input))
-                    return "";
-                Input = Regex.Replace(Input, "/// <.+>", "");
-                if (string.IsNullOrEmpty(Input))
-                    return "";
-                Input = Regex.Replace(Input, @">[\s\S]*?<", new MatchEvaluator(Evaluate));
-                return Input;
-            }
-            catch { throw; }
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            Input = Regex.Replace(Input, "/// <.+>", "");
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            Input = Regex.Replace(Input, @">[\s\S]*?<", new MatchEvaluator(Evaluate));
+            return Input;
         }
 
         /// <summary>
@@ -80,30 +76,26 @@ namespace Utilities.Web
         /// <returns>A stripped string</returns>
         public static string RemoveIllegalCharacters(string Input)
         {
-            try
+            if (string.IsNullOrEmpty(Input))
             {
-                if (string.IsNullOrEmpty(Input))
-                {
-                    return Input;
-                }
-
-                Input = Input.Replace(":", string.Empty);
-                Input = Input.Replace("/", string.Empty);
-                Input = Input.Replace("?", string.Empty);
-                Input = Input.Replace("#", string.Empty);
-                Input = Input.Replace("[", string.Empty);
-                Input = Input.Replace("]", string.Empty);
-                Input = Input.Replace("@", string.Empty);
-                Input = Input.Replace(".", string.Empty);
-                Input = Input.Replace("\"", string.Empty);
-                Input = Input.Replace("&", string.Empty);
-                Input = Input.Replace("'", string.Empty);
-                Input = Input.Replace(" ", "-");
-                RemoveExtraHyphen(Input);
-                RemoveDiacritics(Input);
-                return HttpUtility.UrlEncode(Input).Replace("%", string.Empty);
+                return Input;
             }
-            catch { throw; }
+
+            Input = Input.Replace(":", string.Empty);
+            Input = Input.Replace("/", string.Empty);
+            Input = Input.Replace("?", string.Empty);
+            Input = Input.Replace("#", string.Empty);
+            Input = Input.Replace("[", string.Empty);
+            Input = Input.Replace("]", string.Empty);
+            Input = Input.Replace("@", string.Empty);
+            Input = Input.Replace(".", string.Empty);
+            Input = Input.Replace("\"", string.Empty);
+            Input = Input.Replace("&", string.Empty);
+            Input = Input.Replace("'", string.Empty);
+            Input = Input.Replace(" ", "-");
+            RemoveExtraHyphen(Input);
+            RemoveDiacritics(Input);
+            return HttpUtility.UrlEncode(Input).Replace("%", string.Empty);
         }
 
         /// <summary>
@@ -113,16 +105,12 @@ namespace Utilities.Web
         /// <returns>HTML-less string</returns>
         public static string StripHTML(string HTML)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(HTML))
-                    return string.Empty;
+            if (string.IsNullOrEmpty(HTML))
+                return string.Empty;
 
-                HTML = STRIP_HTML_REGEX.Replace(HTML, string.Empty);
-                HTML = HTML.Replace("&nbsp;", " ");
-                return HTML.Replace("&#160;", string.Empty);
-            }
-            catch { throw; }
+            HTML = STRIP_HTML_REGEX.Replace(HTML, string.Empty);
+            HTML = HTML.Replace("&nbsp;", " ");
+            return HTML.Replace("&#160;", string.Empty);
         }
 
         /// <summary>
@@ -132,14 +120,10 @@ namespace Utilities.Web
         /// <returns>false if it does not contain HTML, true otherwise</returns>
         public static bool ContainsHTML(string Input)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(Input))
-                    return false;
+            if (string.IsNullOrEmpty(Input))
+                return false;
 
-                return STRIP_HTML_REGEX.IsMatch(Input);
-            }
-            catch { throw; }
+            return STRIP_HTML_REGEX.IsMatch(Input);
         }
 
 
@@ -148,17 +132,13 @@ namespace Utilities.Web
         /// </summary>
         /// <param name="File">Script file</param>
         /// <param name="Directory">Script directory</param>
-        public static void AddScriptFile(string File,string Directory)
+        public static void AddScriptFile(string File, string Directory)
         {
-            try
+            System.Web.UI.Page CurrentPage = (System.Web.UI.Page)HttpContext.Current.CurrentHandler;
+            if (!CurrentPage.ClientScript.IsClientScriptIncludeRegistered(typeof(System.Web.UI.Page), Directory + File))
             {
-                System.Web.UI.Page CurrentPage = (System.Web.UI.Page)HttpContext.Current.CurrentHandler;
-                if (!CurrentPage.ClientScript.IsClientScriptIncludeRegistered(typeof(System.Web.UI.Page), Directory + File))
-                {
-                    CurrentPage.ClientScript.RegisterClientScriptInclude(typeof(System.Web.UI.Page), Directory + File, HttpContext.Current.Server.MapPath(Directory + File));
-                }
+                CurrentPage.ClientScript.RegisterClientScriptInclude(typeof(System.Web.UI.Page), Directory + File, HttpContext.Current.Server.MapPath(Directory + File));
             }
-            catch { throw; }
         }
 
         /// <summary>
@@ -167,11 +147,7 @@ namespace Utilities.Web
         /// </summary>
         public static bool IsEncodingAccepted(string encoding)
         {
-            try
-            {
-                return HttpContext.Current.Request.Headers["Accept-encoding"] != null && HttpContext.Current.Request.Headers["Accept-encoding"].Contains(encoding);
-            }
-            catch { throw; }
+            return HttpContext.Current.Request.Headers["Accept-encoding"] != null && HttpContext.Current.Request.Headers["Accept-encoding"].Contains(encoding);
         }
 
         /// <summary>
@@ -180,11 +156,7 @@ namespace Utilities.Web
         /// <param name="encoding"></param>
         public static void SetEncoding(string encoding)
         {
-            try
-            {
-                HttpContext.Current.Response.AppendHeader("Content-encoding", encoding);
-            }
-            catch { throw; }
+            HttpContext.Current.Response.AppendHeader("Content-encoding", encoding);
         }
 
         /// <summary>
@@ -193,23 +165,19 @@ namespace Utilities.Web
         /// <param name="context">Current context</param>
         public static void HTTPCompress(HttpContext context)
         {
-            try
-            {
-                if (context.Request.UserAgent != null && context.Request.UserAgent.Contains("MSIE 6"))
-                    return;
+            if (context.Request.UserAgent != null && context.Request.UserAgent.Contains("MSIE 6"))
+                return;
 
-                if (HTML.IsEncodingAccepted(GZIP))
-                {
-                    context.Response.Filter = new GZipStream(context.Response.Filter, CompressionMode.Compress);
-                    HTML.SetEncoding(GZIP);
-                }
-                else if (HTML.IsEncodingAccepted(DEFLATE))
-                {
-                    context.Response.Filter = new DeflateStream(context.Response.Filter, CompressionMode.Compress);
-                    HTML.SetEncoding(DEFLATE);
-                }
+            if (HTML.IsEncodingAccepted(GZIP))
+            {
+                context.Response.Filter = new GZipStream(context.Response.Filter, CompressionMode.Compress);
+                HTML.SetEncoding(GZIP);
             }
-            catch { throw; }
+            else if (HTML.IsEncodingAccepted(DEFLATE))
+            {
+                context.Response.Filter = new DeflateStream(context.Response.Filter, CompressionMode.Compress);
+                HTML.SetEncoding(DEFLATE);
+            }
         }
 
         /// <summary>
@@ -219,11 +187,7 @@ namespace Utilities.Web
         {
             get
             {
-                try
-                {
-                    return VirtualPathUtility.ToAbsolute("~/");
-                }
-                catch { throw; }
+                return VirtualPathUtility.ToAbsolute("~/");
             }
         }
 
@@ -234,18 +198,14 @@ namespace Utilities.Web
         {
             get
             {
-                try
-                {
-                    HttpContext context = HttpContext.Current;
-                    if (context == null)
-                        throw new System.Net.WebException("The current HttpContext is null");
+                HttpContext context = HttpContext.Current;
+                if (context == null)
+                    throw new System.Net.WebException("The current HttpContext is null");
 
-                    if (context.Items["absoluteurl"] == null)
-                        context.Items["absoluteurl"] = new Uri(context.Request.Url.GetLeftPart(UriPartial.Authority) + RelativeRoot);
+                if (context.Items["absoluteurl"] == null)
+                    context.Items["absoluteurl"] = new Uri(context.Request.Url.GetLeftPart(UriPartial.Authority) + RelativeRoot);
 
-                    return context.Items["absoluteurl"] as Uri;
-                }
-                catch { throw; }
+                return context.Items["absoluteurl"] as Uri;
             }
         }
 
@@ -256,18 +216,14 @@ namespace Utilities.Web
         /// <returns>a string containing an HTML formatted list of the server variables</returns>
         public static string DumpServerVars(HttpRequest Request)
         {
-            try
+            StringBuilder String = new StringBuilder();
+            String.Append("<table><thead><tr><th>Property Name</th><th>Value</th></tr></thead><tbody>");
+            foreach (string Key in Request.ServerVariables.Keys)
             {
-                StringBuilder String = new StringBuilder();
-                String.Append("<table><thead><tr><th>Property Name</th><th>Value</th></tr></thead><tbody>");
-                foreach (string Key in Request.ServerVariables.Keys)
-                {
-                    String.Append("<tr><td>").Append(Key).Append("</td><td>").Append(Request.ServerVariables[Key]).Append("</td></tr>");
-                }
-                String.Append("</tbody></table>");
-                return String.ToString();
+                String.Append("<tr><td>").Append(Key).Append("</td><td>").Append(Request.ServerVariables[Key]).Append("</td></tr>");
             }
-            catch { throw; }
+            String.Append("</tbody></table>");
+            return String.ToString();
         }
 
         /// <summary>
@@ -277,11 +233,7 @@ namespace Utilities.Web
         /// <returns>a string containing an HTML formatted list of the server variables</returns>
         public static string DumpServerVars(System.Web.UI.Page page)
         {
-            try
-            {
-                return DumpServerVars(page.Request);
-            }
-            catch { throw; }
+            return DumpServerVars(page.Request);
         }
 
         /// <summary>
@@ -291,13 +243,9 @@ namespace Utilities.Web
         /// <returns>a string containing the information</returns>
         public static string DumpRequestVariable(HttpRequest Request)
         {
-            try
-            {
-                StringBuilder String = new StringBuilder();
-                String.Append(Reflection.Reflection.DumpProperties(Request));
-                return String.ToString();
-            }
-            catch { throw; }
+            StringBuilder String = new StringBuilder();
+            String.Append(Reflection.Reflection.DumpProperties(Request));
+            return String.ToString();
         }
 
         /// <summary>
@@ -307,11 +255,7 @@ namespace Utilities.Web
         /// <returns>a string containing the information</returns>
         public static string DumpRequestVariable(System.Web.UI.Page Page)
         {
-            try
-            {
-                return DumpRequestVariable(Page.Request);
-            }
-            catch { throw; }
+            return DumpRequestVariable(Page.Request);
         }
 
         /// <summary>
@@ -321,13 +265,9 @@ namespace Utilities.Web
         /// <returns>a string containing the information</returns>
         public static string DumpResponseVariable(HttpResponse Response)
         {
-            try
-            {
-                StringBuilder String = new StringBuilder();
-                String.Append(Reflection.Reflection.DumpProperties(Response));
-                return String.ToString();
-            }
-            catch { throw; }
+            StringBuilder String = new StringBuilder();
+            String.Append(Reflection.Reflection.DumpProperties(Response));
+            return String.ToString();
         }
 
         /// <summary>
@@ -337,11 +277,7 @@ namespace Utilities.Web
         /// <returns>a string containing the information</returns>
         public static string DumpResponseVariable(System.Web.UI.Page Page)
         {
-            try
-            {
-                return DumpResponseVariable(Page.Response);
-            }
-            catch { throw; }
+            return DumpResponseVariable(Page.Response);
         }
 
         /// <summary>
@@ -351,11 +287,7 @@ namespace Utilities.Web
         /// <returns>A string containing the session information</returns>
         public static string DumpSession(System.Web.UI.Page Page)
         {
-            try
-            {
-                return DumpSession(Page.Session);
-            }
-            catch { throw; }
+            return DumpSession(Page.Session);
         }
 
         /// <summary>
@@ -365,20 +297,16 @@ namespace Utilities.Web
         /// <returns>A string containing the session information</returns>
         public static string DumpSession(System.Web.SessionState.HttpSessionState Input)
         {
-            try
+            StringBuilder String = new StringBuilder();
+            foreach (string Key in Input.Keys)
             {
-                StringBuilder String = new StringBuilder();
-                foreach (string Key in Input.Keys)
-                {
-                    String.Append(Key).Append( ": ")
-                        .Append(Input[Key].ToString())
-                        .Append("<br />Properties<br />")
-                        .Append(Reflection.Reflection.DumpProperties(Input[Key]))
-                        .Append("<br />");
-                }
-                return String.ToString();
+                String.Append(Key).Append(": ")
+                    .Append(Input[Key].ToString())
+                    .Append("<br />Properties<br />")
+                    .Append(Reflection.Reflection.DumpProperties(Input[Key]))
+                    .Append("<br />");
             }
-            catch { throw; }
+            return String.ToString();
         }
 
         /// <summary>
@@ -388,11 +316,7 @@ namespace Utilities.Web
         /// <returns>A string containing the cache information</returns>
         public static string DumpCache(System.Web.UI.Page Page)
         {
-            try
-            {
-                return DumpCache(Page.Cache);
-            }
-            catch { throw; }
+            return DumpCache(Page.Cache);
         }
 
         /// <summary>
@@ -402,20 +326,16 @@ namespace Utilities.Web
         /// <returns>A string containing the cache information</returns>
         public static string DumpCache(System.Web.Caching.Cache Input)
         {
-            try
+            StringBuilder String = new StringBuilder();
+            foreach (DictionaryEntry Entry in Input)
             {
-                StringBuilder String = new StringBuilder();
-                foreach (DictionaryEntry Entry in Input)
-                {
-                    String.Append(Entry.Key).Append(": ")
-                        .Append(Entry.Value.ToString())
-                        .Append("<br />Properties<br />")
-                        .Append(Reflection.Reflection.DumpProperties(Entry.Value))
-                        .Append("<br />");
-                }
-                return String.ToString();
+                String.Append(Entry.Key).Append(": ")
+                    .Append(Entry.Value.ToString())
+                    .Append("<br />Properties<br />")
+                    .Append(Reflection.Reflection.DumpProperties(Entry.Value))
+                    .Append("<br />");
             }
-            catch { throw; }
+            return String.ToString();
         }
 
         /// <summary>
@@ -425,11 +345,7 @@ namespace Utilities.Web
         /// <returns>A string containing the application state information</returns>
         public static string DumpApplicationState(System.Web.UI.Page Page)
         {
-            try
-            {
-                return DumpApplicationState(Page.Application);
-            }
-            catch { throw; }
+            return DumpApplicationState(Page.Application);
         }
 
         /// <summary>
@@ -439,20 +355,16 @@ namespace Utilities.Web
         /// <returns>A string containing the application state information</returns>
         public static string DumpApplicationState(HttpApplicationState Input)
         {
-            try
+            StringBuilder String = new StringBuilder();
+            foreach (string Key in Input.Keys)
             {
-                StringBuilder String = new StringBuilder();
-                foreach (string Key in Input.Keys)
-                {
-                    String.Append(Key).Append( ": ")
-                        .Append(Input[Key].ToString())
-                        .Append( "<br />Properties<br />")
-                        .Append(Reflection.Reflection.DumpProperties(Input[Key]))
-                        .Append("<br />");
-                }
-                return String.ToString();
+                String.Append(Key).Append(": ")
+                    .Append(Input[Key].ToString())
+                    .Append("<br />Properties<br />")
+                    .Append(Reflection.Reflection.DumpProperties(Input[Key]))
+                    .Append("<br />");
             }
-            catch { throw; }
+            return String.ToString();
         }
 
         /// <summary>
@@ -462,11 +374,7 @@ namespace Utilities.Web
         /// <returns>A string containing the cookie information</returns>
         public static string DumpCookies(System.Web.UI.Page Page)
         {
-            try
-            {
-                return DumpCookies(Page.Request.Cookies);
-            }
-            catch { throw; }
+            return DumpCookies(Page.Request.Cookies);
         }
 
         /// <summary>
@@ -476,30 +384,26 @@ namespace Utilities.Web
         /// <returns>A string containing the cookie information</returns>
         public static string DumpCookies(HttpCookieCollection Input)
         {
-            try
+            StringBuilder String = new StringBuilder();
+            String.Append("<table><thead><tr><th>Name</th><th>Sub Name</th><th>Value</th></tr></thead><tbody>");
+            foreach (string Key in Input.Keys)
             {
-                StringBuilder String = new StringBuilder();
-                String.Append("<table><thead><tr><th>Name</th><th>Sub Name</th><th>Value</th></tr></thead><tbody>");
-                foreach (string Key in Input.Keys)
+                if (Input[Key].Values.Count > 1)
                 {
-                    if (Input[Key].Values.Count > 1)
+                    foreach (string SubKey in Input[Key].Values.Keys)
                     {
-                        foreach (string SubKey in Input[Key].Values.Keys)
-                        {
-                            String.Append("<tr><td>").Append(Key).Append("</td><td>").Append(SubKey).Append("</td><td>");
-                            String.Append(Input[Key].Values[SubKey]).Append("</td></tr>");
-                        }
-                    }
-                    else
-                    {
-                        String.Append("<tr><td>").Append(Key).Append("</td><td></td><td>");
-                        String.Append(Input[Key].Value).Append("</td></tr>");
+                        String.Append("<tr><td>").Append(Key).Append("</td><td>").Append(SubKey).Append("</td><td>");
+                        String.Append(Input[Key].Values[SubKey]).Append("</td></tr>");
                     }
                 }
-                String.Append("</tbody></table>");
-                return String.ToString();
+                else
+                {
+                    String.Append("<tr><td>").Append(Key).Append("</td><td></td><td>");
+                    String.Append(Input[Key].Value).Append("</td></tr>");
+                }
             }
-            catch { throw; }
+            String.Append("</tbody></table>");
+            return String.ToString();
         }
         #endregion
 
@@ -512,16 +416,12 @@ namespace Utilities.Web
         /// <returns>Stripped string</returns>
         private static string RemoveExtraHyphen(string Input)
         {
-            try
+            while (Input.Contains("--"))
             {
-                while (Input.Contains("--"))
-                {
-                    Input = Input.Replace("--", "-");
-                }
-
-                return Input;
+                Input = Input.Replace("--", "-");
             }
-            catch { throw; }
+
+            return Input;
         }
 
         /// <summary>
@@ -531,21 +431,17 @@ namespace Utilities.Web
         /// <returns>Stripped string</returns>
         private static string RemoveDiacritics(string Input)
         {
-            try
+            string Normalized = Input.Normalize(NormalizationForm.FormD);
+            StringBuilder Builder = new StringBuilder();
+
+            for (int i = 0; i < Normalized.Length; i++)
             {
-                string Normalized = Input.Normalize(NormalizationForm.FormD);
-                StringBuilder Builder = new StringBuilder();
-
-                for (int i = 0; i < Normalized.Length; i++)
-                {
-                    Char TempChar = Normalized[i];
-                    if (CharUnicodeInfo.GetUnicodeCategory(TempChar) != UnicodeCategory.NonSpacingMark)
-                        Builder.Append(TempChar);
-                }
-
-                return Builder.ToString();
+                Char TempChar = Normalized[i];
+                if (CharUnicodeInfo.GetUnicodeCategory(TempChar) != UnicodeCategory.NonSpacingMark)
+                    Builder.Append(TempChar);
             }
-            catch { throw; }
+
+            return Builder.ToString();
         }
 
         /// <summary>
@@ -555,15 +451,11 @@ namespace Utilities.Web
         /// <returns>Stripped text</returns>
         private static string Evaluate(Match Matcher)
         {
-            try
-            {
-                string MyString = Matcher.ToString();
-                if (string.IsNullOrEmpty(MyString))
-                    return "";
-                MyString = Regex.Replace(MyString, @"\r\n\s*", "");
-                return MyString;
-            }
-            catch { throw; }
+            string MyString = Matcher.ToString();
+            if (string.IsNullOrEmpty(MyString))
+                return "";
+            MyString = Regex.Replace(MyString, @"\r\n\s*", "");
+            return MyString;
         }
 
         #endregion

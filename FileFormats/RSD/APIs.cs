@@ -75,18 +75,14 @@ namespace Utilities.FileFormats.RSD
         /// <returns>APIs list</returns>
         public override string ToString()
         {
-            try
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<apis>");
+            foreach (API CurrentAPI in APIList)
             {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<apis>");
-                foreach (API CurrentAPI in APIList)
-                {
-                    Builder.Append(CurrentAPI.ToString());
-                }
-                Builder.Append("</apis>");
-                return Builder.ToString();
+                Builder.Append(CurrentAPI.ToString());
             }
-            catch { throw; }
+            Builder.Append("</apis>");
+            return Builder.ToString();
         }
 
         #endregion

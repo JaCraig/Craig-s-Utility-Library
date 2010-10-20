@@ -23,9 +23,9 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Utilities.IO;
-using System.Drawing.Drawing2D;
 using Utilities.Math;
 #endregion
 
@@ -48,8 +48,6 @@ namespace Utilities.Media.Image
         /// <param name="Amount">Amount of noise to add</param>
         public static void AddNoise(string FileName, string NewFileName, int Amount)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -57,8 +55,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -69,8 +65,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap AddNoise(string FileName, int Amount)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -78,8 +72,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.AddNoise(TempBitmap, Amount);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -90,8 +82,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap AddNoise(Bitmap OriginalImage, int Amount)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -119,8 +109,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -135,8 +123,6 @@ namespace Utilities.Media.Image
         /// <param name="Value">-255 to 255</param>
         public static void AdjustBrightness(string FileName, string NewFileName, int Value)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -144,8 +130,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -156,8 +140,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustBrightness(string FileName, int Value)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -165,8 +147,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.AdjustBrightness(TempBitmap, Value);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -177,8 +157,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustBrightness(Bitmap Image, int Value)
         {
-            try
-            {
                 float FinalValue = (float)Value / 255.0f;
                 ColorMatrix TempMatrix = new ColorMatrix();
                 TempMatrix.Matrix = new float[][]{
@@ -189,8 +167,6 @@ namespace Utilities.Media.Image
                             new float[] {FinalValue, FinalValue, FinalValue, 1, 1}
                         };
                 return TempMatrix.Apply(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -205,8 +181,6 @@ namespace Utilities.Media.Image
         /// <param name="Value">Used to set the contrast (-100 to 100)</param>
         public static void AdjustContrast(string FileName, string NewFileName, float Value)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -214,8 +188,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -226,8 +198,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustContrast(string FileName, float Value)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -235,8 +205,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.AdjustContrast(TempBitmap, Value);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -247,8 +215,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustContrast(Bitmap OriginalImage, float Value)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -278,8 +244,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -294,8 +258,6 @@ namespace Utilities.Media.Image
         /// <param name="Value">Used to build the gamma ramp (usually .2 to 5)</param>
         public static void AdjustGamma(string FileName, string NewFileName, float Value)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -303,8 +265,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -315,8 +275,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustGamma(string FileName, float Value)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -324,8 +282,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.AdjustGamma(TempBitmap, Value);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -336,8 +292,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustGamma(Bitmap OriginalImage, float Value)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -369,8 +323,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -385,8 +337,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>'
         public static void And(string FileName1, string FileName2, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName1) || !IsGraphic(FileName2))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -394,8 +344,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -406,8 +354,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap And(string FileName1, string FileName2)
         {
-            try
-            {
                 if (!IsGraphic(FileName1) || !IsGraphic(FileName2))
                     return new Bitmap(1, 1);
                 using (Bitmap TempImage1 = new Bitmap(FileName1))
@@ -418,8 +364,6 @@ namespace Utilities.Media.Image
                         return ReturnBitmap;
                     }
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -430,8 +374,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap And(Bitmap Image1, Bitmap Image2)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData1 = Image.LockImage(Image1);
@@ -456,8 +398,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(Image1, OldData1);
                 Image.UnlockImage(Image2, OldData2);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -471,8 +411,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void BlueFilter(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -480,8 +418,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -491,8 +427,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap BlueFilter(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -500,8 +434,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.BlueFilter(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -511,8 +443,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap BlueFilter(Bitmap Image)
         {
-            try
-            {
                 ColorMatrix TempMatrix = new ColorMatrix();
                 TempMatrix.Matrix = new float[][]{
                             new float[] {0, 0, 0, 0, 0},
@@ -522,8 +452,6 @@ namespace Utilities.Media.Image
                             new float[] {0, 0, 0, 0, 1}
                         };
                 return TempMatrix.Apply(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -538,8 +466,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static void BoxBlur(string FileName, string NewFileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -547,8 +473,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -558,8 +482,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap BoxBlur(string FileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -567,8 +489,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.BoxBlur(TempBitmap, Size);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -578,8 +498,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap BoxBlur(Bitmap Image, int Size)
         {
-            try
-            {
                 Filter TempFilter = new Filter(Size, Size);
                 for (int x = 0; x < Size; ++x)
                 {
@@ -589,8 +507,6 @@ namespace Utilities.Media.Image
                     }
                 }
                 return TempFilter.ApplyFilter(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -605,8 +521,6 @@ namespace Utilities.Media.Image
         /// <param name="Colors">Color array to use for the image</param>
         public static void Colorize(string FileName, string OutputFileName, Color[] Colors)
         {
-            try
-            {
                 if (Colors.Length < 256)
                     return;
                 ImageFormat FormatUsing = GetFormat(OutputFileName);
@@ -614,8 +528,6 @@ namespace Utilities.Media.Image
                 {
                     Image.Save(OutputFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -626,8 +538,6 @@ namespace Utilities.Media.Image
         /// <returns>The colorized image</returns>
         public static Bitmap Colorize(string FileName, Color[] Colors)
         {
-            try
-            {
                 if (Colors.Length < 256)
                     return new Bitmap(1, 1);
                 using (Bitmap TempImage = new Bitmap(FileName))
@@ -635,8 +545,6 @@ namespace Utilities.Media.Image
                     Bitmap Image2 = Colorize(TempImage, Colors);
                     return Image2;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -647,8 +555,6 @@ namespace Utilities.Media.Image
         /// <returns>The colorized image</returns>
         public static Bitmap Colorize(Bitmap OriginalImage, Color[] Colors)
         {
-            try
-            {
                 if (Colors.Length < 256)
                     return new Bitmap(1, 1);
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
@@ -667,8 +573,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -682,8 +586,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the black and white image to</param>
         public static void ConvertBlackAndWhite(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -691,8 +593,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -702,8 +602,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the black and white image</returns>
         public static Bitmap ConvertBlackAndWhite(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -711,8 +609,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.ConvertBlackAndWhite(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -722,8 +618,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the black and white image</returns>
         public static Bitmap ConvertBlackAndWhite(Bitmap Image)
         {
-            try
-            {
                 ColorMatrix TempMatrix = new ColorMatrix();
                 TempMatrix.Matrix = new float[][]{
                             new float[] {.3f, .3f, .3f, 0, 0},
@@ -733,8 +627,6 @@ namespace Utilities.Media.Image
                             new float[] {0, 0, 0, 0, 1}
                         };
                 return TempMatrix.Apply(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -748,8 +640,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void ConvertSepiaTone(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -757,8 +647,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -768,8 +656,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the sepia tone image</returns>
         public static Bitmap ConvertSepiaTone(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -777,8 +663,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.ConvertSepiaTone(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -788,8 +672,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the sepia tone image</returns>
         public static Bitmap ConvertSepiaTone(Bitmap Image)
         {
-            try
-            {
                 ColorMatrix TempMatrix = new ColorMatrix();
                 TempMatrix.Matrix = new float[][]{
                             new float[] {.393f, .349f, .272f, 0, 0},
@@ -799,8 +681,6 @@ namespace Utilities.Media.Image
                             new float[] {0, 0, 0, 0, 1}
                         };
                 return TempMatrix.Apply(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -818,8 +698,6 @@ namespace Utilities.Media.Image
         /// <param name="HAlignment">The horizontal alignment of the cropping (left or right)</param>
         public static void CropImage(string FileName, string NewFileName, int Width, int Height, Image.Align VAlignment, Image.Align HAlignment)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -827,8 +705,6 @@ namespace Utilities.Media.Image
                 {
                     CroppedBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -842,8 +718,6 @@ namespace Utilities.Media.Image
         /// <returns>A Bitmap object of the cropped image</returns>
         public static Bitmap CropImage(string FileName, int Width, int Height, Image.Align VAlignment, Image.Align HAlignment)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -851,8 +725,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnImage = Image.CropImage(TempBitmap, Width, Height, VAlignment, HAlignment);
                     return ReturnImage;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -866,8 +738,6 @@ namespace Utilities.Media.Image
         /// <returns>A Bitmap object of the cropped image</returns>
         public static Bitmap CropImage(Bitmap ImageUsing, int Width, int Height, Image.Align VAlignment, Image.Align HAlignment)
         {
-            try
-            {
                 Bitmap TempBitmap = ImageUsing;
                 System.Drawing.Rectangle TempRectangle = new System.Drawing.Rectangle();
                 TempRectangle.Height = Height;
@@ -894,8 +764,6 @@ namespace Utilities.Media.Image
                 }
                 Bitmap CroppedBitmap = TempBitmap.Clone(TempRectangle, TempBitmap.PixelFormat);
                 return CroppedBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -910,8 +778,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static void Dilate(string FileName, string NewFileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -919,8 +785,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -930,8 +794,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap Dilate(string FileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -939,8 +801,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Dilate(TempBitmap, Size);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -950,8 +810,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap Dilate(Bitmap OriginalImage, int Size)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -994,8 +852,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1014,8 +870,6 @@ namespace Utilities.Media.Image
         public static void DrawText(string FileName, string NewFileName, string TextToDraw,
             Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1023,8 +877,6 @@ namespace Utilities.Media.Image
                 {
                     TempBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1039,8 +891,6 @@ namespace Utilities.Media.Image
         public static Bitmap DrawText(string FileName, string TextToDraw,
             Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1048,8 +898,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.DrawText(TempBitmap, TextToDraw, FontToUse, BrushUsing, BoxToDrawWithin);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1064,16 +912,12 @@ namespace Utilities.Media.Image
         public static Bitmap DrawText(Bitmap Image, string TextToDraw,
             Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin)
         {
-            try
-            {
                 Bitmap TempBitmap = new Bitmap(Image, Image.Width, Image.Height);
                 using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
                 {
                     TempGraphics.DrawString(TextToDraw, FontToUse, BrushUsing, BoxToDrawWithin);
                 }
                 return TempBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1089,8 +933,6 @@ namespace Utilities.Media.Image
         /// <param name="EdgeColor">Color of the edge</param>
         public static void EdgeDetection(string FileName, string NewFileName, float Threshold, Color EdgeColor)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1098,8 +940,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1111,8 +951,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which has the edges drawn on it</returns>
         public static Bitmap EdgeDetection(string FileName, float Threshold, Color EdgeColor)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1120,8 +958,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.EdgeDetection(TempBitmap, Threshold, EdgeColor);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1133,8 +969,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which has the edges drawn on it</returns>
         public static Bitmap EdgeDetection(Bitmap OriginalImage, float Threshold, Color EdgeColor)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage, OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -1174,8 +1008,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1189,8 +1021,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void Emboss(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1198,8 +1028,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1209,8 +1037,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Emboss(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1218,8 +1044,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Emboss(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1229,8 +1053,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Emboss(Bitmap Image)
         {
-            try
-            {
                 Filter TempFilter = new Filter(3, 3);
                 TempFilter.MyFilter[0, 0] = -2;
                 TempFilter.MyFilter[0, 1] = -1;
@@ -1242,8 +1064,6 @@ namespace Utilities.Media.Image
                 TempFilter.MyFilter[0, 2] = 0;
                 TempFilter.MyFilter[2, 0] = 0;
                 return TempFilter.ApplyFilter(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1257,8 +1077,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void Equalize(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1266,8 +1084,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1276,8 +1092,6 @@ namespace Utilities.Media.Image
         /// <param name="FileName">Image to manipulate</param>
         public static Bitmap Equalize(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1285,8 +1099,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Equalize(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1295,8 +1107,6 @@ namespace Utilities.Media.Image
         /// <param name="OriginalImage">Image to manipulate</param>
         public static Bitmap Equalize(Bitmap OriginalImage)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 RGBHistogram TempHistogram = new RGBHistogram(NewBitmap);
                 TempHistogram.Equalize();
@@ -1321,8 +1131,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1336,15 +1144,11 @@ namespace Utilities.Media.Image
         /// <param name="OutputFileName">The file name to place the icon</param>
         public static void ExtractIcon(string FileName, string OutputFileName)
         {
-            try
-            {
                 ImageFormat FormatUsing = GetFormat(OutputFileName);
                 using (Bitmap Image = ExtractIcon(FileName))
                 {
                     Image.Save(OutputFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1354,15 +1158,11 @@ namespace Utilities.Media.Image
         /// <returns>Returns the extracted icon</returns>
         public static Bitmap ExtractIcon(string FileName)
         {
-            try
-            {
                 if (FileManager.FileExists(FileName))
                 {
                     return System.Drawing.Icon.ExtractAssociatedIcon(FileName).ToBitmap();
                 }
                 return new Bitmap(1, 1);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1378,8 +1178,6 @@ namespace Utilities.Media.Image
         /// <param name="FlipY">Flips an image along the Y axis</param>
         public static void Flip(string FileName, string NewFileName, bool FlipX, bool FlipY)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1387,8 +1185,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1400,8 +1196,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which is flipped</returns>
         public static Bitmap Flip(string FileName, bool FlipX, bool FlipY)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1409,8 +1203,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Flip(TempBitmap, FlipX, FlipY);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1422,8 +1214,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which is flipped</returns>
         public static Bitmap Flip(Bitmap Image, bool FlipX, bool FlipY)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
                 if (FlipX && !FlipY)
                 {
@@ -1438,8 +1228,6 @@ namespace Utilities.Media.Image
                     NewBitmap.RotateFlip(RotateFlipType.RotateNoneFlipXY);
                 }
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1454,8 +1242,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static void GaussianBlur(string FileName, string NewFileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1463,8 +1249,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1474,8 +1258,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap GaussianBlur(string FileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1483,8 +1265,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.GaussianBlur(TempBitmap, Size);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1494,8 +1274,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap GaussianBlur(Bitmap Image, int Size)
         {
-            try
-            {
                 using (Bitmap ReturnBitmap = BoxBlur(Image, Size))
                 {
                     using (Bitmap ReturnBitmap2 = BoxBlur(ReturnBitmap, Size))
@@ -1504,8 +1282,6 @@ namespace Utilities.Media.Image
                         return ReturnBitmap3;
                     }
                 }
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1520,8 +1296,6 @@ namespace Utilities.Media.Image
         /// <param name="Height">Height of the image</param>
         public static void GetDimensions(string FileName, out int Width, out int Height)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                 {
                     Width = 0;
@@ -1533,8 +1307,6 @@ namespace Utilities.Media.Image
                     Width = TempImage.Width;
                     Height = TempImage.Height;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1545,8 +1317,6 @@ namespace Utilities.Media.Image
         /// <param name="Height">Height of the image</param>
         public static void GetDimensions(Bitmap Image, out int Width, out int Height)
         {
-            try
-            {
                 if (Image == null)
                 {
                     Width = 0;
@@ -1555,8 +1325,6 @@ namespace Utilities.Media.Image
                 }
                 Width = Image.Width;
                 Height = Image.Height;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1570,8 +1338,6 @@ namespace Utilities.Media.Image
         /// <returns></returns>
         public static ImageFormat GetFormat(string FileName)
         {
-            try
-            {
                 if (FileName.EndsWith("jpg", StringComparison.InvariantCultureIgnoreCase) || FileName.EndsWith("jpeg", StringComparison.InvariantCultureIgnoreCase))
                     return ImageFormat.Jpeg;
                 if (FileName.EndsWith("png", StringComparison.InvariantCultureIgnoreCase))
@@ -1583,8 +1349,6 @@ namespace Utilities.Media.Image
                 if (FileName.EndsWith("gif", StringComparison.InvariantCultureIgnoreCase))
                     return ImageFormat.Gif;
                 return ImageFormat.Bmp;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1598,8 +1362,6 @@ namespace Utilities.Media.Image
         /// <returns>A list containing HTML color values (ex: #041845)</returns>
         public static List<string> GetHTMLPalette(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new List<string>();
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1607,8 +1369,6 @@ namespace Utilities.Media.Image
                     List<string> Palette = GetHTMLPalette(TempBitmap);
                     return Palette;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1618,8 +1378,6 @@ namespace Utilities.Media.Image
         /// <returns>A list containing HTML color values (ex: #041845)</returns>
         public static List<string> GetHTMLPalette(Bitmap OriginalImage)
         {
-            try
-            {
                 List<string> ReturnArray = new List<string>();
                 if (OriginalImage.Palette != null && OriginalImage.Palette.Entries.Length > 0)
                 {
@@ -1648,8 +1406,6 @@ namespace Utilities.Media.Image
                 }
                 Image.UnlockImage(OriginalImage, ImageData);
                 return ReturnArray;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1663,8 +1419,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void GreenFilter(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1672,8 +1426,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1683,8 +1435,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap GreenFilter(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1692,8 +1442,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.GreenFilter(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1703,8 +1451,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap GreenFilter(Bitmap Image)
         {
-            try
-            {
                 ColorMatrix TempMatrix = new ColorMatrix();
                 TempMatrix.Matrix = new float[][]{
                             new float[] {0, 0, 0, 0, 0},
@@ -1714,8 +1460,6 @@ namespace Utilities.Media.Image
                             new float[] {0, 0, 0, 0, 1}
                         };
                 return TempMatrix.Apply(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1729,8 +1473,6 @@ namespace Utilities.Media.Image
         /// <returns>returns true if it is an image, false otherwise</returns>
         public static bool IsGraphic(string FileName)
         {
-            try
-            {
                 System.Text.RegularExpressions.Regex Regex = new System.Text.RegularExpressions.Regex(@"\.ico$|\.tiff$|\.gif$|\.jpg$|\.jpeg$|\.png$|\.bmp$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
                 if (Regex.IsMatch(FileName))
                 {
@@ -1740,8 +1482,6 @@ namespace Utilities.Media.Image
                 {
                     return false;
                 }
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1756,8 +1496,6 @@ namespace Utilities.Media.Image
         /// <param name="MaxJitter">Maximum number of pixels the item can move</param>
         public static void Jitter(string FileName, string NewFileName, int MaxJitter)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1765,8 +1503,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1776,8 +1512,6 @@ namespace Utilities.Media.Image
         /// <param name="MaxJitter">Maximum number of pixels the item can move</param>
         public static Bitmap Jitter(string FileName, int MaxJitter)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1785,8 +1519,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Jitter(TempBitmap, MaxJitter);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1796,8 +1528,6 @@ namespace Utilities.Media.Image
         /// <param name="MaxJitter">Maximum number of pixels the item can move</param>
         public static Bitmap Jitter(Bitmap OriginalImage, int MaxJitter)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage, OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -1821,8 +1551,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1837,8 +1565,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static void KuwaharaBlur(string FileName, string NewFileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1846,8 +1572,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1857,8 +1581,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap KuwaharaBlur(string FileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -1866,8 +1588,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.KuwaharaBlur(TempBitmap, Size);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -1877,8 +1597,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap KuwaharaBlur(Bitmap OriginalImage, int Size)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -1971,8 +1689,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -1986,8 +1702,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void LaplaceEdgeDetection(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -1995,8 +1709,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2006,8 +1718,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap LaplaceEdgeDetection(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2015,8 +1725,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.LaplaceEdgeDetection(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2026,8 +1734,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap LaplaceEdgeDetection(Bitmap Image)
         {
-            try
-            {
                 using (Bitmap TempImage = ConvertBlackAndWhite(Image))
                 {
                     Filter TempFilter = new Filter(5, 5);
@@ -2061,8 +1767,6 @@ namespace Utilities.Media.Image
                         return Negative(NewImage);
                     }
                 }
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2077,8 +1781,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static void MedianFilter(string FileName, string NewFileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2086,8 +1788,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2097,8 +1797,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap MedianFilter(string FileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2106,8 +1804,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.MedianFilter(TempBitmap, Size);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2117,8 +1813,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap MedianFilter(Bitmap OriginalImage, int Size)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -2160,8 +1854,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2175,8 +1867,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void Negative(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2184,8 +1874,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2195,8 +1883,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Negative(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2204,8 +1890,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Negative(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2215,8 +1899,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Negative(Bitmap OriginalImage)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -2234,8 +1916,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2250,8 +1930,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>'
         public static void Or(string FileName1, string FileName2, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName1) || !IsGraphic(FileName2))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2259,8 +1937,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2271,8 +1947,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Or(string FileName1, string FileName2)
         {
-            try
-            {
                 if (!IsGraphic(FileName1) || !IsGraphic(FileName2))
                     return new Bitmap(1, 1);
                 using (Bitmap TempImage1 = new Bitmap(FileName1))
@@ -2283,8 +1957,6 @@ namespace Utilities.Media.Image
                         return ReturnBitmap;
                     }
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2295,8 +1967,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Or(Bitmap Image1, Bitmap Image2)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData1 = Image.LockImage(Image1);
@@ -2321,8 +1991,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(Image1, OldData1);
                 Image.UnlockImage(Image2, OldData2);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2337,8 +2005,6 @@ namespace Utilities.Media.Image
         /// <param name="PixelSize">Size of the "pixels" in pixels</param>
         public static void Pixelate(string FileName, string NewFileName, int PixelSize)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2346,8 +2012,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2358,8 +2022,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which is pixelated</returns>
         public static Bitmap Pixelate(string FileName, int PixelSize)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2367,8 +2029,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Pixelate(TempBitmap, PixelSize);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2379,8 +2039,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which is pixelated</returns>
         public static Bitmap Pixelate(Bitmap OriginalImage, int PixelSize)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -2423,8 +2081,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2438,8 +2094,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void RedFilter(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2447,8 +2101,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2458,8 +2110,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap RedFilter(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2467,8 +2117,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.RedFilter(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2478,8 +2126,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap RedFilter(Bitmap Image)
         {
-            try
-            {
                 ColorMatrix TempMatrix = new ColorMatrix();
                 TempMatrix.Matrix = new float[][]{
                             new float[] {1, 0, 0, 0, 0},
@@ -2489,8 +2135,6 @@ namespace Utilities.Media.Image
                             new float[] {0, 0, 0, 0, 1}
                         };
                 return TempMatrix.Apply(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2505,8 +2149,6 @@ namespace Utilities.Media.Image
         /// <param name="MaxSide">Max height/width for the final image</param>
         public static void ResizeImage(string FileName, string NewFileName, int MaxSide)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2514,8 +2156,6 @@ namespace Utilities.Media.Image
                 {
                     TempBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2526,8 +2166,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the resized image</returns>
         public static Bitmap ResizeImage(string FileName, int MaxSide)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2535,8 +2173,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.ResizeImage(TempBitmap, MaxSide);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2547,8 +2183,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the resized image</returns>
         public static Bitmap ResizeImage(Bitmap Image, int MaxSide)
         {
-            try
-            {
                 int NewWidth;
                 int NewHeight;
 
@@ -2576,8 +2210,6 @@ namespace Utilities.Media.Image
 
                 Bitmap TempBitmap = new Bitmap(Image, NewWidth, NewHeight);
                 return TempBitmap;
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2590,8 +2222,6 @@ namespace Utilities.Media.Image
         /// <param name="Quality">Quality of the resizing</param>
         public static void ResizeImage(string FileName, string NewFileName, int Width, int Height, Quality Quality)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2599,8 +2229,6 @@ namespace Utilities.Media.Image
                 {
                     TempBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2613,8 +2241,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the resized image</returns>
         public static Bitmap ResizeImage(string FileName, int Width, int Height, Quality Quality)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2622,8 +2248,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.ResizeImage(TempBitmap, Width, Height, Quality);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2636,8 +2260,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the resized image</returns>
         public static Bitmap ResizeImage(Bitmap Image, int Width,int Height,Quality Quality)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(Width, Height);
                 using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
                 {
@@ -2656,8 +2278,6 @@ namespace Utilities.Media.Image
                     NewGraphics.DrawImage(Image, new System.Drawing.Rectangle(0, 0, Width, Height));
                 }
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2672,8 +2292,6 @@ namespace Utilities.Media.Image
         /// <param name="DegreesToRotate">Degrees to rotate the image</param>
         public static void Rotate(string FileName, string NewFileName, float DegreesToRotate)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2681,8 +2299,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2693,8 +2309,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object containing the rotated image</returns>
         public static Bitmap Rotate(string FileName, float DegreesToRotate)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2702,8 +2316,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Rotate(TempBitmap, DegreesToRotate);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2714,8 +2326,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object containing the rotated image</returns>
         public static Bitmap Rotate(Bitmap Image, float DegreesToRotate)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(Image.Width, Image.Height);
                 using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
                 {
@@ -2728,8 +2338,6 @@ namespace Utilities.Media.Image
                         GraphicsUnit.Pixel);
                 }
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2743,8 +2351,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void Sharpen(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2752,8 +2358,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2763,8 +2367,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Sharpen(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2772,8 +2374,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Sharpen(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2783,8 +2383,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Sharpen(Bitmap Image)
         {
-            try
-            {
                 Filter TempFilter = new Filter(3, 3);
                 TempFilter.MyFilter[0, 0] = -1;
                 TempFilter.MyFilter[0, 2] = -1;
@@ -2796,8 +2394,6 @@ namespace Utilities.Media.Image
                 TempFilter.MyFilter[1, 2] = -2;
                 TempFilter.MyFilter[1, 1] = 16;
                 return TempFilter.ApplyFilter(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2811,8 +2407,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void SharpenLess(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2820,8 +2414,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2831,8 +2423,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SharpenLess(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2840,8 +2430,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.SharpenLess(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2851,8 +2439,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SharpenLess(Bitmap Image)
         {
-            try
-            {
                 Filter TempFilter = new Filter(3, 3);
                 TempFilter.MyFilter[0, 0] = -1;
                 TempFilter.MyFilter[0, 1] = 0;
@@ -2864,8 +2450,6 @@ namespace Utilities.Media.Image
                 TempFilter.MyFilter[2, 1] = 0;
                 TempFilter.MyFilter[2, 2] = -1;
                 return TempFilter.ApplyFilter(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2883,8 +2467,6 @@ namespace Utilities.Media.Image
         /// <param name="YDirection">Determines if this should be done in the Y direction</param>
         public static void SinWave(string FileName, string NewFileName, float Amplitude, float Frequency, bool XDirection, bool YDirection)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2892,8 +2474,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2907,8 +2487,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which has been modified</returns>
         public static Bitmap SinWave(string FileName, float Amplitude, float Frequency, bool XDirection, bool YDirection)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -2916,8 +2494,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.SinWave(TempBitmap, Amplitude, Frequency, XDirection, YDirection);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -2931,8 +2507,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which has been modified</returns>
         public static Bitmap SinWave(Bitmap OriginalImage, float Amplitude, float Frequency, bool XDirection, bool YDirection)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -2966,8 +2540,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -2981,8 +2553,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save final image</param>
         public static void SobelEdgeDetection(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -2990,8 +2560,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3001,8 +2569,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEdgeDetection(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -3010,8 +2576,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.SobelEdgeDetection(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3021,8 +2585,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEdgeDetection(Bitmap Input)
         {
-            try
-            {
                 using (Bitmap TempImage = ConvertBlackAndWhite(Input))
                 {
                     Filter TempFilter = new Filter(3, 3);
@@ -3080,8 +2642,6 @@ namespace Utilities.Media.Image
                         }
                     }
                 }
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -3095,8 +2655,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void SobelEmboss(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -3104,8 +2662,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3115,8 +2671,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEmboss(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -3124,8 +2678,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.SobelEmboss(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3135,8 +2687,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEmboss(Bitmap Image)
         {
-            try
-            {
                 Filter TempFilter = new Filter(3, 3);
                 TempFilter.MyFilter[0, 0] = -1;
                 TempFilter.MyFilter[0, 1] = 0;
@@ -3149,8 +2699,6 @@ namespace Utilities.Media.Image
                 TempFilter.MyFilter[2, 2] = 1;
                 TempFilter.Offset = 127;
                 return TempFilter.ApplyFilter(Image);
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -3165,8 +2713,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static void SNNBlur(string FileName, string NewFileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -3174,8 +2720,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3185,8 +2729,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap SNNBlur(string FileName, int Size)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -3194,8 +2736,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.SNNBlur(TempBitmap, Size);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3205,8 +2745,6 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap SNNBlur(Bitmap OriginalImage, int Size)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -3266,8 +2804,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -3281,8 +2817,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>
         public static void StretchContrast(string FileName, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -3290,8 +2824,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3301,8 +2833,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap StretchContrast(string FileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -3310,8 +2840,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.StretchContrast(TempBitmap);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3321,8 +2849,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap StretchContrast(Bitmap OriginalImage)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -3345,8 +2871,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -3361,8 +2885,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the black and white image to</param>
         public static void Threshold(string FileName, string NewFileName, float Threshold)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -3370,8 +2892,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3382,8 +2902,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object containing the new image</returns>
         public static Bitmap Threshold(string FileName, float Threshold)
         {
-            try
-            {
                 if (!IsGraphic(FileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -3391,8 +2909,6 @@ namespace Utilities.Media.Image
                     Bitmap ReturnBitmap = Image.Threshold(TempBitmap, Threshold);
                     return ReturnBitmap;
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3403,8 +2919,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object containing the new image</returns>
         public static Bitmap Threshold(Bitmap OriginalImage, float Threshold)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData = Image.LockImage(OriginalImage);
@@ -3428,8 +2942,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(NewBitmap, NewData);
                 Image.UnlockImage(OriginalImage, OldData);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -3448,8 +2960,6 @@ namespace Utilities.Media.Image
         /// <param name="Y">Y position in pixels for the watermark</param>
         public static void Watermark(string FileName, string WatermarkFileName, string NewFileName, float Opacity, int X, int Y, Color KeyColor)
         {
-            try
-            {
                 if (!IsGraphic(FileName) || !IsGraphic(WatermarkFileName))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -3457,8 +2967,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3473,8 +2981,6 @@ namespace Utilities.Media.Image
         /// <returns>The results in the form of a bitmap object</returns>
         public static Bitmap Watermark(string FileName, string WatermarkFileName, float Opacity, int X, int Y, Color KeyColor)
         {
-            try
-            {
                 if (!IsGraphic(FileName) || !IsGraphic(WatermarkFileName))
                     return new Bitmap(1, 1);
                 using (Bitmap TempBitmap = new Bitmap(FileName))
@@ -3485,8 +2991,6 @@ namespace Utilities.Media.Image
                         return ReturnBitmap;
                     }
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3501,8 +3005,6 @@ namespace Utilities.Media.Image
         /// <returns>The results in the form of a bitmap object</returns>
         public static Bitmap Watermark(Bitmap Image, Bitmap WatermarkImage, float Opacity, int X, int Y, Color KeyColor)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
                 using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
                 {
@@ -3530,8 +3032,6 @@ namespace Utilities.Media.Image
                     }
                 }
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -3546,8 +3046,6 @@ namespace Utilities.Media.Image
         /// <param name="NewFileName">Location to save the image to</param>'
         public static void Xor(string FileName1, string FileName2, string NewFileName)
         {
-            try
-            {
                 if (!IsGraphic(FileName1) || !IsGraphic(FileName2))
                     return;
                 ImageFormat FormatUsing = GetFormat(NewFileName);
@@ -3555,8 +3053,6 @@ namespace Utilities.Media.Image
                 {
                     NewBitmap.Save(NewFileName, FormatUsing);
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3567,8 +3063,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Xor(string FileName1, string FileName2)
         {
-            try
-            {
                 if (!IsGraphic(FileName1) || !IsGraphic(FileName2))
                     return new Bitmap(1, 1);
                 using (Bitmap TempImage1 = new Bitmap(FileName1))
@@ -3579,8 +3073,6 @@ namespace Utilities.Media.Image
                         return ReturnBitmap;
                     }
                 }
-            }
-            catch { throw; }
         }
 
         /// <summary>
@@ -3591,8 +3083,6 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Xor(Bitmap Image1, Bitmap Image2)
         {
-            try
-            {
                 Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
                 BitmapData NewData = Image.LockImage(NewBitmap);
                 BitmapData OldData1 = Image.LockImage(Image1);
@@ -3617,8 +3107,6 @@ namespace Utilities.Media.Image
                 Image.UnlockImage(Image1, OldData1);
                 Image.UnlockImage(Image2, OldData2);
                 return NewBitmap;
-            }
-            catch { throw; }
         }
 
         #endregion
@@ -3697,8 +3185,6 @@ namespace Utilities.Media.Image
 
         internal static unsafe Color GetPixel(BitmapData Data, int x, int y,int PixelSizeInBytes)
         {
-            try
-            {
                 byte* DataPointer = (byte*)Data.Scan0;
                 DataPointer = DataPointer + (y * Data.Stride) + (x * PixelSizeInBytes);
                 if (PixelSizeInBytes == 3)
@@ -3706,14 +3192,10 @@ namespace Utilities.Media.Image
                     return Color.FromArgb(DataPointer[2], DataPointer[1], DataPointer[0]);
                 }
                 return Color.FromArgb(DataPointer[3], DataPointer[2], DataPointer[1], DataPointer[0]);
-            }
-            catch { throw; }
         }
 
         internal static unsafe void SetPixel(BitmapData Data, int x, int y,Color PixelColor,int PixelSizeInBytes)
         {
-            try
-            {
                 byte* DataPointer = (byte*)Data.Scan0;
                 DataPointer = DataPointer + (y * Data.Stride) + (x * PixelSizeInBytes);
                 if (PixelSizeInBytes == 3)
@@ -3727,27 +3209,17 @@ namespace Utilities.Media.Image
                 DataPointer[2] = PixelColor.R;
                 DataPointer[1] = PixelColor.G;
                 DataPointer[0] = PixelColor.B;
-            }
-            catch { throw; }
         }
 
         internal static BitmapData LockImage(Bitmap Image)
         {
-            try
-            {
                 return Image.LockBits(new Rectangle(0, 0, Image.Width, Image.Height),
                     ImageLockMode.ReadWrite, Image.PixelFormat);
-            }
-            catch { throw; }
         }
 
         internal static void UnlockImage(Bitmap Image,BitmapData ImageData)
         {
-            try
-            {
                 Image.UnlockBits(ImageData);
-            }
-            catch { throw; }
         }
 
         #endregion
