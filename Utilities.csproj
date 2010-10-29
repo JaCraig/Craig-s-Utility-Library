@@ -164,6 +164,19 @@
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
+    <Compile Include="Reflection\Emit\Assembly.cs" />
+    <Compile Include="Reflection\Emit\ConstructorBuilder.cs" />
+    <Compile Include="Reflection\Emit\DefaultConstructorBuilder.cs" />
+    <Compile Include="Reflection\Emit\DefaultPropertyBuilder.cs" />
+    <Compile Include="Reflection\Emit\EnumBuilder.cs" />
+    <Compile Include="Reflection\Emit\FieldBuilder.cs" />
+    <Compile Include="Reflection\Emit\Interfaces\IMethodBuilder.cs" />
+    <Compile Include="Reflection\Emit\Interfaces\IPropertyBuilder.cs" />
+    <Compile Include="Reflection\Emit\Interfaces\IType.cs" />
+    <Compile Include="Reflection\Emit\LocalBuilder.cs" />
+    <Compile Include="Reflection\Emit\MethodBuilder.cs" />
+    <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
+    <Compile Include="Reflection\Emit\TypeBuilder.cs" />
     <Compile Include="SQL\DataClasses\Column.cs" />
     <Compile Include="SQL\DataClasses\Database.cs" />
     <Compile Include="SQL\DataClasses\Enums\TriggerType.cs" />
@@ -313,9 +326,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reflection\Emit\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)UtilitiesSplitter\bin\Release\UtilitiesSplitter.exe</PostBuildEvent>
