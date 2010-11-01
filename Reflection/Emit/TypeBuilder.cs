@@ -256,5 +256,63 @@ namespace Utilities.Reflection.Emit
         private Assembly Assembly { get; set; }
 
         #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            string[] Splitter = { "." };
+            string[] NameParts = Name.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder Output = new StringBuilder();
+            Output.Append("namespace ").Append(Assembly.Name);
+            for (int x = 0; x < NameParts.Length - 1; ++x)
+            {
+                Output.Append(".").Append(NameParts[x]);
+            }
+            Output.Append("\n{\n");
+            if ((Attributes & TypeAttributes.Public) > 0)
+                Output.Append("public ");
+            else
+                Output.Append("private ");
+            Output.Append(NameParts[NameParts.Length - 1]);
+            string Seperator = " : ";
+            if (BaseClass != null)
+            {
+                Output.Append(Seperator).Append(BaseClass.Name);
+                Seperator = ", ";
+            }
+            foreach (Type Interface in Interfaces)
+            {
+                Output.Append(Seperator).Append(Interface.Name);
+                Seperator = ", ";
+            }
+                
+            Output.Append("\n{");
+
+            foreach (IMethodBuilder Constructor in Constructors)
+            {
+                Output.Append(Constructor.ToString());
+            }
+
+            foreach (IMethodBuilder Method in Methods)
+            {
+                Output.Append(Method.ToString());
+            }
+
+            foreach (IPropertyBuilder Property in Properties)
+            {
+                Output.Append(Property.ToString());
+            }
+
+            foreach (FieldBuilder Field in Fields)
+            {
+                Output.Append(Field.ToString());
+            }
+
+            Output.Append("\n}\n}\n\n");
+            return Output.ToString();
+        }
+
+        #endregion
     }
 }

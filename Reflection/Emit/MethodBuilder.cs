@@ -101,5 +101,48 @@ namespace Utilities.Reflection.Emit
         private TypeBuilder Type { get; set; }
 
         #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Output = new StringBuilder();
+
+            Output.Append("\n");
+            if ((Attributes & MethodAttributes.Public)>0)
+                Output.Append("public ");
+            else if ((Attributes & MethodAttributes.Private)>0)
+                Output.Append("private ");
+            if ((Attributes & MethodAttributes.Static)>0)
+                Output.Append("static ");
+            if ((Attributes & MethodAttributes.Virtual) > 0)
+                Output.Append("virtual ");
+            else if ((Attributes & MethodAttributes.Abstract) > 0)
+                Output.Append("abstract ");
+            else if ((Attributes & MethodAttributes.HideBySig) > 0)
+                Output.Append("override ");
+
+            Output.Append(ReturnType.Name).Append(" ")
+                .Append(Name).Append("(");
+
+            string Splitter="";
+            int ParameterNum=1;
+            if (ParameterTypes != null)
+            {
+                foreach (Type ParameterType in ParameterTypes)
+                {
+                    Output.Append(Splitter).Append(ParameterType.Name)
+                        .Append(" Parameter").Append(ParameterNum);
+                    Splitter = ",";
+                }
+            }
+            Output.Append(")");
+            Output.Append("\n{\n");
+            Output.Append("\n}\n\n");
+
+            return Output.ToString();
+        }
+
+        #endregion
     }
 }

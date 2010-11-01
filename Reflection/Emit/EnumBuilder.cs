@@ -131,5 +131,35 @@ namespace Utilities.Reflection.Emit
         private Assembly Assembly { get; set; }
 
         #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            string[] Splitter={"."};
+            string[] NameParts=Name.Split(Splitter,StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder Output = new StringBuilder();
+            Output.Append("namespace ").Append(Assembly.Name);
+            for (int x = 0; x < NameParts.Length - 1; ++x)
+            {
+                Output.Append(".").Append(NameParts[x]);
+            }
+            Output.Append("\n{\n");
+            if ((Attributes & TypeAttributes.Public) > 0)
+                Output.Append("public ");
+            else
+                Output.Append("private ");
+            Output.Append(NameParts[NameParts.Length-1]).Append("\n{");
+            string Seperator="";
+            foreach (System.Reflection.Emit.FieldBuilder Literal in Literals)
+            {
+                Output.Append(Seperator).Append("\n\t").Append(Literal.Name);
+                Seperator=",";
+            }
+            Output.Append("\n}\n}\n\n");
+            return Output.ToString();
+        }
+
+        #endregion
     }
 }

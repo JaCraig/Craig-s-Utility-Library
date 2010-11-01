@@ -94,12 +94,13 @@ namespace Utilities.Reflection.Emit
             if (!string.IsNullOrEmpty(Directory))
             {
                 Builder = Domain.DefineDynamicAssembly(AssemblyName, AssemblyBuilderAccess.RunAndSave, Directory);
+                Module = Builder.DefineDynamicModule(Name, Name + (Type == AssemblyType.DLL ? ".dll" : ".exe"), true);
             }
             else
             {
                 Builder = Domain.DefineDynamicAssembly(AssemblyName, AssemblyBuilderAccess.Run);
+                Module = Builder.DefineDynamicModule(Name, true);
             }
-            Module = Builder.DefineDynamicModule(Name, Name + (Type == AssemblyType.DLL ? ".dll" : ".exe"), true);
             Classes = new List<TypeBuilder>();
             Enums = new List<EnumBuilder>();
         }
@@ -194,6 +195,24 @@ namespace Utilities.Reflection.Emit
         {
             DLL,
             EXE
+        }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Output = new StringBuilder();
+            foreach (EnumBuilder Enum in Enums)
+            {
+                Output.Append(Enum.ToString());
+            }
+            foreach (TypeBuilder Class in Classes)
+            {
+                Output.Append(Class.ToString());
+            }
+            return Output.ToString();
         }
 
         #endregion
