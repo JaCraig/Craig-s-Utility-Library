@@ -149,7 +149,7 @@ namespace Utilities.Reflection.Emit
                 Output.Append("public ");
             else
                 Output.Append("private ");
-            Output.Append(NameParts[NameParts.Length-1]).Append("\n{");
+            Output.Append("enum ").Append(NameParts[NameParts.Length-1]).Append("\n{");
             string Seperator="";
             foreach (System.Reflection.Emit.FieldBuilder Literal in Literals)
             {

@@ -274,6 +274,7 @@ namespace Utilities.Reflection.Emit
                 Output.Append("public ");
             else
                 Output.Append("private ");
+            Output.Append("class ");
             Output.Append(NameParts[NameParts.Length - 1]);
             string Seperator = " : ";
             if (BaseClass != null)

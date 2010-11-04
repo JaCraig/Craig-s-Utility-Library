@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using Utilities.Reflection.Emit.Interfaces;
+using System.Reflection.Emit;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -32,7 +34,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining a field within a type
     /// </summary>
-    public class FieldBuilder
+    public class FieldBuilder:IVariable
     {
         #region Constructor
 
@@ -70,6 +72,16 @@ namespace Utilities.Reflection.Emit
             Builder = Type.Builder.DefineField(Name, FieldType, Attributes);
         }
 
+        public void Load(System.Reflection.Emit.ILGenerator Generator)
+        {
+            Generator.Emit(OpCodes.Ldfld, Builder);
+        }
+
+        public void Save(System.Reflection.Emit.ILGenerator Generator)
+        {
+            Generator.Emit(OpCodes.Stfld, Builder);
+        }
+
         #endregion
 
         #region Properties
@@ -95,6 +107,43 @@ namespace Utilities.Reflection.Emit
         public FieldAttributes Attributes { get; private set; }
 
         private TypeBuilder Type { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Output = new StringBuilder();
+
+            Output.Append("\n");
+            if ((Attributes & FieldAttributes.Public) > 0)
+                Output.Append("public ");
+            else if ((Attributes & FieldAttributes.Private) > 0)
+                Output.Append("private ");
+            if ((Attributes & FieldAttributes.Static) > 0)
+                Output.Append("static ");
+            if (FieldType.Name.Contains("`"))
+            {
+                Type[] GenericTypes = FieldType.GetGenericArguments();
+                Output.Append(FieldType.Name.Remove(FieldType.Name.IndexOf("`")))
+                    .Append("<");
+                string Seperator = "";
+                foreach (Type GenericType in GenericTypes)
+                {
+                    Output.Append(Seperator).Append(GenericType.Name);
+                    Seperator = ",";
+                }
+                Output.Append(">");
+            }
+            else
+            {
+                Output.Append(FieldType.Name);
+            }
+            Output.Append(" ").Append(Name).Append(";");
+
+            return Output.ToString();
+        }
 
         #endregion
     }

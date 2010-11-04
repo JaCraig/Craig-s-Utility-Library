@@ -32,52 +32,62 @@ using Utilities.Reflection.Emit.Interfaces;
 namespace Utilities.Reflection.Emit
 {
     /// <summary>
-    /// Helper class for defining a local variable
+    /// Helper class for defining a constant value
     /// </summary>
-    public class LocalBuilder:IVariable
+    public class ConstantBuilder : IVariable
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="MethodBuilder">Method builder</param>
-        /// <param name="Name">Name of the local</param>
-        /// <param name="LocalType">Type of the local</param>
-        public LocalBuilder(IMethodBuilder MethodBuilder, string Name, Type LocalType)
+        /// <param name="Value">Value of the constant</param>
+        public ConstantBuilder(object Value)
         {
-            if (MethodBuilder == null)
-                throw new ArgumentNullException("MethodBuilder");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
-            this.Name = Name;
-            this.MethodBuilder = MethodBuilder;
-            this.LocalType = LocalType;
-            Setup();
+            this.Value = Value;
+            if (Value != null)
+            {
+                this.Type = Value.GetType();
+                return;
+            }
+            this.Type = null;
         }
 
         #endregion
 
         #region Functions
 
-        /// <summary>
-        /// Sets up the field
-        /// </summary>
-        private void Setup()
-        {
-            if (MethodBuilder == null)
-                throw new NullReferenceException("No method is associated with this local variable");
-            Builder = MethodBuilder.Generator.DeclareLocal(LocalType);
-        }
-
         public void Load(ILGenerator Generator)
         {
-            Generator.Emit(OpCodes.Ldloc, Builder);
+            if (this.Value == null)
+            {
+                Generator.Emit(OpCodes.Ldnull);
+            }
+            else if (this.Type == typeof(Int32))
+            {
+                Generator.Emit(OpCodes.Ldc_I4, (Int32)Value);
+            }
+            else if (this.Type == typeof(Int64))
+            {
+                Generator.Emit(OpCodes.Ldc_I8, (Int64)Value);
+            }
+            else if (this.Type == typeof(float))
+            {
+                Generator.Emit(OpCodes.Ldc_R4, (float)Value);
+            }
+            else if (this.Type == typeof(double))
+            {
+                Generator.Emit(OpCodes.Ldc_R8, (double)Value);
+            }
+            else if (this.Type == typeof(string))
+            {
+                Generator.Emit(OpCodes.Ldstr, (string)Value);
+            }
         }
 
         public void Save(ILGenerator Generator)
         {
-            Generator.Emit(OpCodes.Stloc, Builder);
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -85,21 +95,16 @@ namespace Utilities.Reflection.Emit
         #region Properties
 
         /// <summary>
-        /// Local name
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Local builder
-        /// </summary>
-        public System.Reflection.Emit.LocalBuilder Builder { get; private set; }
-
-        /// <summary>
         /// Local type
         /// </summary>
-        public Type LocalType { get; private set; }
+        public Type Type { get; protected set; }
 
-        private IMethodBuilder MethodBuilder { get; set; }
+        /// <summary>
+        /// Value of the constant
+        /// </summary>
+        public object Value { get; protected set; }
+
+        public string Name { get { return ""; } }
 
         #endregion
     }

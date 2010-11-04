@@ -34,7 +34,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining default properties
     /// </summary>
-    public class DefaultPropertyBuilder:IPropertyBuilder
+    public class DefaultPropertyBuilder:IPropertyBuilder,IVariable
     {
         #region Constructor
 
@@ -99,6 +99,16 @@ namespace Utilities.Reflection.Emit
             Builder.SetSetMethod(SetMethod.Builder);
         }
 
+        public void Load(ILGenerator Generator)
+        {
+            Generator.EmitCall(OpCodes.Callvirt,GetMethod.Builder, null);
+        }
+
+        public void Save(ILGenerator Generator)
+        {
+            Generator.EmitCall(OpCodes.Callvirt, SetMethod.Builder, null);
+        }
+
         #endregion
 
         #region Properties
@@ -151,6 +161,73 @@ namespace Utilities.Reflection.Emit
         public FieldBuilder Field { get; private set; }
 
         private TypeBuilder Type { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Output = new StringBuilder();
+
+            Output.Append("\n");
+            if ((GetMethodAttributes & MethodAttributes.Public) > 0)
+                Output.Append("public ");
+            else if ((GetMethodAttributes & MethodAttributes.Private) > 0)
+                Output.Append("private ");
+            if ((GetMethodAttributes & MethodAttributes.Static) > 0)
+                Output.Append("static ");
+            if ((GetMethodAttributes & MethodAttributes.Virtual) > 0)
+                Output.Append("virtual ");
+            else if ((GetMethodAttributes & MethodAttributes.Abstract) > 0)
+                Output.Append("abstract ");
+            else if ((GetMethodAttributes & MethodAttributes.HideBySig) > 0)
+                Output.Append("override ");
+            if (PropertyType.Name.Contains("`"))
+            {
+                Type[] GenericTypes = PropertyType.GetGenericArguments();
+                Output.Append(PropertyType.Name.Remove(PropertyType.Name.IndexOf("`")))
+                    .Append("<");
+                string Seperator = "";
+                foreach (Type GenericType in GenericTypes)
+                {
+                    Output.Append(Seperator).Append(GenericType.Name);
+                    Seperator = ",";
+                }
+                Output.Append(">");
+            }
+            else
+            {
+                Output.Append(PropertyType.Name);
+            }
+            Output.Append(" ").Append(Name);
+
+            string Splitter = "";
+            int ParameterNum = 1;
+            if (ParameterTypes != null&&ParameterTypes.Count>0)
+            {
+                Output.Append("[");
+                foreach (Type ParameterType in ParameterTypes)
+                {
+                    Output.Append(Splitter).Append(ParameterType.Name)
+                        .Append(" Parameter").Append(ParameterNum);
+                    Splitter = ",";
+                    ++ParameterNum;
+                }
+                Output.Append("]");
+            }
+            Output.Append(" { get; ");
+            if((SetMethodAttributes & GetMethodAttributes) != SetMethodAttributes)
+            {
+                if ((SetMethodAttributes & MethodAttributes.Public) > 0)
+                    Output.Append("public ");
+                else if ((SetMethodAttributes & MethodAttributes.Private) > 0)
+                    Output.Append("private ");
+            }
+            Output.Append("set; }\n");
+
+            return Output.ToString();
+        }
 
         #endregion
     }

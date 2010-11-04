@@ -27,6 +27,7 @@ using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.Emit.Commands;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -34,7 +35,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining a method within a type
     /// </summary>
-    public class MethodBuilder:IMethodBuilder
+    public class MethodBuilder:Utilities.Reflection.Emit.BaseClasses.MethodBase
     {
         #region Constructor
 
@@ -46,10 +47,11 @@ namespace Utilities.Reflection.Emit
         /// <param name="Attributes">Attributes for the method (public, private, etc.)</param>
         /// <param name="Parameters">Parameter types for the method</param>
         /// <param name="ReturnType">Return type for the method</param>
-        public MethodBuilder(TypeBuilder TypeBuilder, string Name, 
-            MethodAttributes Attributes,List<Type> Parameters, Type ReturnType)
+        public MethodBuilder(TypeBuilder TypeBuilder, string Name,
+            MethodAttributes Attributes, List<Type> Parameters, Type ReturnType)
+            : base()
         {
-            if (TypeBuilder==null)
+            if (TypeBuilder == null)
                 throw new ArgumentNullException("TypeBuilder");
             if (string.IsNullOrEmpty(Name))
                 throw new ArgumentNullException("Name");
@@ -62,6 +64,7 @@ namespace Utilities.Reflection.Emit
                 this.ParameterTypes = new List<Type>();
                 this.ParameterTypes.AddRange(Parameters);
             }
+            Commands = new List<ICommand>();
             Setup();
         }
 
@@ -78,20 +81,9 @@ namespace Utilities.Reflection.Emit
             Generator = Builder.GetILGenerator();
         }
 
-        public LocalBuilder CreateLocal(string Name, Type LocalType)
-        {
-            return new LocalBuilder(this, Name, LocalType);
-        }
-
         #endregion
 
         #region Properties
-
-        public string Name { get; private set; }
-        public Type ReturnType { get; private set; }
-        public List<Type> ParameterTypes { get; private set; }
-        public System.Reflection.MethodAttributes Attributes { get; private set; }
-        public ILGenerator Generator { get; private set; }
 
         /// <summary>
         /// Method builder
@@ -121,9 +113,31 @@ namespace Utilities.Reflection.Emit
                 Output.Append("abstract ");
             else if ((Attributes & MethodAttributes.HideBySig) > 0)
                 Output.Append("override ");
-
-            Output.Append(ReturnType.Name).Append(" ")
-                .Append(Name).Append("(");
+            if (ReturnType.Name == "Void")
+            {
+                Output.Append("void");
+            }
+            else
+            {
+                if (ReturnType.Name.Contains("`"))
+                {
+                    Type[] GenericTypes = ReturnType.GetGenericArguments();
+                    Output.Append(ReturnType.Name.Remove(ReturnType.Name.IndexOf("`")))
+                        .Append("<");
+                    string Seperator="";
+                    foreach (Type GenericType in GenericTypes)
+                    {
+                        Output.Append(Seperator).Append(GenericType.Name);
+                        Seperator = ",";
+                    }
+                    Output.Append(">");
+                }
+                else
+                {
+                    Output.Append(ReturnType.Name);
+                }
+            }
+            Output.Append(" ").Append(Name).Append("(");
 
             string Splitter="";
             int ParameterNum=1;
@@ -134,6 +148,7 @@ namespace Utilities.Reflection.Emit
                     Output.Append(Splitter).Append(ParameterType.Name)
                         .Append(" Parameter").Append(ParameterNum);
                     Splitter = ",";
+                    ++ParameterNum;
                 }
             }
             Output.Append(")");

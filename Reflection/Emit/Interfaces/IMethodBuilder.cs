@@ -45,6 +45,33 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <returns>The LocalBuilder associated with the variable</returns>
         LocalBuilder CreateLocal(string Name, Type LocalType);
 
+        /// <summary>
+        /// Constant value
+        /// </summary>
+        /// <param name="Value">Value of the constant</param>
+        /// <returns>The ConstantBuilder associated with the variable</returns>
+        ConstantBuilder CreateConstant(object Value);
+
+        /// <summary>
+        /// Creates new object
+        /// </summary>
+        /// <param name="Constructor">Constructor</param>
+        /// <param name="Variables">Variables to send to the constructor</param>
+        IVariable NewObj(ConstructorInfo Constructor, List<IVariable> Variables);
+
+        /// <summary>
+        /// Saves the value in the left hand side variable
+        /// </summary>
+        /// <param name="LeftHandSide">Left hand side variable</param>
+        /// <param name="Value">Value to store (may be constant or IVariable object)</param>
+        void Save(IVariable LeftHandSide, object Value);
+
+        /// <summary>
+        /// Returns a specified value
+        /// </summary>
+        /// <param name="ReturnValue">Variable to return</param>
+        void Return(object ReturnValue);
+
         #endregion
 
         #region Properties

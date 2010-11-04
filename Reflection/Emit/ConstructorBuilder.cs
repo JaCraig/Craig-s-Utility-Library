@@ -33,7 +33,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining/creating constructors
     /// </summary>
-    public class ConstructorBuilder : IMethodBuilder
+    public class ConstructorBuilder : Utilities.Reflection.Emit.BaseClasses.MethodBase
     {
         #region Constructor
 
@@ -46,6 +46,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="CallingConventions">Calling convention for the constructor</param>
         public ConstructorBuilder(TypeBuilder TypeBuilder, MethodAttributes Attributes,
             List<Type> Parameters, CallingConventions CallingConventions)
+            : base()
         {
             if (TypeBuilder == null)
                 throw new ArgumentNullException("TypeBuilder");
@@ -71,28 +72,63 @@ namespace Utilities.Reflection.Emit
             this.Generator = Builder.GetILGenerator();
         }
 
-        public LocalBuilder CreateLocal(string Name, Type LocalType)
-        {
-            return new LocalBuilder(this, Name, LocalType);
-        }
-
         #endregion
 
         #region Properties
 
-        public string Name { get; private set; }
-        public Type ReturnType { get; private set; }
-        public List<Type> ParameterTypes { get; private set; }
-        public MethodAttributes Attributes { get; private set; }
-        public System.Reflection.Emit.ILGenerator Generator { get; private set; }
-        public CallingConventions CallingConventions { get; private set; }
+        public CallingConventions CallingConventions { get; protected set; }
 
         /// <summary>
         /// Constructor builder
         /// </summary>
-        public System.Reflection.Emit.ConstructorBuilder Builder { get; private set; }
+        public System.Reflection.Emit.ConstructorBuilder Builder { get; protected set; }
 
         private TypeBuilder Type { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Output = new StringBuilder();
+
+            Output.Append("\n");
+            if ((Attributes & MethodAttributes.Public) > 0)
+                Output.Append("public ");
+            else if ((Attributes & MethodAttributes.Private) > 0)
+                Output.Append("private ");
+            if ((Attributes & MethodAttributes.Static) > 0)
+                Output.Append("static ");
+            if ((Attributes & MethodAttributes.Virtual) > 0)
+                Output.Append("virtual ");
+            else if ((Attributes & MethodAttributes.Abstract) > 0)
+                Output.Append("abstract ");
+            else if ((Attributes & MethodAttributes.HideBySig) > 0)
+                Output.Append("override ");
+
+            string[] Splitter = { "." };
+            string[] NameParts = Type.Name.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
+            Output.Append(NameParts[NameParts.Length - 1]).Append("(");
+
+            string Seperator = "";
+            int ParameterNum = 1;
+            if (ParameterTypes != null)
+            {
+                foreach (Type ParameterType in ParameterTypes)
+                {
+                    Output.Append(Seperator).Append(ParameterType.Name)
+                        .Append(" Parameter").Append(ParameterNum);
+                    Seperator = ",";
+                    ++ParameterNum;
+                }
+            }
+            Output.Append(")");
+            Output.Append("\n{\n");
+            Output.Append("\n}\n\n");
+
+            return Output.ToString();
+        }
 
         #endregion
     }
