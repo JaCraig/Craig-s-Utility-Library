@@ -57,6 +57,12 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="Generator">IL Generator</param>
         void Save(ILGenerator Generator);
 
+        /// <summary>
+        /// Gets the definition of the variable
+        /// </summary>
+        /// <returns>string representation of the variable definition</returns>
+        string GetDefinition();
+
         #endregion
     }
 }

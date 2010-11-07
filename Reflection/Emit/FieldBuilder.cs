@@ -82,6 +82,23 @@ namespace Utilities.Reflection.Emit
             Generator.Emit(OpCodes.Stfld, Builder);
         }
 
+        public string GetDefinition()
+        {
+            StringBuilder Output = new StringBuilder();
+
+            Output.Append("\n");
+            if ((Attributes & FieldAttributes.Public) > 0)
+                Output.Append("public ");
+            else if ((Attributes & FieldAttributes.Private) > 0)
+                Output.Append("private ");
+            if ((Attributes & FieldAttributes.Static) > 0)
+                Output.Append("static ");
+            Output.Append(Reflection.GetTypeName(FieldType));
+            Output.Append(" ").Append(Name).Append(";");
+
+            return Output.ToString();
+        }
+
         #endregion
 
         #region Properties
@@ -114,35 +131,7 @@ namespace Utilities.Reflection.Emit
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-
-            Output.Append("\n");
-            if ((Attributes & FieldAttributes.Public) > 0)
-                Output.Append("public ");
-            else if ((Attributes & FieldAttributes.Private) > 0)
-                Output.Append("private ");
-            if ((Attributes & FieldAttributes.Static) > 0)
-                Output.Append("static ");
-            if (FieldType.Name.Contains("`"))
-            {
-                Type[] GenericTypes = FieldType.GetGenericArguments();
-                Output.Append(FieldType.Name.Remove(FieldType.Name.IndexOf("`")))
-                    .Append("<");
-                string Seperator = "";
-                foreach (Type GenericType in GenericTypes)
-                {
-                    Output.Append(Seperator).Append(GenericType.Name);
-                    Seperator = ",";
-                }
-                Output.Append(">");
-            }
-            else
-            {
-                Output.Append(FieldType.Name);
-            }
-            Output.Append(" ").Append(Name).Append(";");
-
-            return Output.ToString();
+            return Name;
         }
 
         #endregion

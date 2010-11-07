@@ -52,23 +52,19 @@ namespace Utilities.Reflection.Emit
                 throw new ArgumentNullException("TypeBuilder");
             this.Type = TypeBuilder;
             this.Attributes = Attributes;
+            this.Parameters = new List<ParameterBuilder>();
             if (Parameters != null)
             {
-                this.ParameterTypes = new List<Type>();
-                this.ParameterTypes.AddRange(Parameters);
+                int x=1;
+                foreach (Type ParameterType in Parameters)
+                {
+                    this.Parameters.Add(new ParameterBuilder(ParameterType, x));
+                    ++x;
+                }
             }
             this.CallingConventions = CallingConventions;
-            Setup();
-        }
-
-        #endregion
-
-        #region Functions
-
-        private void Setup()
-        {
             this.Builder = Type.Builder.DefineConstructor(Attributes, CallingConventions,
-                (ParameterTypes != null && ParameterTypes.Count > 0) ? ParameterTypes.ToArray() : System.Type.EmptyTypes);
+                (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
             this.Generator = Builder.GetILGenerator();
         }
 
@@ -112,19 +108,20 @@ namespace Utilities.Reflection.Emit
             Output.Append(NameParts[NameParts.Length - 1]).Append("(");
 
             string Seperator = "";
-            int ParameterNum = 1;
-            if (ParameterTypes != null)
+            if (Parameters != null)
             {
-                foreach (Type ParameterType in ParameterTypes)
+                foreach (ParameterBuilder Parameter in Parameters)
                 {
-                    Output.Append(Seperator).Append(ParameterType.Name)
-                        .Append(" Parameter").Append(ParameterNum);
+                    Output.Append(Seperator).Append(Parameter.GetDefinition());
                     Seperator = ",";
-                    ++ParameterNum;
                 }
             }
             Output.Append(")");
             Output.Append("\n{\n");
+            foreach (ICommand Command in Commands)
+            {
+                Output.Append(Command.ToString());
+            }
             Output.Append("\n}\n\n");
 
             return Output.ToString();

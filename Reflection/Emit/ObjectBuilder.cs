@@ -41,10 +41,12 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Value">Value of the constant</param>
-        public ObjectBuilder(IMethodBuilder Method,Type ObjectType)
+        /// <param name="Method">Method builder</param>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="ObjectCounter">Object counter</param>
+        public ObjectBuilder(IMethodBuilder Method,Type ObjectType,int ObjectCounter)
         {
-            Local = Method.CreateLocal("ObjLocal", ObjectType);
+            Local = Method.CreateLocal("ObjLocal"+ObjectCounter.ToString(), ObjectType);
             Local.Save(Method.Generator);
         }
 
@@ -62,6 +64,11 @@ namespace Utilities.Reflection.Emit
             throw new NotImplementedException();
         }
 
+        public string GetDefinition()
+        {
+            return Local.GetDefinition();
+        }
+
         #endregion
 
         #region Properties
@@ -69,6 +76,15 @@ namespace Utilities.Reflection.Emit
         public string Name { get { return ""; } }
 
         protected LocalBuilder Local { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            return Local.ToString();
+        }
 
         #endregion
     }

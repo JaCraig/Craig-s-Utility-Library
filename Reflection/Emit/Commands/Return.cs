@@ -24,75 +24,56 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Reflection;
-using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Interfaces;
+using System.Reflection;
+using Utilities.Reflection.Emit.Commands;
+using System.Reflection.Emit;
 #endregion
 
-namespace Utilities.Reflection.Emit
+namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Helper class for defining a constant value
+    /// Return command
     /// </summary>
-    public class ConstantBuilder : IVariable
+    public class Return:ICommand
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Value">Value of the constant</param>
-        public ConstantBuilder(object Value)
+        /// <param name="ReturnType">Return type</param>
+        /// <param name="ReturnValue">Return value</param>
+        /// <param name="Generator">IL generator</param>
+        public Return(Type ReturnType,object ReturnValue,ILGenerator Generator)
         {
-            this.Value = Value;
-            if (Value != null)
+            this.ReturnType = ReturnType;
+            this.ReturnValue = ReturnValue;
+            if (ReturnType == typeof(void) || ReturnType == null)
             {
-                this.Type = Value.GetType();
+                Generator.Emit(OpCodes.Ret);
                 return;
             }
-            this.Type = null;
-        }
-
-        #endregion
-
-        #region Functions
-
-        public void Load(ILGenerator Generator)
-        {
-            if (this.Value == null)
+            if (ReturnValue == null)
             {
-                Generator.Emit(OpCodes.Ldnull);
+                ConstantBuilder Constant = new ConstantBuilder(ReturnValue);
+                ReturnValue = Constant;
+                Constant.Load(Generator);
+                Generator.Emit(OpCodes.Ret);
+                return;
             }
-            else if (this.Type == typeof(Int32))
+            if (ReturnValue is FieldBuilder || ReturnValue is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            if (ReturnValue is IVariable)
             {
-                Generator.Emit(OpCodes.Ldc_I4, (Int32)Value);
+                ((IVariable)ReturnValue).Load(Generator);
             }
-            else if (this.Type == typeof(Int64))
+            else
             {
-                Generator.Emit(OpCodes.Ldc_I8, (Int64)Value);
+                ConstantBuilder Constant = new ConstantBuilder(ReturnValue);
+                Constant.Load(Generator);
             }
-            else if (this.Type == typeof(float))
-            {
-                Generator.Emit(OpCodes.Ldc_R4, (float)Value);
-            }
-            else if (this.Type == typeof(double))
-            {
-                Generator.Emit(OpCodes.Ldc_R8, (double)Value);
-            }
-            else if (this.Type == typeof(string))
-            {
-                Generator.Emit(OpCodes.Ldstr, (string)Value);
-            }
-        }
-
-        public void Save(ILGenerator Generator)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetDefinition()
-        {
-            return Value.ToString();
+            Generator.Emit(OpCodes.Ret);
         }
 
         #endregion
@@ -100,24 +81,27 @@ namespace Utilities.Reflection.Emit
         #region Properties
 
         /// <summary>
-        /// Local type
+        /// Return type
         /// </summary>
-        public Type Type { get; protected set; }
+        protected Type ReturnType { get; set; }
 
         /// <summary>
-        /// Value of the constant
+        /// Return value
         /// </summary>
-        public object Value { get; protected set; }
-
-        public string Name { get { return ""; } }
+        protected object ReturnValue { get; set; }
 
         #endregion
 
-        #region Overridden Functions
+        #region Overridden Function
 
         public override string ToString()
         {
-            return Value.ToString();
+            StringBuilder Output = new StringBuilder();
+            if (ReturnType != null && ReturnType != typeof(void))
+            {
+                Output.Append("return ").Append(ReturnValue.ToString()).Append(";\n");
+            }
+            return Output.ToString();
         }
 
         #endregion

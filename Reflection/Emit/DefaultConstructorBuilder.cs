@@ -103,6 +103,10 @@ namespace Utilities.Reflection.Emit
             string[] NameParts = Type.Name.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
             Output.Append(NameParts[NameParts.Length - 1]).Append("()");
             Output.Append("\n{\n");
+            foreach (ICommand Command in Commands)
+            {
+                Output.Append(Command.ToString());
+            }
             Output.Append("\n}\n\n");
 
             return Output.ToString();

@@ -61,36 +61,30 @@ namespace Utilities.Reflection.Emit
             this.GetMethodAttributes = GetMethodAttributes;
             this.SetMethodAttributes = SetMethodAttributes;
             this.PropertyType = PropertyType;
-            this.ParameterTypes = new List<System.Type>();
+            this.Parameters = new List<ParameterBuilder>();
             if (Parameters != null)
             {
-                this.ParameterTypes.AddRange(Parameters);
+                int x = 1;
+                foreach (Type Parameter in Parameters)
+                {
+                    this.Parameters.Add(new ParameterBuilder(Parameter, x));
+                    ++x;
+                }
             }
-            Setup();
-        }
-
-        #endregion
-
-        #region Functions
-
-        private void Setup()
-        {
-            if (Type == null)
-                throw new NullReferenceException("No type is associated with this property");
             Field = new FieldBuilder(Type, "_" + Name + "field", PropertyType, FieldAttributes.Private);
-            Builder = Type.Builder.DefineProperty(Name, Attributes,PropertyType,
-                (ParameterTypes != null && ParameterTypes.Count > 0) ? ParameterTypes.ToArray() : System.Type.EmptyTypes);
-            GetMethod = new MethodBuilder(Type, "get_" + Name, GetMethodAttributes, ParameterTypes, PropertyType);
+            Builder = Type.Builder.DefineProperty(Name, Attributes, PropertyType,
+                (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
+            GetMethod = new MethodBuilder(Type, "get_" + Name, GetMethodAttributes, Parameters, PropertyType);
             GetMethod.Generator.Emit(OpCodes.Ldarg_0);
             GetMethod.Generator.Emit(OpCodes.Ldfld, Field.Builder);
             GetMethod.Generator.Emit(OpCodes.Ret);
             List<Type> SetParameters = new List<System.Type>();
-            if (ParameterTypes != null)
+            if (Parameters != null)
             {
-                SetParameters.AddRange(ParameterTypes);
+                SetParameters.AddRange(Parameters);
             }
             SetParameters.Add(PropertyType);
-            SetMethod = new MethodBuilder(Type, "set_" + Name, SetMethodAttributes, SetParameters,typeof(void));
+            SetMethod = new MethodBuilder(Type, "set_" + Name, SetMethodAttributes, SetParameters, typeof(void));
             SetMethod.Generator.Emit(OpCodes.Ldarg_0);
             SetMethod.Generator.Emit(OpCodes.Ldarg_1);
             SetMethod.Generator.Emit(OpCodes.Stfld, Field.Builder);
@@ -98,6 +92,10 @@ namespace Utilities.Reflection.Emit
             Builder.SetGetMethod(GetMethod.Builder);
             Builder.SetSetMethod(SetMethod.Builder);
         }
+
+        #endregion
+
+        #region Functions
 
         public void Load(ILGenerator Generator)
         {
@@ -107,6 +105,50 @@ namespace Utilities.Reflection.Emit
         public void Save(ILGenerator Generator)
         {
             Generator.EmitCall(OpCodes.Callvirt, SetMethod.Builder, null);
+        }
+
+        public string GetDefinition()
+        {
+            StringBuilder Output = new StringBuilder();
+
+            Output.Append("\n");
+            if ((GetMethodAttributes & MethodAttributes.Public) > 0)
+                Output.Append("public ");
+            else if ((GetMethodAttributes & MethodAttributes.Private) > 0)
+                Output.Append("private ");
+            if ((GetMethodAttributes & MethodAttributes.Static) > 0)
+                Output.Append("static ");
+            if ((GetMethodAttributes & MethodAttributes.Virtual) > 0)
+                Output.Append("virtual ");
+            else if ((GetMethodAttributes & MethodAttributes.Abstract) > 0)
+                Output.Append("abstract ");
+            else if ((GetMethodAttributes & MethodAttributes.HideBySig) > 0)
+                Output.Append("override ");
+            Output.Append(Reflection.GetTypeName(PropertyType));
+            Output.Append(" ").Append(Name);
+
+            string Splitter = "";
+            if (Parameters != null && Parameters.Count > 0)
+            {
+                Output.Append("[");
+                foreach (ParameterBuilder Parameter in Parameters)
+                {
+                    Output.Append(Splitter).Append(Parameter.GetDefinition());
+                    Splitter = ",";
+                }
+                Output.Append("]");
+            }
+            Output.Append(" { get; ");
+            if ((SetMethodAttributes & GetMethodAttributes) != SetMethodAttributes)
+            {
+                if ((SetMethodAttributes & MethodAttributes.Public) > 0)
+                    Output.Append("public ");
+                else if ((SetMethodAttributes & MethodAttributes.Private) > 0)
+                    Output.Append("private ");
+            }
+            Output.Append("set; }\n");
+
+            return Output.ToString();
         }
 
         #endregion
@@ -126,7 +168,7 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Parameter types
         /// </summary>
-        public List<Type> ParameterTypes { get; private set; }
+        public List<ParameterBuilder> Parameters { get; private set; }
 
         /// <summary>
         /// Method builder
@@ -168,65 +210,7 @@ namespace Utilities.Reflection.Emit
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-
-            Output.Append("\n");
-            if ((GetMethodAttributes & MethodAttributes.Public) > 0)
-                Output.Append("public ");
-            else if ((GetMethodAttributes & MethodAttributes.Private) > 0)
-                Output.Append("private ");
-            if ((GetMethodAttributes & MethodAttributes.Static) > 0)
-                Output.Append("static ");
-            if ((GetMethodAttributes & MethodAttributes.Virtual) > 0)
-                Output.Append("virtual ");
-            else if ((GetMethodAttributes & MethodAttributes.Abstract) > 0)
-                Output.Append("abstract ");
-            else if ((GetMethodAttributes & MethodAttributes.HideBySig) > 0)
-                Output.Append("override ");
-            if (PropertyType.Name.Contains("`"))
-            {
-                Type[] GenericTypes = PropertyType.GetGenericArguments();
-                Output.Append(PropertyType.Name.Remove(PropertyType.Name.IndexOf("`")))
-                    .Append("<");
-                string Seperator = "";
-                foreach (Type GenericType in GenericTypes)
-                {
-                    Output.Append(Seperator).Append(GenericType.Name);
-                    Seperator = ",";
-                }
-                Output.Append(">");
-            }
-            else
-            {
-                Output.Append(PropertyType.Name);
-            }
-            Output.Append(" ").Append(Name);
-
-            string Splitter = "";
-            int ParameterNum = 1;
-            if (ParameterTypes != null&&ParameterTypes.Count>0)
-            {
-                Output.Append("[");
-                foreach (Type ParameterType in ParameterTypes)
-                {
-                    Output.Append(Splitter).Append(ParameterType.Name)
-                        .Append(" Parameter").Append(ParameterNum);
-                    Splitter = ",";
-                    ++ParameterNum;
-                }
-                Output.Append("]");
-            }
-            Output.Append(" { get; ");
-            if((SetMethodAttributes & GetMethodAttributes) != SetMethodAttributes)
-            {
-                if ((SetMethodAttributes & MethodAttributes.Public) > 0)
-                    Output.Append("public ");
-                else if ((SetMethodAttributes & MethodAttributes.Private) > 0)
-                    Output.Append("private ");
-            }
-            Output.Append("set; }\n");
-
-            return Output.ToString();
+            return Name;
         }
 
         #endregion

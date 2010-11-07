@@ -63,54 +63,25 @@ namespace Utilities.Reflection.Emit.BaseClasses
 
         public IVariable NewObj(ConstructorInfo Constructor, List<IVariable> Variables)
         {
-            Commands.Add(new NewObj(Constructor, Variables, Generator));
-            return new ObjectBuilder(this, Constructor.DeclaringType);
+            NewObj TempCommand = new NewObj(this, Constructor, Variables, ObjectCounter, Generator);
+            Commands.Add(TempCommand);
+            ++ObjectCounter;
+            return TempCommand.GetObject();
         }
 
-        public void Save(IVariable LeftHandSide, object Value)
+        public void Assign(IVariable LeftHandSide, object Value)
         {
-            if (LeftHandSide == null)
-                throw new ArgumentNullException("LeftHandSide");
-            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
-                Generator.Emit(OpCodes.Ldarg_0);
-            if (Value is IVariable)
-            {
-                ((IVariable)Value).Load(Generator);
-            }
-            else
-            {
-                ConstantBuilder Constant = new ConstantBuilder(Value);
-                Constant.Load(Generator);
-            }
-            LeftHandSide.Save(Generator);
+            Commands.Add(new Assign(LeftHandSide, Value, Generator));
         }
 
         public void Return(object ReturnValue)
         {
-            if (this.ReturnType == typeof(void) || this.ReturnType == null)
-            {
-                Generator.Emit(OpCodes.Ret);
-                return;
-            }
-            if (ReturnValue == null)
-            {
-                ConstantBuilder Constant = new ConstantBuilder(ReturnValue);
-                Constant.Load(Generator);
-                Generator.Emit(OpCodes.Ret);
-                return;
-            }
-            if (ReturnValue is FieldBuilder || ReturnValue is IPropertyBuilder)
-                Generator.Emit(OpCodes.Ldarg_0);
-            if (ReturnValue is IVariable)
-            {
-                ((IVariable)ReturnValue).Load(Generator);
-            }
-            else
-            {
-                ConstantBuilder Constant = new ConstantBuilder(ReturnValue);
-                Constant.Load(Generator);
-            }
-            Generator.Emit(OpCodes.Ret);
+            Commands.Add(new Return(ReturnType, ReturnValue, Generator));
+        }
+
+        public void Return()
+        {
+            Commands.Add(new Return(ReturnType, null, Generator));
         }
 
         #endregion
@@ -119,11 +90,13 @@ namespace Utilities.Reflection.Emit.BaseClasses
 
         public string Name { get; protected set; }
         public Type ReturnType { get; protected set; }
-        public List<Type> ParameterTypes { get; protected set; }
+        public List<ParameterBuilder> Parameters { get; protected set; }
         public System.Reflection.MethodAttributes Attributes { get; protected set; }
         public System.Reflection.Emit.ILGenerator Generator { get; protected set; }
 
-        protected List<ICommand> Commands { get; set; }
+        public List<ICommand> Commands { get; protected set; }
+        protected static int ObjectCounter { get; set; }
+
 
         #endregion
     }

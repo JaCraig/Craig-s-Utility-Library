@@ -60,17 +60,22 @@ namespace Utilities.Reflection.Emit.Interfaces
         IVariable NewObj(ConstructorInfo Constructor, List<IVariable> Variables);
 
         /// <summary>
-        /// Saves the value in the left hand side variable
+        /// Assigns the value to the left hand side variable
         /// </summary>
         /// <param name="LeftHandSide">Left hand side variable</param>
         /// <param name="Value">Value to store (may be constant or IVariable object)</param>
-        void Save(IVariable LeftHandSide, object Value);
+        void Assign(IVariable LeftHandSide, object Value);
 
         /// <summary>
         /// Returns a specified value
         /// </summary>
         /// <param name="ReturnValue">Variable to return</param>
         void Return(object ReturnValue);
+
+        /// <summary>
+        /// Returns from the method (used if void is the return type)
+        /// </summary>
+        void Return();
 
         #endregion
 
@@ -87,9 +92,9 @@ namespace Utilities.Reflection.Emit.Interfaces
         Type ReturnType { get; }
 
         /// <summary>
-        /// Parameter types
+        /// Parameters
         /// </summary>
-        List<Type> ParameterTypes { get; }
+        List<ParameterBuilder> Parameters { get; }
 
         /// <summary>
         /// Attributes for the method

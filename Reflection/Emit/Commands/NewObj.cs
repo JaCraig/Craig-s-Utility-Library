@@ -31,17 +31,95 @@ using System.Reflection.Emit;
 
 namespace Utilities.Reflection.Emit.Commands
 {
+    /// <summary>
+    /// Command for creating a new object
+    /// </summary>
     public class NewObj:ICommand
     {
         #region Constructor
 
-        public NewObj(ConstructorInfo Constructor, List<IVariable> Variables,ILGenerator Generator)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Method">Method created within</param>
+        /// <param name="Constructor">Constructor to use</param>
+        /// <param name="Variables">Variables sent to the constructor</param>
+        /// <param name="ObjectCount">Object count</param>
+        /// <param name="Generator">IL generator</param>
+        public NewObj(IMethodBuilder Method,ConstructorInfo Constructor, List<IVariable> Variables,
+            int ObjectCount,ILGenerator Generator)
         {
+            this.Constructor = Constructor;
+            this.Variables = Variables;
             foreach (IVariable Variable in Variables)
             {
                 Variable.Load(Generator);
             }
             Generator.Emit(OpCodes.Newobj, Constructor);
+            TempObject = new ObjectBuilder(Method, Constructor.DeclaringType, ObjectCount);
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Constructor used
+        /// </summary>
+        protected ConstructorInfo Constructor { get; set; }
+
+        /// <summary>
+        /// Method object is created within
+        /// </summary>
+        protected IMethodBuilder Method { get; set; }
+
+        /// <summary>
+        /// Variables sent to the Constructor
+        /// </summary>
+        protected List<IVariable> Variables { get; set; }
+
+        /// <summary>
+        /// Temp object
+        /// </summary>
+        protected IVariable TempObject{get;set;}
+
+        /// <summary>
+        /// Object count
+        /// </summary>
+        protected int ObjectCount { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Gets the object that temporarily stores the new object
+        /// </summary>
+        /// <returns>The new object</returns>
+        public virtual IVariable GetObject()
+        {
+            return TempObject;
+        }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Output = new StringBuilder();
+            Output.Append(Reflection.GetTypeName(Constructor.DeclaringType))
+                .Append(" ").Append(TempObject).Append(" = new ")
+                .Append(Reflection.GetTypeName(Constructor.DeclaringType))
+                .Append("(");
+            string Seperator = "";
+            foreach (IVariable Variable in Variables)
+            {
+                Output.Append(Seperator).Append(Variable.ToString());
+                Seperator = ",";
+            }
+            Output.Append(");\n");
+            return Output.ToString();
         }
 
         #endregion

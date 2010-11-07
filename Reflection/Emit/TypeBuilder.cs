@@ -302,12 +302,12 @@ namespace Utilities.Reflection.Emit
 
             foreach (IPropertyBuilder Property in Properties)
             {
-                Output.Append(Property.ToString());
+                Output.Append(Property.GetDefinition());
             }
 
             foreach (FieldBuilder Field in Fields)
             {
-                Output.Append(Field.ToString());
+                Output.Append(Field.GetDefinition());
             }
 
             Output.Append("\n}\n}\n\n");

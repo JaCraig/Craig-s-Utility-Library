@@ -32,83 +32,64 @@ using Utilities.Reflection.Emit.Interfaces;
 namespace Utilities.Reflection.Emit
 {
     /// <summary>
-    /// Helper class for defining a local variable
+    /// Used to define a parameter
     /// </summary>
-    public class LocalBuilder:IVariable
+    public class ParameterBuilder : IVariable
     {
         #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="MethodBuilder">Method builder</param>
-        /// <param name="Name">Name of the local</param>
-        /// <param name="LocalType">Type of the local</param>
-        public LocalBuilder(IMethodBuilder MethodBuilder, string Name, Type LocalType)
+        
+        public ParameterBuilder(Type ParameterType,int Number)
         {
-            if (MethodBuilder == null)
-                throw new ArgumentNullException("MethodBuilder");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
-            this.Name = Name;
-            this.MethodBuilder = MethodBuilder;
-            this.LocalType = LocalType;
-            Setup();
-        }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Sets up the field
-        /// </summary>
-        private void Setup()
-        {
-            if (MethodBuilder == null)
-                throw new NullReferenceException("No method is associated with this local variable");
-            Builder = MethodBuilder.Generator.DeclareLocal(LocalType);
-        }
-
-        public void Load(ILGenerator Generator)
-        {
-            Generator.Emit(OpCodes.Ldloc, Builder);
-        }
-
-        public void Save(ILGenerator Generator)
-        {
-            Generator.Emit(OpCodes.Stloc, Builder);
-        }
-
-        public string GetDefinition()
-        {
-            return Reflection.GetTypeName(LocalType) + " " + Name;
+            if (Number == 0)
+            {
+                this.Name = "value";
+                this.Number = 1;
+                this.ParameterType = ParameterType;
+                return;
+            }
+            this.Name = "Parameter" + Number.ToString();
+            this.Number = Number;
+            this.ParameterType = ParameterType;
         }
 
         #endregion
 
         #region Properties
 
-        /// <summary>
-        /// Local name
-        /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
 
         /// <summary>
-        /// Local builder
+        /// Order in the parameter list
         /// </summary>
-        public System.Reflection.Emit.LocalBuilder Builder { get; private set; }
+        public int Number { get; protected set; }
 
         /// <summary>
-        /// Local type
+        /// Parameter type
         /// </summary>
-        public Type LocalType { get; private set; }
-
-        private IMethodBuilder MethodBuilder { get; set; }
+        public Type ParameterType { get; protected set; }
 
         #endregion
 
-        #region Overridden Functions
+        #region Functions
+
+        public void Load(ILGenerator Generator)
+        {
+            Generator.Emit(OpCodes.Ldarg, Number);
+        }
+
+        public void Save(ILGenerator Generator)
+        {
+            Generator.Emit(OpCodes.Starg, Number);
+        }
+
+        public string GetDefinition()
+        {
+            return Reflection.GetTypeName(ParameterType) + " " + Name;
+        }
+
+        #endregion
+
+        #region Overridden Function
 
         public override string ToString()
         {

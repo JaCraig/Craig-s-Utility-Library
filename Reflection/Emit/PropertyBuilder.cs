@@ -61,35 +61,33 @@ namespace Utilities.Reflection.Emit
             this.GetMethodAttributes = GetMethodAttributes;
             this.SetMethodAttributes = SetMethodAttributes;
             this.PropertyType = PropertyType;
-            this.ParameterTypes = new List<System.Type>();
+            this.Parameters = new List<ParameterBuilder>();
             if (Parameters != null)
             {
-                this.ParameterTypes.AddRange(Parameters);
+                int x = 1;
+                foreach (Type Parameter in Parameters)
+                {
+                    this.Parameters.Add(new ParameterBuilder(Parameter, x));
+                    ++x;
+                }
             }
-            Setup();
+            Builder = Type.Builder.DefineProperty(Name, Attributes, PropertyType,
+                (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
+            GetMethod = new MethodBuilder(Type, "get_" + Name, GetMethodAttributes, Parameters, PropertyType);
+            List<Type> SetParameters = new List<System.Type>();
+            if (Parameters != null)
+            {
+                SetParameters.AddRange(Parameters);
+            }
+            SetParameters.Add(PropertyType);
+            SetMethod = new MethodBuilder(Type, "set_" + Name, SetMethodAttributes, SetParameters, typeof(void));
+            Builder.SetGetMethod(GetMethod.Builder);
+            Builder.SetSetMethod(SetMethod.Builder);
         }
 
         #endregion
 
         #region Functions
-
-        private void Setup()
-        {
-            if (Type == null)
-                throw new NullReferenceException("No type is associated with this property");
-            Builder = Type.Builder.DefineProperty(Name, Attributes,PropertyType,
-                (ParameterTypes != null && ParameterTypes.Count > 0) ? ParameterTypes.ToArray() : System.Type.EmptyTypes);
-            GetMethod = new MethodBuilder(Type, "get_" + Name, GetMethodAttributes, ParameterTypes, PropertyType);
-            List<Type> SetParameters = new List<System.Type>();
-            if (ParameterTypes != null)
-            {
-                SetParameters.AddRange(ParameterTypes);
-            }
-            SetParameters.Add(PropertyType);
-            SetMethod = new MethodBuilder(Type, "set_" + Name, SetMethodAttributes, SetParameters,typeof(void));
-            Builder.SetGetMethod(GetMethod.Builder);
-            Builder.SetSetMethod(SetMethod.Builder);
-        }
 
         public void Load(ILGenerator Generator)
         {
@@ -101,27 +99,7 @@ namespace Utilities.Reflection.Emit
             Generator.EmitCall(OpCodes.Callvirt, SetMethod.Builder, null);
         }
 
-        #endregion
-
-        #region Properties
-
-        public string Name { get; private set; }
-        public Type PropertyType { get; private set; }
-        public List<Type> ParameterTypes { get; private set; }
-        public System.Reflection.Emit.PropertyBuilder Builder { get; private set; }
-        public System.Reflection.PropertyAttributes Attributes { get; private set; }
-        public System.Reflection.MethodAttributes GetMethodAttributes { get; private set; }
-        public System.Reflection.MethodAttributes SetMethodAttributes { get; private set; }
-        public MethodBuilder GetMethod { get; private set; }
-        public MethodBuilder SetMethod { get; private set; }
-
-        private TypeBuilder Type { get; set; }
-
-        #endregion
-
-        #region Overridden Functions
-
-        public override string ToString()
+        public string GetDefinition()
         {
             StringBuilder Output = new StringBuilder();
 
@@ -139,40 +117,26 @@ namespace Utilities.Reflection.Emit
             else if ((GetMethodAttributes & MethodAttributes.HideBySig) > 0)
                 Output.Append("override ");
 
-            if (PropertyType.Name.Contains("`"))
-            {
-                Type[] GenericTypes = PropertyType.GetGenericArguments();
-                Output.Append(PropertyType.Name.Remove(PropertyType.Name.IndexOf("`")))
-                    .Append("<");
-                string Seperator = "";
-                foreach (Type GenericType in GenericTypes)
-                {
-                    Output.Append(Seperator).Append(GenericType.Name);
-                    Seperator = ",";
-                }
-                Output.Append(">");
-            }
-            else
-            {
-                Output.Append(PropertyType.Name);
-            }
+            Output.Append(Reflection.GetTypeName(PropertyType));
             Output.Append(" ").Append(Name);
 
             string Splitter = "";
-            int ParameterNum = 1;
-            if (ParameterTypes != null && ParameterTypes.Count > 0)
+            if (Parameters != null && Parameters.Count > 0)
             {
                 Output.Append("[");
-                foreach (Type ParameterType in ParameterTypes)
+                foreach (ParameterBuilder Parameter in Parameters)
                 {
-                    Output.Append(Splitter).Append(ParameterType.Name)
-                        .Append(" Parameter").Append(ParameterNum);
+                    Output.Append(Splitter).Append(Parameter.GetDefinition());
                     Splitter = ",";
-                    ++ParameterNum;
                 }
                 Output.Append("]");
             }
-            Output.Append(" { get{} ");
+            Output.Append(" {\nget\n{\n");
+            foreach (ICommand Command in GetMethod.Commands)
+            {
+                Output.Append(Command.ToString());
+            }
+            Output.Append("}\n\n");
             if ((SetMethodAttributes & GetMethodAttributes) != SetMethodAttributes)
             {
                 if ((SetMethodAttributes & MethodAttributes.Public) > 0)
@@ -180,9 +144,39 @@ namespace Utilities.Reflection.Emit
                 else if ((SetMethodAttributes & MethodAttributes.Private) > 0)
                     Output.Append("private ");
             }
-            Output.Append("set{} }\n");
+            Output.Append("set\n{\n");
+            foreach (ICommand Command in SetMethod.Commands)
+            {
+                Output.Append(Command.ToString());
+            }
+            Output.Append("}\n}\n");
 
             return Output.ToString();
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string Name { get; private set; }
+        public Type PropertyType { get; private set; }
+        public List<ParameterBuilder> Parameters { get; private set; }
+        public System.Reflection.Emit.PropertyBuilder Builder { get; private set; }
+        public System.Reflection.PropertyAttributes Attributes { get; private set; }
+        public System.Reflection.MethodAttributes GetMethodAttributes { get; private set; }
+        public System.Reflection.MethodAttributes SetMethodAttributes { get; private set; }
+        public MethodBuilder GetMethod { get; private set; }
+        public MethodBuilder SetMethod { get; private set; }
+
+        private TypeBuilder Type { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            return Name;
         }
 
         #endregion

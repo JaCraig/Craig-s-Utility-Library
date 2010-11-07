@@ -59,25 +59,21 @@ namespace Utilities.Reflection.Emit
             this.Type = TypeBuilder;
             this.Attributes = Attributes;
             this.ReturnType = (ReturnType == null) ? typeof(void) : ReturnType;
+            this.Parameters = new List<ParameterBuilder>();
             if (Parameters != null)
             {
-                this.ParameterTypes = new List<Type>();
-                this.ParameterTypes.AddRange(Parameters);
+                int x = 1;
+                if (Name.StartsWith("set_"))
+                    x = 0;
+                foreach (Type ParameterType in Parameters)
+                {
+                    this.Parameters.Add(new ParameterBuilder(ParameterType, x));
+                    ++x;
+                }
             }
             Commands = new List<ICommand>();
-            Setup();
-        }
-
-        #endregion
-
-        #region Functions
-
-        private void Setup()
-        {
-            if (Type == null)
-                throw new NullReferenceException("No type is associated with this method");
             Builder = Type.Builder.DefineMethod(Name, Attributes, ReturnType,
-                (ParameterTypes != null && ParameterTypes.Count > 0) ? ParameterTypes.ToArray() : System.Type.EmptyTypes);
+                (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
             Generator = Builder.GetILGenerator();
         }
 
@@ -113,46 +109,24 @@ namespace Utilities.Reflection.Emit
                 Output.Append("abstract ");
             else if ((Attributes & MethodAttributes.HideBySig) > 0)
                 Output.Append("override ");
-            if (ReturnType.Name == "Void")
-            {
-                Output.Append("void");
-            }
-            else
-            {
-                if (ReturnType.Name.Contains("`"))
-                {
-                    Type[] GenericTypes = ReturnType.GetGenericArguments();
-                    Output.Append(ReturnType.Name.Remove(ReturnType.Name.IndexOf("`")))
-                        .Append("<");
-                    string Seperator="";
-                    foreach (Type GenericType in GenericTypes)
-                    {
-                        Output.Append(Seperator).Append(GenericType.Name);
-                        Seperator = ",";
-                    }
-                    Output.Append(">");
-                }
-                else
-                {
-                    Output.Append(ReturnType.Name);
-                }
-            }
+            Output.Append(Reflection.GetTypeName(ReturnType));
             Output.Append(" ").Append(Name).Append("(");
 
             string Splitter="";
-            int ParameterNum=1;
-            if (ParameterTypes != null)
+            if (Parameters != null)
             {
-                foreach (Type ParameterType in ParameterTypes)
+                foreach (ParameterBuilder Parameter in Parameters)
                 {
-                    Output.Append(Splitter).Append(ParameterType.Name)
-                        .Append(" Parameter").Append(ParameterNum);
+                    Output.Append(Splitter).Append(Parameter.GetDefinition());
                     Splitter = ",";
-                    ++ParameterNum;
                 }
             }
             Output.Append(")");
             Output.Append("\n{\n");
+            foreach (ICommand Command in Commands)
+            {
+                Output.Append(Command.ToString());
+            }
             Output.Append("\n}\n\n");
 
             return Output.ToString();

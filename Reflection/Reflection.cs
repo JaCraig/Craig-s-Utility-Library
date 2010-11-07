@@ -41,6 +41,41 @@ namespace Utilities.Reflection
         #region Public Static Functions
 
         /// <summary>
+        /// Returns the type's name
+        /// </summary>
+        /// <param name="ObjectType">object type</param>
+        /// <returns>string name of the type</returns>
+        public static string GetTypeName(Type ObjectType)
+        {
+            StringBuilder Output = new StringBuilder();
+            if (ObjectType.Name == "Void")
+            {
+                Output.Append("void");
+            }
+            else
+            {
+                if (ObjectType.Name.Contains("`"))
+                {
+                    Type[] GenericTypes = ObjectType.GetGenericArguments();
+                    Output.Append(ObjectType.Name.Remove(ObjectType.Name.IndexOf("`")))
+                        .Append("<");
+                    string Seperator = "";
+                    foreach (Type GenericType in GenericTypes)
+                    {
+                        Output.Append(Seperator).Append(GetTypeName(GenericType));
+                        Seperator = ",";
+                    }
+                    Output.Append(">");
+                }
+                else
+                {
+                    Output.Append(ObjectType.Name);
+                }
+            }
+            return Output.ToString();
+        }
+
+        /// <summary>
         /// Simple function to determine if an item is an IEnumerable
         /// </summary>
         /// <param name="ObjectType">Object type</param>

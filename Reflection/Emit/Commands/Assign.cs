@@ -24,75 +24,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Reflection;
-using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Interfaces;
+using System.Reflection;
+using Utilities.Reflection.Emit.Commands;
+using System.Reflection.Emit;
 #endregion
 
-namespace Utilities.Reflection.Emit
+namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Helper class for defining a constant value
+    /// Assignment command
     /// </summary>
-    public class ConstantBuilder : IVariable
+    public class Assign:ICommand
     {
         #region Constructor
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Value">Value of the constant</param>
-        public ConstantBuilder(object Value)
+        /// <param name="LeftHandSide">Left hand side</param>
+        /// <param name="Value">Value to store</param>
+        /// <param name="Generator">IL generator</param>
+        public Assign(IVariable LeftHandSide, object Value,ILGenerator Generator)
         {
+            this.LeftHandSide = LeftHandSide;
             this.Value = Value;
-            if (Value != null)
+            if (LeftHandSide == null)
+                throw new ArgumentNullException("LeftHandSide");
+            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            if (Value is IVariable)
             {
-                this.Type = Value.GetType();
-                return;
+                ((IVariable)Value).Load(Generator);
             }
-            this.Type = null;
-        }
-
-        #endregion
-
-        #region Functions
-
-        public void Load(ILGenerator Generator)
-        {
-            if (this.Value == null)
+            else
             {
-                Generator.Emit(OpCodes.Ldnull);
+                ConstantBuilder Constant = new ConstantBuilder(Value);
+                Constant.Load(Generator);
             }
-            else if (this.Type == typeof(Int32))
-            {
-                Generator.Emit(OpCodes.Ldc_I4, (Int32)Value);
-            }
-            else if (this.Type == typeof(Int64))
-            {
-                Generator.Emit(OpCodes.Ldc_I8, (Int64)Value);
-            }
-            else if (this.Type == typeof(float))
-            {
-                Generator.Emit(OpCodes.Ldc_R4, (float)Value);
-            }
-            else if (this.Type == typeof(double))
-            {
-                Generator.Emit(OpCodes.Ldc_R8, (double)Value);
-            }
-            else if (this.Type == typeof(string))
-            {
-                Generator.Emit(OpCodes.Ldstr, (string)Value);
-            }
-        }
-
-        public void Save(ILGenerator Generator)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetDefinition()
-        {
-            return Value.ToString();
+            LeftHandSide.Save(Generator);
         }
 
         #endregion
@@ -100,16 +70,14 @@ namespace Utilities.Reflection.Emit
         #region Properties
 
         /// <summary>
-        /// Local type
+        /// Left hand side of the assignment
         /// </summary>
-        public Type Type { get; protected set; }
+        protected IVariable LeftHandSide { get; set; }
 
         /// <summary>
-        /// Value of the constant
+        /// Value to assign
         /// </summary>
-        public object Value { get; protected set; }
-
-        public string Name { get { return ""; } }
+        protected object Value { get; set; }
 
         #endregion
 
@@ -117,7 +85,9 @@ namespace Utilities.Reflection.Emit
 
         public override string ToString()
         {
-            return Value.ToString();
+            StringBuilder Output = new StringBuilder();
+            Output.Append(LeftHandSide.ToString()).Append("=").Append(Value.ToString()).Append(";\n");
+            return Output.ToString();
         }
 
         #endregion

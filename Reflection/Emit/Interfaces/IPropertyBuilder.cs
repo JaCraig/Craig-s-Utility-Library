@@ -77,5 +77,15 @@ namespace Utilities.Reflection.Emit.Interfaces
         MethodBuilder SetMethod { get; }
 
         #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Gets the definition of the variable
+        /// </summary>
+        /// <returns>string representation of the variable definition</returns>
+        string GetDefinition();
+
+        #endregion
     }
 }
