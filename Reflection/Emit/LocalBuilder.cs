@@ -27,6 +27,7 @@ using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -34,7 +35,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining a local variable
     /// </summary>
-    public class LocalBuilder:IVariable
+    public class LocalBuilder : VariableBase
     {
         #region Constructor
 
@@ -45,6 +46,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="Name">Name of the local</param>
         /// <param name="LocalType">Type of the local</param>
         public LocalBuilder(IMethodBuilder MethodBuilder, string Name, Type LocalType)
+            : base()
         {
             if (MethodBuilder == null)
                 throw new ArgumentNullException("MethodBuilder");
@@ -52,37 +54,22 @@ namespace Utilities.Reflection.Emit
                 throw new ArgumentNullException("Name");
             this.Name = Name;
             this.MethodBuilder = MethodBuilder;
-            this.LocalType = LocalType;
-            Setup();
+            this.DataType = LocalType;
+            Builder = MethodBuilder.Generator.DeclareLocal(LocalType);
         }
 
         #endregion
 
         #region Functions
 
-        /// <summary>
-        /// Sets up the field
-        /// </summary>
-        private void Setup()
-        {
-            if (MethodBuilder == null)
-                throw new NullReferenceException("No method is associated with this local variable");
-            Builder = MethodBuilder.Generator.DeclareLocal(LocalType);
-        }
-
-        public void Load(ILGenerator Generator)
+        public override void Load(ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Ldloc, Builder);
         }
 
-        public void Save(ILGenerator Generator)
+        public override void Save(ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Stloc, Builder);
-        }
-
-        public string GetDefinition()
-        {
-            return Reflection.GetTypeName(LocalType) + " " + Name;
         }
 
         #endregion
@@ -90,21 +77,14 @@ namespace Utilities.Reflection.Emit
         #region Properties
 
         /// <summary>
-        /// Local name
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
         /// Local builder
         /// </summary>
-        public System.Reflection.Emit.LocalBuilder Builder { get; private set; }
+        public virtual System.Reflection.Emit.LocalBuilder Builder { get; protected set; }
 
         /// <summary>
-        /// Local type
+        /// Method builder
         /// </summary>
-        public Type LocalType { get; private set; }
-
-        private IMethodBuilder MethodBuilder { get; set; }
+        protected virtual IMethodBuilder MethodBuilder { get; set; }
 
         #endregion
 

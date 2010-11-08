@@ -167,7 +167,12 @@
     <Compile Include="MultiThreading\Worker.cs" />
     <Compile Include="Reflection\Emit\Assembly.cs" />
     <Compile Include="Reflection\Emit\BaseClasses\MethodBase.cs" />
+    <Compile Include="Reflection\Emit\BaseClasses\VariableBase.cs" />
     <Compile Include="Reflection\Emit\Commands\Assign.cs" />
+    <Compile Include="Reflection\Emit\Commands\Call.cs" />
+    <Compile Include="Reflection\Emit\Commands\DefineLocal.cs" />
+    <Compile Include="Reflection\Emit\Commands\EndIf.cs" />
+    <Compile Include="Reflection\Emit\Commands\If.cs" />
     <Compile Include="Reflection\Emit\Commands\NewObj.cs" />
     <Compile Include="Reflection\Emit\Commands\Return.cs" />
     <Compile Include="Reflection\Emit\ConstantBuilder.cs" />
@@ -175,6 +180,8 @@
     <Compile Include="Reflection\Emit\DefaultConstructorBuilder.cs" />
     <Compile Include="Reflection\Emit\DefaultPropertyBuilder.cs" />
     <Compile Include="Reflection\Emit\EnumBuilder.cs" />
+    <Compile Include="Reflection\Emit\Enums\AssemblyType.cs" />
+    <Compile Include="Reflection\Emit\Enums\Comparison.cs" />
     <Compile Include="Reflection\Emit\FieldBuilder.cs" />
     <Compile Include="Reflection\Emit\Interfaces\ICommand.cs" />
     <Compile Include="Reflection\Emit\Interfaces\IMethodBuilder.cs" />
@@ -183,7 +190,6 @@
     <Compile Include="Reflection\Emit\Interfaces\IVariable.cs" />
     <Compile Include="Reflection\Emit\LocalBuilder.cs" />
     <Compile Include="Reflection\Emit\MethodBuilder.cs" />
-    <Compile Include="Reflection\Emit\ObjectBuilder.cs" />
     <Compile Include="Reflection\Emit\ParameterBuilder.cs" />
     <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
     <Compile Include="Reflection\Emit\TypeBuilder.cs" />

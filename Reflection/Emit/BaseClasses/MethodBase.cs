@@ -38,7 +38,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
     public class MethodBase : IMethodBuilder
     {
         #region Constructor
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -51,17 +51,19 @@ namespace Utilities.Reflection.Emit.BaseClasses
 
         #region Functions
 
-        public LocalBuilder CreateLocal(string Name, Type LocalType)
+        public virtual IVariable CreateLocal(string Name, Type LocalType)
         {
-            return new LocalBuilder(this, Name, LocalType);
+            DefineLocal TempCommand = new DefineLocal(this, Name, LocalType);
+            Commands.Add(TempCommand);
+            return TempCommand.GetObject();
         }
 
-        public ConstantBuilder CreateConstant(object Value)
+        public virtual IVariable CreateConstant(object Value)
         {
             return new ConstantBuilder(Value);
         }
 
-        public IVariable NewObj(ConstructorInfo Constructor, List<IVariable> Variables)
+        public virtual IVariable NewObj(ConstructorInfo Constructor, List<IVariable> Variables)
         {
             NewObj TempCommand = new NewObj(this, Constructor, Variables, ObjectCounter, Generator);
             Commands.Add(TempCommand);
@@ -69,17 +71,24 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.GetObject();
         }
 
-        public void Assign(IVariable LeftHandSide, object Value)
+        public IVariable Call(IVariable ObjectCallingOn, MethodInfo MethodCalling, List<IVariable> Parameters)
+        {
+            Call TempCommand = new Call(this, ObjectCallingOn, MethodCalling, Parameters);
+            Commands.Add(TempCommand);
+            return TempCommand.GetObject();
+        }
+
+        public virtual void Assign(IVariable LeftHandSide, object Value)
         {
             Commands.Add(new Assign(LeftHandSide, Value, Generator));
         }
 
-        public void Return(object ReturnValue)
+        public virtual void Return(object ReturnValue)
         {
             Commands.Add(new Return(ReturnType, ReturnValue, Generator));
         }
 
-        public void Return()
+        public virtual void Return()
         {
             Commands.Add(new Return(ReturnType, null, Generator));
         }
@@ -88,16 +97,30 @@ namespace Utilities.Reflection.Emit.BaseClasses
 
         #region Properties
 
-        public string Name { get; protected set; }
-        public Type ReturnType { get; protected set; }
-        public List<ParameterBuilder> Parameters { get; protected set; }
-        public System.Reflection.MethodAttributes Attributes { get; protected set; }
-        public System.Reflection.Emit.ILGenerator Generator { get; protected set; }
+        public virtual string Name { get; protected set; }
+        public virtual Type ReturnType { get; protected set; }
+        public virtual List<ParameterBuilder> Parameters { get; protected set; }
+        public virtual System.Reflection.MethodAttributes Attributes { get; protected set; }
+        public virtual System.Reflection.Emit.ILGenerator Generator { get; protected set; }
 
-        public List<ICommand> Commands { get; protected set; }
+        public virtual List<ICommand> Commands { get; protected set; }
         protected static int ObjectCounter { get; set; }
 
-
         #endregion
+
+
+        public If If(Enums.Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
+        {
+            Utilities.Reflection.Emit.Commands.If TempCommand = new If(this, ComparisonType, LeftHandSide, RightHandSide);
+            Commands.Add(TempCommand);
+            return TempCommand;
+        }
+
+
+        public void EndIf(If IfCommand)
+        {
+            EndIf TempCommand = new EndIf(this, IfCommand);
+            Commands.Add(TempCommand);
+        }
     }
 }

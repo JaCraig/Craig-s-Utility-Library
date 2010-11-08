@@ -26,38 +26,28 @@ using System.Linq;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
+using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Command for creating a new object
+    /// Defines a local variable
     /// </summary>
-    public class NewObj : ICommand
+    public class DefineLocal:ICommand
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Method">Method created within</param>
-        /// <param name="Constructor">Constructor to use</param>
-        /// <param name="Variables">Variables sent to the constructor</param>
-        /// <param name="ObjectCount">Object count</param>
-        /// <param name="Generator">IL generator</param>
-        public NewObj(IMethodBuilder Method, ConstructorInfo Constructor, List<IVariable> Variables,
-            int ObjectCount, ILGenerator Generator)
+        /// <param name="Method">Method builder</param>
+        /// <param name="Name">Local object name</param>
+        /// <param name="LocalType">Local type</param>
+        public DefineLocal(IMethodBuilder Method,string Name,Type LocalType)
         {
-            this.Constructor = Constructor;
-            this.Variables = Variables;
-            foreach (IVariable Variable in Variables)
-            {
-                Variable.Load(Generator);
-            }
-            Generator.Emit(OpCodes.Newobj, Constructor);
-            TempObject = Method.CreateLocal("ObjLocal" + ObjectCount.ToString(), Constructor.DeclaringType);
-            TempObject.Save(Method.Generator);
+            TempObject = new LocalBuilder(Method, Name, LocalType);
         }
 
         #endregion
@@ -65,29 +55,9 @@ namespace Utilities.Reflection.Emit.Commands
         #region Properties
 
         /// <summary>
-        /// Constructor used
-        /// </summary>
-        protected virtual ConstructorInfo Constructor { get; set; }
-
-        /// <summary>
-        /// Method object is created within
-        /// </summary>
-        protected virtual IMethodBuilder Method { get; set; }
-
-        /// <summary>
-        /// Variables sent to the Constructor
-        /// </summary>
-        protected virtual List<IVariable> Variables { get; set; }
-
-        /// <summary>
         /// Temp object
         /// </summary>
         protected virtual IVariable TempObject { get; set; }
-
-        /// <summary>
-        /// Object count
-        /// </summary>
-        protected virtual int ObjectCount { get; set; }
 
         #endregion
 
@@ -109,16 +79,7 @@ namespace Utilities.Reflection.Emit.Commands
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append(TempObject).Append(" = new ")
-                .Append(Reflection.GetTypeName(Constructor.DeclaringType))
-                .Append("(");
-            string Seperator = "";
-            foreach (IVariable Variable in Variables)
-            {
-                Output.Append(Seperator).Append(Variable.ToString());
-                Seperator = ",";
-            }
-            Output.Append(");\n");
+            Output.Append(TempObject.GetDefinition()).Append(";\n");
             return Output.ToString();
         }
 

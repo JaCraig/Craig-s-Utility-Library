@@ -53,9 +53,10 @@ namespace Utilities.Reflection.Emit
             this.Type = TypeBuilder;
             this.Attributes = Attributes;
             this.Parameters = new List<ParameterBuilder>();
+            this.Parameters.Add(new ParameterBuilder(null, 0));
             if (Parameters != null)
             {
-                int x=1;
+                int x = 1;
                 foreach (Type ParameterType in Parameters)
                 {
                     this.Parameters.Add(new ParameterBuilder(ParameterType, x));
@@ -72,14 +73,20 @@ namespace Utilities.Reflection.Emit
 
         #region Properties
 
-        public CallingConventions CallingConventions { get; protected set; }
+        /// <summary>
+        /// Calling conventions for the constructor
+        /// </summary>
+        public virtual CallingConventions CallingConventions { get; protected set; }
 
         /// <summary>
         /// Constructor builder
         /// </summary>
-        public System.Reflection.Emit.ConstructorBuilder Builder { get; protected set; }
+        public virtual System.Reflection.Emit.ConstructorBuilder Builder { get; protected set; }
 
-        private TypeBuilder Type { get; set; }
+        /// <summary>
+        /// Type builder
+        /// </summary>
+        protected virtual TypeBuilder Type { get; set; }
 
         #endregion
 
@@ -112,8 +119,11 @@ namespace Utilities.Reflection.Emit
             {
                 foreach (ParameterBuilder Parameter in Parameters)
                 {
-                    Output.Append(Seperator).Append(Parameter.GetDefinition());
-                    Seperator = ",";
+                    if (Parameter.Number != 0)
+                    {
+                        Output.Append(Seperator).Append(Parameter.GetDefinition());
+                        Seperator = ",";
+                    }
                 }
             }
             Output.Append(")");
@@ -122,7 +132,7 @@ namespace Utilities.Reflection.Emit
             {
                 Output.Append(Command.ToString());
             }
-            Output.Append("\n}\n\n");
+            Output.Append("}\n\n");
 
             return Output.ToString();
         }

@@ -60,11 +60,12 @@ namespace Utilities.Reflection.Emit
             this.Attributes = Attributes;
             this.ReturnType = (ReturnType == null) ? typeof(void) : ReturnType;
             this.Parameters = new List<ParameterBuilder>();
+            this.Parameters.Add(new ParameterBuilder(null, 0));
             if (Parameters != null)
             {
                 int x = 1;
                 if (Name.StartsWith("set_"))
-                    x = 0;
+                    x = -1;
                 foreach (Type ParameterType in Parameters)
                 {
                     this.Parameters.Add(new ParameterBuilder(ParameterType, x));
@@ -84,9 +85,12 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Method builder
         /// </summary>
-        public System.Reflection.Emit.MethodBuilder Builder { get; private set; }
+        public virtual System.Reflection.Emit.MethodBuilder Builder { get; protected set; }
 
-        private TypeBuilder Type { get; set; }
+        /// <summary>
+        /// Type builder
+        /// </summary>
+        protected virtual TypeBuilder Type { get; set; }
 
         #endregion
 
@@ -103,12 +107,12 @@ namespace Utilities.Reflection.Emit
                 Output.Append("private ");
             if ((Attributes & MethodAttributes.Static)>0)
                 Output.Append("static ");
-            if ((Attributes & MethodAttributes.Virtual) > 0)
-                Output.Append("virtual ");
-            else if ((Attributes & MethodAttributes.Abstract) > 0)
+            if ((Attributes & MethodAttributes.Abstract) > 0)
                 Output.Append("abstract ");
             else if ((Attributes & MethodAttributes.HideBySig) > 0)
                 Output.Append("override ");
+            else if ((Attributes & MethodAttributes.Virtual) > 0)
+                Output.Append("virtual ");
             Output.Append(Reflection.GetTypeName(ReturnType));
             Output.Append(" ").Append(Name).Append("(");
 
@@ -117,8 +121,11 @@ namespace Utilities.Reflection.Emit
             {
                 foreach (ParameterBuilder Parameter in Parameters)
                 {
-                    Output.Append(Splitter).Append(Parameter.GetDefinition());
-                    Splitter = ",";
+                    if (Parameter.Number != 0)
+                    {
+                        Output.Append(Splitter).Append(Parameter.GetDefinition());
+                        Splitter = ",";
+                    }
                 }
             }
             Output.Append(")");
@@ -127,7 +134,7 @@ namespace Utilities.Reflection.Emit
             {
                 Output.Append(Command.ToString());
             }
-            Output.Append("\n}\n\n");
+            Output.Append("}\n\n");
 
             return Output.ToString();
         }

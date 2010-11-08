@@ -24,49 +24,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Reflection.Emit;
+using Utilities.Reflection.Emit.Interfaces;
 #endregion
 
-namespace Utilities.Reflection.Emit.Interfaces
+namespace Utilities.Reflection.Emit.BaseClasses
 {
     /// <summary>
-    /// Variable interface
+    /// Variable base class
     /// </summary>
-    public interface IVariable
+    public class VariableBase : IVariable
     {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public VariableBase()
+        {
+        }
+
+        #endregion
+
         #region Properties
 
-        /// <summary>
-        /// Local name
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Data type for the variable
-        /// </summary>
-        Type DataType { get; }
+        public virtual string Name { get; protected set; }
+        public virtual Type DataType { get; protected set; }
 
         #endregion
 
         #region Functions
 
-        /// <summary>
-        /// Loads a variable's value onto the stack
-        /// </summary>
-        /// <param name="Generator">IL Generator</param>
-        void Load(ILGenerator Generator);
+        public virtual void Load(System.Reflection.Emit.ILGenerator Generator)
+        {
+            throw new NotImplementedException();
+        }
 
-        /// <summary>
-        /// Saves a value from the stack into the variable
-        /// </summary>
-        /// <param name="Generator">IL Generator</param>
-        void Save(ILGenerator Generator);
+        public virtual void Save(System.Reflection.Emit.ILGenerator Generator)
+        {
+            throw new NotImplementedException();
+        }
 
-        /// <summary>
-        /// Gets the definition of the variable
-        /// </summary>
-        /// <returns>string representation of the variable definition</returns>
-        string GetDefinition();
+        public virtual string GetDefinition()
+        {
+            return Reflection.GetTypeName(DataType) + " " + Name;
+        }
 
         #endregion
     }

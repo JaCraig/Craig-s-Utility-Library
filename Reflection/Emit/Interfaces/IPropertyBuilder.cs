@@ -42,9 +42,9 @@ namespace Utilities.Reflection.Emit.Interfaces
         string Name { get; }
 
         /// <summary>
-        /// Property type
+        /// Data type
         /// </summary>
-        Type PropertyType { get; }
+        Type DataType { get; }
 
         /// <summary>
         /// Property builder

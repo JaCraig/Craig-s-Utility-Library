@@ -27,6 +27,7 @@ using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -34,7 +35,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining a constant value
     /// </summary>
-    public class ConstantBuilder : IVariable
+    public class ConstantBuilder : VariableBase
     {
         #region Constructor
 
@@ -43,54 +44,50 @@ namespace Utilities.Reflection.Emit
         /// </summary>
         /// <param name="Value">Value of the constant</param>
         public ConstantBuilder(object Value)
+            : base()
         {
             this.Value = Value;
             if (Value != null)
             {
-                this.Type = Value.GetType();
+                this.DataType = Value.GetType();
                 return;
             }
-            this.Type = null;
+            this.DataType = null;
         }
 
         #endregion
 
         #region Functions
 
-        public void Load(ILGenerator Generator)
+        public override void Load(ILGenerator Generator)
         {
             if (this.Value == null)
             {
                 Generator.Emit(OpCodes.Ldnull);
             }
-            else if (this.Type == typeof(Int32))
+            else if (this.DataType == typeof(Int32))
             {
                 Generator.Emit(OpCodes.Ldc_I4, (Int32)Value);
             }
-            else if (this.Type == typeof(Int64))
+            else if (this.DataType == typeof(Int64))
             {
                 Generator.Emit(OpCodes.Ldc_I8, (Int64)Value);
             }
-            else if (this.Type == typeof(float))
+            else if (this.DataType == typeof(float))
             {
                 Generator.Emit(OpCodes.Ldc_R4, (float)Value);
             }
-            else if (this.Type == typeof(double))
+            else if (this.DataType == typeof(double))
             {
                 Generator.Emit(OpCodes.Ldc_R8, (double)Value);
             }
-            else if (this.Type == typeof(string))
+            else if (this.DataType == typeof(string))
             {
                 Generator.Emit(OpCodes.Ldstr, (string)Value);
             }
         }
 
-        public void Save(ILGenerator Generator)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetDefinition()
+        public override string GetDefinition()
         {
             return Value.ToString();
         }
@@ -100,16 +97,9 @@ namespace Utilities.Reflection.Emit
         #region Properties
 
         /// <summary>
-        /// Local type
-        /// </summary>
-        public Type Type { get; protected set; }
-
-        /// <summary>
         /// Value of the constant
         /// </summary>
-        public object Value { get; protected set; }
-
-        public string Name { get { return ""; } }
+        public virtual object Value { get; protected set; }
 
         #endregion
 
@@ -117,6 +107,10 @@ namespace Utilities.Reflection.Emit
 
         public override string ToString()
         {
+            if (this.DataType == typeof(string))
+            {
+                return "\"" + Value.ToString() + "\"";
+            }
             return Value.ToString();
         }
 

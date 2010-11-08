@@ -83,12 +83,12 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Return type
         /// </summary>
-        protected Type ReturnType { get; set; }
+        protected virtual Type ReturnType { get; set; }
 
         /// <summary>
         /// Return value
         /// </summary>
-        protected object ReturnValue { get; set; }
+        protected virtual object ReturnValue { get; set; }
 
         #endregion
 

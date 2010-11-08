@@ -26,6 +26,8 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.Commands;
+using Utilities.Reflection.Emit.Enums;
 #endregion
 
 namespace Utilities.Reflection.Emit.Interfaces
@@ -43,14 +45,14 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="Name">Name of the local variable</param>
         /// <param name="LocalType">The Type of the local variable</param>
         /// <returns>The LocalBuilder associated with the variable</returns>
-        LocalBuilder CreateLocal(string Name, Type LocalType);
+        IVariable CreateLocal(string Name, Type LocalType);
 
         /// <summary>
         /// Constant value
         /// </summary>
         /// <param name="Value">Value of the constant</param>
         /// <returns>The ConstantBuilder associated with the variable</returns>
-        ConstantBuilder CreateConstant(object Value);
+        IVariable CreateConstant(object Value);
 
         /// <summary>
         /// Creates new object
@@ -76,6 +78,30 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// Returns from the method (used if void is the return type)
         /// </summary>
         void Return();
+
+        /// <summary>
+        /// Calls a function on an object
+        /// </summary>
+        /// <param name="ObjectCallingOn">Object calling on</param>
+        /// <param name="MethodCalling">Method calling</param>
+        /// <param name="Parameters">Parameters sending</param>
+        /// <returns>The return value</returns>
+        IVariable Call(IVariable ObjectCallingOn, MethodInfo MethodCalling, List<IVariable> Parameters);
+
+        /// <summary>
+        /// Defines an if statement
+        /// </summary>
+        /// <param name="ComparisonType">Comparison type</param>
+        /// <param name="LeftHandSide">Left hand side of the if statement</param>
+        /// <param name="RightHandSide">Right hand side of the if statement</param>
+        /// <returns>The if command</returns>
+        If If(Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide);
+
+        /// <summary>
+        /// Defines the end of an if statement
+        /// </summary>
+        /// <param name="IfCommand">If command</param>
+        void EndIf(If IfCommand);
 
         #endregion
 

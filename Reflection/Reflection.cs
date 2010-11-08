@@ -47,6 +47,8 @@ namespace Utilities.Reflection
         /// <returns>string name of the type</returns>
         public static string GetTypeName(Type ObjectType)
         {
+            if (ObjectType == null)
+                return "";
             StringBuilder Output = new StringBuilder();
             if (ObjectType.Name == "Void")
             {

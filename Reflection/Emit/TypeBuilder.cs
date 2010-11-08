@@ -65,7 +65,7 @@ namespace Utilities.Reflection.Emit
             Fields = new List<FieldBuilder>();
             Properties = new List<IPropertyBuilder>();
             Constructors = new List<IMethodBuilder>();
-            Setup();
+            Builder = Assembly.Module.DefineType(Assembly.Name + "." + Name, Attributes, BaseClass, this.Interfaces.ToArray());
         }
 
         #endregion
@@ -73,20 +73,10 @@ namespace Utilities.Reflection.Emit
         #region Functions
 
         /// <summary>
-        /// Does initial setup of the type builder
-        /// </summary>
-        private void Setup()
-        {
-            if (Assembly == null)
-                throw new NullReferenceException("No assembly is associated with this type");
-            Builder = Assembly.Module.DefineType(Assembly.Name + "." + Name, Attributes, BaseClass, Interfaces.ToArray());
-        }
-
-        /// <summary>
         /// Creates the type
         /// </summary>
         /// <returns>The type defined by this TypeBuilder</returns>
-        public Type Create()
+        public virtual Type Create()
         {
             if (Builder == null)
                 throw new NullReferenceException("The builder object has not been defined. Ensure that Setup is called prior to Create");
@@ -102,7 +92,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="ReturnType">Return type</param>
         /// <param name="ParameterTypes">Parameter types</param>
         /// <returns>Method builder for the method</returns>
-        public IMethodBuilder CreateMethod(string Name, 
+        public virtual IMethodBuilder CreateMethod(string Name, 
             MethodAttributes Attributes = MethodAttributes.Public| MethodAttributes.Virtual,
             Type ReturnType = null, List<Type> ParameterTypes = null)
         {
@@ -118,7 +108,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="FieldType">Type of the field</param>
         /// <param name="Attributes">Attributes for the field (public, private, etc.)</param>
         /// <returns>Field builder for the field</returns>
-        public FieldBuilder CreateField(string Name, Type FieldType, FieldAttributes Attributes = FieldAttributes.Public)
+        public virtual FieldBuilder CreateField(string Name, Type FieldType, FieldAttributes Attributes = FieldAttributes.Public)
         {
             FieldBuilder ReturnValue = new FieldBuilder(this, Name, FieldType, Attributes);
             Fields.Add(ReturnValue);
@@ -135,7 +125,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="SetMethodAttributes">Set method's attributes (public, private, etc.)</param>
         /// <param name="Parameters">Parameter types</param>
         /// <returns>Property builder for the property</returns>
-        public IPropertyBuilder CreateProperty(string Name, Type PropertyType,
+        public virtual IPropertyBuilder CreateProperty(string Name, Type PropertyType,
             PropertyAttributes Attributes = PropertyAttributes.SpecialName,
             MethodAttributes GetMethodAttributes = MethodAttributes.Public | MethodAttributes.Virtual,
             MethodAttributes SetMethodAttributes = MethodAttributes.Public | MethodAttributes.Virtual,
@@ -157,7 +147,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="SetMethodAttributes">Set method's attributes (public, private, etc.)</param>
         /// <param name="Parameters">Parameter types</param>
         /// <returns>Property builder for the property</returns>
-        public IPropertyBuilder CreateDefaultProperty(string Name, Type PropertyType,
+        public virtual IPropertyBuilder CreateDefaultProperty(string Name, Type PropertyType,
             PropertyAttributes Attributes = PropertyAttributes.SpecialName,
             MethodAttributes GetMethodAttributes = MethodAttributes.Public | MethodAttributes.Virtual,
             MethodAttributes SetMethodAttributes = MethodAttributes.Public | MethodAttributes.Virtual,
@@ -176,7 +166,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="ParameterTypes">The types for the parameters</param>
         /// <param name="CallingConventions">The calling convention used</param>
         /// <returns>Constructor builder for the constructor</returns>
-        public IMethodBuilder CreateConstructor(MethodAttributes Attributes = MethodAttributes.Public,
+        public virtual IMethodBuilder CreateConstructor(MethodAttributes Attributes = MethodAttributes.Public,
             List<Type> ParameterTypes = null,CallingConventions CallingConventions=CallingConventions.Standard)
         {
             ConstructorBuilder ReturnValue = new ConstructorBuilder(this, Attributes, ParameterTypes, CallingConventions);
@@ -189,7 +179,7 @@ namespace Utilities.Reflection.Emit
         /// </summary>
         /// <param name="Attributes">Attributes for the constructor (public, private, etc.)</param>
         /// <returns>Constructor builder for the constructor</returns>
-        public IMethodBuilder CreateDefaultConstructor(MethodAttributes Attributes = MethodAttributes.Public)
+        public virtual IMethodBuilder CreateDefaultConstructor(MethodAttributes Attributes = MethodAttributes.Public)
         {
             DefaultConstructorBuilder ReturnValue = new DefaultConstructorBuilder(this, Attributes);
             Constructors.Add(ReturnValue);
@@ -203,57 +193,60 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// The type defined by this TypeBuilder (filled once Create is called)
         /// </summary>
-        public Type DefinedType { get; private set; }
+        public virtual Type DefinedType { get; protected set; }
 
         /// <summary>
         /// List of methods defined by this TypeBuilder 
         /// (does not include methods defined in base classes unless overridden)
         /// </summary>
-        public List<IMethodBuilder> Methods { get; private set; }
+        public virtual List<IMethodBuilder> Methods { get; protected set; }
 
         /// <summary>
         /// List of fields defined by the TypeBuilder
         /// (does not include fields defined in base classes)
         /// </summary>
-        public List<FieldBuilder> Fields { get; private set; }
+        public virtual List<FieldBuilder> Fields { get; protected set; }
 
         /// <summary>
         /// List of properties defined by the TypeBuilder
         /// (does not include properties defined in base classes)
         /// </summary>
-        public List<IPropertyBuilder> Properties { get; private set; }
+        public virtual List<IPropertyBuilder> Properties { get; protected set; }
 
         /// <summary>
         /// Constructors defined by the TypeBuilder
         /// </summary>
-        public List<IMethodBuilder> Constructors { get; private set; }
+        public virtual List<IMethodBuilder> Constructors { get; protected set; }
 
         /// <summary>
         /// List of interfaces used by this type
         /// </summary>
-        public List<Type> Interfaces { get; private set; }
+        public virtual List<Type> Interfaces { get; protected set; }
 
         /// <summary>
         /// Base class used by this type
         /// </summary>
-        public Type BaseClass { get; private set; }
+        public virtual Type BaseClass { get; protected set; }
 
         /// <summary>
         /// Builder used by this type
         /// </summary>
-        public System.Reflection.Emit.TypeBuilder Builder { get; private set; }
+        public virtual System.Reflection.Emit.TypeBuilder Builder { get; protected set; }
 
         /// <summary>
         /// TypeAttributes for this type
         /// </summary>
-        public TypeAttributes Attributes { get; private set; }
+        public virtual TypeAttributes Attributes { get; protected set; }
 
         /// <summary>
         /// Name of this type
         /// </summary>
-        public string Name { get; private set; }
+        public virtual string Name { get; protected set; }
 
-        private Assembly Assembly { get; set; }
+        /// <summary>
+        /// Assembly builder
+        /// </summary>
+        protected virtual Assembly Assembly { get; set; }
 
         #endregion
 

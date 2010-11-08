@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -34,7 +35,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining default properties
     /// </summary>
-    public class DefaultPropertyBuilder:IPropertyBuilder,IVariable
+    public class DefaultPropertyBuilder : VariableBase, IPropertyBuilder
     {
         #region Constructor
 
@@ -44,14 +45,17 @@ namespace Utilities.Reflection.Emit
         /// <param name="TypeBuilder">Type builder</param>
         /// <param name="Name">Name of the property</param>
         /// <param name="Attributes">Attributes for the property (public, private, etc.)</param>
+        /// <param name="GetMethodAttributes">Get method attributes</param>
+        /// <param name="SetMethodAttributes">Set method attributes</param>
         /// <param name="PropertyType">Property type for the property</param>
         /// <param name="Parameters">Parameter types for the property</param>
         public DefaultPropertyBuilder(TypeBuilder TypeBuilder, string Name,
-            PropertyAttributes Attributes,MethodAttributes GetMethodAttributes,
+            PropertyAttributes Attributes, MethodAttributes GetMethodAttributes,
             MethodAttributes SetMethodAttributes,
             Type PropertyType, List<Type> Parameters)
+            : base()
         {
-            if (TypeBuilder==null)
+            if (TypeBuilder == null)
                 throw new ArgumentNullException("TypeBuilder");
             if (string.IsNullOrEmpty(Name))
                 throw new ArgumentNullException("Name");
@@ -60,7 +64,7 @@ namespace Utilities.Reflection.Emit
             this.Attributes = Attributes;
             this.GetMethodAttributes = GetMethodAttributes;
             this.SetMethodAttributes = SetMethodAttributes;
-            this.PropertyType = PropertyType;
+            this.DataType = PropertyType;
             this.Parameters = new List<ParameterBuilder>();
             if (Parameters != null)
             {
@@ -97,17 +101,17 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
-        public void Load(ILGenerator Generator)
+        public override void Load(ILGenerator Generator)
         {
-            Generator.EmitCall(OpCodes.Callvirt,GetMethod.Builder, null);
+            Generator.EmitCall(OpCodes.Callvirt, GetMethod.Builder, null);
         }
 
-        public void Save(ILGenerator Generator)
+        public override void Save(ILGenerator Generator)
         {
             Generator.EmitCall(OpCodes.Callvirt, SetMethod.Builder, null);
         }
 
-        public string GetDefinition()
+        public override string GetDefinition()
         {
             StringBuilder Output = new StringBuilder();
 
@@ -124,7 +128,7 @@ namespace Utilities.Reflection.Emit
                 Output.Append("abstract ");
             else if ((GetMethodAttributes & MethodAttributes.HideBySig) > 0)
                 Output.Append("override ");
-            Output.Append(Reflection.GetTypeName(PropertyType));
+            Output.Append(Reflection.GetTypeName(DataType));
             Output.Append(" ").Append(Name);
 
             string Splitter = "";
@@ -156,53 +160,49 @@ namespace Utilities.Reflection.Emit
         #region Properties
 
         /// <summary>
-        /// Method name
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Property type
-        /// </summary>
-        public Type PropertyType { get; private set; }
-
-        /// <summary>
         /// Parameter types
         /// </summary>
-        public List<ParameterBuilder> Parameters { get; private set; }
+        public virtual List<ParameterBuilder> Parameters { get; protected set; }
 
         /// <summary>
         /// Method builder
         /// </summary>
-        public System.Reflection.Emit.PropertyBuilder Builder { get; private set; }
+        public virtual System.Reflection.Emit.PropertyBuilder Builder { get; protected set; }
 
         /// <summary>
         /// Attributes for the property
         /// </summary>
-        public System.Reflection.PropertyAttributes Attributes { get; private set; }
+        public virtual System.Reflection.PropertyAttributes Attributes { get; protected set; }
 
         /// <summary>
         /// Attributes for the get method
         /// </summary>
-        public System.Reflection.MethodAttributes GetMethodAttributes { get; private set; }
+        public virtual System.Reflection.MethodAttributes GetMethodAttributes { get; protected set; }
 
         /// <summary>
         /// Attributes for the set method
         /// </summary>
-        public System.Reflection.MethodAttributes SetMethodAttributes { get; private set; }
+        public virtual System.Reflection.MethodAttributes SetMethodAttributes { get; protected set; }
 
         /// <summary>
         /// Method builder for the get method
         /// </summary>
-        public MethodBuilder GetMethod { get; private set; }
+        public virtual MethodBuilder GetMethod { get; protected set; }
 
         /// <summary>
         /// Method builder for the set method
         /// </summary>
-        public MethodBuilder SetMethod { get; private set; }
+        public virtual MethodBuilder SetMethod { get; protected set; }
 
-        public FieldBuilder Field { get; private set; }
+        /// <summary>
+        /// Field builder
+        /// </summary>
+        public virtual FieldBuilder Field { get; protected set; }
 
-        private TypeBuilder Type { get; set; }
+        /// <summary>
+        /// Type builder
+        /// </summary>
+        protected virtual TypeBuilder Type { get; set; }
 
         #endregion
 

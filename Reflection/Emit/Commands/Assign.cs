@@ -72,12 +72,12 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Left hand side of the assignment
         /// </summary>
-        protected IVariable LeftHandSide { get; set; }
+        protected virtual IVariable LeftHandSide { get; set; }
 
         /// <summary>
         /// Value to assign
         /// </summary>
-        protected object Value { get; set; }
+        protected virtual object Value { get; set; }
 
         #endregion
 

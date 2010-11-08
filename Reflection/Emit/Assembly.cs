@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Threading;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.Emit.Enums;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -55,11 +56,11 @@ namespace Utilities.Reflection.Emit
         /// </summary>
         /// <param name="Name">Assembly name</param>
         /// <param name="Directory">Directory to save the assembly (if left blank, the assembly is run only and will not be saved)</param>
-        public Assembly(string Name,string Directory)
+        public Assembly(string Name, string Directory)
         {
             if (string.IsNullOrEmpty(Name))
                 throw new ArgumentNullException("Name");
-            Setup(Name,Directory);
+            Setup(Name, Directory);
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace Utilities.Reflection.Emit
         {
             if (string.IsNullOrEmpty(Name))
                 throw new ArgumentNullException("Name");
-            Setup(Name, Directory,Type);
+            Setup(Name, Directory, Type);
         }
 
         #endregion
@@ -85,7 +86,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="Name">Assembly name</param>
         /// <param name="Directory">Directory to save the assembly (if left blank, the assembly is run only and will not be saved)</param>
         /// <param name="Type">Assembly type (dll or exe)</param>
-        private void Setup(string Name, string Directory = "",AssemblyType Type=AssemblyType.DLL)
+        private void Setup(string Name, string Directory = "", AssemblyType Type = AssemblyType.DLL)
         {
             this.Name = Name;
             this.Type = Type;
@@ -113,8 +114,8 @@ namespace Utilities.Reflection.Emit
         /// <param name="BaseClass">Base class for this type</param>
         /// <param name="Interfaces">Interfaces used by this type</param>
         /// <returns>A TypeBuilder class</returns>
-        public TypeBuilder CreateType(string Name, TypeAttributes Attributes=TypeAttributes.Public,
-            Type BaseClass=null,List<Type> Interfaces=null)
+        public virtual TypeBuilder CreateType(string Name, TypeAttributes Attributes = TypeAttributes.Public,
+            Type BaseClass = null, List<Type> Interfaces = null)
         {
             TypeBuilder ReturnValue = new TypeBuilder(this, Name, Interfaces, BaseClass, Attributes);
             Classes.Add(ReturnValue);
@@ -128,7 +129,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="EnumBaseType">Base type of the enum</param>
         /// <param name="Attributes">Attributes associated with the type</param>
         /// <returns>An EnumBuilder class</returns>
-        public EnumBuilder CreateEnum(string Name, Type EnumBaseType,
+        public virtual EnumBuilder CreateEnum(string Name, Type EnumBaseType,
             TypeAttributes Attributes = TypeAttributes.Public)
         {
             EnumBuilder ReturnValue = new EnumBuilder(this, Name, EnumBaseType, Attributes);
@@ -140,7 +141,7 @@ namespace Utilities.Reflection.Emit
         /// Creates all types associated with the assembly and saves the assembly to disk
         /// if a directory is specified.
         /// </summary>
-        public void Create()
+        public virtual void Create()
         {
             foreach (IType Class in Classes)
             {
@@ -160,42 +161,32 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// ModuleBuilder object
         /// </summary>
-        public ModuleBuilder Module { get; private set; }
+        public virtual ModuleBuilder Module { get; protected set; }
 
         /// <summary>
         /// Name of the assembly
         /// </summary>
-        public string Name { get; private set; }
+        public virtual string Name { get; protected set; }
 
         /// <summary>
         /// List of classes associated with this assembly
         /// </summary>
-        public List<TypeBuilder> Classes { get; private set; }
+        public virtual List<TypeBuilder> Classes { get; protected set; }
 
         /// <summary>
         /// List of enums associated with this assembly
         /// </summary>
-        public List<EnumBuilder> Enums { get; private set; }
+        public virtual List<EnumBuilder> Enums { get; protected set; }
 
         /// <summary>
         /// Assembly type (exe or dll)
         /// </summary>
-        public AssemblyType Type { get; private set; }
-
-        private AssemblyBuilder Builder { get; set; }
-
-        #endregion
-
-        #region Enums
+        public virtual AssemblyType Type { get; protected set; }
 
         /// <summary>
-        /// Assembly type
+        /// Assembly builder
         /// </summary>
-        public enum AssemblyType
-        {
-            DLL,
-            EXE
-        }
+        protected virtual AssemblyBuilder Builder { get; set; }
 
         #endregion
 

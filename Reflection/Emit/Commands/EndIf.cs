@@ -24,17 +24,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Reflection;
-using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Interfaces;
+using System.Reflection;
+using Utilities.Reflection.Emit.Commands;
+using System.Reflection.Emit;
+using Utilities.Reflection.Emit.Enums;
 #endregion
 
-namespace Utilities.Reflection.Emit
+namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Helper class for defining an object value
+    /// End If command
     /// </summary>
-    public class ObjectBuilder : IVariable
+    public class EndIf : ICommand
     {
         #region Constructor
 
@@ -42,40 +44,23 @@ namespace Utilities.Reflection.Emit
         /// Constructor
         /// </summary>
         /// <param name="Method">Method builder</param>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="ObjectCounter">Object counter</param>
-        public ObjectBuilder(IMethodBuilder Method,Type ObjectType,int ObjectCounter)
+        /// <param name="ComparisonType">Comparison type</param>
+        /// <param name="LeftHandSide">Left hand side</param>
+        /// <param name="RightHandSide">Right hand side</param>
+        public EndIf(IMethodBuilder Method, If IfCommand)
         {
-            Local = Method.CreateLocal("ObjLocal"+ObjectCounter.ToString(), ObjectType);
-            Local.Save(Method.Generator);
-        }
-
-        #endregion
-
-        #region Functions
-
-        public void Load(ILGenerator Generator)
-        {
-            Local.Load(Generator);
-        }
-
-        public void Save(ILGenerator Generator)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetDefinition()
-        {
-            return Local.GetDefinition();
+            this.Method = Method;
+            Method.Generator.MarkLabel(IfCommand.EndIfLabel);
         }
 
         #endregion
 
         #region Properties
 
-        public string Name { get { return ""; } }
-
-        protected LocalBuilder Local { get; set; }
+        /// <summary>
+        /// Method builder
+        /// </summary>
+        protected virtual IMethodBuilder Method { get; set; }
 
         #endregion
 
@@ -83,7 +68,9 @@ namespace Utilities.Reflection.Emit
 
         public override string ToString()
         {
-            return Local.ToString();
+            StringBuilder Output = new StringBuilder();
+            Output.Append("}\n");
+            return Output.ToString();
         }
 
         #endregion

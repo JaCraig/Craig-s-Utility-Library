@@ -33,7 +33,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining enums
     /// </summary>
-    public class EnumBuilder:IType
+    public class EnumBuilder : IType
     {
         #region Constructor
 
@@ -43,8 +43,8 @@ namespace Utilities.Reflection.Emit
         /// <param name="Assembly">Assembly builder</param>
         /// <param name="Name">Name of the enum</param>
         /// <param name="Attributes">Attributes for the enum (public, private, etc.)</param>
-        /// <param name="FieldType">Type for the enum</param>
-        public EnumBuilder(Assembly Assembly,string Name,Type EnumType,TypeAttributes Attributes)
+        /// <param name="EnumType">Type for the enum</param>
+        public EnumBuilder(Assembly Assembly, string Name, Type EnumType, TypeAttributes Attributes)
         {
             if (Assembly == null)
                 throw new ArgumentNullException("Assembly");
@@ -55,7 +55,7 @@ namespace Utilities.Reflection.Emit
             this.EnumType = EnumType;
             this.Attributes = Attributes;
             this.Literals = new List<System.Reflection.Emit.FieldBuilder>();
-            Setup();
+            Builder = Assembly.Module.DefineEnum(Assembly.Name + "." + Name, TypeAttributes.Public, EnumType);
         }
 
         #endregion
@@ -63,21 +63,11 @@ namespace Utilities.Reflection.Emit
         #region Functions
 
         /// <summary>
-        /// Sets up the enum
-        /// </summary>
-        private void Setup()
-        {
-            if (Assembly == null)
-                throw new NullReferenceException("No assembly is associated with this enum");
-            Builder = Assembly.Module.DefineEnum(Assembly.Name + "." + Name, TypeAttributes.Public, EnumType);
-        }
-
-        /// <summary>
         /// Adds a literal to the enum (an entry)
         /// </summary>
         /// <param name="Name">Name of the entry</param>
         /// <param name="Value">Value associated with it</param>
-        public void AddLiteral(string Name, object Value)
+        public virtual void AddLiteral(string Name, object Value)
         {
             Literals.Add(Builder.DefineLiteral(Name, Value));
         }
@@ -86,7 +76,7 @@ namespace Utilities.Reflection.Emit
         /// Creates the enum
         /// </summary>
         /// <returns>The type defined by this EnumBuilder</returns>
-        public Type Create()
+        public virtual Type Create()
         {
             if (Builder == null)
                 throw new NullReferenceException("The builder object has not been defined. Ensure that Setup is called prior to Create");
@@ -101,34 +91,37 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Field name
         /// </summary>
-        public string Name { get; private set; }
+        public virtual string Name { get; protected set; }
 
         /// <summary>
         /// Literals defined within the enum
         /// </summary>
-        public List<System.Reflection.Emit.FieldBuilder> Literals { get; private set; }
+        public virtual List<System.Reflection.Emit.FieldBuilder> Literals { get; protected set; }
 
         /// <summary>
         /// Field builder
         /// </summary>
-        public System.Reflection.Emit.EnumBuilder Builder {get; private set;}
+        public virtual System.Reflection.Emit.EnumBuilder Builder { get; protected set; }
 
         /// <summary>
         /// Base enum type (int32, etc.)
         /// </summary>
-        public Type EnumType { get; private set; }
+        public virtual Type EnumType { get; protected set; }
 
         /// <summary>
         /// Type defined by this enum
         /// </summary>
-        public Type DefinedType { get; private set; }
+        public virtual Type DefinedType { get; protected set; }
 
         /// <summary>
         /// Attributes for the enum (private, public, etc.)
         /// </summary>
-        public TypeAttributes Attributes { get; private set; }
+        public virtual TypeAttributes Attributes { get; protected set; }
 
-        private Assembly Assembly { get; set; }
+        /// <summary>
+        /// Assembly builder
+        /// </summary>
+        protected virtual Assembly Assembly { get; set; }
 
         #endregion
 
@@ -136,8 +129,8 @@ namespace Utilities.Reflection.Emit
 
         public override string ToString()
         {
-            string[] Splitter={"."};
-            string[] NameParts=Name.Split(Splitter,StringSplitOptions.RemoveEmptyEntries);
+            string[] Splitter = { "." };
+            string[] NameParts = Name.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
             StringBuilder Output = new StringBuilder();
             Output.Append("namespace ").Append(Assembly.Name);
             for (int x = 0; x < NameParts.Length - 1; ++x)
@@ -149,12 +142,12 @@ namespace Utilities.Reflection.Emit
                 Output.Append("public ");
             else
                 Output.Append("private ");
-            Output.Append("enum ").Append(NameParts[NameParts.Length-1]).Append("\n{");
-            string Seperator="";
+            Output.Append("enum ").Append(NameParts[NameParts.Length - 1]).Append("\n{");
+            string Seperator = "";
             foreach (System.Reflection.Emit.FieldBuilder Literal in Literals)
             {
                 Output.Append(Seperator).Append("\n\t").Append(Literal.Name);
-                Seperator=",";
+                Seperator = ",";
             }
             Output.Append("\n}\n}\n\n");
             return Output.ToString();

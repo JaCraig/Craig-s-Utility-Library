@@ -27,6 +27,7 @@ using System.Text;
 using System.Reflection;
 using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -34,7 +35,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining a field within a type
     /// </summary>
-    public class FieldBuilder:IVariable
+    public class FieldBuilder : VariableBase
     {
         #region Constructor
 
@@ -45,7 +46,8 @@ namespace Utilities.Reflection.Emit
         /// <param name="Name">Name of the method</param>
         /// <param name="Attributes">Attributes for the field (public, private, etc.)</param>
         /// <param name="FieldType">Type for the field</param>
-        public FieldBuilder(TypeBuilder TypeBuilder,string Name,Type FieldType,FieldAttributes Attributes)
+        public FieldBuilder(TypeBuilder TypeBuilder, string Name, Type FieldType, FieldAttributes Attributes)
+            : base()
         {
             if (TypeBuilder == null)
                 throw new ArgumentNullException("TypeBuilder");
@@ -53,36 +55,26 @@ namespace Utilities.Reflection.Emit
                 throw new ArgumentNullException("Name");
             this.Name = Name;
             this.Type = TypeBuilder;
-            this.FieldType = FieldType;
+            this.DataType = FieldType;
             this.Attributes = Attributes;
-            Setup();
+            Builder = Type.Builder.DefineField(Name, FieldType, Attributes);
         }
 
         #endregion
 
         #region Functions
 
-        /// <summary>
-        /// Sets up the field
-        /// </summary>
-        private void Setup()
-        {
-            if (Type == null)
-                throw new NullReferenceException("No type is associated with this field");
-            Builder = Type.Builder.DefineField(Name, FieldType, Attributes);
-        }
-
-        public void Load(System.Reflection.Emit.ILGenerator Generator)
+        public override void Load(System.Reflection.Emit.ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Ldfld, Builder);
         }
 
-        public void Save(System.Reflection.Emit.ILGenerator Generator)
+        public override void Save(System.Reflection.Emit.ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Stfld, Builder);
         }
 
-        public string GetDefinition()
+        public override string GetDefinition()
         {
             StringBuilder Output = new StringBuilder();
 
@@ -93,7 +85,7 @@ namespace Utilities.Reflection.Emit
                 Output.Append("private ");
             if ((Attributes & FieldAttributes.Static) > 0)
                 Output.Append("static ");
-            Output.Append(Reflection.GetTypeName(FieldType));
+            Output.Append(Reflection.GetTypeName(DataType));
             Output.Append(" ").Append(Name).Append(";");
 
             return Output.ToString();
@@ -104,26 +96,19 @@ namespace Utilities.Reflection.Emit
         #region Properties
 
         /// <summary>
-        /// Field name
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
         /// Field builder
         /// </summary>
-        public System.Reflection.Emit.FieldBuilder Builder {get; private set;}
-
-        /// <summary>
-        /// Field type
-        /// </summary>
-        public Type FieldType { get; private set; }
+        public virtual System.Reflection.Emit.FieldBuilder Builder { get; protected set; }
 
         /// <summary>
         /// Attributes for the field (private, public, etc.)
         /// </summary>
-        public FieldAttributes Attributes { get; private set; }
+        public virtual FieldAttributes Attributes { get; protected set; }
 
-        private TypeBuilder Type { get; set; }
+        /// <summary>
+        /// Type builder
+        /// </summary>
+        protected virtual TypeBuilder Type { get; set; }
 
         #endregion
 

@@ -27,6 +27,7 @@ using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -34,57 +35,57 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Used to define a parameter
     /// </summary>
-    public class ParameterBuilder : IVariable
+    public class ParameterBuilder : VariableBase
     {
         #region Constructor
         
-        public ParameterBuilder(Type ParameterType,int Number)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ParameterType">Parameter type</param>
+        /// <param name="Number">Position in parameter order</param>
+        public ParameterBuilder(Type ParameterType,int Number):base()
         {
-            if (Number == 0)
+            if (Number == -1)
             {
                 this.Name = "value";
                 this.Number = 1;
-                this.ParameterType = ParameterType;
+                this.DataType = ParameterType;
+                return;
+            }
+            else if (Number == 0)
+            {
+                this.Name = "this";
+                this.Number = 0;
+                this.DataType = null;
                 return;
             }
             this.Name = "Parameter" + Number.ToString();
             this.Number = Number;
-            this.ParameterType = ParameterType;
+            this.DataType = ParameterType;
         }
 
         #endregion
 
         #region Properties
 
-        public string Name { get; protected set; }
-
         /// <summary>
         /// Order in the parameter list
         /// </summary>
-        public int Number { get; protected set; }
-
-        /// <summary>
-        /// Parameter type
-        /// </summary>
-        public Type ParameterType { get; protected set; }
+        public virtual int Number { get; protected set; }
 
         #endregion
 
         #region Functions
 
-        public void Load(ILGenerator Generator)
+        public override void Load(ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Ldarg, Number);
         }
 
-        public void Save(ILGenerator Generator)
+        public override void Save(ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Starg, Number);
-        }
-
-        public string GetDefinition()
-        {
-            return Reflection.GetTypeName(ParameterType) + " " + Name;
         }
 
         #endregion
