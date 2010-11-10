@@ -33,12 +33,9 @@ using Utilities.Reflection.Emit.Enums;
 
 namespace Utilities.Reflection.Emit.Commands
 {
-    /// <summary>
-    /// If command
-    /// </summary>
-    public class If : ICommand
+    public class While:ICommand
     {
-        #region Constructor
+        #region Constructors
 
         /// <summary>
         /// Constructor
@@ -47,14 +44,15 @@ namespace Utilities.Reflection.Emit.Commands
         /// <param name="ComparisonType">Comparison type</param>
         /// <param name="LeftHandSide">Left hand side</param>
         /// <param name="RightHandSide">Right hand side</param>
-        public If(IMethodBuilder Method, Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
+        public While(IMethodBuilder Method, Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
         {
             this.Method = Method;
-            this.EndIfLabel = Method.Generator.DefineLabel();
-            this.EndIfFinalLabel = Method.Generator.DefineLabel();
+            this.StartWhileLabel = Method.Generator.DefineLabel();
+            this.EndWhileLabel = Method.Generator.DefineLabel();
             this.LeftHandSide = LeftHandSide;
             this.RightHandSide = RightHandSide;
             this.ComparisonType = ComparisonType;
+            Method.Generator.MarkLabel(StartWhileLabel);
             if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
                 Method.Generator.Emit(OpCodes.Ldarg_0);
             LeftHandSide.Load(Method.Generator);
@@ -65,27 +63,27 @@ namespace Utilities.Reflection.Emit.Commands
             {
                 Method.Generator.Emit(OpCodes.Ceq);
                 Method.Generator.Emit(OpCodes.Ldc_I4_0);
-                Method.Generator.Emit(OpCodes.Beq, EndIfLabel);
+                Method.Generator.Emit(OpCodes.Beq, EndWhileLabel);
             }
             else if (ComparisonType == Comparison.GreaterThan)
             {
-                Method.Generator.Emit(OpCodes.Ble, EndIfLabel);
+                Method.Generator.Emit(OpCodes.Ble, EndWhileLabel);
             }
             else if (ComparisonType == Comparison.GreaterThenOrEqual)
             {
-                Method.Generator.Emit(OpCodes.Blt, EndIfLabel);
+                Method.Generator.Emit(OpCodes.Blt, EndWhileLabel);
             }
             else if (ComparisonType == Comparison.LessThan)
             {
-                Method.Generator.Emit(OpCodes.Bge, EndIfLabel);
+                Method.Generator.Emit(OpCodes.Bge, EndWhileLabel);
             }
             else if (ComparisonType == Comparison.LessThanOrEqual)
             {
-                Method.Generator.Emit(OpCodes.Bgt, EndIfLabel);
+                Method.Generator.Emit(OpCodes.Bgt, EndWhileLabel);
             }
             else if (ComparisonType == Comparison.NotEqual)
             {
-                Method.Generator.Emit(OpCodes.Beq, EndIfLabel);
+                Method.Generator.Emit(OpCodes.Beq, EndWhileLabel);
             }
         }
 
@@ -99,14 +97,14 @@ namespace Utilities.Reflection.Emit.Commands
         protected virtual IMethodBuilder Method { get; set; }
 
         /// <summary>
-        /// End if label
+        /// Start while label
         /// </summary>
-        public virtual Label EndIfLabel { get; set; }
+        public virtual Label StartWhileLabel { get; set; }
 
         /// <summary>
-        /// End if label
+        /// End while label
         /// </summary>
-        public virtual Label EndIfFinalLabel { get; set; }
+        public virtual Label EndWhileLabel { get; set; }
 
         /// <summary>
         /// Left hand side of the comparison
@@ -128,36 +126,11 @@ namespace Utilities.Reflection.Emit.Commands
         #region Functions
 
         /// <summary>
-        /// Ends the if statement
+        /// Ends the while statement
         /// </summary>
-        public virtual void EndIf()
+        public virtual void EndWhile()
         {
-            Method.EndIf(this);
-        }
-
-        /// <summary>
-        /// Defines an else if statement
-        /// </summary>
-        /// <param name="ComparisonType">Comparison type</param>
-        /// <param name="LeftHandSide">left hand side value</param>
-        /// <param name="RightHandSide">right hand side value</param>
-        public virtual void ElseIf(Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
-        {
-            Method.Generator.Emit(OpCodes.Br, EndIfFinalLabel);
-            Method.Generator.MarkLabel(EndIfLabel);
-            EndIfLabel = Method.Generator.DefineLabel();
-            ((BaseClasses.MethodBase)Method).Commands.Add(new ElseIf(Method, EndIfLabel, ComparisonType, LeftHandSide, RightHandSide));
-        }
-
-        /// <summary>
-        /// Defines an else statement
-        /// </summary>
-        public virtual void Else()
-        {
-            Method.Generator.Emit(OpCodes.Br, EndIfFinalLabel);
-            Method.Generator.MarkLabel(EndIfLabel);
-            EndIfLabel = Method.Generator.DefineLabel();
-            ((BaseClasses.MethodBase)Method).Commands.Add(new Else(Method));
+            Method.EndWhile(this);
         }
 
         #endregion
@@ -167,7 +140,7 @@ namespace Utilities.Reflection.Emit.Commands
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append("if(");
+            Output.Append("while(");
             Output.Append(LeftHandSide);
             if (ComparisonType == Comparison.Equal)
             {

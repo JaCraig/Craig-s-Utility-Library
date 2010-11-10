@@ -93,6 +93,32 @@ namespace Utilities.Reflection.Emit.BaseClasses
             Commands.Add(new Return(ReturnType, null, Generator));
         }
 
+        public If If(Enums.Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
+        {
+            Utilities.Reflection.Emit.Commands.If TempCommand = new If(this, ComparisonType, LeftHandSide, RightHandSide);
+            Commands.Add(TempCommand);
+            return TempCommand;
+        }
+
+        public void EndIf(If IfCommand)
+        {
+            EndIf TempCommand = new EndIf(this, IfCommand);
+            Commands.Add(TempCommand);
+        }
+
+        public While While(Enums.Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
+        {
+            While TempCommand = new While(this, ComparisonType, LeftHandSide, RightHandSide);
+            Commands.Add(TempCommand);
+            return TempCommand;
+        }
+
+        public void EndWhile(While WhileCommand)
+        {
+            EndWhile TempCommand = new EndWhile(this, WhileCommand);
+            Commands.Add(TempCommand);
+        }
+
         #endregion
 
         #region Properties
@@ -107,20 +133,5 @@ namespace Utilities.Reflection.Emit.BaseClasses
         protected static int ObjectCounter { get; set; }
 
         #endregion
-
-
-        public If If(Enums.Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
-        {
-            Utilities.Reflection.Emit.Commands.If TempCommand = new If(this, ComparisonType, LeftHandSide, RightHandSide);
-            Commands.Add(TempCommand);
-            return TempCommand;
-        }
-
-
-        public void EndIf(If IfCommand)
-        {
-            EndIf TempCommand = new EndIf(this, IfCommand);
-            Commands.Add(TempCommand);
-        }
     }
 }

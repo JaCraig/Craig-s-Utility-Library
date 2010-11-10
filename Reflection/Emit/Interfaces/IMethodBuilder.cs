@@ -103,6 +103,21 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="IfCommand">If command</param>
         void EndIf(If IfCommand);
 
+        /// <summary>
+        /// Defines a while statement
+        /// </summary>
+        /// <param name="ComparisonType">Comparison type</param>
+        /// <param name="LeftHandSide">Left hand side of the while statement</param>
+        /// <param name="RightHandSide">Right hand side of the while statement</param>
+        /// <returns>The while command</returns>
+        While While(Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide);
+
+        /// <summary>
+        /// Defines the end of a while statement
+        /// </summary>
+        /// <param name="WhileCommand">While command</param>
+        void EndWhile(While WhileCommand);
+
         #endregion
 
         #region Properties

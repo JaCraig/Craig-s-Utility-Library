@@ -44,13 +44,12 @@ namespace Utilities.Reflection.Emit.Commands
         /// Constructor
         /// </summary>
         /// <param name="Method">Method builder</param>
-        /// <param name="ComparisonType">Comparison type</param>
-        /// <param name="LeftHandSide">Left hand side</param>
-        /// <param name="RightHandSide">Right hand side</param>
+        /// <param name="IfCommand">If command</param>
         public EndIf(IMethodBuilder Method, If IfCommand)
         {
             this.Method = Method;
             Method.Generator.MarkLabel(IfCommand.EndIfLabel);
+            Method.Generator.MarkLabel(IfCommand.EndIfFinalLabel);
         }
 
         #endregion

@@ -54,6 +54,11 @@ namespace Utilities.Reflection.Emit.BaseClasses
 
         #region Functions
 
+        public void Assign(IMethodBuilder Method, object Value)
+        {
+            Method.Assign(this, Value);
+        }
+
         public virtual void Load(System.Reflection.Emit.ILGenerator Generator)
         {
             throw new NotImplementedException();

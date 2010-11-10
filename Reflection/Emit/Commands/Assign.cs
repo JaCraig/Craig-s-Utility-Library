@@ -53,8 +53,10 @@ namespace Utilities.Reflection.Emit.Commands
                 throw new ArgumentNullException("LeftHandSide");
             if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
                 Generator.Emit(OpCodes.Ldarg_0);
-            if (Value is IVariable)
+            if (Value!=null&&Value is IVariable)
             {
+                if (Value is FieldBuilder || Value is IPropertyBuilder)
+                    Generator.Emit(OpCodes.Ldarg_0);
                 ((IVariable)Value).Load(Generator);
             }
             else

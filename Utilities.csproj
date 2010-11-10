@@ -171,10 +171,14 @@
     <Compile Include="Reflection\Emit\Commands\Assign.cs" />
     <Compile Include="Reflection\Emit\Commands\Call.cs" />
     <Compile Include="Reflection\Emit\Commands\DefineLocal.cs" />
+    <Compile Include="Reflection\Emit\Commands\Else.cs" />
+    <Compile Include="Reflection\Emit\Commands\ElseIf.cs" />
     <Compile Include="Reflection\Emit\Commands\EndIf.cs" />
+    <Compile Include="Reflection\Emit\Commands\EndWhile.cs" />
     <Compile Include="Reflection\Emit\Commands\If.cs" />
     <Compile Include="Reflection\Emit\Commands\NewObj.cs" />
     <Compile Include="Reflection\Emit\Commands\Return.cs" />
+    <Compile Include="Reflection\Emit\Commands\While.cs" />
     <Compile Include="Reflection\Emit\ConstantBuilder.cs" />
     <Compile Include="Reflection\Emit\ConstructorBuilder.cs" />
     <Compile Include="Reflection\Emit\DefaultConstructorBuilder.cs" />

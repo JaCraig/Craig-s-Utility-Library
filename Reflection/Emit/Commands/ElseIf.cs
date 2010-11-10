@@ -34,9 +34,9 @@ using Utilities.Reflection.Emit.Enums;
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// If command
+    /// Else if command
     /// </summary>
-    public class If : ICommand
+    public class ElseIf : ICommand
     {
         #region Constructor
 
@@ -44,14 +44,14 @@ namespace Utilities.Reflection.Emit.Commands
         /// Constructor
         /// </summary>
         /// <param name="Method">Method builder</param>
+        /// <param name="EndIfLabel">End if label (for this else if)</param>
         /// <param name="ComparisonType">Comparison type</param>
         /// <param name="LeftHandSide">Left hand side</param>
         /// <param name="RightHandSide">Right hand side</param>
-        public If(IMethodBuilder Method, Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
+        public ElseIf(IMethodBuilder Method,Label EndIfLabel, Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
         {
             this.Method = Method;
-            this.EndIfLabel = Method.Generator.DefineLabel();
-            this.EndIfFinalLabel = Method.Generator.DefineLabel();
+            this.EndIfLabel = EndIfLabel;
             this.LeftHandSide = LeftHandSide;
             this.RightHandSide = RightHandSide;
             this.ComparisonType = ComparisonType;
@@ -104,11 +104,6 @@ namespace Utilities.Reflection.Emit.Commands
         public virtual Label EndIfLabel { get; set; }
 
         /// <summary>
-        /// End if label
-        /// </summary>
-        public virtual Label EndIfFinalLabel { get; set; }
-
-        /// <summary>
         /// Left hand side of the comparison
         /// </summary>
         public virtual IVariable LeftHandSide { get; set; }
@@ -125,49 +120,12 @@ namespace Utilities.Reflection.Emit.Commands
 
         #endregion
 
-        #region Functions
-
-        /// <summary>
-        /// Ends the if statement
-        /// </summary>
-        public virtual void EndIf()
-        {
-            Method.EndIf(this);
-        }
-
-        /// <summary>
-        /// Defines an else if statement
-        /// </summary>
-        /// <param name="ComparisonType">Comparison type</param>
-        /// <param name="LeftHandSide">left hand side value</param>
-        /// <param name="RightHandSide">right hand side value</param>
-        public virtual void ElseIf(Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
-        {
-            Method.Generator.Emit(OpCodes.Br, EndIfFinalLabel);
-            Method.Generator.MarkLabel(EndIfLabel);
-            EndIfLabel = Method.Generator.DefineLabel();
-            ((BaseClasses.MethodBase)Method).Commands.Add(new ElseIf(Method, EndIfLabel, ComparisonType, LeftHandSide, RightHandSide));
-        }
-
-        /// <summary>
-        /// Defines an else statement
-        /// </summary>
-        public virtual void Else()
-        {
-            Method.Generator.Emit(OpCodes.Br, EndIfFinalLabel);
-            Method.Generator.MarkLabel(EndIfLabel);
-            EndIfLabel = Method.Generator.DefineLabel();
-            ((BaseClasses.MethodBase)Method).Commands.Add(new Else(Method));
-        }
-
-        #endregion
-
         #region Overridden Functions
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append("if(");
+            Output.Append("}\nelse if(");
             Output.Append(LeftHandSide);
             if (ComparisonType == Comparison.Equal)
             {

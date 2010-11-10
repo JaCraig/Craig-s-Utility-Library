@@ -24,56 +24,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.Reflection.Emit.Interfaces;
+using System.Reflection;
+using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.Enums;
 #endregion
 
-namespace Utilities.Reflection.Emit.Interfaces
+namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Variable interface
+    /// Else command
     /// </summary>
-    public interface IVariable
+    public class Else : ICommand
     {
-        #region Properties
+        #region Constructor
 
         /// <summary>
-        /// Local name
+        /// Constructor
         /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Data type for the variable
-        /// </summary>
-        Type DataType { get; }
+        /// <param name="Method">Method builder</param>
+        public Else(IMethodBuilder Method)
+        {
+            this.Method = Method;
+        }
 
         #endregion
 
-        #region Functions
+        #region Properties
 
         /// <summary>
-        /// Assigns a value to this variable
+        /// Method builder
         /// </summary>
-        /// <param name="Method">Method associated with this command</param>
-        /// <param name="Value">Value to assign</param>
-        void Assign(IMethodBuilder Method,object Value);
+        protected virtual IMethodBuilder Method { get; set; }
 
-        /// <summary>
-        /// Loads a variable's value onto the stack
-        /// </summary>
-        /// <param name="Generator">IL Generator</param>
-        void Load(ILGenerator Generator);
+        #endregion
 
-        /// <summary>
-        /// Saves a value from the stack into the variable
-        /// </summary>
-        /// <param name="Generator">IL Generator</param>
-        void Save(ILGenerator Generator);
+        #region Overridden Functions
 
-        /// <summary>
-        /// Gets the definition of the variable
-        /// </summary>
-        /// <returns>string representation of the variable definition</returns>
-        string GetDefinition();
+        public override string ToString()
+        {
+            StringBuilder Output = new StringBuilder();
+            Output.Append("}\nelse\n{\n");
+            return Output.ToString();
+        }
 
         #endregion
     }
