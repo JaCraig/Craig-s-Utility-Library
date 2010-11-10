@@ -214,5 +214,25 @@ namespace Utilities.Reflection.Emit
         }
 
         #endregion
+
+        #region Operator Functions
+
+        public static DefaultPropertyBuilder operator ++(DefaultPropertyBuilder Left)
+        {
+            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
+                throw new NullReferenceException("Unsure which method is the current method");
+            Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Add(Left, 1));
+            return Left;
+        }
+
+        public static DefaultPropertyBuilder operator --(DefaultPropertyBuilder Left)
+        {
+            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
+                throw new NullReferenceException("Unsure which method is the current method");
+            Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Subtract(Left, 1));
+            return Left;
+        }
+
+        #endregion
     }
 }

@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Commands;
 using Utilities.Reflection.Emit.Enums;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Interfaces
@@ -40,33 +41,45 @@ namespace Utilities.Reflection.Emit.Interfaces
         #region Functions
 
         /// <summary>
+        /// Sets the method as the current method
+        /// </summary>
+        void SetCurrentMethod();
+
+        /// <summary>
         /// Defines a local variable
         /// </summary>
         /// <param name="Name">Name of the local variable</param>
         /// <param name="LocalType">The Type of the local variable</param>
         /// <returns>The LocalBuilder associated with the variable</returns>
-        IVariable CreateLocal(string Name, Type LocalType);
+        VariableBase CreateLocal(string Name, Type LocalType);
 
         /// <summary>
         /// Constant value
         /// </summary>
         /// <param name="Value">Value of the constant</param>
         /// <returns>The ConstantBuilder associated with the variable</returns>
-        IVariable CreateConstant(object Value);
+        VariableBase CreateConstant(object Value);
 
         /// <summary>
         /// Creates new object
         /// </summary>
         /// <param name="Constructor">Constructor</param>
         /// <param name="Variables">Variables to send to the constructor</param>
-        IVariable NewObj(ConstructorInfo Constructor, List<IVariable> Variables);
+        VariableBase NewObj(ConstructorInfo Constructor, object[] Variables=null);
+
+        /// <summary>
+        /// Creates new object
+        /// </summary>
+        /// <param name="ObjectType">object type</param>
+        /// <param name="Variables">Variables to send to the constructor</param>
+        VariableBase NewObj(Type ObjectType, object[] Variables=null);
 
         /// <summary>
         /// Assigns the value to the left hand side variable
         /// </summary>
         /// <param name="LeftHandSide">Left hand side variable</param>
-        /// <param name="Value">Value to store (may be constant or IVariable object)</param>
-        void Assign(IVariable LeftHandSide, object Value);
+        /// <param name="Value">Value to store (may be constant or VariableBase object)</param>
+        void Assign(VariableBase LeftHandSide, object Value);
 
         /// <summary>
         /// Returns a specified value
@@ -86,7 +99,7 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="MethodCalling">Method calling</param>
         /// <param name="Parameters">Parameters sending</param>
         /// <returns>The return value</returns>
-        IVariable Call(IVariable ObjectCallingOn, MethodInfo MethodCalling, List<IVariable> Parameters);
+        VariableBase Call(VariableBase ObjectCallingOn, MethodInfo MethodCalling, object[] Parameters);
 
         /// <summary>
         /// Defines an if statement
@@ -95,7 +108,7 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="LeftHandSide">Left hand side of the if statement</param>
         /// <param name="RightHandSide">Right hand side of the if statement</param>
         /// <returns>The if command</returns>
-        If If(Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide);
+        If If(Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide);
 
         /// <summary>
         /// Defines the end of an if statement
@@ -110,13 +123,53 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="LeftHandSide">Left hand side of the while statement</param>
         /// <param name="RightHandSide">Right hand side of the while statement</param>
         /// <returns>The while command</returns>
-        While While(Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide);
+        While While(Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide);
 
         /// <summary>
         /// Defines the end of a while statement
         /// </summary>
         /// <param name="WhileCommand">While command</param>
         void EndWhile(While WhileCommand);
+
+        /// <summary>
+        /// Adds two variables and returns the result
+        /// </summary>
+        /// <param name="LeftHandSide">Left hand side</param>
+        /// <param name="RightHandSide">Right hand side</param>
+        /// <returns>The result</returns>
+        VariableBase Add(object LeftHandSide, object RightHandSide);
+
+        /// <summary>
+        /// Subtracts two variables and returns the result
+        /// </summary>
+        /// <param name="LeftHandSide">Left hand side</param>
+        /// <param name="RightHandSide">Right hand side</param>
+        /// <returns>The result</returns>
+        VariableBase Subtract(object LeftHandSide, object RightHandSide);
+
+        /// <summary>
+        /// Multiplies two variables and returns the result
+        /// </summary>
+        /// <param name="LeftHandSide">Left hand side</param>
+        /// <param name="RightHandSide">Right hand side</param>
+        /// <returns>The result</returns>
+        VariableBase Multiply(object LeftHandSide, object RightHandSide);
+
+        /// <summary>
+        /// Divides two variables and returns the result
+        /// </summary>
+        /// <param name="LeftHandSide">Left hand side</param>
+        /// <param name="RightHandSide">Right hand side</param>
+        /// <returns>The result</returns>
+        VariableBase Divide(object LeftHandSide, object RightHandSide);
+
+        /// <summary>
+        /// Mods (%) two variables and returns the result
+        /// </summary>
+        /// <param name="LeftHandSide">Left hand side</param>
+        /// <param name="RightHandSide">Right hand side</param>
+        /// <returns>The result</returns>
+        VariableBase Modulo(object LeftHandSide, object RightHandSide);
 
         #endregion
 
@@ -146,6 +199,11 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// IL generator for this method
         /// </summary>
         ILGenerator Generator { get; }
+
+        /// <summary>
+        /// Returns the this object for this object
+        /// </summary>
+        VariableBase This { get; }
 
         #endregion
     }

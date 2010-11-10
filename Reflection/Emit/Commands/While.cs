@@ -29,6 +29,7 @@ using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Enums;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -44,7 +45,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// <param name="ComparisonType">Comparison type</param>
         /// <param name="LeftHandSide">Left hand side</param>
         /// <param name="RightHandSide">Right hand side</param>
-        public While(IMethodBuilder Method, Comparison ComparisonType, IVariable LeftHandSide, IVariable RightHandSide)
+        public While(IMethodBuilder Method, Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide)
         {
             this.Method = Method;
             this.StartWhileLabel = Method.Generator.DefineLabel();
@@ -109,12 +110,12 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Left hand side of the comparison
         /// </summary>
-        public virtual IVariable LeftHandSide { get; set; }
+        public virtual VariableBase LeftHandSide { get; set; }
 
         /// <summary>
         /// Right hand side of the comparison
         /// </summary>
-        public virtual IVariable RightHandSide { get; set; }
+        public virtual VariableBase RightHandSide { get; set; }
 
         /// <summary>
         /// Comparison type

@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -46,14 +47,26 @@ namespace Utilities.Reflection.Emit.Commands
         /// <param name="Variables">Variables sent to the constructor</param>
         /// <param name="ObjectCount">Object count</param>
         /// <param name="Generator">IL generator</param>
-        public NewObj(IMethodBuilder Method, ConstructorInfo Constructor, List<IVariable> Variables,
+        public NewObj(IMethodBuilder Method, ConstructorInfo Constructor, object[] Parameters,
             int ObjectCount, ILGenerator Generator)
         {
             this.Constructor = Constructor;
-            this.Variables = Variables;
-            foreach (IVariable Variable in Variables)
+            if (Parameters != null)
             {
-                Variable.Load(Generator);
+                this.Parameters = new object[Parameters.Length];
+                for (int x = 0; x < Parameters.Length; ++x)
+                {
+                    if (Parameters[x] is VariableBase)
+                        this.Parameters[x] = Parameters[x];
+                    else
+                        this.Parameters[x] = Method.CreateConstant(Parameters[x]);
+                }
+                foreach (VariableBase Parameter in this.Parameters)
+                {
+                    if (Parameter is FieldBuilder || Parameter is IPropertyBuilder)
+                        Method.Generator.Emit(OpCodes.Ldarg_0);
+                    Parameter.Load(Method.Generator);
+                }
             }
             Generator.Emit(OpCodes.Newobj, Constructor);
             TempObject = Method.CreateLocal("ObjLocal" + ObjectCount.ToString(), Constructor.DeclaringType);
@@ -77,12 +90,12 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Variables sent to the Constructor
         /// </summary>
-        protected virtual List<IVariable> Variables { get; set; }
+        protected virtual object[] Parameters { get; set; }
 
         /// <summary>
         /// Temp object
         /// </summary>
-        protected virtual IVariable TempObject { get; set; }
+        protected virtual VariableBase TempObject { get; set; }
 
         /// <summary>
         /// Object count
@@ -97,7 +110,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// Gets the object that temporarily stores the new object
         /// </summary>
         /// <returns>The new object</returns>
-        public virtual IVariable GetObject()
+        public virtual VariableBase GetObject()
         {
             return TempObject;
         }
@@ -113,10 +126,13 @@ namespace Utilities.Reflection.Emit.Commands
                 .Append(Reflection.GetTypeName(Constructor.DeclaringType))
                 .Append("(");
             string Seperator = "";
-            foreach (IVariable Variable in Variables)
+            if (Parameters != null)
             {
-                Output.Append(Seperator).Append(Variable.ToString());
-                Seperator = ",";
+                foreach (VariableBase Variable in Parameters)
+                {
+                    Output.Append(Seperator).Append(Variable.ToString());
+                    Seperator = ",";
+                }
             }
             Output.Append(");\n");
             return Output.ToString();

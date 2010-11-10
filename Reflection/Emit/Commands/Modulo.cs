@@ -34,38 +34,47 @@ using Utilities.Reflection.Emit.BaseClasses;
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Assignment command
+    /// Mods two variables
     /// </summary>
-    public class Assign:ICommand
+    public class Modulo : ICommand
     {
         #region Constructor
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="LeftHandSide">Left hand side</param>
-        /// <param name="Value">Value to store</param>
-        /// <param name="Generator">IL generator</param>
-        public Assign(VariableBase LeftHandSide, object Value,ILGenerator Generator)
+        /// <param name="Method">Method builder</param>
+        /// <param name="LeftHandSide">Left variable</param>
+        /// <param name="RightHandSide">Right variable</param>
+        /// <param name="ObjectCount">Object counter</param>
+        public Modulo(IMethodBuilder Method, object LeftHandSide, object RightHandSide, int ObjectCount)
         {
-            this.LeftHandSide = LeftHandSide;
-            this.Value = Value;
-            if (LeftHandSide == null)
-                throw new ArgumentNullException("LeftHandSide");
-            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
-                Generator.Emit(OpCodes.Ldarg_0);
-            if (Value!=null&&Value is VariableBase)
+            if (!(LeftHandSide is VariableBase))
             {
-                if (Value is FieldBuilder || Value is IPropertyBuilder)
-                    Generator.Emit(OpCodes.Ldarg_0);
-                ((VariableBase)Value).Load(Generator);
+                this.LeftHandSide = Method.CreateConstant(LeftHandSide);
             }
             else
             {
-                ConstantBuilder Constant = new ConstantBuilder(Value);
-                Constant.Load(Generator);
+                this.LeftHandSide = (VariableBase)LeftHandSide;
             }
-            LeftHandSide.Save(Generator);
+            if (!(RightHandSide is VariableBase))
+            {
+                this.RightHandSide = Method.CreateConstant(RightHandSide);
+            }
+            else
+            {
+                this.RightHandSide = (VariableBase)RightHandSide;
+            }
+            this.Method = Method;
+            Result = this.Method.CreateLocal("ModuloLocalResult" + ObjectCount.ToString(), this.LeftHandSide.DataType);
+            if (this.LeftHandSide is FieldBuilder || this.LeftHandSide is IPropertyBuilder)
+                Method.Generator.Emit(OpCodes.Ldarg_0);
+            this.LeftHandSide.Load(Method.Generator);
+            if (this.RightHandSide is FieldBuilder || this.RightHandSide is IPropertyBuilder)
+                Method.Generator.Emit(OpCodes.Ldarg_0);
+            this.RightHandSide.Load(Method.Generator);
+            Method.Generator.Emit(OpCodes.Rem);
+            Result.Save(Method.Generator);
         }
 
         #endregion
@@ -73,14 +82,24 @@ namespace Utilities.Reflection.Emit.Commands
         #region Properties
 
         /// <summary>
-        /// Left hand side of the assignment
+        /// Left hand side of the addition
         /// </summary>
         protected virtual VariableBase LeftHandSide { get; set; }
 
         /// <summary>
-        /// Value to assign
+        /// Right hand side of the addition
         /// </summary>
-        protected virtual object Value { get; set; }
+        protected virtual VariableBase RightHandSide { get; set; }
+
+        /// <summary>
+        /// Value assigned to
+        /// </summary>
+        public virtual VariableBase Result { get; set; }
+
+        /// <summary>
+        /// Method builder
+        /// </summary>
+        protected virtual IMethodBuilder Method { get; set; }
 
         #endregion
 
@@ -89,7 +108,7 @@ namespace Utilities.Reflection.Emit.Commands
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append(LeftHandSide.ToString()).Append("=").Append(Value.ToString()).Append(";\n");
+            Output.Append(Result).Append("=").Append(LeftHandSide).Append("%").Append(RightHandSide).Append(";\n");
             return Output.ToString();
         }
 

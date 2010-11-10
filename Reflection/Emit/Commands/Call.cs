@@ -28,6 +28,7 @@ using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -46,20 +47,36 @@ namespace Utilities.Reflection.Emit.Commands
         /// <param name="Method">Method builder</param>
         /// <param name="MethodCalling">Method calling on the object</param>
         /// <param name="Parameters">List of parameters to send in</param>
-        public Call(IMethodBuilder Method, IVariable ObjectCallingOn, MethodInfo MethodCalling, List<IVariable> Parameters)
+        public Call(IMethodBuilder Method, VariableBase ObjectCallingOn, MethodInfo MethodCalling, object[] Parameters)
         {
             this.ObjectCallingOn = ObjectCallingOn;
             this.MethodCalling = MethodCalling;
-            this.Parameters = Parameters;
             this.MethodCallingFrom = Method;
             if (MethodCalling.ReturnType != null && MethodCalling.ReturnType != typeof(void))
             {
                 TempObject = Method.CreateLocal(MethodCalling.Name + "ReturnObject", MethodCalling.ReturnType);
             }
             ObjectCallingOn.Load(Method.Generator);
-            foreach (IVariable Parameter in Parameters)
+            if (Parameters != null)
             {
-                Parameter.Load(Method.Generator);
+                this.Parameters = new object[Parameters.Length];
+                for (int x=0;x<Parameters.Length;++x)
+                {
+                    if (Parameters[x] is VariableBase)
+                        this.Parameters[x] = Parameters[x];
+                    else
+                        this.Parameters[x] = Method.CreateConstant(Parameters[x]);
+                }
+                foreach (VariableBase Parameter in this.Parameters)
+                {
+                    if (Parameter is FieldBuilder || Parameter is IPropertyBuilder)
+                        Method.Generator.Emit(OpCodes.Ldarg_0);
+                    Parameter.Load(Method.Generator);
+                }
+            }
+            else
+            {
+                this.Parameters = null;
             }
             if (ObjectCallingOn.Name == "this" && Method.Name == MethodCalling.Name)
             {
@@ -84,12 +101,12 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Temp return object from the call
         /// </summary>
-        protected virtual IVariable TempObject { get; set; }
+        protected virtual VariableBase TempObject { get; set; }
 
         /// <summary>
         /// Object calling on
         /// </summary>
-        protected virtual IVariable ObjectCallingOn { get; set; }
+        protected virtual VariableBase ObjectCallingOn { get; set; }
 
         /// <summary>
         /// Method calling
@@ -99,7 +116,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Parameters sent in
         /// </summary>
-        protected virtual List<IVariable> Parameters { get; set; }
+        protected virtual object[] Parameters { get; set; }
 
         /// <summary>
         /// Method calling from
@@ -114,7 +131,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// Gets the object that temporarily stores the new object
         /// </summary>
         /// <returns>The new object</returns>
-        public virtual IVariable GetObject()
+        public virtual VariableBase GetObject()
         {
             return TempObject;
         }
@@ -140,10 +157,13 @@ namespace Utilities.Reflection.Emit.Commands
                 Output.Append(MethodCalling.Name).Append("(");
             }
             string Seperator = "";
-            foreach (IVariable Variable in Parameters)
+            if (Parameters != null)
             {
-                Output.Append(Seperator).Append(Variable.ToString());
-                Seperator = ",";
+                foreach (VariableBase Variable in Parameters)
+                {
+                    Output.Append(Seperator).Append(Variable.ToString());
+                    Seperator = ",";
+                }
             }
             Output.Append(");\n");
             return Output.ToString();

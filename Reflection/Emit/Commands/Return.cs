@@ -28,6 +28,7 @@ using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -64,9 +65,9 @@ namespace Utilities.Reflection.Emit.Commands
             }
             if (ReturnValue is FieldBuilder || ReturnValue is IPropertyBuilder)
                 Generator.Emit(OpCodes.Ldarg_0);
-            if (ReturnValue is IVariable)
+            if (ReturnValue is VariableBase)
             {
-                ((IVariable)ReturnValue).Load(Generator);
+                ((VariableBase)ReturnValue).Load(Generator);
             }
             else
             {

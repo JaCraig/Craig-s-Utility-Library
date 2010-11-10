@@ -28,6 +28,7 @@ using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -57,7 +58,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Temp object
         /// </summary>
-        protected virtual IVariable TempObject { get; set; }
+        protected virtual VariableBase TempObject { get; set; }
 
         #endregion
 
@@ -67,7 +68,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// Gets the object that temporarily stores the new object
         /// </summary>
         /// <returns>The new object</returns>
-        public virtual IVariable GetObject()
+        public virtual VariableBase GetObject()
         {
             return TempObject;
         }
