@@ -36,7 +36,7 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// Return command
     /// </summary>
-    public class Return:ICommand
+    public class Return : CommandBase
     {
         #region Constructor
 
@@ -45,36 +45,14 @@ namespace Utilities.Reflection.Emit.Commands
         /// </summary>
         /// <param name="ReturnType">Return type</param>
         /// <param name="ReturnValue">Return value</param>
-        /// <param name="Generator">IL generator</param>
-        public Return(Type ReturnType,object ReturnValue,ILGenerator Generator)
+        public Return(Type ReturnType, object ReturnValue)
+            : base()
         {
             this.ReturnType = ReturnType;
-            this.ReturnValue = ReturnValue;
-            if (ReturnType == typeof(void) || ReturnType == null)
-            {
-                Generator.Emit(OpCodes.Ret);
-                return;
-            }
-            if (ReturnValue == null)
-            {
-                ConstantBuilder Constant = new ConstantBuilder(ReturnValue);
-                ReturnValue = Constant;
-                Constant.Load(Generator);
-                Generator.Emit(OpCodes.Ret);
-                return;
-            }
-            if (ReturnValue is FieldBuilder || ReturnValue is IPropertyBuilder)
-                Generator.Emit(OpCodes.Ldarg_0);
-            if (ReturnValue is VariableBase)
-            {
-                ((VariableBase)ReturnValue).Load(Generator);
-            }
+            if (ReturnValue == null || !(ReturnValue is VariableBase))
+                this.ReturnValue = new ConstantBuilder(ReturnValue);
             else
-            {
-                ConstantBuilder Constant = new ConstantBuilder(ReturnValue);
-                Constant.Load(Generator);
-            }
-            Generator.Emit(OpCodes.Ret);
+                this.ReturnValue = (VariableBase)ReturnValue;
         }
 
         #endregion
@@ -89,18 +67,32 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Return value
         /// </summary>
-        protected virtual object ReturnValue { get; set; }
+        protected virtual VariableBase ReturnValue { get; set; }
 
         #endregion
 
-        #region Overridden Function
+        #region Function
+
+        public override void Setup()
+        {
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            if (ReturnType == typeof(void) || ReturnType == null)
+            {
+                Generator.Emit(OpCodes.Ret);
+                return;
+            }
+            if (ReturnValue is FieldBuilder || ReturnValue is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            ReturnValue.Load(Generator);
+            Generator.Emit(OpCodes.Ret);
+        }
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
             if (ReturnType != null && ReturnType != typeof(void))
             {
-                Output.Append("return ").Append(ReturnValue.ToString()).Append(";\n");
+                Output.Append("return ").Append(ReturnValue).Append(";\n");
             }
             return Output.ToString();
         }

@@ -55,9 +55,10 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public virtual VariableBase CreateLocal(string Name, Type LocalType)
         {
             SetCurrentMethod();
-            DefineLocal TempCommand = new DefineLocal(this, Name, LocalType);
+            DefineLocal TempCommand = new DefineLocal(Name, LocalType);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
-            return TempCommand.GetObject();
+            return TempCommand.Result;
         }
 
         public virtual VariableBase CreateConstant(object Value)
@@ -69,10 +70,11 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public virtual VariableBase NewObj(ConstructorInfo Constructor, object[] Variables=null)
         {
             SetCurrentMethod();
-            NewObj TempCommand = new NewObj(this, Constructor, Variables, ObjectCounter, Generator);
+            NewObj TempCommand = new NewObj(Constructor, Variables);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
             ++ObjectCounter;
-            return TempCommand.GetObject();
+            return TempCommand.Result;
         }
 
         public virtual VariableBase NewObj(Type ObjectType, object[] Variables=null)
@@ -96,33 +98,39 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public VariableBase Call(VariableBase ObjectCallingOn, MethodInfo MethodCalling, object[] Parameters)
         {
             SetCurrentMethod();
-            Call TempCommand = new Call(this, ObjectCallingOn, MethodCalling, Parameters);
+            Call TempCommand = new Call(this,ObjectCallingOn, MethodCalling, Parameters);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
-            return TempCommand.GetObject();
+            ++ObjectCounter;
+            return TempCommand.Result;
         }
 
         public virtual void Assign(VariableBase LeftHandSide, object Value)
         {
             SetCurrentMethod();
-            Commands.Add(new Assign(LeftHandSide, Value, Generator));
+            Assign TempCommand = new Assign(LeftHandSide, Value);
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
         }
 
         public virtual void Return(object ReturnValue)
         {
-            SetCurrentMethod();
-            Commands.Add(new Return(ReturnType, ReturnValue, Generator));
+            Return TempCommand = new Return(ReturnType, ReturnValue);
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
+            CurrentMethod = null;
         }
 
         public virtual void Return()
         {
-            CurrentMethod = null;
-            Commands.Add(new Return(ReturnType, null, Generator));
+            Return(null);
         }
 
-        public If If(Enums.Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide)
+        public If If(VariableBase LeftHandSide, Enums.Comparison ComparisonType, VariableBase RightHandSide)
         {
             SetCurrentMethod();
-            Utilities.Reflection.Emit.Commands.If TempCommand = new If(this, ComparisonType, LeftHandSide, RightHandSide);
+            Utilities.Reflection.Emit.Commands.If TempCommand = new If(ComparisonType, LeftHandSide, RightHandSide);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
             return TempCommand;
         }
@@ -130,14 +138,16 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public void EndIf(If IfCommand)
         {
             SetCurrentMethod();
-            EndIf TempCommand = new EndIf(this, IfCommand);
+            EndIf TempCommand = new EndIf(IfCommand);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
         }
 
-        public While While(Enums.Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide)
+        public While While(VariableBase LeftHandSide, Enums.Comparison ComparisonType, VariableBase RightHandSide)
         {
             SetCurrentMethod();
-            While TempCommand = new While(this, ComparisonType, LeftHandSide, RightHandSide);
+            While TempCommand = new While(ComparisonType, LeftHandSide, RightHandSide);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
             return TempCommand;
         }
@@ -145,14 +155,16 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public void EndWhile(While WhileCommand)
         {
             SetCurrentMethod();
-            EndWhile TempCommand = new EndWhile(this, WhileCommand);
+            EndWhile TempCommand = new EndWhile(WhileCommand);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
         }
 
         public VariableBase Add(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
-            Add TempCommand = new Add(this, LeftHandSide, RightHandSide, ObjectCounter);
+            Add TempCommand = new Add(LeftHandSide, RightHandSide);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
             ++ObjectCounter;
             return TempCommand.Result;
@@ -161,7 +173,8 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public VariableBase Subtract(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
-            Subtract TempCommand = new Subtract(this, LeftHandSide, RightHandSide, ObjectCounter);
+            Subtract TempCommand = new Subtract(LeftHandSide, RightHandSide);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
             ++ObjectCounter;
             return TempCommand.Result;
@@ -170,7 +183,8 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public VariableBase Multiply(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
-            Multiply TempCommand = new Multiply(this, LeftHandSide, RightHandSide, ObjectCounter);
+            Multiply TempCommand = new Multiply(LeftHandSide, RightHandSide);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
             ++ObjectCounter;
             return TempCommand.Result;
@@ -179,7 +193,8 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public VariableBase Divide(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
-            Divide TempCommand = new Divide(this, LeftHandSide, RightHandSide, ObjectCounter);
+            Divide TempCommand = new Divide(LeftHandSide, RightHandSide);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
             ++ObjectCounter;
             return TempCommand.Result;
@@ -188,10 +203,71 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public VariableBase Modulo(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
-            Modulo TempCommand = new Modulo(this, LeftHandSide, RightHandSide, ObjectCounter);
+            Modulo TempCommand = new Modulo(LeftHandSide, RightHandSide);
+            TempCommand.Setup();
             Commands.Add(TempCommand);
             ++ObjectCounter;
             return TempCommand.Result;
+        }
+
+        public Utilities.Reflection.Emit.Commands.Try Try()
+        {
+            Utilities.Reflection.Emit.Commands.Try TempCommand = new Utilities.Reflection.Emit.Commands.Try();
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
+            return TempCommand;
+        }
+
+        public Utilities.Reflection.Emit.Commands.Catch Catch(Type ExceptionType)
+        {
+            Utilities.Reflection.Emit.Commands.Catch TempCommand = new Utilities.Reflection.Emit.Commands.Catch(ExceptionType);
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
+            TempCommand.Exception = CreateLocal("ExceptionLocal"+ObjectCounter.ToString(), ExceptionType);
+            TempCommand.Exception.Save(Generator);
+            ++ObjectCounter;
+            return TempCommand;
+        }
+
+        public void EndTry()
+        {
+            EndTry TempCommand = new Emit.Commands.EndTry();
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
+        }
+
+        public VariableBase Box(object Value)
+        {
+            Box TempCommand = new Box(Value);
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
+            ++ObjectCounter;
+            return TempCommand.Result;
+        }
+
+        public VariableBase UnBox(VariableBase Value,Type ValueType)
+        {
+            UnBox TempCommand = new UnBox(Value, ValueType);
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
+            ++ObjectCounter;
+            return TempCommand.Result;
+        }
+
+        public VariableBase Cast(VariableBase Value, Type ValueType)
+        {
+            Cast TempCommand = new Cast(Value, ValueType);
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
+            ++ObjectCounter;
+            return TempCommand.Result;
+        }
+
+        public void Throw(VariableBase Exception)
+        {
+            Throw TempCommand = new Throw(Exception);
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
         }
 
         public void SetCurrentMethod()
@@ -209,10 +285,10 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public virtual System.Reflection.MethodAttributes Attributes { get; protected set; }
         public virtual System.Reflection.Emit.ILGenerator Generator { get; protected set; }
 
-        public static IMethodBuilder CurrentMethod { get; protected set; }
+        public static MethodBase CurrentMethod { get; protected set; }
 
         public virtual List<ICommand> Commands { get; protected set; }
-        protected static int ObjectCounter { get; set; }
+        public static int ObjectCounter { get; set; }
 
         public virtual VariableBase This
         {

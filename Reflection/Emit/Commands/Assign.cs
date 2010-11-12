@@ -36,36 +36,25 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// Assignment command
     /// </summary>
-    public class Assign:ICommand
+    public class Assign : CommandBase
     {
         #region Constructor
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="LeftHandSide">Left hand side</param>
         /// <param name="Value">Value to store</param>
-        /// <param name="Generator">IL generator</param>
-        public Assign(VariableBase LeftHandSide, object Value,ILGenerator Generator)
+        public Assign(VariableBase LeftHandSide, object Value)
+            : base()
         {
-            this.LeftHandSide = LeftHandSide;
-            this.Value = Value;
             if (LeftHandSide == null)
                 throw new ArgumentNullException("LeftHandSide");
-            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
-                Generator.Emit(OpCodes.Ldarg_0);
-            if (Value!=null&&Value is VariableBase)
-            {
-                if (Value is FieldBuilder || Value is IPropertyBuilder)
-                    Generator.Emit(OpCodes.Ldarg_0);
-                ((VariableBase)Value).Load(Generator);
-            }
+            this.LeftHandSide = LeftHandSide;
+            if (!(Value is VariableBase))
+                this.RightHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(Value);
             else
-            {
-                ConstantBuilder Constant = new ConstantBuilder(Value);
-                Constant.Load(Generator);
-            }
-            LeftHandSide.Save(Generator);
+                this.RightHandSide = (VariableBase)Value;
         }
 
         #endregion
@@ -80,16 +69,50 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Value to assign
         /// </summary>
-        protected virtual object Value { get; set; }
+        protected virtual VariableBase RightHandSide { get; set; }
 
         #endregion
 
-        #region Overridden Functions
+        #region Functions
+
+        public override void Setup()
+        {
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            if (RightHandSide.DataType.IsValueType 
+                && !LeftHandSide.DataType.IsValueType)
+            {
+                RightHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Box(RightHandSide);
+            }
+            else if (!RightHandSide.DataType.IsValueType 
+                && LeftHandSide.DataType.IsValueType)
+            {
+                RightHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.UnBox(RightHandSide, LeftHandSide.DataType);
+            }
+            else if (!RightHandSide.DataType.IsValueType 
+                && !LeftHandSide.DataType.IsValueType
+                && RightHandSide.DataType != LeftHandSide.DataType)
+            {
+                RightHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Cast(RightHandSide, LeftHandSide.DataType);
+            }
+            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            if (RightHandSide is FieldBuilder || RightHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            RightHandSide.Load(Generator);
+            if (RightHandSide.DataType != LeftHandSide.DataType)
+            {
+                if (ConversionOpCodes.ContainsKey(LeftHandSide.DataType))
+                {
+                    Generator.Emit(ConversionOpCodes[LeftHandSide.DataType]);
+                }
+            }
+            LeftHandSide.Save(Generator);
+        }
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append(LeftHandSide.ToString()).Append("=").Append(Value.ToString()).Append(";\n");
+            Output.Append(LeftHandSide).Append("=").Append(RightHandSide).Append(";\n");
             return Output.ToString();
         }
 

@@ -34,22 +34,29 @@ using Utilities.Reflection.Emit.BaseClasses;
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Defines a local variable
+    /// Throws an exception
     /// </summary>
-    public class DefineLocal : CommandBase
+    public class Throw:CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Name">Local object name</param>
-        /// <param name="LocalType">Local type</param>
-        public DefineLocal(string Name, Type LocalType)
-            : base()
+        /// <param name="Exception">Exception to throw</param>
+        public Throw(VariableBase Exception)
         {
-            Result = new LocalBuilder(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod, Name, LocalType);
+            this.Exception = Exception;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Exception to throw
+        /// </summary>
+        public VariableBase Exception { get; set; }
 
         #endregion
 
@@ -57,14 +64,15 @@ namespace Utilities.Reflection.Emit.Commands
 
         public override void Setup()
         {
-
+            if (Exception is FieldBuilder || Exception is IPropertyBuilder)
+                Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.Emit(OpCodes.Ldarg_0);
+            Exception.Load(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator);
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.Emit(OpCodes.Throw);
         }
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append(Result.GetDefinition()).Append(";\n");
-            return Output.ToString();
+            return "throw " + Exception.ToString() + ";\n";
         }
 
         #endregion

@@ -34,22 +34,37 @@ using Utilities.Reflection.Emit.BaseClasses;
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Defines a local variable
+    /// Unboxes an object
     /// </summary>
-    public class DefineLocal : CommandBase
+    public class UnBox : CommandBase
     {
         #region Constructor
 
         /// <summary>
-        /// Constructor
+        /// Unboxes a value to a specified type
         /// </summary>
-        /// <param name="Name">Local object name</param>
-        /// <param name="LocalType">Local type</param>
-        public DefineLocal(string Name, Type LocalType)
+        /// <param name="Value">Value to unbox</param>
+        /// <param name="ValueType">Value type</param>
+        public UnBox(VariableBase Value, Type ValueType)
             : base()
         {
-            Result = new LocalBuilder(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod, Name, LocalType);
+            this.Value = Value;
+            this.ValueType = ValueType;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Value to unbox
+        /// </summary>
+        public virtual VariableBase Value { get; set; }
+
+        /// <summary>
+        /// Value type to unbox to
+        /// </summary>
+        public virtual Type ValueType { get; set; }
 
         #endregion
 
@@ -57,13 +72,22 @@ namespace Utilities.Reflection.Emit.Commands
 
         public override void Setup()
         {
-
+            if (!ValueType.IsValueType)
+                throw new ArgumentException("ValueType is not a value type, unbox operations convert reference types to value types");
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("UnBoxResult" + Value.Name + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(), ValueType);
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            if (Value is FieldBuilder || Value is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            Value.Load(Generator);
+            Generator.Emit(OpCodes.Unbox_Any, ValueType);
+            Result.Save(Generator);
         }
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append(Result.GetDefinition()).Append(";\n");
+            Output.Append(Result).Append("=(").Append(Reflection.GetTypeName(ValueType))
+                .Append(")").Append(Value).Append(";\n");
             return Output.ToString();
         }
 

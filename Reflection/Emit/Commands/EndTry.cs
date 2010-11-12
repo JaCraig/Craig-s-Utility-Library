@@ -34,21 +34,16 @@ using Utilities.Reflection.Emit.BaseClasses;
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Defines a local variable
+    /// Ends a try/catch block
     /// </summary>
-    public class DefineLocal : CommandBase
+    public class EndTry : CommandBase
     {
         #region Constructor
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Name">Local object name</param>
-        /// <param name="LocalType">Local type</param>
-        public DefineLocal(string Name, Type LocalType)
+        public EndTry()
             : base()
         {
-            Result = new LocalBuilder(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod, Name, LocalType);
+
         }
 
         #endregion
@@ -57,14 +52,12 @@ namespace Utilities.Reflection.Emit.Commands
 
         public override void Setup()
         {
-
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.EndExceptionBlock();
         }
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append(Result.GetDefinition()).Append(";\n");
-            return Output.ToString();
+            return "}\n";
         }
 
         #endregion

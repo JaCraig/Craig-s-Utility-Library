@@ -36,45 +36,29 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// Adds two variables
     /// </summary>
-    public class Add:ICommand
+    public class Add : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Method">Method builder</param>
         /// <param name="LeftHandSide">Left variable</param>
         /// <param name="RightHandSide">Right variable</param>
-        /// <param name="ObjectCount">Object counter</param>
-        public Add(IMethodBuilder Method,object LeftHandSide,object RightHandSide,int ObjectCount)
+        public Add(object LeftHandSide, object RightHandSide)
+            : base()
         {
+            Utilities.Reflection.Emit.BaseClasses.MethodBase Method = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod;
             if (!(LeftHandSide is VariableBase))
-            {
                 this.LeftHandSide = Method.CreateConstant(LeftHandSide);
-            }
             else
-            {
                 this.LeftHandSide = (VariableBase)LeftHandSide;
-            }
             if (!(RightHandSide is VariableBase))
-            {
                 this.RightHandSide = Method.CreateConstant(RightHandSide);
-            }
             else
-            {
                 this.RightHandSide = (VariableBase)RightHandSide;
-            }
-            this.Method = Method;
-            Result = this.Method.CreateLocal("AddLocalResult" + ObjectCount.ToString(), this.LeftHandSide.DataType);
-            if (this.LeftHandSide is FieldBuilder || this.LeftHandSide is IPropertyBuilder)
-                Method.Generator.Emit(OpCodes.Ldarg_0);
-            this.LeftHandSide.Load(Method.Generator);
-            if (this.RightHandSide is FieldBuilder || this.RightHandSide is IPropertyBuilder)
-                Method.Generator.Emit(OpCodes.Ldarg_0);
-            this.RightHandSide.Load(Method.Generator);
-            Method.Generator.Emit(OpCodes.Add);
-            Result.Save(Method.Generator);
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("AddLocalResult" + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(),
+                this.LeftHandSide.DataType);
         }
 
         #endregion
@@ -91,19 +75,29 @@ namespace Utilities.Reflection.Emit.Commands
         /// </summary>
         protected virtual VariableBase RightHandSide { get; set; }
 
-        /// <summary>
-        /// Value assigned to
-        /// </summary>
-        public virtual VariableBase Result { get; set; }
-
-        /// <summary>
-        /// Method builder
-        /// </summary>
-        protected virtual IMethodBuilder Method { get; set; }
-
         #endregion
 
-        #region Overridden Functions
+        #region Functions
+
+        public override void Setup()
+        {
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            LeftHandSide.Load(Generator);
+            if (RightHandSide is FieldBuilder || RightHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            RightHandSide.Load(Generator);
+            if (LeftHandSide.DataType != RightHandSide.DataType)
+            {
+                if (ConversionOpCodes.ContainsKey(LeftHandSide.DataType))
+                {
+                    Generator.Emit(ConversionOpCodes[LeftHandSide.DataType]);
+                }
+            }
+            Generator.Emit(OpCodes.Add);
+            Result.Save(Generator);
+        }
 
         public override string ToString()
         {

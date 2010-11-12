@@ -28,43 +28,57 @@ using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.Enums;
 using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Defines a local variable
+    /// Starts a try block
     /// </summary>
-    public class DefineLocal : CommandBase
+    public class Try : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Name">Local object name</param>
-        /// <param name="LocalType">Local type</param>
-        public DefineLocal(string Name, Type LocalType)
+        public Try()
             : base()
         {
-            Result = new LocalBuilder(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod, Name, LocalType);
+
         }
 
         #endregion
 
         #region Functions
 
+        /// <summary>
+        /// Ends the try and starts a catch block
+        /// </summary>
+        /// <param name="ExceptionType">Exception type</param>
+        public Catch StartCatchBlock(Type ExceptionType)
+        {
+            return Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Catch(ExceptionType);
+        }
+
+        /// <summary>
+        /// Ends the try/catch block
+        /// </summary>
+        public void EndTryBlock()
+        {
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.EndTry();
+        }
+
         public override void Setup()
         {
-
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.BeginExceptionBlock();
         }
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append(Result.GetDefinition()).Append(";\n");
-            return Output.ToString();
+            return "try\n{\n";
         }
 
         #endregion

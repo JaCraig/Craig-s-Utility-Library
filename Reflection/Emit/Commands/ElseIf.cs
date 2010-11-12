@@ -37,67 +37,29 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// Else if command
     /// </summary>
-    public class ElseIf : ICommand
+    public class ElseIf : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Method">Method builder</param>
         /// <param name="EndIfLabel">End if label (for this else if)</param>
         /// <param name="ComparisonType">Comparison type</param>
         /// <param name="LeftHandSide">Left hand side</param>
         /// <param name="RightHandSide">Right hand side</param>
-        public ElseIf(IMethodBuilder Method,Label EndIfLabel, Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide)
+        public ElseIf(Label EndIfLabel, Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide)
+            : base()
         {
-            this.Method = Method;
             this.EndIfLabel = EndIfLabel;
             this.LeftHandSide = LeftHandSide;
             this.RightHandSide = RightHandSide;
             this.ComparisonType = ComparisonType;
-            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
-                Method.Generator.Emit(OpCodes.Ldarg_0);
-            LeftHandSide.Load(Method.Generator);
-            if (RightHandSide is FieldBuilder || RightHandSide is IPropertyBuilder)
-                Method.Generator.Emit(OpCodes.Ldarg_0);
-            RightHandSide.Load(Method.Generator);
-            if (ComparisonType == Comparison.Equal)
-            {
-                Method.Generator.Emit(OpCodes.Ceq);
-                Method.Generator.Emit(OpCodes.Ldc_I4_0);
-                Method.Generator.Emit(OpCodes.Beq, EndIfLabel);
-            }
-            else if (ComparisonType == Comparison.GreaterThan)
-            {
-                Method.Generator.Emit(OpCodes.Ble, EndIfLabel);
-            }
-            else if (ComparisonType == Comparison.GreaterThenOrEqual)
-            {
-                Method.Generator.Emit(OpCodes.Blt, EndIfLabel);
-            }
-            else if (ComparisonType == Comparison.LessThan)
-            {
-                Method.Generator.Emit(OpCodes.Bge, EndIfLabel);
-            }
-            else if (ComparisonType == Comparison.LessThanOrEqual)
-            {
-                Method.Generator.Emit(OpCodes.Bgt, EndIfLabel);
-            }
-            else if (ComparisonType == Comparison.NotEqual)
-            {
-                Method.Generator.Emit(OpCodes.Beq, EndIfLabel);
-            }
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Method builder
-        /// </summary>
-        protected virtual IMethodBuilder Method { get; set; }
 
         /// <summary>
         /// End if label
@@ -121,38 +83,31 @@ namespace Utilities.Reflection.Emit.Commands
 
         #endregion
 
-        #region Overridden Functions
+        #region Functions
+
+        public override void Setup()
+        {
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            LeftHandSide.Load(Generator);
+            if (RightHandSide is FieldBuilder || RightHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            RightHandSide.Load(Generator);
+            if (ComparisonType == Comparison.Equal)
+            {
+                Generator.Emit(OpCodes.Ceq);
+                Generator.Emit(OpCodes.Ldc_I4_0);
+            }
+            Generator.Emit(ComparisonOpCodes[ComparisonType], EndIfLabel);
+        }
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append("}\nelse if(");
-            Output.Append(LeftHandSide);
-            if (ComparisonType == Comparison.Equal)
-            {
-                Output.Append("==");
-            }
-            else if (ComparisonType == Comparison.GreaterThan)
-            {
-                Output.Append(">");
-            }
-            else if (ComparisonType == Comparison.GreaterThenOrEqual)
-            {
-                Output.Append(">=");
-            }
-            else if (ComparisonType == Comparison.LessThan)
-            {
-                Output.Append("<");
-            }
-            else if (ComparisonType == Comparison.LessThanOrEqual)
-            {
-                Output.Append("<=");
-            }
-            else if (ComparisonType == Comparison.NotEqual)
-            {
-                Output.Append("!=");
-            }
-            Output.Append(RightHandSide).Append(")\n{\n");
+            Output.Append("}\nelse if(").Append(LeftHandSide)
+                .Append(ComparisonTextEquivalent[ComparisonType])
+                .Append(RightHandSide).Append(")\n{\n");
             return Output.ToString();
         }
 

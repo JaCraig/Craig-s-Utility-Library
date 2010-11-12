@@ -108,7 +108,7 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="LeftHandSide">Left hand side of the if statement</param>
         /// <param name="RightHandSide">Right hand side of the if statement</param>
         /// <returns>The if command</returns>
-        If If(Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide);
+        If If(VariableBase LeftHandSide, Comparison ComparisonType, VariableBase RightHandSide);
 
         /// <summary>
         /// Defines the end of an if statement
@@ -123,7 +123,7 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="LeftHandSide">Left hand side of the while statement</param>
         /// <param name="RightHandSide">Right hand side of the while statement</param>
         /// <returns>The while command</returns>
-        While While(Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide);
+        While While(VariableBase LeftHandSide, Comparison ComparisonType, VariableBase RightHandSide);
 
         /// <summary>
         /// Defines the end of a while statement
@@ -170,6 +170,51 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <param name="RightHandSide">Right hand side</param>
         /// <returns>The result</returns>
         VariableBase Modulo(object LeftHandSide, object RightHandSide);
+
+        /// <summary>
+        /// Starts a try block
+        /// </summary>
+        Utilities.Reflection.Emit.Commands.Try Try();
+
+        /// <summary>
+        /// Ends a try block and starts a catch block
+        /// </summary>
+        /// <param name="ExceptionType">Exception type</param>
+        Utilities.Reflection.Emit.Commands.Catch Catch(Type ExceptionType);
+
+        /// <summary>
+        /// Ends a try/catch block
+        /// </summary>
+        void EndTry();
+
+        /// <summary>
+        /// Boxes a value
+        /// </summary>
+        /// <param name="Value">Value to box</param>
+        /// <returns>The resulting boxed variable</returns>
+        VariableBase Box(object Value);
+
+        /// <summary>
+        /// Unboxes a value
+        /// </summary>
+        /// <param name="Value">Value to unbox</param>
+        /// <param name="ValueType">Type to unbox to</param>
+        /// <returns>The resulting unboxed variable</returns>
+        VariableBase UnBox(VariableBase Value,Type ValueType);
+
+        /// <summary>
+        /// Casts an object to another type
+        /// </summary>
+        /// <param name="Value">Value to cast</param>
+        /// <param name="ValueType">Value type to cast to</param>
+        /// <returns>The resulting casted value</returns>
+        VariableBase Cast(VariableBase Value, Type ValueType);
+
+        /// <summary>
+        /// Throws an exception
+        /// </summary>
+        /// <param name="Exception">Exception to throw</param>
+        void Throw(VariableBase Exception);
 
         #endregion
 

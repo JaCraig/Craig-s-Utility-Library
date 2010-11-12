@@ -28,43 +28,61 @@ using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.Enums;
 using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Defines a local variable
+    /// Catch block
     /// </summary>
-    public class DefineLocal : CommandBase
+    public class Catch : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Name">Local object name</param>
-        /// <param name="LocalType">Local type</param>
-        public DefineLocal(string Name, Type LocalType)
+        /// <param name="ExceptionType">Exception type</param>
+        public Catch(Type ExceptionType)
             : base()
         {
-            Result = new LocalBuilder(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod, Name, LocalType);
+            this.ExceptionType = ExceptionType;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Exception caught in exception block
+        /// </summary>
+        public virtual VariableBase Exception { get; set; }
+
+        /// <summary>
+        /// Exception type
+        /// </summary>
+        protected virtual Type ExceptionType { get; set; }
 
         #endregion
 
         #region Functions
 
+        public virtual void Rethrow()
+        {
+            Exception.Load(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator);
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.Emit(OpCodes.Rethrow);
+        }
+
         public override void Setup()
         {
-
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.BeginCatchBlock(ExceptionType);
         }
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append(Result.GetDefinition()).Append(";\n");
-            return Output.ToString();
+            return "}\ncatch\n{\n";
         }
 
         #endregion

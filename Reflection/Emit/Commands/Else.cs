@@ -29,6 +29,7 @@ using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Enums;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -36,37 +37,30 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// Else command
     /// </summary>
-    public class Else : ICommand
+    public class Else : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Method">Method builder</param>
-        public Else(IMethodBuilder Method)
+        public Else()
+            : base()
         {
-            this.Method = Method;
         }
 
         #endregion
 
-        #region Properties
+        #region Functions
 
-        /// <summary>
-        /// Method builder
-        /// </summary>
-        protected virtual IMethodBuilder Method { get; set; }
+        public override void Setup()
+        {
 
-        #endregion
-
-        #region Overridden Functions
+        }
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append("}\nelse\n{\n");
-            return Output.ToString();
+            return "}\nelse\n{\n";
         }
 
         #endregion

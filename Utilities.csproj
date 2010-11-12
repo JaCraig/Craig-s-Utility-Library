@@ -166,16 +166,21 @@
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
     <Compile Include="Reflection\Emit\Assembly.cs" />
+    <Compile Include="Reflection\Emit\BaseClasses\CommandBase.cs" />
     <Compile Include="Reflection\Emit\BaseClasses\MethodBase.cs" />
     <Compile Include="Reflection\Emit\BaseClasses\VariableBase.cs" />
     <Compile Include="Reflection\Emit\Commands\Add.cs" />
     <Compile Include="Reflection\Emit\Commands\Assign.cs" />
+    <Compile Include="Reflection\Emit\Commands\Box.cs" />
     <Compile Include="Reflection\Emit\Commands\Call.cs" />
+    <Compile Include="Reflection\Emit\Commands\Cast.cs" />
+    <Compile Include="Reflection\Emit\Commands\Catch.cs" />
     <Compile Include="Reflection\Emit\Commands\DefineLocal.cs" />
     <Compile Include="Reflection\Emit\Commands\Divide.cs" />
     <Compile Include="Reflection\Emit\Commands\Else.cs" />
     <Compile Include="Reflection\Emit\Commands\ElseIf.cs" />
     <Compile Include="Reflection\Emit\Commands\EndIf.cs" />
+    <Compile Include="Reflection\Emit\Commands\EndTry.cs" />
     <Compile Include="Reflection\Emit\Commands\EndWhile.cs" />
     <Compile Include="Reflection\Emit\Commands\If.cs" />
     <Compile Include="Reflection\Emit\Commands\Modulo.cs" />
@@ -183,6 +188,9 @@
     <Compile Include="Reflection\Emit\Commands\NewObj.cs" />
     <Compile Include="Reflection\Emit\Commands\Return.cs" />
     <Compile Include="Reflection\Emit\Commands\Subtract.cs" />
+    <Compile Include="Reflection\Emit\Commands\Throw.cs" />
+    <Compile Include="Reflection\Emit\Commands\Try.cs" />
+    <Compile Include="Reflection\Emit\Commands\UnBox.cs" />
     <Compile Include="Reflection\Emit\Commands\While.cs" />
     <Compile Include="Reflection\Emit\ConstantBuilder.cs" />
     <Compile Include="Reflection\Emit\ConstructorBuilder.cs" />
@@ -330,7 +338,6 @@
     <Compile Include="Web\Youtube\Youtube.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Utilities.snk" />
   </ItemGroup>
   <ItemGroup>

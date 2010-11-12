@@ -29,6 +29,7 @@ using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Enums;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -36,20 +37,18 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// End While command
     /// </summary>
-    public class EndWhile : ICommand
+    public class EndWhile : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Method">Method builder</param>
         /// <param name="WhileCommand">While command</param>
-        public EndWhile(IMethodBuilder Method, While WhileCommand)
+        public EndWhile(While WhileCommand)
+            : base()
         {
-            this.Method = Method;
-            Method.Generator.Emit(OpCodes.Br, WhileCommand.StartWhileLabel);
-            Method.Generator.MarkLabel(WhileCommand.EndWhileLabel);
+            this.WhileCommand = WhileCommand;
         }
 
         #endregion
@@ -57,19 +56,23 @@ namespace Utilities.Reflection.Emit.Commands
         #region Properties
 
         /// <summary>
-        /// Method builder
+        /// While command
         /// </summary>
-        protected virtual IMethodBuilder Method { get; set; }
+        protected virtual While WhileCommand { get; set; }
 
         #endregion
 
-        #region Overridden Functions
+        #region Functions
+
+        public override void Setup()
+        {
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.Emit(OpCodes.Br, WhileCommand.StartWhileLabel);
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.MarkLabel(WhileCommand.EndWhileLabel);
+        }
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append("}\n");
-            return Output.ToString();
+            return "}\n";
         }
 
         #endregion

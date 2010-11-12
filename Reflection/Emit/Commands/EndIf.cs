@@ -29,6 +29,7 @@ using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.Enums;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -36,20 +37,18 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// End If command
     /// </summary>
-    public class EndIf : ICommand
+    public class EndIf : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Method">Method builder</param>
         /// <param name="IfCommand">If command</param>
-        public EndIf(IMethodBuilder Method, If IfCommand)
+        public EndIf(If IfCommand)
+            : base()
         {
-            this.Method = Method;
-            Method.Generator.MarkLabel(IfCommand.EndIfLabel);
-            Method.Generator.MarkLabel(IfCommand.EndIfFinalLabel);
+            this.IfCommand = IfCommand;
         }
 
         #endregion
@@ -57,19 +56,23 @@ namespace Utilities.Reflection.Emit.Commands
         #region Properties
 
         /// <summary>
-        /// Method builder
+        /// If command
         /// </summary>
-        protected virtual IMethodBuilder Method { get; set; }
+        protected virtual If IfCommand { get; set; }
 
         #endregion
 
-        #region Overridden Functions
+        #region Functions
+
+        public override void Setup()
+        {
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.MarkLabel(IfCommand.EndIfLabel);
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.MarkLabel(IfCommand.EndIfFinalLabel);
+        }
 
         public override string ToString()
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append("}\n");
-            return Output.ToString();
+            return "}\n";
         }
 
         #endregion

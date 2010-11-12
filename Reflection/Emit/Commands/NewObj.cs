@@ -35,42 +35,32 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// Command for creating a new object
     /// </summary>
-    public class NewObj : ICommand
+    public class NewObj : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Method">Method created within</param>
         /// <param name="Constructor">Constructor to use</param>
         /// <param name="Variables">Variables sent to the constructor</param>
-        /// <param name="ObjectCount">Object count</param>
-        /// <param name="Generator">IL generator</param>
-        public NewObj(IMethodBuilder Method, ConstructorInfo Constructor, object[] Parameters,
-            int ObjectCount, ILGenerator Generator)
+        public NewObj(ConstructorInfo Constructor, object[] Parameters)
+            : base()
         {
             this.Constructor = Constructor;
             if (Parameters != null)
             {
-                this.Parameters = new object[Parameters.Length];
+                this.Parameters = new VariableBase[Parameters.Length];
                 for (int x = 0; x < Parameters.Length; ++x)
                 {
                     if (Parameters[x] is VariableBase)
-                        this.Parameters[x] = Parameters[x];
+                        this.Parameters[x] = (VariableBase)Parameters[x];
                     else
-                        this.Parameters[x] = Method.CreateConstant(Parameters[x]);
-                }
-                foreach (VariableBase Parameter in this.Parameters)
-                {
-                    if (Parameter is FieldBuilder || Parameter is IPropertyBuilder)
-                        Method.Generator.Emit(OpCodes.Ldarg_0);
-                    Parameter.Load(Method.Generator);
+                        this.Parameters[x] = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(Parameters[x]);
                 }
             }
-            Generator.Emit(OpCodes.Newobj, Constructor);
-            TempObject = Method.CreateLocal("ObjLocal" + ObjectCount.ToString(), Constructor.DeclaringType);
-            TempObject.Save(Method.Generator);
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("ObjLocal" + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(),
+                Constructor.DeclaringType);
         }
 
         #endregion
@@ -83,46 +73,34 @@ namespace Utilities.Reflection.Emit.Commands
         protected virtual ConstructorInfo Constructor { get; set; }
 
         /// <summary>
-        /// Method object is created within
-        /// </summary>
-        protected virtual IMethodBuilder Method { get; set; }
-
-        /// <summary>
         /// Variables sent to the Constructor
         /// </summary>
-        protected virtual object[] Parameters { get; set; }
-
-        /// <summary>
-        /// Temp object
-        /// </summary>
-        protected virtual VariableBase TempObject { get; set; }
-
-        /// <summary>
-        /// Object count
-        /// </summary>
-        protected virtual int ObjectCount { get; set; }
+        protected virtual VariableBase[] Parameters { get; set; }
 
         #endregion
 
         #region Functions
 
-        /// <summary>
-        /// Gets the object that temporarily stores the new object
-        /// </summary>
-        /// <returns>The new object</returns>
-        public virtual VariableBase GetObject()
+        public override void Setup()
         {
-            return TempObject;
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            if (Parameters != null)
+            {
+                foreach (VariableBase Parameter in Parameters)
+                {
+                    if (Parameter is FieldBuilder || Parameter is IPropertyBuilder)
+                        Generator.Emit(OpCodes.Ldarg_0);
+                    Parameter.Load(Generator);
+                }
+            }
+            Generator.Emit(OpCodes.Newobj, Constructor);
+            Result.Save(Generator);
         }
-
-        #endregion
-
-        #region Overridden Functions
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append(TempObject).Append(" = new ")
+            Output.Append(Result).Append(" = new ")
                 .Append(Reflection.GetTypeName(Constructor.DeclaringType))
                 .Append("(");
             string Seperator = "";

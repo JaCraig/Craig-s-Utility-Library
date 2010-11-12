@@ -34,68 +34,33 @@ using Utilities.Reflection.Emit.BaseClasses;
 
 namespace Utilities.Reflection.Emit.Commands
 {
-    public class While:ICommand
+    /// <summary>
+    /// While command
+    /// </summary>
+    public class While : CommandBase
     {
         #region Constructors
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Method">Method builder</param>
         /// <param name="ComparisonType">Comparison type</param>
         /// <param name="LeftHandSide">Left hand side</param>
         /// <param name="RightHandSide">Right hand side</param>
-        public While(IMethodBuilder Method, Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide)
+        public While(Comparison ComparisonType, VariableBase LeftHandSide, VariableBase RightHandSide)
+            : base()
         {
-            this.Method = Method;
-            this.StartWhileLabel = Method.Generator.DefineLabel();
-            this.EndWhileLabel = Method.Generator.DefineLabel();
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            this.StartWhileLabel = Generator.DefineLabel();
+            this.EndWhileLabel = Generator.DefineLabel();
             this.LeftHandSide = LeftHandSide;
             this.RightHandSide = RightHandSide;
             this.ComparisonType = ComparisonType;
-            Method.Generator.MarkLabel(StartWhileLabel);
-            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
-                Method.Generator.Emit(OpCodes.Ldarg_0);
-            LeftHandSide.Load(Method.Generator);
-            if (RightHandSide is FieldBuilder || RightHandSide is IPropertyBuilder)
-                Method.Generator.Emit(OpCodes.Ldarg_0);
-            RightHandSide.Load(Method.Generator);
-            if (ComparisonType == Comparison.Equal)
-            {
-                Method.Generator.Emit(OpCodes.Ceq);
-                Method.Generator.Emit(OpCodes.Ldc_I4_0);
-                Method.Generator.Emit(OpCodes.Beq, EndWhileLabel);
-            }
-            else if (ComparisonType == Comparison.GreaterThan)
-            {
-                Method.Generator.Emit(OpCodes.Ble, EndWhileLabel);
-            }
-            else if (ComparisonType == Comparison.GreaterThenOrEqual)
-            {
-                Method.Generator.Emit(OpCodes.Blt, EndWhileLabel);
-            }
-            else if (ComparisonType == Comparison.LessThan)
-            {
-                Method.Generator.Emit(OpCodes.Bge, EndWhileLabel);
-            }
-            else if (ComparisonType == Comparison.LessThanOrEqual)
-            {
-                Method.Generator.Emit(OpCodes.Bgt, EndWhileLabel);
-            }
-            else if (ComparisonType == Comparison.NotEqual)
-            {
-                Method.Generator.Emit(OpCodes.Beq, EndWhileLabel);
-            }
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Method builder
-        /// </summary>
-        protected virtual IMethodBuilder Method { get; set; }
 
         /// <summary>
         /// Start while label
@@ -131,43 +96,33 @@ namespace Utilities.Reflection.Emit.Commands
         /// </summary>
         public virtual void EndWhile()
         {
-            Method.EndWhile(this);
+            Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.EndWhile(this);
         }
 
-        #endregion
-
-        #region Overridden Functions
+        public override void Setup()
+        {
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            Generator.MarkLabel(StartWhileLabel);
+            if (LeftHandSide is FieldBuilder || LeftHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            LeftHandSide.Load(Generator);
+            if (RightHandSide is FieldBuilder || RightHandSide is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            RightHandSide.Load(Generator);
+            if (ComparisonType == Comparison.Equal)
+            {
+                Generator.Emit(OpCodes.Ceq);
+                Generator.Emit(OpCodes.Ldc_I4_0);
+            }
+            Generator.Emit(ComparisonOpCodes[ComparisonType], EndWhileLabel);
+        }
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append("while(");
-            Output.Append(LeftHandSide);
-            if (ComparisonType == Comparison.Equal)
-            {
-                Output.Append("==");
-            }
-            else if (ComparisonType == Comparison.GreaterThan)
-            {
-                Output.Append(">");
-            }
-            else if (ComparisonType == Comparison.GreaterThenOrEqual)
-            {
-                Output.Append(">=");
-            }
-            else if (ComparisonType == Comparison.LessThan)
-            {
-                Output.Append("<");
-            }
-            else if (ComparisonType == Comparison.LessThanOrEqual)
-            {
-                Output.Append("<=");
-            }
-            else if (ComparisonType == Comparison.NotEqual)
-            {
-                Output.Append("!=");
-            }
-            Output.Append(RightHandSide).Append(")\n{\n");
+            Output.Append("while(").Append(LeftHandSide)
+                .Append(ComparisonTextEquivalent[ComparisonType]).Append(RightHandSide)
+                .Append(")\n{\n");
             return Output.ToString();
         }
 

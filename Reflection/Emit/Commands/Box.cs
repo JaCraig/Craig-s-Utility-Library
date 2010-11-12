@@ -34,22 +34,34 @@ using Utilities.Reflection.Emit.BaseClasses;
 namespace Utilities.Reflection.Emit.Commands
 {
     /// <summary>
-    /// Defines a local variable
+    /// Boxes an object
     /// </summary>
-    public class DefineLocal : CommandBase
+    public class Box : CommandBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Name">Local object name</param>
-        /// <param name="LocalType">Local type</param>
-        public DefineLocal(string Name, Type LocalType)
+        /// <param name="Value">Value to box</param>
+        /// <param name="ValueType">Value type to box to</param>
+        public Box(object Value)
             : base()
         {
-            Result = new LocalBuilder(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod, Name, LocalType);
+            if (Value is VariableBase)
+                this.Value = (VariableBase)Value;
+            else
+                this.Value = new ConstantBuilder(Value);
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Value to box
+        /// </summary>
+        public virtual VariableBase Value { get; set; }
 
         #endregion
 
@@ -57,13 +69,22 @@ namespace Utilities.Reflection.Emit.Commands
 
         public override void Setup()
         {
-
+            if (!Value.DataType.IsValueType)
+                throw new ArgumentException("Value is not a value type, box operations convert value types to reference types");
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("BoxResult" + Value.Name+Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(), typeof(object));
+            ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
+            if (Value is FieldBuilder || Value is IPropertyBuilder)
+                Generator.Emit(OpCodes.Ldarg_0);
+            Value.Load(Generator);
+            Generator.Emit(OpCodes.Box, Value.DataType);
+            Result.Save(Generator);
         }
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append(Result.GetDefinition()).Append(";\n");
+            Output.Append(Result).Append("=(").Append(Reflection.GetTypeName(typeof(object)))
+                .Append(")").Append(Value).Append(";\n");
             return Output.ToString();
         }
 

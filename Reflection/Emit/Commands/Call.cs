@@ -36,7 +36,7 @@ namespace Utilities.Reflection.Emit.Commands
     /// <summary>
     /// Call command
     /// </summary>
-    public class Call : ICommand
+    public class Call : CommandBase
     {
         #region Constructor
 
@@ -48,60 +48,35 @@ namespace Utilities.Reflection.Emit.Commands
         /// <param name="MethodCalling">Method calling on the object</param>
         /// <param name="Parameters">List of parameters to send in</param>
         public Call(IMethodBuilder Method, VariableBase ObjectCallingOn, MethodInfo MethodCalling, object[] Parameters)
+            : base()
         {
             this.ObjectCallingOn = ObjectCallingOn;
             this.MethodCalling = MethodCalling;
             this.MethodCallingFrom = Method;
             if (MethodCalling.ReturnType != null && MethodCalling.ReturnType != typeof(void))
             {
-                TempObject = Method.CreateLocal(MethodCalling.Name + "ReturnObject", MethodCalling.ReturnType);
+                Result = Method.CreateLocal(MethodCalling.Name + "ReturnObject"+Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(), MethodCalling.ReturnType);
             }
-            ObjectCallingOn.Load(Method.Generator);
             if (Parameters != null)
             {
-                this.Parameters = new object[Parameters.Length];
-                for (int x=0;x<Parameters.Length;++x)
+                this.Parameters = new VariableBase[Parameters.Length];
+                for (int x = 0; x < Parameters.Length; ++x)
                 {
                     if (Parameters[x] is VariableBase)
-                        this.Parameters[x] = Parameters[x];
+                        this.Parameters[x] = (VariableBase)Parameters[x];
                     else
-                        this.Parameters[x] = Method.CreateConstant(Parameters[x]);
-                }
-                foreach (VariableBase Parameter in this.Parameters)
-                {
-                    if (Parameter is FieldBuilder || Parameter is IPropertyBuilder)
-                        Method.Generator.Emit(OpCodes.Ldarg_0);
-                    Parameter.Load(Method.Generator);
+                        this.Parameters[x] = MethodCallingFrom.CreateConstant(Parameters[x]);
                 }
             }
             else
             {
                 this.Parameters = null;
             }
-            if (ObjectCallingOn.Name == "this" && Method.Name == MethodCalling.Name)
-            {
-                Method.Generator.EmitCall(OpCodes.Call, MethodCalling, null);
-                if (MethodCalling.ReturnType != null && MethodCalling.ReturnType != typeof(void))
-                {
-                    Method.Generator.Emit(OpCodes.Stloc, ((LocalBuilder)TempObject).Builder);
-                }
-                return;
-            }
-            Method.Generator.EmitCall(OpCodes.Callvirt, MethodCalling, null);
-            if (MethodCalling.ReturnType != null && MethodCalling.ReturnType != typeof(void))
-            {
-                Method.Generator.Emit(OpCodes.Stloc, ((LocalBuilder)TempObject).Builder);
-            }
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Temp return object from the call
-        /// </summary>
-        protected virtual VariableBase TempObject { get; set; }
 
         /// <summary>
         /// Object calling on
@@ -116,7 +91,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Parameters sent in
         /// </summary>
-        protected virtual object[] Parameters { get; set; }
+        protected virtual VariableBase[] Parameters { get; set; }
 
         /// <summary>
         /// Method calling from
@@ -127,25 +102,34 @@ namespace Utilities.Reflection.Emit.Commands
 
         #region Functions
 
-        /// <summary>
-        /// Gets the object that temporarily stores the new object
-        /// </summary>
-        /// <returns>The new object</returns>
-        public virtual VariableBase GetObject()
+        public override void Setup()
         {
-            return TempObject;
+            ObjectCallingOn.Load(MethodCallingFrom.Generator);
+            if (Parameters != null)
+            {
+                foreach (VariableBase Parameter in this.Parameters)
+                {
+                    if (Parameter is FieldBuilder || Parameter is IPropertyBuilder)
+                        MethodCallingFrom.Generator.Emit(OpCodes.Ldarg_0);
+                    Parameter.Load(MethodCallingFrom.Generator);
+                }
+            }
+            OpCode OpCodeUsing = OpCodes.Callvirt;
+            if (ObjectCallingOn.Name == "this" && MethodCallingFrom.Name == MethodCalling.Name)
+                OpCodeUsing = OpCodes.Call;
+            MethodCallingFrom.Generator.EmitCall(OpCodeUsing, MethodCalling, null);
+            if (MethodCalling.ReturnType != null && MethodCalling.ReturnType != typeof(void))
+            {
+                Result.Save(MethodCallingFrom.Generator);
+            }
         }
-
-        #endregion
-
-        #region Overridden Functions
 
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            if (TempObject != null)
+            if (Result != null)
             {
-                Output.Append(TempObject).Append(" = ");
+                Output.Append(Result).Append(" = ");
             }
             Output.Append(ObjectCallingOn).Append(".");
             if (ObjectCallingOn.Name == "this" && MethodCallingFrom.Name == MethodCalling.Name)
