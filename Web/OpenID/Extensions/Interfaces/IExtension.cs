@@ -36,7 +36,6 @@ namespace Utilities.Web.OpenID.Extensions.Interfaces
         /// <summary>
         /// Generates the attributes in a list of pairs
         /// </summary>
-        /// <param name="Required">Required attributes</param>
         /// <returns>A list of attribute pairs</returns>
         System.Collections.Generic.List<Pair<string, string>> GenerateURLAttributes();
 

@@ -21,14 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Reflection.Emit.Interfaces;
-using System.Reflection;
-using Utilities.Reflection.Emit.Commands;
 using System.Reflection.Emit;
+using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
+using Utilities.Reflection.Emit.Interfaces;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands

@@ -22,8 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
 #endregion
 
@@ -124,7 +122,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Calls a method on this variable
         /// </summary>
-        /// <param name="MethodBuilder">Method</param>
+        /// <param name="Method">Method</param>
         /// <param name="Parameters">Parameters sent in</param>
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(MethodBuilder Method, object[] Parameters = null)
@@ -137,7 +135,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Calls a method on this variable
         /// </summary>
-        /// <param name="MethodBuilder">Method</param>
+        /// <param name="Method">Method</param>
         /// <param name="Parameters">Parameters sent in</param>
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(System.Reflection.Emit.MethodBuilder Method, object[] Parameters = null)
@@ -150,7 +148,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Calls a method on this variable
         /// </summary>
-        /// <param name="MethodBuilder">Method</param>
+        /// <param name="Method">Method</param>
         /// <param name="Parameters">Parameters sent in</param>
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(System.Reflection.MethodInfo Method, object[] Parameters = null)
@@ -163,7 +161,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Calls a method on this variable
         /// </summary>
-        /// <param name="MethodBuilder">Method</param>
+        /// <param name="Method">Method</param>
         /// <param name="Parameters">Parameters sent in</param>
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(IMethodBuilder Method, object[] Parameters = null)

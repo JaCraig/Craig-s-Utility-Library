@@ -194,6 +194,72 @@ namespace Utilities.Math
             return Value1;
         }
 
+        /// <summary>
+        /// Returns the minimum value between the two
+        /// </summary>
+        /// <param name="InputA">Input A</param>
+        /// <param name="InputB">Input B</param>
+        /// <returns>The minimum value</returns>
+        public static int Min(int InputA, int InputB)
+        {
+            return InputA < InputB ? InputA : InputB;
+        }
+
+        /// <summary>
+        /// Returns the minimum value between the two
+        /// </summary>
+        /// <param name="InputA">Input A</param>
+        /// <param name="InputB">Input B</param>
+        /// <returns>The minimum value</returns>
+        public static double Min(double InputA, double InputB)
+        {
+            return InputA < InputB ? InputA : InputB;
+        }
+
+        /// <summary>
+        /// Returns the minimum value between the two
+        /// </summary>
+        /// <param name="InputA">Input A</param>
+        /// <param name="InputB">Input B</param>
+        /// <returns>The minimum value</returns>
+        public static float Min(float InputA, float InputB)
+        {
+            return InputA < InputB ? InputA : InputB;
+        }
+
+        /// <summary>
+        /// Returns the maximum value between the two
+        /// </summary>
+        /// <param name="InputA">Input A</param>
+        /// <param name="InputB">Input B</param>
+        /// <returns>The maximum value</returns>
+        public static int Max(int InputA, int InputB)
+        {
+            return InputA > InputB ? InputA : InputB;
+        }
+
+        /// <summary>
+        /// Returns the maximum value between the two
+        /// </summary>
+        /// <param name="InputA">Input A</param>
+        /// <param name="InputB">Input B</param>
+        /// <returns>The maximum value</returns>
+        public static double Max(double InputA, double InputB)
+        {
+            return InputA > InputB ? InputA : InputB;
+        }
+
+        /// <summary>
+        /// Returns the maximum value between the two
+        /// </summary>
+        /// <param name="InputA">Input A</param>
+        /// <param name="InputB">Input B</param>
+        /// <returns>The maximum value</returns>
+        public static float Max(float InputA, float InputB)
+        {
+            return InputA > InputB ? InputA : InputB;
+        }
+
         #endregion
     }
 }

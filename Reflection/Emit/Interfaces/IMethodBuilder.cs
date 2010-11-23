@@ -22,13 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Commands;
 using Utilities.Reflection.Emit.Enums;
-using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit.Interfaces

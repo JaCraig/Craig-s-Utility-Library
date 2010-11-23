@@ -20,14 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Reflection.Emit.Interfaces;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
+using Utilities.Reflection.Emit.Interfaces;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -43,7 +40,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// Constructor
         /// </summary>
         /// <param name="Constructor">Constructor to use</param>
-        /// <param name="Variables">Variables sent to the constructor</param>
+        /// <param name="Parameters">Variables sent to the constructor</param>
         public NewObj(ConstructorInfo Constructor, object[] Parameters)
             : base()
         {
