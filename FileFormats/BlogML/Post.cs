@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Xml;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -83,6 +84,10 @@ namespace Utilities.FileFormats.BlogML
                 else if (Children.Name.Equals("tags", StringComparison.CurrentCultureIgnoreCase))
                 {
                     _Tags = new Tags((XmlElement)Children);
+                }
+                else if (Children.Name.Equals("comments", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    Comments = new Comments((XmlElement)Children);
                 }
             }
         }
@@ -201,6 +206,12 @@ namespace Utilities.FileFormats.BlogML
             get { return _Tags; }
             set { _Tags = value; }
         }
+
+        /// <summary>
+        /// Comments associated with the post
+        /// </summary>
+        public Comments Comments { get; set; }
+
         #endregion
     }
 }

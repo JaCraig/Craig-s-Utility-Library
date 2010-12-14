@@ -145,6 +145,8 @@
     <Compile Include="FileFormats\BlogML\BlogML.cs" />
     <Compile Include="FileFormats\BlogML\Categories.cs" />
     <Compile Include="FileFormats\BlogML\Category.cs" />
+    <Compile Include="FileFormats\BlogML\Comment.cs" />
+    <Compile Include="FileFormats\BlogML\Comments.cs" />
     <Compile Include="FileFormats\BlogML\Post.cs" />
     <Compile Include="FileFormats\BlogML\Posts.cs" />
     <Compile Include="FileFormats\BlogML\Tag.cs" />

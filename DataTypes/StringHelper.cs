@@ -60,7 +60,7 @@ namespace Utilities.DataTypes
         /// <returns>The resulting string</returns>
         public static string Left(string Input, int Length)
         {
-            return Input.Substring(0, Length);
+            return Input.Substring(0, Input.Length > Length ? Length : Input.Length);
         }
 
         /// <summary>
@@ -71,6 +71,7 @@ namespace Utilities.DataTypes
         /// <returns>The resulting string</returns>
         public static string Right(string Input, int Length)
         {
+            Length = Input.Length > Length ? Length : Input.Length;
             return Input.Substring(Input.Length - Length, Length);
         }
 
