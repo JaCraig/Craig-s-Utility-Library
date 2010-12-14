@@ -223,6 +223,7 @@
     <Compile Include="SQL\DataClasses\View.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
     <Compile Include="Web\Bing\Bing.cs" />
+    <Compile Include="Web\Gravatar\Gravatar.cs" />
     <Compile Include="Web\OAuth\OAuth.cs" />
     <Compile Include="Web\Craigslist\Craigslist.cs" />
     <Compile Include="Web\CSS.cs" />
