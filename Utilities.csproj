@@ -164,7 +164,10 @@
     <Compile Include="Math\Math.cs" />
     <Compile Include="Math\Permutation.cs" />
     <Compile Include="Math\Set.cs" />
+    <Compile Include="Media\Image\CellularTexture.cs" />
     <Compile Include="Media\Image\ColorMatrix.cs" />
+    <Compile Include="Media\Image\FaultFormation.cs" />
+    <Compile Include="Media\Image\PerlinNoise.cs" />
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
@@ -222,6 +225,8 @@
     <Compile Include="SQL\DataClasses\Trigger.cs" />
     <Compile Include="SQL\DataClasses\View.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
+    <Compile Include="Web\Akismet\Akismet.cs" />
+    <Compile Include="Web\Akismet\Comment.cs" />
     <Compile Include="Web\Bing\Bing.cs" />
     <Compile Include="Web\Gravatar\Gravatar.cs" />
     <Compile Include="Web\OAuth\OAuth.cs" />

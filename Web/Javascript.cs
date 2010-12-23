@@ -67,7 +67,7 @@ namespace Utilities.Web
             Input = Regex.Replace(Input, @"(\W(if|while|for)\([^{]*?\))\n", "$1");
             Input = Regex.Replace(Input, @"(\W(if|while|for)\([^{]*?\))((if|while|for)\([^{]*?\))\n", "$1$3");
             Input = Regex.Replace(Input, @"([;}]else)\n", "$1 ");
-            Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&ndsp;)\s{2,}(?=[<])", String.Empty);
+            Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&nbsp;)\s{2,}(?=[<])", String.Empty);
 
             return Input;
         }

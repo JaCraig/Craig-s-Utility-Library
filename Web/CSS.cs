@@ -48,7 +48,7 @@ namespace Utilities.Web
             Input = Input.Replace(", ", ",");
             Input = Input.Replace("; ", ";");
             Input = Input.Replace(";}", "}");
-            Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&ndsp;)\s{2,}(?=[<])", string.Empty);
+            Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&nbsp;)\s{2,}(?=[<])", string.Empty);
             Input = Regex.Replace(Input, "([!{}:;>+([,])s+", "$1");
             Input = Regex.Replace(Input, "([^;}])}", "$1;}");
             Input = Regex.Replace(Input, "([s:])(0)(px|em|%|in|cm|mm|pc|pt|ex)", "$1$2");

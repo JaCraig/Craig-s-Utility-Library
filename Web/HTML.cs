@@ -93,8 +93,8 @@ namespace Utilities.Web
             Input = Input.Replace("&", string.Empty);
             Input = Input.Replace("'", string.Empty);
             Input = Input.Replace(" ", "-");
-            RemoveExtraHyphen(Input);
-            RemoveDiacritics(Input);
+            Input = RemoveExtraHyphen(Input);
+            Input = RemoveDiacritics(Input);
             return HttpUtility.UrlEncode(Input).Replace("%", string.Empty);
         }
 
