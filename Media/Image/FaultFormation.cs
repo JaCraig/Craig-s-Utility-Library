@@ -35,6 +35,8 @@ namespace Utilities.Media.Image
     /// </summary>
     public static class FaultFormation
     {
+        #region Functions
+        
         /// <summary>
         /// Generates a number of faults, returning an image
         /// </summary>
@@ -172,5 +174,7 @@ namespace Utilities.Media.Image
             IncreaseVal -= (0.1f / (float)NumberFaults);
             return IncreaseVal;
         }
+
+        #endregion
     }
 }

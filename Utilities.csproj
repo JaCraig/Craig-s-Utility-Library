@@ -167,6 +167,7 @@
     <Compile Include="Media\Image\CellularTexture.cs" />
     <Compile Include="Media\Image\ColorMatrix.cs" />
     <Compile Include="Media\Image\FaultFormation.cs" />
+    <Compile Include="Media\Image\MidpointDisplacement.cs" />
     <Compile Include="Media\Image\PerlinNoise.cs" />
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />

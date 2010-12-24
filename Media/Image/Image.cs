@@ -1232,6 +1232,190 @@ namespace Utilities.Media.Image
 
         #endregion
 
+        #region FluvialErosion
+
+        /// <summary>
+        /// Does fluvial erosion on black and white images
+        /// </summary>
+        /// <param name="FileName">Image to manipulate</param>
+        /// <param name="NewFileName">Location to save the image to</param>
+        /// <param name="X">X position to drop water</param>
+        /// <param name="Y">Y position to drop water</param>
+        /// <param name="WaterPercent">Percent that the space is filled with water (1.0=100%, 0.0=0%)</param>
+        /// <param name="DepositRate">When the water moves, this is the amount that is deposited in the new spot (1.0=all, 0.0=none)</param>
+        /// <param name="PickupRate">The amount of "land" that the water picks up when it gets in a new spot</param>
+        /// <param name="Iterations">Number of steps that the water should take before stopping</param>
+        public static void FluvialErosion(string FileName, string NewFileName, int X, int Y,
+            float WaterPercent, float DepositRate, float PickupRate, int Iterations)
+        {
+            if (!IsGraphic(FileName))
+                return;
+            ImageFormat FormatUsing = GetFormat(NewFileName);
+            using (Bitmap NewBitmap = Image.FluvialErosion(FileName, X,Y,WaterPercent,DepositRate,PickupRate,Iterations))
+            {
+                NewBitmap.Save(NewFileName, FormatUsing);
+            }
+        }
+
+        /// <summary>
+        /// Does fluvial erosion on black and white images
+        /// </summary>
+        /// <param name="FileName">Image to manipulate</param>
+        /// <param name="X">X position to drop water</param>
+        /// <param name="Y">Y position to drop water</param>
+        /// <param name="WaterPercent">Percent that the space is filled with water (1.0=100%, 0.0=0%)</param>
+        /// <param name="DepositRate">When the water moves, this is the amount that is deposited in the new spot (1.0=all, 0.0=none)</param>
+        /// <param name="PickupRate">The amount of "land" that the water picks up when it gets in a new spot</param>
+        /// <param name="Iterations">Number of steps that the water should take before stopping</param>
+        /// <returns>Returns the resulting Bitmap</returns>
+        public static Bitmap FluvialErosion(string FileName, int X, int Y,
+            float WaterPercent, float DepositRate, float PickupRate, int Iterations)
+        {
+            if (!IsGraphic(FileName))
+                return new Bitmap(1, 1);
+            using (Bitmap TempBitmap = new Bitmap(FileName))
+            {
+                Bitmap ReturnBitmap = Image.FluvialErosion(TempBitmap, X,Y,WaterPercent,DepositRate,PickupRate,Iterations);
+                return ReturnBitmap;
+            }
+        }
+
+        /// <summary>
+        /// Does fluvial erosion on black and white images
+        /// </summary>
+        /// <param name="Image">Image to manipulate</param>
+        /// <param name="X">X position to drop water</param>
+        /// <param name="Y">Y position to drop water</param>
+        /// <param name="WaterPercent">Percent that the space is filled with water (1.0=100%, 0.0=0%)</param>
+        /// <param name="DepositRate">When the water moves, this is the amount that is deposited in the new spot (1.0=all, 0.0=none)</param>
+        /// <param name="PickupRate">The amount of "land" that the water picks up when it gets in a new spot</param>
+        /// <param name="Iterations">Number of steps that the water should take before stopping</param>
+        /// <returns>Returns the resulting Bitmap</returns>
+        public static Bitmap FluvialErosion(Bitmap Image, int X, int Y,
+            float WaterPercent, float DepositRate, float PickupRate, int Iterations)
+        {
+            Bitmap ReturnValue=new Bitmap(Image.Width,Image.Height);
+            BitmapData ImageData = LockImage(Image);
+            int ImagePixelSize = GetPixelSize(ImageData);
+            BitmapData ReturnData = LockImage(ReturnValue);
+            int ReturnPixelSize = GetPixelSize(ReturnData);
+            float[,] SedimentValues = new float[Image.Width, Image.Height];
+            float[,] WaterValues = new float[Image.Width, Image.Height];
+            float[,] Data = new float[Image.Width, Image.Height];
+            for (int x = 0; x < Image.Width; ++x)
+            {
+                for (int y = 0; y < Image.Height; ++y)
+                {
+                    Data[x, y] = GetHeight(GetPixel(ImageData, x, y, ImagePixelSize));
+                }
+            }
+            WaterValues[X, Y] = WaterPercent;
+            if (Data[X, Y] > PickupRate)
+            {
+                SedimentValues[X, Y] = PickupRate;
+                Data[X, Y] -= PickupRate;
+                Data[X, Y] = Math.MathHelper.Clamp(Data[X, Y], 1.0f, 0.0f);
+            }
+            else
+            {
+                SedimentValues[X, Y] = Data[X, Y];
+                Data[X, Y] -= PickupRate;
+                Data[X, Y] = Math.MathHelper.Clamp(Data[X, Y], 1.0f, 0.0f);
+            }
+            for (int i = 0; i < Iterations; ++i)
+            {
+                for (int x = 0; x < Image.Width; ++x)
+                {
+                    for (int y = 0; y < Image.Height; ++y)
+                    {
+                        if (WaterValues[x, y] > 0.0f)
+                        {
+                            List<int> MinX = new List<int>();
+                            List<int> MinY = new List<int>();
+                            float MinValue = Data[x, y];
+                            for (int BoxX = Math.MathHelper.Clamp(x - 1, Image.Width - 1, 0); BoxX <= Math.MathHelper.Clamp(x + 1, Image.Width - 1, 0); ++BoxX)
+                            {
+                                for (int BoxY = Math.MathHelper.Clamp(y - 1, Image.Height - 1, 0); BoxY <= Math.MathHelper.Clamp(y + 1, Image.Height - 1, 0); ++BoxY)
+                                {
+                                    if (BoxX != x || BoxY != y)
+                                    {
+                                        if (Data[BoxX, BoxY] < MinValue)
+                                        {
+                                            MinValue = Data[BoxX, BoxY];
+                                            MinX.Clear();
+                                            MinX.Add(BoxX);
+                                            MinY.Clear();
+                                            MinY.Add(BoxY);
+                                        }
+                                        else if (Data[BoxX, BoxY] == MinValue)
+                                        {
+                                            MinX.Add(BoxX);
+                                            MinY.Add(BoxY);
+                                        }
+                                    }
+                                }
+                            }
+                            float WaterChange = WaterValues[x, y];
+                            for (int z = 0; z < MinX.Count; ++z)
+                            {
+                                if (WaterChange > ((WaterValues[x, y] + Data[x, y]) - (WaterValues[MinX[z], MinY[z]] + Data[MinX[z], MinY[z]])))
+                                {
+                                    WaterChange = ((WaterValues[x, y] + Data[x, y]) - (WaterValues[MinX[z], MinY[z]] + Data[MinX[z], MinY[z]]));
+                                }
+                            }
+                            if (WaterChange <= 0.0f)
+                            {
+                                Data[x, y] += (DepositRate * SedimentValues[x, y]);
+                                SedimentValues[x, y] *= (1.0f - DepositRate);
+                            }
+                            else
+                            {
+                                float SedimentCapacity = WaterValues[x, y] * PickupRate;
+                                for (int z = 0; z < MinX.Count; ++z)
+                                {
+                                    WaterValues[MinX[z], MinY[z]] += (WaterChange / (float)MinX.Count);
+                                    if (SedimentValues[x, y] >= SedimentCapacity)
+                                    {
+                                        SedimentValues[MinX[z], MinY[z]] += (SedimentCapacity / (float)MinX.Count);
+                                    }
+                                    else
+                                    {
+                                        SedimentValues[MinX[z], MinY[z]] += SedimentValues[x, y] + (PickupRate * ((SedimentCapacity - SedimentValues[x, y]) / (float)MinX.Count));
+                                    }
+                                }
+                                if (SedimentValues[x, y] >= SedimentCapacity)
+                                {
+                                    Data[x, y] += DepositRate * (SedimentValues[x, y] - SedimentCapacity);
+                                    SedimentValues[x, y] = (1.0f - DepositRate) * (SedimentValues[x, y] - SedimentCapacity);
+                                }
+                                else
+                                {
+                                    Data[x, y] += DepositRate * (SedimentCapacity - SedimentValues[x, y]);
+                                    SedimentValues[x, y] = 0.0f;
+                                }
+                                WaterValues[x, y] -= WaterChange;
+                            }
+                        }
+                    }
+                }
+            }
+            for (int x = 0; x < Image.Width; ++x)
+            {
+                for (int y = 0; y < Image.Height; ++y)
+                {
+                    Data[x, y] += SedimentValues[x, y];
+                    Data[x, y] = Math.MathHelper.Clamp(Data[x, y], 1.0f, 0.0f);
+                    Data[x,y]*=255.0f;
+                    SetPixel(ReturnData, x, y, Color.FromArgb((int)Data[x, y], (int)Data[x, y], (int)Data[x, y]), ReturnPixelSize);
+                }
+            }
+            UnlockImage(ReturnValue, ReturnData);
+            UnlockImage(Image, ImageData);
+            return ReturnValue;
+        }
+
+        #endregion
+
         #region GaussianBlur
 
         /// <summary>
@@ -2875,6 +3059,170 @@ namespace Utilities.Media.Image
 
         #endregion
 
+        #region ThermalErosion
+
+        /// <summary>
+        /// Does thermal erosion on the image
+        /// </summary>
+        /// <param name="FileName">Image to manipulate</param>
+        /// <param name="NewFileName">Location to save the image to</param>
+        /// <param name="T">Threshold value</param>
+        /// <param name="C">Change value</param>
+        /// <param name="Iterations">Number of iterations</param>
+        public static void ThermalErosion(string FileName, string NewFileName,float T,float C,int Iterations)
+        {
+            if (!IsGraphic(FileName))
+                return;
+            ImageFormat FormatUsing = GetFormat(NewFileName);
+            using (Bitmap NewBitmap = Image.ThermalErosion(FileName,T,C,Iterations))
+            {
+                NewBitmap.Save(NewFileName, FormatUsing);
+            }
+        }
+
+        /// <summary>
+        /// Does thermal erosion on the image
+        /// </summary>
+        /// <param name="FileName">Image to manipulate</param>
+        /// <param name="T">Threshold value</param>
+        /// <param name="C">Change value</param>
+        /// <param name="Iterations">Number of iterations</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap ThermalErosion(string FileName,float T,float C,int Iterations)
+        {
+            if (!IsGraphic(FileName))
+                return new Bitmap(1, 1);
+            using (Bitmap TempBitmap = new Bitmap(FileName))
+            {
+                Bitmap ReturnBitmap = Image.ThermalErosion(TempBitmap,T,C,Iterations);
+                return ReturnBitmap;
+            }
+        }
+
+        /// <summary>
+        /// Does thermal erosion on the image
+        /// </summary>
+        /// <param name="OriginalImage">Image to manipulate</param>
+        /// <param name="T">Threshold value</param>
+        /// <param name="C">Change value</param>
+        /// <param name="Iterations">Number of iterations</param>
+        /// <returns>A bitmap image</returns>
+        public static Bitmap ThermalErosion(Bitmap OriginalImage,float T,float C,int Iterations)
+        {
+            Bitmap BlackAndWhiteImage = Image.ConvertBlackAndWhite(OriginalImage);
+            BitmapData BlackAndWhiteData = Image.LockImage(BlackAndWhiteImage);
+            int BlackAndWhitePixelSize = Image.GetPixelSize(BlackAndWhiteData);
+            float[] HeightDifferences = new float[8];
+            for (int i = 0; i < Iterations; ++i)
+            {
+                for (int x = 0; x < BlackAndWhiteImage.Width; ++x)
+                {
+                    for (int y = 0; y < BlackAndWhiteImage.Height; ++y)
+                    {
+                        int X1 = x - 1;
+                        int Y1 = y - 1;
+                        X1=Math.MathHelper.Clamp(X1, BlackAndWhiteImage.Width-1, 0);
+                        Y1=Math.MathHelper.Clamp(Y1, BlackAndWhiteImage.Height-1, 0);
+                        int X2 = x + 1;
+                        int Y2 = y + 1;
+                        X2=Math.MathHelper.Clamp(X2, BlackAndWhiteImage.Width-1, 0);
+                        Y2=Math.MathHelper.Clamp(Y2, BlackAndWhiteImage.Height-1, 0);
+                        HeightDifferences[0] = GetHeightDifferences(x, y, X1, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        HeightDifferences[1] = GetHeightDifferences(x, y, x, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        HeightDifferences[2] = GetHeightDifferences(x, y, X2, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        HeightDifferences[3] = GetHeightDifferences(x, y, X1, y, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        HeightDifferences[4] = GetHeightDifferences(x, y, X2, y, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        HeightDifferences[5] = GetHeightDifferences(x, y, X1, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        HeightDifferences[6] = GetHeightDifferences(x, y, x, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        HeightDifferences[7] = GetHeightDifferences(x, y, X2, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        float MaxDifference = 0.0f;
+                        float DifferenceTotal = 0.0f;
+                        float NumberOver = 0;
+                        for (int z = 0; z < 8; ++z)
+                        {
+                            if (HeightDifferences[z] > MaxDifference)
+                            {
+                                MaxDifference = HeightDifferences[z];
+                            }
+                            if (HeightDifferences[z] > T)
+                            {
+                                DifferenceTotal += HeightDifferences[z];
+                                ++NumberOver;
+                            }
+                        }
+                        float Height = GetHeight(x, y, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        if (X1 != x && Y1 != y && HeightDifferences[0] != 0.0f && DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(X1, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + C * (MaxDifference - T) * (HeightDifferences[0] / DifferenceTotal);
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(X1, Y1, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                        if (Y1 != y && HeightDifferences[1] != 0.0f && DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(x, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + C * (MaxDifference - T) * (HeightDifferences[1] / DifferenceTotal);
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(x, Y1, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                        if (X2 != x && Y1 != y && HeightDifferences[2] != 0.0f && DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(X2, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + C * (MaxDifference - T) * (HeightDifferences[2] / DifferenceTotal);
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(X2, Y1, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                        if (X1 != x && HeightDifferences[3] != 0.0f && DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(X1, y, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + C * (MaxDifference - T) * (HeightDifferences[3] / DifferenceTotal);
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(X1, y, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                        if (X2 != x && HeightDifferences[4] != 0.0f && DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(X2, y, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + C * (MaxDifference - T) * (HeightDifferences[4] / DifferenceTotal);
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(X2, y, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                        if (X1 != x && Y2 != y && HeightDifferences[5] != 0.0f && DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(X1, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + C * (MaxDifference - T) * (HeightDifferences[5] / DifferenceTotal);
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(X1, Y2, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                        if (Y2 != y && HeightDifferences[6] != 0.0f && DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(x, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + C * (MaxDifference - T) * (HeightDifferences[6] / DifferenceTotal);
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(x, Y2, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                        if (X2 != x && Y2 != y && HeightDifferences[7] != 0.0f && DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(X2, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + C * (MaxDifference - T) * (HeightDifferences[7] / DifferenceTotal);
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(X2, Y2, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                        if (DifferenceTotal != 0.0f)
+                        {
+                            Height = GetHeight(x, y, BlackAndWhiteData, BlackAndWhitePixelSize);
+                            Height = Height + (MaxDifference - (NumberOver * MaxDifference * T / DifferenceTotal));
+                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            SetHeight(x, y, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
+                        }
+                    }
+                }
+            }
+            Image.UnlockImage(BlackAndWhiteImage, BlackAndWhiteData);
+            return BlackAndWhiteImage;
+        }
+
+        #endregion
+
         #region Threshold
 
         /// <summary>
@@ -2942,6 +3290,93 @@ namespace Utilities.Media.Image
             Image.UnlockImage(NewBitmap, NewData);
             Image.UnlockImage(OriginalImage, OldData);
             return NewBitmap;
+        }
+
+        #endregion
+
+        #region Turbulence
+
+        /// <summary>
+        /// Does turbulence manipulation of the image
+        /// </summary>
+        /// <param name="FileName">File to change</param>
+        /// <param name="NewFileName">Location to save the black and white image to</param>
+        /// <param name="Roughness">Roughness of the movement</param>
+        /// <param name="Power">How strong the movement is</param>
+        /// <param name="Seed">Random seed</param>
+        public static void Turbulence(string FileName, string NewFileName, int Roughness,float Power,int Seed)
+        {
+            if (!IsGraphic(FileName))
+                return;
+            ImageFormat FormatUsing = GetFormat(NewFileName);
+            using (Bitmap NewBitmap = Image.Turbulence(FileName, Roughness,Power,Seed))
+            {
+                NewBitmap.Save(NewFileName, FormatUsing);
+            }
+        }
+
+        /// <summary>
+        /// Does turbulence manipulation of the image
+        /// </summary>
+        /// <param name="FileName">File to change</param>
+        /// <param name="Roughness">Roughness of the movement</param>
+        /// <param name="Power">How strong the movement is</param>
+        /// <param name="Seed">Random seed</param>
+        /// <returns>A bitmap object containing the new image</returns>
+        public static Bitmap Turbulence(string FileName, int Roughness, float Power, int Seed)
+        {
+            if (!IsGraphic(FileName))
+                return new Bitmap(1, 1);
+            using (Bitmap TempBitmap = new Bitmap(FileName))
+            {
+                Bitmap ReturnBitmap = Image.Turbulence(TempBitmap, Roughness,Power,Seed);
+                return ReturnBitmap;
+            }
+        }
+
+        /// <summary>
+        /// Does turbulence manipulation of the image
+        /// </summary>
+        /// <param name="OriginalImage">Image to transform</param>
+        /// <param name="Roughness">Roughness of the movement</param>
+        /// <param name="Power">How strong the movement is</param>
+        /// <param name="Seed">Random seed</param>
+        /// <returns>A bitmap object containing the new image</returns>
+        public static Bitmap Turbulence(Bitmap OriginalImage, int Roughness, float Power, int Seed)
+        {
+            int Width = OriginalImage.Width;
+            int Height = OriginalImage.Height;
+            BitmapData OriginalData = Image.LockImage(OriginalImage);
+            int OriginalPixelSize = Image.GetPixelSize(OriginalData);
+            Bitmap ReturnValue = new Bitmap(Width, Height);
+            BitmapData ReturnData = Image.LockImage(ReturnValue);
+            int ReturnPixelSize = Image.GetPixelSize(ReturnData);
+            using (Bitmap XNoise = PerlinNoise.Generate(Width, Height, 255, 0, 0.0625f, 1.0f, 0.5f, Roughness, Seed))
+            {
+                BitmapData XNoiseData = Image.LockImage(XNoise);
+                int XNoisePixelSize = Image.GetPixelSize(XNoiseData);
+                using (Bitmap YNoise = PerlinNoise.Generate(Width, Height, 255, 0, 0.0625f, 1.0f, 0.5f, Roughness, Seed * 2))
+                {
+                    BitmapData YNoiseData = Image.LockImage(YNoise);
+                    int YNoisePixelSize = Image.GetPixelSize(YNoiseData);
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        for (int x = 0; x < Width; ++x)
+                        {
+                            float XDistortion = x + (GetHeight(x, y, XNoiseData, XNoisePixelSize) * Power);
+                            float YDistortion = y + (GetHeight(x, y, YNoiseData, YNoisePixelSize) * Power);
+                            int X1 = Math.MathHelper.Clamp((int)XDistortion, Width - 1, 0);
+                            int Y1 = Math.MathHelper.Clamp((int)YDistortion, Height - 1, 0);
+                            Image.SetPixel(ReturnData, x, y, GetPixel(OriginalData, X1, Y1, OriginalPixelSize), ReturnPixelSize);
+                        }
+                    }
+                    UnlockImage(YNoise, YNoiseData);
+                }
+                UnlockImage(XNoise, XNoiseData);
+            }
+            UnlockImage(ReturnValue, ReturnData);
+            UnlockImage(OriginalImage, OriginalData);
+            return ReturnValue;
         }
 
         #endregion
@@ -3114,6 +3549,35 @@ namespace Utilities.Media.Image
         #endregion
 
         #region Private Functions
+
+        private static float GetHeightDifferences(int x, int y, int X1, int Y1, BitmapData BlackAndWhiteData, int BlackAndWhitePixelSize)
+        {
+            Color TempColor = Image.GetPixel(BlackAndWhiteData, x, y, BlackAndWhitePixelSize);
+            float Height = GetHeight(TempColor);
+            TempColor = Image.GetPixel(BlackAndWhiteData, X1, Y1, BlackAndWhitePixelSize);
+            float Height2 = GetHeight(TempColor);
+            return Height - Height2;
+        }
+
+        private static void SetHeight(int x, int y, float Value,BitmapData Data,int PixelSize)
+        {
+            Value *= 0.5f;
+            Value += 0.5f;
+            int Value2 = (int)(Value * 255.0f);
+            Color TempColor = Color.FromArgb(Value2, Value2, Value2);
+            Image.SetPixel(Data, x, y, TempColor, PixelSize);
+        }
+
+        private static float GetHeight(int x, int y, BitmapData BlackAndWhiteData, int BlackAndWhitePixelSize)
+        {
+            Color TempColor = Image.GetPixel(BlackAndWhiteData, x, y, BlackAndWhitePixelSize);
+            return GetHeight(TempColor);
+        }
+
+        private static float GetHeight(Color Color)
+        {
+            return (float)Color.R / 255.0f;
+        }
 
         private static double Distance(int R1, int R2, int G1, int G2, int B1, int B2)
         {
