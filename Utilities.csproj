@@ -152,6 +152,9 @@
     <Compile Include="FileFormats\BlogML\Tag.cs" />
     <Compile Include="FileFormats\BlogML\Tags.cs" />
     <Compile Include="Classifier\NaiveBayes\NaiveBayes.cs" />
+    <Compile Include="FileFormats\Delimited\Cell.cs" />
+    <Compile Include="FileFormats\Delimited\Delimited.cs" />
+    <Compile Include="FileFormats\Delimited\Row.cs" />
     <Compile Include="FileFormats\FixedLength\BaseClasses\FieldBase.cs" />
     <Compile Include="FileFormats\FixedLength\BaseClasses\FixedLengthBase.cs" />
     <Compile Include="FileFormats\FixedLength\Interfaces\IField.cs" />
@@ -233,9 +236,7 @@
     <Compile Include="Web\OAuth\OAuth.cs" />
     <Compile Include="Web\Craigslist\Craigslist.cs" />
     <Compile Include="Web\CSS.cs" />
-    <Compile Include="FileFormats\CSV\Cell.cs" />
     <Compile Include="FileFormats\CSV\CSV.cs" />
-    <Compile Include="FileFormats\CSV\Row.cs" />
     <Compile Include="DataTypes\DataTypeConversion.cs" />
     <Compile Include="Compression\Deflate.cs" />
     <Compile Include="DataTypes\DateHelper.cs" />

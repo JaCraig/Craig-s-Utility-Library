@@ -30,85 +30,22 @@ namespace Utilities.FileFormats.CSV
     /// <summary>
     /// CSV loader
     /// </summary>
-    public class CSV
+    public class CSV:Delimited.Delimited
     {
         #region Constructor
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
-        public CSV()
-        {
-        }
+        public CSV() : base() { }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="FileContent">File content</param>
-        public CSV(string FileContent)
-        {
-            Regex TempSplitter = new Regex("[^\"\r\n$]*(\r\n|\n|$)|(([^\"\r\n$]*)(\"[^\"]*\")([^\"\r\n$]*))*(\r\n|\n|$)");
-            MatchCollection Matches = TempSplitter.Matches(FileContent);
-            foreach (Match Match in Matches)
-            {
-                if (!string.IsNullOrEmpty(Match.Value))
-                {
-                    Rows.Add(new Row(Match.Value));
-                }
-            }
-        }
+        public CSV(string FileContent) : base(FileContent) { }
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
-        private List<Row> _Rows = new List<Row>();
-
-        /// <summary>
-        /// The list of rows
-        /// </summary>
-        public List<Row> Rows
-        {
-            get { return _Rows; }
-            set { _Rows = value; }
-        }
-
-        /// <summary>
-        /// The number of rows within the file
-        /// </summary>
-        public int NumberOfRows
-        {
-            get { return Rows.Count; }
-        }
-
-        /// <summary>
-        /// Individual rows
-        /// </summary>
-        /// <param name="Position">The row that you want to get</param>
-        /// <returns>The row requested</returns>
-        public Row this[int Position]
-        {
-            get { return _Rows[Position]; }
-            set { _Rows[Position] = value; }
-        }
-
-        #endregion
-
-        #region Public Overridden Function
-
-        /// <summary>
-        /// To string function
-        /// </summary>
-        /// <returns>A string containing the file information</returns>
-        public override string ToString()
-        {
-            StringBuilder Builder=new StringBuilder();
-            foreach (Row CurrentRow in Rows)
-            {
-                Builder.Append(CurrentRow.ToString());
-            }
-            return Builder.ToString();
-        }
+        protected override string Delimiter { get { return ","; } }
 
         #endregion
     }

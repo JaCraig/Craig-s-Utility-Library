@@ -23,10 +23,10 @@ THE SOFTWARE.*/
 
 #endregion
 
-namespace Utilities.FileFormats.CSV
+namespace Utilities.FileFormats.Delimited
 {
     /// <summary>
-    /// Cell within a CSV file
+    /// Cell within a delimited file
     /// </summary>
     public class Cell
     {

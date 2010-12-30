@@ -38,11 +38,7 @@ namespace Utilities.Environment
         /// <param name="ProcessName">Name of the process without the ending (ie iexplore instead of iexplore.exe)</param>
         public static void KillProcess(string ProcessName)
         {
-            Process[] Processes = Process.GetProcessesByName(ProcessName);
-            foreach (Process CurrentProcess in Processes)
-            {
-                CurrentProcess.Kill();
-            }
+            KillProcessAsync(ProcessName, 0);
         }
 
         /// <summary>

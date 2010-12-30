@@ -25,10 +25,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 #endregion
 
-namespace Utilities.FileFormats.CSV
+namespace Utilities.FileFormats.Delimited
 {
     /// <summary>
-    /// Individual row within a CSV
+    /// Individual row within a delimited file
     /// </summary>
     public class Row
     {
@@ -45,9 +45,10 @@ namespace Utilities.FileFormats.CSV
         /// Constructor
         /// </summary>
         /// <param name="Content">Content of the row</param>
-        public Row(string Content)
+        /// <param name="Delimiter">Delimiter to parse the individual cells</param>
+        public Row(string Content, string Delimiter)
         {
-            Regex TempSplitter = new Regex("(?<Value>\"(?:[^\"]|\"\")*\"|[^,\r\n]*?)(?<Delimiter>,|\r\n|\n|$)");
+            Regex TempSplitter = new Regex(string.Format("(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Delimiter));
             MatchCollection Matches = TempSplitter.Matches(Content);
             bool Finished = false;
             foreach (Match Match in Matches)
@@ -56,7 +57,7 @@ namespace Utilities.FileFormats.CSV
                 {
                     Cells.Add(new Cell(Match.Groups["Value"].Value));
                 }
-                Finished = string.IsNullOrEmpty(Match.Groups["Delimiter"].Value) || Match.Groups["Delimiter"].Value== "\r\n" || Match.Groups["Delimiter"].Value == "\n";
+                Finished = string.IsNullOrEmpty(Match.Groups["Delimiter"].Value) || Match.Groups["Delimiter"].Value == "\r\n" || Match.Groups["Delimiter"].Value == "\n";
             }
         }
 
@@ -104,8 +105,8 @@ namespace Utilities.FileFormats.CSV
         /// <returns>The content of the row in string form</returns>
         public override string ToString()
         {
-            StringBuilder Builder=new StringBuilder();
-            string Seperator="";
+            StringBuilder Builder = new StringBuilder();
+            string Seperator = "";
             foreach (Cell CurrentCell in Cells)
             {
                 Builder.Append(Seperator).Append(CurrentCell);

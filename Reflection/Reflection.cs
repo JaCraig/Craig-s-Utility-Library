@@ -307,14 +307,8 @@ namespace Utilities.Reflection
                 Type[] Types = Assembly.GetTypes();
                 foreach (Type Type in Types)
                 {
-                    if (Type.GetInterface(Interface, true) != null)
-                    {
+                    if (CheckIsOfInterface(Type, Interface))
                         ReturnList.Add(Type);
-                    }
-                    else if (Type.BaseType != null && Type.BaseType.FullName != null && Type.BaseType.FullName.StartsWith(Interface))
-                    {
-                        ReturnList.Add(Type);
-                    }
                 }
             }
             return ReturnList;
@@ -616,6 +610,23 @@ namespace Utilities.Reflection
         #endregion
 
         #region Private Static Functions
+
+        /// <summary>
+        /// Checks if the type is of a specific interface type
+        /// </summary>
+        /// <param name="Type">Type to check</param>
+        /// <param name="Interface">Name of the interface to check against</param>
+        /// <returns>True if it is, false otherwise</returns>
+        private static bool CheckIsOfInterface(Type Type, string Interface)
+        {
+            if (Type == null)
+                return false;
+            if (Type.GetInterface(Interface, true) != null)
+                return true;
+            if (!string.IsNullOrEmpty(Type.FullName) && Type.FullName.Contains(Interface))
+                return true;
+            return CheckIsOfInterface(Type.BaseType, Interface);
+        }
 
         /// <summary>
         /// Copies a field value
