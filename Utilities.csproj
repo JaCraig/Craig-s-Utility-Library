@@ -161,6 +161,7 @@
     <Compile Include="FileFormats\FixedLength\Interfaces\IRecord.cs" />
     <Compile Include="FileFormats\FixedLength\BaseClasses\RecordBase.cs" />
     <Compile Include="FileFormats\FixedLength\StringField.cs" />
+    <Compile Include="FileFormats\PipeDelimited\PipeDelimited.cs" />
     <Compile Include="FileFormats\RSSHelper\GUID.cs" />
     <Compile Include="FileFormats\RSSHelper\Thumbnail.cs" />
     <Compile Include="Math\Conversion.cs" />

@@ -39,6 +39,10 @@ namespace Utilities.FileFormats.CSV
         /// </summary>
         public CSV() : base() { }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="FileContent">File content</param>
         public CSV(string FileContent) : base(FileContent) { }
 
         #endregion
