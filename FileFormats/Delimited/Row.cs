@@ -48,7 +48,8 @@ namespace Utilities.FileFormats.Delimited
         /// <param name="Delimiter">Delimiter to parse the individual cells</param>
         public Row(string Content, string Delimiter)
         {
-            Regex TempSplitter = new Regex(string.Format("(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Delimiter));
+            this.Delimiter = Delimiter;
+            Regex TempSplitter = new Regex(string.Format("(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(Delimiter)));
             MatchCollection Matches = TempSplitter.Matches(Content);
             bool Finished = false;
             foreach (Match Match in Matches)
@@ -95,6 +96,8 @@ namespace Utilities.FileFormats.Delimited
             get { return Cells.Count; }
         }
 
+        protected virtual string Delimiter { get; set; }
+
         #endregion
 
         #region Public Overridden Functions
@@ -110,7 +113,7 @@ namespace Utilities.FileFormats.Delimited
             foreach (Cell CurrentCell in Cells)
             {
                 Builder.Append(Seperator).Append(CurrentCell);
-                Seperator = ",";
+                Seperator = Delimiter;
             }
             Builder.Append(System.Environment.NewLine);
             return Builder.ToString();

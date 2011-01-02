@@ -49,7 +49,7 @@ namespace Utilities.FileFormats.PipeDelimited
 
         #region Properties
 
-        protected override string Delimiter { get { return "\\|"; } }
+        protected override string Delimiter { get { return "|"; } }
 
         #endregion
     }
