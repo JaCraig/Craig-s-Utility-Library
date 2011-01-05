@@ -70,6 +70,36 @@ namespace Utilities.Reflection.Emit.Commands
             }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ObjectCallingOn">Object calling on</param>
+        /// <param name="Method">Method builder</param>
+        /// <param name="MethodCalling">Method calling on the object</param>
+        /// <param name="Parameters">List of parameters to send in</param>
+        public Call(IMethodBuilder Method, VariableBase ObjectCallingOn, ConstructorInfo MethodCalling, object[] Parameters)
+            : base()
+        {
+            this.ObjectCallingOn = ObjectCallingOn;
+            this.ConstructorCalling = MethodCalling;
+            this.MethodCallingFrom = Method;
+            if (Parameters != null)
+            {
+                this.Parameters = new VariableBase[Parameters.Length];
+                for (int x = 0; x < Parameters.Length; ++x)
+                {
+                    if (Parameters[x] is VariableBase)
+                        this.Parameters[x] = (VariableBase)Parameters[x];
+                    else
+                        this.Parameters[x] = MethodCallingFrom.CreateConstant(Parameters[x]);
+                }
+            }
+            else
+            {
+                this.Parameters = null;
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -83,6 +113,11 @@ namespace Utilities.Reflection.Emit.Commands
         /// Method calling
         /// </summary>
         protected virtual MethodInfo MethodCalling { get; set; }
+
+        /// <summary>
+        /// Method calling
+        /// </summary>
+        protected virtual ConstructorInfo ConstructorCalling { get; set; }
 
         /// <summary>
         /// Parameters sent in
@@ -100,7 +135,12 @@ namespace Utilities.Reflection.Emit.Commands
 
         public override void Setup()
         {
-            ObjectCallingOn.Load(MethodCallingFrom.Generator);
+            if (ObjectCallingOn != null)
+            {
+                if (ObjectCallingOn is FieldBuilder || ObjectCallingOn is IPropertyBuilder)
+                    MethodCallingFrom.Generator.Emit(OpCodes.Ldarg_0);
+                ObjectCallingOn.Load(MethodCallingFrom.Generator);
+            }
             if (Parameters != null)
             {
                 foreach (VariableBase Parameter in this.Parameters)
@@ -111,12 +151,23 @@ namespace Utilities.Reflection.Emit.Commands
                 }
             }
             OpCode OpCodeUsing = OpCodes.Callvirt;
-            if (ObjectCallingOn.Name == "this" && MethodCallingFrom.Name == MethodCalling.Name)
-                OpCodeUsing = OpCodes.Call;
-            MethodCallingFrom.Generator.EmitCall(OpCodeUsing, MethodCalling, null);
-            if (MethodCalling.ReturnType != null && MethodCalling.ReturnType != typeof(void))
+            if (MethodCalling != null)
             {
-                Result.Save(MethodCallingFrom.Generator);
+                if (!MethodCalling.IsVirtual||
+                    (ObjectCallingOn.Name=="this"&& MethodCalling.Name==MethodCallingFrom.Name))
+                    OpCodeUsing = OpCodes.Call;
+                MethodCallingFrom.Generator.EmitCall(OpCodeUsing, MethodCalling, null);
+                if (MethodCalling.ReturnType != null && MethodCalling.ReturnType != typeof(void))
+                {
+                    Result.Save(MethodCallingFrom.Generator);
+                }
+            }
+            else if (ConstructorCalling != null)
+            {
+                if (!ConstructorCalling.IsVirtual||
+                    (ObjectCallingOn.Name == "this" && MethodCalling.Name == MethodCallingFrom.Name))
+                    OpCodeUsing = OpCodes.Call;
+                MethodCallingFrom.Generator.Emit(OpCodeUsing, ConstructorCalling);
             }
         }
 
@@ -127,7 +178,8 @@ namespace Utilities.Reflection.Emit.Commands
             {
                 Output.Append(Result).Append(" = ");
             }
-            Output.Append(ObjectCallingOn).Append(".");
+            if(ObjectCallingOn!=null)
+                Output.Append(ObjectCallingOn).Append(".");
             if (ObjectCallingOn.Name == "this" && MethodCallingFrom.Name == MethodCalling.Name)
             {
                 Output.Append("base").Append("(");

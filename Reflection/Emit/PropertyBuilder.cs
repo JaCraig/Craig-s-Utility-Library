@@ -94,12 +94,18 @@ namespace Utilities.Reflection.Emit
 
         public override void Load(ILGenerator Generator)
         {
-            Generator.EmitCall(OpCodes.Callvirt, GetMethod.Builder, null);
+            if (GetMethod.Builder.IsVirtual)
+                Generator.EmitCall(OpCodes.Callvirt, GetMethod.Builder, null);
+            else
+                Generator.EmitCall(OpCodes.Call, GetMethod.Builder, null);
         }
 
         public override void Save(ILGenerator Generator)
         {
-            Generator.EmitCall(OpCodes.Callvirt, SetMethod.Builder, null);
+            if(SetMethod.Builder.IsVirtual)
+                Generator.EmitCall(OpCodes.Callvirt, SetMethod.Builder, null);
+            else
+                Generator.EmitCall(OpCodes.Call, SetMethod.Builder, null);
         }
 
         public override string GetDefinition()

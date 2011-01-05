@@ -103,6 +103,15 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
+        public void Call(VariableBase ObjectCallingOn, ConstructorInfo MethodCalling, object[] Parameters)
+        {
+            SetCurrentMethod();
+            Call TempCommand = new Call(this, ObjectCallingOn, MethodCalling, Parameters);
+            TempCommand.Setup();
+            Commands.Add(TempCommand);
+            ++ObjectCounter;
+        }
+
         public virtual void Assign(VariableBase LeftHandSide, object Value)
         {
             SetCurrentMethod();

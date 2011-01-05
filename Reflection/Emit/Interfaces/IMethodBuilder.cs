@@ -100,6 +100,15 @@ namespace Utilities.Reflection.Emit.Interfaces
         VariableBase Call(VariableBase ObjectCallingOn, MethodInfo MethodCalling, object[] Parameters);
 
         /// <summary>
+        /// Calls a function on an object
+        /// </summary>
+        /// <param name="ObjectCallingOn">Object calling on</param>
+        /// <param name="MethodCalling">Method calling</param>
+        /// <param name="Parameters">Parameters sending</param>
+        /// <returns>The return value</returns>
+        void Call(VariableBase ObjectCallingOn, ConstructorInfo MethodCalling, object[] Parameters);
+
+        /// <summary>
         /// Defines an if statement
         /// </summary>
         /// <param name="ComparisonType">Comparison type</param>

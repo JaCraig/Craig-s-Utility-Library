@@ -88,6 +88,7 @@ namespace Utilities.Reflection.Emit
         private void Setup(string Name, string Directory = "", AssemblyType Type = AssemblyType.DLL)
         {
             this.Name = Name;
+            this.Directory = Directory;
             this.Type = Type;
             AssemblyName AssemblyName = new AssemblyName(Name);
             AppDomain Domain = Thread.GetDomain();
@@ -99,7 +100,7 @@ namespace Utilities.Reflection.Emit
             else
             {
                 Builder = Domain.DefineDynamicAssembly(AssemblyName, AssemblyBuilderAccess.Run);
-                Module = Builder.DefineDynamicModule(Name, true);
+                Module = Builder.DefineDynamicModule(Name);
             }
             Classes = new List<TypeBuilder>();
             Enums = new List<EnumBuilder>();
@@ -150,7 +151,8 @@ namespace Utilities.Reflection.Emit
             {
                 Enum.Create();
             }
-            Builder.Save(Name + (Type == AssemblyType.DLL ? ".dll" : ".exe"));
+            if(!string.IsNullOrEmpty(this.Directory))
+                Builder.Save(Name + (Type == AssemblyType.DLL ? ".dll" : ".exe"));
         }
 
         #endregion
@@ -166,6 +168,11 @@ namespace Utilities.Reflection.Emit
         /// Name of the assembly
         /// </summary>
         public virtual string Name { get; protected set; }
+
+        /// <summary>
+        /// Directory of the assembly
+        /// </summary>
+        public virtual string Directory { get; protected set; }
 
         /// <summary>
         /// List of classes associated with this assembly

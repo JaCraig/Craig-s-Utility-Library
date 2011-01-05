@@ -164,6 +164,19 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <param name="Method">Method</param>
         /// <param name="Parameters">Parameters sent in</param>
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
+        public virtual void Call(System.Reflection.ConstructorInfo Method, object[] Parameters = null)
+        {
+            if (Method == null)
+                throw new ArgumentNullException("Method");
+            MethodBase.CurrentMethod.Call(this, Method, Parameters);
+        }
+
+        /// <summary>
+        /// Calls a method on this variable
+        /// </summary>
+        /// <param name="Method">Method</param>
+        /// <param name="Parameters">Parameters sent in</param>
+        /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(IMethodBuilder Method, object[] Parameters = null)
         {
             if (Method == null)

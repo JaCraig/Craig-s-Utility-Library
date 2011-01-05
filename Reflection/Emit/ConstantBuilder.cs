@@ -80,6 +80,17 @@ namespace Utilities.Reflection.Emit
             {
                 Generator.Emit(OpCodes.Ldstr, (string)Value);
             }
+            else if(this.DataType==typeof(bool))
+            {
+                if((bool)Value)
+                {
+                    Generator.Emit(OpCodes.Ldc_I4_1);
+                }
+                else
+                {
+                    Generator.Emit(OpCodes.Ldc_I4_0);
+                }
+            }
         }
 
         public override string GetDefinition()

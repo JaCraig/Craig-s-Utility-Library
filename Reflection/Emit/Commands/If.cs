@@ -48,8 +48,14 @@ namespace Utilities.Reflection.Emit.Commands
             ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
             this.EndIfLabel = Generator.DefineLabel();
             this.EndIfFinalLabel = Generator.DefineLabel();
-            this.LeftHandSide = LeftHandSide;
-            this.RightHandSide = RightHandSide;
+            if (LeftHandSide != null)
+                this.LeftHandSide = LeftHandSide;
+            else
+                this.LeftHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(null);
+            if(RightHandSide!=null)
+                this.RightHandSide = RightHandSide;
+            else
+                this.RightHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(null);
             this.ComparisonType = ComparisonType;
         }
 
