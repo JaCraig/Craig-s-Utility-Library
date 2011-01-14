@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 #endregion
 
-namespace Utilities.Media.Image
+namespace Utilities.Media.Image.Procedural
 {
     /// <summary>
     /// Cellular texture helper
@@ -44,29 +44,15 @@ namespace Utilities.Media.Image
         public static Bitmap Generate(int Width, int Height, int NumberOfPoints, int Seed)
         {
             float[,] DistanceBuffer = new float[Width, Height];
-            Points[] PointArray = new Points[NumberOfPoints];
             float MinimumDistance = float.MaxValue;
             float MaxDistance = float.MinValue;
-            System.Random Generator = new System.Random(Seed);
-            for (int x = 0; x < NumberOfPoints; ++x)
-            {
-                PointArray[x].X = Generator.Next(0, Width);
-                PointArray[x].Y = Generator.Next(0, Height);
-            }
-            for (int y = 0; y < Height; ++y)
-            {
-                for (int x = 0; x < Width; ++x)
-                {
-                    DistanceBuffer[x, y] = DistanceNearestPoint(x, y, PointArray);
-                    if (DistanceBuffer[x, y] > MaxDistance)
-                        MaxDistance = DistanceBuffer[x, y];
-                    else if (DistanceBuffer[x, y] < MinimumDistance)
-                        MinimumDistance = DistanceBuffer[x, y];
-                }
-            }
+            CellularMap Map = new CellularMap(Seed, Width, Height, NumberOfPoints);
+            MaxDistance = Map.MaxDistance;
+            MinimumDistance = Map.MinDistance;
+            DistanceBuffer = Map.Distances;
             Bitmap ReturnValue = new Bitmap(Width, Height);
-            BitmapData ImageData = Image.LockImage(ReturnValue);
-            int ImagePixelSize = Image.GetPixelSize(ImageData);
+            BitmapData ImageData = Utilities.Media.Image.Image.LockImage(ReturnValue);
+            int ImagePixelSize = Utilities.Media.Image.Image.GetPixelSize(ImageData);
             for (int x = 0; x < Width; ++x)
             {
                 for (int y = 0; y < Height; ++y)
@@ -74,10 +60,10 @@ namespace Utilities.Media.Image
                     float Value = GetHeight(x, y, DistanceBuffer, MinimumDistance, MaxDistance);
                     Value *= 255;
                     int RGBValue = Math.MathHelper.Clamp((int)Value, 255, 0);
-                    Image.SetPixel(ImageData, x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
+                    Utilities.Media.Image.Image.SetPixel(ImageData, x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
                 }
             }
-            Image.UnlockImage(ReturnValue, ImageData);
+            Utilities.Media.Image.Image.UnlockImage(ReturnValue, ImageData);
             return ReturnValue;
         }
 
@@ -87,30 +73,6 @@ namespace Utilities.Media.Image
             return (DistanceBuffer[(int)X, (int)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);
         }
 
-        private static float DistanceNearestPoint(int x, int y,Points[] PointArray)
-        {
-            float Lowest = float.MaxValue;
-            for (int z = 0; z < PointArray.Length; ++z)
-            {
-                float Distance = (float)System.Math.Sqrt(((PointArray[z].X - x) * (PointArray[z].X - x)) + ((PointArray[z].Y - y) * (PointArray[z].Y - y)));
-                if (Distance < Lowest)
-                {
-                    Lowest = Distance;
-                }
-            }
-            return Lowest;
-        }
-
         #endregion
     }
-
-    #region Structs
-
-    internal struct Points
-    {
-        public float X;
-        public float Y;
-    }
-
-    #endregion
 }

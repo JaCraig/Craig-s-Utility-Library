@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -93,6 +93,21 @@ namespace Utilities.Reflection
                     return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Determines if an object is of a specific type
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Type">Type</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsOfType(object Object, Type Type)
+        {
+            if (Object == null)
+                throw new ArgumentNullException("Object");
+            if (Type == null)
+                throw new ArgumentNullException("Type");
+            return CheckIsOfInterface(Object.GetType(), Type);
         }
 
         /// <summary>
@@ -300,6 +315,27 @@ namespace Utilities.Reflection
         /// <param name="Interface">Interface to look for (also checks base class)</param>
         /// <returns>List of types that use the interface</returns>
         public static System.Collections.Generic.List<Type> GetTypes(Assembly Assembly, string Interface)
+        {
+            System.Collections.Generic.List<Type> ReturnList = new System.Collections.Generic.List<Type>();
+            if (Assembly != null)
+            {
+                Type[] Types = Assembly.GetTypes();
+                foreach (Type Type in Types)
+                {
+                    if (CheckIsOfInterface(Type, Interface))
+                        ReturnList.Add(Type);
+                }
+            }
+            return ReturnList;
+        }
+
+        /// <summary>
+        /// Gets a list of types based on an interface
+        /// </summary>
+        /// <param name="Assembly">Assembly to check</param>
+        /// <param name="Interface">Interface to look for (also checks base class)</param>
+        /// <returns>List of types that use the interface</returns>
+        public static System.Collections.Generic.List<Type> GetTypes(Assembly Assembly, Type Interface)
         {
             System.Collections.Generic.List<Type> ReturnList = new System.Collections.Generic.List<Type>();
             if (Assembly != null)
@@ -610,6 +646,23 @@ namespace Utilities.Reflection
         #endregion
 
         #region Private Static Functions
+
+        /// <summary>
+        /// Checks if the type is of a specific interface type
+        /// </summary>
+        /// <param name="Type">Type to check</param>
+        /// <param name="Interface">Interface to check against</param>
+        /// <returns>True if it is, false otherwise</returns>
+        private static bool CheckIsOfInterface(Type Type, Type Interface)
+        {
+            if (Type == null)
+                return false;
+            if (Type.GetInterface(Interface.Name, true) != null)
+                return true;
+            if (Type==Interface)
+                return true;
+            return CheckIsOfInterface(Type.BaseType, Interface);
+        }
 
         /// <summary>
         /// Checks if the type is of a specific interface type

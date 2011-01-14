@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ namespace Utilities.FileFormats.Delimited
     /// <summary>
     /// Base classs for delimited files (CSV, etc.)
     /// </summary>
-    public class Delimited
+    public abstract class Delimited
     {
         #region Constructor
 
@@ -95,7 +95,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// The delimiter used to seperate values (must be overridden)
         /// </summary>
-        protected virtual string Delimiter { get { return ""; } }
+        protected abstract string Delimiter { get; }
 
         #endregion
 

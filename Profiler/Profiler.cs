@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,13 +35,6 @@ namespace Utilities.Profiler
     /// </summary>
     public class Profiler : IDisposable
     {
-        #region Private Variables
-        private int StartTime = System.Environment.TickCount;
-        private int StopTime = System.Environment.TickCount;
-        private bool Running = true;
-        private string Function = "";
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -49,6 +42,7 @@ namespace Utilities.Profiler
         /// </summary>
         public Profiler()
         {
+            Setup();
         }
 
         /// <summary>
@@ -57,7 +51,7 @@ namespace Utilities.Profiler
         /// <param name="FunctionName">Takes in the function name/identifier</param>
         public Profiler(string FunctionName)
         {
-            Function = FunctionName;
+            Setup(FunctionName);
         }
 
         #endregion
@@ -80,11 +74,29 @@ namespace Utilities.Profiler
             if (Running)
             {
                 Running = false;
-                StopTime = System.Environment.TickCount;
-                ProfilerManager.Instance.AddItem(Function, StartTime, StopTime);
+                StopWatch.Stop();
+                ProfilerManager.Instance.AddItem(Function, StopWatch.StartTime, StopWatch.StopTime);
             }
         }
 
+        #endregion
+
+        #region Private Functions
+
+        private void Setup(string Function="")
+        {
+            StopWatch = new StopWatch();
+            StopWatch.Start();
+            this.Function = Function;
+        }
+
+        #endregion
+
+        #region Private Variables
+
+        private StopWatch StopWatch { get; set; }
+        private bool Running = true;
+        private string Function { get; set; }
         #endregion
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -44,6 +44,8 @@ namespace Utilities.Media.Image.Procedural
         {
             _Width = Width;
             _Height = Height;
+            MinDistance = float.MaxValue;
+            MaxDistance = float.MinValue;
             Random.Random Rand = new Random.Random(Seed);
             Distances = new float[Width, Height];
             ClosestPoint = new int[Width, Height];
@@ -95,6 +97,10 @@ namespace Utilities.Media.Image.Procedural
             }
             ClosestPoint[x, y] = Index;
             Distances[x, y] = MaxDistance;
+            if (MaxDistance < this.MinDistance)
+                this.MinDistance = MaxDistance;
+            if (MaxDistance > this.MaxDistance)
+                this.MaxDistance = MaxDistance;
         }
 
         #endregion
@@ -110,6 +116,16 @@ namespace Utilities.Media.Image.Procedural
         /// Distances to the closest cell
         /// </summary>
         public float[,] Distances { get; set; }
+
+        /// <summary>
+        /// Minimum distance to a point
+        /// </summary>
+        public float MinDistance { get; set; }
+
+        /// <summary>
+        /// Maximum distance to a point
+        /// </summary>
+        public float MaxDistance { get; set; }
 
         #endregion
 

@@ -21,49 +21,63 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
 #endregion
 
-namespace Utilities.Web.Email.MIME.CodeTypes
+namespace Utilities.Profiler
 {
     /// <summary>
-    /// Base 64 coder
+    /// Acts as a stop watch (records start and stop times)
     /// </summary>
-    public class CodeBase64:Code
+    public class StopWatch
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public CodeBase64()
+        public StopWatch()
         {
         }
+
         #endregion
 
-        #region Public Overridden Functions
-        public override void Decode(string Input, out byte[] Output)
+        #region Functions
+
+        /// <summary>
+        /// Starts the stop watch
+        /// </summary>
+        public void Start()
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input can not be null");
-            Output = System.Convert.FromBase64String(Input);
+            StopTime = StartTime = System.Environment.TickCount;
         }
 
-        public override string Encode(byte[] Input)
+        /// <summary>
+        /// Stops the stop watch
+        /// </summary>
+        public void Stop()
         {
-            if (Input==null)
-                throw new ArgumentNullException("Input can not be null");
-            string TempString = System.Convert.ToBase64String(Input);
-            int MAX = 76;
-            int Index = 0;
-            StringBuilder TempBuilder = new StringBuilder();
-            while ((Index + MAX) < TempString.Length)
-            {
-                TempBuilder.AppendFormat("{0}\r\n", TempString.Substring(Index, MAX));
-                Index += MAX;
-            }
-            TempBuilder.AppendFormat("{0}", TempString.Substring(Index, TempString.Length - Index));
-            return TempBuilder.ToString();
+            StopTime = System.Environment.TickCount;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Start time in ticks
+        /// </summary>
+        public int StartTime { get; private set; }
+
+        /// <summary>
+        /// Stop time in ticks
+        /// </summary>
+        public int StopTime { get; private set; }
+
+        /// <summary>
+        /// Returns the elapsed time
+        /// </summary>
+        public int ElapsedTime { get { return StopTime - StartTime; } }
+
         #endregion
     }
 }

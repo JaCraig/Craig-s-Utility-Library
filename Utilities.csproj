@@ -117,6 +117,7 @@
     <Compile Include="DataTypes\PriorityQueue.cs" />
     <Compile Include="DataTypes\Triple.cs" />
     <Compile Include="DataTypes\Vector.cs" />
+    <Compile Include="Environment\ArgsParser.cs" />
     <Compile Include="Environment\DataTypes\Application.cs" />
     <Compile Include="Environment\DataTypes\Applications.cs" />
     <Compile Include="Environment\DataTypes\BIOS.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Environment\DataTypes\Network.cs" />
     <Compile Include="Environment\DataTypes\NetworkAdapter.cs" />
     <Compile Include="Environment\DataTypes\NetworkAddress.cs" />
+    <Compile Include="Environment\Option.cs" />
     <Compile Include="Environment\WMI.cs" />
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Events\EventHelper.cs" />
@@ -168,14 +170,15 @@
     <Compile Include="Math\Math.cs" />
     <Compile Include="Math\Permutation.cs" />
     <Compile Include="Math\Set.cs" />
-    <Compile Include="Media\Image\CellularTexture.cs" />
+    <Compile Include="Media\Image\Procedural\CellularTexture.cs" />
     <Compile Include="Media\Image\ColorMatrix.cs" />
-    <Compile Include="Media\Image\FaultFormation.cs" />
-    <Compile Include="Media\Image\MidpointDisplacement.cs" />
-    <Compile Include="Media\Image\PerlinNoise.cs" />
+    <Compile Include="Media\Image\Procedural\FaultFormation.cs" />
+    <Compile Include="Media\Image\Procedural\MidpointDisplacement.cs" />
+    <Compile Include="Media\Image\Procedural\PerlinNoise.cs" />
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
+    <Compile Include="Profiler\StopWatch.cs" />
     <Compile Include="Reflection\Emit\Assembly.cs" />
     <Compile Include="Reflection\Emit\BaseClasses\CommandBase.cs" />
     <Compile Include="Reflection\Emit\BaseClasses\MethodBase.cs" />

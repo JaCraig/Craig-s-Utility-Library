@@ -20,81 +20,66 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 #endregion
 
-namespace Utilities.FileFormats.XFN
+namespace Utilities.Environment
 {
     /// <summary>
-    /// List used for displaying XFN data
+    /// Contains an individual option
     /// </summary>
-    public class XFNList
+    public class Option
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public XFNList()
+        /// <param name="Text">Option text</param>
+        public Option(string Text,string OptionStarter)
         {
-            People = new List<People>();
+            Regex CommandParser = new Regex(string.Format(@"{0}(?<Command>[^\s]*)\s(?<Parameters>.*)", OptionStarter));
+            Regex ParameterParser = new Regex("(?<Parameter>\"[^\"]*\")[\\s]?|(?<Parameter>[^\\s]*)[\\s]?");
+            Parameters = new List<string>();
+            Match CommandMatch = CommandParser.Match(Text);
+            Command = CommandMatch.Groups["Command"].Value;
+            Text = CommandMatch.Groups["Parameters"].Value;
+            MatchCollection ParameterMatchs = ParameterParser.Matches(Text);
+            foreach (Match ParameterMatch in ParameterMatchs)
+            {
+                if(!string.IsNullOrEmpty(ParameterMatch.Value))
+                {
+                    Parameters.Add(ParameterMatch.Groups["Parameter"].Value);
+                }
+            }
         }
 
         #endregion
 
-        #region Public Properties
+        #region Functions
 
-        /// <summary>
-        /// List of people
-        /// </summary>
-        public List<People> People { get; set; }
-
-        #endregion
-
-        #region Public Overridden Function
-
-        /// <summary>
-        /// Returns an HTML formatted string containing the information
-        /// </summary>
-        /// <returns>An HTML formatted string containing the information</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            foreach (People CurrentPerson in People)
-            {
-                Builder.Append(CurrentPerson.ToString());
-            }
+            Builder.Append("Command: ").Append(Command).Append("\n");
+            Builder.Append("Parameters: ");
+            foreach (string Parameter in Parameters)
+                Builder.Append(Parameter).Append(" ");
+            Builder.Append("\n");
             return Builder.ToString();
         }
 
         #endregion
-    }
 
-    #region Enums
-    /// <summary>
-    /// Enum defining relationships (used for XFN markup)
-    /// </summary>
-    public enum Relationship
-    {
-        Friend,
-        Acquaintance,
-        Contact,
-        Met,
-        CoWorker,
-        Colleague,
-        CoResident,
-        Neighbor,
-        Child,
-        Parent,
-        Sibling,
-        Spouse,
-        Kin,
-        Muse,
-        Crush,
-        Date,
-        Sweetheart,
-        Me
+        #region Properties
+
+        public virtual string Command { get; set; }
+        public virtual List<string> Parameters { get; set; }
+
+        #endregion
     }
-    #endregion
 }

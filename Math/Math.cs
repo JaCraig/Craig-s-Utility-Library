@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -228,6 +228,51 @@ namespace Utilities.Math
         }
 
         /// <summary>
+        /// Returns the min value from the list
+        /// </summary>
+        /// <param name="Input">Input list</param>
+        /// <returns>The minimum value</returns>
+        public static float Min(System.Collections.Generic.List<float> Input)
+        {
+            float ReturnValue = float.MaxValue;
+            foreach (float Value in Input)
+            {
+                ReturnValue = Min(Value, ReturnValue);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Returns the min value from the list
+        /// </summary>
+        /// <param name="Input">Input list</param>
+        /// <returns>The minimum value</returns>
+        public static double Min(System.Collections.Generic.List<double> Input)
+        {
+            double ReturnValue = double.MaxValue;
+            foreach (double Value in Input)
+            {
+                ReturnValue = Min(Value, ReturnValue);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Returns the min value from the list
+        /// </summary>
+        /// <param name="Input">Input list</param>
+        /// <returns>The minimum value</returns>
+        public static int Min(System.Collections.Generic.List<int> Input)
+        {
+            int ReturnValue = int.MaxValue;
+            foreach (int Value in Input)
+            {
+                ReturnValue = Min(Value, ReturnValue);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
         /// Returns the maximum value between the two
         /// </summary>
         /// <param name="InputA">Input A</param>
@@ -258,6 +303,51 @@ namespace Utilities.Math
         public static float Max(float InputA, float InputB)
         {
             return InputA > InputB ? InputA : InputB;
+        }
+
+        /// <summary>
+        /// Returns the max value from the list
+        /// </summary>
+        /// <param name="Input">Input list</param>
+        /// <returns>The maximum value</returns>
+        public static float Max(System.Collections.Generic.List<float> Input)
+        {
+            float ReturnValue = float.MinValue;
+            foreach (float Value in Input)
+            {
+                ReturnValue = Max(Value, ReturnValue);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Returns the max value from the list
+        /// </summary>
+        /// <param name="Input">Input list</param>
+        /// <returns>The maximum value</returns>
+        public static double Max(System.Collections.Generic.List<double> Input)
+        {
+            double ReturnValue = double.MinValue;
+            foreach (double Value in Input)
+            {
+                ReturnValue = Max(Value, ReturnValue);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Returns the max value from the list
+        /// </summary>
+        /// <param name="Input">Input list</param>
+        /// <returns>The maximum value</returns>
+        public static int Max(System.Collections.Generic.List<int> Input)
+        {
+            int ReturnValue = int.MinValue;
+            foreach (int Value in Input)
+            {
+                ReturnValue = Max(Value, ReturnValue);
+            }
+            return ReturnValue;
         }
 
         #endregion
