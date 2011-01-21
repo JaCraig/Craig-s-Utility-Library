@@ -52,7 +52,7 @@ namespace Utilities.DataTypes.Patterns
         /// <param name="Result">The object to be returned</param>
         public void Register(Key Key, T Result)
         {
-            if (Constructors.ContainsKey(Key))
+            if (Exists(Key))
                 Constructors[Key] = new Func<T>(() => Result);
             else
                 Constructors.Add(Key, new Func<T>(() => Result));
@@ -65,7 +65,7 @@ namespace Utilities.DataTypes.Patterns
         /// <param name="Constructor">The function to call when creating the item</param>
         public void Register(Key Key, Func<T> Constructor)
         {
-            if (Constructors.ContainsKey(Key))
+            if (Exists(Key))
                 Constructors[Key] = Constructor;
             else
                 Constructors.Add(Key, Constructor);
@@ -78,9 +78,19 @@ namespace Utilities.DataTypes.Patterns
         /// <returns>The type returned by the initializer</returns>
         public T Create(Key Key)
         {
-            if (Constructors.ContainsKey(Key))
+            if (Exists(Key))
                 return Constructors[Key]();
             return default(T);
+        }
+
+        /// <summary>
+        /// Determines if a key has been registered
+        /// </summary>
+        /// <param name="Key">Key to check</param>
+        /// <returns>True if it exists, false otherwise</returns>
+        public bool Exists(Key Key)
+        {
+            return Constructors.ContainsKey(Key);
         }
 
         #endregion
