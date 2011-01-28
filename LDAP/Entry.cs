@@ -213,6 +213,22 @@ namespace Utilities.LDAP
         }
 
         /// <summary>
+        /// Gets a value from the entry
+        /// </summary>
+        /// <param name="Property">Property you want the information about</param>
+        /// <param name="Index">Index of the property to return</param>
+        /// <returns>an object containing the property's information</returns>
+        public object GetValue(string Property, int Index)
+        {
+            PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
+            if (Collection != null)
+            {
+                return Collection[Index];
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Sets a property of the entry to a specific value
         /// </summary>
         /// <param name="Property">Property of the entry to set</param>
@@ -225,6 +241,22 @@ namespace Utilities.LDAP
                 Collection.Value = Value;
             }
         }
+
+        /// <summary>
+        /// Sets a property of the entry to a specific value
+        /// </summary>
+        /// <param name="Property">Property of the entry to set</param>
+        /// <param name="Index">Index of the property to set</param>
+        /// <param name="Value">Value to set the property to</param>
+        public void SetValue(string Property,int Index, object Value)
+        {
+            PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
+            if (Collection != null)
+            {
+                Collection[Index] = Value;
+            }
+        }
+
         #endregion
 
         #region Private Variables

@@ -114,6 +114,23 @@ namespace Utilities.Environment.DataTypes
 
         private Network _Network = null;
 
+        /// <summary>
+        /// Operating system info
+        /// </summary>
+        public OperatingSystem OperatingSystem
+        {
+            get
+            {
+                if (_OperatingSystem==null)
+                {
+                    _OperatingSystem = new OperatingSystem(Name, UserName, Password);
+                }
+                return _OperatingSystem;
+            }
+        }
+
+        private OperatingSystem _OperatingSystem = null;
+
 
         #endregion
     }
