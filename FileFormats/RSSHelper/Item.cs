@@ -230,10 +230,13 @@ namespace Utilities.FileFormats.RSSHelper
                 ItemString.Append("<category>").Append(Category).Append("</category>\r\n");
             }
             ItemString.Append("<pubDate>").Append(PubDate.ToString("r")).Append("</pubDate>\r\n");
-            ItemString.Append(Enclosure.ToString());
-            ItemString.Append(Thumbnail.ToString());
+            if(Enclosure!=null)
+                ItemString.Append(Enclosure.ToString());
+            if(Thumbnail!=null)
+                ItemString.Append(Thumbnail.ToString());
             ItemString.Append("<description><![CDATA[").Append(Description).Append("]]></description>\r\n");
-            ItemString.Append(GUID.ToString());
+            if (GUID != null)
+                ItemString.Append(GUID.ToString());
             ItemString.Append("<itunes:subtitle>").Append(Title).Append("</itunes:subtitle>");
             ItemString.Append("<itunes:summary><![CDATA[").Append(Description).Append("]]></itunes:summary>");
             ItemString.Append("</item>\r\n");

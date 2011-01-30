@@ -284,7 +284,7 @@ namespace Utilities.FileFormats.RSSHelper
             ChannelString.Append("<channel>");
             ChannelString.Append("<title>").Append(Title).Append("</title>\r\n");
             ChannelString.Append("<link>").Append(Link).Append("</link>\r\n");
-            ChannelString.Append("<atom:link xmlns:atom=\"http://www.w3.org/2005/Atom\" rel=\"self\" href=\"").Append(Link).Append("\" type=\"application/rss).Append(xml\" />");
+            ChannelString.Append("<atom:link xmlns:atom=\"http://www.w3.org/2005/Atom\" rel=\"self\" href=\"").Append(Link).Append("\" type=\"application/rss+xml\" />");
 
             ChannelString.Append("<description><![CDATA[").Append(Description).Append("]]></description>\r\n");
             ChannelString.Append("<language>").Append(Language).Append("</language>\r\n");
