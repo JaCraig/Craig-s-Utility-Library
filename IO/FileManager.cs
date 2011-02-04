@@ -408,7 +408,7 @@ namespace Utilities.IO
                 byte[] Buffer = new byte[1024];
                 using (MemoryStream TempReader = new MemoryStream())
                 {
-                    while (Reader.Read(Buffer, 0, 1024) == 1024)
+                    while (Reader.Read(Buffer, 0, 1024) > 0)
                     {
                         TempReader.Write(Buffer, 0, Buffer.Length);
                     }

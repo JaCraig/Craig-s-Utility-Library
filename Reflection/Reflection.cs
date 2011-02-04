@@ -219,13 +219,16 @@ namespace Utilities.Reflection
             {
                 try
                 {
-                    if (SimpleTypesOnly)
+                    if (Property.GetGetMethod() != null && Property.GetSetMethod() != null)
                     {
-                        SetPropertyifSimpleType(Property, ClassInstance, Object);
-                    }
-                    else
-                    {
-                        SetProperty(Property, ClassInstance, Object);
+                        if (SimpleTypesOnly)
+                        {
+                            SetPropertyifSimpleType(Property, ClassInstance, Object);
+                        }
+                        else
+                        {
+                            SetProperty(Property, ClassInstance, Object);
+                        }
                     }
                 }
                 catch { }
@@ -761,7 +764,10 @@ namespace Utilities.Reflection
         {
             try
             {
-                SetPropertyifSimpleType(Property, Property, ClassInstance, Object);
+                if (Property.GetGetMethod() != null && Property.GetSetMethod() != null)
+                {
+                    SetPropertyifSimpleType(Property, Property, ClassInstance, Object);
+                }
             }
             catch { }
         }
@@ -776,7 +782,10 @@ namespace Utilities.Reflection
         {
             try
             {
-                SetProperty(Property, Property, ClassInstance, Object);
+                if (Property.GetGetMethod() != null && Property.GetSetMethod() != null)
+                {
+                    SetProperty(Property, Property, ClassInstance, Object);
+                }
             }
             catch { }
         }
