@@ -50,27 +50,24 @@ namespace Utilities.Cisco
         /// <summary>
         /// Title
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Prompt
         /// </summary>
-        public string Prompt { get; set; }
+        public virtual string Prompt { get; set; }
 
         /// <summary>
         /// URL
         /// </summary>
-        public string URL { get; set; }
+        public virtual string URL { get; set; }
 
         /// <summary>
         /// Input items
         /// </summary>
-        public List<InputItem> InputItems { get; set; }
+        public virtual List<InputItem> InputItems { get; set; }
 
-        /// <summary>
-        /// Softkeys list
-        /// </summary>
-        public List<SoftKeyItem> SoftKeys { get; set; }
+        public virtual List<SoftKeyItem> SoftKeys { get; set; }
 
         #endregion
 
@@ -81,13 +78,19 @@ namespace Utilities.Cisco
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<CiscoIPPhoneInput><Title>").Append(Title).Append("</Title><Prompt>")
                 .Append(Prompt).Append("</Prompt><URL>").Append(URL).Append("</URL>");
-            foreach (InputItem Item in InputItems)
+            if (InputItems != null)
             {
-                Builder.Append(Item.ToString());
+                foreach (InputItem Item in InputItems)
+                {
+                    Builder.Append(Item.ToString());
+                }
             }
-            foreach (SoftKeyItem Item in SoftKeys)
+            if (SoftKeys != null)
             {
-                Builder.Append(Item.ToString());
+                foreach (SoftKeyItem Item in SoftKeys)
+                {
+                    Builder.Append(Item.ToString());
+                }
             }
             Builder.Append("</CiscoIPPhoneInput>");
             return Builder.ToString();

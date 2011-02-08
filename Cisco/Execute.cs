@@ -48,7 +48,7 @@ namespace Utilities.Cisco
         /// <summary>
         /// Execute items
         /// </summary>
-        public List<ExecuteItem> ExecuteItems { get; set; }
+        public virtual List<ExecuteItem> ExecuteItems { get; set; }
 
         #endregion
 
@@ -58,9 +58,12 @@ namespace Utilities.Cisco
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<CiscoIPPhoneExecute>");
-            foreach (ExecuteItem Item in ExecuteItems)
+            if (ExecuteItems != null)
             {
-                Builder.Append(Item.ToString());
+                foreach (ExecuteItem Item in ExecuteItems)
+                {
+                    Builder.Append(Item.ToString());
+                }
             }
             Builder.Append("</CiscoIPPhoneExecute>");
             return Builder.ToString();

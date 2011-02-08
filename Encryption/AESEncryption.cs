@@ -53,6 +53,14 @@ namespace Utilities.Encryption
         {
             if (string.IsNullOrEmpty(PlainText))
                 return "";
+            if (string.IsNullOrEmpty(Password))
+                throw new ArgumentNullException("Password");
+            if(string.IsNullOrEmpty(Salt))
+                throw new ArgumentNullException("Salt");
+            if(string.IsNullOrEmpty(HashAlgorithm))
+                throw new ArgumentNullException("HashAlgorithm");
+            if (string.IsNullOrEmpty(InitialVector))
+                throw new ArgumentNullException("InitialVector");
             byte[] InitialVectorBytes = Encoding.ASCII.GetBytes(InitialVector);
             byte[] SaltValueBytes = Encoding.ASCII.GetBytes(Salt);
             byte[] PlainTextBytes = Encoding.UTF8.GetBytes(PlainText);
@@ -97,6 +105,14 @@ namespace Utilities.Encryption
         {
             if (string.IsNullOrEmpty(CipherText))
                 return "";
+            if (string.IsNullOrEmpty(Password))
+                throw new ArgumentNullException("Password");
+            if (string.IsNullOrEmpty(Salt))
+                throw new ArgumentNullException("Salt");
+            if (string.IsNullOrEmpty(HashAlgorithm))
+                throw new ArgumentNullException("HashAlgorithm");
+            if (string.IsNullOrEmpty(InitialVector))
+                throw new ArgumentNullException("InitialVector");
             byte[] InitialVectorBytes = Encoding.ASCII.GetBytes(InitialVector);
             byte[] SaltValueBytes = Encoding.ASCII.GetBytes(Salt);
             byte[] CipherTextBytes = Convert.FromBase64String(CipherText);

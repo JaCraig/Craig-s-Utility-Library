@@ -48,24 +48,21 @@ namespace Utilities.Cisco
         #region Properties
 
         /// <summary>
-        /// Title
+        /// Directory entries
         /// </summary>
-        public string Title { get; set; }
+        public virtual List<DirectoryEntry> DirectoryEntries { get; set; }
 
         /// <summary>
         /// Prompt
         /// </summary>
-        public string Prompt { get; set; }
+        public virtual string Prompt { get; set; }
+
+        public virtual List<SoftKeyItem> SoftKeys { get; set; }
 
         /// <summary>
-        /// Directory entries
+        /// Title
         /// </summary>
-        public List<DirectoryEntry> DirectoryEntries { get; set; }
-
-        /// <summary>
-        /// Softkey entries
-        /// </summary>
-        public List<SoftKeyItem> SoftKeys { get; set; }
+        public virtual string Title { get; set; }
 
         #endregion
 
@@ -76,13 +73,19 @@ namespace Utilities.Cisco
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<CiscoIPPhoneDirectory><Title>").Append(Title).Append("</Title><Prompt>")
                 .Append(Prompt).Append("</Prompt>");
-            foreach (DirectoryEntry Entry in DirectoryEntries)
+            if (DirectoryEntries != null)
             {
-                Builder.Append(Entry.ToString());
+                foreach (DirectoryEntry Entry in DirectoryEntries)
+                {
+                    Builder.Append(Entry.ToString());
+                }
             }
-            foreach (SoftKeyItem Item in SoftKeys)
+            if (SoftKeys != null)
             {
-                Builder.Append(Item.ToString());
+                foreach (SoftKeyItem Item in SoftKeys)
+                {
+                    Builder.Append(Item.ToString());
+                }
             }
             Builder.Append("</CiscoIPPhoneDirectory>");
             return Builder.ToString();

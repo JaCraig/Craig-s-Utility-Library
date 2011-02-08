@@ -47,12 +47,12 @@ namespace Utilities.Cisco
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// URL
         /// </summary>
-        public string URL { get; set; }
+        public virtual string URL { get; set; }
 
         #endregion
 

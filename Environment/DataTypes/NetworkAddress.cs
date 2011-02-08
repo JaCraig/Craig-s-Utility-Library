@@ -46,12 +46,12 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Type of address
         /// </summary>
-        public string Type { get; set; }
+        public virtual string Type { get; set; }
 
         /// <summary>
         /// Actual address
         /// </summary>
-        public string Address { get; set; }
+        public virtual string Address { get; set; }
 
         #endregion
     }

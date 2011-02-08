@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 #endregion
 
+using System;
 namespace Utilities.Environment.DataTypes
 {
     /// <summary>
@@ -39,6 +40,8 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password</param>
         public Computer(string Name, string UserName = "", string Password = "")
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             this.Name = Name;
             this.UserName = UserName;
             this.Password = Password;
@@ -51,22 +54,22 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Computer Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// User Name
         /// </summary>
-        public string UserName { get; set; }
+        public virtual string UserName { get; set; }
 
         /// <summary>
         /// Password
         /// </summary>
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
 
         /// <summary>
         /// BIOS info
         /// </summary>
-        public BIOS BIOS
+        public virtual BIOS BIOS
         {
             get
             {
@@ -78,12 +81,12 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
-        private BIOS _BIOS = null;
+        protected BIOS _BIOS = null;
 
         /// <summary>
         /// Application info
         /// </summary>
-        public Applications Applications
+        public virtual Applications Applications
         {
             get
             {
@@ -95,12 +98,12 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
-        private Applications _Applications = null;
+        protected Applications _Applications = null;
 
         /// <summary>
         /// Network info
         /// </summary>
-        public Network Network
+        public virtual Network Network
         {
             get
             {
@@ -112,12 +115,12 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
-        private Network _Network = null;
+        protected Network _Network = null;
 
         /// <summary>
         /// Operating system info
         /// </summary>
-        public OperatingSystem OperatingSystem
+        public virtual OperatingSystem OperatingSystem
         {
             get
             {
@@ -129,7 +132,7 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
-        private OperatingSystem _OperatingSystem = null;
+        protected OperatingSystem _OperatingSystem = null;
 
 
         #endregion

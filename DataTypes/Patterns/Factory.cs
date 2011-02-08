@@ -34,12 +34,24 @@ namespace Utilities.DataTypes.Patterns
     /// <typeparam name="T">The class type that you want created</typeparam>
     public class Factory<Key, T>
     {
+        #region Constructors
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Factory()
+        {
+            Constructors = new Dictionary<Key, Func<T>>();
+        }
+
+        #endregion
+
         #region Protected Variables
 
         /// <summary>
         /// List of constructors/initializers
         /// </summary>
-        protected Dictionary<Key, Func<T>> Constructors = new Dictionary<Key, Func<T>>();
+        protected virtual Dictionary<Key, Func<T>> Constructors { get; set; }
 
         #endregion
 
@@ -50,7 +62,7 @@ namespace Utilities.DataTypes.Patterns
         /// </summary>
         /// <param name="Key">Item to register</param>
         /// <param name="Result">The object to be returned</param>
-        public void Register(Key Key, T Result)
+        public virtual void Register(Key Key, T Result)
         {
             if (Exists(Key))
                 Constructors[Key] = new Func<T>(() => Result);
@@ -63,7 +75,7 @@ namespace Utilities.DataTypes.Patterns
         /// </summary>
         /// <param name="Key">Item to register</param>
         /// <param name="Constructor">The function to call when creating the item</param>
-        public void Register(Key Key, Func<T> Constructor)
+        public virtual void Register(Key Key, Func<T> Constructor)
         {
             if (Exists(Key))
                 Constructors[Key] = Constructor;
@@ -76,7 +88,7 @@ namespace Utilities.DataTypes.Patterns
         /// </summary>
         /// <param name="Key">Registered item</param>
         /// <returns>The type returned by the initializer</returns>
-        public T Create(Key Key)
+        public virtual T Create(Key Key)
         {
             if (Exists(Key))
                 return Constructors[Key]();
@@ -88,7 +100,7 @@ namespace Utilities.DataTypes.Patterns
         /// </summary>
         /// <param name="Key">Key to check</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool Exists(Key Key)
+        public virtual bool Exists(Key Key)
         {
             return Constructors.ContainsKey(Key);
         }

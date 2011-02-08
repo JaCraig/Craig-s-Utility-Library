@@ -40,13 +40,14 @@ namespace Utilities.DataTypes
         /// </summary>
         public ListMapping()
         {
+            Items = new Dictionary<T1, List<T2>>();
         }
 
         #endregion
 
         #region Private Variables
 
-        protected Dictionary<T1, List<T2>> Items = new Dictionary<T1, List<T2>>();
+        protected virtual Dictionary<T1, List<T2>> Items { get; set; }
 
         #endregion
 

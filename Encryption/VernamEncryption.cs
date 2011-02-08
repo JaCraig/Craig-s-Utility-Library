@@ -62,6 +62,10 @@ namespace Utilities.Encryption
         /// </summary>
         private static string Process(string Input, string Key)
         {
+            if (string.IsNullOrEmpty(Input))
+                throw new ArgumentNullException("Input");
+            if (string.IsNullOrEmpty(Key))
+                throw new ArgumentNullException("Key");
             if (Input.Length != Key.Length)
             {
                 throw new ArgumentException("Key is not the same length as the input string");

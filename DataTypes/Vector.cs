@@ -42,6 +42,7 @@ namespace Utilities.DataTypes
         public Vector()
         {
             Items = new T[DefaultSize];
+            DefaultSize = 2;
         }
 
         /// <summary>
@@ -60,12 +61,12 @@ namespace Utilities.DataTypes
 
         #region IList<T> Members
 
-        public int IndexOf(T item)
+        public virtual int IndexOf(T item)
         {
             return Array.IndexOf<T>(this.Items, item, 0, this.NumberItems);
         }
 
-        public void Insert(int index, T item)
+        public virtual void Insert(int index, T item)
         {
             if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
 
@@ -82,7 +83,7 @@ namespace Utilities.DataTypes
             EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
         }
 
-        public void RemoveAt(int index)
+        public virtual void RemoveAt(int index)
         {
             if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
 
@@ -95,7 +96,7 @@ namespace Utilities.DataTypes
             EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
         }
 
-        public T this[int index]
+        public virtual T this[int index]
         {
             get
             {
@@ -114,39 +115,39 @@ namespace Utilities.DataTypes
 
         #region ICollection<T> Members
 
-        public void Add(T item)
+        public virtual void Add(T item)
         {
             Insert(this.NumberItems, item);
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             Array.Clear(this.Items, 0, this.Items.Length);
             this.NumberItems = 0;
             EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
         }
 
-        public bool Contains(T item)
+        public virtual bool Contains(T item)
         {
             return (this.IndexOf(item) >= 0);
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public virtual void CopyTo(T[] array, int arrayIndex)
         {
             Array.Copy(this.Items, 0, array, arrayIndex, this.NumberItems);
         }
 
-        public int Count
+        public virtual int Count
         {
             get { return this.NumberItems; }
         }
 
-        public bool IsReadOnly
+        public virtual bool IsReadOnly
         {
             get { return false; }
         }
 
-        public bool Remove(T item)
+        public virtual bool Remove(T item)
         {
             int Index = this.IndexOf(item);
             if (Index > 0)
@@ -161,7 +162,7 @@ namespace Utilities.DataTypes
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public virtual IEnumerator<T> GetEnumerator()
         {
             for (int x = 0; x < this.NumberItems; ++x)
             {
@@ -185,14 +186,30 @@ namespace Utilities.DataTypes
 
         #region Protected Variables/Properties
 
-        protected int DefaultSize = 2;
+        /// <summary>
+        /// Default size
+        /// </summary>
+        protected virtual int DefaultSize { get; set; }
+
+        /// <summary>
+        /// Internal list of items
+        /// </summary>
         protected T[] Items = null;
-        protected int NumberItems { get; set; }
+        
+        /// <summary>
+        /// Number of items in the list
+        /// </summary>
+        protected virtual int NumberItems { get; set; }
 
         #endregion
 
         #region Events
-        public EventHandler<ChangedEventArgs> Changed;
+        
+        /// <summary>
+        /// Event that is fired when the vector is changed
+        /// </summary>
+        public virtual EventHandler<ChangedEventArgs> Changed { get; set; }
+
         #endregion
     }
 }

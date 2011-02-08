@@ -87,21 +87,21 @@ namespace Utilities.DataTypes
         /// <returns>returns the int value for the day of the week</returns>
         public static int DayToInt(string DayOfWeek)
         {
-            switch (DayOfWeek)
+            switch (DayOfWeek.ToLower())
             {
-                case "Sunday":
+                case "sunday":
                     return 1;
-                case "Monday":
+                case "monday":
                     return 2;
-                case "Tuesday":
+                case "tuesday":
                     return 3;
-                case "Wednesday":
+                case "wednesday":
                     return 4;
-                case "Thursday":
+                case "thursday":
                     return 5;
-                case "Friday":
+                case "friday":
                     return 6;
-                case "Saturday":
+                case "saturday":
                     return 7;
             }
             return 0;
@@ -152,31 +152,31 @@ namespace Utilities.DataTypes
         /// <returns>returns the string value for the month</returns>
         public static int StringToIntMonth(string Month)
         {
-            switch (Month)
+            switch (Month.ToLower())
             {
-                case "January":
+                case "january":
                     return 1;
-                case "February":
+                case "february":
                     return 2;
-                case "March":
+                case "march":
                     return 3;
-                case "April":
+                case "april":
                     return 4;
-                case "May":
+                case "may":
                     return 5;
-                case "June":
+                case "june":
                     return 6;
-                case "July":
+                case "july":
                     return 7;
-                case "August":
+                case "august":
                     return 8;
-                case "September":
+                case "september":
                     return 9;
-                case "October":
+                case "october":
                     return 10;
-                case "November":
+                case "november":
                     return 11;
-                case "December":
+                case "december":
                     return 12;
                 default:
                     return 0;
@@ -216,6 +216,8 @@ namespace Utilities.DataTypes
         /// <returns>ASCII string of the byte array</returns>
         public static string ByteArrayToASCIIString(byte[] Input)
         {
+            if (Input == null)
+                return "";
             ASCIIEncoding Encoding = new ASCIIEncoding();
             return Encoding.GetString(Input);
         }
@@ -227,6 +229,8 @@ namespace Utilities.DataTypes
         /// <returns>Unicode string of the byte array</returns>
         public static string ByteArrayToUnicodeString(byte[] Input)
         {
+            if (Input == null)
+                return "";
             UnicodeEncoding Encoding = new UnicodeEncoding();
             return Encoding.GetString(Input);
         }
@@ -238,6 +242,8 @@ namespace Utilities.DataTypes
         /// <returns>Byte array of the string</returns>
         public static byte[] ASCIIStringToByteArray(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return null;
             ASCIIEncoding Encoding = new ASCIIEncoding();
             return Encoding.GetBytes(Input);
         }
@@ -249,6 +255,8 @@ namespace Utilities.DataTypes
         /// <returns>Byte array of the string</returns>
         public static byte[] UnicodeStringToByteArray(string Input)
         {
+            if(string.IsNullOrEmpty(Input))
+                return null;
             UnicodeEncoding Encoding = new UnicodeEncoding();
             return Encoding.GetBytes(Input);
         }

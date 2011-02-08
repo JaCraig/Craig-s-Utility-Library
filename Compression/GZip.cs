@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.IO;
 using System.IO.Compression;
+using System;
 #endregion
 
 namespace Utilities.Compression
@@ -40,6 +41,8 @@ namespace Utilities.Compression
         /// <returns>A byte array of compressed data</returns>
         public static byte[] Compress(byte[] Bytes)
         {
+            if (Bytes == null)
+                throw new ArgumentNullException("Bytes");
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (GZipStream ZipStream = new GZipStream(Stream, CompressionMode.Compress, true))
@@ -58,6 +61,8 @@ namespace Utilities.Compression
         /// <returns>A byte array of decompressed data</returns>
         public static byte[] Decompress(byte[] Bytes)
         {
+            if (Bytes == null)
+                throw new ArgumentNullException("Bytes");
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (GZipStream ZipStream = new GZipStream(new MemoryStream(Bytes), CompressionMode.Decompress, true))

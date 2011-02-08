@@ -60,12 +60,12 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Left hand item
         /// </summary>
-        public T1 Left { get; set; }
+        public virtual T1 Left { get; set; }
 
         /// <summary>
         /// Right hand item
         /// </summary>
-        public T2 Right { get; set; }
+        public virtual T2 Right { get; set; }
 
         #endregion
 

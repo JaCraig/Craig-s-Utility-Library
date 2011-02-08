@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using System;
 #endregion
 
 namespace Utilities.Environment
@@ -38,6 +39,8 @@ namespace Utilities.Environment
         /// <param name="ProcessName">Name of the process without the ending (ie iexplore instead of iexplore.exe)</param>
         public static void KillProcess(string ProcessName)
         {
+            if (string.IsNullOrEmpty(ProcessName))
+                throw new ArgumentNullException("ProcessName");
             KillProcessAsync(ProcessName, 0);
         }
 
@@ -48,6 +51,8 @@ namespace Utilities.Environment
         /// <param name="TimeToKill">Amount of time (in ms) until the process is killed.</param>
         public static void KillProcess(string ProcessName, int TimeToKill)
         {
+            if (string.IsNullOrEmpty(ProcessName))
+                throw new ArgumentNullException("ProcessName");
             ThreadPool.QueueUserWorkItem(delegate { KillProcessAsync(ProcessName, TimeToKill); });
         }
 

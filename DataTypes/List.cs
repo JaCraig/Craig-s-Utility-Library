@@ -34,7 +34,7 @@ namespace Utilities.DataTypes
     public class List<T> : System.Collections.Generic.List<T>
     {
         #region Events
-        public EventHandler<ChangedEventArgs> Changed;
+        public virtual EventHandler<ChangedEventArgs> Changed { get; set; }
         #endregion
 
         #region Public Functions
@@ -127,7 +127,10 @@ namespace Utilities.DataTypes
             }
         }
 
-        public string PropertyName { get; set; }
+        /// <summary>
+        /// If set, it will set the Content property of the event args with this value
+        /// </summary>
+        public virtual string PropertyName { get; set; }
 
         #endregion
     }

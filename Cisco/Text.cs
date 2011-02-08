@@ -30,7 +30,7 @@ namespace Utilities.Cisco
     /// <summary>
     /// Text class
     /// </summary>
-    public class Text:IDisplay
+    public class Text : IDisplay
     {
         #region Constructor
 
@@ -49,22 +49,19 @@ namespace Utilities.Cisco
         /// <summary>
         /// Title
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Prompt
         /// </summary>
-        public string Prompt { get; set; }
+        public virtual string Prompt { get; set; }
 
         /// <summary>
         /// Text
         /// </summary>
-        public string Content { get; set; }
+        public virtual string Content { get; set; }
 
-        /// <summary>
-        /// Softkey list
-        /// </summary>
-        public List<SoftKeyItem> SoftKeys { get; set; }
+        public virtual List<SoftKeyItem> SoftKeys { get; set; }
 
         #endregion
 
@@ -72,15 +69,18 @@ namespace Utilities.Cisco
 
         public override string ToString()
         {
-                StringBuilder Builder = new StringBuilder();
-                Builder.Append("<CiscoIPPhoneText><Title>").Append(Title).Append("</Title><Prompt>")
-                    .Append(Prompt).Append("</Prompt><Text>").Append(Content).Append("</Text>");
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<CiscoIPPhoneText><Title>").Append(Title).Append("</Title><Prompt>")
+                .Append(Prompt).Append("</Prompt><Text>").Append(Content).Append("</Text>");
+            if (SoftKeys != null)
+            {
                 foreach (SoftKeyItem Item in SoftKeys)
                 {
                     Builder.Append(Item.ToString());
                 }
-                Builder.Append("</CiscoIPPhoneText>");
-                return Builder.ToString();
+            }
+            Builder.Append("</CiscoIPPhoneText>");
+            return Builder.ToString();
         }
 
         #endregion

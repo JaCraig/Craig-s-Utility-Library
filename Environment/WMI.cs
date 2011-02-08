@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using Utilities.Environment.DataTypes;
+using System;
 #endregion
 
 namespace Utilities.Environment
@@ -41,6 +42,8 @@ namespace Utilities.Environment
         /// <returns>The computer's information</returns>
         public static Computer GetComputerInfo(string ComputerName, string UserName = "", string Password = "")
         {
+            if (string.IsNullOrEmpty(ComputerName))
+                throw new ArgumentNullException("ComputerName");
             return new Computer(ComputerName, UserName, Password);
         }
 

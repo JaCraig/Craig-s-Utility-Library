@@ -43,8 +43,14 @@ namespace Utilities.DataTypes
             NumberOfNodes = 0;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Root">Root of the binary tree</param>
         public BinaryTree(TreeNode<T> Root)
         {
+            if (Root == null)
+                throw new ArgumentNullException("Root");
             this.Root = Root;
             foreach (TreeNode<T> Node in Traversal(Root))
             {
@@ -58,22 +64,22 @@ namespace Utilities.DataTypes
         /// <summary>
         /// The root value
         /// </summary>
-        public TreeNode<T> Root { get; set; }
+        public virtual TreeNode<T> Root { get; set; }
 
         /// <summary>
         /// The number of nodes in the tree
         /// </summary>
-        protected int NumberOfNodes { get; set; }
+        protected virtual int NumberOfNodes { get; set; }
 
         /// <summary>
         /// Is the tree empty
         /// </summary>
-        public bool IsEmpty { get { return Root == null; } }
+        public virtual bool IsEmpty { get { return Root == null; } }
 
         /// <summary>
         /// Gets the minimum value of the tree
         /// </summary>
-        public T MinValue
+        public virtual T MinValue
         {
             get
             {
@@ -89,7 +95,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Gets the maximum value of the tree
         /// </summary>
-        public T MaxValue
+        public virtual T MaxValue
         {
             get
             {
@@ -106,7 +112,7 @@ namespace Utilities.DataTypes
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public virtual IEnumerator<T> GetEnumerator()
         {
             foreach (TreeNode<T> TempNode in Traversal(Root))
             {
@@ -130,7 +136,7 @@ namespace Utilities.DataTypes
 
         #region ICollection<T> Members
 
-        public void Add(T item)
+        public virtual void Add(T item)
         {
             if (Root == null)
             {
@@ -143,13 +149,13 @@ namespace Utilities.DataTypes
             }
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             Root = null;
             NumberOfNodes = 0;
         }
 
-        public bool Contains(T item)
+        public virtual bool Contains(T item)
         {
             if (IsEmpty)
                 return false;
@@ -168,7 +174,7 @@ namespace Utilities.DataTypes
             return false;
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public virtual void CopyTo(T[] array, int arrayIndex)
         {
             T[] TempArray = new T[NumberOfNodes];
             int Counter = 0;
@@ -180,17 +186,17 @@ namespace Utilities.DataTypes
             Array.Copy(TempArray, 0, array, arrayIndex, this.NumberOfNodes);
         }
 
-        public int Count
+        public virtual int Count
         {
             get { return NumberOfNodes; }
         }
 
-        public bool IsReadOnly
+        public virtual bool IsReadOnly
         {
             get { return false; }
         }
 
-        public bool Remove(T item)
+        public virtual bool Remove(T item)
         {
             TreeNode<T> Item = Find(item);
             if (Item == null)
@@ -237,7 +243,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">The item to find</param>
         /// <returns>The node if it is found</returns>
-        protected TreeNode<T> Find(T item)
+        protected virtual TreeNode<T> Find(T item)
         {
             foreach (TreeNode<T> Item in Traversal(Root))
                 if (Item.Value.Equals(item))
@@ -250,7 +256,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Node">The node to start the search from</param>
         /// <returns>The individual items from the tree</returns>
-        protected IEnumerable<TreeNode<T>> Traversal(TreeNode<T> Node)
+        protected virtual IEnumerable<TreeNode<T>> Traversal(TreeNode<T> Node)
         {
             if (Node.Left != null)
             {
@@ -269,7 +275,7 @@ namespace Utilities.DataTypes
         /// Inserts a value
         /// </summary>
         /// <param name="item">item to insert</param>
-        protected void Insert(T item)
+        protected virtual void Insert(T item)
         {
             TreeNode<T> TempNode = Root;
             bool Found = false;
@@ -369,32 +375,32 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Value of the node
         /// </summary>
-        public T Value { get; set; }
+        public virtual T Value { get; set; }
 
         /// <summary>
         /// Parent node
         /// </summary>
-        public TreeNode<T> Parent { get; set; }
+        public virtual TreeNode<T> Parent { get; set; }
 
         /// <summary>
         /// Left node
         /// </summary>
-        public TreeNode<T> Left { get; set; }
+        public virtual TreeNode<T> Left { get; set; }
 
         /// <summary>
         /// Right node
         /// </summary>
-        public TreeNode<T> Right { get; set; }
+        public virtual TreeNode<T> Right { get; set; }
 
         /// <summary>
         /// Is this the root
         /// </summary>
-        public bool IsRoot { get { return Parent == null; } }
+        public virtual bool IsRoot { get { return Parent == null; } }
 
         /// <summary>
         /// Is this a leaf
         /// </summary>
-        public bool IsLeaf { get { return Left == null && Right == null; } }
+        public virtual bool IsLeaf { get { return Left == null && Right == null; } }
 
         internal bool Visited { get; set; }
 

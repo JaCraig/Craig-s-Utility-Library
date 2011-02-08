@@ -46,12 +46,12 @@ namespace Utilities.Cisco
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Telephone
         /// </summary>
-        public string Telephone { get; set; }
+        public virtual string Telephone { get; set; }
 
         #endregion
 

@@ -46,12 +46,12 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Description of the adapter
         /// </summary>
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         /// <summary>
         /// MAC address
         /// </summary>
-        public string MACAddress { get; set; }
+        public virtual string MACAddress { get; set; }
 
         #endregion
     }

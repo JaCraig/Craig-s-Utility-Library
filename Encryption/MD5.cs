@@ -40,6 +40,8 @@ namespace Utilities.Encryption
         /// <returns>A hash of the input string using MD5</returns>
         public static string ComputeHash(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                throw new ArgumentNullException("Input");
             MD5CryptoServiceProvider MD5 = new MD5CryptoServiceProvider();
             byte[] InputArray = System.Text.Encoding.ASCII.GetBytes(Input);
             byte[] HashedArray = MD5.ComputeHash(InputArray);

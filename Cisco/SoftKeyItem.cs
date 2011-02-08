@@ -46,22 +46,22 @@ namespace Utilities.Cisco
         /// <summary>
         /// Name of the softkey
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// URL action for release event
         /// </summary>
-        public string URL { get; set; }
+        public virtual string URL { get; set; }
 
         /// <summary>
         /// URL action for press event
         /// </summary>
-        public string URLDown { get; set; }
+        public virtual string URLDown { get; set; }
 
         /// <summary>
         /// position of softkey
         /// </summary>
-        public int Position { get; set; }
+        public virtual int Position { get; set; }
 
         #endregion
 

@@ -39,6 +39,7 @@ namespace Utilities.DataTypes
         public PriorityQueue()
             : base()
         {
+            HighestKey = int.MinValue;
         }
 
         #endregion
@@ -48,7 +49,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Peek at the next thing in the queue
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The next item in queue or default(T) if it is empty</returns>
         public virtual T Peek()
         {
             if (Items.ContainsKey(HighestKey))
@@ -69,7 +70,7 @@ namespace Utilities.DataTypes
         /// Removes an item from the queue and returns it
         /// </summary>
         /// <returns>The next item in the queue</returns>
-        public T Remove()
+        public virtual T Remove()
         {
             T ReturnValue = default(T);
             if (Items.ContainsKey(HighestKey) && Items[HighestKey].Count >= 1)
@@ -94,7 +95,10 @@ namespace Utilities.DataTypes
 
         #region Protected Variables
 
-        protected int HighestKey = int.MinValue;
+        /// <summary>
+        /// Highest value key
+        /// </summary>
+        protected virtual int HighestKey { get; set; }
 
         #endregion
     }

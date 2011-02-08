@@ -42,6 +42,8 @@ namespace Utilities.Environment
         /// <param name="OptionStarter">The text to determine where an option starts</param>
         public ArgsParser(string OptionStarter = "/")
         {
+            if (string.IsNullOrEmpty(OptionStarter))
+                throw new ArgumentNullException("OptionStarter");
             this.OptionStarter = OptionStarter;
             OptionRegex = new Regex(string.Format("({0}[^\\s]*)[\\s|\\S|$]([^\"{0}]*)|(\"[^\"]*\")", OptionStarter));
         }
@@ -55,8 +57,10 @@ namespace Utilities.Environment
         /// </summary>
         /// <param name="Args">Args to parse</param>
         /// <returns>A list of options</returns>
-        public List<Option> Parse(string[] Args)
+        public virtual List<Option> Parse(string[] Args)
         {
+            if (Args == null)
+                return new List<Option>();
             List<Option> Result = new List<Option>();
             string Text = "";
             string Splitter = "";
@@ -84,7 +88,14 @@ namespace Utilities.Environment
 
         #region Properties
 
+        /// <summary>
+        /// Option regex
+        /// </summary>
         protected virtual Regex OptionRegex { get; set; }
+
+        /// <summary>
+        /// String that starts an option
+        /// </summary>
         protected virtual string OptionStarter { get; set; }
 
         #endregion

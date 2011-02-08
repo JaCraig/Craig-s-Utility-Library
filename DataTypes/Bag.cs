@@ -39,19 +39,14 @@ namespace Utilities.DataTypes
         /// </summary>
         public Bag()
         {
+            Items = new Dictionary<T, int>();
         }
-
-        #endregion
-
-        #region Private Variables
-
-        protected Dictionary<T, int> Items = new Dictionary<T, int>();
 
         #endregion
 
         #region ICollection<T> Members
 
-        public void Add(T item)
+        public virtual void Add(T item)
         {
             if (Items.ContainsKey(item))
                 ++Items[item];
@@ -59,12 +54,12 @@ namespace Utilities.DataTypes
                 Items.Add(item, 1);
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             Items.Clear();
         }
 
-        public bool Contains(T item)
+        public virtual bool Contains(T item)
         {
             return Items.ContainsKey(item);
         }
@@ -74,22 +69,22 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="array">Not used</param>
         /// <param name="arrayIndex">Not used</param>
-        public void CopyTo(T[] array, int arrayIndex)
+        public virtual void CopyTo(T[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
-        public int Count
+        public virtual int Count
         {
             get { return Items.Count; }
         }
 
-        public bool IsReadOnly
+        public virtual bool IsReadOnly
         {
             get { return false; }
         }
 
-        public bool Remove(T item)
+        public virtual bool Remove(T item)
         {
             return Items.Remove(item);
         }
@@ -98,7 +93,7 @@ namespace Utilities.DataTypes
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public virtual IEnumerator<T> GetEnumerator()
         {
             foreach (T Key in this.Items.Keys)
             {
@@ -122,11 +117,16 @@ namespace Utilities.DataTypes
 
         #region Properties
 
-        public int this[T index]
+        public virtual int this[T index]
         {
             get { return Items[index]; }
             set { Items[index] = value; }
         }
+
+        /// <summary>
+        /// Actual internal container
+        /// </summary>
+        protected virtual Dictionary<T, int> Items { get; set; }
 
         #endregion
     }

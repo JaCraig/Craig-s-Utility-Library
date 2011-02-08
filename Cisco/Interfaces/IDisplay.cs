@@ -31,9 +31,13 @@ namespace Utilities.Cisco.Interfaces
     /// </summary>
     public interface IDisplay
     {
+        #region Properties
+
         /// <summary>
         /// Softkey items
         /// </summary>
         List<SoftKeyItem> SoftKeys { get; set; }
+
+        #endregion
     }
 }

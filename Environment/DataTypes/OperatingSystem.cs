@@ -44,6 +44,8 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">Username</param>
         public OperatingSystem(string Name = "", string UserName = "", string Password = "")
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             GetOperatingSystemInfo(Name, UserName, Password);
         }
 
@@ -51,14 +53,16 @@ namespace Utilities.Environment.DataTypes
 
         #region Properties
 
-        public DateTime LastBootUpTime { get; set; }
+        public virtual DateTime LastBootUpTime { get; set; }
 
         #endregion
 
-        #region Private Functions
+        #region Functions
 
-        private void GetOperatingSystemInfo(string Name, string UserName, string Password)
+        protected virtual void GetOperatingSystemInfo(string Name, string UserName, string Password)
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {

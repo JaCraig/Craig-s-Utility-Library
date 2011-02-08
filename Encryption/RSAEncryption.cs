@@ -47,6 +47,10 @@ namespace Utilities.Encryption
         /// <returns>An encrypted string (64bit string)</returns>
         public static string Encrypt(string Input, string Key)
         {
+            if (string.IsNullOrEmpty(Input))
+                throw new ArgumentNullException("Input");
+            if (string.IsNullOrEmpty(Key))
+                throw new ArgumentNullException("Key");
             RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
             RSA.FromXmlString(Key);
             ASCIIEncoding Encoding = new ASCIIEncoding();
@@ -64,6 +68,10 @@ namespace Utilities.Encryption
         /// <returns>A decrypted string</returns>
         public static string Decrypt(string Input, string Key)
         {
+            if (string.IsNullOrEmpty(Input))
+                throw new ArgumentNullException("Input");
+            if (string.IsNullOrEmpty(Key))
+                throw new ArgumentNullException("Key");
             RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
             RSA.FromXmlString(Key);
             byte[] InputArray = Convert.FromBase64String(Input);
@@ -95,6 +103,10 @@ namespace Utilities.Encryption
         /// <returns>A signed hash of the input (64bit string)</returns>
         public static string SignHash(string Input,string Key,out string Hash)
         {
+            if (string.IsNullOrEmpty(Input))
+                throw new ArgumentNullException("Input");
+            if (string.IsNullOrEmpty(Key))
+                throw new ArgumentNullException("Key");
             RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
             RSA.FromXmlString(Key);
             ASCIIEncoding Encoding = new ASCIIEncoding();
@@ -117,6 +129,12 @@ namespace Utilities.Encryption
         /// <returns>True if it is verified, false otherwise</returns>
         public static bool VerifyHash(string Hash, string SignedHash, string Key)
         {
+            if (string.IsNullOrEmpty(Hash))
+                throw new ArgumentNullException("Hash");
+            if (string.IsNullOrEmpty(SignedHash))
+                throw new ArgumentNullException("SignedHash");
+            if (string.IsNullOrEmpty(Key))
+                throw new ArgumentNullException("Key");
             RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
             RSA.FromXmlString(Key);
             byte[] InputArray = Convert.FromBase64String(SignedHash);

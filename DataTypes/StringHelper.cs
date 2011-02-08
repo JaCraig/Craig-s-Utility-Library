@@ -60,6 +60,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting string</returns>
         public static string Left(string Input, int Length)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             return Input.Substring(0, Input.Length > Length ? Length : Input.Length);
         }
 
@@ -71,6 +73,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting string</returns>
         public static string Right(string Input, int Length)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             Length = Input.Length > Length ? Length : Input.Length;
             return Input.Substring(Input.Length - Length, Length);
         }
@@ -83,7 +87,7 @@ namespace Utilities.DataTypes
         public static string ToFirstCharacterUpperCase(string Input)
         {
             if (string.IsNullOrEmpty(Input))
-                return null;
+                return "";
             char[] InputChars = Input.ToCharArray();
             for (int x = 0; x < InputChars.Length; ++x)
             {
@@ -103,6 +107,8 @@ namespace Utilities.DataTypes
         /// <returns>String with each sentence capitalized</returns>
         public static string ToSentenceCapitalize(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             string[] Seperator = { ".", "?", "!" };
             string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
             for (int x = 0; x < InputStrings.Length; ++x)
@@ -124,6 +130,8 @@ namespace Utilities.DataTypes
         /// <returns>String with each word capitalized</returns>
         public static string ToTitleCase(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             string[] Seperator = { " ", ".", "\t", System.Environment.NewLine, "!", "?" };
             string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
             for (int x = 0; x < InputStrings.Length; ++x)
@@ -174,6 +182,8 @@ namespace Utilities.DataTypes
         /// <returns>The number of times the string occurs</returns>
         public static int NumberTimesOccurs(string Input, string Match)
         {
+            if (string.IsNullOrEmpty(Input))
+                return 0;
             Regex TempRegex = new Regex(Match);
             return TempRegex.Matches(Input).Count;
         }
@@ -185,6 +195,8 @@ namespace Utilities.DataTypes
         /// <returns>The reverse of the input string</returns>
         public static string ReverseString(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             char[] ArrayValues = Input.ToCharArray();
             Array.Reverse(ArrayValues);
             return new string(ArrayValues);
@@ -198,6 +210,10 @@ namespace Utilities.DataTypes
         /// <returns>The input text minus the filter text.</returns>
         public static string FilterOutText(string Input, string Filter)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            if (string.IsNullOrEmpty(Filter))
+                return Input;
             Regex TempRegex = new Regex(Filter);
             return TempRegex.Replace(Input, "");
         }
@@ -210,6 +226,10 @@ namespace Utilities.DataTypes
         /// <returns>The input text minus everything not in the filter text.</returns>
         public static string KeepFilterText(string Input, string Filter)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            if (string.IsNullOrEmpty(Filter))
+                return "";
             Regex TempRegex = new Regex(Filter);
             MatchCollection Collection = TempRegex.Matches(Input);
             StringBuilder Builder = new StringBuilder();
@@ -264,6 +284,8 @@ namespace Utilities.DataTypes
         /// </returns>
         public static Dictionary<string, System.Collections.Generic.List<string>> GetAnagramEquivalents(System.Collections.Generic.List<string> InputArray)
         {
+            if (InputArray == null)
+                throw new ArgumentNullException("InputArray");
             Dictionary<string, System.Collections.Generic.List<string>> ReturnList = new Dictionary<string, System.Collections.Generic.List<string>>();
             for (int x = 0; x < InputArray.Count; ++x)
             {
@@ -290,6 +312,8 @@ namespace Utilities.DataTypes
         /// <returns>True if it's unicode, false otherwise</returns>
         public static bool IsUnicode(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return true;
             UnicodeEncoding Encoding = new UnicodeEncoding();
             string UniInput = Encoding.GetString(Encoding.GetBytes(Input));
             ASCIIEncoding Encoding2 = new ASCIIEncoding();
@@ -306,6 +330,8 @@ namespace Utilities.DataTypes
         /// <returns>True if it's unicode, false otherwise</returns>
         public static bool IsUnicode(byte[] Input)
         {
+            if (Input == null)
+                return true;
             UnicodeEncoding Encoding = new UnicodeEncoding();
             byte[] UniInput = Encoding.GetBytes(Encoding.GetString(Input));
             ASCIIEncoding Encoding2 = new ASCIIEncoding();

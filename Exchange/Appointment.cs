@@ -328,24 +328,81 @@ namespace Utilities.Exchange
         #endregion
 
         #region Variables
-        public DateTime StartDate;
-        public DateTime EndDate;
-        public string Subject;
-        public string Summary;
-        public string Location;
-        public MailAddressCollection AttendeeList;
-        public string OrganizerName;
-        public string OrganizerEmail;
 
-        public List<Attachment> Attachments;
+        /// <summary>
+        /// Start date
+        /// </summary>
+        public virtual DateTime StartDate { get; set; }
 
-        public Guid MeetingGUID;
+        /// <summary>
+        /// End date
+        /// </summary>
+        public virtual DateTime EndDate { get; set; }
 
-        public string Directory;
-        public string ServerName;
-        public string UserName;
-        public string Password;
-        public int Port;
+        /// <summary>
+        /// Subject
+        /// </summary>
+        public virtual string Subject { get; set; }
+
+        /// <summary>
+        /// Summary
+        /// </summary>
+        public virtual string Summary { get; set; }
+
+        /// <summary>
+        /// Location of the appointment
+        /// </summary>
+        public virtual string Location { get; set; }
+
+        /// <summary>
+        /// List of attendees
+        /// </summary>
+        public virtual MailAddressCollection AttendeeList { get; set; }
+
+        /// <summary>
+        /// Organizer name
+        /// </summary>
+        public virtual string OrganizerName { get; set; }
+
+        /// <summary>
+        /// Organizer email
+        /// </summary>
+        public virtual string OrganizerEmail { get; set; }
+
+        /// <summary>
+        /// List of attachments
+        /// </summary>
+        public virtual List<Attachment> Attachments { get; set; }
+
+        /// <summary>
+        /// Meeting GUID
+        /// </summary>
+        public virtual Guid MeetingGUID { get; set; }
+
+        /// <summary>
+        /// Directory to place the appointment on the exchange server (usually the first part of the email address)
+        /// </summary>
+        public virtual string Directory { get; set; }
+
+        /// <summary>
+        /// Server name
+        /// </summary>
+        public virtual string ServerName { get; set; }
+
+        /// <summary>
+        /// User name (if required)
+        /// </summary>
+        public virtual string UserName { get; set; }
+
+        /// <summary>
+        /// Password (if required)
+        /// </summary>
+        public virtual string Password { get; set; }
+
+        /// <summary>
+        /// Post of the server
+        /// </summary>
+        public virtual int Port { get; set; }
 
         #endregion
     }

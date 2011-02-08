@@ -46,12 +46,12 @@ namespace Utilities.Cisco
         /// <summary>
         /// Priority
         /// </summary>
-        public int Priority { get; set; }
+        public virtual int Priority { get; set; }
 
         /// <summary>
         /// URL
         /// </summary>
-        public string URL { get; set; }
+        public virtual string URL { get; set; }
 
         #endregion
 

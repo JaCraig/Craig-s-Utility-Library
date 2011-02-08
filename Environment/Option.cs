@@ -40,8 +40,13 @@ namespace Utilities.Environment
         /// Constructor
         /// </summary>
         /// <param name="Text">Option text</param>
+        /// <param name="OptionStarter">Starter text for an option ("/", "-", etc.)</param>
         public Option(string Text,string OptionStarter)
         {
+            if (string.IsNullOrEmpty(Text))
+                throw new ArgumentNullException("Text");
+            if (string.IsNullOrEmpty(OptionStarter))
+                throw new ArgumentNullException("OptionStarter");
             Regex CommandParser = new Regex(string.Format(@"{0}(?<Command>[^\s]*)\s(?<Parameters>.*)", OptionStarter));
             Regex ParameterParser = new Regex("(?<Parameter>\"[^\"]*\")[\\s]?|(?<Parameter>[^\\s]*)[\\s]?");
             Parameters = new List<string>();
@@ -77,7 +82,14 @@ namespace Utilities.Environment
 
         #region Properties
 
+        /// <summary>
+        /// Command string
+        /// </summary>
         public virtual string Command { get; set; }
+
+        /// <summary>
+        /// List of parameters found
+        /// </summary>
         public virtual List<string> Parameters { get; set; }
 
         #endregion

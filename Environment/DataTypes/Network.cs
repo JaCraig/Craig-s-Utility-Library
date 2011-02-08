@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Management;
 using System.Net;
+using System;
 #endregion
 
 namespace Utilities.Environment.DataTypes
@@ -42,6 +43,8 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">Username</param>
         public Network(string Name = "", string UserName = "", string Password = "")
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             GetNetworkInfo(Name, UserName, Password);
             GetNetworkAdapterInfo(Name, UserName, Password);
         }
@@ -53,16 +56,16 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Network addresses (IP Addresses, etc.)
         /// </summary>
-        public List<NetworkAddress> NetworkAddresses { get; set; }
+        public virtual List<NetworkAddress> NetworkAddresses { get; set; }
 
         /// <summary>
         /// MAC Address 
         /// </summary>
-        public List<NetworkAdapter> MACAddresses { get; set; }
+        public virtual List<NetworkAdapter> MACAddresses { get; set; }
 
         #endregion
 
-        #region Private Functions
+        #region Functions
 
         /// <summary>
         /// Gets the network info
@@ -70,8 +73,10 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Name">Computer name</param>
         /// <param name="Password">Password</param>
         /// <param name="UserName">Username</param>
-        private void GetNetworkInfo(string Name, string UserName, string Password)
+        protected virtual void GetNetworkInfo(string Name, string UserName, string Password)
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             NetworkAddresses = new List<NetworkAddress>();
             IPHostEntry HostEntry = Dns.GetHostEntry(Name);
             foreach (IPAddress Address in HostEntry.AddressList)
@@ -83,8 +88,10 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
-        private void GetNetworkAdapterInfo(string Name, string UserName, string Password)
+        protected virtual void GetNetworkAdapterInfo(string Name, string UserName, string Password)
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             MACAddresses = new List<NetworkAdapter>();
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))

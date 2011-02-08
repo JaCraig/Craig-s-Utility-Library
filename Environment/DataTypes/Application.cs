@@ -46,7 +46,7 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Application Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         #endregion
     }

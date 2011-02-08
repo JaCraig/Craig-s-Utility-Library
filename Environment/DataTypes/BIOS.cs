@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Management;
+using System;
 #endregion
 
 namespace Utilities.Environment.DataTypes
@@ -40,6 +41,8 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">User Name</param>
         public BIOS(string Name = "", string UserName = "", string Password = "")
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             LoadBIOS(Name, UserName, Password);
         }
 
@@ -50,11 +53,11 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Serial Number
         /// </summary>
-        public string SerialNumber { get; set; }
+        public virtual string SerialNumber { get; set; }
 
         #endregion
 
-        #region Private Functions
+        #region Functions
 
         /// <summary>
         /// Loads the BIOS info
@@ -62,8 +65,10 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Name">Computer name</param>
         /// <param name="UserName">User name</param>
         /// <param name="Password">Password</param>
-        private void LoadBIOS(string Name, string UserName, string Password)
+        protected virtual void LoadBIOS(string Name, string UserName, string Password)
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {

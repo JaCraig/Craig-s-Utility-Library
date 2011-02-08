@@ -40,6 +40,8 @@ namespace Utilities.Encryption
         /// <returns>A hash of the input string using SHA1</returns>
         public static string ComputeHash(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                throw new ArgumentNullException("Input");
             SHA1CryptoServiceProvider SHA1 = new SHA1CryptoServiceProvider();
             byte[] InputArray = System.Text.Encoding.ASCII.GetBytes(Input);
             byte[] HashedArray = SHA1.ComputeHash(InputArray);

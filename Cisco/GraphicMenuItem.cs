@@ -47,32 +47,32 @@ namespace Utilities.Cisco
         /// <summary>
         /// Name of the Graphic menu
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Invoked when area touched
         /// </summary>
-        public string URL { get; set; }
+        public virtual string URL { get; set; }
 
         /// <summary>
         /// Left
         /// </summary>
-        public int X1 { get; set; }
+        public virtual int X1 { get; set; }
 
         /// <summary>
         /// Right
         /// </summary>
-        public int X2 { get; set; }
+        public virtual int X2 { get; set; }
 
         /// <summary>
         /// Top
         /// </summary>
-        public int Y1 { get; set; }
+        public virtual int Y1 { get; set; }
 
         /// <summary>
         /// Bottom
         /// </summary>
-        public int Y2 { get; set; }
+        public virtual int Y2 { get; set; }
 
         #endregion
 

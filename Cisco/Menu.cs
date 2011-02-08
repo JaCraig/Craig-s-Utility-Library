@@ -50,34 +50,34 @@ namespace Utilities.Cisco
         /// <summary>
         /// Title of the menu
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Prompt of the menu
         /// </summary>
-        public string Prompt { get; set; }
+        public virtual string Prompt { get; set; }
 
         /// <summary>
         /// Menu items for the menu
         /// </summary>
-        public List<IMenuItem> MenuItems { get; set; }
+        public virtual List<IMenuItem> MenuItems { get; set; }
 
         /// <summary>
         /// X location of backgroun image (if present)
         /// </summary>
-        public int X { get; set; }
+        public virtual int X { get; set; }
 
         /// <summary>
         /// Y location of backgroun image (if present)
         /// </summary>
-        public int Y { get; set; }
+        public virtual int Y { get; set; }
 
         /// <summary>
         /// URL for background image (if needed)
         /// </summary>
-        public string ImageURL { get; set; }
+        public virtual string ImageURL { get; set; }
 
-        public List<SoftKeyItem> SoftKeys { get; set; }
+        public virtual List<SoftKeyItem> SoftKeys { get; set; }
 
         #endregion
 
@@ -101,13 +101,19 @@ namespace Utilities.Cisco
                 Builder.Append("<LocationX>").Append(X).Append("</LocationX><LocationY>").Append(Y)
                     .Append("</LocationY><URL>").Append(ImageURL).Append("</URL>");
             }
-            for (int x = 0; x < MenuItems.Count; ++x)
+            if (MenuItems != null)
             {
-                Builder.Append(MenuItems[x].ToString());
+                for (int x = 0; x < MenuItems.Count; ++x)
+                {
+                    Builder.Append(MenuItems[x].ToString());
+                }
             }
-            for (int x = 0; x < SoftKeys.Count; ++x)
+            if (SoftKeys != null)
             {
-                Builder.Append(SoftKeys[x].ToString());
+                for (int x = 0; x < SoftKeys.Count; ++x)
+                {
+                    Builder.Append(SoftKeys[x].ToString());
+                }
             }
             if (string.IsNullOrEmpty(ImageURL))
             {

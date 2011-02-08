@@ -46,21 +46,13 @@ namespace Utilities.Web.Youtube
         public static void GetMovie(string FileLocation, string Url)
         {
             string Content = FileManager.GetFileContents(new Uri(Url));
-            Regex TempRegex = new Regex("'SWF_ARGS': {(.*)}");
+            Regex TempRegex = new Regex("img.src = '(?<ImageURL>.*)';");
             Match Match = TempRegex.Match(Content);
-            Content = Match.Value;
-            TempRegex = new Regex("\"video_id\": \"(.*?\")");
-            string VideoLocation = "http://www.youtube.com/get_video?video_id=";
+            Content = Match.Groups["ImageURL"].Value;
+            Content=Content.Replace(@"\/", "/");
+            TempRegex=new Regex(@"(?<URLBeginning>.*/)(.*)\?(?<Parameters>.*)");
             Match = TempRegex.Match(Content);
-            VideoLocation += Match.Groups[1].Value.Replace("\"", "");
-            VideoLocation += "&l=";
-            TempRegex = new Regex("\"length_seconds\": \"(.*?\")");
-            Match = TempRegex.Match(Content);
-            VideoLocation += Match.Groups[1].Value.Replace("\"", "");
-            VideoLocation += "&t=";
-            TempRegex = new Regex("\"t\": \"(.*?\")");
-            Match = TempRegex.Match(Content);
-            VideoLocation += Match.Groups[1].Value.Replace("\"", "");
+            string VideoLocation = Match.Groups["URLBeginning"].Value + "videoplayback?" + Match.Groups["Parameters"].Value;
             Stream TempStream;
             WebClient Client;
             FileManager.GetFileContents(new Uri(VideoLocation), out TempStream, out Client);

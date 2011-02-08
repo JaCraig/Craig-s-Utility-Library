@@ -44,6 +44,14 @@ namespace Utilities.DataTypes
         /// <returns>True if they overlap, false otherwise</returns>
         public static bool DatePeriodsOverlap(DateTime Start1, DateTime End1, DateTime Start2, DateTime End2)
         {
+            if (Start1 == null)
+                throw new ArgumentNullException("Start1");
+            if (Start2 == null)
+                throw new ArgumentNullException("Start2");
+            if (End1 == null)
+                throw new ArgumentNullException("End1");
+            if (End2 == null)
+                throw new ArgumentNullException("End2");
             return ((Start1 >= Start2 && Start1 < End2) || (End1 <= End2 && End1 > Start2) || (Start1 <= Start2 && End1 >= End2));
         }
 
@@ -55,7 +63,7 @@ namespace Utilities.DataTypes
         public static bool IsInFuture(DateTime Date)
         {
             if (Date == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Date");
             return DateTime.Now < Date;
         }
 
@@ -67,7 +75,7 @@ namespace Utilities.DataTypes
         public static bool IsInPast(DateTime Date)
         {
             if (Date == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Date");
             return DateTime.Now > Date;
         }
 
@@ -78,6 +86,8 @@ namespace Utilities.DataTypes
         /// <returns>The number of days left in a month</returns>
         public static int DaysLeftInMonth(DateTime Date)
         {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
             return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInMonth(Date.Year, Date.Month) - Date.Day;
         }
 
@@ -88,6 +98,8 @@ namespace Utilities.DataTypes
         /// <returns>The number of days left in a year</returns>
         public static int DaysLeftInYear(DateTime Date)
         {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
             return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInYear(Date.Year) - Date.DayOfYear;
         }
 
@@ -98,6 +110,8 @@ namespace Utilities.DataTypes
         /// <returns>The number of days left in a week</returns>
         public static int DaysLeftInWeek(DateTime Date)
         {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
             return 7 - DataTypeConversion.DayToInt(Date.DayOfWeek.ToString());
         }
 
@@ -108,6 +122,8 @@ namespace Utilities.DataTypes
         /// <returns>Whether this is a week day or not</returns>
         public static bool IsWeekDay(DateTime Date)
         {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
             if (DataTypeConversion.DayToInt(Date.DayOfWeek.ToString()) < 6)
                 return true;
             return false;
@@ -120,6 +136,8 @@ namespace Utilities.DataTypes
         /// <returns>Whether this is a week end or not</returns>
         public static bool IsWeekEnd(DateTime Date)
         {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
             return !IsWeekDay(Date);
         }
 

@@ -64,17 +64,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// First item
         /// </summary>
-        public T1 First { get; set; }
+        public virtual T1 First { get; set; }
 
         /// <summary>
         /// Second item
         /// </summary>
-        public T2 Second { get; set; }
+        public virtual T2 Second { get; set; }
 
         /// <summary>
         /// Third item
         /// </summary>
-        public T3 Third { get; set; }
+        public virtual T3 Third { get; set; }
 
         #endregion
 

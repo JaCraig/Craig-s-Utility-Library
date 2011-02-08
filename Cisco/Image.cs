@@ -49,32 +49,29 @@ namespace Utilities.Cisco
         /// <summary>
         /// Title
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Prompt
         /// </summary>
-        public string Prompt { get; set; }
+        public virtual string Prompt { get; set; }
 
         /// <summary>
         /// X location
         /// </summary>
-        public int X { get; set; }
+        public virtual int X { get; set; }
 
         /// <summary>
         /// Y location
         /// </summary>
-        public int Y { get; set; }
+        public virtual int Y { get; set; }
 
         /// <summary>
         /// URL to the image
         /// </summary>
-        public string URL { get; set; }
+        public virtual string URL { get; set; }
 
-        /// <summary>
-        /// Softkeys list
-        /// </summary>
-        public List<SoftKeyItem> SoftKeys { get; set; }
+        public virtual List<SoftKeyItem> SoftKeys { get; set; }
 
         #endregion
 
@@ -86,9 +83,12 @@ namespace Utilities.Cisco
             Builder.Append("<CiscoIPPhoneImageFile><Title>").Append(Title).Append("</Title><Prompt>").Append(Prompt).Append("</Prompt><LocationX>")
                 .Append(X.ToString()).Append("</LocationX><LocationY>").Append(Y.ToString()).Append("</LocationY><URL>")
                 .Append(URL).Append("</URL>");
-            foreach (SoftKeyItem Item in SoftKeys)
+            if (SoftKeys != null)
             {
-                Builder.Append(Item.ToString());
+                foreach (SoftKeyItem Item in SoftKeys)
+                {
+                    Builder.Append(Item.ToString());
+                }
             }
             Builder.Append("</CiscoIPPhoneImageFile>");
             return Builder.ToString();

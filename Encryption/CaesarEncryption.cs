@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Text;
+using System;
 #endregion
 
 namespace Utilities.Encryption
@@ -40,6 +41,10 @@ namespace Utilities.Encryption
         /// <returns>An encrypted string</returns>
         public static string Encrypt(string Input, string Key)
         {
+            if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Key))
+            {
+                throw new ArgumentNullException("The input/key string can not be empty.");
+            }
             return Process(Input, Key);
         }
 
@@ -51,6 +56,10 @@ namespace Utilities.Encryption
         /// <returns>A decrypted string</returns>
         public static string Decrypt(string Input, string Key)
         {
+            if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Key))
+            {
+                throw new ArgumentNullException("The input/key string can not be empty.");
+            }
             return Process(Input, Key);
         }
 

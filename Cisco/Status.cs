@@ -49,32 +49,29 @@ namespace Utilities.Cisco
         /// <summary>
         /// Text
         /// </summary>
-        public string Text { get; set; }
+        public virtual string Text { get; set; }
 
         /// <summary>
         /// Timer value in seconds
         /// </summary>
-        public int Timer { get; set; }
+        public virtual int Timer { get; set; }
 
         /// <summary>
         /// X location
         /// </summary>
-        public int X { get; set; }
+        public virtual int X { get; set; }
 
         /// <summary>
         /// Y location
         /// </summary>
-        public int Y { get; set; }
+        public virtual int Y { get; set; }
 
         /// <summary>
         /// Location of the image
         /// </summary>
-        public string URL { get; set; }
+        public virtual string URL { get; set; }
 
-        /// <summary>
-        /// Soft key list
-        /// </summary>
-        public List<SoftKeyItem> SoftKeys { get; set; }
+        public virtual List<SoftKeyItem> SoftKeys { get; set; }
 
         #endregion
 
@@ -86,9 +83,12 @@ namespace Utilities.Cisco
             Builder.Append("<CiscoIPPhoneStatusFile><Text>").Append(Text).Append("</Text><Timer>").Append(Timer).Append("</Timer<LocationX>")
                 .Append(X).Append("</LocationX><LocationY>").Append(Y).Append("</LocationY><URL>").Append(URL)
                 .Append("</URL>");
-            foreach (SoftKeyItem Item in SoftKeys)
+            if (SoftKeys != null)
             {
-                Builder.Append(Item.ToString());
+                foreach (SoftKeyItem Item in SoftKeys)
+                {
+                    Builder.Append(Item.ToString());
+                }
             }
             Builder.Append("</CiscoIPPhoneStatusFile>");
             return Builder.ToString();

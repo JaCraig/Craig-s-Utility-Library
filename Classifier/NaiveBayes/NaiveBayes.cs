@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using Utilities.DataTypes;
 using System.Collections.Generic;
 using Utilities.Math;
+using System;
 #endregion
 
 namespace Utilities.Classifier.NaiveBayes
@@ -61,37 +62,52 @@ namespace Utilities.Classifier.NaiveBayes
         /// <summary>
         /// Set A
         /// </summary>
-        public Bag<T> SetA { get; set; }
+        public virtual Bag<T> SetA { get; set; }
 
         /// <summary>
         /// Set B
         /// </summary>
-        public Bag<T> SetB { get; set; }
+        public virtual Bag<T> SetB { get; set; }
 
-        private double Total { get; set; }
-        private double TotalA { get; set; }
-        private double TotalB { get; set; }
-        private Dictionary<T, double> Probabilities { get; set; }
+        /// <summary>
+        /// Total number of tokens
+        /// </summary>
+        protected virtual double Total { get; set; }
+
+        /// <summary>
+        /// Total number of tokens in set A
+        /// </summary>
+        protected virtual double TotalA { get; set; }
+
+        /// <summary>
+        /// Total number of tokens in set B
+        /// </summary>
+        protected virtual double TotalB { get; set; }
+
+        /// <summary>
+        /// Dictionary containing probabilities
+        /// </summary>
+        protected virtual Dictionary<T, double> Probabilities { get; set; }
 
         /// <summary>
         /// Weight to give to the probabilities in set A
         /// </summary>
-        public int ATokenWeight { get; set; }
+        public virtual int ATokenWeight { get; set; }
 
         /// <summary>
         /// Weight to give the probabilities in set B
         /// </summary>
-        public int BTokenWeight { get; set; }
+        public virtual int BTokenWeight { get; set; }
 
         /// <summary>
         /// Minimum count that an item needs to be found to be included in final probability
         /// </summary>
-        public int MinCountForInclusion { get; set; }
+        public virtual int MinCountForInclusion { get; set; }
 
         /// <summary>
         /// Minimum token probability (if less than this amount, it becomes this amount)
         /// </summary>
-        public double MinTokenProbability { get; set; }
+        public virtual double MinTokenProbability { get; set; }
 
         /// <summary>
         /// Maximum token probability (if greater than this amount, it becomes this amount)
@@ -101,7 +117,7 @@ namespace Utilities.Classifier.NaiveBayes
         /// <summary>
         /// After sorting, this is the maximum number of tokens that are picked to figure out the final probability
         /// </summary>
-        public int MaxInterestingTokenCount { get; set; }
+        public virtual int MaxInterestingTokenCount { get; set; }
 
         #endregion
 
@@ -112,8 +128,17 @@ namespace Utilities.Classifier.NaiveBayes
         /// </summary>
         /// <param name="SetATokens">Set A</param>
         /// <param name="SetBTokens">Set B</param>
-        public void LoadTokens(System.Collections.Generic.List<T> SetATokens, System.Collections.Generic.List<T> SetBTokens)
+        public virtual void LoadTokens(System.Collections.Generic.List<T> SetATokens, System.Collections.Generic.List<T> SetBTokens)
         {
+            if (SetATokens == null)
+                throw new ArgumentNullException("SetATokens");
+            if (SetBTokens == null)
+                throw new ArgumentNullException("SetBTokens");
+            if (SetA == null)
+                SetA = new Bag<T>();
+            if (SetB == null)
+                SetB = new Bag<T>();
+
             foreach (T TokenA in SetATokens)
             {
                 SetA.Add(TokenA);
@@ -152,8 +177,12 @@ namespace Utilities.Classifier.NaiveBayes
         /// </summary>
         /// <param name="Items">List of items</param>
         /// <returns>The probability that the tokens are from set A</returns>
-        public double CalculateProbabilityOfTokens(System.Collections.Generic.List<T> Items)
+        public virtual double CalculateProbabilityOfTokens(System.Collections.Generic.List<T> Items)
         {
+            if (Items == null)
+                throw new ArgumentNullException("Items");
+            if (Probabilities == null)
+                throw new NullReferenceException("Probabilities has not been initialized");
             SortedList<string, double> SortedProbabilities = new SortedList<string, double>();
             for (int x = 0; x < Items.Count; ++x)
             {
@@ -183,15 +212,17 @@ namespace Utilities.Classifier.NaiveBayes
 
         #endregion
 
-        #region Private Functions
+        #region Protected Functions
 
         /// <summary>
         /// Calculates a single items probability of being in set A
         /// </summary>
         /// <param name="Item">Item to calculate</param>
         /// <returns>The probability that the token is from set A</returns>
-        private double CalculateProbabilityOfToken(T Item)
+        protected virtual double CalculateProbabilityOfToken(T Item)
         {
+            if (SetA == null || SetB == null)
+                throw new NullReferenceException("Probabilities have not been initialized");
             double Probability = 0;
             int ACount = SetA.Contains(Item) ? SetA[Item] * ATokenWeight : 0;
             int BCount = SetB.Contains(Item) ? SetB[Item] * BTokenWeight : 0;

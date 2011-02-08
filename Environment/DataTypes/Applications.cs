@@ -43,6 +43,8 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">User Name</param>
         public Applications(string Name = "", string UserName = "", string Password = "")
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             LoadApplications(Name, UserName, Password);
         }
 
@@ -50,11 +52,11 @@ namespace Utilities.Environment.DataTypes
 
         #region Properties
 
-        public List<Application> ApplicationList { get; set; }
+        public virtual List<Application> ApplicationList { get; set; }
 
         #endregion
 
-        #region Private Functions
+        #region Functions
 
         /// <summary>
         /// Loads applications
@@ -62,8 +64,10 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Name">Computer name</param>
         /// <param name="UserName">User name</param>
         /// <param name="Password">Password</param>
-        private void LoadApplications(string Name, string UserName, string Password)
+        protected virtual void LoadApplications(string Name, string UserName, string Password)
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException("Name");
             ApplicationList = new List<Application>();
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
@@ -109,8 +113,10 @@ namespace Utilities.Environment.DataTypes
 
         #region IEnumerable
 
-        public IEnumerator GetEnumerator()
+        public virtual IEnumerator GetEnumerator()
         {
+            if (ApplicationList == null)
+                throw new NullReferenceException("ApplicationList");
             return ApplicationList.GetEnumerator();
         }
 

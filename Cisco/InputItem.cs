@@ -46,22 +46,22 @@ namespace Utilities.Cisco
         /// <summary>
         /// Display name
         /// </summary>
-        public string DisplayName { get; set; }
+        public virtual string DisplayName { get; set; }
 
         /// <summary>
         /// Query string parameter
         /// </summary>
-        public string QueryStringParam { get; set; }
+        public virtual string QueryStringParam { get; set; }
 
         /// <summary>
         /// Default value
         /// </summary>
-        public string DefaultValue { get; set; }
+        public virtual string DefaultValue { get; set; }
 
         /// <summary>
         /// input flags
         /// </summary>
-        public InputFlag InputFlags { get; set; }
+        public virtual InputFlag InputFlags { get; set; }
 
         #endregion
 
