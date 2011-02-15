@@ -39,36 +39,31 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Categories element</param>
         public Categories(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+            CategoryList = new List<Category>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Categories.Add(new Category((XmlElement)Children));
+                    CategoryList.Add(new Category((XmlElement)Children));
                 }
             }
         }
-        #endregion
-
-        #region Private Variables
-        private List<Category> _Categories = new List<Category>();
         #endregion
 
         #region Public Properties
         /// <summary>
         /// Categories list
         /// </summary>
-        public List<Category> CategoryList
-        {
-            get { return _Categories; }
-            set { _Categories = value; }
-        }
+        public virtual List<Category> CategoryList { get; set; }
 
         /// <summary>
         /// Gets a specified category
         /// </summary>
         /// <param name="index">The ID of the category</param>
         /// <returns>The category specified</returns>
-        public Category this[string index]
+        public virtual Category this[string index]
         {
             get
             {

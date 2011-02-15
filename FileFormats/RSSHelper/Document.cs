@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -47,6 +48,8 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Location">Location of the RSS feed to load</param>
         public Document(string Location)
         {
+            if (string.IsNullOrEmpty(Location))
+                throw new ArgumentNullException("Location");
             XmlDocument Document = new XmlDocument();
             Document.Load(Location);
             Load(Document);
@@ -58,6 +61,8 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Document">XML document containing an RSS feed</param>
         public Document(XmlDocument Document)
         {
+            if (Document == null)
+                throw new ArgumentNullException("Document");
             Load(Document);
         }
 
@@ -74,7 +79,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Channels for the RSS feed
         /// </summary>
-        public List<Channel> Channels
+        public virtual List<Channel> Channels
         {
             get
             {
@@ -114,8 +119,10 @@ namespace Utilities.FileFormats.RSSHelper
         /// Copies one document's channels to another
         /// </summary>
         /// <param name="CopyFrom">RSS document to copy from</param>
-        public void Copy(Document CopyFrom)
+        public virtual void Copy(Document CopyFrom)
         {
+            if (CopyFrom == null)
+                throw new ArgumentNullException("CopyFrom");
             foreach (Channel CurrentChannel in CopyFrom.Channels)
             {
                 Channels.Add(CurrentChannel);
@@ -128,6 +135,8 @@ namespace Utilities.FileFormats.RSSHelper
 
         private void Load(XmlDocument Document)
         {
+            if (Document == null)
+                throw new ArgumentNullException("Document");
             XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Document.NameTable);
             XmlNodeList Nodes = Document.DocumentElement.SelectNodes("./channel", NamespaceManager);
             foreach (XmlNode Element in Nodes)

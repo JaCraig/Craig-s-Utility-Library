@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Xml;
+using System;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -37,26 +38,21 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing the tag info</param>
         public Tag(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Attributes["ref"] != null)
             {
-                _REF = Element.Attributes["ref"].Value;
+                REF = Element.Attributes["ref"].Value;
             }
         }
-        #endregion
-
-        #region Private Variables
-        private string _REF = "";
         #endregion
 
         #region Public Properties
         /// <summary>
         /// Gets the REF info for the tag (usually just the tag's name)
         /// </summary>
-        public string REF
-        {
-            get { return _REF; }
-            set { _REF = value; }
-        }
+        public virtual string REF { get; set; }
+
         #endregion
     }
 }

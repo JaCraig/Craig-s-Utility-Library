@@ -48,6 +48,8 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML element containing the item content</param>
         public Item(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (!Element.Name.Equals("item", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not an item");
             XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Element.OwnerDocument.NameTable);
@@ -117,12 +119,12 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// GUID for the item
         /// </summary>
-        public GUID GUID { get; set; }
+        public virtual GUID GUID { get; set; }
 
         /// <summary>
         /// Thumbnail information
         /// </summary>
-        public Thumbnail Thumbnail
+        public virtual Thumbnail Thumbnail
         {
             get
             {
@@ -138,7 +140,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Title of the item
         /// </summary>
-        public string Title
+        public virtual string Title
         {
             get { return _Title; }
             set { _Title = RSS.StripIllegalCharacters(value); }
@@ -147,7 +149,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Link to its location
         /// </summary>
-        public string Link
+        public virtual string Link
         {
             get { return _Link; }
             set { _Link = value; }
@@ -156,7 +158,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Description of the item
         /// </summary>
-        public string Description
+        public virtual string Description
         {
             get { return _Description; }
             set { _Description = RSS.StripIllegalCharacters(value); }
@@ -165,7 +167,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Author of the item
         /// </summary>
-        public string Author
+        public virtual string Author
         {
             get { return _Author; }
             set { _Author = RSS.StripIllegalCharacters(value); }
@@ -174,7 +176,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Categories associated with the item
         /// </summary>
-        public List<string> Categories
+        public virtual List<string> Categories
         {
             get
             {
@@ -190,7 +192,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Date it was published
         /// </summary>
-        public DateTime PubDate
+        public virtual DateTime PubDate
         {
             get { return _pubDate; }
             set { _pubDate = value; }
@@ -199,7 +201,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Enclosure (used for podcasting)
         /// </summary>
-        public Enclosure Enclosure
+        public virtual Enclosure Enclosure
         {
             get
             {
@@ -230,9 +232,9 @@ namespace Utilities.FileFormats.RSSHelper
                 ItemString.Append("<category>").Append(Category).Append("</category>\r\n");
             }
             ItemString.Append("<pubDate>").Append(PubDate.ToString("r")).Append("</pubDate>\r\n");
-            if(Enclosure!=null)
+            if (Enclosure != null)
                 ItemString.Append(Enclosure.ToString());
-            if(Thumbnail!=null)
+            if (Thumbnail != null)
                 ItemString.Append(Thumbnail.ToString());
             ItemString.Append("<description><![CDATA[").Append(Description).Append("]]></description>\r\n");
             if (GUID != null)

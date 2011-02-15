@@ -39,29 +39,25 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing post info</param>
         public Posts(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+            PostList = new List<Post>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("post", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Posts.Add(new Post((XmlElement)Children));
+                    PostList.Add(new Post((XmlElement)Children));
                 }
             }
         }
-        #endregion
-
-        #region Private Variables
-        private List<Post> _Posts = new List<Post>();
         #endregion
 
         #region Public Properties
         /// <summary>
         /// List of posts
         /// </summary>
-        public List<Post> PostList
-        {
-            get { return _Posts; }
-            set { _Posts = value; }
-        }
+        public virtual List<Post> PostList { get; set; }
+
         #endregion
     }
 }

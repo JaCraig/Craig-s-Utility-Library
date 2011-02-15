@@ -48,6 +48,8 @@ namespace Utilities.FileFormats.RSD
         /// <param name="FileContent">Content of the RSD file</param>
         public RSD(string FileContent)
         {
+            if (string.IsNullOrEmpty(FileContent))
+                throw new ArgumentNullException("FileContent");
             XmlDocument Document = new XmlDocument();
             Document.LoadXml(FileContent);
             foreach (XmlNode Children in Document.ChildNodes)
@@ -88,22 +90,22 @@ namespace Utilities.FileFormats.RSD
         /// <summary>
         /// Engine name
         /// </summary>
-        public string EngineName { get; set; }
+        public virtual string EngineName { get; set; }
 
         /// <summary>
         /// Link to the engine
         /// </summary>
-        public string EngineLink { get; set; }
+        public virtual string EngineLink { get; set; }
 
         /// <summary>
         /// Link to the home page
         /// </summary>
-        public string HomePageLink { get; set; }
+        public virtual string HomePageLink { get; set; }
 
         /// <summary>
         /// API definitions
         /// </summary>
-        public APIs APIs { get; set; }
+        public virtual APIs APIs { get; set; }
 
         #endregion
 

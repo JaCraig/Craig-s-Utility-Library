@@ -47,6 +47,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the sources information</param>
         public Sources(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("sources", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)
@@ -68,7 +70,7 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// List of sources
         /// </summary>
-        public List<Source> Source
+        public virtual List<Source> Source
         {
             get { return _Source; }
             set { _Source = value; }

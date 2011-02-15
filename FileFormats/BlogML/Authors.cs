@@ -39,36 +39,31 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing the authors information</param>
         public Authors(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+            AuthorList = new List<Author>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("author", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Authors.Add(new Author((XmlElement)Children));
+                    AuthorList.Add(new Author((XmlElement)Children));
                 }
             }
         }
-        #endregion
-
-        #region Private Variables
-        private List<Author> _Authors = new List<Author>();
         #endregion
 
         #region Public Properties
         /// <summary>
         /// List of authors
         /// </summary>
-        public List<Author> AuthorList
-        {
-            get { return _Authors; }
-            set { _Authors = value; }
-        }
+        public virtual List<Author> AuthorList { get; set; }
 
         /// <summary>
         /// Gets a specific author
         /// </summary>
         /// <param name="index">Index within the list</param>
         /// <returns>The author specified</returns>
-        public Author this[int index]
+        public virtual Author this[int index]
         {
             get { return AuthorList[index]; }
         }
@@ -78,7 +73,7 @@ namespace Utilities.FileFormats.BlogML
         /// </summary>
         /// <param name="index">Author's ID that you want</param>
         /// <returns>The author specified</returns>
-        public Author this[string index]
+        public virtual Author this[string index]
         {
             get
             {

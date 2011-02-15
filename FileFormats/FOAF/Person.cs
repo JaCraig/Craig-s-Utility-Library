@@ -39,6 +39,11 @@ namespace Utilities.FileFormats.FOAF
         /// </summary>
         public Person()
         {
+            Email = new List<string>();
+            Homepage = new List<string>();
+            Depiction = new List<string>();
+            Phone = new List<string>();
+            PeopleKnown = new List<Person>();
         }
 
         /// <summary>
@@ -47,6 +52,14 @@ namespace Utilities.FileFormats.FOAF
         /// <param name="Element">Element containing the proper information</param>
         public Person(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+
+            Email = new List<string>();
+            Homepage = new List<string>();
+            Depiction = new List<string>();
+            Phone = new List<string>();
+            PeopleKnown = new List<Person>();
             if (Element.Name.Equals("foaf:Person", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)
@@ -133,146 +146,77 @@ namespace Utilities.FileFormats.FOAF
         #endregion
 
         #region Public Properties
-        private string _SeeAlso = "";
-        private string _Name = "";
-        private string _Title = "";
-        private string _GivenName = "";
-        private string _FamilyName = "";
-        private string _NickName = "";
-        private List<string> _Email = new List<string>();
-        private List<string> _Homepage = new List<string>();
-        private List<string> _Depiction = new List<string>();
-        private List<string> _Phone = new List<string>();
-        private string _WorkplaceHomepage = "";
-        private string _WorkInfoHomepage = "";
-        private string _SchoolHomepage = "";
-        private List<Person> _PeopleKnown = new List<Person>();
 
         /// <summary>
         /// Points to a person's FOAF file
         /// </summary>
-        public string SeeAlso
-        {
-            get { return _SeeAlso; }
-            set { _SeeAlso = value; }
-        }
+        public virtual string SeeAlso { get; set; }
 
         /// <summary>
         /// Name of the individual
         /// </summary>
-        public string Name
-        {
-            get { return _Name; }
-            set { _Name = value; }
-        }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Title (such as Mr, Ms., etc.)
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Their given name
         /// </summary>
-        public string GivenName
-        {
-            get { return _GivenName; }
-            set { _GivenName = value; }
-        }
+        public virtual string GivenName { get; set; }
 
         /// <summary>
         /// Last name/Family name
         /// </summary>
-        public string FamilyName
-        {
-            get { return _FamilyName; }
-            set { _FamilyName = value; }
-        }
+        public virtual string FamilyName { get; set; }
 
         /// <summary>
         /// Any sort of nick name
         /// </summary>
-        public string NickName
-        {
-            get { return _NickName; }
-            set { _NickName = value; }
-        }
+        public virtual string NickName { get; set; }
 
         /// <summary>
         /// Their home pages
         /// </summary>
-        public List<string> Homepage
-        {
-            get { return _Homepage; }
-            set { _Homepage = value; }
-        }
+        public virtual List<string> Homepage { get; set; }
 
         /// <summary>
         /// Image of the person
         /// </summary>
-        public List<string> Depiction
-        {
-            get { return _Depiction; }
-            set { _Depiction = value; }
-        }
+        public virtual List<string> Depiction { get; set; }
 
         /// <summary>
         /// Their phone number
         /// </summary>
-        public List<string> Phone
-        {
-            get { return _Phone; }
-            set { _Phone = value; }
-        }
+        public virtual List<string> Phone { get; set; }
 
         /// <summary>
         /// Workplace home page
         /// </summary>
-        public string WorkplaceHomepage
-        {
-            get { return _WorkplaceHomepage; }
-            set { _WorkplaceHomepage = value; }
-        }
+        public virtual string WorkplaceHomepage { get; set; }
 
         /// <summary>
         /// Information about what the person does (link to it)
         /// </summary>
-        public string WorkInfoHomepage
-        {
-            get { return _WorkInfoHomepage; }
-            set { _WorkInfoHomepage = value; }
-        }
+        public virtual string WorkInfoHomepage { get; set; }
 
         /// <summary>
         /// Link to the school they went/currently going to
         /// </summary>
-        public string SchoolHomepage
-        {
-            get { return _SchoolHomepage; }
-            set { _SchoolHomepage = value; }
-        }
+        public virtual string SchoolHomepage { get; set; }
 
         /// <summary>
         /// Email addresses associated with the person (may be SHA1 hashes)
         /// </summary>
-        public List<string> Email
-        {
-            get { return _Email; }
-            set { _Email = value; }
-        }
+        public virtual List<string> Email { get; set; }
 
         /// <summary>
         /// People that this person knows
         /// </summary>
-        public List<Person> PeopleKnown
-        {
-            get { return _PeopleKnown; }
-            set { _PeopleKnown = value; }
-        }
+        public virtual List<Person> PeopleKnown { get; set; }
+
         #endregion
 
         #region Public Overridden Functions
@@ -283,15 +227,15 @@ namespace Utilities.FileFormats.FOAF
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            if(!string.IsNullOrEmpty(Name))
+            if (!string.IsNullOrEmpty(Name))
                 Builder.Append("<foaf:name>" + Name + "</foaf:name>");
-            if(!string.IsNullOrEmpty(Title))
+            if (!string.IsNullOrEmpty(Title))
                 Builder.Append("<foaf:title>" + Title + "</foaf:title>");
-            if(!string.IsNullOrEmpty(GivenName))
+            if (!string.IsNullOrEmpty(GivenName))
                 Builder.Append("<foaf:givenname>" + GivenName + "</foaf:givenname>");
-            if(!string.IsNullOrEmpty(FamilyName))
+            if (!string.IsNullOrEmpty(FamilyName))
                 Builder.Append("<foaf:family_name>" + FamilyName + "</foaf:family_name>");
-            if(!string.IsNullOrEmpty(NickName))
+            if (!string.IsNullOrEmpty(NickName))
                 Builder.Append("<foaf:nick>" + NickName + "</foaf:nickname>");
             foreach (string CurrentEmail in Email)
             {
@@ -309,24 +253,24 @@ namespace Utilities.FileFormats.FOAF
             }
             foreach (string CurrentHomePage in Homepage)
             {
-                if(!string.IsNullOrEmpty(CurrentHomePage))
+                if (!string.IsNullOrEmpty(CurrentHomePage))
                     Builder.Append("<foaf:homepage rdf:resource=\"" + CurrentHomePage + "\" />");
             }
             foreach (string CurrentDepiction in Depiction)
             {
-                if(!string.IsNullOrEmpty(CurrentDepiction))
+                if (!string.IsNullOrEmpty(CurrentDepiction))
                     Builder.Append("<foaf:depiction rdf:resource=\"" + CurrentDepiction + "\" />");
             }
             foreach (string CurrentPhone in Phone)
             {
-                if(!string.IsNullOrEmpty(CurrentPhone))
+                if (!string.IsNullOrEmpty(CurrentPhone))
                     Builder.Append("<foaf:phone rdf:resource=\"" + CurrentPhone + "\" />");
             }
-            if(!string.IsNullOrEmpty(WorkplaceHomepage))
+            if (!string.IsNullOrEmpty(WorkplaceHomepage))
                 Builder.Append("<foaf:workplaceHomepage rdf:resource=\"" + WorkplaceHomepage + "\" />");
-            if(!string.IsNullOrEmpty(WorkInfoHomepage))
+            if (!string.IsNullOrEmpty(WorkInfoHomepage))
                 Builder.Append("<foaf:workInfoHomepage rdf:resource=\"" + WorkInfoHomepage + "\" />");
-            if(!string.IsNullOrEmpty(SchoolHomepage))
+            if (!string.IsNullOrEmpty(SchoolHomepage))
                 Builder.Append("<foaf:schoolHomepage rdf:resource=\"" + SchoolHomepage + "\" />");
             foreach (Person CurrentPerson in PeopleKnown)
             {
@@ -337,7 +281,7 @@ namespace Utilities.FileFormats.FOAF
                     Builder.Append("</foaf:Person></foaf:knows>");
                 }
             }
-            if(!string.IsNullOrEmpty(SeeAlso))
+            if (!string.IsNullOrEmpty(SeeAlso))
                 Builder.Append("<rdfs:seeAlso rdf:resource=\"" + SeeAlso + "\"/>");
             return Builder.ToString();
         }

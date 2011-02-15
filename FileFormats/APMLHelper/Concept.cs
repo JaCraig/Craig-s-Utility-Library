@@ -38,6 +38,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// </summary>
         public Concept()
         {
+            Value = 1.0f;
+            Updated = DateTime.Now;
         }
 
         /// <summary>
@@ -46,6 +48,10 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the concept information</param>
         public Concept(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+            Value = 1.0f;
+            Updated = DateTime.Now;
             if (Element.Name.Equals("concept", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (Element.Attributes["key"] != null)
@@ -72,42 +78,23 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// Key information
         /// </summary>
-        public string Key
-        {
-            get { return _Key; }
-            set { _Key = value; }
-        }
-        private string _Key = "";
+        public virtual string Key { get; set; }
 
         /// <summary>
         /// Value/Weight of the item
         /// </summary>
-        public float Value
-        {
-            get { return _Value; }
-            set { _Value = value; }
-        }
-        private float _Value = 1.0f;
+        public virtual float Value { get; set; }
 
         /// <summary>
         /// Where it is from
         /// </summary>
-        public string From
-        {
-            get { return _From; }
-            set { _From = value; }
-        }
-        private string _From = "";
+        public virtual string From { get; set; }
 
         /// <summary>
         /// Last time updated
         /// </summary>
-        public DateTime Updated
-        {
-            get { return _Updated; }
-            set { _Updated = value; }
-        }
-        private DateTime _Updated = DateTime.Now;
+        public virtual DateTime Updated { get; set; }
+
         #endregion
 
         #region Overriden Functions

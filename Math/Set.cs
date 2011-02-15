@@ -55,7 +55,7 @@ namespace Utilities.Math
         /// </summary>
         /// <param name="Set">Set to check against</param>
         /// <returns>True if it is, false otherwise</returns>
-        public bool Contains(Set<T> Set)
+        public virtual bool Contains(Set<T> Set)
         {
             return Set.IsSubset(this);
         }
@@ -65,7 +65,7 @@ namespace Utilities.Math
         /// </summary>
         /// <param name="Set">Set to check against</param>
         /// <returns>True if it is, false otherwise</returns>
-        public bool IsSubset(Set<T> Set)
+        public virtual bool IsSubset(Set<T> Set)
         {
             if (Set == null || this.NumberItems > Set.NumberItems)
                 return false;
@@ -83,7 +83,7 @@ namespace Utilities.Math
         /// </summary>
         /// <param name="Set">Set to check against</param>
         /// <returns>True if they do, false otherwise</returns>
-        public bool Intersect(Set<T> Set)
+        public virtual bool Intersect(Set<T> Set)
         {
             if (Set == null)
                 return false;

@@ -39,6 +39,8 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing post info</param>
         public Comments(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             CommentList = new List<Comment>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
@@ -54,7 +56,7 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// List of comments
         /// </summary>
-        public List<Comment> CommentList { get; set; }
+        public virtual List<Comment> CommentList { get; set; }
 
         #endregion
     }

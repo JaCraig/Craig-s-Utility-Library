@@ -54,13 +54,213 @@ namespace Utilities.LDAP
         #endregion
 
         #region Public Functions
+
+        #region Authenticate
+
+        /// <summary>
+        /// Checks to see if the person was authenticated
+        /// </summary>
+        /// <returns>true if they were authenticated properly, false otherwise</returns>
+        public virtual bool Authenticate()
+        {
+            try
+            {
+                if (!Entry.Guid.ToString().ToLower().Trim().Equals(""))
+                    return true;
+            }
+            catch { }
+            return false;
+        }
+        #endregion
+
+        #region Close
+
+        /// <summary>
+        /// Closes the directory
+        /// </summary>
+        public virtual void Close()
+        {
+            Entry.Close();
+        }
+
+        #endregion
+
+        #region FindActiveGroupMembers
+
+        /// <summary>
+        /// Returns a group's list of members
+        /// </summary>
+        /// <param name="GroupName">The group's name</param>
+        /// <returns>A list of the members</returns>
+        public virtual List<Entry> FindActiveGroupMembers(string GroupName)
+        {
+            try
+            {
+                List<Entry> Entries = this.FindGroups("cn=" + GroupName);
+                if (Entries.Count < 1)
+                    return new List<Entry>();
+
+                return this.FindActiveUsersAndGroups("memberOf=" + Entries[0].DistinguishedName);
+            }
+            catch
+            {
+                return new List<Entry>();
+            }
+        }
+
+        #endregion
+
+        #region FindActiveGroups
+
+        /// <summary>
+        /// Finds all active groups
+        /// </summary>
+        /// <param name="Filter">Filter used to modify the query</param>
+        /// <param name="args">Additional arguments (used in string formatting</param>
+        /// <returns>A list of all active groups' entries</returns>
+        public virtual List<Entry> FindActiveGroups(string Filter, params object[] args)
+        {
+            Filter = string.Format(Filter, args);
+            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+            return FindGroups(Filter);
+        }
+
+        #endregion
+
+        #region FindActiveUsers
+
+        /// <summary>
+        /// Finds all active users
+        /// </summary>
+        /// <param name="Filter">Filter used to modify the query</param>
+        /// <param name="args">Additional arguments (used in string formatting</param>
+        /// <returns>A list of all active users' entries</returns>
+        public virtual List<Entry> FindActiveUsers(string Filter, params object[] args)
+        {
+            Filter = string.Format(Filter, args);
+            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+            return FindUsers(Filter);
+        }
+
+        #endregion
+
+        #region FindActiveUsersAndGroups
+
+        /// <summary>
+        /// Finds all active users and groups
+        /// </summary>
+        /// <param name="Filter">Filter used to modify the query</param>
+        /// <param name="args">Additional arguments (used in string formatting</param>
+        /// <returns>A list of all active groups' entries</returns>
+        public virtual List<Entry> FindActiveUsersAndGroups(string Filter, params object[] args)
+        {
+            Filter = string.Format(Filter, args);
+            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+            return FindUsersAndGroups(Filter);
+        }
+
+        #endregion
+
+        #region FindAll
+
+        /// <summary>
+        /// Finds all entries that match the query
+        /// </summary>
+        /// <returns>A list of all entries that match the query</returns>
+        public virtual List<Entry> FindAll()
+        {
+            List<Entry> ReturnedResults = new List<Entry>();
+            using (SearchResultCollection Results = Searcher.FindAll())
+            {
+                foreach (SearchResult Result in Results)
+                {
+                    ReturnedResults.Add(new Entry(Result.GetDirectoryEntry()));
+                }
+            }
+            return ReturnedResults;
+        }
+
+        #endregion
+
+        #region FindComputers
+
+        /// <summary>
+        /// Finds all computers
+        /// </summary>
+        /// <param name="Filter">Filter used to modify the query</param>
+        /// <param name="args">Additional arguments (used in string formatting</param>
+        /// <returns>A list of all computers meeting the specified Filter</returns>
+        public virtual List<Entry> FindComputers(string Filter, params object[] args)
+        {
+            Filter = string.Format(Filter, args);
+            Filter = string.Format("(&(objectClass=computer)({0}))", Filter);
+            Searcher.Filter = Filter;
+            return FindAll();
+        }
+
+        #endregion
+
+        #region FindGroups
+
+        /// <summary>
+        /// Finds all groups
+        /// </summary>
+        /// <param name="Filter">Filter used to modify the query</param>
+        /// <param name="args">Additional arguments (used in string formatting</param>
+        /// <returns>A list of all groups meeting the specified Filter</returns>
+        public virtual List<Entry> FindGroups(string Filter, params object[] args)
+        {
+            Filter = string.Format(Filter, args);
+            Filter = string.Format("(&(objectClass=Group)(objectCategory=Group)({0}))", Filter);
+            Searcher.Filter = Filter;
+            return FindAll();
+        }
+
+        #endregion
+
+        #region FindOne
+
+        /// <summary>
+        /// Finds one entry that matches the query
+        /// </summary>
+        /// <returns>A single entry matching the query</returns>
+        public virtual Entry FindOne()
+        {
+            SearchResult Result = Searcher.FindOne();
+            return new Entry(Result.GetDirectoryEntry());
+        }
+
+        #endregion
+
+        #region FindUsersAndGroups
+
+        /// <summary>
+        /// Finds all users and groups
+        /// </summary>
+        /// <param name="Filter">Filter used to modify the query</param>
+        /// <param name="args">Additional arguments (used in string formatting</param>
+        /// <returns>A list of all users and groups meeting the specified Filter</returns>
+        public virtual List<Entry> FindUsersAndGroups(string Filter, params object[] args)
+        {
+            Filter = string.Format(Filter, args);
+            Filter = string.Format("(&(|(&(objectClass=Group)(objectCategory=Group))(&(objectClass=User)(objectCategory=Person)))({0}))", Filter);
+            Searcher.Filter = Filter;
+            return FindAll();
+        }
+
+        #endregion
+
+        #region FindUserByUserName
+
         /// <summary>
         /// Finds a user by his user name
         /// </summary>
         /// <param name="UserName">User name to search by</param>
         /// <returns>The user's entry</returns>
-        public Entry FindUserByUserName(string UserName)
+        public virtual Entry FindUserByUserName(string UserName)
         {
+            if (string.IsNullOrEmpty(UserName))
+                throw new ArgumentNullException("UserName");
             List<Entry> Entries = FindUsers("samAccountName=" + UserName);
             if (Entries.Count > 0)
             {
@@ -69,18 +269,9 @@ namespace Utilities.LDAP
             return null;
         }
 
-        /// <summary>
-        /// Finds all active users
-        /// </summary>
-        /// <param name="Filter">Filter used to modify the query</param>
-        /// <param name="args">Additional arguments (used in string formatting</param>
-        /// <returns>A list of all active users' entries</returns>
-        public List<Entry> FindActiveUsers(string Filter, params object[] args)
-        {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
-            return FindUsers(Filter);
-        }
+        #endregion
+
+        #region FindUsers
 
         /// <summary>
         /// Finds all users
@@ -88,7 +279,7 @@ namespace Utilities.LDAP
         /// <param name="Filter">Filter used to modify the query</param>
         /// <param name="args">Additional arguments (used in string formatting</param>
         /// <returns>A list of all users meeting the specified Filter</returns>
-        public List<Entry> FindUsers(string Filter, params object[] args)
+        public virtual List<Entry> FindUsers(string Filter, params object[] args)
         {
             Filter = string.Format(Filter, args);
             Filter = string.Format("(&(objectClass=User)(objectCategory=Person)({0}))", Filter);
@@ -96,154 +287,15 @@ namespace Utilities.LDAP
             return FindAll();
         }
 
-        /// <summary>
-        /// Finds all computers
-        /// </summary>
-        /// <param name="Filter">Filter used to modify the query</param>
-        /// <param name="args">Additional arguments (used in string formatting</param>
-        /// <returns>A list of all computers meeting the specified Filter</returns>
-        public List<Entry> FindComputers(string Filter, params object[] args)
-        {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(objectClass=computer)({0}))", Filter);
-            Searcher.Filter = Filter;
-            return FindAll();
-        }
+        #endregion
 
-        /// <summary>
-        /// Finds all active users and groups
-        /// </summary>
-        /// <param name="Filter">Filter used to modify the query</param>
-        /// <param name="args">Additional arguments (used in string formatting</param>
-        /// <returns>A list of all active groups' entries</returns>
-        public List<Entry> FindActiveUsersAndGroups(string Filter, params object[] args)
-        {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
-            return FindUsersAndGroups(Filter);
-        }
-
-        /// <summary>
-        /// Finds all users and groups
-        /// </summary>
-        /// <param name="Filter">Filter used to modify the query</param>
-        /// <param name="args">Additional arguments (used in string formatting</param>
-        /// <returns>A list of all users and groups meeting the specified Filter</returns>
-        public List<Entry> FindUsersAndGroups(string Filter, params object[] args)
-        {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(|(&(objectClass=Group)(objectCategory=Group))(&(objectClass=User)(objectCategory=Person)))({0}))", Filter);
-            Searcher.Filter = Filter;
-            return FindAll();
-        }
-
-        /// <summary>
-        /// Finds all active groups
-        /// </summary>
-        /// <param name="Filter">Filter used to modify the query</param>
-        /// <param name="args">Additional arguments (used in string formatting</param>
-        /// <returns>A list of all active groups' entries</returns>
-        public List<Entry> FindActiveGroups(string Filter, params object[] args)
-        {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
-            return FindGroups(Filter);
-        }
-
-        /// <summary>
-        /// Finds all groups
-        /// </summary>
-        /// <param name="Filter">Filter used to modify the query</param>
-        /// <param name="args">Additional arguments (used in string formatting</param>
-        /// <returns>A list of all groups meeting the specified Filter</returns>
-        public List<Entry> FindGroups(string Filter, params object[] args)
-        {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(objectClass=Group)(objectCategory=Group)({0}))", Filter);
-            Searcher.Filter = Filter;
-            return FindAll();
-        }
-
-        /// <summary>
-        /// Returns a group's list of members
-        /// </summary>
-        /// <param name="GroupName">The group's name</param>
-        /// <returns>A list of the members</returns>
-        public List<Utilities.LDAP.Entry> FindActiveGroupMembers(string GroupName)
-        {
-            try
-            {
-                List<Utilities.LDAP.Entry> Entries = this.FindGroups("cn=" + GroupName);
-                if (Entries.Count < 1)
-                    return new List<Utilities.LDAP.Entry>();
-
-                return this.FindActiveUsersAndGroups("memberOf=" + Entries[0].DistinguishedName);
-            }
-            catch
-            {
-                return new List<Utilities.LDAP.Entry>();
-            }
-        }
-
-        /// <summary>
-        /// Finds all entries that match the query
-        /// </summary>
-        /// <returns>A list of all entries that match the query</returns>
-        public List<Entry> FindAll()
-        {
-            List<Entry> ReturnedResults = new List<Entry>();
-            SearchResultCollection Results = Searcher.FindAll();
-            foreach (SearchResult Result in Results)
-            {
-                ReturnedResults.Add(new Entry(Result.GetDirectoryEntry()));
-            }
-            Results.Dispose();
-            return ReturnedResults;
-        }
-
-        /// <summary>
-        /// Finds one entry that matches the query
-        /// </summary>
-        /// <returns>A single entry matching the query</returns>
-        public Entry FindOne()
-        {
-            SearchResult Result = Searcher.FindOne();
-            return new Entry(Result.GetDirectoryEntry());
-        }
-
-        /// <summary>
-        /// Closes the directory
-        /// </summary>
-        public void Close()
-        {
-            Entry.Close();
-        }
-
-        /// <summary>
-        /// Checks to see if the person was authenticated
-        /// </summary>
-        /// <returns>true if they were authenticated properly, false otherwise</returns>
-        public bool Authenticate()
-        {
-            try
-            {
-                if (!Entry.Guid.ToString().ToLower().Trim().Equals(""))
-                {
-                    return true;
-                }
-            }
-            catch
-            {
-            }
-            return false;
-        }
         #endregion
 
         #region Properties
         /// <summary>
         /// Path of the server
         /// </summary>
-        public string Path
+        public virtual string Path
         {
             get { return _Path; }
             set
@@ -252,6 +304,13 @@ namespace Utilities.LDAP
                 if (Entry != null)
                 {
                     Entry.Close();
+                    Entry.Dispose();
+                    Entry = null;
+                }
+                if (Searcher != null)
+                {
+                    Searcher.Dispose();
+                    Searcher = null;
                 }
                 Entry = new DirectoryEntry(_Path, _UserName, _Password, AuthenticationTypes.Secure);
                 Searcher = new DirectorySearcher(Entry);
@@ -263,7 +322,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// User name used to log in
         /// </summary>
-        public string UserName
+        public virtual string UserName
         {
             get { return _UserName; }
             set
@@ -272,6 +331,13 @@ namespace Utilities.LDAP
                 if (Entry != null)
                 {
                     Entry.Close();
+                    Entry.Dispose();
+                    Entry = null;
+                }
+                if (Searcher != null)
+                {
+                    Searcher.Dispose();
+                    Searcher = null;
                 }
                 Entry = new DirectoryEntry(_Path, _UserName, _Password, AuthenticationTypes.Secure);
                 Searcher = new DirectorySearcher(Entry);
@@ -283,7 +349,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// Password used to log in
         /// </summary>
-        public string Password
+        public virtual string Password
         {
             get { return _Password; }
             set
@@ -292,6 +358,13 @@ namespace Utilities.LDAP
                 if (Entry != null)
                 {
                     Entry.Close();
+                    Entry.Dispose();
+                    Entry = null;
+                }
+                if (Searcher != null)
+                {
+                    Searcher.Dispose();
+                    Searcher = null;
                 }
                 Entry = new DirectoryEntry(_Path, _UserName, _Password, AuthenticationTypes.Secure);
                 Searcher = new DirectorySearcher(Entry);
@@ -303,7 +376,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// The query that is being made
         /// </summary>
-        public string Query
+        public virtual string Query
         {
             get { return _Query; }
             set
@@ -316,7 +389,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// Decides what to sort the information by
         /// </summary>
-        public string SortBy
+        public virtual string SortBy
         {
             get { return _SortBy; }
             set
@@ -344,6 +417,7 @@ namespace Utilities.LDAP
         {
             if (Entry != null)
             {
+                Entry.Close();
                 Entry.Dispose();
                 Entry = null;
             }

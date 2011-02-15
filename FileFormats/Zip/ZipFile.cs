@@ -33,7 +33,7 @@ namespace Utilities.FileFormats.Zip
     /// <summary>
     /// Helper class for dealing with zip files
     /// </summary>
-    public class ZipFile:IDisposable
+    public class ZipFile : IDisposable
     {
         #region Constructor
 
@@ -42,7 +42,7 @@ namespace Utilities.FileFormats.Zip
         /// </summary>
         /// <param name="FilePath">Path to the zip file</param>
         /// <param name="Overwrite">Should the zip file be overwritten?</param>
-        public ZipFile(string FilePath,bool Overwrite)
+        public ZipFile(string FilePath, bool Overwrite)
         {
             if (string.IsNullOrEmpty(FilePath))
                 throw new ArgumentNullException("FilePath");
@@ -72,12 +72,12 @@ namespace Utilities.FileFormats.Zip
                 throw new ArgumentNullException("Folder");
             if (Folder.EndsWith(@"\"))
                 Folder = Folder.Remove(Folder.Length - 1);
-            using(Package Package=ZipPackage.Open(ZipFileStream,FileMode.OpenOrCreate))
+            using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.OpenOrCreate))
             {
-                List<FileInfo> Files=Utilities.IO.FileManager.FileList(Folder,true);
-                foreach(FileInfo File in Files)
+                List<FileInfo> Files = Utilities.IO.FileManager.FileList(Folder, true);
+                foreach (FileInfo File in Files)
                 {
-                    string FilePath=File.FullName.Replace(Folder,"");
+                    string FilePath = File.FullName.Replace(Folder, "");
                     AddFile(FilePath, File, Package);
                 }
             }
@@ -135,7 +135,7 @@ namespace Utilities.FileFormats.Zip
             byte[] Data = new byte[1024];
             using (FileStream FileStream = new FileStream(Location, FileMode.Create))
             {
-                Stream DocumentStream=Document.GetStream();
+                Stream DocumentStream = Document.GetStream();
                 while (true)
                 {
                     int Size = DocumentStream.Read(Data, 0, 1024);
@@ -153,7 +153,7 @@ namespace Utilities.FileFormats.Zip
         /// <param name="File">File to add</param>
         /// <param name="FileInfo">File information</param>
         /// <param name="Package">Package to add the file to</param>
-        protected virtual void AddFile(string File,FileInfo FileInfo,Package Package)
+        protected virtual void AddFile(string File, FileInfo FileInfo, Package Package)
         {
             if (string.IsNullOrEmpty(File))
                 throw new ArgumentNullException("File");

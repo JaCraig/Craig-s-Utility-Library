@@ -71,7 +71,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// Cells within the row
         /// </summary>
-        public List<Cell> Cells
+        public virtual List<Cell> Cells
         {
             get { return _Cells; }
             set { _Cells = value; }
@@ -82,7 +82,7 @@ namespace Utilities.FileFormats.Delimited
         /// </summary>
         /// <param name="Position">The position of the cell</param>
         /// <returns>The specified cell</returns>
-        public Cell this[int Position]
+        public virtual Cell this[int Position]
         {
             get { return _Cells[Position]; }
             set { _Cells[Position] = value; }
@@ -91,7 +91,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// Number of cells within the row
         /// </summary>
-        public int NumberOfCells
+        public virtual int NumberOfCells
         {
             get { return Cells.Count; }
         }

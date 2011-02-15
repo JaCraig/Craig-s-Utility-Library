@@ -46,6 +46,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the data information</param>
         public Data(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("implicitdata", StringComparison.CurrentCultureIgnoreCase) || Element.Name.Equals("explicitdata", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)
@@ -71,7 +73,7 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// Concepts list
         /// </summary>
-        public Concepts Concepts
+        public virtual Concepts Concepts
         {
             get { return _Concepts; }
             set { _Concepts = value; }
@@ -81,7 +83,7 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// Sources list
         /// </summary>
-        public Sources Sources
+        public virtual Sources Sources
         {
             get { return _Sources; }
             set { _Sources = value; }

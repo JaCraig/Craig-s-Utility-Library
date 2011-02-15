@@ -46,6 +46,8 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML element holding info for the enclosure</param>
         public Thumbnail(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (!Element.Name.Equals("media:thumbnail", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not a thumbnail");
             if (Element.Attributes["url"] != null)
@@ -64,42 +66,22 @@ namespace Utilities.FileFormats.RSSHelper
 
         #endregion
 
-        #region Private Variables
-
-        private string _Url = string.Empty;
-        private int _Width = 1;
-        private int _Height = 1;
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         /// Location of the item
         /// </summary>
-        public string Url
-        {
-            get { return _Url; }
-            set { _Url = value; }
-        }
+        public virtual string Url { get; set; }
 
         /// <summary>
         /// Image width
         /// </summary>
-        public int Width
-        {
-            get { return _Width; }
-            set { _Width = value; }
-        }
+        public virtual int Width { get; set; }
 
         /// <summary>
         /// Image height
         /// </summary>
-        public int Height
-        {
-            get { return _Height; }
-            set { _Height = value; }
-        }
+        public virtual int Height { get; set; }
 
         #endregion
 
@@ -111,9 +93,9 @@ namespace Utilities.FileFormats.RSSHelper
         /// <returns>A string formatted for RSS output</returns>
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(_Url))
+            if (!string.IsNullOrEmpty(Url))
             {
-                return "<media:thumbnail url=\"" + _Url + "\" width=\"" + _Width.ToString() + "\" height=\"" + _Height + "\" />\r\n";
+                return "<media:thumbnail url=\"" + Url + "\" width=\"" + Width.ToString() + "\" height=\"" + Height + "\" />\r\n";
             }
             return string.Empty;
         }

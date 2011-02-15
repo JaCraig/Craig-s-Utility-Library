@@ -48,17 +48,17 @@ namespace Utilities.FileFormats.XFN
         /// <summary>
         /// Person's name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Person's URL
         /// </summary>
-        public string URL { get; set; }
+        public virtual string URL { get; set; }
 
         /// <summary>
         /// Person's relationships
         /// </summary>
-        public List<Relationship> Relationships { get; set; }
+        public virtual List<Relationship> Relationships { get; set; }
 
         #endregion
 

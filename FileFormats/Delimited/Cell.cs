@@ -37,6 +37,7 @@ namespace Utilities.FileFormats.Delimited
         /// </summary>
         public Cell()
         {
+            Value = "";
         }
 
         /// <summary>
@@ -52,16 +53,10 @@ namespace Utilities.FileFormats.Delimited
 
         #region Public Properties
 
-        private string _Value = string.Empty;
-
         /// <summary>
         /// Value within the cell
         /// </summary>
-        public string Value
-        {
-            get { return _Value; }
-            set { _Value = value; }
-        }
+        public virtual string Value { get; set; }
 
         #endregion
 

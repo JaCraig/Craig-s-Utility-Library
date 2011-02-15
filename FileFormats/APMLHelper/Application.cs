@@ -46,6 +46,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the application information</param>
         public Application(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("application", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (Element.Attributes["name"] != null)
@@ -61,22 +63,13 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// Name of the application
         /// </summary>
-        public string Name
-        {
-            get { return _Name; }
-            set { _Name = value; }
-        }
-        private string _Name = "";
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Extra application specific data (string containing XML info)
         /// </summary>
-        public string Data
-        {
-            get { return _Data; }
-            set { _Data = value; }
-        }
-        private string _Data = null;
+        public virtual string Data { get; set; }
+
         #endregion
 
         #region Overridden Functions

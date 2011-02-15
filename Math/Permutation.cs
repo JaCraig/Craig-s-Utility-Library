@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
+using System;
 
 #endregion
 
@@ -41,7 +42,9 @@ namespace Utilities.Math
         /// <returns>The list of permutations</returns>
         public static List<List<T>> Permute<T>(List<T> Input)
         {
-            List<T> Current=new List<T>();
+            if (Input == null)
+                throw new ArgumentNullException("Input");
+            List<T> Current = new List<T>();
             Current.AddRange(Input);
             List<List<T>> ReturnValue = new List<List<T>>();
             int Max = MathHelper.Factorial(Input.Count - 1);

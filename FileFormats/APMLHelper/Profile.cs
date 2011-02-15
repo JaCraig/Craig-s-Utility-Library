@@ -46,6 +46,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the profile information</param>
         public Profile(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("profile", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (Element.Attributes["name"] != null)
@@ -58,11 +60,11 @@ namespace Utilities.FileFormats.APMLHelper
                     {
                         if (Child.Name.Equals("implicitdata", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            ImplicitData=new Data((XmlElement)Child);
+                            ImplicitData = new Data((XmlElement)Child);
                         }
                         else if (Child.Name.Equals("explicitdata", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            ExplicitData=new Data((XmlElement)Child);
+                            ExplicitData = new Data((XmlElement)Child);
                         }
                     }
                     catch { }
@@ -75,17 +77,12 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// Name of the profile
         /// </summary>
-        public string Name
-        {
-            get { return _Name; }
-            set { _Name = value; }
-        }
-        private string _Name = "";
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Implicit data (data defined by an outside source)
         /// </summary>
-        public Data ImplicitData
+        public virtual Data ImplicitData
         {
             get { return _ImplicitData; }
             set { _ImplicitData = value; }
@@ -95,7 +92,7 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// Explicit data (data defined by the user)
         /// </summary>
-        public Data ExplicitData
+        public virtual Data ExplicitData
         {
             get { return _ExplicitData; }
             set { _ExplicitData = value; }
@@ -108,8 +105,8 @@ namespace Utilities.FileFormats.APMLHelper
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<Profile name=\"" + Name + "\">");
-            Builder.Append("<ImplicitData>"+ImplicitData.ToString()+"</ImplicitData>");
-            Builder.Append("<ExplicitData>"+ExplicitData.ToString()+"</ExplicitData>");
+            Builder.Append("<ImplicitData>" + ImplicitData.ToString() + "</ImplicitData>");
+            Builder.Append("<ExplicitData>" + ExplicitData.ToString() + "</ExplicitData>");
             Builder.Append("</Profile>");
             return Builder.ToString();
         }

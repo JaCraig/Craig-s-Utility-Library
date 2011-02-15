@@ -39,7 +39,7 @@ namespace Utilities.LDAP
         /// <param name="DirectoryEntry">Directory entry for the item</param>
         public Entry(DirectoryEntry DirectoryEntry)
         {
-            this._DirectoryEntry = DirectoryEntry;
+            this.DirectoryEntry = DirectoryEntry;
         }
         #endregion
 
@@ -47,16 +47,12 @@ namespace Utilities.LDAP
         /// <summary>
         /// Actual base directory entry
         /// </summary>
-        public DirectoryEntry DirectoryEntry
-        {
-            get { return _DirectoryEntry; }
-            set { _DirectoryEntry = value; }
-        }
+        public virtual DirectoryEntry DirectoryEntry { get; set; }
 
         /// <summary>
         /// Email property for this entry
         /// </summary>
-        public string Email
+        public virtual string Email
         {
             get { return (string)GetValue("mail"); }
             set { SetValue("mail", value); }
@@ -65,7 +61,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// distinguished name property for this entry
         /// </summary>
-        public string DistinguishedName
+        public virtual string DistinguishedName
         {
             get { return (string)GetValue("distinguishedname"); }
             set { SetValue("distinguishedname", value); }
@@ -74,7 +70,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// country code property for this entry
         /// </summary>
-        public string CountryCode
+        public virtual string CountryCode
         {
             get { return (string)GetValue("countrycode"); }
             set { SetValue("countrycode", value); }
@@ -83,7 +79,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// company property for this entry
         /// </summary>
-        public string Company
+        public virtual string Company
         {
             get { return (string)GetValue("company"); }
             set { SetValue("company", value); }
@@ -92,7 +88,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// MemberOf property for this entry
         /// </summary>
-        public List<string> MemberOf
+        public virtual List<string> MemberOf
         {
             get
             {
@@ -109,7 +105,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// display name property for this entry
         /// </summary>
-        public string DisplayName
+        public virtual string DisplayName
         {
             get { return (string)GetValue("displayname"); }
             set { SetValue("displayname", value); }
@@ -118,7 +114,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// initials property for this entry
         /// </summary>
-        public string Initials
+        public virtual string Initials
         {
             get { return (string)GetValue("initials"); }
             set { SetValue("initials", value); }
@@ -127,7 +123,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// title property for this entry
         /// </summary>
-        public string Title
+        public virtual string Title
         {
             get { return (string)GetValue("title"); }
             set { SetValue("title", value); }
@@ -136,7 +132,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// samaccountname property for this entry
         /// </summary>
-        public string SamAccountName
+        public virtual string SamAccountName
         {
             get { return (string)GetValue("samaccountname"); }
             set { SetValue("samaccountname", value); }
@@ -145,7 +141,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// givenname property for this entry
         /// </summary>
-        public string GivenName
+        public virtual string GivenName
         {
             get { return (string)GetValue("givenname"); }
             set { SetValue("givenname", value); }
@@ -154,7 +150,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// cn property for this entry
         /// </summary>
-        public string CN
+        public virtual string CN
         {
             get { return (string)GetValue("cn"); }
             set { SetValue("cn", value); }
@@ -163,7 +159,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// name property for this entry
         /// </summary>
-        public string Name
+        public virtual string Name
         {
             get { return (string)GetValue("name"); }
             set { SetValue("name", value); }
@@ -172,7 +168,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// office property for this entry
         /// </summary>
-        public string Office
+        public virtual string Office
         {
             get { return (string)GetValue("physicaldeliveryofficename"); }
             set { SetValue("physicaldeliveryofficename", value); }
@@ -181,7 +177,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// telephone number property for this entry
         /// </summary>
-        public string TelephoneNumber
+        public virtual string TelephoneNumber
         {
             get { return (string)GetValue("telephonenumber"); }
             set { SetValue("telephonenumber", value); }
@@ -192,9 +188,11 @@ namespace Utilities.LDAP
         /// <summary>
         /// Saves any changes that have been made
         /// </summary>
-        public void Save()
+        public virtual void Save()
         {
-            _DirectoryEntry.CommitChanges();
+            if (DirectoryEntry == null)
+                throw new NullReferenceException("DirectoryEntry shouldn't be null");
+            DirectoryEntry.CommitChanges();
         }
 
         /// <summary>
@@ -202,14 +200,10 @@ namespace Utilities.LDAP
         /// </summary>
         /// <param name="Property">Property you want the information about</param>
         /// <returns>an object containing the property's information</returns>
-        public object GetValue(string Property)
+        public virtual object GetValue(string Property)
         {
             PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
-            if (Collection != null)
-            {
-                return Collection.Value;
-            }
-            return null;
+            return Collection != null ? Collection.Value : null;
         }
 
         /// <summary>
@@ -218,14 +212,10 @@ namespace Utilities.LDAP
         /// <param name="Property">Property you want the information about</param>
         /// <param name="Index">Index of the property to return</param>
         /// <returns>an object containing the property's information</returns>
-        public object GetValue(string Property, int Index)
+        public virtual object GetValue(string Property, int Index)
         {
             PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
-            if (Collection != null)
-            {
-                return Collection[Index];
-            }
-            return null;
+            return Collection != null ? Collection[Index] : null;
         }
 
         /// <summary>
@@ -233,13 +223,11 @@ namespace Utilities.LDAP
         /// </summary>
         /// <param name="Property">Property of the entry to set</param>
         /// <param name="Value">Value to set the property to</param>
-        public void SetValue(string Property, object Value)
+        public virtual void SetValue(string Property, object Value)
         {
             PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
             if (Collection != null)
-            {
                 Collection.Value = Value;
-            }
         }
 
         /// <summary>
@@ -248,29 +236,23 @@ namespace Utilities.LDAP
         /// <param name="Property">Property of the entry to set</param>
         /// <param name="Index">Index of the property to set</param>
         /// <param name="Value">Value to set the property to</param>
-        public void SetValue(string Property,int Index, object Value)
+        public virtual void SetValue(string Property,int Index, object Value)
         {
             PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
             if (Collection != null)
-            {
                 Collection[Index] = Value;
-            }
         }
 
-        #endregion
-
-        #region Private Variables
-        private DirectoryEntry _DirectoryEntry;
         #endregion
 
         #region IDisposable Members
 
         public void Dispose()
         {
-            if (_DirectoryEntry != null)
+            if (DirectoryEntry != null)
             {
-                _DirectoryEntry.Dispose();
-                _DirectoryEntry = null;
+                DirectoryEntry.Dispose();
+                DirectoryEntry = null;
             }
         }
 

@@ -39,51 +39,55 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing the post info</param>
         public Post(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+            DateCreated = DateTime.Now;
+            DateModified = DateTime.Now;
             if (Element.Attributes["id"] != null)
             {
-                _ID = Element.Attributes["id"].Value;
+                ID = Element.Attributes["id"].Value;
             }
             if (Element.Attributes["post-url"] != null)
             {
-                _PostURL = Element.Attributes["post-url"].Value;
+                PostURL = Element.Attributes["post-url"].Value;
             }
             if (Element.Attributes["date-created"] != null)
             {
-                _DateCreated = DateTime.Parse(Element.Attributes["date-created"].Value);
+                DateCreated = DateTime.Parse(Element.Attributes["date-created"].Value);
             }
             if (Element.Attributes["date-modified"] != null)
             {
-                _DateModified = DateTime.Parse(Element.Attributes["date-modified"].Value);
+                DateModified = DateTime.Parse(Element.Attributes["date-modified"].Value);
             }
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Title = Children.InnerText;
+                    Title = Children.InnerText;
                 }
                 else if (Children.Name.Equals("content", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Content = Children.InnerText;
+                    Content = Children.InnerText;
                 }
                 else if (Children.Name.Equals("post-name", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _PostName = Children.InnerText;
+                    PostName = Children.InnerText;
                 }
                 else if (Children.Name.Equals("excerpt", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Excerpt = Children.InnerText;
+                    Excerpt = Children.InnerText;
                 }
                 else if (Children.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Authors = new Authors((XmlElement)Children);
+                    Authors = new Authors((XmlElement)Children);
                 }
                 else if (Children.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Categories = new Categories((XmlElement)Children);
+                    Categories = new Categories((XmlElement)Children);
                 }
                 else if (Children.Name.Equals("tags", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Tags = new Tags((XmlElement)Children);
+                    Tags = new Tags((XmlElement)Children);
                 }
                 else if (Children.Name.Equals("comments", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -93,124 +97,66 @@ namespace Utilities.FileFormats.BlogML
         }
         #endregion
 
-        #region Private Variables
-        private string _ID="";
-        private string _PostURL = "";
-        private string _Title = "";
-        private string _Content = "";
-        private string _Excerpt = "";
-        private string _PostName = "";
-        private DateTime _DateCreated = DateTime.Now;
-        private DateTime _DateModified = DateTime.Now;
-        private Authors _Authors = null;
-        private Categories _Categories = null;
-        private Tags _Tags = null;
-        #endregion
-
         #region Public Properties
         /// <summary>
         /// ID of the post
         /// </summary>
-        public string ID
-        {
-            get { return _ID; }
-            set { _ID = value; }
-        }
+        public virtual string ID { get; set; }
 
         /// <summary>
         /// URL of the post
         /// </summary>
-        public string PostURL
-        {
-            get { return _PostURL; }
-            set { _PostURL = value; }
-        }
+        public virtual string PostURL { get; set; }
 
         /// <summary>
         /// Title of the post
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Content of the post
         /// </summary>
-        public string Content
-        {
-            get { return _Content; }
-            set { _Content = value; }
-        }
+        public virtual string Content { get; set; }
 
         /// <summary>
         /// Excerpt of the post
         /// </summary>
-        public string Excerpt
-        {
-            get { return _Excerpt; }
-            set { _Excerpt = value; }
-        }
+        public virtual string Excerpt { get; set; }
 
         /// <summary>
         /// Name of the post
         /// </summary>
-        public string PostName
-        {
-            get { return _PostName; }
-            set { _PostName = value; }
-        }
+        public virtual string PostName { get; set; }
 
         /// <summary>
         /// Date the post was created
         /// </summary>
-        public DateTime DateCreated
-        {
-            get { return _DateCreated; }
-            set { _DateCreated = value; }
-        }
+        public virtual DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Date the post was modified
         /// </summary>
-        public DateTime DateModified
-        {
-            get { return _DateModified; }
-            set { _DateModified = value; }
-        }
+        public virtual DateTime DateModified { get; set; }
 
         /// <summary>
         /// Authors of the post
         /// </summary>
-        public Authors Authors
-        {
-            get { return _Authors; }
-            set { _Authors = value; }
-        }
+        public virtual Authors Authors { get; set; }
 
         /// <summary>
         /// Categories associated with the post
         /// </summary>
-        public Categories Categories
-        {
-            get { return _Categories; }
-            set { _Categories = value; }
-        }
+        public virtual Categories Categories { get; set; }
 
         /// <summary>
         /// Tags associated with the post
         /// </summary>
-        public Tags Tags
-        {
-            get { return _Tags; }
-            set { _Tags = value; }
-        }
+        public virtual Tags Tags { get; set; }
 
         /// <summary>
         /// Comments associated with the post
         /// </summary>
-        public Comments Comments { get; set; }
+        public virtual Comments Comments { get; set; }
 
         #endregion
     }

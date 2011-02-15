@@ -46,6 +46,8 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML element holding info for the enclosure</param>
         public GUID(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (!Element.Name.Equals("guid", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not a guid");
             if (Element.Attributes["isPermaLink"] != null)
@@ -62,12 +64,12 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Is this a perma link?
         /// </summary>
-        public string PermaLink { get; set; }
+        public virtual string PermaLink { get; set; }
 
         /// <summary>
         /// GUID Text
         /// </summary>
-        public string GUIDText { get; set; }
+        public virtual string GUIDText { get; set; }
 
         #endregion
 

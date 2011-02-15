@@ -49,6 +49,8 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Element">Element containing outline information</param>
         public Outline(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (Element.Attributes["text"] != null)
@@ -104,47 +106,47 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// Outline list
         /// </summary>
-        public List<Outline> Outlines { get; set; }
+        public virtual List<Outline> Outlines { get; set; }
 
         /// <summary>
         /// Url of the XML file
         /// </summary>
-        public string XMLUrl { get; set; }
+        public virtual string XMLUrl { get; set; }
 
         /// <summary>
         /// Version number
         /// </summary>
-        public string Version { get; set; }
+        public virtual string Version { get; set; }
 
         /// <summary>
         /// Title of the item
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Language used
         /// </summary>
-        public string Language { get; set; }
+        public virtual string Language { get; set; }
 
         /// <summary>
         /// Type
         /// </summary>
-        public string Type { get; set; }
+        public virtual string Type { get; set; }
 
         /// <summary>
         /// HTML Url
         /// </summary>
-        public string HTMLUrl { get; set; }
+        public virtual string HTMLUrl { get; set; }
 
         /// <summary>
         /// Text
         /// </summary>
-        public string Text { get; set; }
+        public virtual string Text { get; set; }
 
         /// <summary>
         /// Description
         /// </summary>
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         #endregion
 

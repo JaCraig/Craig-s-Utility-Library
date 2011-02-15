@@ -40,6 +40,8 @@ namespace Utilities.FileFormats.BlogML
         {
             try
             {
+                if (string.IsNullOrEmpty(Location))
+                    throw new ArgumentNullException("Location");
                 XmlDocument Document = new XmlDocument();
                 Document.Load(Location);
                 foreach (XmlNode Children in Document.ChildNodes)
@@ -50,23 +52,23 @@ namespace Utilities.FileFormats.BlogML
                         {
                             if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                _Title = Child.InnerText;
+                                Title = Child.InnerText;
                             }
                             else if (Child.Name.Equals("sub-title", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                _SubTitle = Child.InnerText;
+                                SubTitle = Child.InnerText;
                             }
                             else if (Child.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                _Authors = new Authors((XmlElement)Child);
+                                Authors = new Authors((XmlElement)Child);
                             }
                             else if (Child.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                _Categories = new Categories((XmlElement)Child);
+                                Categories = new Categories((XmlElement)Child);
                             }
                             else if (Child.Name.Equals("posts", StringComparison.CurrentCultureIgnoreCase))
                             {
-                                _Posts = new Posts((XmlElement)Child);
+                                Posts = new Posts((XmlElement)Child);
                             }
                         }
                     }
@@ -76,59 +78,32 @@ namespace Utilities.FileFormats.BlogML
         }
         #endregion
 
-        #region Private Variables
-        private string _Title = "";
-        private string _SubTitle = "";
-        private Authors _Authors=null;
-        private Categories _Categories = null;
-        private Posts _Posts = null;
-        #endregion
-
         #region Public Properties
         /// <summary>
         /// Title of the blog
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Sub title of the blog
         /// </summary>
-        public string SubTitle
-        {
-            get { return _SubTitle; }
-            set { _SubTitle = value; }
-        }
-        
+        public virtual string SubTitle { get; set; }
+
         /// <summary>
         /// Authors of the blog
         /// </summary>
-        public Authors Authors
-        {
-            get { return _Authors; }
-            set { _Authors = value; }
-        }
+        public virtual Authors Authors { get; set; }
 
         /// <summary>
         /// Categories of the blog (doesn't include tags)
         /// </summary>
-        public Categories Categories
-        {
-            get { return _Categories; }
-            set { _Categories = value; }
-        }
+        public virtual Categories Categories { get; set; }
 
         /// <summary>
         /// Posts of the blog
         /// </summary>
-        public Posts Posts
-        {
-            get { return _Posts; }
-            set { _Posts = value; }
-        }
+        public virtual Posts Posts { get; set; }
+
         #endregion
     }
 }

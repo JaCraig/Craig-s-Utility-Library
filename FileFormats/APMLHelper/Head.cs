@@ -38,6 +38,7 @@ namespace Utilities.FileFormats.APMLHelper
         /// </summary>
         public Head()
         {
+            DateCreated = DateTime.Now;
         }
 
         /// <summary>
@@ -46,6 +47,9 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the head information</param>
         public Head(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+            DateCreated = DateTime.Now;
             if (Element.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)
@@ -79,42 +83,23 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// Title of the APML document
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
-        private string _Title="";
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Generator of the APML document
         /// </summary>
-        public string Generator
-        {
-            get { return _Generator; }
-            set { _Generator = value; }
-        }
-        private string _Generator="";
+        public virtual string Generator { get; set; }
 
         /// <summary>
         /// User's email address
         /// </summary>
-        public string UserEmail
-        {
-            get { return _UserEmail; }
-            set { _UserEmail = value; }
-        }
-        private string _UserEmail="";
+        public virtual string UserEmail { get; set; }
 
         /// <summary>
         /// Date the document was created
         /// </summary>
-        public DateTime DateCreated
-        {
-            get { return _DateCreated; }
-            set { _DateCreated = value; }
-        }
-        private DateTime _DateCreated=DateTime.Now;
+        public virtual DateTime DateCreated { get; set; }
+
         #endregion
 
         #region Overridden Functions

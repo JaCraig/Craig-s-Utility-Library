@@ -55,7 +55,7 @@ namespace Utilities.Math
         /// Width of the matrix
         /// </summary>
         [XmlElement]
-        public int Width
+        public virtual int Width
         {
             get { return _Width; }
             set { _Width = value; _Values = new double[Width, Height]; }
@@ -65,7 +65,7 @@ namespace Utilities.Math
         /// Height of the matrix
         /// </summary>
         [XmlElement]
-        public int Height
+        public virtual int Height
         {
             get { return _Height; }
             set { _Height = value; _Values = new double[Width, Height]; }
@@ -76,11 +76,12 @@ namespace Utilities.Math
         /// <param name="X">X position</param>
         /// <param name="Y">Y position</param>
         /// <returns>the value at a point in the matrix</returns>
-        public double this[int X, int Y]
+        public virtual double this[int X, int Y]
         {
             get
             {
-                if (X < _Width && X >= 0 && Y < _Height && Y >= 0)
+                if (Math.MathHelper.Between<int>(X, 0, _Width)
+                    && Math.MathHelper.Between<int>(Y, 0, _Height))
                 {
                     return _Values[X, Y];
                 }
@@ -89,7 +90,8 @@ namespace Utilities.Math
 
             set
             {
-                if (X < _Width && X >= 0 && Y < _Height && Y >= 0)
+                if (Math.MathHelper.Between<int>(X, 0, _Width)
+                    && Math.MathHelper.Between<int>(Y, 0, _Height))
                 {
                     _Values[X, Y] = value;
                     return;
@@ -102,7 +104,7 @@ namespace Utilities.Math
         /// Values for the matrix
         /// </summary>
         [XmlElement]
-        public double[,] Values
+        public virtual double[,] Values
         {
             get { return _Values; }
             set { _Values = value; }
@@ -294,7 +296,7 @@ namespace Utilities.Math
         /// Transposes the matrix
         /// </summary>
         /// <returns>Returns a new transposed matrix</returns>
-        public Matrix Transpose()
+        public virtual Matrix Transpose()
         {
             Matrix TempValues = new Matrix(Height, Width);
             for (int x = 0; x < Width; ++x)
@@ -311,14 +313,12 @@ namespace Utilities.Math
         /// Gets the determinant of a square matrix
         /// </summary>
         /// <returns>The determinant of a square matrix</returns>
-        public double Determinant()
+        public virtual double Determinant()
         {
             if (Width != Height)
                 throw new Exception("The determinant can not be calculated for a non square matrix");
             if (Width == 2)
-            {
                 return (this[0, 0] * this[1, 1]) - (this[0, 1] * this[1, 0]);
-            }
             double Answer = 0.0;
             for (int x = 0; x < Width; ++x)
             {

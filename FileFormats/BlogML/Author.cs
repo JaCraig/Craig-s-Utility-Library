@@ -38,71 +38,51 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">XML element containing the author info</param>
         public Author(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Attributes["id"] != null)
             {
-                _ID = Element.Attributes["id"].Value;
+                ID = Element.Attributes["id"].Value;
             }
             if (Element.Attributes["email"] != null)
             {
-                _Email = Element.Attributes["email"].Value;
+                Email = Element.Attributes["email"].Value;
             }
             if (Element.Attributes["ref"] != null)
             {
-                _REF = Element.Attributes["ref"].Value;
+                REF = Element.Attributes["ref"].Value;
             }
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Title = Children.InnerText;
+                    Title = Children.InnerText;
                 }
             }
         }
-        #endregion
-
-        #region Private Variables
-        private string _ID = "";
-        private string _Email = "";
-        private string _Title = "";
-        private string _REF = "";
         #endregion
 
         #region Public Properties
         /// <summary>
         /// ID of the author
         /// </summary>
-        public string ID
-        {
-            get { return _ID; }
-            set { _ID = value; }
-        }
+        public virtual string ID { get; set; }
 
         /// <summary>
         /// Email address of the author
         /// </summary>
-        public string Email
-        {
-            get { return _Email; }
-            set { _Email = value; }
-        }
+        public virtual string Email { get; set; }
 
         /// <summary>
         /// The person's title (most likely their name)
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Determines if this should be a reference to an author
         /// </summary>
-        public string REF
-        {
-            get { return _REF; }
-            set { _REF = value; }
-        }
+        public virtual string REF { get; set; }
+
         #endregion
     }
 }

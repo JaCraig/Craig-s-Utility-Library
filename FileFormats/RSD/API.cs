@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Xml;
+using System;
 #endregion
 
 namespace Utilities.FileFormats.RSD
@@ -44,6 +45,8 @@ namespace Utilities.FileFormats.RSD
         /// <param name="Element">Element containing the API info</param>
         public API(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Attributes["name"] != null)
             {
                 Name = Element.Attributes["name"].Value;
@@ -67,22 +70,22 @@ namespace Utilities.FileFormats.RSD
         /// <summary>
         /// Name of the API
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Is this API preferred?
         /// </summary>
-        public bool Preferred { get; set; }
+        public virtual bool Preferred { get; set; }
 
         /// <summary>
         /// Link to the API
         /// </summary>
-        public string APILink { get; set; }
+        public virtual string APILink { get; set; }
 
         /// <summary>
         /// Link to the blog
         /// </summary>
-        public string BlogID { get; set; }
+        public virtual string BlogID { get; set; }
 
         #endregion
 

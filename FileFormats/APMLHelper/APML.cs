@@ -47,6 +47,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Location">Location of the APML file</param>
         public APML(string Location)
         {
+            if (string.IsNullOrEmpty("Location"))
+                throw new ArgumentNullException(Location);
             XmlDocument Document = new XmlDocument();
             Document.Load(Location);
             foreach (XmlNode Children in Document.ChildNodes)
@@ -82,7 +84,7 @@ namespace Utilities.FileFormats.APMLHelper
                     {
                         if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Body=new Body((XmlElement)Child);
+                            Body = new Body((XmlElement)Child);
                         }
                         else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
                         {
@@ -95,26 +97,17 @@ namespace Utilities.FileFormats.APMLHelper
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Body
         /// </summary>
-        public Body Body
-        {
-            get { return _Body; }
-            set { _Body = value; }
-        }
+        public virtual Body Body { get; set; }
 
         /// <summary>
         /// Head
         /// </summary>
-        public Head Head
-        {
-            get { return _Head; }
-            set { _Head = value; }
-        }
+        public virtual Head Head { get; set; }
 
-        private Body _Body;
-        private Head _Head;
         #endregion
 
         #region Overridden Functions

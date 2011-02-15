@@ -50,7 +50,7 @@ namespace Utilities.FileFormats
         /// Gets the vCard
         /// </summary>
         /// <returns>A vCard in string format</returns>
-        public string GetVCard()
+        public virtual string GetVCard()
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("BEGIN:VCARD\r\nVERSION:2.1\r\n");
@@ -87,7 +87,7 @@ namespace Utilities.FileFormats
         /// Gets the hCard version of the vCard
         /// </summary>
         /// <returns>A hCard in string format</returns>
-        public string GetHCard()
+        public virtual string GetHCard()
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<div class=\"vcard\">");
@@ -181,57 +181,57 @@ namespace Utilities.FileFormats
         /// <summary>
         /// First name
         /// </summary>
-        public string FirstName { get; set; }
+        public virtual string FirstName { get; set; }
 
         /// <summary>
         /// Last name
         /// </summary>
-        public string LastName { get; set; }
+        public virtual string LastName { get; set; }
 
         /// <summary>
         /// Middle name
         /// </summary>
-        public string MiddleName { get; set; }
+        public virtual string MiddleName { get; set; }
 
         /// <summary>
         /// Prefix
         /// </summary>
-        public string Prefix { get; set; }
+        public virtual string Prefix { get; set; }
 
         /// <summary>
         /// Suffix
         /// </summary>
-        public string Suffix { get; set; }
+        public virtual string Suffix { get; set; }
 
         /// <summary>
         /// Work phone number of the individual
         /// </summary>
-        public string DirectDial { get; set; }
+        public virtual string DirectDial { get; set; }
 
         /// <summary>
         /// Email of the individual
         /// </summary>
-        public string Email { get; set; }
+        public virtual string Email { get; set; }
 
         /// <summary>
         /// Title of the person
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Organization the person belongs to
         /// </summary>
-        public string Organization { get; set; }
+        public virtual string Organization { get; set; }
 
         /// <summary>
         /// Relationship to the person (uses XFN)
         /// </summary>
-        public List<Relationship> Relationships { get; set; }
+        public virtual List<Relationship> Relationships { get; set; }
 
         /// <summary>
         /// Url to the person's site
         /// </summary>
-        public string Url { get; set; }
+        public virtual string Url { get; set; }
 
         #endregion
     }

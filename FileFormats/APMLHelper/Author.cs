@@ -38,6 +38,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// </summary>
         public Author()
         {
+            Value = 1.0f;
+            Updated = DateTime.Now;
         }
 
         /// <summary>
@@ -46,6 +48,10 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the author information</param>
         public Author(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+            Value = 1.0f;
+            Updated = DateTime.Now;
             if (Element.Name.Equals("author", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (Element.Attributes["key"] != null)
@@ -72,42 +78,23 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// The author key
         /// </summary>
-        public string Key
-        {
-            get { return _Key; }
-            set { _Key = value; }
-        }
-        private string _Key = "";
+        public virtual string Key { get; set; }
 
         /// <summary>
         /// Value associated with the author
         /// </summary>
-        public float Value
-        {
-            get { return _Value; }
-            set { _Value = value; }
-        }
-        private float _Value = 1.0f;
+        public virtual float Value { get; set; }
 
         /// <summary>
         /// From value
         /// </summary>
-        public string From
-        {
-            get { return _From; }
-            set { _From = value; }
-        }
-        private string _From = "";
+        public virtual string From { get; set; }
 
         /// <summary>
         /// Last time it was updated
         /// </summary>
-        public DateTime Updated
-        {
-            get { return _Updated; }
-            set { _Updated = value; }
-        }
-        private DateTime _Updated = DateTime.Now;
+        public virtual DateTime Updated { get; set; }
+
         #endregion
 
         #region Overriden Functions

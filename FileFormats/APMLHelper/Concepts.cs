@@ -47,6 +47,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the Concepts information</param>
         public Concepts(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("concepts", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)
@@ -68,7 +70,7 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// List of concepts
         /// </summary>
-        public List<Concept> Concept
+        public virtual List<Concept> Concept
         {
             get { return _Concept; }
             set { _Concept = value; }

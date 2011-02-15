@@ -31,6 +31,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
     /// <summary>
     /// Parses and creates a fixed length file
     /// </summary>
+    /// <typeparam name="T">Field type</typeparam>
     public class FixedLengthBase<T>
     {
         #region Constructor
@@ -70,7 +71,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #region Protected Variables
 
-        protected List<IRecord<T>> Records { get; set; }
+        protected virtual List<IRecord<T>> Records { get; set; }
 
         #endregion
 

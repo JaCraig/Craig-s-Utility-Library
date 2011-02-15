@@ -47,6 +47,8 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Location">Location of the OPML file</param>
         public OPML(string Location)
         {
+            if (string.IsNullOrEmpty(Location))
+                throw new ArgumentNullException("Location");
             XmlDocument Document = new XmlDocument();
             Document.Load(Location);
             foreach (XmlNode Children in Document.ChildNodes)
@@ -74,6 +76,8 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Document">XmlDocument containing the OPML file</param>
         public OPML(XmlDocument Document)
         {
+            if (Document == null)
+                throw new ArgumentNullException("Document");
             foreach (XmlNode Children in Document.ChildNodes)
             {
                 if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
@@ -99,12 +103,12 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// Body of the file
         /// </summary>
-        public Body Body { get; set; }
+        public virtual Body Body { get; set; }
 
         /// <summary>
         /// Header information
         /// </summary>
-        public Head Head { get; set; }
+        public virtual Head Head { get; set; }
 
         #endregion
 

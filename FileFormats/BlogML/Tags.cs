@@ -39,39 +39,35 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing tags info</param>
         public Tags(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
+            TagList = new List<Tag>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("tag", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Tags.Add(new Tag((XmlElement)Children));
+                    TagList.Add(new Tag((XmlElement)Children));
                 }
             }
         }
-        #endregion
-
-        #region Private Variables
-        private List<Tag> _Tags = new List<Tag>();
         #endregion
 
         #region Public Properties
         /// <summary>
         /// Tags list
         /// </summary>
-        public List<Tag> TagList
-        {
-            get { return _Tags; }
-            set { _Tags = value; }
-        }
+        public virtual List<Tag> TagList { get; set; }
 
         /// <summary>
         /// gets a specific tag
         /// </summary>
         /// <param name="index">Index of the tag</param>
         /// <returns>A specific tag</returns>
-        public Tag this[int index]
+        public virtual Tag this[int index]
         {
             get { return TagList[index]; }
         }
+
         #endregion
     }
 }

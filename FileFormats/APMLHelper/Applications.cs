@@ -47,6 +47,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the Applications information</param>
         public Applications(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("applications", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)
@@ -68,7 +70,7 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// The individual application information
         /// </summary>
-        public List<Application> Application
+        public virtual List<Application> Application
         {
             get { return _Application; }
             set { _Application = value; }

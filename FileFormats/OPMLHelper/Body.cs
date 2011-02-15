@@ -48,6 +48,8 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Element">XmlElement containing the body information</param>
         public Body(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             Outlines = new List<Outline>();
             if (Element.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -71,7 +73,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// List of outlines
         /// </summary>
-        public List<Outline> Outlines { get; set; }
+        public virtual List<Outline> Outlines { get; set; }
 
         #endregion
 

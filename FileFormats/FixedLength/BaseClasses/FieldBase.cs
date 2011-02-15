@@ -26,6 +26,10 @@ using Utilities.FileFormats.FixedLength.Interfaces;
 
 namespace Utilities.FileFormats.FixedLength.BaseClasses
 {
+    /// <summary>
+    /// Field base class
+    /// </summary>
+    /// <typeparam name="T">Field type</typeparam>
     public class FieldBase<T> : IField<T>
     {
         #region Constructor
@@ -46,7 +50,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
             throw new NotImplementedException();
         }
 
-        public virtual void Parse(string Value,int Length)
+        public virtual void Parse(string Value, int Length)
         {
             throw new NotImplementedException();
         }
@@ -56,9 +60,9 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
             throw new NotImplementedException();
         }
 
-        public int Length { get; set; }
+        public virtual int Length { get; set; }
 
-        public T Value { get; set; }
+        public virtual T Value { get; set; }
 
         #endregion
 

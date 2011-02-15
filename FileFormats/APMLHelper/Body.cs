@@ -47,6 +47,8 @@ namespace Utilities.FileFormats.APMLHelper
         /// <param name="Element">XmlElement containing the body information</param>
         public Body(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (Element.Attributes["defaultprofile"] != null)
@@ -76,39 +78,30 @@ namespace Utilities.FileFormats.APMLHelper
         /// <summary>
         /// Default Profile
         /// </summary>
-        public string DefaultProfile
-        {
-            get { return _DefaultProfile; }
-            set { _DefaultProfile = value; }
-        }
-        private string _DefaultProfile="";
+        public virtual string DefaultProfile { get; set; }
 
         /// <summary>
         /// The list of profiles
         /// </summary>
-        public List<Profile> Profiles
+        public virtual List<Profile> Profiles
         {
             get { return _Profiles; }
             set { _Profiles = value; }
         }
-        private List<Profile> _Profiles=new List<Profile>();
+        private List<Profile> _Profiles = new List<Profile>();
 
         /// <summary>
         /// The list of applications
         /// </summary>
-        public Applications Applications
-        {
-            get { return _Applications; }
-            set { _Applications = value; }
-        }
-        private Applications _Applications=null;
+        public virtual Applications Applications { get; set; }
+
         #endregion
 
         #region Overriden Functions
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.Append("<Body defaultprofile=\""+DefaultProfile+"\">");
+            Builder.Append("<Body defaultprofile=\"" + DefaultProfile + "\">");
             foreach (Profile Profile in Profiles)
             {
                 Builder.Append(Profile.ToString());

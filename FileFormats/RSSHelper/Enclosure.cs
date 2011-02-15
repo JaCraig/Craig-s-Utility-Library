@@ -46,6 +46,8 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML element holding info for the enclosure</param>
         public Enclosure(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (!Element.Name.Equals("enclosure", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not an enclosure");
             if (Element.Attributes["url"] != null)
@@ -64,39 +66,22 @@ namespace Utilities.FileFormats.RSSHelper
 
         #endregion
 
-        #region Private Variables
-        private string _Url = string.Empty;
-        private string _Length = string.Empty;
-        private string _Type = string.Empty;
-        #endregion
-
         #region Properties
         /// <summary>
         /// Location of the item
         /// </summary>
-        public string Url
-        {
-            get { return _Url; }
-            set { _Url = value; }
-        }
+        public virtual string Url { get; set; }
 
         /// <summary>
         /// Size in bytes
         /// </summary>
-        public string Length
-        {
-            get { return _Length; }
-            set { _Length = value; }
-        }
+        public virtual string Length { get; set; }
 
         /// <summary>
         /// File type
         /// </summary>
-        public string Type
-        {
-            get { return _Type; }
-            set { _Type = value; }
-        }
+        public virtual string Type { get; set; }
+
         #endregion
 
         #region Public Overridden Functions
@@ -107,10 +92,10 @@ namespace Utilities.FileFormats.RSSHelper
         /// <returns>A string formatted for RSS output</returns>
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(_Url) && !string.IsNullOrEmpty(_Type) && !string.IsNullOrEmpty(_Length))
+            if (!string.IsNullOrEmpty(Url) && !string.IsNullOrEmpty(Type) && !string.IsNullOrEmpty(Length))
             {
-                return "<enclosure url=\"" + _Url + "\" length=\"" + _Length + "\" type=\"" + _Type + "\" />\r\n"
-                    + "<media:content url=\"" + _Url + "\" fileSize=\"" + _Length + "\" type=\"" + _Type + "\" />";
+                return "<enclosure url=\"" + Url + "\" length=\"" + Length + "\" type=\"" + Type + "\" />\r\n"
+                    + "<media:content url=\"" + Url + "\" fileSize=\"" + Length + "\" type=\"" + Type + "\" />";
 
             }
             return string.Empty;

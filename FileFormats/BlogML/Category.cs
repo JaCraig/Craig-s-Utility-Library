@@ -38,57 +38,42 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">XML element with the category info</param>
         public Category(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Attributes["id"] != null)
             {
-                _ID = Element.Attributes["id"].Value;
+                ID = Element.Attributes["id"].Value;
             }
             if (Element.Attributes["ref"] != null)
             {
-                _REF = Element.Attributes["ref"].Value;
+                REF = Element.Attributes["ref"].Value;
             }
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _Title = Children.InnerText;
+                    Title = Children.InnerText;
                 }
             }
         }
-        #endregion
-
-        #region Private Variables
-        private string _ID = "";
-        private string _Title = "";
-        private string _REF = "";
         #endregion
 
         #region Public Properties
         /// <summary>
         /// ID of the category
         /// </summary>
-        public string ID
-        {
-            get { return _ID; }
-            set { _ID = value; }
-        }
+        public virtual string ID { get; set; }
 
         /// <summary>
         /// Title of the cateogry (its name)
         /// </summary>
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Determines if this is a reference to a category
         /// </summary>
-        public string REF
-        {
-            get { return _REF; }
-            set { _REF = value; }
-        }
+        public virtual string REF { get; set; }
+
         #endregion
     }
 }

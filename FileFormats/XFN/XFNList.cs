@@ -48,7 +48,7 @@ namespace Utilities.FileFormats.XFN
         /// <summary>
         /// List of people
         /// </summary>
-        public List<People> People { get; set; }
+        public virtual List<People> People { get; set; }
 
         #endregion
 

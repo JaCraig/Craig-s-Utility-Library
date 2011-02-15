@@ -47,32 +47,32 @@ namespace Utilities.FileFormats
         /// <summary>
         /// The time zone adjustment for the calendar event
         /// </summary>
-        public int TimeZoneAdjustment { get; set; }
+        public virtual int TimeZoneAdjustment { get; set; }
 
         /// <summary>
         /// The start time
         /// </summary>
-        public DateTime StartTime { get; set; }
+        public virtual DateTime StartTime { get; set; }
 
         /// <summary>
         /// The end time
         /// </summary>
-        public DateTime EndTime { get; set; }
+        public virtual DateTime EndTime { get; set; }
 
         /// <summary>
         /// The location of the event
         /// </summary>
-        public string Location { get; set; }
+        public virtual string Location { get; set; }
 
         /// <summary>
         /// The subject of the item to send
         /// </summary>
-        public string Subject { get; set; }
+        public virtual string Subject { get; set; }
 
         /// <summary>
         /// The description of the event
         /// </summary>
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
@@ -106,7 +106,7 @@ namespace Utilities.FileFormats
         /// Returns the VCalendar item
         /// </summary>
         /// <returns>a string output of the VCalendar item</returns>
-        public string GetVCalendar()
+        public virtual string GetVCalendar()
         {
             StringBuilder FileOutput = new StringBuilder();
             FileOutput.AppendLine("BEGIN:VCALENDAR");
@@ -133,7 +133,7 @@ namespace Utilities.FileFormats
         /// Returns the ICalendar item
         /// </summary>
         /// <returns>a string output of the ICalendar item</returns>
-        public string GetICalendar()
+        public virtual string GetICalendar()
         {
             StringBuilder FileOutput = new StringBuilder();
             FileOutput.AppendLine("BEGIN:VCALENDAR");
@@ -175,7 +175,7 @@ namespace Utilities.FileFormats
         /// Returns the HCalendar item
         /// </summary>
         /// <returns>A string output of the HCalendar item</returns>
-        public string GetHCalendar()
+        public virtual string GetHCalendar()
         {
             StringBuilder Output = new StringBuilder();
             Output.Append("<div class=\"vevent\">")

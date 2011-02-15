@@ -53,7 +53,7 @@ namespace Utilities.Math
         /// <summary>
         /// Normalizes the vector
         /// </summary>
-        public void Normalize()
+        public virtual void Normalize()
         {
             double Normal = Magnitude;
             if (Normal > 0)
@@ -108,7 +108,7 @@ namespace Utilities.Math
         /// <summary>
         /// Used for converting this to an array and back
         /// </summary>
-        public double[] Array
+        public virtual double[] Array
         {
             get { return new double[] { X, Y, Z }; }
             set
@@ -125,7 +125,7 @@ namespace Utilities.Math
         /// <summary>
         /// Returns the magnitude of the vector
         /// </summary>
-        public double Magnitude
+        public virtual double Magnitude
         {
             get { return System.Math.Sqrt((X * X) + (Y * Y) + (Z * Z)); }
         }
@@ -134,19 +134,19 @@ namespace Utilities.Math
         /// X value
         /// </summary>
         [XmlElement]
-        public double X { get; set; }
+        public virtual double X { get; set; }
 
         /// <summary>
         /// Y Value
         /// </summary>
         [XmlElement]
-        public double Y { get; set; }
+        public virtual double Y { get; set; }
 
         /// <summary>
         /// Z value
         /// </summary>
         [XmlElement]
-        public double Z { get; set; }
+        public virtual double Z { get; set; }
 
         #endregion
 

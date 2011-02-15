@@ -49,18 +49,18 @@ namespace Utilities.FileFormats.XMDP
         /// <summary>
         /// Name of the property
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Description of the property
         /// </summary>
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         /// <summary>
         /// List of sub properties (only used for rel type when you need to
         /// define new link types)
         /// </summary>
-        public List<Property> Properties { get; set; }
+        public virtual List<Property> Properties { get; set; }
 
         #endregion
 

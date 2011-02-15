@@ -36,21 +36,8 @@ namespace Utilities.IO
     public static class Serialization
     {
         #region Public Static Functions
-        /// <summary>
-        /// Serializes an object to binary
-        /// </summary>
-        /// <param name="Object">Object to serialize</param>
-        /// <param name="Output">Binary output of the object</param>
-        public static void ObjectToBinary(object Object, out byte[] Output)
-        {
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                BinaryFormatter Formatter = new BinaryFormatter();
-                Formatter.Serialize(Stream, Object);
-                Stream.Seek(0, 0);
-                Output = Stream.ToArray();
-            }
-        }
+
+        #region BinaryToObject
 
         /// <summary>
         /// Deserializes an object from binary
@@ -60,14 +47,67 @@ namespace Utilities.IO
         /// <param name="Object">Object after it is deserialized</param>
         public static void BinaryToObject<T>(byte[] Binary, out T Object)
         {
-            using (MemoryStream Stream = new MemoryStream())
+            if (Binary == null)
             {
-                Stream.Write(Binary, 0, Binary.Length);
-                Stream.Seek(0, 0);
+                Object = default(T);
+                return;
+            }
+            using (MemoryStream Stream = new MemoryStream(Binary))
+            {
                 BinaryFormatter Formatter = new BinaryFormatter();
                 Object = (T)Formatter.Deserialize(Stream);
             }
         }
+
+        #endregion
+
+        #region ObjectToBinary
+
+        /// <summary>
+        /// Serializes an object to binary
+        /// </summary>
+        /// <param name="Object">Object to serialize</param>
+        /// <param name="Output">Binary output of the object</param>
+        public static void ObjectToBinary(object Object, out byte[] Output)
+        {
+            if (Object == null)
+            {
+                Output = null;
+                return;
+            }
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                BinaryFormatter Formatter = new BinaryFormatter();
+                Formatter.Serialize(Stream, Object);
+                Output = Stream.ToArray();
+            }
+        }
+
+        #endregion
+
+        #region ObjectToSOAP
+
+        /// <summary>
+        /// Converts an object to a SOAP string
+        /// </summary>
+        /// <param name="Object">Object to serialize</param>
+        /// <returns>The serialized string</returns>
+        public static string ObjectToSOAP(object Object)
+        {
+            if (Object == null)
+                throw new ArgumentException("Object can not be null");
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                SoapFormatter Serializer = new SoapFormatter();
+                Serializer.Serialize(Stream, Object);
+                Stream.Flush();
+                return UTF8Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
+            }
+        }
+
+        #endregion
+
+        #region ObjectToXML
 
         /// <summary>
         /// Converts an object to XML
@@ -77,6 +117,8 @@ namespace Utilities.IO
         /// <returns>string representation of the object in XML format</returns>
         public static string ObjectToXML(object Object, string FileName)
         {
+            if (string.IsNullOrEmpty(FileName))
+                throw new ArgumentNullException("FileName");
             string XML = ObjectToXML(Object);
             FileManager.SaveFile(XML, FileName);
             return XML;
@@ -90,9 +132,7 @@ namespace Utilities.IO
         public static string ObjectToXML(object Object)
         {
             if (Object == null)
-            {
                 throw new ArgumentException("Object can not be null");
-            }
             using (MemoryStream Stream = new MemoryStream())
             {
                 XmlSerializer Serializer = new XmlSerializer(Object.GetType());
@@ -102,24 +142,30 @@ namespace Utilities.IO
             }
         }
 
+        #endregion
+
+        #region SOAPToObject
+
         /// <summary>
-        /// Takes an XML file and exports the Object it holds
+        /// Converts a SOAP string to an object
         /// </summary>
-        /// <param name="FileName">File name to use</param>
-        /// <param name="Object">Object to export to</param>
-        public static void XMLToObject<T>(string FileName, out T Object)
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="SOAP">SOAP string</param>
+        /// <returns>The object of the specified type</returns>
+        public static T SOAPToObject<T>(string SOAP)
         {
-            if (string.IsNullOrEmpty(FileName))
+            if (string.IsNullOrEmpty(SOAP))
+                throw new ArgumentException("SOAP can not be null/empty");
+            using (MemoryStream Stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(SOAP)))
             {
-                throw new ArgumentException("File name can not be null/empty");
+                SoapFormatter Formatter = new SoapFormatter();
+                return (T)Formatter.Deserialize(Stream);
             }
-            if (!FileManager.FileExists(FileName))
-            {
-                throw new ArgumentException("File does not exist");
-            }
-            string FileContent = FileManager.GetFileContents(FileName);
-            Object = XMLToObject<T>(FileContent);
         }
+
+        #endregion
+
+        #region XMLToObject
 
         /// <summary>
         /// Converts an XML string to an object
@@ -130,9 +176,7 @@ namespace Utilities.IO
         public static T XMLToObject<T>(string XML)
         {
             if (string.IsNullOrEmpty(XML))
-            {
                 throw new ArgumentException("XML can not be null/empty");
-            }
             using (MemoryStream Stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(XML)))
             {
                 XmlSerializer Serializer = new XmlSerializer(typeof(T));
@@ -145,19 +189,14 @@ namespace Utilities.IO
         /// </summary>
         /// <param name="FileName">File name to use</param>
         /// <param name="Object">Object to export to</param>
-        /// <param name="ObjectType">Object type to export</param>
-        public static void XMLToObject(string FileName, out object Object, Type ObjectType)
+        public static void XMLToObject<T>(string FileName, out T Object)
         {
             if (string.IsNullOrEmpty(FileName))
-            {
                 throw new ArgumentException("File name can not be null/empty");
-            }
             if (!FileManager.FileExists(FileName))
-            {
                 throw new ArgumentException("File does not exist");
-            }
             string FileContent = FileManager.GetFileContents(FileName);
-            Object = XMLToObject(FileContent, ObjectType);
+            Object = XMLToObject<T>(FileContent);
         }
 
         /// <summary>
@@ -169,9 +208,7 @@ namespace Utilities.IO
         public static object XMLToObject(string XML, Type ObjectType)
         {
             if (string.IsNullOrEmpty(XML))
-            {
                 throw new ArgumentException("XML can not be null/empty");
-            }
             using (MemoryStream Stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(XML)))
             {
                 XmlSerializer Serializer = new XmlSerializer(ObjectType);
@@ -180,43 +217,23 @@ namespace Utilities.IO
         }
 
         /// <summary>
-        /// Converts a SOAP string to an object
+        /// Takes an XML file and exports the Object it holds
         /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="SOAP">SOAP string</param>
-        /// <returns>The object of the specified type</returns>
-        public static T SOAPToObject<T>(string SOAP)
+        /// <param name="FileName">File name to use</param>
+        /// <param name="Object">Object to export to</param>
+        /// <param name="ObjectType">Object type to export</param>
+        public static void XMLToObject(string FileName, out object Object, Type ObjectType)
         {
-            if (string.IsNullOrEmpty(SOAP))
-            {
-                throw new ArgumentException("SOAP can not be null/empty");
-            }
-            using (MemoryStream Stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(SOAP)))
-            {
-                SoapFormatter Formatter = new SoapFormatter();
-                return (T)Formatter.Deserialize(Stream);
-            }
+            if (string.IsNullOrEmpty(FileName))
+                throw new ArgumentException("File name can not be null/empty");
+            if (!FileManager.FileExists(FileName))
+                throw new ArgumentException("File does not exist");
+            string FileContent = FileManager.GetFileContents(FileName);
+            Object = XMLToObject(FileContent, ObjectType);
         }
 
-        /// <summary>
-        /// Converts an object to a SOAP string
-        /// </summary>
-        /// <param name="Object">Object to serialize</param>
-        /// <returns>The serialized string</returns>
-        public static string ObjectToSOAP(object Object)
-        {
-            if (Object == null)
-            {
-                throw new ArgumentException("Object can not be null");
-            }
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                SoapFormatter Serializer = new SoapFormatter();
-                Serializer.Serialize(Stream, Object);
-                Stream.Flush();
-                return UTF8Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
-            }
-        }
+        #endregion
+
         #endregion
     }
 }

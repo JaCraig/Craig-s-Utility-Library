@@ -47,6 +47,8 @@ namespace Utilities.FileFormats.FOAF
         /// <param name="Location">Location of the FOAF file</param>
         public FOAF(string Location)
         {
+            if (string.IsNullOrEmpty(Location))
+                throw new ArgumentNullException("Location");
             XmlDocument Document = new XmlDocument();
             Document.Load(Location);
             foreach (XmlNode Children in Document.ChildNodes)
@@ -90,12 +92,8 @@ namespace Utilities.FileFormats.FOAF
         /// <summary>
         /// Person object
         /// </summary>
-        public Person Person
-        {
-            get { return _Person; }
-            set { _Person = value; }
-        }
-        private Person _Person = null;
+        public virtual Person Person { get; set; }
+
         #endregion
 
         #region Public Overridden Functions

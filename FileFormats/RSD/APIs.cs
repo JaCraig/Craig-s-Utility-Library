@@ -48,6 +48,8 @@ namespace Utilities.FileFormats.RSD
         /// <param name="Element">Element containing the info</param>
         public APIs(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             APIList = new List<API>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
@@ -63,7 +65,7 @@ namespace Utilities.FileFormats.RSD
         /// <summary>
         /// List of APIs
         /// </summary>
-        public List<API> APIList { get; set; }
+        public virtual List<API> APIList { get; set; }
 
         #endregion
 

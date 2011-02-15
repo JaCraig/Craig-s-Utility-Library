@@ -39,6 +39,8 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing the post info</param>
         public Comment(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Attributes["date-created"] != null)
             {
                 DateCreated = DateTime.Parse(Element.Attributes["date-created"].Value);
@@ -84,42 +86,42 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Title of the comment
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Actual content of the comment
         /// </summary>
-        public string Content { get; set; }
+        public virtual string Content { get; set; }
 
         /// <summary>
         /// Date created
         /// </summary>
-        public DateTime DateCreated { get; set; }
+        public virtual DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Determines if the comment is approved
         /// </summary>
-        public bool Approved { get; set; }
+        public virtual bool Approved { get; set; }
 
         /// <summary>
         /// User name
         /// </summary>
-        public string UserName { get; set; }
+        public virtual string UserName { get; set; }
 
         /// <summary>
         /// User email
         /// </summary>
-        public string UserEmail { get; set; }
+        public virtual string UserEmail { get; set; }
 
         /// <summary>
         /// User IP
         /// </summary>
-        public string UserIP { get; set; }
+        public virtual string UserIP { get; set; }
 
         /// <summary>
         /// User URL
         /// </summary>
-        public string UserURL { get; set; }
+        public virtual string UserURL { get; set; }
 
         #endregion
     }

@@ -49,6 +49,8 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Element">XML representation of the channel</param>
         public Channel(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (!Element.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
                 throw new ArgumentException("Element is not a channel");
             XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Element.OwnerDocument.NameTable);
@@ -137,7 +139,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Determines if this is explicit or not
         /// </summary>
-        public bool Explicit
+        public virtual bool Explicit
         {
             get
             {
@@ -148,7 +150,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Items for this channel
         /// </summary>
-        public List<Item> Items
+        public virtual List<Item> Items
         {
             get
             {
@@ -163,7 +165,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Title of the channel
         /// </summary>
-        public string Title
+        public virtual string Title
         {
             get { return _Title; }
             set { _Title = RSS.StripIllegalCharacters(value); }
@@ -172,7 +174,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Link to the website
         /// </summary>
-        public string Link
+        public virtual string Link
         {
             get { return _Link; }
             set { _Link = value; }
@@ -181,7 +183,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Description of the channel
         /// </summary>
-        public string Description
+        public virtual string Description
         {
             get { return _Description; }
             set { _Description = RSS.StripIllegalCharacters(value); }
@@ -190,7 +192,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Copyright info
         /// </summary>
-        public string Copyright
+        public virtual string Copyright
         {
             get { return _Copyright; }
             set { _Copyright = value; }
@@ -199,7 +201,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Language it is in
         /// </summary>
-        public string Language
+        public virtual string Language
         {
             get { return _Language; }
             set { _Language = value; }
@@ -208,7 +210,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Web Master info
         /// </summary>
-        public string WebMaster
+        public virtual string WebMaster
         {
             get { return _webMaster; }
             set { _webMaster = value; }
@@ -217,7 +219,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Date the channel was published
         /// </summary>
-        public DateTime PubDate
+        public virtual DateTime PubDate
         {
             get { return _pubDate; }
             set { _pubDate = value; }
@@ -226,7 +228,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Categories associated with this channel
         /// </summary>
-        public List<string> Categories
+        public virtual List<string> Categories
         {
             get
             {
@@ -242,7 +244,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Document describing the file format
         /// </summary>
-        public string Docs
+        public virtual string Docs
         {
             get { return _Docs; }
             set { _Docs = value; }
@@ -251,7 +253,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Cloud information
         /// </summary>
-        public string Cloud
+        public virtual string Cloud
         {
             get { return _Cloud; }
             set { _Cloud = value; }
@@ -260,7 +262,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Time to live... Amount of time between updates.
         /// </summary>
-        public int TTL
+        public virtual int TTL
         {
             get { return _TTL; }
             set { _TTL = value; }
@@ -269,7 +271,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Url pointing to the image/logo associated with the channel
         /// </summary>
-        public string ImageUrl
+        public virtual string ImageUrl
         {
             get { return _ImageUrl; }
             set { _ImageUrl = value; }

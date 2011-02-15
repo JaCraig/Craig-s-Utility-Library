@@ -49,6 +49,8 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Element">XmlElement containing the header information</param>
         public Head(XmlElement Element)
         {
+            if (Element == null)
+                throw new ArgumentNullException("Element");
             if (Element.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)
@@ -91,32 +93,32 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// Title of the OPML document
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
         /// <summary>
         /// Date it was created
         /// </summary>
-        public DateTime DateCreated { get; set; }
+        public virtual DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Date it was last modified
         /// </summary>
-        public DateTime DateModified { get; set; }
+        public virtual DateTime DateModified { get; set; }
 
         /// <summary>
         /// Owner of the file
         /// </summary>
-        public string OwnerName { get; set; }
+        public virtual string OwnerName { get; set; }
 
         /// <summary>
         /// Owner's email address
         /// </summary>
-        public string OwnerEmail { get; set; }
+        public virtual string OwnerEmail { get; set; }
 
         /// <summary>
         /// Location of the OPML spec
         /// </summary>
-        public string Docs { get; set; }
+        public virtual string Docs { get; set; }
         #endregion
 
         #region Overridden Functions

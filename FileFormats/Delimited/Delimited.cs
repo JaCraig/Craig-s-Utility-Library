@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -47,6 +48,8 @@ namespace Utilities.FileFormats.Delimited
         /// <param name="FileContent">File content</param>
         public Delimited(string FileContent)
         {
+            if (string.IsNullOrEmpty(FileContent))
+                throw new ArgumentNullException("FileContent");
             Regex TempSplitter = new Regex("[^\"\r\n$]*(\r\n|\n|$)|(([^\"\r\n$]*)(\"[^\"]*\")([^\"\r\n$]*))*(\r\n|\n|$)");
             MatchCollection Matches = TempSplitter.Matches(FileContent);
             foreach (Match Match in Matches)
@@ -67,7 +70,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// The list of rows
         /// </summary>
-        public List<Row> Rows
+        public virtual List<Row> Rows
         {
             get { return _Rows; }
             set { _Rows = value; }
@@ -76,7 +79,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// The number of rows within the file
         /// </summary>
-        public int NumberOfRows
+        public virtual int NumberOfRows
         {
             get { return Rows.Count; }
         }
@@ -86,7 +89,7 @@ namespace Utilities.FileFormats.Delimited
         /// </summary>
         /// <param name="Position">The row that you want to get</param>
         /// <returns>The row requested</returns>
-        public Row this[int Position]
+        public virtual Row this[int Position]
         {
             get { return _Rows[Position]; }
             set { _Rows[Position] = value; }
@@ -107,7 +110,7 @@ namespace Utilities.FileFormats.Delimited
         /// <returns>A string containing the file information</returns>
         public override string ToString()
         {
-            StringBuilder Builder=new StringBuilder();
+            StringBuilder Builder = new StringBuilder();
             foreach (Row CurrentRow in Rows)
             {
                 Builder.Append(CurrentRow.ToString());
