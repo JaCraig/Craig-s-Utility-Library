@@ -35,15 +35,15 @@ namespace Utilities.Web.Akismet
     {
         #region Properties
 
-        public string UserIP { get; set; }
-        public string UserAgent { get; set; }
-        public string Referrer { get; set; }
-        public string Permalink { get; set; }
-        public string CommentType { get; set; }
-        public string UserName { get; set; }
-        public string UserEmail { get; set; }
-        public string UserUrl { get; set; }
-        public string Content { get; set; }
+        public virtual string UserIP { get; set; }
+        public virtual string UserAgent { get; set; }
+        public virtual string Referrer { get; set; }
+        public virtual string Permalink { get; set; }
+        public virtual string CommentType { get; set; }
+        public virtual string UserName { get; set; }
+        public virtual string UserEmail { get; set; }
+        public virtual string UserUrl { get; set; }
+        public virtual string Content { get; set; }
 
         #endregion
     }

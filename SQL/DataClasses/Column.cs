@@ -86,57 +86,57 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Data type
         /// </summary>
-        public SqlDbType DataType { get; set; }
+        public virtual SqlDbType DataType { get; set; }
 
         /// <summary>
         /// Data length
         /// </summary>
-        public int Length { get; set; }
+        public virtual int Length { get; set; }
 
         /// <summary>
         /// Foreign keys
         /// </summary>
-        public List<Column> ForeignKey { get; set; }
+        public virtual List<Column> ForeignKey { get; set; }
 
         /// <summary>
         /// Primary key?
         /// </summary>
-        public bool PrimaryKey { get; set; }
+        public virtual bool PrimaryKey { get; set; }
 
         /// <summary>
         /// Nullable?
         /// </summary>
-        public bool Nullable { get; set; }
+        public virtual bool Nullable { get; set; }
 
         /// <summary>
         /// Unique?
         /// </summary>
-        public bool Unique { get; set; }
+        public virtual bool Unique { get; set; }
 
         /// <summary>
         /// Index?
         /// </summary>
-        public bool Index { get; set; }
+        public virtual bool Index { get; set; }
 
         /// <summary>
         /// Auto increment?
         /// </summary>
-        public bool AutoIncrement { get; set; }
+        public virtual bool AutoIncrement { get; set; }
 
         /// <summary>
         /// Default value
         /// </summary>
-        public string Default { get; set; }
+        public virtual string Default { get; set; }
 
         /// <summary>
         /// Parent table
         /// </summary>
-        public ITable ParentTable { get; set; }
+        public virtual ITable ParentTable { get; set; }
 
         #endregion
 
@@ -154,7 +154,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="ForeignKeyTable">Table of the foreign key</param>
         /// <param name="ForeignKeyColumn">Column of the foreign key</param>
-        public void AddForeignKey(string ForeignKeyTable, string ForeignKeyColumn)
+        public virtual void AddForeignKey(string ForeignKeyTable, string ForeignKeyColumn)
         {
             if (string.IsNullOrEmpty(ForeignKeyTable) || string.IsNullOrEmpty(ForeignKeyColumn))
                 return;
@@ -165,7 +165,7 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Sets up the foreign key list
         /// </summary>
-        public void SetupForeignKeys()
+        public virtual void SetupForeignKeys()
         {
             for (int x = 0; x < ForeignKeyColumns.Count; ++x)
             {

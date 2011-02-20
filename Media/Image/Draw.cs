@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System;
 #endregion
 
 namespace Utilities.Media.Image
@@ -47,6 +48,10 @@ namespace Utilities.Media.Image
         public static Bitmap DrawRoundedRectangle(Bitmap Image, Color BoxColor, int XPosition, int YPosition,
             int Height, int Width, int CornerRadius)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
+            if (BoxColor == null)
+                throw new ArgumentNullException("BoxColor");
             Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
             {

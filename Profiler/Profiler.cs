@@ -83,7 +83,7 @@ namespace Utilities.Profiler
 
         #region Private Functions
 
-        private void Setup(string Function="")
+        private void Setup(string Function = "")
         {
             StopWatch = new StopWatch();
             StopWatch.Start();

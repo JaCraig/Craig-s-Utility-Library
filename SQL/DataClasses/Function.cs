@@ -52,17 +52,17 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Definition
         /// </summary>
-        public string Definition { get; set; }
+        public virtual string Definition { get; set; }
 
         /// <summary>
         /// Parent database
         /// </summary>
-        public Database ParentDatabase { get; set; }
+        public virtual Database ParentDatabase { get; set; }
 
         #endregion
     }

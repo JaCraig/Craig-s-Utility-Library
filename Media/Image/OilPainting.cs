@@ -31,7 +31,7 @@ namespace Utilities.Media.Image
     /// <summary>
     /// Not recommended for use, fun class for distorting an image.
     /// </summary>
-    public class OilPainting:IDisposable
+    public class OilPainting : IDisposable
     {
         #region Constructor
 
@@ -41,8 +41,10 @@ namespace Utilities.Media.Image
         /// <param name="Image">Input image</param>
         /// <param name="Seed">Randomization seed</param>
         /// <param name="NumberOfPoints">Number of points for the painting</param>
-        public OilPainting(Bitmap Image,int Seed,int NumberOfPoints)
+        public OilPainting(Bitmap Image, int Seed, int NumberOfPoints)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             _Image = new Bitmap(Image);
             _NumberOfPoints = NumberOfPoints;
             Map = new CellularMap(Seed, Image.Width, Image.Height, NumberOfPoints);
@@ -59,10 +61,10 @@ namespace Utilities.Media.Image
             int ImagePixelSize = Image.GetPixelSize(ImageData);
             for (int i = 0; i < _NumberOfPoints; ++i)
             {
-                int Red=0;
-                int Green=0;
-                int Blue=0;
-                int Counter=0;
+                int Red = 0;
+                int Green = 0;
+                int Blue = 0;
+                int Counter = 0;
                 for (int x = 0; x < _Image.Width; ++x)
                 {
                     for (int y = 0; y < _Image.Height; ++y)
@@ -106,7 +108,7 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Final Bitmap Image
         /// </summary>
-        public Bitmap _Image { get; set; }
+        public virtual Bitmap _Image { get; set; }
 
         private int _NumberOfPoints = 0;
 

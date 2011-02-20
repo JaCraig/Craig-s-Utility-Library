@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
+using System;
 #endregion
 
 namespace Utilities.Media.Image
@@ -41,6 +42,8 @@ namespace Utilities.Media.Image
         /// <returns>A string containing the art</returns>
         public static string ConvertToASCII(Bitmap Input)
         {
+            if (Input == null)
+                throw new ArgumentNullException("Input");
             bool ShowLine = true;
             using (Bitmap TempImage = Image.ConvertBlackAndWhite(Input))
             {

@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Imaging;
+using System;
 #endregion
 
 namespace Utilities.Media.Image
@@ -47,7 +48,7 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Matrix containing the values of the ColorMatrix
         /// </summary>
-        public float[][] Matrix { get; set; }
+        public virtual float[][] Matrix { get; set; }
 
         #endregion
 
@@ -58,8 +59,10 @@ namespace Utilities.Media.Image
         /// </summary>
         /// <param name="OriginalImage">Image sent in</param>
         /// <returns>An image with the color matrix applied</returns>
-        public Bitmap Apply(Bitmap OriginalImage)
+        public virtual Bitmap Apply(Bitmap OriginalImage)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
             {

@@ -67,7 +67,7 @@ namespace Utilities.MultiThreading
         /// Causes the worker thread to sleep for a given number of milliseconds
         /// </summary>
         /// <param name="TimeInMs">Time to sleep in milliseconds</param>
-        protected void Sleep(int TimeInMs)
+        protected virtual void Sleep(int TimeInMs)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Utilities.MultiThreading
         /// <summary>
         /// Starts the thread
         /// </summary>
-        public void Start()
+        public virtual void Start()
         {
             try
             {
@@ -113,7 +113,7 @@ namespace Utilities.MultiThreading
         /// <summary>
         /// Stops the thread and waits for it to finish
         /// </summary>
-        public void Stop()
+        public virtual void Stop()
         {
             try
             {
@@ -173,22 +173,22 @@ namespace Utilities.MultiThreading
         /// <summary>
         /// Called when the thread is finished
         /// </summary>
-        public EventHandler<OnEndEventArgs> Finished { get; set; }
+        public virtual EventHandler<OnEndEventArgs> Finished { get; set; }
 
         /// <summary>
         /// Called when the thread is started
         /// </summary>
-        public EventHandler<OnStartEventArgs> Started { get; set; }
+        public virtual EventHandler<OnStartEventArgs> Started { get; set; }
 
         /// <summary>
         /// Can be used by the worker function to indicate progress
         /// </summary>
-        public EventHandler<ChangedEventArgs> Updated { get; set; }
+        public virtual EventHandler<ChangedEventArgs> Updated { get; set; }
 
         /// <summary>
         /// Can be used by the worker function to indicate an exception has occurred
         /// </summary>
-        public EventHandler<OnErrorEventArgs> Exception { get; set; }
+        public virtual EventHandler<OnErrorEventArgs> Exception { get; set; }
 
         #endregion
 
@@ -197,7 +197,7 @@ namespace Utilities.MultiThreading
         /// <summary>
         /// Indicates whether or not the thread is stopped/started
         /// </summary>
-        public bool Stopped
+        public virtual bool Stopped
         {
             get
             {
@@ -210,7 +210,7 @@ namespace Utilities.MultiThreading
         /// <summary>
         /// The result (can be used by the class that inherits from this base class
         /// </summary>
-        protected ResultType Result { get; set; }
+        protected virtual ResultType Result { get; set; }
 
         /// <summary>
         /// Parameters used in the function

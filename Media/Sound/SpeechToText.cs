@@ -50,7 +50,7 @@ namespace Utilities.Media.Sound
         /// Converts text to speech
         /// </summary>
         /// <param name="Text">Text to convert</param>
-        public void Speak(string Text)
+        public virtual void Speak(string Text)
         {
             this.Text = Text;
             Thread TempThread = new Thread(new ThreadStart(SpeakAsync));
@@ -64,8 +64,10 @@ namespace Utilities.Media.Sound
         /// </summary>
         /// <param name="Text">Text to convert</param>
         /// <param name="OutputFile">Output file</param>
-        public void Speak(string Text, string OutputFile)
+        public virtual void Speak(string Text, string OutputFile)
         {
+            if (string.IsNullOrEmpty(OutputFile))
+                throw new ArgumentNullException("OutputFile");
             this.Text = Text;
             this.OutputFile = OutputFile;
             Thread TempThread = new Thread(new ThreadStart(SpeakAsync));
@@ -81,7 +83,7 @@ namespace Utilities.Media.Sound
         /// <summary>
         /// Converts text to speech
         /// </summary>
-        void SpeakAsync()
+        private void SpeakAsync()
         {
             if (!string.IsNullOrEmpty(OutputFile))
             {

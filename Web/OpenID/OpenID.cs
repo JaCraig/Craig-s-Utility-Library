@@ -57,22 +57,22 @@ namespace Utilities.Web.OpenID
         /// <summary>
         /// Extensions list
         /// </summary>
-        public System.Collections.Generic.List<IExtension> Extensions { get; set; }
+        public virtual System.Collections.Generic.List<IExtension> Extensions { get; set; }
 
         /// <summary>
         /// Redirect URL
         /// </summary>
-        public string RedirectURL { get; set; }
+        public virtual string RedirectURL { get; set; }
 
         /// <summary>
         /// Server URL
         /// </summary>
-        public string ServerURL { get; set; }
+        public virtual string ServerURL { get; set; }
 
         /// <summary>
         /// Endpoint URL
         /// </summary>
-        protected string EndpointURL { get; set; }
+        protected virtual string EndpointURL { get; set; }
 
         #endregion
 
@@ -82,7 +82,7 @@ namespace Utilities.Web.OpenID
         /// Generates login URL
         /// </summary>
         /// <returns>The login URL based on request</returns>
-        public string GenerateLoginURL()
+        public virtual string GenerateLoginURL()
         {
             EndpointURL = GetServerURL();
             return CreateLoginRedirectUrl();
@@ -93,7 +93,7 @@ namespace Utilities.Web.OpenID
         /// </summary>
         /// <param name="URL">URL</param>
         /// <returns></returns>
-        public System.Collections.Generic.List<Pair<string, string>> GetAttributes(string URL)
+        public virtual System.Collections.Generic.List<Pair<string, string>> GetAttributes(string URL)
         {
             System.Collections.Generic.List<Pair<string, string>> Pairs = new System.Collections.Generic.List<Pair<string, string>>();
             MatchCollection Matches = Keys.Matches(URL);
@@ -114,7 +114,7 @@ namespace Utilities.Web.OpenID
         /// Creates a redirect URL for login requests
         /// </summary>
         /// <returns>A redirect URL</returns>
-        protected string CreateLoginRedirectUrl()
+        protected virtual string CreateLoginRedirectUrl()
         {
             System.Collections.Generic.List<Pair<string, string>> Pairs = new System.Collections.Generic.List<Pair<string, string>>();
             Pairs.Add(new Pair<string, string>("openid.ns", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0")));
@@ -141,7 +141,7 @@ namespace Utilities.Web.OpenID
         /// Get server endpoint URL
         /// </summary>
         /// <returns>Endpoint URL</returns>
-        protected string GetServerURL()
+        protected virtual string GetServerURL()
         {
             if (!string.IsNullOrEmpty(EndpointURL))
                 return EndpointURL;
@@ -186,7 +186,7 @@ namespace Utilities.Web.OpenID
         /// <param name="URL">URL returned</param>
         /// <param name="Pairs">Individual attribute pairs</param>
         /// <returns>true if it is valid, false otherwise</returns>
-        protected bool Verify(string URL, System.Collections.Generic.List<Pair<string, string>> Pairs)
+        protected virtual bool Verify(string URL, System.Collections.Generic.List<Pair<string, string>> Pairs)
         {
             Pair<string, string> Mode = Pairs.Find(x => x.Left.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase));
             if (Mode.Right.Equals("cancel", StringComparison.CurrentCultureIgnoreCase))
@@ -230,7 +230,7 @@ namespace Utilities.Web.OpenID
         /// </summary>
         /// <param name="Pairs">The individual attribute pairs</param>
         /// <returns>The appropriate verification URL</returns>
-        protected string GenerateVerificationUrl(System.Collections.Generic.List<Pair<string, string>> Pairs)
+        protected virtual string GenerateVerificationUrl(System.Collections.Generic.List<Pair<string, string>> Pairs)
         {
             Pairs.Find(x => x.Left.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase)).Right = "check_authentication";
             StringBuilder Builder = new StringBuilder();

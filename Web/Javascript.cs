@@ -54,7 +54,7 @@ namespace Utilities.Web
             }
 
             Input = Builder.ToString();
-            Input = Regex.Replace(Input, "(/" + Regex.Escape("*") + ".*?" + Regex.Escape("*") + "/)", string.Empty);
+            Input = Regex.Replace(Input, @"(/\*[\s\S]*?\*/)", string.Empty);
             Input = Regex.Replace(Input, @"^[\s]+|[ \f\r\t\v]+$", String.Empty);
             Input = Regex.Replace(Input, @"^[\s]+|[ \f\r\t\v]+$", String.Empty);
             Input = Regex.Replace(Input, @"([+-])\n\1", "$1 $1");

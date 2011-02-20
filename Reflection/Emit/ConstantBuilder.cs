@@ -54,6 +54,10 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
+        public override void Save(ILGenerator Generator)
+        {
+        }
+
         public override void Load(ILGenerator Generator)
         {
             if (this.Value == null)

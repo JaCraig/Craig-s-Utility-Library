@@ -50,7 +50,7 @@ namespace Utilities.Web.REST
         /// Does a GET to the REST service
         /// </summary>
         /// <returns>a string containing the data returned by the service</returns>
-        public string GET()
+        public virtual string GET()
         {
             HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
             Request.Method = "GET";
@@ -64,7 +64,7 @@ namespace Utilities.Web.REST
         /// Does a POST to the REST service
         /// </summary>
         /// <returns>a string containing the data returned by the service</returns>
-        public string POST()
+        public virtual string POST()
         {
             HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
             Request.Method = "POST";
@@ -78,7 +78,7 @@ namespace Utilities.Web.REST
         /// Does a DELETE on the REST service
         /// </summary>
         /// <returns>a string containing the data returned by the service</returns>
-        public string DELETE()
+        public virtual string DELETE()
         {
             HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
             Request.Method = "DELETE";
@@ -92,7 +92,7 @@ namespace Utilities.Web.REST
         /// Does a PUT on the REST service
         /// </summary>
         /// <returns>a string containing the data returned by the service</returns>
-        public string PUT()
+        public virtual string PUT()
         {
             HttpWebRequest Request = WebRequest.Create(Url) as HttpWebRequest;
             Request.Method = "PUT";
@@ -164,22 +164,22 @@ namespace Utilities.Web.REST
         /// <summary>
         /// URL to send the request to
         /// </summary>
-        public Uri Url { get; set; }
+        public virtual Uri Url { get; set; }
 
         /// <summary>
         /// Any data that needs to be appended to the request
         /// </summary>
-        public string Data { get; set; }
+        public virtual string Data { get; set; }
 
         /// <summary>
         /// User name (basic authentication)
         /// </summary>
-        public string UserName { get; set; }
+        public virtual string UserName { get; set; }
 
         /// <summary>
         /// Password (basic authentication
         /// </summary>
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
 
         #endregion
     }

@@ -54,7 +54,7 @@ namespace Utilities.Web.OpenID
         /// Generates login URL
         /// </summary>
         /// <returns>The login URL based on request</returns>
-        public string GenerateLoginURL(string Redirect, string Server, Attributes Required)
+        public virtual string GenerateLoginURL(string Redirect, string Server, Attributes Required)
         {
             this.RedirectURL = Redirect;
             this.ServerURL = Server;
@@ -71,7 +71,7 @@ namespace Utilities.Web.OpenID
         /// <param name="URL">The response URL from the provider</param>
         /// <param name="Required">Attributes that are required</param>
         /// <returns>A list of attributes based on what was requested or an exception if the login failed</returns>
-        public Dictionary<Attributes, string> GetRequestedAttributes(string URL, Attributes Required)
+        public virtual Dictionary<Attributes, string> GetRequestedAttributes(string URL, Attributes Required)
         {
             foreach (AttributeExchange Extension in Extensions.OfType<AttributeExchange>())
             {

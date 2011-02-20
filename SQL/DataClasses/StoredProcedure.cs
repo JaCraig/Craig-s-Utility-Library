@@ -51,14 +51,14 @@ namespace Utilities.SQL.DataClasses
 
         #region Public Properties
 
-        public string Name { get; set; }
-        public Database ParentDatabase { get; set; }
-        public List<Column> Columns { get; set; }
+        public virtual string Name { get; set; }
+        public virtual Database ParentDatabase { get; set; }
+        public virtual List<Column> Columns { get; set; }
 
         /// <summary>
         /// Definition
         /// </summary>
-        public string Definition { get; set; }
+        public virtual string Definition { get; set; }
 
         #endregion
 
@@ -71,7 +71,7 @@ namespace Utilities.SQL.DataClasses
         /// <param name="Type">Data type</param>
         /// <param name="Length">Max data length</param>
         /// <param name="Default">Default value</param>
-        public void AddColumn(string Name, string Type, int Length, string Default)
+        public virtual void AddColumn(string Name, string Type, int Length, string Default)
         {
             Columns.Add(new Column(Name, Type, Length, false, false, false, false, false, "", "", Default, this));
         }

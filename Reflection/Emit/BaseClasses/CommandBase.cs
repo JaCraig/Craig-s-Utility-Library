@@ -32,7 +32,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
     /// <summary>
     /// Command base class
     /// </summary>
-    public class CommandBase:ICommand
+    public abstract class CommandBase:ICommand
     {
         #region Constructor
 
@@ -85,7 +85,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Sets up the command
         /// </summary>
-        public virtual void Setup() { }
+        public abstract void Setup();
 
         #endregion
 

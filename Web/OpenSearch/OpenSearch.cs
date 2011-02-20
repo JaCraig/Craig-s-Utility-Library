@@ -51,7 +51,7 @@ namespace Utilities.Web.OpenSearch
         /// <param name="QueryString">Query string</param>
         /// <param name="AdditionalInfo">Additional info</param>
         /// <returns>The returned data</returns>
-        public string Search(string QueryString, string AdditionalInfo)
+        public virtual string Search(string QueryString, string AdditionalInfo)
         {
             StringBuilder Builder = new StringBuilder();
             Builder.AppendFormat(APILocation, QueryString, AdditionalInfo);
@@ -63,8 +63,8 @@ namespace Utilities.Web.OpenSearch
 
         #region Protected Properties
 
-        protected REST.REST RestHelper { get; set; }
-        protected string APILocation { get; set; }
+        protected virtual REST.REST RestHelper { get; set; }
+        protected virtual string APILocation { get; set; }
 
         #endregion
     }

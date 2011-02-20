@@ -61,37 +61,37 @@ namespace Utilities.Web.Akismet
         /// <summary>
         /// API Key
         /// </summary>
-        protected string Key { get; set; }
+        protected virtual string Key { get; set; }
 
         /// <summary>
         /// Website
         /// </summary>
-        protected string Website { get; set; }
+        protected virtual string Website { get; set; }
 
         /// <summary>
         /// Data sent to verify the API key
         /// </summary>
-        protected string VerifyKeyData { get; set; }
+        protected virtual string VerifyKeyData { get; set; }
 
         /// <summary>
         /// Comment check url
         /// </summary>
-        protected Uri CommentCheckUrl { get; set; }
+        protected virtual Uri CommentCheckUrl { get; set; }
 
         /// <summary>
         /// Submit spam url
         /// </summary>
-        protected Uri SubmitSpamUrl { get; set; }
+        protected virtual Uri SubmitSpamUrl { get; set; }
 
         /// <summary>
         /// Submit ham url
         /// </summary>
-        protected Uri SubmitHamUrl { get; set; }
+        protected virtual Uri SubmitHamUrl { get; set; }
 
         /// <summary>
         /// Comment check data string
         /// </summary>
-        protected string CommentCheckData { get; set; }
+        protected virtual string CommentCheckData { get; set; }
 
         #endregion
 
@@ -101,7 +101,7 @@ namespace Utilities.Web.Akismet
         /// Verifies the Key
         /// </summary>
         /// <returns>True if the key is valid, false otherwise</returns>
-        public bool VerifyKey()
+        public virtual bool VerifyKey()
         {
             this.Url = new Uri("http://rest.akismet.com/1.1/verify-key");
             this.Data = VerifyKeyData;
@@ -113,7 +113,7 @@ namespace Utilities.Web.Akismet
         /// </summary>
         /// <param name="Comment">Comment to check</param>
         /// <returns>True if it is spam, false otherwise</returns>
-        public bool IsSpam(Comment Comment)
+        public virtual bool IsSpam(Comment Comment)
         {
             this.Url = CommentCheckUrl;
             this.Data = SetupData(Comment);
@@ -124,7 +124,7 @@ namespace Utilities.Web.Akismet
         /// Submits a spam message
         /// </summary>
         /// <param name="Comment">Comment to submit</param>
-        public void SubmitSpam(Comment Comment)
+        public virtual void SubmitSpam(Comment Comment)
         {
             this.Url = SubmitSpamUrl;
             this.Data = SetupData(Comment);
@@ -135,7 +135,7 @@ namespace Utilities.Web.Akismet
         /// Submits a ham message
         /// </summary>
         /// <param name="Comment">Comment to submit</param>
-        public void SubmitHam(Comment Comment)
+        public virtual void SubmitHam(Comment Comment)
         {
             this.Url = SubmitHamUrl;
             this.Data = SetupData(Comment);

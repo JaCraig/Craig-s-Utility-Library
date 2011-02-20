@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Drawing;
+using System;
 #endregion
 
 namespace Utilities.Media.Image
@@ -45,7 +46,7 @@ namespace Utilities.Media.Image
 
         #region Protected Properties
 
-        protected Filter EdgeDetectionFilter { get; set; }
+        protected virtual Filter EdgeDetectionFilter { get; set; }
 
         #endregion
 
@@ -54,12 +55,12 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Determines the direction of the bump map
         /// </summary>
-        public bool Invert { get; set; }
+        public virtual bool Invert { get; set; }
 
         /// <summary>
         /// Determines the direction of the bump map
         /// </summary>
-        public Direction Direction { get; set; }
+        public virtual Direction Direction { get; set; }
 
         #endregion
 
@@ -68,7 +69,7 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Sets up the edge detection filter
         /// </summary>
-        protected void CreateFilter()
+        protected virtual void CreateFilter()
         {
             EdgeDetectionFilter = new Filter(3, 3);
             if (Direction == Direction.TopBottom)
@@ -135,8 +136,10 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Creates the bump map
         /// </summary>
-        public Bitmap Create(Bitmap Image)
+        public virtual Bitmap Create(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             CreateFilter();
             using (Bitmap TempImage = EdgeDetectionFilter.ApplyFilter(Image))
             {

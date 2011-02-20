@@ -39,26 +39,22 @@ namespace Utilities.Web
         /// <returns>A stripped CSS file</returns>
         public static string StripWhitespace(string Input)
         {
-            Input = Input.Replace("  ", string.Empty);
-            Input = Input.Replace(System.Environment.NewLine, string.Empty);
-            Input = Input.Replace("\t", string.Empty);
-            Input = Input.Replace(" {", "{");
-            Input = Input.Replace(" :", ":");
-            Input = Input.Replace(": ", ":");
-            Input = Input.Replace(", ", ",");
-            Input = Input.Replace("; ", ";");
-            Input = Input.Replace(";}", "}");
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            Input = Regex.Replace(Input, @"(/\*[\s\S]*?\*/)", string.Empty);
+            Input = Regex.Replace(Input, @"\s+", " ");
+            Input = Regex.Replace(Input, @"(\s([\{:,;\}\(\)]))", "$2");
+            Input = Regex.Replace(Input, @"(([\{:,;\}\(\)])\s)", "$2");
+            Input = Regex.Replace(Input, ";}", "}");
             Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&nbsp;)\s{2,}(?=[<])", string.Empty);
-            Input = Regex.Replace(Input, "([!{}:;>+([,])s+", "$1");
-            Input = Regex.Replace(Input, "([^;}])}", "$1;}");
-            Input = Regex.Replace(Input, "([s:])(0)(px|em|%|in|cm|mm|pc|pt|ex)", "$1$2");
-            Input = Regex.Replace(Input, ":0 0 0 0;", ":0;");
-            Input = Regex.Replace(Input, ":0 0 0;", ":0;");
-            Input = Regex.Replace(Input, ":0 0;", ":0;");
-            Input = Regex.Replace(Input, "background-position:0;", "background-position:0 0;");
-            Input = Regex.Replace(Input, "(:|s)0+.(d+)", "$1.$2");
-            Input = Regex.Replace(Input, "[^}]+{;}", "");
-            Input = Regex.Replace(Input, "(/" + Regex.Escape("*") + ".*?" + Regex.Escape("*") + "/)", string.Empty);
+            Input = Regex.Replace(Input, @"([!{}:;>+([,])\s+", "$1");
+            Input = Regex.Replace(Input, @"([\s:])(0)(px|em|%|in|cm|mm|pc|pt|ex)", "$1$2");
+            Input = Regex.Replace(Input, ":0 0 0 0", ":0");
+            Input = Regex.Replace(Input, ":0 0 0", ":0");
+            Input = Regex.Replace(Input, ":0 0", ":0");
+            Input = Regex.Replace(Input, "background-position:0", "background-position:0 0");
+            Input = Regex.Replace(Input, @"(:|\s)0+\.(\d+)", "$1.$2");
+            Input = Regex.Replace(Input, @"[^\}]+\{;\}", "");
             return Input;
         }
 

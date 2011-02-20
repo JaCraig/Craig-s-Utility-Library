@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Imaging;
+using System;
 #endregion
 
 namespace Utilities.Media.Image
@@ -49,22 +50,22 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Determines the direction of the normal map in the x direction
         /// </summary>
-        public bool InvertX { get; set; }
+        public virtual bool InvertX { get; set; }
 
         /// <summary>
         /// Determines the direction of the normal map in the y direction
         /// </summary>
-        public bool InvertY { get; set; }
+        public virtual bool InvertY { get; set; }
 
         /// <summary>
         /// X filter
         /// </summary>
-        protected BumpMap FilterX { get; set; }
+        protected virtual BumpMap FilterX { get; set; }
 
         /// <summary>
         /// Y filter
         /// </summary>
-        protected BumpMap FilterY { get; set; }
+        protected virtual BumpMap FilterY { get; set; }
 
         #endregion
 
@@ -73,7 +74,7 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Sets up the edge detection filter
         /// </summary>
-        protected void CreateFilter()
+        protected virtual void CreateFilter()
         {
             FilterX = new BumpMap();
             FilterY = new BumpMap();
@@ -90,8 +91,10 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Creates the bump map
         /// </summary>
-        public Bitmap Create(Bitmap ImageUsing)
+        public virtual Bitmap Create(Bitmap ImageUsing)
         {
+            if (ImageUsing==null)
+                throw new ArgumentNullException("ImageUsing");
             CreateFilter();
             using (Bitmap TempImageX = FilterX.Create(ImageUsing))
             {

@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using System;
 #endregion
 
 namespace Utilities.Media
@@ -41,6 +42,8 @@ namespace Utilities.Media
         /// <param name="FileName">Name of the file to save the screenshot.</param>
         public static void TakeScreenShot(string FileName)
         {
+            if (string.IsNullOrEmpty(FileName))
+                throw new ArgumentNullException("FileName");
             using (Bitmap TempBitmap = Screenshot.TakeScreenShot())
             {
                 TempBitmap.Save(FileName);

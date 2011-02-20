@@ -93,7 +93,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return NewObj(Constructor, Variables);
         }
 
-        public VariableBase Call(VariableBase ObjectCallingOn, MethodInfo MethodCalling, object[] Parameters)
+        public virtual VariableBase Call(VariableBase ObjectCallingOn, MethodInfo MethodCalling, object[] Parameters)
         {
             SetCurrentMethod();
             Call TempCommand = new Call(this,ObjectCallingOn, MethodCalling, Parameters);
@@ -103,7 +103,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public void Call(VariableBase ObjectCallingOn, ConstructorInfo MethodCalling, object[] Parameters)
+        public virtual void Call(VariableBase ObjectCallingOn, ConstructorInfo MethodCalling, object[] Parameters)
         {
             SetCurrentMethod();
             Call TempCommand = new Call(this, ObjectCallingOn, MethodCalling, Parameters);
@@ -133,7 +133,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             Return(null);
         }
 
-        public If If(VariableBase LeftHandSide, Enums.Comparison ComparisonType, VariableBase RightHandSide)
+        public virtual If If(VariableBase LeftHandSide, Enums.Comparison ComparisonType, VariableBase RightHandSide)
         {
             SetCurrentMethod();
             Utilities.Reflection.Emit.Commands.If TempCommand = new If(ComparisonType, LeftHandSide, RightHandSide);
@@ -142,7 +142,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand;
         }
 
-        public void EndIf(If IfCommand)
+        public virtual void EndIf(If IfCommand)
         {
             SetCurrentMethod();
             EndIf TempCommand = new EndIf(IfCommand);
@@ -150,7 +150,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             Commands.Add(TempCommand);
         }
 
-        public While While(VariableBase LeftHandSide, Enums.Comparison ComparisonType, VariableBase RightHandSide)
+        public virtual While While(VariableBase LeftHandSide, Enums.Comparison ComparisonType, VariableBase RightHandSide)
         {
             SetCurrentMethod();
             While TempCommand = new While(ComparisonType, LeftHandSide, RightHandSide);
@@ -159,7 +159,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand;
         }
 
-        public void EndWhile(While WhileCommand)
+        public virtual void EndWhile(While WhileCommand)
         {
             SetCurrentMethod();
             EndWhile TempCommand = new EndWhile(WhileCommand);
@@ -167,7 +167,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             Commands.Add(TempCommand);
         }
 
-        public VariableBase Add(object LeftHandSide, object RightHandSide)
+        public virtual VariableBase Add(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
             Add TempCommand = new Add(LeftHandSide, RightHandSide);
@@ -177,7 +177,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public VariableBase Subtract(object LeftHandSide, object RightHandSide)
+        public virtual VariableBase Subtract(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
             Subtract TempCommand = new Subtract(LeftHandSide, RightHandSide);
@@ -187,7 +187,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public VariableBase Multiply(object LeftHandSide, object RightHandSide)
+        public virtual VariableBase Multiply(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
             Multiply TempCommand = new Multiply(LeftHandSide, RightHandSide);
@@ -197,7 +197,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public VariableBase Divide(object LeftHandSide, object RightHandSide)
+        public virtual VariableBase Divide(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
             Divide TempCommand = new Divide(LeftHandSide, RightHandSide);
@@ -207,7 +207,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public VariableBase Modulo(object LeftHandSide, object RightHandSide)
+        public virtual VariableBase Modulo(object LeftHandSide, object RightHandSide)
         {
             SetCurrentMethod();
             Modulo TempCommand = new Modulo(LeftHandSide, RightHandSide);
@@ -217,7 +217,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public Utilities.Reflection.Emit.Commands.Try Try()
+        public virtual Utilities.Reflection.Emit.Commands.Try Try()
         {
             Utilities.Reflection.Emit.Commands.Try TempCommand = new Utilities.Reflection.Emit.Commands.Try();
             TempCommand.Setup();
@@ -225,7 +225,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand;
         }
 
-        public Utilities.Reflection.Emit.Commands.Catch Catch(Type ExceptionType)
+        public virtual Utilities.Reflection.Emit.Commands.Catch Catch(Type ExceptionType)
         {
             Utilities.Reflection.Emit.Commands.Catch TempCommand = new Utilities.Reflection.Emit.Commands.Catch(ExceptionType);
             TempCommand.Setup();
@@ -236,14 +236,14 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand;
         }
 
-        public void EndTry()
+        public virtual void EndTry()
         {
             EndTry TempCommand = new Emit.Commands.EndTry();
             TempCommand.Setup();
             Commands.Add(TempCommand);
         }
 
-        public VariableBase Box(object Value)
+        public virtual VariableBase Box(object Value)
         {
             Box TempCommand = new Box(Value);
             TempCommand.Setup();
@@ -252,7 +252,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public VariableBase UnBox(VariableBase Value,Type ValueType)
+        public virtual VariableBase UnBox(VariableBase Value,Type ValueType)
         {
             UnBox TempCommand = new UnBox(Value, ValueType);
             TempCommand.Setup();
@@ -261,7 +261,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public VariableBase Cast(VariableBase Value, Type ValueType)
+        public virtual VariableBase Cast(VariableBase Value, Type ValueType)
         {
             Cast TempCommand = new Cast(Value, ValueType);
             TempCommand.Setup();
@@ -270,14 +270,14 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return TempCommand.Result;
         }
 
-        public void Throw(VariableBase Exception)
+        public virtual void Throw(VariableBase Exception)
         {
             Throw TempCommand = new Throw(Exception);
             TempCommand.Setup();
             Commands.Add(TempCommand);
         }
 
-        public void SetCurrentMethod()
+        public virtual void SetCurrentMethod()
         {
             CurrentMethod = this;
         }

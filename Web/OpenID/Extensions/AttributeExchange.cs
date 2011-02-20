@@ -52,7 +52,7 @@ namespace Utilities.Web.OpenID.Extensions
         /// <summary>
         /// Required attributes
         /// </summary>
-        public Attributes Required { get; set; }
+        public virtual Attributes Required { get; set; }
 
         #endregion
 
@@ -63,7 +63,7 @@ namespace Utilities.Web.OpenID.Extensions
         /// </summary>
         /// <param name="Pairs">Returned attribute pairs</param>
         /// <returns>A dictionary with the requested values</returns>
-        public Dictionary<Attributes, string> GetValues(System.Collections.Generic.List<Pair<string, string>> Pairs)
+        public virtual Dictionary<Attributes, string> GetValues(System.Collections.Generic.List<Pair<string, string>> Pairs)
         {
             Dictionary<Attributes, string> ReturnValues = new Dictionary<Attributes, string>();
             Pair<string, string> Pair = Pairs.Find(x => x.Right == "http://openid.net/srv/ax/1.0");
@@ -133,7 +133,7 @@ namespace Utilities.Web.OpenID.Extensions
             return ReturnValues;
         }
 
-        public bool Verify(string URL, System.Collections.Generic.List<Pair<string, string>> Pairs)
+        public virtual bool Verify(string URL, System.Collections.Generic.List<Pair<string, string>> Pairs)
         {
             Pair<string, string> Pair = Pairs.Find(x => x.Right == "http://openid.net/srv/ax/1.0");
             if (Pair == null && Required != Attributes.None)
@@ -221,7 +221,7 @@ namespace Utilities.Web.OpenID.Extensions
             return true;
         }
 
-        public System.Collections.Generic.List<Pair<string, string>> GenerateURLAttributes()
+        public virtual System.Collections.Generic.List<Pair<string, string>> GenerateURLAttributes()
         {
             System.Collections.Generic.List<Pair<string, string>> ReturnValues = new System.Collections.Generic.List<Pair<string, string>>();
             if (Required == Attributes.None)

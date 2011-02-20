@@ -58,7 +58,7 @@ namespace Utilities.Web.OAuth
         /// Generates a request
         /// </summary>
         /// <returns>The string containing the request</returns>
-        protected string GenerateRequest()
+        protected virtual string GenerateRequest()
         {
             string Url = "";
             string Parameters = "";
@@ -73,7 +73,7 @@ namespace Utilities.Web.OAuth
         /// <param name="Url">Url</param>
         /// <param name="Parameters">Parameters</param>
         /// <returns>The signature</returns>
-        protected string GenerateSignature(out string Url, out string Parameters)
+        protected virtual string GenerateSignature(out string Url, out string Parameters)
         {
             Parameters = "";
             Url = "";
@@ -101,7 +101,7 @@ namespace Utilities.Web.OAuth
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>Url encoded string</returns>
-        protected string UrlEncode(string Input)
+        protected virtual string UrlEncode(string Input)
         {
             StringBuilder Result = new StringBuilder();
             for (int x = 0; x < Input.Length; ++x)
@@ -119,7 +119,7 @@ namespace Utilities.Web.OAuth
         /// </summary>
         /// <param name="Key">Key text</param>
         /// <param name="Value">Value text</param>
-        protected void AddParameter(string Key, string Value)
+        protected virtual void AddParameter(string Key, string Value)
         {
             bool Found = false;
             foreach (Pair<string, string> Pair in Parameters)
@@ -208,7 +208,7 @@ namespace Utilities.Web.OAuth
         /// <summary>
         /// Url that is being used
         /// </summary>
-        protected Uri Url { get; set; }
+        protected virtual Uri Url { get; set; }
 
         /// <summary>
         /// Consumer key
@@ -233,12 +233,12 @@ namespace Utilities.Web.OAuth
         /// <summary>
         /// HTTP Method
         /// </summary>
-        protected HTTPMethod Method { get; set; }
+        protected virtual HTTPMethod Method { get; set; }
 
         /// <summary>
         /// The hash type that is suppose to be used
         /// </summary>
-        protected Signature SignatureType { get; set; }
+        protected virtual Signature SignatureType { get; set; }
 
         #endregion
 

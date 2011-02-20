@@ -50,7 +50,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// Ends the try and starts a catch block
         /// </summary>
         /// <param name="ExceptionType">Exception type</param>
-        public Catch StartCatchBlock(Type ExceptionType)
+        public virtual Catch StartCatchBlock(Type ExceptionType)
         {
             return Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Catch(ExceptionType);
         }
@@ -58,7 +58,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Ends the try/catch block
         /// </summary>
-        public void EndTryBlock()
+        public virtual void EndTryBlock()
         {
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.EndTry();
         }

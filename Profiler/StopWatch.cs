@@ -46,7 +46,7 @@ namespace Utilities.Profiler
         /// <summary>
         /// Starts the stop watch
         /// </summary>
-        public void Start()
+        public virtual void Start()
         {
             StopTime = StartTime = System.Environment.TickCount;
         }
@@ -54,7 +54,7 @@ namespace Utilities.Profiler
         /// <summary>
         /// Stops the stop watch
         /// </summary>
-        public void Stop()
+        public virtual void Stop()
         {
             StopTime = System.Environment.TickCount;
         }
@@ -66,17 +66,17 @@ namespace Utilities.Profiler
         /// <summary>
         /// Start time in ticks
         /// </summary>
-        public int StartTime { get; private set; }
+        public virtual int StartTime { get; private set; }
 
         /// <summary>
         /// Stop time in ticks
         /// </summary>
-        public int StopTime { get; private set; }
+        public virtual int StopTime { get; private set; }
 
         /// <summary>
         /// Returns the elapsed time
         /// </summary>
-        public int ElapsedTime { get { return StopTime - StartTime; } }
+        public virtual int ElapsedTime { get { return StopTime - StartTime; } }
 
         #endregion
     }

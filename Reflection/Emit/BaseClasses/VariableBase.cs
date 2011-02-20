@@ -30,7 +30,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
     /// <summary>
     /// Variable base class
     /// </summary>
-    public class VariableBase
+    public abstract class VariableBase
     {
         #region Constructor
 
@@ -72,19 +72,13 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// Loads the variable onto the stack
         /// </summary>
         /// <param name="Generator">IL Generator</param>
-        public virtual void Load(System.Reflection.Emit.ILGenerator Generator)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Load(System.Reflection.Emit.ILGenerator Generator);
 
         /// <summary>
         /// Saves the top item from the stack onto the variable
         /// </summary>
         /// <param name="Generator">IL Generator</param>
-        public virtual void Save(System.Reflection.Emit.ILGenerator Generator)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Save(System.Reflection.Emit.ILGenerator Generator);
 
         /// <summary>
         /// Gets the definition of the variable

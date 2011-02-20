@@ -54,22 +54,22 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Definition
         /// </summary>
-        public string Definition { get; set; }
+        public virtual string Definition { get; set; }
 
         /// <summary>
         /// Trigger type
         /// </summary>
-        public TriggerType Type { get; set; }
+        public virtual TriggerType Type { get; set; }
 
         /// <summary>
         /// Parent table
         /// </summary>
-        public Table ParentTable { get; set; }
+        public virtual Table ParentTable { get; set; }
 
         #endregion
     }

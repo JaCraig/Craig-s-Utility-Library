@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Imaging;
+using System;
 #endregion
 
 namespace Utilities.Media.Image
@@ -43,6 +44,12 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap indicating where changes between frames have occurred overlayed on top of the new image.</returns>
         public static Bitmap Process(Bitmap NewImage, Bitmap OldImage, int Threshold, Color DetectionColor)
         {
+            if (NewImage == null)
+                throw new ArgumentNullException("NewImage");
+            if (OldImage == null)
+                throw new ArgumentNullException("OldImage");
+            if (DetectionColor == null)
+                throw new ArgumentNullException("DetectionColor");
             using (Bitmap NewImage1 = Utilities.Media.Image.Image.ConvertBlackAndWhite(NewImage))
             {
                 using (Bitmap OldImage1 = Utilities.Media.Image.Image.ConvertBlackAndWhite(OldImage))

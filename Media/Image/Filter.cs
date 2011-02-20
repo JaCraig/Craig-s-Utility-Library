@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.Math;
+using System;
 
 #endregion
 
@@ -68,27 +69,27 @@ namespace Utilities.Media.Image
         /// <summary>
         /// The actual filter array
         /// </summary>
-        public int[,] MyFilter { get; set; }
+        public virtual int[,] MyFilter { get; set; }
 
         /// <summary>
         /// Width of the filter box
         /// </summary>
-        public int Width { get; set; }
+        public virtual int Width { get; set; }
 
         /// <summary>
         /// Height of the filter box
         /// </summary>
-        public int Height { get; set; }
+        public virtual int Height { get; set; }
 
         /// <summary>
         /// Amount to add to the red, blue, and green values
         /// </summary>
-        public int Offset { get; set; }
+        public virtual int Offset { get; set; }
 
         /// <summary>
         /// Determines if we should take the absolute value prior to clamping
         /// </summary>
-        public bool Absolute { get; set; }
+        public virtual bool Absolute { get; set; }
 
         #endregion
 
@@ -99,8 +100,10 @@ namespace Utilities.Media.Image
         /// </summary>
         /// <param name="Input">input image</param>
         /// <returns>Returns a separate image with the filter applied</returns>
-        public Bitmap ApplyFilter(Bitmap Input)
+        public virtual Bitmap ApplyFilter(Bitmap Input)
         {
+            if (Input == null)
+                throw new ArgumentNullException("Input");
             Bitmap NewBitmap = new Bitmap(Input.Width, Input.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(Input);

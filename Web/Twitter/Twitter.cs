@@ -53,7 +53,7 @@ namespace Utilities.Web.Twitter
         /// </summary>
         /// <param name="Token">The request token</param>
         /// <param name="TokenSecret">The request token secret</param>
-        public void GetRequestToken(out string Token, out string TokenSecret)
+        public virtual void GetRequestToken(out string Token, out string TokenSecret)
         {
             this.Token = "";
             this.TokenSecret = "";
@@ -76,7 +76,7 @@ namespace Utilities.Web.Twitter
         /// </summary>
         /// <returns>The location that the user must go in order to
         /// authorize the app and get the authorization PIN</returns>
-        public string GetAuthorizationSite()
+        public virtual string GetAuthorizationSite()
         {
             this.Method = HTTPMethod.GET;
             this.Url = new Uri("https://twitter.com/oauth/authorize");
@@ -92,7 +92,7 @@ namespace Utilities.Web.Twitter
         /// <param name="PIN">PIN received from the authorization site</param>
         /// <param name="AccessToken">The access token</param>
         /// <param name="AccessTokenSecret">The access token secret</param>
-        public void GetAccessToken(string PIN, out string AccessToken, out string AccessTokenSecret)
+        public virtual void GetAccessToken(string PIN, out string AccessToken, out string AccessTokenSecret)
         {
             this.Url = new Uri("https://twitter.com/oauth/access_token");
             this.AddParameter("oauth_verifier", PIN);
@@ -113,7 +113,7 @@ namespace Utilities.Web.Twitter
         /// </summary>
         /// <param name="Status">Status of the user (needs to be within 140 characters)</param>
         /// <returns>The XML doc returned from the Twitter service</returns>
-        public string UpdateStatus(string Status)
+        public virtual string UpdateStatus(string Status)
         {
             this.Method = HTTPMethod.POST;
             this.Url = new Uri("http://twitter.com/statuses/update.xml");
@@ -129,7 +129,7 @@ namespace Utilities.Web.Twitter
         /// <param name="UserName">The screen name of the user</param>
         /// <returns>The XML doc returned from the Twitter service
         /// contatining the timeline</returns>
-        public string GetTimeline(string UserName)
+        public virtual string GetTimeline(string UserName)
         {
             this.Method = HTTPMethod.POST;
             this.Url = new Uri("http://twitter.com/statuses/user_timeline.xml");

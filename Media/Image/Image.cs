@@ -83,6 +83,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap AddNoise(Bitmap OriginalImage, int Amount)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -158,6 +160,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustBrightness(Bitmap Image, int Value)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             float FinalValue = (float)Value / 255.0f;
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
@@ -216,6 +220,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustContrast(Bitmap OriginalImage, float Value)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -293,6 +299,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustGamma(Bitmap OriginalImage, float Value)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -375,6 +383,10 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap And(Bitmap Image1, Bitmap Image2)
         {
+            if (Image1 == null)
+                throw new ArgumentNullException("Image1");
+            if (Image2 == null)
+                throw new ArgumentNullException("Image2");
             Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData1 = Image.LockImage(Image1);
@@ -444,6 +456,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap BlueFilter(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
                             new float[] {0, 0, 0, 0, 0},
@@ -499,6 +513,8 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap BoxBlur(Bitmap Image, int Size)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Filter TempFilter = new Filter(Size, Size);
             for (int x = 0; x < Size; ++x)
             {
@@ -556,6 +572,8 @@ namespace Utilities.Media.Image
         /// <returns>The colorized image</returns>
         public static Bitmap Colorize(Bitmap OriginalImage, Color[] Colors)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             if (Colors.Length < 256)
                 return new Bitmap(1, 1);
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
@@ -619,6 +637,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the black and white image</returns>
         public static Bitmap ConvertBlackAndWhite(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
                             new float[] {.3f, .3f, .3f, 0, 0},
@@ -673,6 +693,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the sepia tone image</returns>
         public static Bitmap ConvertSepiaTone(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
                             new float[] {.393f, .349f, .272f, 0, 0},
@@ -739,6 +761,8 @@ namespace Utilities.Media.Image
         /// <returns>A Bitmap object of the cropped image</returns>
         public static Bitmap CropImage(Bitmap ImageUsing, int Width, int Height, Image.Align VAlignment, Image.Align HAlignment)
         {
+            if (ImageUsing == null)
+                throw new ArgumentNullException("ImageUsing");
             Bitmap TempBitmap = ImageUsing;
             System.Drawing.Rectangle TempRectangle = new System.Drawing.Rectangle();
             TempRectangle.Height = Height;
@@ -811,6 +835,8 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap Dilate(Bitmap OriginalImage, int Size)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -913,6 +939,14 @@ namespace Utilities.Media.Image
         public static Bitmap DrawText(Bitmap Image, string TextToDraw,
             Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
+            if (FontToUse == null)
+                throw new ArgumentNullException("FontToUse");
+            if (BrushUsing == null)
+                throw new ArgumentNullException("BrushUsing");
+            if (BoxToDrawWithin == null)
+                throw new ArgumentNullException("BoxToDrawWithin");
             Bitmap TempBitmap = new Bitmap(Image, Image.Width, Image.Height);
             using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
             {
@@ -970,6 +1004,10 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which has the edges drawn on it</returns>
         public static Bitmap EdgeDetection(Bitmap OriginalImage, float Threshold, Color EdgeColor)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
+            if (EdgeColor == null)
+                throw new ArgumentNullException("EdgeColor");
             Bitmap NewBitmap = new Bitmap(OriginalImage, OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -1054,6 +1092,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Emboss(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Filter TempFilter = new Filter(3, 3);
             TempFilter.MyFilter[0, 0] = -2;
             TempFilter.MyFilter[0, 1] = -1;
@@ -1108,6 +1148,8 @@ namespace Utilities.Media.Image
         /// <param name="OriginalImage">Image to manipulate</param>
         public static Bitmap Equalize(Bitmap OriginalImage)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             RGBHistogram TempHistogram = new RGBHistogram(NewBitmap);
             TempHistogram.Equalize();
@@ -1215,6 +1257,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which is flipped</returns>
         public static Bitmap Flip(Bitmap Image, bool FlipX, bool FlipY)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
             if (FlipX && !FlipY)
             {
@@ -1295,6 +1339,8 @@ namespace Utilities.Media.Image
         public static Bitmap FluvialErosion(Bitmap Image, int X, int Y,
             float WaterPercent, float DepositRate, float PickupRate, int Iterations)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Bitmap ReturnValue=new Bitmap(Image.Width,Image.Height);
             BitmapData ImageData = LockImage(Image);
             int ImagePixelSize = GetPixelSize(ImageData);
@@ -1459,6 +1505,8 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap GaussianBlur(Bitmap Image, int Size)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             using (Bitmap ReturnBitmap = BoxBlur(Image, Size))
             {
                 using (Bitmap ReturnBitmap2 = BoxBlur(ReturnBitmap, Size))
@@ -1523,6 +1571,8 @@ namespace Utilities.Media.Image
         /// <returns></returns>
         public static ImageFormat GetFormat(string FileName)
         {
+            if (string.IsNullOrEmpty(FileName))
+                throw new ArgumentNullException("FileName");
             if (FileName.EndsWith("jpg", StringComparison.InvariantCultureIgnoreCase) || FileName.EndsWith("jpeg", StringComparison.InvariantCultureIgnoreCase))
                 return ImageFormat.Jpeg;
             if (FileName.EndsWith("png", StringComparison.InvariantCultureIgnoreCase))
@@ -1563,6 +1613,8 @@ namespace Utilities.Media.Image
         /// <returns>A list containing HTML color values (ex: #041845)</returns>
         public static List<string> GetHTMLPalette(Bitmap OriginalImage)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             List<string> ReturnArray = new List<string>();
             if (OriginalImage.Palette != null && OriginalImage.Palette.Entries.Length > 0)
             {
@@ -1636,6 +1688,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap GreenFilter(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
                             new float[] {0, 0, 0, 0, 0},
@@ -1659,14 +1713,7 @@ namespace Utilities.Media.Image
         public static bool IsGraphic(string FileName)
         {
             System.Text.RegularExpressions.Regex Regex = new System.Text.RegularExpressions.Regex(@"\.ico$|\.tiff$|\.gif$|\.jpg$|\.jpeg$|\.png$|\.bmp$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-            if (Regex.IsMatch(FileName))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Regex.IsMatch(FileName);
         }
 
         #endregion
@@ -1713,6 +1760,8 @@ namespace Utilities.Media.Image
         /// <param name="MaxJitter">Maximum number of pixels the item can move</param>
         public static Bitmap Jitter(Bitmap OriginalImage, int MaxJitter)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage, OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -1782,6 +1831,8 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap KuwaharaBlur(Bitmap OriginalImage, int Size)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -1919,6 +1970,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap LaplaceEdgeDetection(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             using (Bitmap TempImage = ConvertBlackAndWhite(Image))
             {
                 Filter TempFilter = new Filter(5, 5);
@@ -1998,6 +2051,8 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap MedianFilter(Bitmap OriginalImage, int Size)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -2084,6 +2139,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Negative(Bitmap OriginalImage)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -2152,6 +2209,10 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Or(Bitmap Image1, Bitmap Image2)
         {
+            if (Image1 == null)
+                throw new ArgumentNullException("Image1");
+            if (Image2 == null)
+                throw new ArgumentNullException("Image2");
             Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData1 = Image.LockImage(Image1);
@@ -2224,6 +2285,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which is pixelated</returns>
         public static Bitmap Pixelate(Bitmap OriginalImage, int PixelSize)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -2311,6 +2374,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object</returns>
         public static Bitmap RedFilter(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
                             new float[] {1, 0, 0, 0, 0},
@@ -2368,6 +2433,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the resized image</returns>
         public static Bitmap ResizeImage(Bitmap Image, int MaxSide)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             int NewWidth;
             int NewHeight;
 
@@ -2445,6 +2512,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object of the resized image</returns>
         public static Bitmap ResizeImage(Bitmap Image, int Width, int Height, Quality Quality)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Bitmap NewBitmap = new Bitmap(Width, Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
             {
@@ -2511,6 +2580,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object containing the rotated image</returns>
         public static Bitmap Rotate(Bitmap Image, float DegreesToRotate)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Bitmap NewBitmap = new Bitmap(Image.Width, Image.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
             {
@@ -2568,6 +2639,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Sharpen(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Filter TempFilter = new Filter(3, 3);
             TempFilter.MyFilter[0, 0] = -1;
             TempFilter.MyFilter[0, 2] = -1;
@@ -2624,6 +2697,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SharpenLess(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Filter TempFilter = new Filter(3, 3);
             TempFilter.MyFilter[0, 0] = -1;
             TempFilter.MyFilter[0, 1] = 0;
@@ -2692,6 +2767,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap which has been modified</returns>
         public static Bitmap SinWave(Bitmap OriginalImage, float Amplitude, float Frequency, bool XDirection, bool YDirection)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -2770,6 +2847,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEdgeDetection(Bitmap Input)
         {
+            if (Input == null)
+                throw new ArgumentNullException("Input");
             using (Bitmap TempImage = ConvertBlackAndWhite(Input))
             {
                 Filter TempFilter = new Filter(3, 3);
@@ -2872,6 +2951,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEmboss(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             Filter TempFilter = new Filter(3, 3);
             TempFilter.MyFilter[0, 0] = -1;
             TempFilter.MyFilter[0, 1] = 0;
@@ -2930,6 +3011,8 @@ namespace Utilities.Media.Image
         /// <param name="Size">Size of the aperture</param>
         public static Bitmap SNNBlur(Bitmap OriginalImage, int Size)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -3034,6 +3117,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap StretchContrast(Bitmap OriginalImage)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -3110,6 +3195,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap ThermalErosion(Bitmap OriginalImage,float T,float C,int Iterations)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap BlackAndWhiteImage = Image.ConvertBlackAndWhite(OriginalImage);
             BitmapData BlackAndWhiteData = Image.LockImage(BlackAndWhiteImage);
             int BlackAndWhitePixelSize = Image.GetPixelSize(BlackAndWhiteData);
@@ -3268,6 +3355,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object containing the new image</returns>
         public static Bitmap Threshold(Bitmap OriginalImage, float Threshold)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData = Image.LockImage(OriginalImage);
@@ -3345,6 +3434,8 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap object containing the new image</returns>
         public static Bitmap Turbulence(Bitmap OriginalImage, int Roughness, float Power, int Seed)
         {
+            if (OriginalImage == null)
+                throw new ArgumentNullException("OriginalImage");
             int Width = OriginalImage.Width;
             int Height = OriginalImage.Height;
             BitmapData OriginalData = Image.LockImage(OriginalImage);
@@ -3441,6 +3532,10 @@ namespace Utilities.Media.Image
         /// <returns>The results in the form of a bitmap object</returns>
         public static Bitmap Watermark(Bitmap Image, Bitmap WatermarkImage, float Opacity, int X, int Y, Color KeyColor)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
+            if (WatermarkImage == null)
+                throw new ArgumentNullException("WatermarkImage");
             Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
             {
@@ -3519,6 +3614,10 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap image</returns>
         public static Bitmap Xor(Bitmap Image1, Bitmap Image2)
         {
+            if (Image1 == null)
+                throw new ArgumentNullException("Image1");
+            if (Image2 == null)
+                throw new ArgumentNullException("Image2");
             Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
             BitmapData NewData = Image.LockImage(NewBitmap);
             BitmapData OldData1 = Image.LockImage(Image1);
@@ -3553,6 +3652,8 @@ namespace Utilities.Media.Image
 
         private static float GetHeightDifferences(int x, int y, int X1, int Y1, BitmapData BlackAndWhiteData, int BlackAndWhitePixelSize)
         {
+            if (BlackAndWhiteData == null)
+                throw new ArgumentNullException("BlackAndWhiteData");
             Color TempColor = Image.GetPixel(BlackAndWhiteData, x, y, BlackAndWhitePixelSize);
             float Height = GetHeight(TempColor);
             TempColor = Image.GetPixel(BlackAndWhiteData, X1, Y1, BlackAndWhitePixelSize);
@@ -3562,6 +3663,8 @@ namespace Utilities.Media.Image
 
         private static void SetHeight(int x, int y, float Value,BitmapData Data,int PixelSize)
         {
+            if (Data == null)
+                throw new ArgumentNullException("Data");
             Value *= 0.5f;
             Value += 0.5f;
             int Value2 = (int)(Value * 255.0f);
@@ -3571,12 +3674,16 @@ namespace Utilities.Media.Image
 
         private static float GetHeight(int x, int y, BitmapData BlackAndWhiteData, int BlackAndWhitePixelSize)
         {
+            if (BlackAndWhiteData == null)
+                throw new ArgumentNullException("BlackAndWhiteData");
             Color TempColor = Image.GetPixel(BlackAndWhiteData, x, y, BlackAndWhitePixelSize);
             return GetHeight(TempColor);
         }
 
         private static float GetHeight(Color Color)
         {
+            if (Color == null)
+                throw new ArgumentNullException("Color");
             return (float)Color.R / 255.0f;
         }
 
@@ -3587,6 +3694,8 @@ namespace Utilities.Media.Image
 
         private static void GetMinMaxPixel(out Color Min, out Color Max, BitmapData ImageData, int PixelSize)
         {
+            if (ImageData == null)
+                throw new ArgumentNullException("ImageData");
             int MinR = 255, MinG = 255, MinB = 255;
             int MaxR = 0, MaxG = 0, MaxB = 0;
             for (int x = 0; x < ImageData.Width; ++x)
@@ -3639,6 +3748,8 @@ namespace Utilities.Media.Image
 
         internal static int GetPixelSize(BitmapData Data)
         {
+            if (Data == null)
+                throw new ArgumentNullException("Data");
             if (Data.PixelFormat == PixelFormat.Format24bppRgb)
                 return 3;
             else if (Data.PixelFormat == PixelFormat.Format32bppArgb
@@ -3650,6 +3761,8 @@ namespace Utilities.Media.Image
 
         internal static unsafe Color GetPixel(BitmapData Data, int x, int y, int PixelSizeInBytes)
         {
+            if (Data == null)
+                throw new ArgumentNullException("Data");
             byte* DataPointer = (byte*)Data.Scan0;
             DataPointer = DataPointer + (y * Data.Stride) + (x * PixelSizeInBytes);
             if (PixelSizeInBytes == 3)
@@ -3661,6 +3774,10 @@ namespace Utilities.Media.Image
 
         internal static unsafe void SetPixel(BitmapData Data, int x, int y, Color PixelColor, int PixelSizeInBytes)
         {
+            if (Data == null)
+                throw new ArgumentNullException("Data");
+            if (PixelColor == null)
+                throw new ArgumentNullException("PixelColor");
             byte* DataPointer = (byte*)Data.Scan0;
             DataPointer = DataPointer + (y * Data.Stride) + (x * PixelSizeInBytes);
             if (PixelSizeInBytes == 3)
@@ -3678,12 +3795,18 @@ namespace Utilities.Media.Image
 
         internal static BitmapData LockImage(Bitmap Image)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
             return Image.LockBits(new Rectangle(0, 0, Image.Width, Image.Height),
                 ImageLockMode.ReadWrite, Image.PixelFormat);
         }
 
         internal static void UnlockImage(Bitmap Image, BitmapData ImageData)
         {
+            if (Image == null)
+                throw new ArgumentNullException("Image");
+            if (ImageData == null)
+                throw new ArgumentNullException("ImageData");
             Image.UnlockBits(ImageData);
         }
 

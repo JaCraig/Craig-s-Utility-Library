@@ -59,14 +59,14 @@ namespace Utilities.SQL.DataClasses
 
         #region Public Properties
 
-        public string Name { get; set; }
-        public List<Column> Columns { get; set; }
-        public Database ParentDatabase { get; set; }
+        public virtual string Name { get; set; }
+        public virtual List<Column> Columns { get; set; }
+        public virtual Database ParentDatabase { get; set; }
 
         /// <summary>
         /// List of triggers associated with the table
         /// </summary>
-        public List<Trigger> Triggers { get; set; }
+        public virtual List<Trigger> Triggers { get; set; }
 
         #endregion
 
@@ -86,7 +86,7 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ForeignKeyTable">Foreign key table</param>
         /// <param name="ForeignKeyColumn">Foreign key column</param>
         /// <param name="DefaultValue">Default value</param>
-        public void AddColumn(string ColumnName,string ColumnType,int Length,bool Nullable,
+        public virtual void AddColumn(string ColumnName,string ColumnType,int Length,bool Nullable,
             bool Identity,bool Index,bool PrimaryKey,bool Unique,string ForeignKeyTable,string ForeignKeyColumn,
             string DefaultValue)
         {
@@ -98,7 +98,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="ColumnName">Column name</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool ContainsColumn(string ColumnName)
+        public virtual bool ContainsColumn(string ColumnName)
         {
             foreach (Column Column in this.Columns)
             {
@@ -114,7 +114,7 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ColumnName">Column name</param>
         /// <param name="ForeignKeyTable">Foreign key table</param>
         /// <param name="ForeignKeyColumn">Foreign key column</param>
-        public void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn)
+        public virtual void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn)
         {
             foreach (Column Column in this.Columns)
             {
@@ -129,7 +129,7 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Sets up foreign keys
         /// </summary>
-        public void SetupForeignKeys()
+        public virtual void SetupForeignKeys()
         {
             foreach (Column Column in this.Columns)
             {
@@ -143,7 +143,7 @@ namespace Utilities.SQL.DataClasses
         /// <param name="Name">Trigger name</param>
         /// <param name="Definition">Trigger definition</param>
         /// <param name="Type">The trigger type</param>
-        public void AddTrigger(string Name, string Definition, int Type)
+        public virtual void AddTrigger(string Name, string Definition, int Type)
         {
             Triggers.Add(new Trigger(Name, Definition, Type, this));
         }
@@ -153,7 +153,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="Name">Column name</param>
         /// <returns>The specified column</returns>
-        public Column this[string Name]
+        public virtual Column this[string Name]
         {
             get
             {

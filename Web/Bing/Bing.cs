@@ -52,7 +52,7 @@ namespace Utilities.Web.Bing
         /// </summary>
         /// <param name="Item">Item to check</param>
         /// <returns>List of words that may be correct spellings</returns>
-        public List<string> CheckSpelling(string Item)
+        public virtual List<string> CheckSpelling(string Item)
         {
             List<string> ReturnList = new List<string>();
             string AdditionalInfo = "&sources={0}&appid={1}";
@@ -77,7 +77,7 @@ namespace Utilities.Web.Bing
         /// <summary>
         /// App ID
         /// </summary>
-        public string APPID { get; set; }
+        public virtual string APPID { get; set; }
 
         #endregion
     }

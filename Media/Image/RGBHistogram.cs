@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Imaging;
+using System;
 #endregion
 
 namespace Utilities.Media.Image
@@ -63,8 +64,10 @@ namespace Utilities.Media.Image
         /// Loads an image
         /// </summary>
         /// <param name="ImageUsing">Image to load</param>
-        public void LoadImage(Bitmap ImageUsing)
+        public virtual void LoadImage(Bitmap ImageUsing)
         {
+            if (ImageUsing == null)
+                throw new ArgumentNullException("ImageUsing");
             BitmapData OldData = Image.LockImage(ImageUsing);
             int PixelSize = Image.GetPixelSize(OldData);
             Width = ImageUsing.Width;
@@ -91,7 +94,7 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Normalizes the histogram
         /// </summary>
-        public void Normalize()
+        public virtual void Normalize()
         {
             float TotalPixels = Width * Height;
             for (int x = 0; x < 256; ++x)
@@ -105,7 +108,7 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Equalizes the histogram
         /// </summary>
-        public void Equalize()
+        public virtual void Equalize()
         {
             float TotalPixels = Width * Height;
 
@@ -140,17 +143,17 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Red values
         /// </summary>
-        public float[] R { get; set; }
+        public virtual float[] R { get; set; }
 
         /// <summary>
         /// Green values
         /// </summary>
-        public float[] G { get; set; }
+        public virtual float[] G { get; set; }
 
         /// <summary>
         /// Blue values
         /// </summary>
-        public float[] B { get; set; }
+        public virtual float[] B { get; set; }
 
         #endregion
     }

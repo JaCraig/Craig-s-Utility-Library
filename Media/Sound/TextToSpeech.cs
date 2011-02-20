@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Speech.Recognition;
 using System.Text;
 using System.Threading;
+using System;
 #endregion
 
 namespace Utilities.Media.Sound
@@ -51,8 +52,10 @@ namespace Utilities.Media.Sound
         /// </summary>
         /// <param name="InputFile">Wave file to use</param>
         /// <returns>The text found in the wave file</returns>
-        public string Recognize(string InputFile)
+        public virtual string Recognize(string InputFile)
         {
+            if (string.IsNullOrEmpty(InputFile))
+                throw new ArgumentNullException("InputFile");
             this.InputFile = InputFile;
             Thread TempThread = new Thread(new ThreadStart(RecognizeAsync));
             TempThread.SetApartmentState(ApartmentState.STA);
@@ -68,7 +71,7 @@ namespace Utilities.Media.Sound
         /// <summary>
         /// Recognizes speech
         /// </summary>
-        void RecognizeAsync()
+        private void RecognizeAsync()
         {
             RecognitionEngine.LoadGrammar(new DictationGrammar());
             RecognitionResult Result = RecognitionEngine.Recognize();

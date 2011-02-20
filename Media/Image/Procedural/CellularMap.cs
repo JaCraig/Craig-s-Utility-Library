@@ -110,22 +110,22 @@ namespace Utilities.Media.Image.Procedural
         /// <summary>
         /// List of closest cells
         /// </summary>
-        public int[,] ClosestPoint { get; set; }
+        public virtual int[,] ClosestPoint { get; set; }
 
         /// <summary>
         /// Distances to the closest cell
         /// </summary>
-        public float[,] Distances { get; set; }
+        public virtual float[,] Distances { get; set; }
 
         /// <summary>
         /// Minimum distance to a point
         /// </summary>
-        public float MinDistance { get; set; }
+        public virtual float MinDistance { get; set; }
 
         /// <summary>
         /// Maximum distance to a point
         /// </summary>
-        public float MaxDistance { get; set; }
+        public virtual float MaxDistance { get; set; }
 
         #endregion
 
@@ -157,12 +157,12 @@ namespace Utilities.Media.Image.Procedural
         /// <summary>
         /// X axis
         /// </summary>
-        public int X { get; set; }
+        public virtual int X { get; set; }
 
         /// <summary>
         /// Y axis
         /// </summary>
-        public int Y { get; set; }
+        public virtual int Y { get; set; }
 
         #endregion
     }

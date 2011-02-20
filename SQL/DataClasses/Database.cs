@@ -65,34 +65,34 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
         
         /// <summary>
         /// List of tables
         /// </summary>
-        public List<Table> Tables { get; set; }
+        public virtual List<Table> Tables { get; set; }
 
         /// <summary>
         /// List of stored procedures
         /// </summary>
-        public List<StoredProcedure> StoredProcedures { get; set; }
+        public virtual List<StoredProcedure> StoredProcedures { get; set; }
 
         /// <summary>
         /// List of views
         /// </summary>
-        public List<View> Views { get; set; }
+        public virtual List<View> Views { get; set; }
 
         /// <summary>
         /// List of functions
         /// </summary>
-        public List<Function> Functions { get; set; }
+        public virtual List<Function> Functions { get; set; }
 
         /// <summary>
         /// Returns a table with the given name
         /// </summary>
         /// <param name="Name">Table name</param>
         /// <returns>The table specified</returns>
-        public Table this[string Name]
+        public virtual Table this[string Name]
         {
             get
             {
@@ -115,7 +115,7 @@ namespace Utilities.SQL.DataClasses
         /// Adds a table to the database
         /// </summary>
         /// <param name="TableName">Table name</param>
-        public void AddTable(string TableName)
+        public virtual void AddTable(string TableName)
         {
             Tables.Add(new Table(TableName, this));
         }
@@ -124,7 +124,7 @@ namespace Utilities.SQL.DataClasses
         /// Adds a view to the database
         /// </summary>
         /// <param name="ViewName">View name</param>
-        public void AddView(string ViewName)
+        public virtual void AddView(string ViewName)
         {
             Views.Add(new View(ViewName, this));
         }
@@ -134,7 +134,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="ProcedureName">Procedure name</param>
         /// <param name="Definition">Definition</param>
-        public void AddStoredProcedure(string ProcedureName, string Definition)
+        public virtual void AddStoredProcedure(string ProcedureName, string Definition)
         {
             StoredProcedures.Add(new StoredProcedure(ProcedureName, Definition,this));
         }
@@ -144,7 +144,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="Name">Function name</param>
         /// <param name="Definition">Function definition</param>
-        public void AddFunction(string Name, string Definition)
+        public virtual void AddFunction(string Name, string Definition)
         {
             Functions.Add(new Function(Name, Definition, this));
         }

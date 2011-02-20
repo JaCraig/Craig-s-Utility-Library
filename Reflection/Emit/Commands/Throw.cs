@@ -51,7 +51,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Exception to throw
         /// </summary>
-        public VariableBase Exception { get; set; }
+        public virtual VariableBase Exception { get; set; }
 
         #endregion
 

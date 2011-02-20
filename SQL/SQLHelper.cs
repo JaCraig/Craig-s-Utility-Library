@@ -57,7 +57,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Begins a transaction
         /// </summary>
-        public void BeginTransaction()
+        public virtual void BeginTransaction()
         {
             Transaction = Connection.BeginTransaction();
             Command = _Command;
@@ -66,7 +66,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Commits a transaction
         /// </summary>
-        public void Commit()
+        public virtual void Commit()
         {
             if (Transaction != null)
             {
@@ -77,7 +77,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Rolls back a transaction
         /// </summary>
-        public void Rollback()
+        public virtual void Rollback()
         {
             if (Transaction != null)
             {
@@ -88,7 +88,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Opens the connection
         /// </summary>
-        public void Open()
+        public virtual void Open()
         {
             if (_ExecutableCommand != null)
             {
@@ -102,7 +102,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Closes the connection
         /// </summary>
-        public void Close()
+        public virtual void Close()
         {
             if (_ExecutableCommand != null)
             {
@@ -119,7 +119,7 @@ namespace Utilities.SQL
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
         /// <param name="Length">Size of the string(either -1 or 5000 should be used to indicate nvarchar(max))</param>
-        public void AddParameter(string ID, string Value, int Length)
+        public virtual void AddParameter(string ID, string Value, int Length)
         {
             if (Length == 5000)
             {
@@ -160,7 +160,7 @@ namespace Utilities.SQL
         /// </summary>
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Type">SQL type of the parameter</param>
-        public void AddOutputParameter(string ID, SqlDbType Type)
+        public virtual void AddOutputParameter(string ID, SqlDbType Type)
         {
             if (_ExecutableCommand != null)
             {
@@ -183,7 +183,7 @@ namespace Utilities.SQL
         /// </summary>
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Length">Length of the string (either -1 or 5000 should be used to indicate nvarchar(max))</param>
-        public void AddOutputParameter(string ID, int Length)
+        public virtual void AddOutputParameter(string ID, int Length)
         {
             if (Length == 5000)
             {
@@ -211,7 +211,7 @@ namespace Utilities.SQL
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
         /// <param name="Type">SQL type of the parameter</param>
-        public void AddParameter(string ID, object Value, SqlDbType Type)
+        public virtual void AddParameter(string ID, object Value, SqlDbType Type)
         {
             if (_ExecutableCommand != null)
             {
@@ -246,7 +246,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Executes the stored procedure and returns a reader object
         /// </summary>
-        public void ExecuteReader()
+        public virtual void ExecuteReader()
         {
             if (_ExecutableCommand != null)
             {
@@ -258,7 +258,7 @@ namespace Utilities.SQL
         /// Executes the stored procedure as a non query
         /// </summary>
         /// <returns>Number of rows effected</returns>
-        public int ExecuteNonQuery()
+        public virtual int ExecuteNonQuery()
         {
             if (_ExecutableCommand != null)
             {
@@ -271,7 +271,7 @@ namespace Utilities.SQL
         /// Executes the stored procedure as a scalar query
         /// </summary>
         /// <returns>The object of the first row and first column</returns>
-        public object ExecuteScalar()
+        public virtual object ExecuteScalar()
         {
             if (_ExecutableCommand != null)
             {
@@ -284,7 +284,7 @@ namespace Utilities.SQL
         /// Is there more information?
         /// </summary>
         /// <returns>True if there is more rows, false otherwise</returns>
-        public bool Read()
+        public virtual bool Read()
         {
             if (_Reader != null)
             {
@@ -299,7 +299,7 @@ namespace Utilities.SQL
         /// <param name="ID">Parameter name</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public object GetOutputParameter(string ID, object Default)
+        public virtual object GetOutputParameter(string ID, object Default)
         {
             if (_ExecutableCommand != null)
             {
@@ -317,7 +317,7 @@ namespace Utilities.SQL
         /// <param name="ID">Parameter name</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public object GetParameter(string ID, object Default)
+        public virtual object GetParameter(string ID, object Default)
         {
             if (_Reader != null)
             {
@@ -335,7 +335,7 @@ namespace Utilities.SQL
         /// <param name="Position">Position in the row</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public object GetParameter(int Position, object Default)
+        public virtual object GetParameter(int Position, object Default)
         {
             if (_Reader != null)
             {
@@ -350,7 +350,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Clears the parameters
         /// </summary>
-        public void ClearParameters()
+        public virtual void ClearParameters()
         {
             if (_ExecutableCommand != null)
             {
@@ -365,7 +365,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Stored procedure's name or SQL Text
         /// </summary>
-        public string Command
+        public virtual string Command
         {
             get { return _Command; }
             set
@@ -397,7 +397,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Command Type
         /// </summary>
-        public CommandType CommandType
+        public virtual CommandType CommandType
         {
             get { return _CommandType; }
             set

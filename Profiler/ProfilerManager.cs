@@ -49,7 +49,7 @@ namespace Utilities.Profiler
         /// <param name="FunctionName">Function name/identifier</param>
         /// <param name="StartTime">Start time (in ms)</param>
         /// <param name="StopTime">Stop time (in ms)</param>
-        public void AddItem(string FunctionName, int StartTime, int StopTime)
+        public virtual void AddItem(string FunctionName, int StartTime, int StopTime)
         {
             ProfilerInfo Profiler = Profilers.Find(x => x.FunctionName == FunctionName);
             if (Profiler != null)
