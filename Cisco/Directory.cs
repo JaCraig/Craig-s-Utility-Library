@@ -77,14 +77,16 @@ namespace Utilities.Cisco
             {
                 foreach (DirectoryEntry Entry in DirectoryEntries)
                 {
-                    Builder.Append(Entry.ToString());
+                    if (Entry != null)
+                        Builder.Append(Entry.ToString());
                 }
             }
             if (SoftKeys != null)
             {
                 foreach (SoftKeyItem Item in SoftKeys)
                 {
-                    Builder.Append(Item.ToString());
+                    if (Item != null)
+                        Builder.Append(Item.ToString());
                 }
             }
             Builder.Append("</CiscoIPPhoneDirectory>");

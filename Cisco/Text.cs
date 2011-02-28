@@ -76,7 +76,8 @@ namespace Utilities.Cisco
             {
                 foreach (SoftKeyItem Item in SoftKeys)
                 {
-                    Builder.Append(Item.ToString());
+                    if(Item!=null)
+                        Builder.Append(Item.ToString());
                 }
             }
             Builder.Append("</CiscoIPPhoneText>");

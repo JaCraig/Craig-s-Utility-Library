@@ -62,7 +62,8 @@ namespace Utilities.Cisco
             {
                 foreach (ExecuteItem Item in ExecuteItems)
                 {
-                    Builder.Append(Item.ToString());
+                    if(Item!=null)
+                        Builder.Append(Item.ToString());
                 }
             }
             Builder.Append("</CiscoIPPhoneExecute>");

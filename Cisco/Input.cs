@@ -82,14 +82,16 @@ namespace Utilities.Cisco
             {
                 foreach (InputItem Item in InputItems)
                 {
-                    Builder.Append(Item.ToString());
+                    if(Item!=null)
+                        Builder.Append(Item.ToString());
                 }
             }
             if (SoftKeys != null)
             {
                 foreach (SoftKeyItem Item in SoftKeys)
                 {
-                    Builder.Append(Item.ToString());
+                    if(Item!=null)
+                        Builder.Append(Item.ToString());
                 }
             }
             Builder.Append("</CiscoIPPhoneInput>");

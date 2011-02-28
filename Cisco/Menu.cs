@@ -105,14 +105,16 @@ namespace Utilities.Cisco
             {
                 for (int x = 0; x < MenuItems.Count; ++x)
                 {
-                    Builder.Append(MenuItems[x].ToString());
+                    if(MenuItems[x]!=null)
+                        Builder.Append(MenuItems[x].ToString());
                 }
             }
             if (SoftKeys != null)
             {
                 for (int x = 0; x < SoftKeys.Count; ++x)
                 {
-                    Builder.Append(SoftKeys[x].ToString());
+                    if(SoftKeys[x]!=null)
+                        Builder.Append(SoftKeys[x].ToString());
                 }
             }
             if (string.IsNullOrEmpty(ImageURL))
