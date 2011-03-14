@@ -49,7 +49,7 @@ namespace Utilities.Encryption
         /// <param name="Input">Input string</param>
         /// <param name="Key">Key to use (must be the same size as the input string)</param>
         /// <returns>A decrypted string</returns>
-        public static string Dencrypt(string Input, string Key)
+        public static string Decrypt(string Input, string Key)
         {
             return Process(Input, Key);
         }

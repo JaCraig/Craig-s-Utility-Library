@@ -258,16 +258,19 @@ namespace Utilities.DataTypes
         /// <returns>The individual items from the tree</returns>
         protected virtual IEnumerable<TreeNode<T>> Traversal(TreeNode<T> Node)
         {
-            if (Node.Left != null)
+            if (Node != null)
             {
-                foreach (TreeNode<T> LeftNode in Traversal(Node.Left))
-                    yield return LeftNode;
-            }
-            yield return Node;
-            if (Node.Right != null)
-            {
-                foreach (TreeNode<T> RightNode in Traversal(Node.Right))
-                    yield return RightNode;
+                if (Node.Left != null)
+                {
+                    foreach (TreeNode<T> LeftNode in Traversal(Node.Left))
+                        yield return LeftNode;
+                }
+                yield return Node;
+                if (Node.Right != null)
+                {
+                    foreach (TreeNode<T> RightNode in Traversal(Node.Right))
+                        yield return RightNode;
+                }
             }
         }
 
