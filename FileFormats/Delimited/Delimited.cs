@@ -50,7 +50,7 @@ namespace Utilities.FileFormats.Delimited
         {
             if (string.IsNullOrEmpty(FileContent))
                 throw new ArgumentNullException("FileContent");
-            Regex TempSplitter = new Regex("[^\"\r\n$]*(\r\n|\n|$)|(([^\"\r\n$]*)(\"[^\"]*\")([^\"\r\n$]*))*(\r\n|\n|$)");
+            Regex TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
             MatchCollection Matches = TempSplitter.Matches(FileContent);
             foreach (Match Match in Matches)
             {
