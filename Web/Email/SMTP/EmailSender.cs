@@ -80,14 +80,16 @@ namespace Utilities.Web.Email.SMTP
                 string[] AddressCollection = To.Split(Splitter);
                 for (int x = 0; x < AddressCollection.Length; ++x)
                 {
-                    message.To.Add(AddressCollection[x]);
+                    if(!string.IsNullOrEmpty(AddressCollection[x].Trim()))
+                        message.To.Add(AddressCollection[x]);
                 }
                 if (!string.IsNullOrEmpty(CC))
                 {
                     AddressCollection = CC.Split(Splitter);
                     for (int x = 0; x < AddressCollection.Length; ++x)
                     {
-                        message.CC.Add(AddressCollection[x]);
+                        if (!string.IsNullOrEmpty(AddressCollection[x].Trim()))
+                            message.CC.Add(AddressCollection[x]);
                     }
                 }
                 if (!string.IsNullOrEmpty(Bcc))
@@ -95,7 +97,8 @@ namespace Utilities.Web.Email.SMTP
                     AddressCollection = Bcc.Split(Splitter);
                     for (int x = 0; x < AddressCollection.Length; ++x)
                     {
-                        message.Bcc.Add(AddressCollection[x]);
+                        if (!string.IsNullOrEmpty(AddressCollection[x].Trim()))
+                            message.Bcc.Add(AddressCollection[x]);
                     }
                 }
                 message.Subject = Subject;
