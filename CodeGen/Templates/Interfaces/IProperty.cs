@@ -24,16 +24,48 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.CodeGen.Interfaces;
+using Utilities.CodeGen.Templates.Enums;
 #endregion
 
-namespace Utilities.CodeGen.BaseClasses
+namespace Utilities.CodeGen.Templates.Interfaces
 {
     /// <summary>
-    /// Template base class
+    /// Property interface
     /// </summary>
-    public class TemplateBase:ITemplate
+    public interface IProperty:IObject
     {
-        public virtual string Code { get; set; }
+        #region Properties
+
+        /// <summary>
+        /// Access modifier
+        /// </summary>
+        AccessModifier AccessModifier { get; set; }
+
+        /// <summary>
+        /// Modifier
+        /// </summary>
+        Modifiers Modifier { get; set; }
+
+        /// <summary>
+        /// Property Type
+        /// </summary>
+        string PropertyType { get; set; }
+
+        /// <summary>
+        /// Property name
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
+        /// Get function
+        /// </summary>
+        string GetFunction { get; set; }
+
+        /// <summary>
+        /// Set function
+        /// </summary>
+        string SetFunction { get; set; }
+
+        #endregion
     }
 }

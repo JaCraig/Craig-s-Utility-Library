@@ -30,10 +30,26 @@ using Utilities.CodeGen.Interfaces;
 namespace Utilities.CodeGen.BaseClasses
 {
     /// <summary>
-    /// Template base class
+    /// Input base class
     /// </summary>
-    public class TemplateBase:ITemplate
+    public class InputBase:IInput
     {
-        public virtual string Code { get; set; }
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public InputBase()
+        {
+            Values = new Dictionary<string, string>();
+        }
+
+        #endregion
+
+        #region Properties
+
+        public virtual Dictionary<string, string> Values { get; set; }
+
+        #endregion
     }
 }

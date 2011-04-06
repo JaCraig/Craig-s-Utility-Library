@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utilities.CodeGen.BaseClasses;
+using Utilities.CodeGen.Interfaces;
 #endregion
 
 namespace Utilities.CodeGen
@@ -34,5 +35,14 @@ namespace Utilities.CodeGen
     /// </summary>
     public class DefaultParser:ParserBase
     {
+        public override string Transform(ITemplate Template, IInput Input)
+        {
+            string TemplateCode = Template.Code;
+            foreach (string Key in Input.Values.Keys)
+            {
+                TemplateCode = TemplateCode.Replace("@" + Key, Input.Values[Key]);
+            }
+            return TemplateCode;
+        }
     }
 }

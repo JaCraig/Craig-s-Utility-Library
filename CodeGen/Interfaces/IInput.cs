@@ -24,16 +24,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.CodeGen.Interfaces;
 #endregion
 
-namespace Utilities.CodeGen.BaseClasses
+namespace Utilities.CodeGen.Interfaces
 {
     /// <summary>
-    /// Template base class
+    /// Input interface
     /// </summary>
-    public class TemplateBase:ITemplate
+    public interface IInput
     {
-        public virtual string Code { get; set; }
+        #region Properties
+
+        /// <summary>
+        /// Input values
+        /// </summary>
+        Dictionary<string, string> Values { get; set; }
+
+        #endregion
     }
 }

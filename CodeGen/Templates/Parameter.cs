@@ -24,16 +24,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.CodeGen.Templates.Interfaces;
 using Utilities.CodeGen.Interfaces;
+using Utilities.CodeGen.Templates.Enums;
+using Utilities.CodeGen.Templates.BaseClasses;
 #endregion
 
-namespace Utilities.CodeGen.BaseClasses
+namespace Utilities.CodeGen.Templates
 {
     /// <summary>
-    /// Template base class
+    /// Parameter class
     /// </summary>
-    public class TemplateBase:ITemplate
+    public class Parameter:ObjectBase,IParameter
     {
-        public virtual string Code { get; set; }
+        #region Constructor
+
+        public Parameter(string Type, string Name,Class Object)
+            : base(Object.Parser)
+        {
+            this.Type = Type;
+            this.Name = Name;
+        }
+
+        #endregion
+
+        #region Functions
+
+        protected override void SetupTemplate()
+        {
+            Template = new DefaultTemplate(@"@ParameterType @ParameterName");
+        }
+
+        protected override void SetupInput()
+        {
+            Input.Values.Add("ParameterType", Type);
+            Input.Values.Add("ParameterName", Name);
+        }
+
+        #endregion
+
+        #region Properties
+
+        protected virtual string Type { get; set; }
+        protected virtual string Name { get; set; }
+
+        #endregion
     }
 }

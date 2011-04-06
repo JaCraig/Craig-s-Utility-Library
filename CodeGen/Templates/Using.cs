@@ -24,16 +24,47 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.CodeGen.Templates.Interfaces;
 using Utilities.CodeGen.Interfaces;
+using Utilities.CodeGen.Templates.Enums;
+using Utilities.CodeGen.Templates.BaseClasses;
 #endregion
 
-namespace Utilities.CodeGen.BaseClasses
+namespace Utilities.CodeGen.Templates
 {
     /// <summary>
-    /// Template base class
+    /// Using class
     /// </summary>
-    public class TemplateBase:ITemplate
+    public class Using:ObjectBase
     {
-        public virtual string Code { get; set; }
+        #region Constructor
+
+        public Using(string Namespace, IParser Parser)
+            : base(Parser)
+        {
+            this.Namespace = Namespace;
+        }
+
+        #endregion
+
+        #region Properties
+
+        protected string Namespace { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        protected override void SetupTemplate()
+        {
+            Template = new DefaultTemplate("using @Namespace;");
+        }
+
+        protected override void SetupInput()
+        {
+            Input.Values.Add("Namespace", Namespace);
+        }
+
+        #endregion
     }
 }

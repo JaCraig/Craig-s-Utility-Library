@@ -24,16 +24,44 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.CodeGen.Templates.Enums;
 using Utilities.CodeGen.Interfaces;
 #endregion
 
-namespace Utilities.CodeGen.BaseClasses
+namespace Utilities.CodeGen.Templates.Interfaces
 {
     /// <summary>
-    /// Template base class
+    /// Object interface
     /// </summary>
-    public class TemplateBase:ITemplate
+    public interface IObject
     {
-        public virtual string Code { get; set; }
+        #region Functions
+
+        /// <summary>
+        /// Transforms the object
+        /// </summary>
+        /// <returns>The string/Code representation</returns>
+        string Transform();
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Input object
+        /// </summary>
+        IInput Input { get; set; }
+
+        /// <summary>
+        /// Template object
+        /// </summary>
+        ITemplate Template { get; set; }
+
+        /// <summary>
+        /// Parser object
+        /// </summary>
+        IParser Parser { get; set; }
+
+        #endregion
     }
 }

@@ -32,15 +32,8 @@ namespace Utilities.CodeGen.BaseClasses
     /// <summary>
     /// Parser base class
     /// </summary>
-    public class ParserBase:IParser
+    public abstract class ParserBase:IParser
     {
-        #region IParser Members
-
-        public virtual string Transform(ITemplate Template)
-        {
-            return Template.Code;
-        }
-
-        #endregion
+        public abstract string Transform(ITemplate Template, IInput Input);
     }
 }

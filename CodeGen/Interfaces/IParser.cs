@@ -38,8 +38,10 @@ namespace Utilities.CodeGen.Interfaces
         /// <summary>
         /// Transforms the class into string output
         /// </summary>
+        /// <param name="Template">Template class</param>
+        /// <param name="Input">Input value class</param>
         /// <returns>String equivalent of class</returns>
-        string Transform(ITemplate Template);
+        string Transform(ITemplate Template, IInput Input);
 
         #endregion
     }

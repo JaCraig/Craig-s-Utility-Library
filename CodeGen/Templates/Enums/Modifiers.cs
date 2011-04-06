@@ -24,16 +24,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.CodeGen.Interfaces;
 #endregion
 
-namespace Utilities.CodeGen.BaseClasses
+namespace Utilities.CodeGen.Templates.Enums
 {
     /// <summary>
-    /// Template base class
+    /// Modifiers
     /// </summary>
-    public class TemplateBase:ITemplate
+    public enum Modifiers
     {
-        public virtual string Code { get; set; }
+        Virtual,
+        Abstract,
+        Override,
+        Partial,
+        None
     }
 }

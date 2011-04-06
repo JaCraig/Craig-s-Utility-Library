@@ -24,16 +24,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.CodeGen.Interfaces;
+using Utilities.CodeGen.Templates.Enums;
 #endregion
 
-namespace Utilities.CodeGen.BaseClasses
+namespace Utilities.CodeGen.Templates.Interfaces
 {
     /// <summary>
-    /// Template base class
+    /// Function interface
     /// </summary>
-    public class TemplateBase:ITemplate
+    public interface IFunction:IObject
     {
-        public virtual string Code { get; set; }
     }
 }
