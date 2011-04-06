@@ -108,6 +108,12 @@
     <Compile Include="Cisco\SoftKeyItem.cs" />
     <Compile Include="Cisco\Status.cs" />
     <Compile Include="Cisco\Text.cs" />
+    <Compile Include="CodeGen\BaseClasses\ParserBase.cs" />
+    <Compile Include="CodeGen\BaseClasses\TemplateBase.cs" />
+    <Compile Include="CodeGen\DefaultParser.cs" />
+    <Compile Include="CodeGen\DefaultTemplate.cs" />
+    <Compile Include="CodeGen\Interfaces\IParser.cs" />
+    <Compile Include="CodeGen\Interfaces\ITemplate.cs" />
     <Compile Include="FileFormats\Zip\ZipFile.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
