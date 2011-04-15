@@ -43,6 +43,7 @@ namespace Utilities.Exchange
         {
             AttendeeList = new MailAddressCollection();
             Attachments = new List<Attachment>();
+            Status = "BUSY";
         }
         #endregion
 
@@ -66,7 +67,7 @@ namespace Utilities.Exchange
                 + "<cal:dtstart dt:dt=\"dateTime.tz\">" + StartDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.000Z") + "</cal:dtstart>"// + StartDate.ToUniversalTime().ToString("yyyyMMddTHHmmssZ") + "</cal:dtstart>"
                 + "<cal:dtend dt:dt=\"dateTime.tz\">" + EndDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.000Z") + "</cal:dtend>"// + EndDate.ToUniversalTime().ToString("yyyyMMddTHHmmssZ") + "</cal:dtend>"
                 + "<cal:instancetype dt:dt=\"int\">0</cal:instancetype>"
-                + "<cal:busystatus>BUSY</cal:busystatus>"
+                + "<cal:busystatus>"+Status+"</cal:busystatus>"
                 + "<cal:meetingstatus>CONFIRMED</cal:meetingstatus>"
                 + "<cal:alldayevent dt:dt=\"boolean\">0</cal:alldayevent>"
                 + "<cal:responserequested dt:dt=\"boolean\">1</cal:responserequested>"
@@ -309,7 +310,7 @@ namespace Utilities.Exchange
                 Method = "REQUEST";
             else
                 Method = "CANCEL";
-            string bodyCalendar = "BEGIN:VCALENDAR\r\nMETHOD:{10}\r\nPRODID:Microsoft CDO for Microsoft Exchange\r\nVERSION:2.0\r\nBEGIN:VTIMEZONE\r\nTZID:(GMT-06.00) Central Time (US & Canada)\r\nX-MICROSOFT-CDO-TZID:11\r\nBEGIN:STANDARD\r\nDTSTART:16010101T020000\r\nTZOFFSETFROM:-0500\r\nTZOFFSETTO:-0600\r\nRRULE:FREQ=YEARLY;WKST=MO;INTERVAL=1;BYMONTH=11;BYDAY=1SU\r\nEND:STANDARD\r\nBEGIN:DAYLIGHT\r\nDTSTART:16010101T020000\r\nTZOFFSETFROM:-0600\r\nTZOFFSETTO:-0500\r\nRRULE:FREQ=YEARLY;WKST=MO;INTERVAL=1;BYMONTH=3;BYDAY=2SU\r\nEND:DAYLIGHT\r\nEND:VTIMEZONE\r\nBEGIN:VEVENT\r\nDTSTAMP:{8}\r\nDTSTART:{0}\r\nSUMMARY:{7}\r\nUID:{5}\r\nATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=\"{9}\":MAILTO:{9}\r\nACTION;RSVP=TRUE;CN=\"{4}\":MAILTO:{4}\r\nORGANIZER;CN=\"{3}\":mailto:{4}\r\nLOCATION:{2}\r\nDTEND:{1}\r\nDESCRIPTION:{7}\\N\r\nSEQUENCE:1\r\nPRIORITY:5\r\nCLASS:\r\nCREATED:{8}\r\nLAST-MODIFIED:{8}\r\nSTATUS:CONFIRMED\r\nTRANSP:OPAQUE\r\nX-MICROSOFT-CDO-BUSYSTATUS:BUSY\r\nX-MICROSOFT-CDO-INSTTYPE:0\r\nX-MICROSOFT-CDO-INTENDEDSTATUS:BUSY\r\nX-MICROSOFT-CDO-ALLDAYEVENT:FALSE\r\nX-MICROSOFT-CDO-IMPORTANCE:1\r\nX-MICROSOFT-CDO-OWNERAPPTID:-1\r\nX-MICROSOFT-CDO-ATTENDEE-CRITICAL-CHANGE:{8}\r\nX-MICROSOFT-CDO-OWNER-CRITICAL-CHANGE:{8}\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:REMINDER\r\nTRIGGER;RELATED=START:-PT00H15M00S\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n";
+            string bodyCalendar = "BEGIN:VCALENDAR\r\nMETHOD:{10}\r\nPRODID:Microsoft CDO for Microsoft Exchange\r\nVERSION:2.0\r\nBEGIN:VTIMEZONE\r\nTZID:(GMT-06.00) Central Time (US & Canada)\r\nX-MICROSOFT-CDO-TZID:11\r\nBEGIN:STANDARD\r\nDTSTART:16010101T020000\r\nTZOFFSETFROM:-0500\r\nTZOFFSETTO:-0600\r\nRRULE:FREQ=YEARLY;WKST=MO;INTERVAL=1;BYMONTH=11;BYDAY=1SU\r\nEND:STANDARD\r\nBEGIN:DAYLIGHT\r\nDTSTART:16010101T020000\r\nTZOFFSETFROM:-0600\r\nTZOFFSETTO:-0500\r\nRRULE:FREQ=YEARLY;WKST=MO;INTERVAL=1;BYMONTH=3;BYDAY=2SU\r\nEND:DAYLIGHT\r\nEND:VTIMEZONE\r\nBEGIN:VEVENT\r\nDTSTAMP:{8}\r\nDTSTART:{0}\r\nSUMMARY:{7}\r\nUID:{5}\r\nATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=\"{9}\":MAILTO:{9}\r\nACTION;RSVP=TRUE;CN=\"{4}\":MAILTO:{4}\r\nORGANIZER;CN=\"{3}\":mailto:{4}\r\nLOCATION:{2}\r\nDTEND:{1}\r\nDESCRIPTION:{7}\\N\r\nSEQUENCE:1\r\nPRIORITY:5\r\nCLASS:\r\nCREATED:{8}\r\nLAST-MODIFIED:{8}\r\nSTATUS:CONFIRMED\r\nTRANSP:OPAQUE\r\nX-MICROSOFT-CDO-BUSYSTATUS:{11}\r\nX-MICROSOFT-CDO-INSTTYPE:0\r\nX-MICROSOFT-CDO-INTENDEDSTATUS:BUSY\r\nX-MICROSOFT-CDO-ALLDAYEVENT:FALSE\r\nX-MICROSOFT-CDO-IMPORTANCE:1\r\nX-MICROSOFT-CDO-OWNERAPPTID:-1\r\nX-MICROSOFT-CDO-ATTENDEE-CRITICAL-CHANGE:{8}\r\nX-MICROSOFT-CDO-OWNER-CRITICAL-CHANGE:{8}\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:REMINDER\r\nTRIGGER;RELATED=START:-PT00H15M00S\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n";
             bodyCalendar = string.Format(bodyCalendar,
                 StartDate.ToUniversalTime().ToString(DateFormatUsing),
                 EndDate.ToUniversalTime().ToString(DateFormatUsing),
@@ -321,7 +322,8 @@ namespace Utilities.Exchange
                 Subject,
                 DateTime.Now.ToUniversalTime().ToString(DateFormatUsing),
                 AttendeeList.ToString(),
-                Method);
+                Method,
+                Status);
             return bodyCalendar;
         }
 
@@ -403,6 +405,11 @@ namespace Utilities.Exchange
         /// Post of the server
         /// </summary>
         public virtual int Port { get; set; }
+
+        /// <summary>
+        /// Sets the status for the appointment (FREE, BUSY, etc.)
+        /// </summary>
+        public virtual string Status { get; set; }
 
         #endregion
     }
