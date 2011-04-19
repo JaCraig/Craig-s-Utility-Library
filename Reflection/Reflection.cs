@@ -263,6 +263,20 @@ namespace Utilities.Reflection
             return Name;
         }
 
+        /// <summary>
+        /// Gets a property name
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <typeparam name="DataType">Data type of the property</typeparam>
+        /// <param name="Expression">LINQ expression</param>
+        /// <returns>The name of the property</returns>
+        public static string GetPropertyName<ClassType, DataType>(Expression<Func<ClassType, DataType>> Expression)
+        {
+            if (!(Expression.Body is MemberExpression))
+                throw new ArgumentException("Expression.Body is not a MemberExpression");
+            return ((MemberExpression)Expression.Body).Member.Name;
+        }
+
         #endregion
 
         #region GetPropertyParent
@@ -544,9 +558,22 @@ namespace Utilities.Reflection
         {
             if (Object == null)
                 throw new ArgumentNullException("Object");
+            return IsOfType(Object.GetType(), Type);
+        }
+
+        /// <summary>
+        /// Determines if an object type is of a specific type
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Type">Base type</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsOfType(Type ObjectType, Type Type)
+        {
+            if (ObjectType == null)
+                throw new ArgumentException("ObjectType");
             if (Type == null)
-                throw new ArgumentNullException("Type");
-            return CheckIsOfInterface(Object.GetType(), Type);
+                throw new ArgumentException("Type");
+            return CheckIsOfInterface(ObjectType, Type);
         }
 
         #endregion
@@ -742,9 +769,7 @@ namespace Utilities.Reflection
         {
             if (Type == null)
                 return false;
-            if (Type.GetInterface(Interface.Name, true) != null)
-                return true;
-            if (Type==Interface)
+            if (Type == Interface || Type.GetInterface(Interface.Name, true) != null)
                 return true;
             return CheckIsOfInterface(Type.BaseType, Interface);
         }
