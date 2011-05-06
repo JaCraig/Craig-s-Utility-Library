@@ -533,15 +533,7 @@ namespace Utilities.Reflection
         /// <returns>True if it is, false otherwise</returns>
         public static bool IsIEnumerable(Type ObjectType)
         {
-            if (ObjectType.IsPrimitive)
-                return false;
-            if (ObjectType.GetConstructor(System.Type.EmptyTypes) != null)
-            {
-                object TempObject = Activator.CreateInstance(ObjectType);
-                if (TempObject is IEnumerable)
-                    return true;
-            }
-            return false;
+            return IsOfType(ObjectType, typeof(IEnumerable));
         }
 
         #endregion

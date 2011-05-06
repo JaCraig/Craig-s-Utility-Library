@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Text;
+using System.Data;
 #endregion
 
 
@@ -259,6 +260,66 @@ namespace Utilities.DataTypes
                 return null;
             UnicodeEncoding Encoding = new UnicodeEncoding();
             return Encoding.GetBytes(Input);
+        }
+
+        /// <summary>
+        /// Converts a .Net type to SQLDbType value
+        /// </summary>
+        /// <param name="Type">.Net Type</param>
+        /// <returns>The corresponding SQLDbType</returns>
+        public static SqlDbType NetTypeToSQLDbType(Type Type)
+        {
+            if (Type==typeof(string))
+                return SqlDbType.NVarChar;
+            else if (Type==typeof(long))
+                return SqlDbType.BigInt;
+            else if (Type == typeof(bool))
+                return SqlDbType.Bit;
+            else if (Type == typeof(char))
+                return SqlDbType.NChar;
+            else if (Type == typeof(DateTime))
+                return SqlDbType.DateTime;
+            else if (Type == typeof(decimal))
+                return SqlDbType.Decimal;
+            else if (Type == typeof(float) || Type == typeof(double))
+                return SqlDbType.Float;
+            else if (Type == typeof(Single))
+                return SqlDbType.Real;
+            else if (Type == typeof(short))
+                return SqlDbType.SmallInt;
+            else if (Type == typeof(Guid))
+                return SqlDbType.UniqueIdentifier;
+            return SqlDbType.Int;
+        }
+
+        /// <summary>
+        /// Converts a SQLDbType value to .Net type
+        /// </summary>
+        /// <param name="Type">SqlDbType Type</param>
+        /// <returns>The corresponding .Net type</returns>
+        public static Type SQLDbTypeToNetType(SqlDbType Type)
+        {
+            if (Type == SqlDbType.NVarChar)
+                return typeof(string);
+            else if (Type == SqlDbType.BigInt)
+                return typeof(long);
+            else if (Type == SqlDbType.Bit)
+                return typeof(bool);
+            else if (Type == SqlDbType.NChar)
+                return typeof(char);
+            else if (Type == SqlDbType.DateTime)
+                return typeof(DateTime);
+            else if (Type == SqlDbType.Decimal)
+                return typeof(decimal);
+            else if (Type==SqlDbType.Float)
+                return typeof(float);
+            else if (Type == SqlDbType.Real)
+                return typeof(Single);
+            else if (Type == SqlDbType.SmallInt)
+                return typeof(short);
+            else if (Type == SqlDbType.UniqueIdentifier)
+                return typeof(Guid);
+            return typeof(int);
         }
 
         #endregion

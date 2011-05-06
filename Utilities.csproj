@@ -131,6 +131,7 @@
     <Compile Include="CodeGen\Templates\Parameter.cs" />
     <Compile Include="CodeGen\Templates\Property.cs" />
     <Compile Include="CodeGen\Templates\Using.cs" />
+    <Compile Include="DataTypes\Patterns\IFluentInterface.cs" />
     <Compile Include="FileFormats\Zip\ZipFile.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
