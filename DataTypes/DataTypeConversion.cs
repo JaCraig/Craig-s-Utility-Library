@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Text;
 using System.Data;
+using System.Data.SqlClient;
 #endregion
 
 
@@ -34,6 +35,9 @@ namespace Utilities.DataTypes
     public static class DataTypeConversion
     {
         #region Static Public Functions
+
+        #region BoolToInt
+
         /// <summary>
         /// Turns a bool into an int
         /// </summary>
@@ -44,6 +48,10 @@ namespace Utilities.DataTypes
             return Input ? 1 : 0;
         }
 
+        #endregion
+
+        #region IntToBool
+
         /// <summary>
         /// Turns an int into a bool
         /// </summary>
@@ -53,6 +61,10 @@ namespace Utilities.DataTypes
         {
             return Input > 0 ? true : false;
         }
+
+        #endregion
+
+        #region IntToDay
 
         /// <summary>
         /// Takes the numeric value and returns the day of the week.
@@ -81,6 +93,10 @@ namespace Utilities.DataTypes
             return "";
         }
 
+        #endregion
+
+        #region DayToInt
+
         /// <summary>
         /// Takes the day of the week and returns the numeric value (1-7).
         /// </summary>
@@ -107,6 +123,10 @@ namespace Utilities.DataTypes
             }
             return 0;
         }
+
+        #endregion
+
+        #region IntMonthToString
 
         /// <summary>
         /// Takes the int value for the month and returns the name of the month
@@ -146,6 +166,10 @@ namespace Utilities.DataTypes
             }
         }
 
+        #endregion
+
+        #region StringToIntMonth
+
         /// <summary>
         /// Takes the int value for the month and returns the name of the month
         /// </summary>
@@ -184,6 +208,10 @@ namespace Utilities.DataTypes
             }
         }
 
+        #endregion
+
+        #region Base64ToString
+
         /// <summary>
         /// Converts base 64 string to normal string
         /// </summary>
@@ -196,6 +224,10 @@ namespace Utilities.DataTypes
             byte[] TempArray = Convert.FromBase64String(Input);
             return Encoding.UTF8.GetString(TempArray);
         }
+
+        #endregion
+
+        #region StringToBase64
 
         /// <summary>
         /// Converts a normal string to base 64 string
@@ -210,6 +242,10 @@ namespace Utilities.DataTypes
             return Convert.ToBase64String(TempArray);
         }
 
+        #endregion
+
+        #region ByteArrayToASCIIString
+
         /// <summary>
         /// Converts a byte array to ASCII string
         /// </summary>
@@ -222,6 +258,10 @@ namespace Utilities.DataTypes
             ASCIIEncoding Encoding = new ASCIIEncoding();
             return Encoding.GetString(Input);
         }
+
+        #endregion
+
+        #region ByteArrayToUnicodeString
 
         /// <summary>
         /// Converts a byte array to unicode string
@@ -236,6 +276,10 @@ namespace Utilities.DataTypes
             return Encoding.GetString(Input);
         }
 
+        #endregion
+
+        #region ASCIIStringToByteArray
+
         /// <summary>
         /// Converts an ASCII string to a byte array
         /// </summary>
@@ -248,6 +292,10 @@ namespace Utilities.DataTypes
             ASCIIEncoding Encoding = new ASCIIEncoding();
             return Encoding.GetBytes(Input);
         }
+
+        #endregion
+
+        #region UnicodeStringToByteArray
 
         /// <summary>
         /// Converts a unicode string to a byte array
@@ -262,6 +310,10 @@ namespace Utilities.DataTypes
             return Encoding.GetBytes(Input);
         }
 
+        #endregion
+
+        #region NetTypeToSQLDbType
+
         /// <summary>
         /// Converts a .Net type to SQLDbType value
         /// </summary>
@@ -269,28 +321,60 @@ namespace Utilities.DataTypes
         /// <returns>The corresponding SQLDbType</returns>
         public static SqlDbType NetTypeToSQLDbType(Type Type)
         {
-            if (Type==typeof(string))
-                return SqlDbType.NVarChar;
-            else if (Type==typeof(long))
-                return SqlDbType.BigInt;
-            else if (Type == typeof(bool))
-                return SqlDbType.Bit;
-            else if (Type == typeof(char))
-                return SqlDbType.NChar;
-            else if (Type == typeof(DateTime))
-                return SqlDbType.DateTime;
-            else if (Type == typeof(decimal))
-                return SqlDbType.Decimal;
-            else if (Type == typeof(float) || Type == typeof(double))
-                return SqlDbType.Float;
-            else if (Type == typeof(Single))
-                return SqlDbType.Real;
-            else if (Type == typeof(short))
-                return SqlDbType.SmallInt;
-            else if (Type == typeof(Guid))
-                return SqlDbType.UniqueIdentifier;
-            return SqlDbType.Int;
+            return DbTypeToSqlDbType(NetTypeToDbType(Type));
         }
+
+        #endregion
+
+        #region NetTypeToDbType
+
+        /// <summary>
+        /// Converts a .Net type to DbType value
+        /// </summary>
+        /// <param name="Type">.Net Type</param>
+        /// <returns>The corresponding DbType</returns>
+        public static DbType NetTypeToDbType(Type Type)
+        {
+            if (Type == typeof(byte)) return DbType.Byte;
+            else if (Type == typeof(sbyte)) return DbType.SByte;
+            else if (Type == typeof(short)) return DbType.Int16;
+            else if (Type == typeof(ushort)) return DbType.UInt16;
+            else if (Type == typeof(int)) return DbType.Int32;
+            else if (Type == typeof(uint)) return DbType.UInt32;
+            else if (Type == typeof(long)) return DbType.Int64;
+            else if (Type == typeof(ulong)) return DbType.UInt64;
+            else if (Type == typeof(float)) return DbType.Single;
+            else if (Type == typeof(double)) return DbType.Double;
+            else if (Type == typeof(decimal)) return DbType.Decimal;
+            else if (Type == typeof(bool)) return DbType.Boolean;
+            else if (Type == typeof(string)) return DbType.String;
+            else if (Type == typeof(char)) return DbType.StringFixedLength;
+            else if (Type == typeof(Guid)) return DbType.Guid;
+            else if (Type == typeof(DateTime)) return DbType.DateTime;
+            else if (Type == typeof(DateTimeOffset)) return DbType.DateTimeOffset;
+            else if (Type == typeof(byte[])) return DbType.Binary;
+            else if (Type == typeof(byte?)) return DbType.Byte;
+            else if (Type == typeof(sbyte?)) return DbType.SByte;
+            else if (Type == typeof(short?)) return DbType.Int16;
+            else if (Type == typeof(ushort?)) return DbType.UInt16;
+            else if (Type == typeof(int?)) return DbType.Int32;
+            else if (Type == typeof(uint?)) return DbType.UInt32;
+            else if (Type == typeof(long?)) return DbType.Int64;
+            else if (Type == typeof(ulong?)) return DbType.UInt64;
+            else if (Type == typeof(float?)) return DbType.Single;
+            else if (Type == typeof(double?)) return DbType.Double;
+            else if (Type == typeof(decimal?)) return DbType.Decimal;
+            else if (Type == typeof(bool?)) return DbType.Boolean;
+            else if (Type == typeof(char?)) return DbType.StringFixedLength;
+            else if (Type == typeof(Guid?)) return DbType.Guid;
+            else if (Type == typeof(DateTime?)) return DbType.DateTime;
+            else if (Type == typeof(DateTimeOffset?)) return DbType.DateTimeOffset;
+            return DbType.Int32;
+        }
+
+        #endregion
+
+        #region SQLDbTypeToNetType
 
         /// <summary>
         /// Converts a SQLDbType value to .Net type
@@ -299,28 +383,74 @@ namespace Utilities.DataTypes
         /// <returns>The corresponding .Net type</returns>
         public static Type SQLDbTypeToNetType(SqlDbType Type)
         {
-            if (Type == SqlDbType.NVarChar)
-                return typeof(string);
-            else if (Type == SqlDbType.BigInt)
-                return typeof(long);
-            else if (Type == SqlDbType.Bit)
-                return typeof(bool);
-            else if (Type == SqlDbType.NChar)
-                return typeof(char);
-            else if (Type == SqlDbType.DateTime)
-                return typeof(DateTime);
-            else if (Type == SqlDbType.Decimal)
-                return typeof(decimal);
-            else if (Type==SqlDbType.Float)
-                return typeof(float);
-            else if (Type == SqlDbType.Real)
-                return typeof(Single);
-            else if (Type == SqlDbType.SmallInt)
-                return typeof(short);
-            else if (Type == SqlDbType.UniqueIdentifier)
-                return typeof(Guid);
+            return DbTypeToNetType(SqlDbTypeToDbType(Type));
+        }
+
+        #endregion
+
+        #region DbTypeToNetType
+
+        /// <summary>
+        /// Converts a DbType value to .Net type
+        /// </summary>
+        /// <param name="Type">DbType</param>
+        /// <returns>The corresponding .Net type</returns>
+        public static Type DbTypeToNetType(DbType Type)
+        {
+            if (Type == DbType.Byte) return typeof(byte);
+            else if (Type == DbType.SByte) return typeof(sbyte);
+            else if (Type == DbType.Int16) return typeof(short);
+            else if (Type == DbType.UInt16) return typeof(ushort);
+            else if (Type == DbType.Int32) return typeof(int);
+            else if (Type == DbType.UInt32) return typeof(uint);
+            else if (Type == DbType.Int64) return typeof(long);
+            else if (Type == DbType.UInt64) return typeof(ulong);
+            else if (Type == DbType.Single) return typeof(float);
+            else if (Type == DbType.Double) return typeof(double);
+            else if (Type == DbType.Decimal) return typeof(decimal);
+            else if (Type == DbType.Boolean) return typeof(bool);
+            else if (Type == DbType.String) return typeof(string);
+            else if (Type == DbType.StringFixedLength) return typeof(char);
+            else if (Type == DbType.Guid) return typeof(Guid);
+            else if (Type == DbType.DateTime) return typeof(DateTime);
+            else if (Type == DbType.DateTimeOffset) return typeof(DateTimeOffset);
+            else if (Type == DbType.Binary) return typeof(byte[]);
             return typeof(int);
         }
+
+        #endregion
+
+        #region DbTypeToSqlDbType
+
+        /// <summary>
+        /// Converts a DbType to a SqlDbType
+        /// </summary>
+        /// <param name="Type">Type to convert</param>
+        /// <returns>The corresponding SqlDbType (if it exists)</returns>
+        public static SqlDbType DbTypeToSqlDbType(DbType Type)
+        {
+            SqlParameter Parameter = new SqlParameter();
+            Parameter.DbType = Type;
+            return Parameter.SqlDbType;
+        }
+
+        #endregion
+
+        #region SqlDbTypeToDbType
+
+        /// <summary>
+        /// Converts SqlDbType to DbType
+        /// </summary>
+        /// <param name="Type">Type to convert</param>
+        /// <returns>The corresponding DbType (if it exists)</returns>
+        public static DbType SqlDbTypeToDbType(SqlDbType Type)
+        {
+            SqlParameter Parameter = new SqlParameter();
+            Parameter.SqlDbType = Type;
+            return Parameter.DbType;
+        }
+
+        #endregion
 
         #endregion
     }

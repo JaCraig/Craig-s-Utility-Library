@@ -23,7 +23,8 @@ THE SOFTWARE.*/
 using System;
 using System.Data;
 using System.Data.SqlClient;
-
+using System.Xml;
+using System.Data.Common;
 #endregion
 
 namespace Utilities.SQL
@@ -41,119 +42,83 @@ namespace Utilities.SQL
         /// <param name="Command">Stored procedure/SQL Text to use</param>
         /// <param name="ConnectionUsing">The connection string to user</param>
         /// <param name="CommandType">The command type of the command sent in</param>
-        public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType)
+        public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DbType = "System.Data.SqlClient")
         {
-            Connection = new SqlConnection(ConnectionUsing);
+            Factory = DbProviderFactories.GetFactory(DbType);
+            Connection = Factory.CreateConnection();
+            Connection.ConnectionString = ConnectionUsing;
             _Command = Command;
-            _ExecutableCommand = new SqlCommand(_Command, Connection);
-            _ExecutableCommand.CommandType = CommandType;
-            this._CommandType = CommandType;
+            _CommandType = CommandType;
+            ExecutableCommand = Factory.CreateCommand();
+            ExecutableCommand.CommandText = _Command;
+            ExecutableCommand.Connection = Connection;
+            ExecutableCommand.CommandType = CommandType;
         }
 
         #endregion
 
-        #region Public Functions
+        #region Properties
 
         /// <summary>
-        /// Begins a transaction
+        /// Db provider factory (creates connections, etc.)
         /// </summary>
-        public virtual void BeginTransaction()
-        {
-            Transaction = Connection.BeginTransaction();
-            Command = _Command;
-        }
+        protected virtual DbProviderFactory Factory { get; set; }
 
         /// <summary>
-        /// Commits a transaction
+        /// Connection to the database
         /// </summary>
-        public virtual void Commit()
+        protected virtual DbConnection Connection { get; set; }
+
+        /// <summary>
+        /// The executable command
+        /// </summary>
+        protected DbCommand ExecutableCommand { get; set; }
+
+        /// <summary>
+        /// The data reader for the query
+        /// </summary>
+        protected DbDataReader Reader { get; set; }
+
+        /// <summary>
+        /// The transaction associated with the query
+        /// </summary>
+        protected DbTransaction Transaction { get; set; }
+
+        /// <summary>
+        /// Stored procedure's name or SQL Text
+        /// </summary>
+        public virtual string Command
         {
-            if (Transaction != null)
+            get { return _Command; }
+            set
             {
-                Transaction.Commit();
+                _Command = value;
+                RecreateConnection();
             }
         }
 
-        /// <summary>
-        /// Rolls back a transaction
-        /// </summary>
-        public virtual void Rollback()
-        {
-            if (Transaction != null)
-            {
-                Transaction.Rollback();
-            }
-        }
+        private string _Command = null;
+
 
         /// <summary>
-        /// Opens the connection
+        /// Command Type
         /// </summary>
-        public virtual void Open()
+        public virtual CommandType CommandType
         {
-            if (_ExecutableCommand != null)
+            get { return _CommandType; }
+            set
             {
-                if (_ExecutableCommand.Connection != null)
-                {
-                    _ExecutableCommand.Connection.Open();
-                }
+                _CommandType = value;
+                RecreateConnection();
             }
         }
+        private CommandType _CommandType;
 
-        /// <summary>
-        /// Closes the connection
-        /// </summary>
-        public virtual void Close()
-        {
-            if (_ExecutableCommand != null)
-            {
-                if (_ExecutableCommand.Connection != null)
-                {
-                    _ExecutableCommand.Connection.Close();
-                }
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// Adds a parameter to the call (for strings only)
-        /// </summary>
-        /// <param name="ID">Name of the parameter</param>
-        /// <param name="Value">Value to add</param>
-        /// <param name="Length">Size of the string(either -1 or 5000 should be used to indicate nvarchar(max))</param>
-        public virtual void AddParameter(string ID, string Value, int Length)
-        {
-            if (Length == 5000)
-            {
-                Length = -1;
-            }
-            if (_ExecutableCommand != null)
-            {
-                if (_ExecutableCommand.Parameters.Contains(ID))
-                {
-                    if (string.IsNullOrEmpty(Value))
-                    {
-                        _ExecutableCommand.Parameters[ID].IsNullable = true;
-                        _ExecutableCommand.Parameters[ID].Value = System.DBNull.Value;
-                    }
-                    else
-                    {
-                        _ExecutableCommand.Parameters[ID].Value = Value;
-                    }
-                }
-                else
-                {
-                    SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, SqlDbType.NVarChar, Length);
-                    if (string.IsNullOrEmpty(Value))
-                    {
-                        Parameter.IsNullable = true;
-                        Parameter.Value = System.DBNull.Value;
-                    }
-                    else
-                    {
-                        Parameter.Value = Value;
-                    }
-                }
-            }
-        }
+        #region Functions
+
+        #region AddOutputParameter
 
         /// <summary>
         /// Adds an output parameter
@@ -162,19 +127,20 @@ namespace Utilities.SQL
         /// <param name="Type">SQL type of the parameter</param>
         public virtual void AddOutputParameter(string ID, SqlDbType Type)
         {
-            if (_ExecutableCommand != null)
+            if (ExecutableCommand != null)
             {
-                if (_ExecutableCommand.Parameters.Contains(ID))
-                {
-                    _ExecutableCommand.Parameters[ID].Value = null;
-                    _ExecutableCommand.Parameters[ID].Direction = ParameterDirection.Output;
-                }
+                DbParameter Parameter = null;
+                if (ExecutableCommand.Parameters.Contains(ID))
+                    Parameter = ExecutableCommand.Parameters[ID];
                 else
                 {
-                    SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, Type);
-                    Parameter.Value = null;
-                    Parameter.Direction = ParameterDirection.Output;
+                    Parameter = ExecutableCommand.CreateParameter();
+                    ExecutableCommand.Parameters.Add(Parameter);
                 }
+                Parameter.ParameterName = ID;
+                Parameter.Value = null;
+                Parameter.DbType = Utilities.DataTypes.DataTypeConversion.SqlDbTypeToDbType(Type);
+                Parameter.Direction = ParameterDirection.Output;
             }
         }
 
@@ -186,22 +152,55 @@ namespace Utilities.SQL
         public virtual void AddOutputParameter(string ID, int Length)
         {
             if (Length == 5000)
-            {
                 Length = -1;
-            }
-            if (_ExecutableCommand != null)
+            if (ExecutableCommand != null)
             {
-                if (_ExecutableCommand.Parameters.Contains(ID))
-                {
-                    _ExecutableCommand.Parameters[ID].Value = null;
-                    _ExecutableCommand.Parameters[ID].Direction = ParameterDirection.Output;
-                }
+                DbParameter Parameter = null;
+                if (ExecutableCommand.Parameters.Contains(ID))
+                    Parameter = ExecutableCommand.Parameters[ID];
                 else
                 {
-                    SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, SqlDbType.NVarChar, Length);
-                    Parameter.Value = null;
-                    Parameter.Direction = ParameterDirection.Output;
+                    Parameter = ExecutableCommand.CreateParameter();
+                    ExecutableCommand.Parameters.Add(Parameter);
                 }
+                Parameter.ParameterName = ID;
+                Parameter.Value = null;
+                Parameter.DbType = Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(typeof(string));
+                Parameter.Direction = ParameterDirection.Output;
+                Parameter.Size = Length;
+            }
+        }
+
+        #endregion
+
+        #region AddParameter
+
+        /// <summary>
+        /// Adds a parameter to the call (for strings only)
+        /// </summary>
+        /// <param name="ID">Name of the parameter</param>
+        /// <param name="Value">Value to add</param>
+        /// <param name="Length">Size of the string(either -1 or 5000 should be used to indicate nvarchar(max))</param>
+        public virtual void AddParameter(string ID, string Value, int Length)
+        {
+            if (Length == 5000)
+                Length = -1;
+            if (ExecutableCommand != null)
+            {
+                DbParameter Parameter = null;
+                if (ExecutableCommand.Parameters.Contains(ID))
+                    Parameter = ExecutableCommand.Parameters[ID];
+                else
+                {
+                    Parameter = ExecutableCommand.CreateParameter();
+                    ExecutableCommand.Parameters.Add(Parameter);
+                }
+                Parameter.ParameterName = ID;
+                Parameter.Value = (string.IsNullOrEmpty(Value)) ? System.DBNull.Value : (object)Value;
+                Parameter.IsNullable = (string.IsNullOrEmpty(Value));
+                Parameter.DbType = Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(typeof(string));
+                Parameter.Direction = ParameterDirection.Input;
+                Parameter.Size = Length;
             }
         }
 
@@ -213,46 +212,100 @@ namespace Utilities.SQL
         /// <param name="Type">SQL type of the parameter</param>
         public virtual void AddParameter(string ID, object Value, SqlDbType Type)
         {
-            if (_ExecutableCommand != null)
+            if (ExecutableCommand != null)
             {
-                if (_ExecutableCommand.Parameters.Contains(ID))
-                {
-                    if (Value == null)
-                    {
-                        _ExecutableCommand.Parameters[ID].IsNullable = true;
-                        _ExecutableCommand.Parameters[ID].Value = System.DBNull.Value;
-                    }
-                    else
-                    {
-                        _ExecutableCommand.Parameters[ID].Value = Value;
-                    }
-                }
+                DbParameter Parameter = null;
+                if (ExecutableCommand.Parameters.Contains(ID))
+                    Parameter = ExecutableCommand.Parameters[ID];
                 else
                 {
-                    SqlParameter Parameter = _ExecutableCommand.Parameters.Add(ID, Type);
-                    if (Value == null)
-                    {
-                        Parameter.IsNullable = true;
-                        Parameter.Value = System.DBNull.Value;
-                    }
-                    else
-                    {
-                        Parameter.Value = Value;
-                    }
+                    Parameter = ExecutableCommand.CreateParameter();
+                    ExecutableCommand.Parameters.Add(Parameter);
                 }
+                Parameter.ParameterName = ID;
+                Parameter.Value = (Value == null) ? System.DBNull.Value : Value;
+                Parameter.IsNullable = (Value == null);
+                Parameter.DbType = Utilities.DataTypes.DataTypeConversion.SqlDbTypeToDbType(Type);
+                Parameter.Direction = ParameterDirection.Input;
             }
         }
 
+        #endregion
+
+        #region BeginTransaction
+
         /// <summary>
-        /// Executes the stored procedure and returns a reader object
+        /// Begins a transaction
         /// </summary>
-        public virtual void ExecuteReader()
+        public virtual void BeginTransaction()
         {
-            if (_ExecutableCommand != null)
-            {
-                _Reader = _ExecutableCommand.ExecuteReader();
-            }
+            Transaction = Connection.BeginTransaction();
+            Command = _Command;
         }
+
+        #endregion
+
+        #region ClearParameters
+
+        /// <summary>
+        /// Clears the parameters
+        /// </summary>
+        public virtual void ClearParameters()
+        {
+            if (ExecutableCommand != null)
+                ExecutableCommand.Parameters.Clear();
+        }
+
+        #endregion
+
+        #region Close
+
+        /// <summary>
+        /// Closes the connection
+        /// </summary>
+        public virtual void Close()
+        {
+            if (ExecutableCommand != null && ExecutableCommand.Connection != null)
+                ExecutableCommand.Connection.Close();
+        }
+
+        #endregion
+
+        #region Commit
+
+        /// <summary>
+        /// Commits a transaction
+        /// </summary>
+        public virtual void Commit()
+        {
+            if (Transaction != null)
+                Transaction.Commit();
+        }
+
+        #endregion
+
+        #region ExecuteDataSet
+
+        /// <summary>
+        /// Executes the query and returns a data set
+        /// </summary>
+        /// <returns>A dataset filled with the results of the query</returns>
+        public virtual DataSet ExecuteDataSet()
+        {
+            if (ExecutableCommand != null)
+            {
+                DbDataAdapter Adapter = Factory.CreateDataAdapter();
+                Adapter.SelectCommand = ExecutableCommand;
+                DataSet ReturnSet = new DataSet();
+                Adapter.Fill(ReturnSet);
+                return ReturnSet;
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region ExecuteNonQuery
 
         /// <summary>
         /// Executes the stored procedure as a non query
@@ -260,12 +313,27 @@ namespace Utilities.SQL
         /// <returns>Number of rows effected</returns>
         public virtual int ExecuteNonQuery()
         {
-            if (_ExecutableCommand != null)
-            {
-                return _ExecutableCommand.ExecuteNonQuery();
-            }
+            if (ExecutableCommand != null)
+                return ExecutableCommand.ExecuteNonQuery();
             return 0;
         }
+
+        #endregion
+
+        #region ExecuteReader
+
+        /// <summary>
+        /// Executes the stored procedure and returns a reader object
+        /// </summary>
+        public virtual void ExecuteReader()
+        {
+            if (ExecutableCommand != null)
+                Reader = ExecutableCommand.ExecuteReader();
+        }
+
+        #endregion
+
+        #region ExecuteScalar
 
         /// <summary>
         /// Executes the stored procedure as a scalar query
@@ -273,43 +341,29 @@ namespace Utilities.SQL
         /// <returns>The object of the first row and first column</returns>
         public virtual object ExecuteScalar()
         {
-            if (_ExecutableCommand != null)
-            {
-                return _ExecutableCommand.ExecuteScalar();
-            }
+            if (ExecutableCommand != null)
+                return ExecutableCommand.ExecuteScalar();
             return null;
         }
 
-        /// <summary>
-        /// Is there more information?
-        /// </summary>
-        /// <returns>True if there is more rows, false otherwise</returns>
-        public virtual bool Read()
-        {
-            if (_Reader != null)
-            {
-                return _Reader.Read();
-            }
-            return false;
-        }
+        #endregion
+
+        #region ExecuteXmlReader
 
         /// <summary>
-        /// Returns an output parameter's value
+        /// Executes the query and returns an XmlReader
         /// </summary>
-        /// <param name="ID">Parameter name</param>
-        /// <param name="Default">Default value for the parameter</param>
-        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public virtual object GetOutputParameter(string ID, object Default)
+        /// <returns>The XmlReader filled with the data from the query</returns>
+        public virtual XmlReader ExecuteXmlReader()
         {
-            if (_ExecutableCommand != null)
-            {
-                if (_ExecutableCommand.Parameters[ID] != null && !string.IsNullOrEmpty(_ExecutableCommand.Parameters[ID].ToString()))
-                {
-                    return _ExecutableCommand.Parameters[ID].Value;
-                }
-            }
-            return Default;
+            if (ExecutableCommand != null && ExecutableCommand is SqlCommand)
+                return ((SqlCommand)ExecutableCommand).ExecuteXmlReader();
+            return null;
         }
+
+        #endregion
+
+        #region GetParameter
 
         /// <summary>
         /// Returns a parameter's value
@@ -319,13 +373,8 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public virtual object GetParameter(string ID, object Default)
         {
-            if (_Reader != null)
-            {
-                if (_Reader[ID] != null && !string.IsNullOrEmpty(_Reader[ID].ToString()))
-                {
-                    return _Reader[ID];
-                }
-            }
+            if (Reader != null && !DBNull.Value.Equals(Reader[ID]))
+                return Reader[ID];
             return Default;
         }
 
@@ -337,104 +386,107 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public virtual object GetParameter(int Position, object Default)
         {
-            if (_Reader != null)
-            {
-                if (_Reader[Position] != null && !string.IsNullOrEmpty(_Reader[Position].ToString()))
-                {
-                    return _Reader[Position];
-                }
-            }
+            if (Reader != null && !DBNull.Value.Equals(Reader[Position]))
+                return Reader[Position];
             return Default;
         }
 
+        #endregion
+
+        #region GetOutputParameter
+
         /// <summary>
-        /// Clears the parameters
+        /// Returns an output parameter's value
         /// </summary>
-        public virtual void ClearParameters()
+        /// <param name="ID">Parameter name</param>
+        /// <param name="Default">Default value for the parameter</param>
+        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
+        public virtual object GetOutputParameter(string ID, object Default)
         {
-            if (_ExecutableCommand != null)
-            {
-                _ExecutableCommand.Parameters.Clear();
-            }
+            if (ExecutableCommand != null && !DBNull.Value.Equals(ExecutableCommand.Parameters[ID]))
+                return ExecutableCommand.Parameters[ID].Value;
+            return Default;
         }
 
         #endregion
 
-        #region Properties
+        #region NextResult
 
         /// <summary>
-        /// Stored procedure's name or SQL Text
+        /// Goes to the next result set (used if multiple queries are sent in)
         /// </summary>
-        public virtual string Command
+        public virtual void NextResult()
         {
-            get { return _Command; }
-            set
-            {
-                _Command = value;
-                if (_Reader != null)
-                {
-                    _Reader.Close();
-                    _Reader.Dispose();
-                    _Reader = null;
-                }
-                if (_ExecutableCommand != null)
-                {
-                    _ExecutableCommand.Dispose();
-                    _ExecutableCommand = null;
-                }
-                if (Transaction != null)
-                {
-                    _ExecutableCommand = new SqlCommand(_Command, Connection, Transaction);
-                }
-                else
-                {
-                    _ExecutableCommand = new SqlCommand(_Command, Connection);
-                }
-                _ExecutableCommand.CommandType = _CommandType;
-            }
-        }
-
-        /// <summary>
-        /// Command Type
-        /// </summary>
-        public virtual CommandType CommandType
-        {
-            get { return _CommandType; }
-            set
-            {
-                _CommandType = value;
-                if (_Reader != null)
-                {
-                    _Reader.Close();
-                    _Reader.Dispose();
-                    _Reader = null;
-                }
-                if (_ExecutableCommand != null)
-                {
-                    _ExecutableCommand.Dispose();
-                    _ExecutableCommand = null;
-                }
-                if (Transaction != null)
-                {
-                    _ExecutableCommand = new SqlCommand(_Command, Connection, Transaction);
-                }
-                else
-                {
-                    _ExecutableCommand = new SqlCommand(_Command, Connection);
-                }
-                _ExecutableCommand.CommandType = _CommandType;
-            }
+            if (Reader != null)
+                Reader.NextResult();
         }
 
         #endregion
 
-        #region Private Variables
-        private SqlConnection Connection = null;
-        private string _Command = null;
-        private SqlCommand _ExecutableCommand = null;
-        private SqlDataReader _Reader = null;
-        private CommandType _CommandType;
-        private SqlTransaction Transaction = null;
+        #region Open
+
+        /// <summary>
+        /// Opens the connection
+        /// </summary>
+        public virtual void Open()
+        {
+            if (ExecutableCommand != null && ExecutableCommand.Connection != null)
+                ExecutableCommand.Connection.Open();
+        }
+
+        #endregion
+
+        #region Read
+
+        /// <summary>
+        /// Is there more information?
+        /// </summary>
+        /// <returns>True if there is more rows, false otherwise</returns>
+        public virtual bool Read()
+        {
+            return (Reader != null) ? Reader.Read() : false;
+        }
+
+        #endregion
+
+        #region RecreateConnection
+
+        private void RecreateConnection()
+        {
+            if (Reader != null)
+            {
+                Reader.Close();
+                Reader.Dispose();
+                Reader = null;
+            }
+            if (ExecutableCommand != null)
+            {
+                ExecutableCommand.Dispose();
+                ExecutableCommand = null;
+            }
+            ExecutableCommand = Factory.CreateCommand();
+            ExecutableCommand.CommandText = _Command;
+            ExecutableCommand.Connection = Connection;
+            ExecutableCommand.CommandType = CommandType;
+            if (Transaction != null)
+                ExecutableCommand.Transaction = Transaction;
+        }
+
+        #endregion
+
+        #region Rollback
+
+        /// <summary>
+        /// Rolls back a transaction
+        /// </summary>
+        public virtual void Rollback()
+        {
+            if (Transaction != null)
+                Transaction.Rollback();
+        }
+
+        #endregion
+
         #endregion
 
         #region IDisposable Members
@@ -451,15 +503,15 @@ namespace Utilities.SQL
                 Transaction.Dispose();
                 Transaction = null;
             }
-            if (_ExecutableCommand != null)
+            if (ExecutableCommand != null)
             {
-                _ExecutableCommand.Dispose();
-                _ExecutableCommand = null;
+                ExecutableCommand.Dispose();
+                ExecutableCommand = null;
             }
-            if (_Reader != null)
+            if (Reader != null)
             {
-                _Reader.Dispose();
-                _Reader = null;
+                Reader.Dispose();
+                Reader = null;
             }
         }
 
