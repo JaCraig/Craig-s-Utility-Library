@@ -210,6 +210,180 @@ namespace Utilities.Reflection
 
         #endregion
 
+        #region GetPropertyGetter
+
+        /// <summary>
+        /// Gets a lambda expression that calls a specific property's getter function
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <typeparam name="DataType">Data type expecting</typeparam>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>A lambda expression that calls a specific property's getter function</returns>
+        public static Expression<Func<ClassType,DataType>> GetPropertyGetter<ClassType,DataType>(string PropertyName)
+        {
+            if (string.IsNullOrEmpty(PropertyName))
+                throw new ArgumentNullException("PropertyName");
+            string[] SplitName = PropertyName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            PropertyInfo Property = Utilities.Reflection.Reflection.GetProperty<ClassType>(SplitName[0]);
+            ParameterExpression ObjectInstance = Expression.Parameter(Property.DeclaringType, "x");
+            MemberExpression PropertyGet = Expression.Property(ObjectInstance, Property);
+            for (int x = 1; x < SplitName.Length; ++x)
+            {
+                Property = Utilities.Reflection.Reflection.GetProperty(Property.PropertyType, SplitName[x]);
+                PropertyGet = Expression.Property(PropertyGet, Property);
+            }
+            if (Property.PropertyType != typeof(DataType))
+            {
+                UnaryExpression Convert = Expression.Convert(PropertyGet, typeof(DataType));
+                return Expression.Lambda<Func<ClassType, DataType>>(Convert, ObjectInstance);
+            }
+            return Expression.Lambda<Func<ClassType, DataType>>(PropertyGet, ObjectInstance);
+        }
+
+        /// <summary>
+        /// Gets a lambda expression that calls a specific property's getter function
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <typeparam name="DataType">Data type expecting</typeparam>
+        /// <param name="Property">Property</param>
+        /// <returns>A lambda expression that calls a specific property's getter function</returns>
+        public static Expression<Func<ClassType, DataType>> GetPropertyGetter<ClassType, DataType>(PropertyInfo Property)
+        {
+            if (!IsOfType(Property.PropertyType, typeof(DataType)))
+                throw new ArgumentException("Property is not of the type specified");
+            if (!IsOfType(Property.DeclaringType, typeof(ClassType)))
+                throw new ArgumentException("Property is not from the declaring class type specified");
+            ParameterExpression ObjectInstance = Expression.Parameter(Property.DeclaringType, "x");
+            MemberExpression PropertyGet = Expression.Property(ObjectInstance, Property);
+            if(Property.PropertyType!=typeof(DataType))
+            {
+                UnaryExpression Convert=Expression.Convert(PropertyGet,typeof(DataType));
+                return Expression.Lambda<Func<ClassType, DataType>>(Convert, ObjectInstance);
+            }
+            return Expression.Lambda<Func<ClassType, DataType>>(PropertyGet, ObjectInstance);
+        }
+
+        /// <summary>
+        /// Gets a lambda expression that calls a specific property's getter function
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>A lambda expression that calls a specific property's getter function</returns>
+        public static Expression<Func<ClassType, object>> GetPropertyGetter<ClassType>(string PropertyName)
+        {
+            return GetPropertyGetter<ClassType, object>(PropertyName);
+        }
+
+        /// <summary>
+        /// Gets a lambda expression that calls a specific property's getter function
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <param name="Property">Property</param>
+        /// <returns>A lambda expression that calls a specific property's getter function</returns>
+        public static Expression<Func<ClassType, object>> GetPropertyGetter<ClassType>(PropertyInfo Property)
+        {
+            return GetPropertyGetter<ClassType, object>(Property);
+        }
+
+        #endregion
+
+        #region GetPropertySetter
+
+        /// <summary>
+        /// Gets a lambda expression that calls a specific property's setter function
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <typeparam name="DataType">Data type expecting</typeparam>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>A lambda expression that calls a specific property's setter function</returns>
+        public static Expression<Action<ClassType, DataType>> GetPropertySetter<ClassType,DataType>(string PropertyName)
+        {
+            if (string.IsNullOrEmpty(PropertyName))
+                throw new ArgumentNullException("PropertyName");
+            string[] SplitName = PropertyName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            PropertyInfo Property = Utilities.Reflection.Reflection.GetProperty<ClassType>(SplitName[0]);
+            ParameterExpression ObjectInstance = Expression.Parameter(Property.DeclaringType, "x");
+            ParameterExpression PropertySet = Expression.Parameter(typeof(DataType), "y");
+            MethodCallExpression SetterCall = null;
+            MemberExpression PropertyGet = null;
+            if (SplitName.Length > 1)
+            {
+                PropertyGet = Expression.Property(ObjectInstance, Property);
+                for (int x = 1; x < SplitName.Length - 1; ++x)
+                {
+                    Property = Utilities.Reflection.Reflection.GetProperty(Property.PropertyType, SplitName[x]);
+                    PropertyGet = Expression.Property(PropertyGet, Property);
+                }
+                Property = Utilities.Reflection.Reflection.GetProperty(Property.PropertyType, SplitName[SplitName.Length - 1]);
+            }
+            if (Property.PropertyType != typeof(DataType))
+            {
+                UnaryExpression Convert = Expression.Convert(PropertySet, Property.PropertyType);
+                if (PropertyGet == null)
+                    SetterCall = Expression.Call(ObjectInstance, Property.GetSetMethod(), Convert);
+                else
+                    SetterCall = Expression.Call(PropertyGet, Property.GetSetMethod(), Convert);
+                return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
+            }
+            if (PropertyGet == null)
+                SetterCall = Expression.Call(ObjectInstance, Property.GetSetMethod(), PropertySet);
+            else
+                SetterCall = Expression.Call(PropertyGet, Property.GetSetMethod(), PropertySet);
+            return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
+        }
+
+        /// <summary>
+        /// Gets a lambda expression that calls a specific property's setter function
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <typeparam name="DataType">Data type expecting</typeparam>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>A lambda expression that calls a specific property's setter function</returns>
+        public static Expression<Action<ClassType, DataType>> GetPropertySetter<ClassType, DataType>(PropertyInfo Property)
+        {
+            if (!IsOfType(Property.PropertyType, typeof(DataType)))
+                throw new ArgumentException("Property is not of the type specified");
+            if (!IsOfType(Property.DeclaringType, typeof(ClassType)))
+                throw new ArgumentException("Property is not from the declaring class type specified");
+
+            ParameterExpression ObjectInstance = Expression.Parameter(Property.DeclaringType, "x");
+            ParameterExpression PropertySet = Expression.Parameter(typeof(DataType), "y");
+            MethodCallExpression SetterCall = null;
+            if(Property.PropertyType!=typeof(DataType))
+            {
+                
+                UnaryExpression Convert=Expression.Convert(PropertySet,Property.PropertyType);
+                SetterCall = Expression.Call(ObjectInstance, Property.GetSetMethod(), Convert);
+                return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
+            }
+            SetterCall = Expression.Call(ObjectInstance, Property.GetSetMethod(), PropertySet);
+            return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
+        }
+
+        /// <summary>
+        /// Gets a lambda expression that calls a specific property's setter function
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>A lambda expression that calls a specific property's setter function</returns>
+        public static Expression<Action<ClassType,object>> GetPropertySetter<ClassType>(string PropertyName)
+        {
+            return GetPropertySetter<ClassType, object>(PropertyName);
+        }
+
+        /// <summary>
+        /// Gets a lambda expression that calls a specific property's setter function
+        /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>A lambda expression that calls a specific property's setter function</returns>
+        public static Expression<Action<ClassType, object>> GetPropertySetter<ClassType>(PropertyInfo Property)
+        {
+            return GetPropertySetter<ClassType, object>(Property);
+        }
+
+        #endregion
+
         #region GetProperty
 
         /// <summary>
@@ -220,11 +394,22 @@ namespace Utilities.Reflection
         /// <returns>The property info</returns>
         public static PropertyInfo GetProperty<Source>(string PropertyPath)
         {
+            return GetProperty(typeof(Source), PropertyPath);
+        }
+
+        /// <summary>
+        /// Gets a property based on a path
+        /// </summary>
+        /// <param name="Source">Source type</param>
+        /// <param name="PropertyPath">Path to the property</param>
+        /// <returns>The property info</returns>
+        public static PropertyInfo GetProperty(Type SourceType, string PropertyPath)
+        {
             if (string.IsNullOrEmpty(PropertyPath))
                 return null;
             string[] Splitter = { "." };
             string[] SourceProperties = PropertyPath.Split(Splitter, StringSplitOptions.None);
-            Type PropertyType = typeof(Source);
+            Type PropertyType = SourceType;
             PropertyInfo PropertyInfo = PropertyType.GetProperty(SourceProperties[0]);
             PropertyType = PropertyInfo.PropertyType;
             for (int x = 1; x < SourceProperties.Length; ++x)
@@ -274,7 +459,14 @@ namespace Utilities.Reflection
         {
             if (!(Expression.Body is MemberExpression))
                 throw new ArgumentException("Expression.Body is not a MemberExpression");
-            return ((MemberExpression)Expression.Body).Member.Name;
+            return GetPropertyName(((MemberExpression)Expression.Body).Expression) + ((MemberExpression)Expression.Body).Member.Name;
+        }
+
+        private static string GetPropertyName(Expression expression)
+        {
+            if (!(expression is MemberExpression))
+                return "";
+            return GetPropertyName(((MemberExpression)expression).Expression) + ((MemberExpression)expression).Member.Name + ".";
         }
 
         #endregion

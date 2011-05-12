@@ -131,6 +131,8 @@
     <Compile Include="CodeGen\Templates\Parameter.cs" />
     <Compile Include="CodeGen\Templates\Property.cs" />
     <Compile Include="CodeGen\Templates\Using.cs" />
+    <Compile Include="DataMapper\Mapping.cs" />
+    <Compile Include="DataMapper\TypeMapping.cs" />
     <Compile Include="DataTypes\Patterns\IFluentInterface.cs" />
     <Compile Include="FileFormats\Zip\ZipFile.cs" />
     <Compile Include="DataTypes\Bag.cs" />
@@ -261,6 +263,9 @@
     <Compile Include="SQL\DataClasses\Table.cs" />
     <Compile Include="SQL\DataClasses\Trigger.cs" />
     <Compile Include="SQL\DataClasses\View.cs" />
+    <Compile Include="SQL\MicroORM\Interfaces\IParameter.cs" />
+    <Compile Include="SQL\MicroORM\MicroORM.cs" />
+    <Compile Include="SQL\MicroORM\Parameter.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
     <Compile Include="Web\Akismet\Akismet.cs" />
@@ -401,9 +406,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SQL\MicroORM\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)Utilities\UtilitiesSplitter\bin\Release\UtilitiesSplitter.exe</PostBuildEvent>

@@ -127,6 +127,16 @@ namespace Utilities.SQL
         /// <param name="Type">SQL type of the parameter</param>
         public virtual void AddOutputParameter(string ID, SqlDbType Type)
         {
+            AddOutputParameter(ID, Utilities.DataTypes.DataTypeConversion.SqlDbTypeToDbType(Type));
+        }
+
+        /// <summary>
+        /// Adds an output parameter
+        /// </summary>
+        /// <param name="ID">Name of the parameter</param>
+        /// <param name="Type">SQL type of the parameter</param>
+        public virtual void AddOutputParameter(string ID, DbType Type)
+        {
             if (ExecutableCommand != null)
             {
                 DbParameter Parameter = null;
@@ -139,9 +149,19 @@ namespace Utilities.SQL
                 }
                 Parameter.ParameterName = ID;
                 Parameter.Value = null;
-                Parameter.DbType = Utilities.DataTypes.DataTypeConversion.SqlDbTypeToDbType(Type);
+                Parameter.DbType = Type;
                 Parameter.Direction = ParameterDirection.Output;
             }
+        }
+
+        /// <summary>
+        /// Adds an output parameter
+        /// </summary>
+        /// <typeparam name="DataType">Data type of the parameter</typeparam>
+        /// <param name="ID">ID associated with the output parameter</param>
+        public virtual void AddOutputParameter<DataType>(string ID)
+        {
+            AddOutputParameter(ID, Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(typeof(DataType)));
         }
 
         /// <summary>
@@ -212,6 +232,28 @@ namespace Utilities.SQL
         /// <param name="Type">SQL type of the parameter</param>
         public virtual void AddParameter(string ID, object Value, SqlDbType Type)
         {
+            AddParameter(ID, Value, Utilities.DataTypes.DataTypeConversion.SqlDbTypeToDbType(Type));
+        }
+
+        /// <summary>
+        /// Adds a parameter to the call (for all types other than strings)
+        /// </summary>
+        /// <typeparam name="DataType">Data type of the parameter</typeparam>
+        /// <param name="ID">Name of the parameter</param>
+        /// <param name="Value">Value to add</param>
+        public virtual void AddParameter<DataType>(string ID, DataType Value)
+        {
+            AddParameter(ID, Value, Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(typeof(DataType)));
+        }
+
+        /// <summary>
+        /// Adds a parameter to the call (for all types other than strings)
+        /// </summary>
+        /// <param name="ID">Name of the parameter</param>
+        /// <param name="Value">Value to add</param>
+        /// <param name="Type">SQL type of the parameter</param>
+        public virtual void AddParameter(string ID, object Value, DbType Type)
+        {
             if (ExecutableCommand != null)
             {
                 DbParameter Parameter = null;
@@ -225,7 +267,7 @@ namespace Utilities.SQL
                 Parameter.ParameterName = ID;
                 Parameter.Value = (Value == null) ? System.DBNull.Value : Value;
                 Parameter.IsNullable = (Value == null);
-                Parameter.DbType = Utilities.DataTypes.DataTypeConversion.SqlDbTypeToDbType(Type);
+                Parameter.DbType = Type;
                 Parameter.Direction = ParameterDirection.Input;
             }
         }
@@ -373,8 +415,22 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public virtual object GetParameter(string ID, object Default)
         {
-            if (Reader != null && !DBNull.Value.Equals(Reader[ID]))
+            if (Reader != null && !Convert.IsDBNull(Reader[ID]))
                 return Reader[ID];
+            return Default;
+        }
+
+        /// <summary>
+        /// Returns a parameter's value
+        /// </summary>
+        /// <typeparam name="DataType">Data type of the object</typeparam>
+        /// <param name="ID">Parameter name</param>
+        /// <param name="Default">Default value for the parameter</param>
+        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
+        public virtual DataType GetParameter<DataType>(string ID, DataType Default)
+        {
+            if (Reader != null && !Convert.IsDBNull(Reader[ID]))
+                return (DataType)Convert.ChangeType(Reader[ID], typeof(DataType));
             return Default;
         }
 
@@ -386,8 +442,22 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public virtual object GetParameter(int Position, object Default)
         {
-            if (Reader != null && !DBNull.Value.Equals(Reader[Position]))
+            if (Reader != null && !Convert.IsDBNull(Reader[Position]))
                 return Reader[Position];
+            return Default;
+        }
+
+        /// <summary>
+        /// Returns a parameter's value
+        /// </summary>
+        /// <typeparam name="DataType">Data type of the object</typeparam>
+        /// <param name="Position">Position in the row</param>
+        /// <param name="Default">Default value for the parameter</param>
+        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
+        public virtual DataType GetParameter<DataType>(int Position, DataType Default)
+        {
+            if (Reader != null && !Convert.IsDBNull(Reader[Position]))
+                return (DataType)Convert.ChangeType(Reader[Position], typeof(DataType));
             return Default;
         }
 
@@ -403,8 +473,22 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public virtual object GetOutputParameter(string ID, object Default)
         {
-            if (ExecutableCommand != null && !DBNull.Value.Equals(ExecutableCommand.Parameters[ID]))
+            if (ExecutableCommand != null && !Convert.IsDBNull(ExecutableCommand.Parameters[ID]))
                 return ExecutableCommand.Parameters[ID].Value;
+            return Default;
+        }
+
+        /// <summary>
+        /// Returns an output parameter's value
+        /// </summary>
+        /// <typeparam name="DataType">Data type of the object</typeparam>
+        /// <param name="ID">Parameter name</param>
+        /// <param name="Default">Default value for the parameter</param>
+        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
+        public virtual DataType GetOutputParameter<DataType>(string ID, DataType Default)
+        {
+            if (ExecutableCommand != null && !Convert.IsDBNull(ExecutableCommand.Parameters[ID]))
+                return (DataType)Convert.ChangeType(ExecutableCommand.Parameters[ID].Value, typeof(DataType));
             return Default;
         }
 
