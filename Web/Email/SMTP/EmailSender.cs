@@ -76,7 +76,7 @@ namespace Utilities.Web.Email.SMTP
         {
             using (System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage())
             {
-                char[] Splitter = { ',' };
+                char[] Splitter = { ',', ';' };
                 string[] AddressCollection = To.Split(Splitter);
                 for (int x = 0; x < AddressCollection.Length; ++x)
                 {
