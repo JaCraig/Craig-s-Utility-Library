@@ -243,7 +243,7 @@ namespace Utilities.SQL
         /// <param name="Value">Value to add</param>
         public virtual void AddParameter<DataType>(string ID, DataType Value)
         {
-            AddParameter(ID, Value, Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(typeof(DataType)));
+            AddParameter(ID, Value, Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(Value.GetType()));
         }
 
         /// <summary>
