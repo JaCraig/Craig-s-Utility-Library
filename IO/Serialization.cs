@@ -26,6 +26,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
 using System.Text;
 using System.Xml.Serialization;
+using System.Runtime.Serialization.Json;
 #endregion
 
 namespace Utilities.IO
@@ -61,6 +62,27 @@ namespace Utilities.IO
 
         #endregion
 
+        #region JSONToObject
+
+        /// <summary>
+        /// Converts JSON data to an object
+        /// </summary>
+        /// <typeparam name="T">Type of the object to return</typeparam>
+        /// <param name="Data">JSON data to objects</param>
+        /// <returns>The object represented by the data</returns>
+        public static T JSONToObject<T>(string Data)
+        {
+            if (string.IsNullOrEmpty(Data))
+                throw new ArgumentNullException("Data can not be empty");
+            using (MemoryStream Stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(Data)))
+            {
+                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(typeof(T));
+                return (T)Serializer.ReadObject(Stream);
+            }
+        }
+
+        #endregion
+
         #region ObjectToBinary
 
         /// <summary>
@@ -80,6 +102,28 @@ namespace Utilities.IO
                 BinaryFormatter Formatter = new BinaryFormatter();
                 Formatter.Serialize(Stream, Object);
                 Output = Stream.ToArray();
+            }
+        }
+
+        #endregion
+
+        #region ObjectToJSON
+
+        /// <summary>
+        /// Converts an object to JSON
+        /// </summary>
+        /// <param name="Object">Object to convert</param>
+        /// <returns>string representation of the object in JSON format</returns>
+        public static string ObjectToJSON(object Object)
+        {
+            if (Object == null)
+                throw new ArgumentException("Object can not be null");
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(Object.GetType());
+                Serializer.WriteObject(Stream, Object);
+                Stream.Flush();
+                return UTF8Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
             }
         }
 

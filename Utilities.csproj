@@ -77,7 +77,9 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Speech">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
