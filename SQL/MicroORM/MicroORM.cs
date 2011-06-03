@@ -35,16 +35,16 @@ namespace Utilities.SQL.MicroORM
     /// <summary>
     /// Manager class that can be used to manage
     /// </summary>
-    public class MicroORM : IDisposable
+    public class MicroORM : SQLHelper
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public MicroORM()
+        public MicroORM(string Connection)
+            : base("", Connection, CommandType.Text)
         {
-            Mappings = new Dictionary<Type, IMapping>();
         }
 
         #endregion
@@ -54,7 +54,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Mappings
         /// </summary>
-        protected static Dictionary<Type, IMapping> Mappings { get; set; }
+        protected static Dictionary<Type, IMapping> Mappings = new Dictionary<Type, IMapping>();
 
         #endregion
 
@@ -79,39 +79,26 @@ namespace Utilities.SQL.MicroORM
         }
 
         /// <summary>
-        /// Creates a mapping
-        /// </summary>
-        /// <typeparam name="ClassType">Class type to map</typeparam>
-        /// <param name="Connection">Connection string to use</param>
-        /// <param name="TableName">Table name</param>
-        /// <param name="PrimaryKey">Primary key</param>
-        /// <param name="AutoIncrement">Auto incrementing primar key</param>
-        /// <param name="ParameterStarter">Parameter starter</param>
-        /// <param name="DbType">Db type</param>
-        /// <returns>The created mapping (or an already created one if it exists</returns>
-        public static Mapping<ClassType> Map<ClassType>(string Connection, string TableName, string PrimaryKey, bool AutoIncrement = true, string ParameterStarter = "@", string DbType = "System.Data.SqlClient") where ClassType : class,new()
-        {
-            if (Mappings.ContainsKey(typeof(ClassType)))
-                return (Mapping<ClassType>)Mappings[typeof(ClassType)];
-            Mapping<ClassType> Mapping = new Mapping<ClassType>(Connection, TableName, PrimaryKey, AutoIncrement, ParameterStarter, DbType);
-            Mappings.Add(typeof(ClassType), Mapping);
-            return Mapping;
-        }
-
-        /// <summary>
         /// Returns a specific mapping
         /// </summary>
         /// <typeparam name="ClassType">Class type to get</typeparam>
         /// <returns>The mapping specified</returns>
-        public static Mapping<ClassType> Map<ClassType>() where ClassType : class,new()
+        public Mapping<ClassType> Map<ClassType>() where ClassType : class,new()
         {
             if (!Mappings.ContainsKey(typeof(ClassType)))
                 throw new ArgumentOutOfRangeException(typeof(ClassType).Name + " not found");
-            return (Mapping<ClassType>)Mappings[typeof(ClassType)];
+            Mapping<ClassType> ReturnValue = (Mapping<ClassType>)Mappings[typeof(ClassType)];
+            ReturnValue.Helper = this;
+            return ReturnValue;
         }
 
-        public void Dispose()
+        #endregion
+
+        #region IDisposable Members
+
+        public override void Dispose()
         {
+            base.Dispose();
             foreach (Type Key in Mappings.Keys)
             {
                 Mappings[Key].Dispose();

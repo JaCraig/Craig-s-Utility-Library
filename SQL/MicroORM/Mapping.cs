@@ -627,7 +627,6 @@ namespace Utilities.SQL.MicroORM
         {
             if (Helper != null)
             {
-                Helper.Dispose();
                 Helper = null;
             }
         }

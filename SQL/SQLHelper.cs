@@ -281,6 +281,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void BeginTransaction()
         {
+            Open();
             Transaction = Connection.BeginTransaction();
             Command = _Command;
         }
@@ -307,7 +308,9 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void Close()
         {
-            if (ExecutableCommand != null && ExecutableCommand.Connection != null)
+            if (ExecutableCommand != null
+                && ExecutableCommand.Connection != null
+                && ExecutableCommand.Connection.State != ConnectionState.Closed)
                 ExecutableCommand.Connection.Close();
         }
 
@@ -334,6 +337,7 @@ namespace Utilities.SQL
         /// <returns>A dataset filled with the results of the query</returns>
         public virtual DataSet ExecuteDataSet()
         {
+            Open();
             if (ExecutableCommand != null)
             {
                 DbDataAdapter Adapter = Factory.CreateDataAdapter();
@@ -355,6 +359,7 @@ namespace Utilities.SQL
         /// <returns>Number of rows effected</returns>
         public virtual int ExecuteNonQuery()
         {
+            Open();
             if (ExecutableCommand != null)
                 return ExecutableCommand.ExecuteNonQuery();
             return 0;
@@ -369,6 +374,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void ExecuteReader()
         {
+            Open();
             if (ExecutableCommand != null)
                 Reader = ExecutableCommand.ExecuteReader();
         }
@@ -383,6 +389,7 @@ namespace Utilities.SQL
         /// <returns>The object of the first row and first column</returns>
         public virtual object ExecuteScalar()
         {
+            Open();
             if (ExecutableCommand != null)
                 return ExecutableCommand.ExecuteScalar();
             return null;
@@ -398,6 +405,7 @@ namespace Utilities.SQL
         /// <returns>The XmlReader filled with the data from the query</returns>
         public virtual XmlReader ExecuteXmlReader()
         {
+            Open();
             if (ExecutableCommand != null && ExecutableCommand is SqlCommand)
                 return ((SqlCommand)ExecutableCommand).ExecuteXmlReader();
             return null;
@@ -514,7 +522,9 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void Open()
         {
-            if (ExecutableCommand != null && ExecutableCommand.Connection != null)
+            if (ExecutableCommand != null 
+                && ExecutableCommand.Connection != null 
+                && ExecutableCommand.Connection.State != ConnectionState.Open)
                 ExecutableCommand.Connection.Open();
         }
 
@@ -575,8 +585,9 @@ namespace Utilities.SQL
 
         #region IDisposable Members
 
-        public void Dispose()
+        public virtual void Dispose()
         {
+            Close();
             if (Connection != null)
             {
                 Connection.Dispose();
