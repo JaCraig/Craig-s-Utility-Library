@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
+using Utilities.DataMapper.Interfaces;
+using System.Reflection;
 #endregion
 
 namespace Utilities.DataMapper
@@ -34,7 +36,7 @@ namespace Utilities.DataMapper
     /// </summary>
     /// <typeparam name="Left">Left type</typeparam>
     /// <typeparam name="Right">Right type</typeparam>
-    public class TypeMapping<Left, Right>
+    public class TypeMapping<Left, Right>:ITypeMapping
     {
         #region Constructor
 
@@ -55,6 +57,27 @@ namespace Utilities.DataMapper
         #endregion
 
         #region Functions
+
+        /// <summary>
+        /// Automatically maps properties that are named the same thing
+        /// </summary>
+        public virtual void AutoMap()
+        {
+            PropertyInfo[] Properties = typeof(Left).GetProperties();
+            Type DestinationType = typeof(Right);
+            for (int x = 0; x < Properties.Length; ++x)
+            {
+                PropertyInfo DestinationProperty=DestinationType.GetProperty(Properties[x].Name);
+                if (DestinationProperty != null)
+                {
+                    Expression<Func<Left,object>>LeftGet= Utilities.Reflection.Reflection.GetPropertyGetter<Left>(DestinationProperty);
+                    Expression<Action<Left,object>> LeftSet= Utilities.Reflection.Reflection.GetPropertySetter<Left>(DestinationProperty);
+                    Expression<Func<Right,object>>RightGet= Utilities.Reflection.Reflection.GetPropertyGetter<Right>(DestinationProperty);
+                    Expression<Action<Right,object>> RightSet= Utilities.Reflection.Reflection.GetPropertySetter<Right>(DestinationProperty);
+                    this.AddMapping(LeftGet.Compile(), LeftSet.Compile(), RightGet.Compile(), RightSet.Compile());
+                }
+            }
+        }
 
         /// <summary>
         /// Adds a mapping
@@ -138,6 +161,21 @@ namespace Utilities.DataMapper
             foreach (Mapping<Left, Right> Mapping in Mappings)
             {
                 Mapping.CopyLeftToRight(Source, Destination);
+            }
+        }
+
+        /// <summary>
+        /// Copies from the source to the destination (used in 
+        /// instances when both Left and Right are the same type
+        /// and thus Copy is ambiguous)
+        /// </summary>
+        /// <param name="Source">Source</param>
+        /// <param name="Destination">Destination</param>
+        public void CopyRightToLeft(Right Source, Left Destination)
+        {
+            foreach (Mapping<Left, Right> Mapping in Mappings)
+            {
+                Mapping.CopyRightToLeft(Source, Destination);
             }
         }
 

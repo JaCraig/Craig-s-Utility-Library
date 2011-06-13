@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
+using Utilities.DataMapper.Interfaces;
 #endregion
 
 namespace Utilities.DataMapper
@@ -156,6 +157,18 @@ namespace Utilities.DataMapper
         public virtual void CopyLeftToRight(Left Source, Right Destination)
         {
             RightSet(Destination, LeftGet(Source));
+        }
+
+        /// <summary>
+        /// Copies from the source to the destination (used in 
+        /// instances when both Left and Right are the same type
+        /// and thus Copy is ambiguous)
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        public virtual void CopyRightToLeft(Right Source, Left Destination)
+        {
+            LeftSet(Destination, RightGet(Source));
         }
 
         #endregion

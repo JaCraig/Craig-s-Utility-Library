@@ -103,7 +103,6 @@ namespace Utilities.SQL.MicroORM
             {
                 Mappings[Key].Dispose();
             }
-            Mappings.Clear();
         }
 
         #endregion
