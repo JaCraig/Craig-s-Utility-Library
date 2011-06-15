@@ -457,6 +457,11 @@ namespace Utilities.Reflection
         /// <returns>The name of the property</returns>
         public static string GetPropertyName<ClassType, DataType>(Expression<Func<ClassType, DataType>> Expression)
         {
+            if (Expression.Body is UnaryExpression && Expression.Body.NodeType == ExpressionType.Convert)
+            {
+                MemberExpression Temp = (MemberExpression)((UnaryExpression)Expression.Body).Operand;
+                return GetPropertyName(Temp.Expression) + Temp.Member.Name;
+            }
             if (!(Expression.Body is MemberExpression))
                 throw new ArgumentException("Expression.Body is not a MemberExpression");
             return GetPropertyName(((MemberExpression)Expression.Body).Expression) + ((MemberExpression)Expression.Body).Member.Name;

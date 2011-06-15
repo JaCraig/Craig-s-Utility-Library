@@ -274,10 +274,13 @@
     <Compile Include="SQL\MicroORM\Parameter.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
+    <Compile Include="Validation\BaseClasses\BaseAttribute.cs" />
     <Compile Include="Validation\BaseClasses\Rule.cs" />
     <Compile Include="Validation\Exceptions\NotValid.cs" />
     <Compile Include="Validation\Interfaces\IRule.cs" />
+    <Compile Include="Validation\Interfaces\IValidator.cs" />
     <Compile Include="Validation\Rules\Between.cs" />
+    <Compile Include="Validation\Rules\Cascade.cs" />
     <Compile Include="Validation\Rules\Custom.cs" />
     <Compile Include="Validation\Rules\Equal.cs" />
     <Compile Include="Validation\Rules\GreaterThan.cs" />
@@ -288,6 +291,7 @@
     <Compile Include="Validation\Rules\Regex.cs" />
     <Compile Include="Validation\Rules\Required.cs" />
     <Compile Include="Validation\Rules\RequiredString.cs" />
+    <Compile Include="Validation\ValidationManager.cs" />
     <Compile Include="Validation\Validator.cs" />
     <Compile Include="Web\Akismet\Akismet.cs" />
     <Compile Include="Web\Akismet\Comment.cs" />

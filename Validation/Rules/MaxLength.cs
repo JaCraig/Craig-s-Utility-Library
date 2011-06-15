@@ -66,9 +66,41 @@ namespace Utilities.Validation.Rules
 
         public override void Validate(ObjectType Object)
         {
+            if (string.IsNullOrEmpty(ItemToValidate(Object)))
+                return;
             if (ItemToValidate(Object).Length > MaxLengthAllowed)
                 throw new NotValid(ErrorMessage);
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Max length attribute
+    /// </summary>
+    public class MaxLength : BaseAttribute
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ErrorMessage">Error message</param>
+        /// <param name="MaxLength">Max length</param>
+        public MaxLength(int MaxLength, string ErrorMessage = "")
+            : base(ErrorMessage)
+        {
+            this.MaxLengthAllowed = MaxLength;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Max length value
+        /// </summary>
+        public int MaxLengthAllowed { get; set; }
 
         #endregion
     }

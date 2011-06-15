@@ -47,14 +47,14 @@ namespace Utilities.Validation.Rules
         public Regex(Func<ObjectType, string> ItemToValidate,string RegexString, string ErrorMessage)
             : base(ItemToValidate, ErrorMessage)
         {
-            ValidationRegex = new Regex(RegexString);
+            ValidationRegex = new System.Text.RegularExpressions.Regex(RegexString);
         }
 
         #endregion
 
         #region Properties
 
-        protected virtual Regex ValidationRegex { get; set; }
+        protected virtual System.Text.RegularExpressions.Regex ValidationRegex { get; set; }
 
         #endregion
 
@@ -62,9 +62,41 @@ namespace Utilities.Validation.Rules
 
         public override void Validate(ObjectType Object)
         {
+            if(string.IsNullOrEmpty(ItemToValidate(Object)))
+                throw new NotValid(ErrorMessage);
             if(!ValidationRegex.IsMatch(ItemToValidate(Object)))
                 throw new NotValid(ErrorMessage);
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Regex attribute
+    /// </summary>
+    public class Regex : BaseAttribute
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ErrorMessage">Error message</param>
+        /// <param name="RegexString">Regex string value</param>
+        public Regex(string RegexString, string ErrorMessage = "")
+            : base(ErrorMessage)
+        {
+            this.RegexString = RegexString;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Regex string value
+        /// </summary>
+        public string RegexString { get; set; }
 
         #endregion
     }

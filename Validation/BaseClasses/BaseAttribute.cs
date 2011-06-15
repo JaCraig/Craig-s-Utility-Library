@@ -21,54 +21,36 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Validation.Interfaces;
+using System.Reflection;
 #endregion
 
 namespace Utilities.Validation.BaseClasses
 {
     /// <summary>
-    /// Rule base class
+    /// Base class for the attributes
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public abstract class Rule<ObjectType, DataType> : IRule<ObjectType>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    public class BaseAttribute : Attribute 
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ErrorMessage">Error message</param>
-        public Rule(Func<ObjectType, DataType> ItemToValidate, string ErrorMessage)
-            : base()
+        public BaseAttribute(string ErrorMessage)
         {
             this.ErrorMessage = ErrorMessage;
-            this.ItemToValidate = ItemToValidate;
         }
 
         #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Error message thrown if Validate is not valid
-        /// </summary>
-        public virtual string ErrorMessage { get; set; }
+        
+        #region Public Properties
 
         /// <summary>
-        /// Item to validate
+        /// Error message thrown if it is not valid
         /// </summary>
-        public virtual Func<ObjectType, DataType> ItemToValidate { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        public abstract void Validate(ObjectType Object);
+        public string ErrorMessage { get; set; }
 
         #endregion
     }

@@ -74,4 +74,34 @@ namespace Utilities.Validation.Rules
 
         #endregion
     }
+
+    /// <summary>
+    /// Equal attribute
+    /// </summary>
+    public class Equal : BaseAttribute
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ErrorMessage">Error message</param>
+        /// <param name="Value">Value to compare to</param>
+        public Equal(object Value, string ErrorMessage = "")
+            : base(ErrorMessage)
+        {
+            this.Value = (IComparable)Value;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// value to compare to
+        /// </summary>
+        public IComparable Value { get; set; }
+
+        #endregion
+    }
 }

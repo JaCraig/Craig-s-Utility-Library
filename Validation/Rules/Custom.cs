@@ -45,9 +45,8 @@ namespace Utilities.Validation.Rules
         /// </summary>
         /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ActionToCall">Validation action to call</param>
-        /// <param name="ErrorMessage">Error message</param>
-        public Custom(Func<ObjectType, DataType> ItemToValidate, Action<DataType> ActionToCall, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
+        public Custom(Func<ObjectType, DataType> ItemToValidate, Action<DataType> ActionToCall)
+            : base(ItemToValidate, "")
         {
             this.ActionToCall = ActionToCall;
         }

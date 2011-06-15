@@ -74,4 +74,34 @@ namespace Utilities.Validation.Rules
 
         #endregion
     }
+
+    /// <summary>
+    /// GreaterThanOrEqual attribute
+    /// </summary>
+    public class GreaterThanOrEqual : BaseAttribute
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ErrorMessage">Error message</param>
+        /// <param name="Value">Value to compare to</param>
+        public GreaterThanOrEqual(object Value, string ErrorMessage = "")
+            : base(ErrorMessage)
+        {
+            this.Value = (IComparable)Value;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// value to compare to
+        /// </summary>
+        public IComparable Value { get; set; }
+
+        #endregion
+    }
 }

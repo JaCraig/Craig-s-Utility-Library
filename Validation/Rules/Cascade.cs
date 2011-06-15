@@ -27,16 +27,17 @@ using System.Text;
 using Utilities.Validation.BaseClasses;
 using Utilities.Validation.Exceptions;
 using Utilities.DataTypes.Comparison;
+using System.Collections;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item is between two values
+    /// This is a cascade rule
     /// </summary>
     /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
     /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class Between<ObjectType, DataType> : Rule<ObjectType, DataType> where DataType : IComparable
+    public class Cascade<ObjectType, DataType> : Rule<ObjectType, DataType>
     {
         #region Constructor
 
@@ -44,29 +45,11 @@ namespace Utilities.Validation.Rules
         /// Constructor
         /// </summary>
         /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="MinValue">Min value</param>
-        /// <param name="MaxValue">Max value</param>
         /// <param name="ErrorMessage">Error message</param>
-        public Between(Func<ObjectType, DataType> ItemToValidate, DataType MinValue, DataType MaxValue, string ErrorMessage)
+        public Cascade(Func<ObjectType, DataType> ItemToValidate, string ErrorMessage)
             : base(ItemToValidate, ErrorMessage)
         {
-            this.MaxValue = MaxValue;
-            this.MinValue = MinValue;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Min value
-        /// </summary>
-        protected virtual DataType MinValue { get; set; }
-
-        /// <summary>
-        /// Max value
-        /// </summary>
-        protected virtual DataType MaxValue { get; set; }
 
         #endregion
 
@@ -74,19 +57,24 @@ namespace Utilities.Validation.Rules
 
         public override void Validate(ObjectType Object)
         {
-            GenericComparer<DataType> Comparer = new GenericComparer<DataType>();
-            if (Comparer.Compare(MaxValue, ItemToValidate(Object)) < 0
-                || Comparer.Compare(ItemToValidate(Object), MinValue) < 0)
-                throw new NotValid(ErrorMessage);
+            try
+            {
+                object Item = ItemToValidate(Object);
+                if (Item is IEnumerable)
+                    ValidationManager.Validate((IEnumerable)Item);
+                else
+                    ValidationManager.Validate(Item);
+            }
+            catch (Exception e) { throw new NotValid(ErrorMessage + e.Message); }
         }
 
         #endregion
     }
 
     /// <summary>
-    /// Between attribute
+    /// Cascade attribute
     /// </summary>
-    public class Between : BaseAttribute
+    public class Cascade : BaseAttribute
     {
         #region Constructor
 
@@ -94,28 +82,10 @@ namespace Utilities.Validation.Rules
         /// Constructor
         /// </summary>
         /// <param name="ErrorMessage">Error message</param>
-        /// <param name="MinValue">Min value to compare to</param>
-        /// <param name="MaxValue">Max value to compare to</param>
-        public Between(object MinValue,object MaxValue, string ErrorMessage = "")
+        public Cascade(string ErrorMessage = "")
             : base(ErrorMessage)
         {
-            this.MinValue = (IComparable)MinValue;
-            this.MaxValue = (IComparable)MaxValue;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Min value to compare to
-        /// </summary>
-        public IComparable MinValue { get; set; }
-
-        /// <summary>
-        /// Max value to compare to
-        /// </summary>
-        public IComparable MaxValue { get; set; }
 
         #endregion
     }

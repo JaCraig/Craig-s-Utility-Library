@@ -27,6 +27,9 @@ using System.Text;
 using Utilities.Validation.BaseClasses;
 using Utilities.Validation.Interfaces;
 using Utilities.Validation.Rules;
+using Utilities.Validation.Exceptions;
+using System.Linq.Expressions;
+using System.Reflection;
 #endregion
 
 namespace Utilities.Validation
@@ -34,7 +37,7 @@ namespace Utilities.Validation
     /// <summary>
     /// Holds rules for a specific type
     /// </summary>
-    public class Validator<Type>
+    public class Validator<Type>:IValidator
     {
         #region Constructor
 
@@ -44,6 +47,84 @@ namespace Utilities.Validation
         public Validator()
         {
             Rules = new List<IRule<Type>>();
+            System.Type ObjectType = typeof(Type);
+            System.Type[] Interfaces = ObjectType.GetInterfaces();
+            PropertyInfo[] Properties = ObjectType.GetProperties();
+            foreach (PropertyInfo Property in Properties)
+            {
+                object[] Attributes = Property.GetCustomAttributes(typeof(BaseAttribute), true);
+                foreach (BaseAttribute Attribute in Attributes)
+                {
+                    if (Attribute is Required)
+                    {
+                        Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property);
+                        this.Required(PropertyGetter, ((Required)Attribute).DefaultValue, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is Regex)
+                    {
+                        Expression<Func<Type, string>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, string>(Property);
+                        this.Regex(PropertyGetter, ((Regex)Attribute).RegexString, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is MaxLength)
+                    {
+                        Expression<Func<Type, string>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, string>(Property);
+                        this.MaxLength(PropertyGetter, ((MaxLength)Attribute).MaxLengthAllowed, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is LessThanOrEqual)
+                    {
+                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                        this.LessThanOrEqual(PropertyGetter, ((LessThanOrEqual)Attribute).Value, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is LessThan)
+                    {
+                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                        this.LessThan(PropertyGetter, ((LessThan)Attribute).Value, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is GreaterThanOrEqual)
+                    {
+                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                        this.GreaterThanOrEqual(PropertyGetter, ((GreaterThanOrEqual)Attribute).Value, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is GreaterThan)
+                    {
+                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                        this.GreaterThan(PropertyGetter, ((GreaterThan)Attribute).Value, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is Equal)
+                    {
+                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                        this.Equal(PropertyGetter, ((Equal)Attribute).Value, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is Cascade)
+                    {
+                        Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property);
+                        this.Cascade(PropertyGetter, Attribute.ErrorMessage);
+                    }
+                    else if (Attribute is Between)
+                    {
+                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                        this.Between(PropertyGetter, ((Between)Attribute).MinValue, ((Between)Attribute).MaxValue, Attribute.ErrorMessage);
+                    }
+
+                }
+                foreach (System.Type Interface in Interfaces)
+                {
+                    try
+                    {
+                        PropertyInfo TempProperty = Interface.GetProperty(Property.Name);
+                        if (TempProperty != null)
+                        {
+                            object[] InterfaceAttributes = TempProperty.GetCustomAttributes(typeof(BaseAttribute), true);
+                            foreach (object Attribute in InterfaceAttributes)
+                            {
+                                if (Attribute is Required)
+                                    this.Required(Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property), ((Required)Attribute).DefaultValue, ((Required)Attribute).ErrorMessage);
+                            }
+                        }
+                    }
+                    catch { }
+                }
+            }
         }
 
         #endregion
@@ -67,10 +148,32 @@ namespace Utilities.Validation
         /// <param name="MinValue">Value that the property/function should be greater than or equal to</param>
         /// <param name="MaxValue">Value that the property/function should be less than or equal to</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> Between<DataType>(Func<Type, DataType> ItemToValidate,
-            DataType MinValue, DataType MaxValue, string ErrorMessage = "Object is not valid") where DataType : IComparable
+        public virtual Validator<Type> Between<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            DataType MinValue, DataType MaxValue, string ErrorMessage = "") where DataType : IComparable
         {
-            Rules.Add(new Between<Type, DataType>(ItemToValidate, MinValue, MaxValue, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is not between " + MinValue.ToString() + " and " + MaxValue.ToString();
+            Rules.Add(new Between<Type, DataType>(ItemToValidate.Compile(), MinValue, MaxValue, ErrorMessage));
+            return this;
+        }
+
+        #endregion
+
+        #region Cascade
+
+        /// <summary>
+        /// Adds a cascade rule
+        /// </summary>
+        /// <typeparam name="DataType">Data type that the property/function should return</typeparam>
+        /// <param name="ItemToValidate">Property/Function to validate</param>
+        /// <param name="ErrorMessage">Error message to throw if not valid</param>
+        /// <returns>This</returns>
+        public virtual Validator<Type> Cascade<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            string ErrorMessage="")
+        {
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is not valid:\n";
+            Rules.Add(new Cascade<Type, DataType>(ItemToValidate.Compile(), ErrorMessage));
             return this;
         }
 
@@ -83,13 +186,12 @@ namespace Utilities.Validation
         /// </summary>
         /// <typeparam name="DataType">Data type that the property/function should return</typeparam>
         /// <param name="ItemToValidate">Property/Function to validate</param>
-        /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <param name="CustomRule">Custom rule to call</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> Custom<DataType>(Func<Type, DataType> ItemToValidate,
-            Action<DataType> CustomRule, string ErrorMessage = "Object is not valid")
+        public virtual Validator<Type> Custom<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            Action<DataType> CustomRule)
         {
-            Rules.Add(new Custom<Type, DataType>(ItemToValidate, CustomRule, ErrorMessage));
+            Rules.Add(new Custom<Type, DataType>(ItemToValidate.Compile(), CustomRule));
             return this;
         }
 
@@ -105,10 +207,12 @@ namespace Utilities.Validation
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <param name="Value">Value that the property/function should be equal to</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> Equal<DataType>(Func<Type, DataType> ItemToValidate,
-            DataType Value, string ErrorMessage = "Object is not valid")
+        public virtual Validator<Type> Equal<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            DataType Value, string ErrorMessage = "")
         {
-            Rules.Add(new Equal<Type, DataType>(ItemToValidate, Value, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is not equal to " + Value.ToString();
+            Rules.Add(new Equal<Type, DataType>(ItemToValidate.Compile(), Value, ErrorMessage));
             return this;
         }
 
@@ -124,10 +228,12 @@ namespace Utilities.Validation
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <param name="MinValue">Value that the property/function should be greater than</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> GreaterThan<DataType>(Func<Type, DataType> ItemToValidate,
-            DataType MinValue, string ErrorMessage = "Object is not valid") where DataType : IComparable
+        public virtual Validator<Type> GreaterThan<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            DataType MinValue, string ErrorMessage = "") where DataType : IComparable
         {
-            Rules.Add(new GreaterThan<Type, DataType>(ItemToValidate, MinValue, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is less than or equal to " + MinValue.ToString();
+            Rules.Add(new GreaterThan<Type, DataType>(ItemToValidate.Compile(), MinValue, ErrorMessage));
             return this;
         }
 
@@ -143,10 +249,12 @@ namespace Utilities.Validation
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <param name="MinValue">Value that the property/function should be greater than or equal to</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> GreaterThanOrEqual<DataType>(Func<Type, DataType> ItemToValidate,
-            DataType MinValue, string ErrorMessage = "Object is not valid") where DataType : IComparable
+        public virtual Validator<Type> GreaterThanOrEqual<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            DataType MinValue, string ErrorMessage = "") where DataType : IComparable
         {
-            Rules.Add(new GreaterThanOrEqual<Type, DataType>(ItemToValidate, MinValue, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is less than " + MinValue.ToString();
+            Rules.Add(new GreaterThanOrEqual<Type, DataType>(ItemToValidate.Compile(), MinValue, ErrorMessage));
             return this;
         }
 
@@ -162,10 +270,12 @@ namespace Utilities.Validation
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <param name="MaxValue">Value that the property/function should be less than</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> LessThan<DataType>(Func<Type, DataType> ItemToValidate,
-            DataType MaxValue, string ErrorMessage = "Object is not valid") where DataType : IComparable
+        public virtual Validator<Type> LessThan<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            DataType MaxValue, string ErrorMessage = "") where DataType : IComparable
         {
-            Rules.Add(new LessThan<Type, DataType>(ItemToValidate, MaxValue, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is greater than or equal to " + MaxValue.ToString();
+            Rules.Add(new LessThan<Type, DataType>(ItemToValidate.Compile(), MaxValue, ErrorMessage));
             return this;
         }
 
@@ -181,10 +291,12 @@ namespace Utilities.Validation
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <param name="MaxValue">Value that the property/function should be less than or equal to</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> LessThanOrEqual<DataType>(Func<Type, DataType> ItemToValidate,
-            DataType MaxValue, string ErrorMessage = "Object is not valid") where DataType : IComparable
+        public virtual Validator<Type> LessThanOrEqual<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            DataType MaxValue, string ErrorMessage = "") where DataType : IComparable
         {
-            Rules.Add(new LessThanOrEqual<Type, DataType>(ItemToValidate, MaxValue, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is greater than " + MaxValue.ToString();
+            Rules.Add(new LessThanOrEqual<Type, DataType>(ItemToValidate.Compile(), MaxValue, ErrorMessage));
             return this;
         }
 
@@ -199,9 +311,11 @@ namespace Utilities.Validation
         /// <param name="ItemToValidate">Property/Function to validate</param>
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> MaxLength(Func<Type, string> ItemToValidate, int MaxLength, string ErrorMessage = "Object is not valid")
+        public virtual Validator<Type> MaxLength(Expression<Func<Type, string>> ItemToValidate, int MaxLength, string ErrorMessage = "")
         {
-            Rules.Add(new MaxLength<Type>(ItemToValidate, MaxLength, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + "'s length is greater than " + MaxLength.ToString() + " characters";
+            Rules.Add(new MaxLength<Type>(ItemToValidate.Compile(), MaxLength, ErrorMessage));
             return this;
         }
 
@@ -216,9 +330,11 @@ namespace Utilities.Validation
         /// <param name="ItemToValidate">Property/Function to validate</param>
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> Regex(Func<Type, string> ItemToValidate, string RegexString, string ErrorMessage = "Object is not valid")
+        public virtual Validator<Type> Regex(Expression<Func<Type, string>> ItemToValidate, string RegexString, string ErrorMessage = "")
         {
-            Rules.Add(new Regex<Type>(ItemToValidate, RegexString, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " does not match";
+            Rules.Add(new Regex<Type>(ItemToValidate.Compile(), RegexString, ErrorMessage));
             return this;
         }
 
@@ -234,10 +350,12 @@ namespace Utilities.Validation
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <param name="DefaultValue">Default value</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> Required<DataType>(Func<Type, DataType> ItemToValidate,
-            DataType DefaultValue=default(DataType), string ErrorMessage = "Object is not valid")
+        public virtual Validator<Type> Required<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
+            DataType DefaultValue=default(DataType), string ErrorMessage = "")
         {
-            Rules.Add(new Required<Type, DataType>(ItemToValidate, DefaultValue, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is required";
+            Rules.Add(new Required<Type, DataType>(ItemToValidate.Compile(), DefaultValue, ErrorMessage));
             return this;
         }
 
@@ -247,10 +365,12 @@ namespace Utilities.Validation
         /// <param name="ItemToValidate">Property/Function to validate</param>
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
         /// <returns>This</returns>
-        public virtual Validator<Type> Required(Func<Type, string> ItemToValidate, 
-            string DefaultValue = null, string ErrorMessage = "Object is not valid")
+        public virtual Validator<Type> Required(Expression<Func<Type, string>> ItemToValidate, 
+            string DefaultValue = null, string ErrorMessage = "")
         {
-            Rules.Add(new RequiredString<Type>(ItemToValidate, DefaultValue, ErrorMessage));
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is required";
+            Rules.Add(new RequiredString<Type>(ItemToValidate.Compile(), DefaultValue, ErrorMessage));
             return this;
         }
 
@@ -258,10 +378,28 @@ namespace Utilities.Validation
 
         #region Validate
 
+        public virtual void Validate(object Object)
+        {
+            Validate((Type)Object);
+        }
+
+        /// <summary>
+        /// Validates an object
+        /// </summary>
+        /// <param name="Object">Object to validate</param>
         public virtual void Validate(Type Object)
         {
+            StringBuilder Builder=new StringBuilder();
             foreach (IRule<Type> Rule in Rules)
-                Rule.Validate(Object);
+            {
+                try
+                {
+                    Rule.Validate(Object);
+                }
+                catch (Exception e) { Builder.AppendLine(e.Message); }
+            }
+            if (Builder.Length > 0)
+                throw new NotValid(Builder.ToString());
         }
 
         #endregion

@@ -24,52 +24,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.Validation.Interfaces;
 #endregion
 
-namespace Utilities.Validation.BaseClasses
+namespace Utilities.Validation.Interfaces
 {
     /// <summary>
-    /// Rule base class
+    /// Validator interface
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public abstract class Rule<ObjectType, DataType> : IRule<ObjectType>
+    public interface IValidator
     {
-        #region Constructor
-
         /// <summary>
-        /// Constructor
+        /// Validates an object
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="ErrorMessage">Error message</param>
-        public Rule(Func<ObjectType, DataType> ItemToValidate, string ErrorMessage)
-            : base()
-        {
-            this.ErrorMessage = ErrorMessage;
-            this.ItemToValidate = ItemToValidate;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Error message thrown if Validate is not valid
-        /// </summary>
-        public virtual string ErrorMessage { get; set; }
-
-        /// <summary>
-        /// Item to validate
-        /// </summary>
-        public virtual Func<ObjectType, DataType> ItemToValidate { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        public abstract void Validate(ObjectType Object);
-
-        #endregion
+        /// <param name="Object">Object to validate</param>
+        void Validate(object Object);
     }
 }
