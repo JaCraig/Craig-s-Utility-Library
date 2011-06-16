@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Validation.BaseClasses;
 using Utilities.Validation.Exceptions;
 using Utilities.DataTypes.Comparison;
+using System.Linq.Expressions;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -45,7 +46,7 @@ namespace Utilities.Validation.Rules
         /// </summary>
         /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ActionToCall">Validation action to call</param>
-        public Custom(Func<ObjectType, DataType> ItemToValidate, Action<DataType> ActionToCall)
+        public Custom(Func<ObjectType, DataType> ItemToValidate, Action<ObjectType> ActionToCall)
             : base(ItemToValidate, "")
         {
             this.ActionToCall = ActionToCall;
@@ -58,7 +59,7 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Action to call
         /// </summary>
-        protected virtual Action<DataType> ActionToCall { get; set; }
+        protected virtual Action<ObjectType> ActionToCall { get; set; }
 
         #endregion
 
@@ -66,8 +67,35 @@ namespace Utilities.Validation.Rules
 
         public override void Validate(ObjectType Object)
         {
-            ActionToCall(ItemToValidate(Object));
+            ActionToCall(Object);
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Cascade attribute
+    /// </summary>
+    public class Custom : BaseAttribute
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ErrorMessage">Error message</param>
+        /// <param name="Action">Function to call</param>
+        public Custom(string Action, string ErrorMessage = "")
+            : base(ErrorMessage)
+        {
+            this.Action = Action;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string Action { get; set; }
 
         #endregion
     }

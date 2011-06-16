@@ -55,56 +55,7 @@ namespace Utilities.Validation
                 object[] Attributes = Property.GetCustomAttributes(typeof(BaseAttribute), true);
                 foreach (BaseAttribute Attribute in Attributes)
                 {
-                    if (Attribute is Required)
-                    {
-                        Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property);
-                        this.Required(PropertyGetter, ((Required)Attribute).DefaultValue, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is Regex)
-                    {
-                        Expression<Func<Type, string>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, string>(Property);
-                        this.Regex(PropertyGetter, ((Regex)Attribute).RegexString, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is MaxLength)
-                    {
-                        Expression<Func<Type, string>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, string>(Property);
-                        this.MaxLength(PropertyGetter, ((MaxLength)Attribute).MaxLengthAllowed, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is LessThanOrEqual)
-                    {
-                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
-                        this.LessThanOrEqual(PropertyGetter, ((LessThanOrEqual)Attribute).Value, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is LessThan)
-                    {
-                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
-                        this.LessThan(PropertyGetter, ((LessThan)Attribute).Value, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is GreaterThanOrEqual)
-                    {
-                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
-                        this.GreaterThanOrEqual(PropertyGetter, ((GreaterThanOrEqual)Attribute).Value, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is GreaterThan)
-                    {
-                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
-                        this.GreaterThan(PropertyGetter, ((GreaterThan)Attribute).Value, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is Equal)
-                    {
-                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
-                        this.Equal(PropertyGetter, ((Equal)Attribute).Value, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is Cascade)
-                    {
-                        Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property);
-                        this.Cascade(PropertyGetter, Attribute.ErrorMessage);
-                    }
-                    else if (Attribute is Between)
-                    {
-                        Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
-                        this.Between(PropertyGetter, ((Between)Attribute).MinValue, ((Between)Attribute).MaxValue, Attribute.ErrorMessage);
-                    }
+                    AddRule(Property, Attribute);
 
                 }
                 foreach (System.Type Interface in Interfaces)
@@ -115,10 +66,9 @@ namespace Utilities.Validation
                         if (TempProperty != null)
                         {
                             object[] InterfaceAttributes = TempProperty.GetCustomAttributes(typeof(BaseAttribute), true);
-                            foreach (object Attribute in InterfaceAttributes)
+                            foreach (BaseAttribute Attribute in InterfaceAttributes)
                             {
-                                if (Attribute is Required)
-                                    this.Required(Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property), ((Required)Attribute).DefaultValue, ((Required)Attribute).ErrorMessage);
+                                AddRule(TempProperty, Attribute);
                             }
                         }
                     }
@@ -136,6 +86,71 @@ namespace Utilities.Validation
         #endregion
 
         #region Functions
+
+        #region AddRule
+
+        private void AddRule(PropertyInfo Property, BaseAttribute Attribute)
+        {
+            if (Attribute is Required)
+            {
+                Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property);
+                this.Required(PropertyGetter, ((Required)Attribute).DefaultValue, Attribute.ErrorMessage);
+            }
+            else if (Attribute is Regex)
+            {
+                Expression<Func<Type, string>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, string>(Property);
+                this.Regex(PropertyGetter, ((Regex)Attribute).RegexString, Attribute.ErrorMessage);
+            }
+            else if (Attribute is MaxLength)
+            {
+                Expression<Func<Type, string>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, string>(Property);
+                this.MaxLength(PropertyGetter, ((MaxLength)Attribute).MaxLengthAllowed, Attribute.ErrorMessage);
+            }
+            else if (Attribute is LessThanOrEqual)
+            {
+                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                this.LessThanOrEqual(PropertyGetter, ((LessThanOrEqual)Attribute).Value, Attribute.ErrorMessage);
+            }
+            else if (Attribute is LessThan)
+            {
+                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                this.LessThan(PropertyGetter, ((LessThan)Attribute).Value, Attribute.ErrorMessage);
+            }
+            else if (Attribute is GreaterThanOrEqual)
+            {
+                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                this.GreaterThanOrEqual(PropertyGetter, ((GreaterThanOrEqual)Attribute).Value, Attribute.ErrorMessage);
+            }
+            else if (Attribute is GreaterThan)
+            {
+                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                this.GreaterThan(PropertyGetter, ((GreaterThan)Attribute).Value, Attribute.ErrorMessage);
+            }
+            else if (Attribute is Equal)
+            {
+                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                this.Equal(PropertyGetter, ((Equal)Attribute).Value, Attribute.ErrorMessage);
+            }
+            else if (Attribute is Custom)
+            {
+                Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, object>(Property);
+                MethodInfo Method = typeof(Type).GetMethod(((Custom)Attribute).Action);
+                Action<Type> Test = (x) => Method.Invoke(x, null);
+                this.Custom(PropertyGetter, Test);
+            }
+            else if (Attribute is Cascade)
+            {
+                Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property);
+                this.Cascade(PropertyGetter, Attribute.ErrorMessage);
+            }
+            else if (Attribute is Between)
+            {
+                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                this.Between(PropertyGetter, ((Between)Attribute).MinValue, ((Between)Attribute).MaxValue, Attribute.ErrorMessage);
+            }
+        }
+
+        #endregion
 
         #region Between
 
@@ -189,7 +204,7 @@ namespace Utilities.Validation
         /// <param name="CustomRule">Custom rule to call</param>
         /// <returns>This</returns>
         public virtual Validator<Type> Custom<DataType>(Expression<Func<Type, DataType>> ItemToValidate,
-            Action<DataType> CustomRule)
+            Action<Type> CustomRule)
         {
             Rules.Add(new Custom<Type, DataType>(ItemToValidate.Compile(), CustomRule));
             return this;
