@@ -133,6 +133,9 @@
     <Compile Include="CodeGen\Templates\Parameter.cs" />
     <Compile Include="CodeGen\Templates\Property.cs" />
     <Compile Include="CodeGen\Templates\Using.cs" />
+    <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Configuration\Interfaces\IConfig.cs" />
+    <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="DataMapper\Interfaces\ITypeMapping.cs" />
     <Compile Include="DataMapper\Mapping.cs" />
     <Compile Include="DataMapper\MappingManager.cs" />
@@ -201,6 +204,12 @@
     <Compile Include="FileFormats\PipeDelimited\PipeDelimited.cs" />
     <Compile Include="FileFormats\RSSHelper\GUID.cs" />
     <Compile Include="FileFormats\RSSHelper\Thumbnail.cs" />
+    <Compile Include="IO\Logging\BaseClasses\LogBase.cs" />
+    <Compile Include="IO\Logging\ConsoleLog.cs" />
+    <Compile Include="IO\Logging\Enums\MessageType.cs" />
+    <Compile Include="IO\Logging\FileLog.cs" />
+    <Compile Include="IO\Logging\Interfaces\ILog.cs" />
+    <Compile Include="IO\Logging\LoggingManager.cs" />
     <Compile Include="Math\Conversion.cs" />
     <Compile Include="Math\Math.cs" />
     <Compile Include="Math\Permutation.cs" />
