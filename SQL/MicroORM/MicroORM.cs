@@ -45,6 +45,7 @@ namespace Utilities.SQL.MicroORM
         public MicroORM(string Connection)
             : base("", Connection, CommandType.Text)
         {
+            MappingsUsing = new List<IMapping>();
         }
 
         #endregion
@@ -55,6 +56,11 @@ namespace Utilities.SQL.MicroORM
         /// Mappings
         /// </summary>
         protected static Dictionary<Type, IMapping> Mappings = new Dictionary<Type, IMapping>();
+
+        /// <summary>
+        /// Mappings using
+        /// </summary>
+        protected List<IMapping> MappingsUsing { get; set; }
 
         #endregion
 
@@ -87,9 +93,7 @@ namespace Utilities.SQL.MicroORM
         {
             if (!Mappings.ContainsKey(typeof(ClassType)))
                 throw new ArgumentOutOfRangeException(typeof(ClassType).Name + " not found");
-            Mapping<ClassType> ReturnValue = (Mapping<ClassType>)Mappings[typeof(ClassType)];
-            ReturnValue.Helper = this;
-            return ReturnValue;
+            return new Mapping<ClassType>((Mapping<ClassType>)Mappings[typeof(ClassType)], this);
         }
 
         #endregion
@@ -99,9 +103,9 @@ namespace Utilities.SQL.MicroORM
         public override void Dispose()
         {
             base.Dispose();
-            foreach (Type Key in Mappings.Keys)
+            foreach (IMapping Mapping in MappingsUsing)
             {
-                Mappings[Key].Dispose();
+                Mapping.Dispose();
             }
         }
 

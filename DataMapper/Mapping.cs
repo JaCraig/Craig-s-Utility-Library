@@ -134,6 +134,7 @@ namespace Utilities.DataMapper
         /// <param name="Destination">Destination object</param>
         public virtual void Copy(Left Source, Right Destination)
         {
+            if (RightSet == null || LeftGet == null || Source == null || Destination == null) return;
             RightSet(Destination, LeftGet(Source));
         }
 
@@ -144,6 +145,7 @@ namespace Utilities.DataMapper
         /// <param name="Destination">Destination object</param>
         public virtual void Copy(Right Source, Left Destination)
         {
+            if (LeftSet == null || RightGet == null || Source == null || Destination == null) return;
             LeftSet(Destination, RightGet(Source));
         }
 
@@ -156,6 +158,7 @@ namespace Utilities.DataMapper
         /// <param name="Destination">Destination object</param>
         public virtual void CopyLeftToRight(Left Source, Right Destination)
         {
+            if (RightSet == null || LeftGet == null || Source == null || Destination == null) return;
             RightSet(Destination, LeftGet(Source));
         }
 
@@ -168,6 +171,7 @@ namespace Utilities.DataMapper
         /// <param name="Destination">Destination object</param>
         public virtual void CopyRightToLeft(Right Source, Left Destination)
         {
+            if (LeftSet == null || RightGet == null || Source == null || Destination == null) return;
             LeftSet(Destination, RightGet(Source));
         }
 

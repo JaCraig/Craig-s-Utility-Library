@@ -276,6 +276,7 @@
     <Compile Include="SQL\DataClasses\Table.cs" />
     <Compile Include="SQL\DataClasses\Trigger.cs" />
     <Compile Include="SQL\DataClasses\View.cs" />
+    <Compile Include="SQL\MicroORM\Enums\Mode.cs" />
     <Compile Include="SQL\MicroORM\Interfaces\IMapping.cs" />
     <Compile Include="SQL\MicroORM\Interfaces\IParameter.cs" />
     <Compile Include="SQL\MicroORM\MicroORM.cs" />

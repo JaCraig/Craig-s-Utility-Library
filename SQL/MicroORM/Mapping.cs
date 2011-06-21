@@ -28,6 +28,9 @@ using Utilities.DataMapper;
 using System.Linq.Expressions;
 using Utilities.SQL.MicroORM.Interfaces;
 using System.Data;
+using System.Reflection;
+using Utilities.DataTypes.Comparison;
+using Utilities.SQL.MicroORM.Enums;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -36,7 +39,7 @@ namespace Utilities.SQL.MicroORM
     /// Class that acts as a mapping within the micro ORM
     /// </summary>
     /// <typeparam name="ClassType">Class type that this will accept</typeparam>
-    public class Mapping<ClassType> : IMapping where ClassType : class,new()
+    public class Mapping<ClassType> : IMapping, IMapping<ClassType> where ClassType : class,new()
     {
         #region Constructors
 
@@ -79,6 +82,24 @@ namespace Utilities.SQL.MicroORM
             this.ParameterStarter = ParameterStarter;
         }
 
+        /// <summary>
+        /// Constructor (used internally to create instance versions of static mappings
+        /// </summary>
+        /// <param name="MappingToCopyFrom">Mapping to copy from</param>
+        /// <param name="Helper">Helper class to use for queries</param>
+        public Mapping(Mapping<ClassType> MappingToCopyFrom, SQLHelper Helper)
+        {
+            this.Mappings = MappingToCopyFrom.Mappings;
+            this.TableName = MappingToCopyFrom.TableName;
+            this.PrimaryKey = MappingToCopyFrom.PrimaryKey;
+            this.AutoIncrement = MappingToCopyFrom.AutoIncrement;
+            this.ParameterStarter = MappingToCopyFrom.ParameterStarter;
+            this.ParameterNames = MappingToCopyFrom.ParameterNames;
+            this.Helper = Helper;
+            this.GetPrimaryKey = MappingToCopyFrom.GetPrimaryKey;
+            this.PrimaryKeyMapping = MappingToCopyFrom.PrimaryKeyMapping;
+        }
+
         #endregion
 
         #region Properties
@@ -99,9 +120,19 @@ namespace Utilities.SQL.MicroORM
         protected virtual string TableName { get; set; }
 
         /// <summary>
-        /// Primar key
+        /// Primary key
         /// </summary>
         protected virtual string PrimaryKey { get; set; }
+
+        /// <summary>
+        /// Used to get/set primary key from an object
+        /// </summary>
+        protected virtual Mapping<ClassType, object> PrimaryKeyMapping { get; set; }
+
+        /// <summary>
+        /// Gets the primary key from an object
+        /// </summary>
+        protected virtual Func<ClassType, object> GetPrimaryKey { get; set; }
 
         /// <summary>
         /// Auto increment?
@@ -129,21 +160,30 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         /// <param name="Command">Command to use (can be an SQL string or stored procedure)</param>
         /// <param name="CommandType">Command type</param>
+        /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of all objects that meet the specified criteria</returns>
-        public virtual IEnumerable<ClassType> All(string Command, CommandType CommandType, params IParameter[] Parameters)
+        public virtual IEnumerable<ClassType> All(string Command, CommandType CommandType, IEnumerable<ClassType> Objects = null, params IParameter[] Parameters)
         {
             Check(Command, "Command");
             Check(Helper, "Helper");
             Check(Mappings, "Mappings");
-            List<ClassType> Return = new List<ClassType>();
+            List<ClassType> Return = Objects == null ? new List<ClassType>() : Objects.ToList();
             SetupCommand(Command, CommandType, Parameters);
             Helper.ExecuteReader();
             while (Helper.Read())
             {
-                ClassType Temp = new ClassType();
+                bool Add = false;
+                object CurrentKey = Helper.GetParameter(PrimaryKey, null);
+                ClassType Temp = default(ClassType);
+                if (Objects != null) Temp = Objects.FirstOrDefault(x => GetPrimaryKey(x).Equals(CurrentKey));
+                if (Temp == default(ClassType))
+                {
+                    Temp = new ClassType();
+                    Add = true;
+                }
                 Mappings.Copy(Helper, Temp);
-                Return.Add(Temp);
+                if (Add) Return.Add(Temp);
             }
             return Return;
         }
@@ -154,12 +194,13 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Columns">Columns to return</param>
         /// <param name="Limit">Limit on the number of items to return</param>
         /// <param name="OrderBy">Order by clause</param>
+        /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of all objects that meet the specified criteria</returns>
-        public virtual IEnumerable<ClassType> All(string Columns = "*", int Limit = 0, string OrderBy = "", params IParameter[] Parameters)
+        public virtual IEnumerable<ClassType> All(string Columns = "*", int Limit = 0, string OrderBy = "", IEnumerable<ClassType> Objects = null, params IParameter[] Parameters)
         {
             Check(Columns, "Columns");
-            return All(SetupSelectCommand(Columns, Limit, OrderBy, Parameters), CommandType.Text, Parameters);
+            return All(SetupSelectCommand(Columns, Limit, OrderBy, Parameters), CommandType.Text, Objects, Parameters);
         }
 
         #endregion
@@ -170,6 +211,8 @@ namespace Utilities.SQL.MicroORM
         /// Gets a single object that fits the criteria
         /// </summary>
         /// <param name="Columns">Columns to select</param>
+        /// <param name="ObjectToReturn">Object to return (in case the object needs to be created outside this,
+        /// or default value is desired in case of nothing found)</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>An object fitting the criteria specified or null if none are found</returns>
         public virtual ClassType Any(string Columns = "*", ClassType ObjectToReturn = null, params IParameter[] Parameters)
@@ -183,7 +226,8 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         /// <param name="Command">Command to use (can be an SQL string or stored procedure name)</param>
         /// <param name="CommandType">Command type</param>
-        /// <param name="ObjectToReturn">Object to return (in case the object needs to be created outside this)</param>
+        /// <param name="ObjectToReturn">Object to return (in case the object needs to be created outside this,
+        /// or default value is desired in case of nothing found)</param>
         /// <param name="Parameters">Parameters used to search by</param>
         /// <returns>An object fitting the criteria specified or null if none are found</returns>
         public virtual ClassType Any(string Command, CommandType CommandType, ClassType ObjectToReturn = null, params IParameter[] Parameters)
@@ -191,25 +235,15 @@ namespace Utilities.SQL.MicroORM
             Check(Mappings, "Mappings");
             Check(Command, "Command");
             Check(Helper, "Helper");
-            ClassType Return = (ObjectToReturn == null) ? new ClassType() : ObjectToReturn;
             SetupCommand(Command, CommandType, Parameters);
             Helper.ExecuteReader();
             if (Helper.Read())
+            {
+                ClassType Return = (ObjectToReturn == null) ? new ClassType() : ObjectToReturn;
                 Mappings.Copy(Helper, Return);
-            return Return;
-        }
-
-        #endregion
-
-        #region Close
-
-        /// <summary>
-        /// Closes the connection to the database
-        /// </summary>
-        public virtual void Close()
-        {
-            Check(Helper, "Helper");
-            Helper.Close();
+                return Return;
+            }
+            return ObjectToReturn;
         }
 
         #endregion
@@ -254,13 +288,13 @@ namespace Utilities.SQL.MicroORM
         /// <param name="CommandType">Command type</param>
         /// <param name="Object">Object to insert</param>
         /// <returns>The returned object from the query (usually the newly created row's ID)</returns>
-        public virtual DataType Insert<DataType>(string Command, CommandType CommandType, ClassType Object)
+        public virtual DataType Insert<DataType>(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
         {
             Check(Object, "Object");
             Check(Command, "Command");
             Check(Helper, "Helper");
             Check(Mappings, "Mappings");
-            SetupCommand(Command, CommandType, null);
+            SetupCommand(Command, CommandType, Parameters);
             Mappings.Copy(Object, Helper);
             return (DataType)Convert.ChangeType(Helper.ExecuteScalar(), typeof(DataType));
         }
@@ -271,22 +305,16 @@ namespace Utilities.SQL.MicroORM
         /// <typeparam name="DataType">Data type expected (should be the same type as the primary key)</typeparam>
         /// <param name="Object">Object to insert</param>
         /// <returns>The returned object from the query (the newly created row's ID)</returns>
-        public virtual DataType Insert<DataType>(ClassType Object)
+        public virtual DataType Insert<DataType>(ClassType Object, params IParameter[] Parameters)
         {
-            return Insert<DataType>(SetupInsertCommand(), CommandType.Text, Object);
+            return Insert<DataType>(SetupInsertCommand(Parameters), CommandType.Text, Object, Parameters);
         }
 
         #endregion
 
         #region Map
 
-        /// <summary>
-        /// Maps a property to a database property name (required to actually get data from the database)
-        /// </summary>
-        /// <typeparam name="DataType">Data type of the property</typeparam>
-        /// <param name="Property">Property to add a mapping for</param>
-        /// <param name="DatabasePropertyName">Property name</param>
-        public virtual Mapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName)
+        public virtual IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName, Mode Mode = Mode.Read|Mode.Write)
         {
             Check(Property, "Property");
             Check(DatabasePropertyName, "DatabasePropertyName");
@@ -294,19 +322,18 @@ namespace Utilities.SQL.MicroORM
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
-                new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, default(DataType))),
-                new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, y)));
+                ((Mode & Mode.Read) == Mode.Read) ? new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, default(DataType))) : null,
+                ((Mode & Mode.Write) == Mode.Write) ? new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, y)) : null);
             ParameterNames.Add(DatabasePropertyName);
+            if (DatabasePropertyName == PrimaryKey)
+            {
+                PrimaryKeyMapping = new Mapping<ClassType, object>(PropertyExpression, x => x, (x, y) => x = y);
+                GetPrimaryKey = PropertyExpression.Compile();
+            }
             return this;
         }
 
-        /// <summary>
-        /// Maps a property to a database property name (required to actually get data from the database)
-        /// </summary>
-        /// <param name="Property">Property to add a mapping for</param>
-        /// <param name="DatabasePropertyName">Property name</param>
-        /// <param name="Length">Max length of the string</param>
-        public virtual Mapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName, int Length)
+        public virtual IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName, int Length, Mode Mode = Mode.Read|Mode.Write)
         {
             Check(Property, "Property");
             Check(DatabasePropertyName, "DatabasePropertyName");
@@ -314,23 +341,15 @@ namespace Utilities.SQL.MicroORM
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
-                new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, "")),
-                new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, (string)y, Length)));
+                ((Mode & Mode.Read) == Mode.Read) ? new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, "")) : null,
+                ((Mode & Mode.Write) == Mode.Write) ? new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, (string)y, Length)) : null);
             ParameterNames.Add(DatabasePropertyName);
+            if (DatabasePropertyName == PrimaryKey)
+            {
+                PrimaryKeyMapping = new Mapping<ClassType, object>(PropertyExpression, x => x, (x, y) => x = y);
+                GetPrimaryKey = PropertyExpression.Compile();
+            }
             return this;
-        }
-
-        #endregion
-
-        #region Open
-
-        /// <summary>
-        /// Opens the connection to the database
-        /// </summary>
-        public virtual void Open()
-        {
-            Check(Helper, "Helper");
-            Helper.Open();
         }
 
         #endregion
@@ -367,12 +386,55 @@ namespace Utilities.SQL.MicroORM
         /// <param name="OrderBy">Order by clause</param>
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">The current page (starting at 0)</param>
+        /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of objects that fit the specified criteria</returns>
-        public virtual IEnumerable<ClassType> Paged(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters)
+        public virtual IEnumerable<ClassType> Paged(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, IEnumerable<ClassType> Objects = null, params IParameter[] Parameters)
         {
             Check(Columns, "Columns");
-            return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, Parameters), CommandType.Text, Parameters);
+            return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, Parameters), CommandType.Text, Objects, Parameters);
+        }
+
+        #endregion
+
+        #region Save
+
+        /// <summary>
+        /// Saves (inserts/updates) an object based on the following criteria:
+        /// 1) If autoincrement is set to true and the primary key is the default value, it inserts
+        /// 2) If autoincrement is set to true and the primary key is not the default value, it updates
+        /// 3) If autoincrement is set to false and the primary key is the default value, it inserts
+        /// 4) If autoincrement is set to false and the primary key is not the default value,
+        /// it does an Any call to see if the item is already in the database. If it is, it does an
+        /// update. Otherwise it does an insert.
+        /// On an insert, the primary key property is updated with the resulting value of the insert.
+        /// </summary>
+        /// <param name="Object">Object to save</param>
+        /// <param name="Parameters">Extra parameters to be added to the insert/update function</param>
+        public virtual void Save<PrimaryKeyType>(ClassType Object, params IParameter[] Parameters)
+        {
+            PrimaryKeyType PrimaryKeyVal = (PrimaryKeyType)GetPrimaryKey(Object);
+            GenericEqualityComparer<PrimaryKeyType> Comparer = new GenericEqualityComparer<PrimaryKeyType>();
+            if (Comparer.Equals(PrimaryKeyVal, default(PrimaryKeyType)))
+            {
+                PrimaryKeyVal = Insert<PrimaryKeyType>(Object, Parameters);
+                PrimaryKeyMapping.CopyRightToLeft(PrimaryKeyVal, Object);
+                return;
+            }
+            if (AutoIncrement)
+            {
+                Update(Object, Parameters);
+                return;
+            }
+            Parameter<PrimaryKeyType> Param1 = new Parameter<PrimaryKeyType>(PrimaryKeyVal, PrimaryKey, ParameterStarter);
+            ClassType TempVal = Any(PrimaryKey, null, Param1);
+            if (TempVal == null)
+            {
+                PrimaryKeyVal = Insert<PrimaryKeyType>(Object, Parameters);
+                PrimaryKeyMapping.CopyRightToLeft(PrimaryKeyVal, Object);
+                return;
+            }
+            Update(Object, Parameters);
         }
 
         #endregion
@@ -385,12 +447,12 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Command">Command to use</param>
         /// <param name="CommandType">Command type</param>
         /// <param name="Object">Object to update</param>
-        public virtual void Update(string Command, CommandType CommandType, ClassType Object)
+        public virtual void Update(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
         {
             Check(Helper, "Helper");
             Check(Mappings, "Mappings");
             Check(Command, "Command");
-            SetupCommand(Command, CommandType, null);
+            SetupCommand(Command, CommandType, Parameters);
             Mappings.Copy(Object, Helper);
             Helper.ExecuteNonQuery();
         }
@@ -399,9 +461,9 @@ namespace Utilities.SQL.MicroORM
         /// Updates an object in the database
         /// </summary>
         /// <param name="Object">Object to update</param>
-        public virtual void Update(ClassType Object)
+        public virtual void Update(ClassType Object, params IParameter[] Parameters)
         {
-            Update(SetupUpdateCommand(), CommandType.Text, Object);
+            Update(SetupUpdateCommand(Parameters), CommandType.Text, Object, Parameters);
         }
 
         #endregion
@@ -480,7 +542,7 @@ namespace Utilities.SQL.MicroORM
         /// Sets up the insert command
         /// </summary>
         /// <returns>The command string</returns>
-        protected virtual string SetupInsertCommand()
+        protected virtual string SetupInsertCommand(IParameter[] Parameters)
         {
             string ParameterList = "";
             string ValueList = "";
@@ -493,6 +555,12 @@ namespace Utilities.SQL.MicroORM
                     ValueList += Splitter + ParameterStarter + Name;
                     Splitter = ",";
                 }
+            }
+            foreach (IParameter Parameter in Parameters)
+            {
+                ParameterList += Splitter + Parameter.ID;
+                ValueList += Splitter + ParameterStarter + Parameter.ID;
+                Splitter = ",";
             }
             return string.Format("INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [ID]", TableName, ParameterList, ValueList);
         }
@@ -596,10 +664,10 @@ namespace Utilities.SQL.MicroORM
         /// Sets up the update command
         /// </summary>
         /// <returns>The command string</returns>
-        protected virtual string SetupUpdateCommand()
+        protected virtual string SetupUpdateCommand(IParameter[] Parameters)
         {
             string ParameterList = "";
-            string WhereCommand = "";
+            string WhereCommand = PrimaryKey + "=" + ParameterStarter + PrimaryKey;
             string Splitter = "";
             foreach (string Name in ParameterNames)
             {
@@ -608,8 +676,11 @@ namespace Utilities.SQL.MicroORM
                     ParameterList += Splitter + Name + "=" + ParameterStarter + Name;
                     Splitter = ",";
                 }
-                else
-                    WhereCommand = Name + "=" + ParameterStarter + Name;
+            }
+            foreach (IParameter Parameter in Parameters)
+            {
+                ParameterList += Splitter + Parameter.ToString();
+                Splitter = ",";
             }
             return string.Format("UPDATE {0} SET {1} WHERE {2}", TableName, ParameterList, WhereCommand);
         }

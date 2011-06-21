@@ -24,11 +24,47 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.DataTypes.Patterns;
+using System.Linq.Expressions;
+using Utilities.SQL.MicroORM.Enums;
 #endregion
 
 namespace Utilities.SQL.MicroORM.Interfaces
 {
+    /// <summary>
+    /// Mapping interface
+    /// </summary>
     public interface IMapping : IDisposable
     {
+    }
+
+    /// <summary>
+    /// Mapping interface
+    /// </summary>
+    public interface IMapping<ClassType> : IFluentInterface
+    {
+        #region Functions
+
+        /// <summary>
+        /// Maps a property to a database property name (required to actually get data from the database)
+        /// </summary>
+        /// <typeparam name="DataType">Data type of the property</typeparam>
+        /// <param name="Property">Property to add a mapping for</param>
+        /// <param name="DatabasePropertyName">Property name</param>
+        /// <param name="Mode">This determines if the mapping should have read or write access</param>
+        /// <returns>This mapping</returns>
+        IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName, Mode Mode = Mode.Read|Mode.Write);
+
+        /// <summary>
+        /// Maps a property to a database property name (required to actually get data from the database)
+        /// </summary>
+        /// <param name="Property">Property to add a mapping for</param>
+        /// <param name="DatabasePropertyName">Property name</param>
+        /// <param name="Length">Max length of the string</param>
+        /// <param name="Mode">This determines if the mapping should have read or write access</param>
+        /// <returns>This mapping</returns>
+        IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName, int Length, Mode Mode = Mode.Read|Mode.Write);
+
+        #endregion
     }
 }
