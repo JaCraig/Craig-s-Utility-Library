@@ -641,6 +641,30 @@ namespace Utilities.IO
 
         #endregion
 
+        #region SetDirectoryAttribute
+
+        /// <summary>
+        /// Sets a directory's attributes
+        /// </summary>
+        /// <param name="Directory">Directory</param>
+        /// <param name="Attributes">Attributes to set</param>
+        /// <param name="Recursive">Is this a recursive call?</param>
+        public static void SetDirectoryAttribute(string Directory,System.IO.FileAttributes Attributes, bool Recursive = false)
+        {
+            foreach (FileInfo File in FileList(Directory))
+                System.IO.File.SetAttributes(File.FullName, Attributes);
+            if (Recursive)
+            {
+                foreach (DirectoryInfo TempDirectory in DirectoryList(Directory))
+                {
+                    SetDirectoryAttribute(TempDirectory.FullName, Attributes, Recursive);
+                    System.IO.File.SetAttributes(TempDirectory.FullName, Attributes);
+                }
+            }
+        }
+
+        #endregion
+
         #endregion
     }
 

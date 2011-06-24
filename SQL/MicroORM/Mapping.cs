@@ -276,6 +276,17 @@ namespace Utilities.SQL.MicroORM
             Delete(SetupDeleteCommand(), CommandType.Text, Object);
         }
 
+        /// <summary>
+        /// Deletes a list of objects from the database
+        /// </summary>
+        /// <param name="Objects">Objects to delete</param>
+        public virtual void Delete(IEnumerable<ClassType> Objects)
+        {
+            string Command=SetupDeleteCommand();
+            foreach (ClassType Object in Objects)
+                Delete(Command, CommandType.Text, Object);
+        }
+
         #endregion
 
         #region Insert
@@ -435,6 +446,26 @@ namespace Utilities.SQL.MicroORM
                 return;
             }
             Update(Object, Parameters);
+        }
+
+        /// <summary>
+        /// Saves (inserts/updates) a list of objects based on the following criteria:
+        /// 1) If autoincrement is set to true and the primary key is the default value, it inserts
+        /// 2) If autoincrement is set to true and the primary key is not the default value, it updates
+        /// 3) If autoincrement is set to false and the primary key is the default value, it inserts
+        /// 4) If autoincrement is set to false and the primary key is not the default value,
+        /// it does an Any call to see if the item is already in the database. If it is, it does an
+        /// update. Otherwise it does an insert.
+        /// On an insert, the primary key property is updated with the resulting value of the insert.
+        /// </summary>
+        /// <param name="Objects">Objects to save</param>
+        /// <param name="Parameters">Extra parameters to be added to the insert/update function</param>
+        public virtual void Save<PrimaryKeyType>(IEnumerable<ClassType> Objects, params IParameter[] Parameters)
+        {
+            foreach (ClassType Object in Objects)
+            {
+                Save<PrimaryKeyType>(Object, Parameters);
+            }
         }
 
         #endregion
@@ -703,5 +734,23 @@ namespace Utilities.SQL.MicroORM
         }
 
         #endregion
+    }
+
+    public class InterfaceMapping<ClassType>:IMapping,IMapping<ClassType>
+    {
+        public IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName, Mode Mode = Mode.Read|Mode.Write)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName, int Length, Mode Mode = Mode.Read|Mode.Write)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
