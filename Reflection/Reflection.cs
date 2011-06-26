@@ -210,6 +210,28 @@ namespace Utilities.Reflection
 
         #endregion
 
+        #region GetObjectsFromAssembly
+
+        /// <summary>
+        /// Returns an instance of all classes that it finds within an assembly
+        /// that are of the specified base type/interface.
+        /// </summary>
+        /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
+        /// <param name="Assembly">Assembly to search within</param>
+        /// <returns>A list of objects that are of the type specified</returns>
+        public static System.Collections.Generic.List<ClassType> GetObjectsFromAssembly<ClassType>(Assembly Assembly)
+        {
+            System.Collections.Generic.List<Type> Types = GetTypes(Assembly, typeof(ClassType));
+            System.Collections.Generic.List<ClassType> ReturnValues = new System.Collections.Generic.List<ClassType>();
+            foreach (Type Type in Types)
+            {
+                ReturnValues.Add((ClassType)Activator.CreateInstance(Type));
+            }
+            return ReturnValues;
+        }
+
+        #endregion
+
         #region GetPropertyGetter
 
         /// <summary>
