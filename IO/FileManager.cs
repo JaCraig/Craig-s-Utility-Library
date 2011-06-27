@@ -287,9 +287,10 @@ namespace Utilities.IO
         /// Gets a list of files
         /// </summary>
         /// <param name="DirectoryPath">Directory to check for files</param>
-        /// <param name="Recursive">Determines if this is a recursive look at all directories under this one</param>
+        /// <param name="Recursive">Determines if this is a recursive look at all directories under this one (optional)</param>
+        /// <param name="FileTypeExtension">File type extension to look for (optional)</param>
         /// <returns>a list of files</returns>
-        public static List<FileInfo> FileList(string DirectoryPath, bool Recursive = false)
+        public static List<FileInfo> FileList(string DirectoryPath, bool Recursive = false, string FileTypeExtension = "")
         {
             if (string.IsNullOrEmpty(DirectoryPath))
                 throw new ArgumentNullException("DirectoryPath");
@@ -303,10 +304,12 @@ namespace Utilities.IO
                     DirectoryInfo[] SubDirectories = Directory.GetDirectories();
                     foreach (DirectoryInfo SubDirectory in SubDirectories)
                     {
-                        Files.AddRange(FileList(SubDirectory.FullName, true));
+                        Files.AddRange(FileList(SubDirectory.FullName, true,FileTypeExtension));
                     }
                 }
             }
+            if (!string.IsNullOrEmpty(FileTypeExtension))
+                return Files.FindAll(x => x.Extension == FileTypeExtension);
             return Files;
         }
 

@@ -230,6 +230,28 @@ namespace Utilities.Reflection
             return ReturnValues;
         }
 
+        /// <summary>
+        /// Returns an instance of all classes that it finds within an assembly
+        /// that are of the specified base type/interface.
+        /// </summary>
+        /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
+        /// <param name="Directory">Directory to search within</param>
+        /// <returns>A list of objects that are of the type specified</returns>
+        public static System.Collections.Generic.List<ClassType> GetObjectsFromAssembly<ClassType>(string Directory)
+        {
+            System.Collections.Generic.List<ClassType> ReturnValues = new System.Collections.Generic.List<ClassType>();
+            System.Collections.Generic.List<Assembly> Assemblies = LoadAssembliesFromDirectory(Directory, true);
+            foreach (Assembly Assembly in Assemblies)
+            {
+                System.Collections.Generic.List<Type> Types = GetTypes(Assembly, typeof(ClassType));
+                foreach (Type Type in Types)
+                {
+                    ReturnValues.Add((ClassType)Activator.CreateInstance(Type));
+                }
+            }
+            return ReturnValues;
+        }
+
         #endregion
 
         #region GetPropertyGetter
@@ -785,6 +807,42 @@ namespace Utilities.Reflection
             if (Type == null)
                 throw new ArgumentException("Type");
             return CheckIsOfInterface(ObjectType, Type);
+        }
+
+        #endregion
+
+        #region LoadAssembly
+
+        /// <summary>
+        /// Loads an assembly from a specific location
+        /// </summary>
+        /// <param name="Location">Location of the assembly</param>
+        /// <returns>The loaded assembly</returns>
+        public static Assembly LoadAssembly(string Location)
+        {
+            AssemblyName Name = AssemblyName.GetAssemblyName(Location);
+            return AppDomain.CurrentDomain.Load(Name);
+        }
+
+        #endregion
+
+        #region LoadAssembliesFromDirectory
+
+        /// <summary>
+        /// Loads an assembly from a specific location
+        /// </summary>
+        /// <param name="Directory">Directory to search for assemblies</param>
+        /// <param name="Recursive">Search recursively</param>
+        /// <returns>The loaded assemblies</returns>
+        public static System.Collections.Generic.List<Assembly> LoadAssembliesFromDirectory(string Directory, bool Recursive = false)
+        {
+            System.Collections.Generic.List<Assembly> ReturnValues = new System.Collections.Generic.List<Assembly>();
+            System.Collections.Generic.List<FileInfo> Files = Utilities.IO.FileManager.FileList(Directory, Recursive, ".dll");
+            foreach (FileInfo File in Files)
+            {
+                ReturnValues.Add(LoadAssembly(File.FullName));
+            }
+            return ReturnValues;
         }
 
         #endregion
