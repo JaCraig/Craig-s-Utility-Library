@@ -93,6 +93,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\CacheItem.cs" />
+    <Compile Include="Caching\Interfaces\ICache.cs" />
+    <Compile Include="Caching\Interfaces\ICacheItem.cs" />
     <Compile Include="Cisco\Directory.cs" />
     <Compile Include="Cisco\DirectoryEntry.cs" />
     <Compile Include="Cisco\Error.cs" />
@@ -223,6 +227,12 @@
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
     <Compile Include="Profiler\StopWatch.cs" />
+    <Compile Include="Reflection\AOP\AOPManager.cs" />
+    <Compile Include="Reflection\AOP\EventArgs\Ending.cs" />
+    <Compile Include="Reflection\AOP\EventArgs\Exception.cs" />
+    <Compile Include="Reflection\AOP\EventArgs\Starting.cs" />
+    <Compile Include="Reflection\AOP\Interfaces\IAspect.cs" />
+    <Compile Include="Reflection\AOP\Interfaces\IEvents.cs" />
     <Compile Include="Reflection\Emit\Assembly.cs" />
     <Compile Include="Reflection\Emit\BaseClasses\CommandBase.cs" />
     <Compile Include="Reflection\Emit\BaseClasses\MethodBase.cs" />

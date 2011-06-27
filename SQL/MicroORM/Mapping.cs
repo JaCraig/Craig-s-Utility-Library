@@ -735,22 +735,4 @@ namespace Utilities.SQL.MicroORM
 
         #endregion
     }
-
-    public class InterfaceMapping<ClassType>:IMapping,IMapping<ClassType>
-    {
-        public IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName, Mode Mode = Mode.Read|Mode.Write)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName, int Length, Mode Mode = Mode.Read|Mode.Write)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
