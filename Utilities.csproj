@@ -226,6 +226,26 @@
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
+    <Compile Include="ORM\Mapping\BaseClasses\PropertyBase.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IID.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IIEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IManyToMany.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IManyToOne.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IMap.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IMappingManager.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IReference.cs" />
+    <Compile Include="ORM\Mapping\Mapping.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IMapping.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IProperty.cs" />
+    <Compile Include="ORM\Mapping\MappingManager.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\ID.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\IEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\ManyToMany.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\ManyToOne.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\Map.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\Reference.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\StringID.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\StringReference.cs" />
     <Compile Include="Profiler\StopWatch.cs" />
     <Compile Include="Reflection\AOP\AOPManager.cs" />
     <Compile Include="Reflection\AOP\EventArgs\Ending.cs" />
@@ -286,6 +306,7 @@
     <Compile Include="SQL\DataClasses\Table.cs" />
     <Compile Include="SQL\DataClasses\Trigger.cs" />
     <Compile Include="SQL\DataClasses\View.cs" />
+    <Compile Include="SQL\MicroORM\Database.cs" />
     <Compile Include="SQL\MicroORM\Enums\Mode.cs" />
     <Compile Include="SQL\MicroORM\Interfaces\IMapping.cs" />
     <Compile Include="SQL\MicroORM\Interfaces\IParameter.cs" />
@@ -451,7 +472,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ORM\QueryProviders\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)Utilities\UtilitiesSplitter\bin\Release\UtilitiesSplitter.exe</PostBuildEvent>

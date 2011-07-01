@@ -42,10 +42,22 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Constructor
         /// </summary>
-        public MicroORM(string Connection)
-            : base("", Connection, CommandType.Text)
+        /// <param name="ConnectionUsing">Connection string or name of the database
+        /// connection string (if already defined)</param>
+        public MicroORM(string ConnectionUsing="Default")
+            : base("", "", CommandType.Text)
         {
             MappingsUsing = new List<IMapping>();
+            if (Databases.ContainsKey(ConnectionUsing))
+            {
+                this.Connection.ConnectionString = Databases[ConnectionUsing].Connection;
+                DatabaseUsing = ConnectionUsing;
+            }
+            else
+            {
+                this.Connection.ConnectionString = ConnectionUsing;
+                DatabaseUsing = "Default";
+            }
         }
 
         #endregion
@@ -53,14 +65,19 @@ namespace Utilities.SQL.MicroORM
         #region Properties
 
         /// <summary>
-        /// Mappings
+        /// List of database connections
         /// </summary>
-        protected static Dictionary<Type, IMapping> Mappings = new Dictionary<Type, IMapping>();
+        protected static Dictionary<string, Database> Databases = new Dictionary<string, Database>();
 
         /// <summary>
         /// Mappings using
         /// </summary>
-        protected List<IMapping> MappingsUsing { get; set; }
+        protected virtual List<IMapping> MappingsUsing { get; set; }
+
+        /// <summary>
+        /// Database using
+        /// </summary>
+        protected virtual string DatabaseUsing { get; set; }
 
         #endregion
 
@@ -75,12 +92,14 @@ namespace Utilities.SQL.MicroORM
         /// <param name="AutoIncrement">Auto incrementing primar key</param>
         /// <param name="ParameterStarter">Parameter starter</param>
         /// <returns>The created mapping (or an already created one if it exists</returns>
-        public static Mapping<ClassType> Map<ClassType>(string TableName, string PrimaryKey, bool AutoIncrement = true, string ParameterStarter = "@") where ClassType : class,new()
+        public static Mapping<ClassType> Map<ClassType>(string TableName, string PrimaryKey, bool AutoIncrement = true, string ParameterStarter = "@", string Database = "Default") where ClassType : class,new()
         {
-            if (Mappings.ContainsKey(typeof(ClassType)))
-                return (Mapping<ClassType>)Mappings[typeof(ClassType)];
+            if (!Databases.ContainsKey(Database))
+                Databases.Add(Database, new Database("", Database));
+            if(Databases[Database].Mappings.ContainsKey(typeof(ClassType)))
+                return (Mapping<ClassType>)Databases[Database].Mappings[typeof(ClassType)];
             Mapping<ClassType> Mapping = new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement, ParameterStarter);
-            Mappings.Add(typeof(ClassType), Mapping);
+            Databases[Database].Mappings.Add(typeof(ClassType), Mapping);
             return Mapping;
         }
 
@@ -91,9 +110,22 @@ namespace Utilities.SQL.MicroORM
         /// <returns>The mapping specified</returns>
         public Mapping<ClassType> Map<ClassType>() where ClassType : class,new()
         {
-            if (!Mappings.ContainsKey(typeof(ClassType)))
+            if (!Databases[DatabaseUsing].Mappings.ContainsKey(typeof(ClassType)))
                 throw new ArgumentOutOfRangeException(typeof(ClassType).Name + " not found");
-            return new Mapping<ClassType>((Mapping<ClassType>)Mappings[typeof(ClassType)], this);
+            return new Mapping<ClassType>((Mapping<ClassType>)Databases[DatabaseUsing].Mappings[typeof(ClassType)], this);
+        }
+
+        /// <summary>
+        /// Adds a database's info
+        /// </summary>
+        /// <param name="ConnectionString">Connection string to use for this database</param>
+        /// <param name="Name">Name to associate with the database</param>
+        public static void Database(string ConnectionString, string Name = "Default")
+        {
+            if (Databases.ContainsKey(Name))
+                Databases[Name].Connection = ConnectionString;
+            else
+                Databases.Add(Name, new Database(ConnectionString, Name));
         }
 
         #endregion

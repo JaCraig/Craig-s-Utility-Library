@@ -24,15 +24,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.SQL.MicroORM.Interfaces;
 #endregion
 
-namespace Utilities.SQL.MicroORM.Enums
+namespace Utilities.SQL.MicroORM
 {
-    [Flags]
-    public enum Mode
+    /// <summary>
+    /// Holds database information
+    /// </summary>
+    public class Database
     {
-        Neither=0,
-        Read=0x01,
-        Write=0x02
-    };
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Connection">Connection string</param>
+        /// <param name="Name">Database name</param>
+        public Database(string Connection,string Name)
+        {
+            this.Connection = Connection;
+            this.Name = Name;
+            this.Mappings = new Dictionary<Type, IMapping>();
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Connection string
+        /// </summary>
+        public virtual string Connection { get; set; }
+
+        /// <summary>
+        /// Name of the database
+        /// </summary>
+        public virtual string Name { get; set; }
+
+        /// <summary>
+        /// Contains the mappings associated with this database
+        /// </summary>
+        public virtual Dictionary<Type, IMapping> Mappings { get; set; }
+
+        #endregion
+    }
 }

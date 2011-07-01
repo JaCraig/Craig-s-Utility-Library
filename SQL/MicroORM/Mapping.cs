@@ -325,11 +325,12 @@ namespace Utilities.SQL.MicroORM
 
         #region Map
 
-        public virtual IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName, Mode Mode = Mode.Read|Mode.Write)
+        public virtual IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName="", Mode Mode = Mode.Read|Mode.Write)
         {
             Check(Property, "Property");
-            Check(DatabasePropertyName, "DatabasePropertyName");
             Check(Mappings, "Mappings");
+            if (string.IsNullOrEmpty(DatabasePropertyName))
+                DatabasePropertyName = Utilities.Reflection.Reflection.GetPropertyName(Property);
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
@@ -344,11 +345,12 @@ namespace Utilities.SQL.MicroORM
             return this;
         }
 
-        public virtual IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName, int Length, Mode Mode = Mode.Read|Mode.Write)
+        public virtual IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName="", int Length=64, Mode Mode = Mode.Read|Mode.Write)
         {
             Check(Property, "Property");
-            Check(DatabasePropertyName, "DatabasePropertyName");
             Check(Mappings, "Mappings");
+            if (string.IsNullOrEmpty(DatabasePropertyName))
+                DatabasePropertyName = Utilities.Reflection.Reflection.GetPropertyName(Property);
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,

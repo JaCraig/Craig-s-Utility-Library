@@ -20,19 +20,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 #endregion
 
-namespace Utilities.SQL.MicroORM.Enums
+namespace Utilities.ORM.Mapping.Interfaces
 {
-    [Flags]
-    public enum Mode
+    /// <summary>
+    /// Many to one interface
+    /// </summary>
+    /// <typeparam name="ClassType">Class type</typeparam>
+    /// <typeparam name="DataType">Property data type</typeparam>
+    public interface IManyToOne<ClassType, DataType> : IProperty<ClassType, DataType, IManyToOne<ClassType, DataType>>
     {
-        Neither=0,
-        Read=0x01,
-        Write=0x02
-    };
+    }
 }

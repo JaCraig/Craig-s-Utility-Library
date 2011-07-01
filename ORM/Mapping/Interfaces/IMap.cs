@@ -26,13 +26,14 @@ using System.Linq;
 using System.Text;
 #endregion
 
-namespace Utilities.SQL.MicroORM.Enums
+namespace Utilities.ORM.Mapping.Interfaces
 {
-    [Flags]
-    public enum Mode
+    /// <summary>
+    /// Map interface
+    /// </summary>
+    /// <typeparam name="ClassType">Class type</typeparam>
+    /// <typeparam name="DataType">Data type</typeparam>
+    public interface IMap<ClassType, DataType> : IProperty<ClassType, DataType, IMap<ClassType, DataType>>
     {
-        Neither=0,
-        Read=0x01,
-        Write=0x02
-    };
+    }
 }

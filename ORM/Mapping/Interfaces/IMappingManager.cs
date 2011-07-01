@@ -26,13 +26,20 @@ using System.Linq;
 using System.Text;
 #endregion
 
-namespace Utilities.SQL.MicroORM.Enums
+namespace Utilities.ORM.Mapping.Interfaces
 {
-    [Flags]
-    public enum Mode
+    /// <summary>
+    /// Mapping manager
+    /// </summary>
+    public interface IMappingManager
     {
-        Neither=0,
-        Read=0x01,
-        Write=0x02
-    };
+        #region Properties
+
+        /// <summary>
+        /// Mappings
+        /// </summary>
+        Dictionary<Type, IMapping> Mappings { get; set; }
+
+        #endregion
+    }
 }
