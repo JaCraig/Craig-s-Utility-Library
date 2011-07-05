@@ -27,6 +27,8 @@ using System.Text;
 using Utilities.ORM.Mapping.Interfaces;
 using System.Linq.Expressions;
 using Utilities.ORM.Mapping.BaseClasses;
+using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL.MicroORM;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes
@@ -38,6 +40,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
     /// <typeparam name="DataType">Data type</typeparam>
     public class IEnumerableManyToOne<ClassType, DataType> : PropertyBase<ClassType, IEnumerable<DataType>, IIEnumerableManyToOne<ClassType, DataType>>,
         IIEnumerableManyToOne<ClassType, DataType>
+        where ClassType : class,new()
     {
         #region Constructor
 
@@ -60,6 +63,10 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         #endregion
 
         #region Functions
+
+        public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
+        {
+        }
 
         public override IIEnumerableManyToOne<ClassType, DataType> SetDefaultValue(Func<IEnumerable<DataType>> DefaultValue)
         {

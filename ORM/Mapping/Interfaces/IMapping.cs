@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
+using Utilities.ORM.QueryProviders.Interfaces;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces
@@ -123,8 +124,22 @@ namespace Utilities.ORM.Mapping.Interfaces
         #endregion
     }
 
+    /// <summary>
+    /// Mapping interface
+    /// </summary>
     public interface IMapping
     {
+        #region Functions
+
+        /// <summary>
+        /// Internal function used to add to
+        /// the query provider
+        /// </summary>
+        /// <param name="Database">Database object</param>
+        void AddToQueryProvider(IDatabase Database);
+
+        #endregion
+
         #region Properties
 
         /// <summary>

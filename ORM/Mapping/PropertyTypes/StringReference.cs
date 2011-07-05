@@ -27,6 +27,9 @@ using System.Text;
 using Utilities.ORM.Mapping.BaseClasses;
 using Utilities.ORM.Mapping.Interfaces;
 using System.Linq.Expressions;
+using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL.MicroORM;
+using Utilities.SQL.MicroORM.Enums;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes
@@ -38,6 +41,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
     /// <typeparam name="DataType">Data type</typeparam>
     public class StringReference<ClassType> : PropertyBase<ClassType, string, IReference<ClassType, string>>,
         IReference<ClassType, string>
+        where ClassType : class,new()
     {
         #region Constructor
 
@@ -57,6 +61,15 @@ namespace Utilities.ORM.Mapping.PropertyTypes
 
         #region Functions
 
+        public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
+        {
+            Mode Mode = Mode.Neither;
+            if (Database.Readable)
+                Mode |= Mode.Read;
+            if (Database.Writable)
+                Mode |= Mode.Write;
+            Mapping.Map(this.Expression, this.FieldName, this.MaxLength, Mode);
+        }
 
         public override IReference<ClassType, string> SetDefaultValue(Func<string> DefaultValue)
         {

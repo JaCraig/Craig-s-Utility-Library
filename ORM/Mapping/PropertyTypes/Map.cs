@@ -27,6 +27,8 @@ using System.Text;
 using Utilities.ORM.Mapping.Interfaces;
 using System.Linq.Expressions;
 using Utilities.ORM.Mapping.BaseClasses;
+using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL.MicroORM;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes
@@ -38,6 +40,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
     /// <typeparam name="DataType">Data type</typeparam>
     public class Map<ClassType, DataType> : PropertyBase<ClassType, DataType, IMap<ClassType, DataType>>,
         IMap<ClassType, DataType>
+        where ClassType : class,new()
     {
         #region Constructor
 
@@ -58,6 +61,9 @@ namespace Utilities.ORM.Mapping.PropertyTypes
 
         #region Functions
 
+        public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
+        {
+        }
 
         public override IMap<ClassType, DataType> SetDefaultValue(Func<DataType> DefaultValue)
         {

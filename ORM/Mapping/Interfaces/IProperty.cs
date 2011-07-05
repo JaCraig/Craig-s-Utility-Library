@@ -26,6 +26,8 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using Utilities.DataTypes.Patterns;
+using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL.MicroORM;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces
@@ -96,6 +98,26 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// Is this a unique field?
         /// </summary>
         bool Unique { get; }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// Property interface
+    /// </summary>
+    /// <typeparam name="ClassType">Class type</typeparam>
+    public interface IProperty<ClassType>
+        where ClassType : class,new()
+    {
+        #region Functions
+
+        /// <summary>
+        /// Adds to query provider
+        /// </summary>
+        /// <param name="Database">Database associated with mapping</param>
+        /// <param name="Mapping">Mapping to add the property to</param>
+        /// <typeparam name="ClassType">Class type</typeparam>
+        void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping);
 
         #endregion
     }

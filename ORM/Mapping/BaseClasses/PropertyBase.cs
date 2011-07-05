@@ -26,6 +26,8 @@ using System.Linq;
 using System.Text;
 using Utilities.ORM.Mapping.Interfaces;
 using System.Linq.Expressions;
+using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL.MicroORM;
 #endregion
 
 namespace Utilities.ORM.Mapping.BaseClasses
@@ -34,7 +36,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
     /// Property base class
     /// </summary>
     public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>,
-        IProperty<ClassType, DataType>, IProperty
+        IProperty<ClassType, DataType>, IProperty<ClassType>, IProperty where ClassType : class,new()
     {
         #region Constructors
 
@@ -64,6 +66,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         public abstract ReturnType SetTableName(string TableName);
         public abstract ReturnType TurnOnCascade();
         public abstract ReturnType SetMaxLength(int MaxLength);
+        public abstract void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping);
 
         #endregion
 

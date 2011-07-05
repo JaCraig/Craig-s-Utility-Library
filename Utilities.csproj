@@ -246,6 +246,8 @@
     <Compile Include="ORM\Mapping\PropertyTypes\Reference.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\StringID.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\StringReference.cs" />
+    <Compile Include="ORM\QueryProviders\Interfaces\IDatabase.cs" />
+    <Compile Include="ORM\QueryProviders\Default.cs" />
     <Compile Include="Profiler\StopWatch.cs" />
     <Compile Include="Reflection\AOP\AOPManager.cs" />
     <Compile Include="Reflection\AOP\EventArgs\Ending.cs" />
@@ -472,9 +474,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ORM\QueryProviders\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)Utilities\UtilitiesSplitter\bin\Release\UtilitiesSplitter.exe</PostBuildEvent>
