@@ -423,7 +423,18 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public virtual object GetParameter(string ID, object Default)
         {
-            if (Reader != null && !Convert.IsDBNull(Reader[ID]))
+            if (Reader == null)
+                return Default;
+            bool Found = false;
+            for (int x = 0; x < Reader.FieldCount; ++x)
+            {
+                if (Reader.GetName(x) == ID)
+                {
+                    Found = true;
+                    break;
+                }
+            }
+            if (Found && !Convert.IsDBNull(Reader[ID]))
                 return Reader[ID];
             return Default;
         }
@@ -437,7 +448,18 @@ namespace Utilities.SQL
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public virtual DataType GetParameter<DataType>(string ID, DataType Default)
         {
-            if (Reader != null && !Convert.IsDBNull(Reader[ID]))
+            if (Reader == null)
+                return Default;
+            bool Found = false;
+            for (int x = 0; x < Reader.FieldCount; ++x)
+            {
+                if (Reader.GetName(x) == ID)
+                {
+                    Found = true;
+                    break;
+                }
+            }
+            if (Found && !Convert.IsDBNull(Reader[ID]))
                 return (DataType)Convert.ChangeType(Reader[ID], typeof(DataType));
             return Default;
         }

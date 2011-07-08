@@ -325,7 +325,7 @@ namespace Utilities.SQL.MicroORM
 
         #region Map
 
-        public virtual IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName="", Mode Mode = Mode.Read|Mode.Write)
+        public virtual IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName = "", DataType DefaultValue = default(DataType), Mode Mode = Mode.Read|Mode.Write)
         {
             Check(Property, "Property");
             Check(Mappings, "Mappings");
@@ -334,7 +334,7 @@ namespace Utilities.SQL.MicroORM
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
-                ((Mode & Mode.Read) == Mode.Read) ? new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, default(DataType))) : null,
+                ((Mode & Mode.Read) == Mode.Read) ? new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, DefaultValue)) : null,
                 ((Mode & Mode.Write) == Mode.Write) ? new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, y)) : null);
             ParameterNames.Add(DatabasePropertyName);
             if (DatabasePropertyName == PrimaryKey)
@@ -345,7 +345,7 @@ namespace Utilities.SQL.MicroORM
             return this;
         }
 
-        public virtual IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName="", int Length=64, Mode Mode = Mode.Read|Mode.Write)
+        public virtual IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName="", int Length=64,string DefaultValue="", Mode Mode = Mode.Read|Mode.Write)
         {
             Check(Property, "Property");
             Check(Mappings, "Mappings");
@@ -354,7 +354,7 @@ namespace Utilities.SQL.MicroORM
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
-                ((Mode & Mode.Read) == Mode.Read) ? new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, "")) : null,
+                ((Mode & Mode.Read) == Mode.Read) ? new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, DefaultValue)) : null,
                 ((Mode & Mode.Write) == Mode.Write) ? new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, (string)y, Length)) : null);
             ParameterNames.Add(DatabasePropertyName);
             if (DatabasePropertyName == PrimaryKey)

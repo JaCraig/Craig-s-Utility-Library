@@ -75,6 +75,24 @@ namespace Utilities.ORM.Mapping
 
         #endregion
 
+        #region All
+
+        public virtual void All(string Command, System.Data.CommandType CommandType)
+        {
+            AllCommand = new Command(Command, CommandType);
+        }
+
+        #endregion
+
+        #region Any
+
+        public virtual void Any(string Command, System.Data.CommandType CommandType)
+        {
+            AnyCommand = new Command(Command, CommandType);
+        }
+
+        #endregion
+
         #region Setup
 
         /// <summary>
@@ -84,7 +102,6 @@ namespace Utilities.ORM.Mapping
         {
             if (Properties == null)
                 Properties = new List<IProperty>();
-            DatabaseConfigType = typeof(DatabaseType);
         }
 
         #endregion
@@ -197,10 +214,13 @@ namespace Utilities.ORM.Mapping
         private string _TableName = "";
         public virtual string Suffix { get; private set; }
         public virtual string Prefix { get; private set; }
-        public virtual Type DatabaseConfigType { get; private set; }
+        public virtual Type DatabaseConfigType { get { return typeof(DatabaseType); } }
         public virtual List<IProperty> Properties { get; private set; }
         public virtual IProperty IDProperty { get; set; }
         public virtual IMappingManager Manager { get; set; }
+        public virtual Type ObjectType { get {return typeof(ClassType); } }
+        public virtual Command AnyCommand { get; set; }
+        public virtual Command AllCommand { get; set; }
 
         #endregion
     }

@@ -67,7 +67,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                 Mode |= Mode.Read;
             if (Database.Writable)
                 Mode |= Mode.Write;
-            Mapping.Map<DataType>(this.Expression, this.FieldName, Mode);
+            Mapping.Map<DataType>(this.Expression, this.FieldName, DefaultValue(), Mode);
         }
 
         public override IReference<ClassType, DataType> SetDefaultValue(Func<DataType> DefaultValue)

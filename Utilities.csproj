@@ -227,6 +227,7 @@
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
     <Compile Include="ORM\Mapping\BaseClasses\PropertyBase.cs" />
+    <Compile Include="ORM\Mapping\Command.cs" />
     <Compile Include="ORM\Mapping\Interfaces\IID.cs" />
     <Compile Include="ORM\Mapping\Interfaces\IIEnumerableManyToOne.cs" />
     <Compile Include="ORM\Mapping\Interfaces\IManyToMany.cs" />
@@ -246,8 +247,12 @@
     <Compile Include="ORM\Mapping\PropertyTypes\Reference.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\StringID.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\StringReference.cs" />
+    <Compile Include="ORM\ORM.cs" />
     <Compile Include="ORM\QueryProviders\Interfaces\IDatabase.cs" />
     <Compile Include="ORM\QueryProviders\Default.cs" />
+    <Compile Include="ORM\QueryProviders\Interfaces\IParameter.cs" />
+    <Compile Include="ORM\QueryProviders\Parameter.cs" />
+    <Compile Include="ORM\Session.cs" />
     <Compile Include="Profiler\StopWatch.cs" />
     <Compile Include="Reflection\AOP\AOPManager.cs" />
     <Compile Include="Reflection\AOP\EventArgs\Ending.cs" />

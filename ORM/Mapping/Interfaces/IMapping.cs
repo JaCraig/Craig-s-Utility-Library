@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using Utilities.ORM.QueryProviders.Interfaces;
+using System.Data;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces
@@ -121,6 +122,28 @@ namespace Utilities.ORM.Mapping.Interfaces
 
         #endregion
 
+        #region Any
+
+        /// <summary>
+        /// Sets the default command to call when Any is called (optional)
+        /// </summary>
+        /// <param name="Command">Command to call</param>
+        /// <param name="CommandType">Command type</param>
+        void Any(string Command, CommandType CommandType);
+
+        #endregion
+
+        #region All
+
+        /// <summary>
+        /// Sets the default command to call when All is called (optional)
+        /// </summary>
+        /// <param name="Command">Command to call</param>
+        /// <param name="CommandType">Command type</param>
+        void All(string Command, CommandType CommandType);
+
+        #endregion
+
         #endregion
     }
 
@@ -176,6 +199,21 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// Mapping manager
         /// </summary>
         IMappingManager Manager { get; set; }
+
+        /// <summary>
+        /// The object type associated with the mapping
+        /// </summary>
+        Type ObjectType { get; }
+
+        /// <summary>
+        /// Any command
+        /// </summary>
+        Command AnyCommand { get; set; }
+
+        /// <summary>
+        /// All command
+        /// </summary>
+        Command AllCommand { get; set; }
 
         #endregion
     }

@@ -53,7 +53,7 @@ namespace Utilities.SQL.MicroORM.Interfaces
         /// <param name="DatabasePropertyName">Property name</param>
         /// <param name="Mode">This determines if the mapping should have read or write access</param>
         /// <returns>This mapping</returns>
-        IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName = "", Mode Mode = Mode.Read|Mode.Write);
+        IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName = "", DataType DefaultValue = default(DataType), Mode Mode = Mode.Read|Mode.Write);
 
         /// <summary>
         /// Maps a property to a database property name (required to actually get data from the database)
@@ -63,7 +63,7 @@ namespace Utilities.SQL.MicroORM.Interfaces
         /// <param name="Length">Max length of the string</param>
         /// <param name="Mode">This determines if the mapping should have read or write access</param>
         /// <returns>This mapping</returns>
-        IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName = "", int Length = 64, Mode Mode = Mode.Read|Mode.Write);
+        IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName = "", int Length = 64, string DefaultValue = "", Mode Mode = Mode.Read|Mode.Write);
 
         #endregion
     }
