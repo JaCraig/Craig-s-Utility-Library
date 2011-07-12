@@ -28,6 +28,7 @@ using Utilities.ORM.Mapping.Interfaces;
 using System.Linq.Expressions;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
+using System.Collections;
 #endregion
 
 namespace Utilities.ORM.Mapping.BaseClasses
@@ -67,6 +68,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         public abstract ReturnType TurnOnCascade();
         public abstract ReturnType SetMaxLength(int MaxLength);
         public abstract void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping);
+        public abstract ReturnType LoadUsingCommand(string Command, System.Data.CommandType CommandType);
 
         #endregion
 
@@ -86,6 +88,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         public virtual int MaxLength { get; protected set; }
         public virtual string TableName { get; protected set; }
         public virtual IMapping ForeignKey { get; set; }
+        public virtual Command CommandToLoad { get; protected set; }
 
         #endregion
     }

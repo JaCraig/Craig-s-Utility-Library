@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.ORM.QueryProviders;
 using Utilities.ORM.QueryProviders.Interfaces;
 using System.Data;
+using System.Linq.Expressions;
 #endregion
 
 namespace Utilities.ORM
@@ -71,7 +72,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(string Columns, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(Columns, Parameters);
+            return QueryProvider.Any<ObjectType>(Columns,null, Parameters);
         }
 
         /// <summary>
@@ -82,7 +83,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(Parameters);
+            return QueryProvider.Any<ObjectType>(null, Parameters);
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(Command, CommandType, Parameters);
+            return QueryProvider.Any<ObjectType>(Command, CommandType, null, Parameters);
         }
 
         #endregion
@@ -142,6 +143,60 @@ namespace Utilities.ORM
 
         #endregion
 
+        #region Delete
+
+        /// <summary>
+        /// Deletes an object from the database
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="Object">Object to delete</param>
+        public virtual void Delete<ObjectType>(ObjectType Object) where ObjectType : class,new()
+        {
+            QueryProvider.Delete(Object);
+        }
+
+        #endregion
+
+        #region LoadProperties
+
+        /// <summary>
+        /// Loads a property (primarily used internally for lazy loading)
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Parameters">Extra parameters (generally will be the ID of the object)</param>
+        /// <returns>The appropriate property value</returns>
+        public virtual IEnumerable<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+            where ObjectType : class,new()
+            where DataType : class,new()
+        {
+            return QueryProvider.LoadProperties<ObjectType, DataType>(Object, PropertyName, Parameters);
+        }
+
+        #endregion
+
+        #region LoadProperty
+
+        /// <summary>
+        /// Loads a property (primarily used internally for lazy loading)
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Parameters">Extra parameters (generally will be the ID of the object)</param>
+        /// <returns>The appropriate property value</returns>
+        public virtual DataType LoadProperty<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+            where ObjectType : class,new()
+            where DataType : class,new()
+        {
+            return QueryProvider.LoadProperty<ObjectType, DataType>(Object, PropertyName, Parameters);
+        }
+
+        #endregion
+
         #region Paged
 
         /// <summary>
@@ -157,6 +212,22 @@ namespace Utilities.ORM
         public virtual IEnumerable<ObjectType> Paged<ObjectType>(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.Paged<ObjectType>(Columns, OrderBy, PageSize, CurrentPage, Parameters);
+        }
+
+        #endregion
+
+        #region Save
+
+        /// <summary>
+        /// Saves an object to the database
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
+        /// <param name="Object">Object to save</param>
+        /// <param name="Parameters">Extra parameters to save</param>
+        public virtual void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] Parameters) where ObjectType : class,new()
+        {
+            QueryProvider.Save<ObjectType, PrimaryKeyType>(Object, Parameters);
         }
 
         #endregion

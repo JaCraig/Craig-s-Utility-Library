@@ -46,6 +46,40 @@ namespace Utilities.Reflection.AOP
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="AssemblyDirectory">Directory to save the generated types (optional)</param>
+        /// <param name="AssemblyName">Assembly name to save the generated types as (optional)</param>
+        /// <param name="RegenerateAssembly">Should this assembly be regenerated if found? (optional)</param>
+        public AOPManager(string AssemblyDirectory = "", string AssemblyName = "Aspects", bool RegenerateAssembly = false)
+        {
+            this.AssemblyDirectory = AssemblyDirectory;
+            this.AssemblyName = AssemblyName;
+            this.RegenerateAssembly = RegenerateAssembly;
+            if (AssemblyBuilder != null)
+                return;
+            if (string.IsNullOrEmpty(AssemblyDirectory)
+                || !Utilities.IO.FileManager.FileExists(AssemblyDirectory + AssemblyName + ".dll")
+                || RegenerateAssembly)
+            {
+                AssemblyBuilder = new Utilities.Reflection.Emit.Assembly(AssemblyName, AssemblyDirectory);
+            }
+            else
+            {
+                System.Reflection.Assembly TempAssembly = Utilities.Reflection.Reflection.LoadAssembly(AssemblyDirectory + AssemblyName + ".dll");
+                Type[] Types = TempAssembly.GetTypes();
+                foreach (Type Type in Types)
+                {
+                    Classes.Add(Type.BaseType, Type);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="AspectLocation">Aspect DLL location</param>
+        /// <param name="AssemblyDirectory">Directory to save the generated types (optional)</param>
+        /// <param name="AssemblyName">Assembly name to save the generated types as (optional)</param>
+        /// <param name="RegenerateAssembly">Should this assembly be regenerated if found? (optional)</param>
         public AOPManager(string AspectLocation,string AssemblyDirectory="",string AssemblyName="Aspects",bool RegenerateAssembly=false)
         {
             this.AssemblyDirectory = AssemblyDirectory;
@@ -90,6 +124,15 @@ namespace Utilities.Reflection.AOP
         #endregion
 
         #region Functions
+
+        /// <summary>
+        /// Adds an aspect to the manager (only needed if loading aspects manually)
+        /// </summary>
+        /// <param name="Aspect">Aspect to load</param>
+        public virtual void AddAspect(IAspect Aspect)
+        {
+            Aspects.Add(Aspect);
+        }
 
         /// <summary>
         /// Saves the assembly to the directory

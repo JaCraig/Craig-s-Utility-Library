@@ -60,6 +60,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
 
         #region Functions
 
+        public override IReference<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
+        {
+            this.CommandToLoad = new Command(Command, CommandType);
+            return (IReference<ClassType, DataType>)this;
+        }
+
         public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
         {
             Mode Mode = Mode.Neither;

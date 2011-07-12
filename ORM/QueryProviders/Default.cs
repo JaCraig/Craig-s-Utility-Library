@@ -117,18 +117,19 @@ namespace Utilities.ORM.QueryProviders
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>First item matching the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual ObjectType Any<ObjectType>(ObjectType ReturnValue=null,params IParameter[] Parameters) where ObjectType : class,new()
         {
-            ObjectType ReturnVal = new ObjectType();
+            ObjectType ReturnVal = (ReturnValue==null)?new ObjectType():ReturnValue;
             foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    if (Mapping.AnyCommand == null)
-                        return Any<ObjectType>("*", Parameters);
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
+                    if (Mapping.AnyCommand == null)
+                        ReturnVal = ORMObject.Map<ObjectType>().Any("*", ReturnVal, Parameters);
+                    else
                         ReturnVal = ORMObject.Map<ObjectType>().Any(Mapping.AnyCommand.CommandToRun, Mapping.AnyCommand.CommandType, ReturnVal, Parameters);
                     }
                 }
@@ -143,9 +144,9 @@ namespace Utilities.ORM.QueryProviders
         /// <param name="Columns">Columns to load</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>First item that matches the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(string Columns, params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual ObjectType Any<ObjectType>(string Columns,ObjectType ReturnValue=null, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            ObjectType ReturnVal = new ObjectType();
+            ObjectType ReturnVal = (ReturnValue==null)?new ObjectType():ReturnValue;
             foreach (IDatabase Database in Mappings.Keys)
             {
                 if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
@@ -167,9 +168,9 @@ namespace Utilities.ORM.QueryProviders
         /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>First item that matches the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual ObjectType Any<ObjectType>(string Command, CommandType CommandType,ObjectType ReturnValue=null, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            ObjectType ReturnVal = new ObjectType();
+            ObjectType ReturnVal = (ReturnValue==null)?new ObjectType():ReturnValue;
             foreach (IDatabase Database in Mappings.Keys)
             {
                 if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
@@ -250,15 +251,123 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    if (Mapping.AllCommand == null)
-                        return All<ObjectType>("*", 0, "", Parameters);
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
+                    if (Mapping.AllCommand == null)
+                    {
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All("*", 0, "", ReturnValues, Parameters);
+                    }
+                    else
+                    {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Mapping.AllCommand.CommandToRun, Mapping.AllCommand.CommandType, ReturnValues, Parameters);
+                    }
                     }
                 }
             }
             return ReturnValues;
+        }
+
+        #endregion
+
+        #region Delete
+
+        /// <summary>
+        /// Deletes the specified object from the database
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="Object">Object to delete</param>
+        public virtual void Delete<ObjectType>(ObjectType Object) where ObjectType : class,new()
+        {
+            foreach (IDatabase Database in Mappings.Keys)
+            {
+                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    {
+                        ORMObject.Map<ObjectType>().Delete(Object);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region LoadProperties
+
+        /// <summary>
+        /// Loads a property
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="DataType">Property type</typeparam>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Parameters">Extra parameters</param>
+        /// <returns>The appropriate property value</returns>
+        public virtual IEnumerable<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+            where ObjectType : class,new()
+            where DataType : class,new()
+        {
+            System.Collections.Generic.List<DataType> ReturnValue = new System.Collections.Generic.List<DataType>();
+            foreach (IDatabase Database in Mappings.Keys)
+            {
+                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    IProperty Property = Mapping.Properties.First(x => x.Type == typeof(DataType)
+                        && x.Name == PropertyName);
+                    if (Property != null)
+                    {
+                        using (MicroORM ORMObject = new MicroORM(Database.Name))
+                        {
+                            if (Property.CommandToLoad == null)
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, Parameters);
+                            else
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, Parameters);
+                        }
+                    }
+                }
+            }
+            return ReturnValue;
+        }
+
+        #endregion
+
+        #region LoadProperty
+
+        /// <summary>
+        /// Loads a property
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="DataType">Property type</typeparam>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Parameters">Extra parameters</param>
+        /// <returns>The appropriate property value</returns>
+        public virtual DataType LoadProperty<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+            where ObjectType : class,new()
+            where DataType : class,new()
+        {
+            DataType ReturnValue = new DataType();
+            foreach (IDatabase Database in Mappings.Keys)
+            {
+                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    IProperty Property = Mapping.Properties.First(x => x.Type == typeof(DataType) && x.Name == PropertyName);
+                    if (Property != null)
+                    {
+                        using (MicroORM ORMObject = new MicroORM(Database.Name))
+                        {
+                            if (Property.CommandToLoad == null)
+                                ReturnValue = ORMObject.Map<DataType>().Any("*", ReturnValue, Parameters);
+                            else
+                                ReturnValue = ORMObject.Map<DataType>().Any(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, Parameters);
+                        }
+                    }
+                }
+            }
+            return ReturnValue;
         }
 
         #endregion
@@ -290,6 +399,32 @@ namespace Utilities.ORM.QueryProviders
                 }
             }
             return ReturnValues;
+        }
+
+        #endregion
+
+        #region Save
+
+        /// <summary>
+        /// Saves an object to the database
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
+        /// <param name="Object">Object to save</param>
+        /// <param name="Parameters">Extra parameters used in saving the object</param>
+        public virtual void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] Parameters) where ObjectType : class,new()
+        {
+            foreach (IDatabase Database in Mappings.Keys)
+            {
+                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    {
+                        ORMObject.Map<ObjectType>().Save<PrimaryKeyType>(Object, Parameters);
+                    }
+                }
+            }
         }
 
         #endregion

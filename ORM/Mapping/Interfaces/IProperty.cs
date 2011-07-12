@@ -28,6 +28,8 @@ using System.Linq.Expressions;
 using Utilities.DataTypes.Patterns;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
+using Utilities.ORM.QueryProviders;
+using System.Data;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces
@@ -98,6 +100,11 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// Is this a unique field?
         /// </summary>
         bool Unique { get; }
+
+        /// <summary>
+        /// Command used to load the property
+        /// </summary>
+        Command CommandToLoad { get; }
 
         #endregion
     }
@@ -209,6 +216,14 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <param name="MaxLength">Max length</param>
         /// <returns>this</returns>
         ReturnType SetMaxLength(int MaxLength);
+
+        /// <summary>
+        /// Allows you to load a property based on a specified command
+        /// </summary>
+        /// <param name="Command">Command used to load the property</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>this</returns>
+        ReturnType LoadUsingCommand(string Command, CommandType CommandType);
 
         #endregion
     }

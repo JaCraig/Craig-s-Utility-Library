@@ -41,6 +41,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
     public class Map<ClassType, DataType> : PropertyBase<ClassType, DataType, IMap<ClassType, DataType>>,
         IMap<ClassType, DataType>
         where ClassType : class,new()
+        where DataType : class,new()
     {
         #region Constructor
 
@@ -60,6 +61,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         #endregion
 
         #region Functions
+
+        public override IMap<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
+        {
+            this.CommandToLoad = new Command(Command, CommandType);
+            return (IMap<ClassType, DataType>)this;
+        }
 
         public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
         {

@@ -86,7 +86,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>the map object</returns>
-        IMap<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression);
+        IMap<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression) where DataType : class,new();
 
         #endregion
 
@@ -98,7 +98,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>The many to one object</returns>
-        IManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, DataType>> Expression);
+        IManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, DataType>> Expression) where DataType : class,new();
 
         /// <summary>
         /// IEnumerable many to one
@@ -106,7 +106,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression pointint to the property</param>
         /// <returns>The many to one object</returns>
-        IIEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression);
+        IIEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new();
 
         #endregion
 
@@ -118,7 +118,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression pointing to the many to many property</param>
         /// <returns>The many to many object</returns>
-        IManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression);
+        IManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new();
 
         #endregion
 

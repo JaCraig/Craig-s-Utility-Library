@@ -30,7 +30,14 @@ namespace Utilities.ORM.Mapping.Interfaces
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Property data type</typeparam>
-    public interface IManyToOne<ClassType, DataType> : IProperty<ClassType, DataType, IManyToOne<ClassType, DataType>>
+    public interface IManyToOne<ClassType, DataType> : IProperty<ClassType, DataType, IManyToOne<ClassType, DataType>>,IManyToOne
+    {
+    }
+
+    /// <summary>
+    /// Many to one interface
+    /// </summary>
+    public interface IManyToOne
     {
     }
 }

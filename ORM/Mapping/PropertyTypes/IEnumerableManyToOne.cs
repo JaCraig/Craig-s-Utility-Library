@@ -41,6 +41,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
     public class IEnumerableManyToOne<ClassType, DataType> : PropertyBase<ClassType, IEnumerable<DataType>, IIEnumerableManyToOne<ClassType, DataType>>,
         IIEnumerableManyToOne<ClassType, DataType>
         where ClassType : class,new()
+        where DataType : class,new()
     {
         #region Constructor
 
@@ -51,6 +52,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public IEnumerableManyToOne(Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
             : base(Expression)
         {
+            Type = typeof(DataType);
             SetDefaultValue(() => new List<DataType>());
             string Class1 = typeof(ClassType).Name;
             string Class2 = typeof(DataType).Name;
@@ -63,6 +65,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         #endregion
 
         #region Functions
+
+        public override IIEnumerableManyToOne<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
+        {
+            this.CommandToLoad = new Command(Command, CommandType);
+            return (IIEnumerableManyToOne<ClassType, DataType>)this;
+        }
 
         public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
         {

@@ -226,6 +226,8 @@
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="MultiThreading\Worker.cs" />
+    <Compile Include="ORM\Aspect\Interfaces\IORMObject.cs" />
+    <Compile Include="ORM\Aspect\ORMAspect.cs" />
     <Compile Include="ORM\Mapping\BaseClasses\PropertyBase.cs" />
     <Compile Include="ORM\Mapping\Command.cs" />
     <Compile Include="ORM\Mapping\Interfaces\IID.cs" />

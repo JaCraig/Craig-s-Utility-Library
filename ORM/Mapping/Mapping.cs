@@ -152,7 +152,7 @@ namespace Utilities.ORM.Mapping
 
         #region Map
 
-        public IMap<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression)
+        public IMap<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression) where DataType : class,new()
         {
             Setup();
             Map<ClassType, DataType> Return = new Map<ClassType, DataType>(Expression);
@@ -164,7 +164,7 @@ namespace Utilities.ORM.Mapping
 
         #region ManyToOne
 
-        public IManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, DataType>> Expression)
+        public IManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, DataType>> Expression) where DataType : class,new()
         {
             Setup();
             ManyToOne<ClassType, DataType> Return = new ManyToOne<ClassType, DataType>(Expression);
@@ -172,7 +172,7 @@ namespace Utilities.ORM.Mapping
             return Return;
         }
 
-        public IIEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
+        public IIEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new()
         {
             Setup();
             IEnumerableManyToOne<ClassType, DataType> Return = new IEnumerableManyToOne<ClassType, DataType>(Expression);
@@ -184,7 +184,7 @@ namespace Utilities.ORM.Mapping
 
         #region ManyToMany
 
-        public IManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
+        public IManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new()
         {
             Setup();
             ManyToMany<ClassType, DataType> Return = new ManyToMany<ClassType, DataType>(Expression);

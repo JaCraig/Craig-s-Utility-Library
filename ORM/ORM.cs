@@ -28,6 +28,7 @@ using System.Reflection;
 using Utilities.ORM.QueryProviders;
 using Utilities.ORM.Mapping;
 using Utilities.ORM.Mapping.Interfaces;
+using Utilities.ORM.Aspect;
 #endregion
 
 namespace Utilities.ORM
@@ -67,6 +68,8 @@ namespace Utilities.ORM
             QueryProvider = new Default(Assemblies);
             foreach (Type Key in MappingManager.Mappings.Keys)
                 QueryProvider.AddMapping(MappingManager.Mappings[Key]);
+            Utilities.Reflection.AOP.AOPManager Manager = new Reflection.AOP.AOPManager();
+            Manager.AddAspect(new ORMAspect(MappingManager.Mappings));
         }
 
         private void Setup(Assembly Assembly)
@@ -75,6 +78,8 @@ namespace Utilities.ORM
             QueryProvider = new Default(Assembly);
             foreach (Type Key in MappingManager.Mappings.Keys)
                 QueryProvider.AddMapping(MappingManager.Mappings[Key]);
+            Utilities.Reflection.AOP.AOPManager Manager = new Reflection.AOP.AOPManager();
+            Manager.AddAspect(new ORMAspect(MappingManager.Mappings));
         }
 
         /// <summary>

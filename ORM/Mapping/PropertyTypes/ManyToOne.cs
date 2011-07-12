@@ -41,6 +41,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
     public class ManyToOne<ClassType, DataType> : PropertyBase<ClassType, DataType, IManyToOne<ClassType, DataType>>,
         IManyToOne<ClassType, DataType>
         where ClassType : class,new()
+        where DataType : class,new()
     {
         #region Constructor
 
@@ -63,6 +64,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         #endregion
 
         #region Functions
+
+        public override IManyToOne<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
+        {
+            this.CommandToLoad = new Command(Command, CommandType);
+            return (IManyToOne<ClassType, DataType>)this;
+        }
 
         public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
         {

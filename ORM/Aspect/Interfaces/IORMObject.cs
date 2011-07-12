@@ -26,21 +26,20 @@ using System.Linq;
 using System.Text;
 #endregion
 
-namespace Utilities.ORM.Mapping.Interfaces
+namespace Utilities.ORM.Aspect.Interfaces
 {
     /// <summary>
-    /// Map interface
+    /// ORM object interface
     /// </summary>
-    /// <typeparam name="ClassType">Class type</typeparam>
-    /// <typeparam name="DataType">Data type</typeparam>
-    public interface IMap<ClassType, DataType> : IProperty<ClassType, DataType, IMap<ClassType, DataType>>,IMap
+    public interface IORMObject
     {
-    }
+        #region Properties
 
-    /// <summary>
-    /// Map interface
-    /// </summary>
-    public interface IMap
-    {
+        /// <summary>
+        /// ORM session that this item came from (used for lazy loading)
+        /// </summary>
+        Session Session0 { get; set; }
+
+        #endregion
     }
 }
