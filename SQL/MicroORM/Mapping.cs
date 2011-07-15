@@ -161,14 +161,16 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Command">Command to use (can be an SQL string or stored procedure)</param>
         /// <param name="CommandType">Command type</param>
         /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
+        /// <param name="ObjectCreator">Function used to create the indvidual objects</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of all objects that meet the specified criteria</returns>
-        public virtual IEnumerable<ClassType> All(string Command, CommandType CommandType, IEnumerable<ClassType> Objects = null, params IParameter[] Parameters)
+        public virtual IEnumerable<ClassType> All(string Command, CommandType CommandType, IEnumerable<ClassType> Objects = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
             Check(Command, "Command");
             Check(Helper, "Helper");
             Check(Mappings, "Mappings");
             List<ClassType> Return = Objects == null ? new List<ClassType>() : Objects.ToList();
+            ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             SetupCommand(Command, CommandType, Parameters);
             Helper.ExecuteReader();
             while (Helper.Read())
@@ -179,7 +181,7 @@ namespace Utilities.SQL.MicroORM
                 if (Objects != null) Temp = Objects.FirstOrDefault(x => GetPrimaryKey(x).Equals(CurrentKey));
                 if (Temp == default(ClassType))
                 {
-                    Temp = new ClassType();
+                    Temp = ObjectCreator();
                     Add = true;
                 }
                 Mappings.Copy(Helper, Temp);
@@ -195,12 +197,13 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Limit">Limit on the number of items to return</param>
         /// <param name="OrderBy">Order by clause</param>
         /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
+        /// <param name="ObjectCreator">Function used to create the individual objects</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of all objects that meet the specified criteria</returns>
-        public virtual IEnumerable<ClassType> All(string Columns = "*", int Limit = 0, string OrderBy = "", IEnumerable<ClassType> Objects = null, params IParameter[] Parameters)
+        public virtual IEnumerable<ClassType> All(string Columns = "*", int Limit = 0, string OrderBy = "", IEnumerable<ClassType> Objects = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
             Check(Columns, "Columns");
-            return All(SetupSelectCommand(Columns, Limit, OrderBy, Parameters), CommandType.Text, Objects, Parameters);
+            return All(SetupSelectCommand(Columns, Limit, OrderBy, Parameters), CommandType.Text, Objects, ObjectCreator, Parameters);
         }
 
         #endregion
@@ -213,12 +216,14 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Columns">Columns to select</param>
         /// <param name="ObjectToReturn">Object to return (in case the object needs to be created outside this,
         /// or default value is desired in case of nothing found)</param>
+        /// <param name="ObjectCreator">Function used to create the object if the ObjectToReturn is set to null
+        /// (if set to null, it just creates a new object using the default constructor)</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>An object fitting the criteria specified or null if none are found</returns>
-        public virtual ClassType Any(string Columns = "*", ClassType ObjectToReturn = null, params IParameter[] Parameters)
+        public virtual ClassType Any(string Columns = "*", ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
             Check(Columns, "Columns");
-            return Any(SetupSelectCommand(Columns, 1, "", Parameters), CommandType.Text, ObjectToReturn, Parameters);
+            return Any(SetupSelectCommand(Columns, 1, "", Parameters), CommandType.Text, ObjectToReturn, ObjectCreator, Parameters);
         }
 
         /// <summary>
@@ -228,18 +233,21 @@ namespace Utilities.SQL.MicroORM
         /// <param name="CommandType">Command type</param>
         /// <param name="ObjectToReturn">Object to return (in case the object needs to be created outside this,
         /// or default value is desired in case of nothing found)</param>
+        /// <param name="ObjectCreator">Function used to create the object if the ObjectToReturn is set to null
+        /// (if set to null, it just creates a new object using the default constructor)</param>
         /// <param name="Parameters">Parameters used to search by</param>
         /// <returns>An object fitting the criteria specified or null if none are found</returns>
-        public virtual ClassType Any(string Command, CommandType CommandType, ClassType ObjectToReturn = null, params IParameter[] Parameters)
+        public virtual ClassType Any(string Command, CommandType CommandType, ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
             Check(Mappings, "Mappings");
             Check(Command, "Command");
             Check(Helper, "Helper");
+            ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             SetupCommand(Command, CommandType, Parameters);
             Helper.ExecuteReader();
             if (Helper.Read())
             {
-                ClassType Return = (ObjectToReturn == null) ? new ClassType() : ObjectToReturn;
+                ClassType Return = (ObjectToReturn == null) ? ObjectCreator() : ObjectToReturn;
                 Mappings.Copy(Helper, Return);
                 return Return;
             }
@@ -400,12 +408,13 @@ namespace Utilities.SQL.MicroORM
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">The current page (starting at 0)</param>
         /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
+        /// <param name="ObjectCreator">Function used to create the individual objects (if set to null, it uses the default constructor)</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of objects that fit the specified criteria</returns>
-        public virtual IEnumerable<ClassType> Paged(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, IEnumerable<ClassType> Objects = null, params IParameter[] Parameters)
+        public virtual IEnumerable<ClassType> Paged(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, IEnumerable<ClassType> Objects = null,Func<ClassType> ObjectCreator=null, params IParameter[] Parameters)
         {
             Check(Columns, "Columns");
-            return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, Parameters), CommandType.Text, Objects, Parameters);
+            return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, Parameters), CommandType.Text, Objects, ObjectCreator, Parameters);
         }
 
         #endregion
@@ -440,7 +449,7 @@ namespace Utilities.SQL.MicroORM
                 return;
             }
             Parameter<PrimaryKeyType> Param1 = new Parameter<PrimaryKeyType>(PrimaryKeyVal, PrimaryKey, ParameterStarter);
-            ClassType TempVal = Any(PrimaryKey, null, Param1);
+            ClassType TempVal = Any(PrimaryKey, null, null, Param1);
             if (TempVal == null)
             {
                 PrimaryKeyVal = Insert<PrimaryKeyType>(Object, Parameters);

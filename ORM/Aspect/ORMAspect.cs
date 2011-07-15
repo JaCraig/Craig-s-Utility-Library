@@ -32,6 +32,8 @@ using System.Reflection;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Enums;
 using System.Reflection.Emit;
+using Utilities.ORM.QueryProviders;
+using Utilities.ORM.QueryProviders.Interfaces;
 #endregion
 
 namespace Utilities.ORM.Aspect
@@ -77,22 +79,19 @@ namespace Utilities.ORM.Aspect
 
         public void SetupEndMethod(Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue)
         {
+            Method.SetCurrentMethod();
             if (ClassMappings.ContainsKey(BaseType)
                 && Method.Name.StartsWith("get_"))
             {
                 IMapping Mapping = ClassMappings[BaseType];
-                string PropertyName = Method.Name.Replace("set_", "");
+                string PropertyName = Method.Name.Replace("get_", "");
                 IProperty Property = Mapping.Properties.Find(x => x.Name == PropertyName);
                 if (Property != null)
                 {
-                    if(Property is IManyToOne)
-                        SetupSingleProperty(Method, BaseType, ReturnValue, Property);
-                    else if(Property is IMap)
-                        SetupSingleProperty(Method, BaseType, ReturnValue, Property);
-                    else if(Property is IIEnumerableManyToOne)
-                        SetupIEnumerableProperty(Method, BaseType, ReturnValue, Property);
-                    else if(Property is IManyToMany)
-                        SetupIEnumerableProperty(Method, BaseType, ReturnValue, Property);
+                    if (Property is IManyToOne || Property is IMap)
+                        SetupSingleProperty(Method, BaseType, ReturnValue, Property, Mapping);
+                    else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
+                        SetupIEnumerableProperty(Method, BaseType, ReturnValue, Property, Mapping);
                 }
             }
         }
@@ -112,6 +111,30 @@ namespace Utilities.ORM.Aspect
             Fields = new List<Reflection.Emit.FieldBuilder>();
             SessionField = CreateProperty(TypeBuilder, "Session0", typeof(Session));
             CreateConstructor(TypeBuilder);
+            SetupFields(TypeBuilder);
+        }
+
+        /// <summary>
+        /// Sets up the fields needed to store the data for lazy loading
+        /// </summary>
+        /// <param name="TypeBuilder"></param>
+        private void SetupFields(Reflection.Emit.TypeBuilder TypeBuilder)
+        {
+            if (ClassMappings.ContainsKey(TypeBuilder.BaseClass))
+            {
+                IMapping Mapping = ClassMappings[TypeBuilder.BaseClass];
+                foreach (IProperty Property in Mapping.Properties)
+                {
+                    if (Property is IManyToOne || Property is IMap)
+                    {
+                        Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, Property.Type));
+                    }
+                    else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
+                    {
+                        Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, typeof(IEnumerable<>).MakeGenericType(Property.Type)));
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -149,7 +172,8 @@ namespace Utilities.ORM.Aspect
         /// <param name="BaseType">Base type for the object</param>
         /// <param name="ReturnValue">Return value</param>
         /// <param name="Property">Property info</param>
-        private void SetupIEnumerableProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property)
+        /// <param name="Mapping">Mapping info</param>
+        private void SetupIEnumerableProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property,IMapping Mapping)
         {
             Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);
             Utilities.Reflection.Emit.Commands.If If1 = Method.If((VariableBase)SessionField, Comparison.NotEqual, null);
@@ -157,25 +181,19 @@ namespace Utilities.ORM.Aspect
                 Utilities.Reflection.Emit.Commands.If If2 = Method.If(Field, Comparison.Equal, null);
                 {
                     //Load data
-
-                    //VariableBase FieldType = Method.CreateLocal(Field.Name + "FieldType", Field.DataType);
-                    //VariableBase Parameter = Method.CreateLocal(Field.Name + "FieldType", Field.DataType);
-                    //Method.Generator.Emit(OpCodes.Ldarg_0);
-                    //Method.Generator.EmitCall(OpCodes.Call, SessionField.GetMethod.Builder, Type.EmptyTypes);
-                    //Method.Generator.Emit(OpCodes.Ldarg_0);
-                    //Method.Generator.Emit(OpCodes.Ldfld, IDField.Builder);
-                    //Method.Generator.Emit(OpCodes.Box, IDField.DataType);
-                    //Method.Generator.Emit(OpCodes.Ldarg_0);
-                    //Method.Generator.Emit(OpCodes.Ldflda, Field.Builder);
-                    //Method.Generator.Emit(OpCodes.Ldstr, Attribute.Name);
-                    //MethodInfo TempMethod = typeof(HaterAide.Session).GetMethod("SelectList");
-                    //TempMethod = TempMethod.MakeGenericMethod(new Type[] { BaseType, Field.DataType.GetGenericArguments()[0] });
-                    //Method.Generator.Emit(OpCodes.Callvirt, TempMethod);
+                    VariableBase IDValue = Method.This.Call(BaseType.GetProperty(Mapping.IDProperty.Name).GetGetMethod());
+                    VariableBase IDParameter = Method.NewObj(typeof(Parameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
+                    VariableBase PropertyList = Method.NewObj(typeof(List<IParameter>));
+                    PropertyList.Call("Add", new object[] { IDParameter });
+                    MethodInfo LoadPropertiesMethod=typeof(Session).GetMethod("LoadProperties");
+                    LoadPropertiesMethod=LoadPropertiesMethod.MakeGenericMethod(new Type[]{BaseType,Field.DataType.GetGenericArguments()[0]});
+                    VariableBase ReturnVal = ((VariableBase)SessionField).Call(LoadPropertiesMethod, new object[] { Method.This, Property.Name, PropertyList.Call("ToArray") });
+                    Field.Assign(ReturnVal);
                 }
                 If2.EndIf();
                 Utilities.Reflection.Emit.Commands.If If3 = Method.If(Field, Comparison.Equal, null);
                 {
-                    Field.Assign(Method.NewObj(Field.DataType.GetConstructor(Type.EmptyTypes)));
+                    Field.Assign(Method.NewObj(typeof(List<>).MakeGenericType(Property.Type).GetConstructor(Type.EmptyTypes)));
                 }
                 If3.EndIf();
             }
@@ -190,7 +208,7 @@ namespace Utilities.ORM.Aspect
         /// <param name="BaseType">Base type for the object</param>
         /// <param name="ReturnValue">Return value</param>
         /// <param name="Property">Property info</param>
-        private void SetupSingleProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property)
+        private void SetupSingleProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property,IMapping Mapping)
         {
             Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);
             Utilities.Reflection.Emit.Commands.If If1 = Method.If((VariableBase)SessionField, Comparison.NotEqual, null);
@@ -198,18 +216,14 @@ namespace Utilities.ORM.Aspect
                 Utilities.Reflection.Emit.Commands.If If2 = Method.If(Field, Comparison.Equal, null);
                 {
                     //Load Data
-
-                    //VariableBase FieldType = Method.CreateLocal(Field.Name + "FieldType", Field.DataType);
-                    //Method.Generator.Emit(OpCodes.Ldarg_0);
-                    //Method.Generator.EmitCall(OpCodes.Call, SessionField.GetMethod.Builder, Type.EmptyTypes);
-                    //Method.Generator.Emit(OpCodes.Ldarg_0);
-                    //Method.Generator.Emit(OpCodes.Ldfld, IDField.Builder);
-                    //Method.Generator.Emit(OpCodes.Box, IDField.DataType);
-                    //Method.Generator.Emit(OpCodes.Ldarg_0);
-                    //Method.Generator.Emit(OpCodes.Ldflda, Field.Builder);
-                    //MethodInfo TempMethod = typeof(HaterAide.Session).GetMethod("Select");
-                    //TempMethod = TempMethod.MakeGenericMethod(new Type[] { Field.DataType });
-                    //Method.Generator.EmitCall(OpCodes.Call, TempMethod, Type.EmptyTypes);
+                    VariableBase IDValue = Method.This.Call(BaseType.GetProperty(Mapping.IDProperty.Name).GetGetMethod());
+                    VariableBase IDParameter = Method.NewObj(typeof(Parameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
+                    VariableBase PropertyList = Method.NewObj(typeof(List<IParameter>));
+                    PropertyList.Call("Add", new object[] { IDParameter });
+                    MethodInfo LoadPropertyMethod = typeof(Session).GetMethod("LoadProperty");
+                    LoadPropertyMethod = LoadPropertyMethod.MakeGenericMethod(new Type[] { BaseType, Field.DataType });
+                    VariableBase ReturnVal = ((VariableBase)SessionField).Call(LoadPropertyMethod, new object[] { Method.This, Property.Name, PropertyList.Call("ToArray") });
+                    Field.Assign(ReturnVal);
                 }
                 If2.EndIf();
             }

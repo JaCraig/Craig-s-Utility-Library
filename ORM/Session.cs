@@ -72,7 +72,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(string Columns, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(Columns,null, Parameters);
+            return QueryProvider.Any<ObjectType>(this,Columns,null, Parameters);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(null, Parameters);
+            return QueryProvider.Any<ObjectType>(this,null, Parameters);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(Command, CommandType, null, Parameters);
+            return QueryProvider.Any<ObjectType>(this,Command, CommandType, null, Parameters);
         }
 
         #endregion
@@ -114,7 +114,7 @@ namespace Utilities.ORM
         /// <returns>All items that match the criteria</returns>
         public virtual IEnumerable<ObjectType> All<ObjectType>(string Columns, int Limit, string OrderBy, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.All<ObjectType>(Columns, Limit, OrderBy, Parameters);
+            return QueryProvider.All<ObjectType>(this,Columns, Limit, OrderBy, Parameters);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Utilities.ORM
         /// <returns>All items that match the criteria</returns>
         public virtual IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.All<ObjectType>(Parameters);
+            return QueryProvider.All<ObjectType>(this,Parameters);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Utilities.ORM
         /// <returns>All items that match the criteria</returns>
         public virtual IEnumerable<ObjectType> All<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.All<ObjectType>(Command, CommandType, Parameters);
+            return QueryProvider.All<ObjectType>(this,Command, CommandType, Parameters);
         }
 
         #endregion
@@ -172,7 +172,7 @@ namespace Utilities.ORM
             where ObjectType : class,new()
             where DataType : class,new()
         {
-            return QueryProvider.LoadProperties<ObjectType, DataType>(Object, PropertyName, Parameters);
+            return QueryProvider.LoadProperties<ObjectType, DataType>(this, Object, PropertyName, Parameters);
         }
 
         #endregion
@@ -192,7 +192,7 @@ namespace Utilities.ORM
             where ObjectType : class,new()
             where DataType : class,new()
         {
-            return QueryProvider.LoadProperty<ObjectType, DataType>(Object, PropertyName, Parameters);
+            return QueryProvider.LoadProperty<ObjectType, DataType>(this, Object, PropertyName, Parameters);
         }
 
         #endregion
@@ -211,7 +211,7 @@ namespace Utilities.ORM
         /// <returns>A paged list of items that match the criteria</returns>
         public virtual IEnumerable<ObjectType> Paged<ObjectType>(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Paged<ObjectType>(Columns, OrderBy, PageSize, CurrentPage, Parameters);
+            return QueryProvider.Paged<ObjectType>(this, Columns, OrderBy, PageSize, CurrentPage, Parameters);
         }
 
         #endregion

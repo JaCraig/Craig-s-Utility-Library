@@ -30,6 +30,7 @@ using Utilities.ORM.Mapping.Interfaces;
 using Utilities.DataTypes;
 using Utilities.SQL.MicroORM;
 using System.Data;
+using Utilities.ORM.Aspect.Interfaces;
 #endregion
 
 namespace Utilities.ORM.QueryProviders
@@ -87,6 +88,7 @@ namespace Utilities.ORM.QueryProviders
                     Databases.Add(TempObject);
                 }
             }
+            Manager = new Reflection.AOP.AOPManager();
         }
 
         #endregion
@@ -116,10 +118,11 @@ namespace Utilities.ORM.QueryProviders
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Parameters">Parameters used in the where clause</param>
+        /// <param name="CurrentSession">Current session</param>
+        /// <param name="ReturnValue">Return value</param>
         /// <returns>First item matching the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(ObjectType ReturnValue=null,params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual ObjectType Any<ObjectType>(Session CurrentSession, ObjectType ReturnValue = null, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            ObjectType ReturnVal = (ReturnValue==null)?new ObjectType():ReturnValue;
             foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
@@ -127,14 +130,16 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                    if (Mapping.AnyCommand == null)
-                        ReturnVal = ORMObject.Map<ObjectType>().Any("*", ReturnVal, Parameters);
-                    else
-                        ReturnVal = ORMObject.Map<ObjectType>().Any(Mapping.AnyCommand.CommandToRun, Mapping.AnyCommand.CommandType, ReturnVal, Parameters);
+                        if (Mapping.AnyCommand == null)
+                            ReturnValue = ORMObject.Map<ObjectType>().Any("*", ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
+                        else
+                            ReturnValue = ORMObject.Map<ObjectType>().Any(Mapping.AnyCommand.CommandToRun, Mapping.AnyCommand.CommandType, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                     }
                 }
             }
-            return ReturnVal;
+            if (ReturnValue is IORMObject)
+                ((IORMObject)ReturnValue).Session0 = CurrentSession;
+            return ReturnValue;
         }
 
         /// <summary>
@@ -143,21 +148,24 @@ namespace Utilities.ORM.QueryProviders
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Columns">Columns to load</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
+        /// <param name="CurrentSession">Current session</param>
+        /// <param name="ReturnValue">Return value</param>
         /// <returns>First item that matches the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(string Columns,ObjectType ReturnValue=null, params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual ObjectType Any<ObjectType>(Session CurrentSession, string Columns, ObjectType ReturnValue = null, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            ObjectType ReturnVal = (ReturnValue==null)?new ObjectType():ReturnValue;
             foreach (IDatabase Database in Mappings.Keys)
             {
                 if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                        ReturnVal = ORMObject.Map<ObjectType>().Any(Columns, ReturnVal, Parameters);
+                        ReturnValue = ORMObject.Map<ObjectType>().Any(Columns, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                     }
                 }
             }
-            return ReturnVal;
+            if (ReturnValue is IORMObject)
+                ((IORMObject)ReturnValue).Session0 = CurrentSession;
+            return ReturnValue;
         }
 
         /// <summary>
@@ -167,21 +175,24 @@ namespace Utilities.ORM.QueryProviders
         /// <param name="Command">Command to run</param>
         /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
+        /// <param name="CurrentSession">Current session</param>
+        /// <param name="ReturnValue">Return value</param>
         /// <returns>First item that matches the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(string Command, CommandType CommandType,ObjectType ReturnValue=null, params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual ObjectType Any<ObjectType>(Session CurrentSession, string Command, CommandType CommandType, ObjectType ReturnValue = null, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            ObjectType ReturnVal = (ReturnValue==null)?new ObjectType():ReturnValue;
             foreach (IDatabase Database in Mappings.Keys)
             {
                 if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                        ReturnVal = ORMObject.Map<ObjectType>().Any(Command, CommandType, ReturnVal, Parameters);
+                        ReturnValue = ORMObject.Map<ObjectType>().Any(Command, CommandType, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                     }
                 }
             }
-            return ReturnVal;
+            if (ReturnValue is IORMObject)
+                ((IORMObject)ReturnValue).Session0 = CurrentSession;
+            return ReturnValue;
         }
 
         #endregion
@@ -192,12 +203,13 @@ namespace Utilities.ORM.QueryProviders
         /// Returns a list of objects that meet the criteria
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="CurrentSession">Current session</param>
         /// <param name="Columns">Columns to load</param>
         /// <param name="Limit">Limit on the number of items to return</param>
         /// <param name="OrderBy">Order by clause (minus the ORDER BY)</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A list of objects that meet the criteria</returns>
-        public virtual IEnumerable<ObjectType> All<ObjectType>(string Columns, int Limit, string OrderBy, params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual IEnumerable<ObjectType> All<ObjectType>(Session CurrentSession, string Columns, int Limit, string OrderBy, params IParameter[] Parameters) where ObjectType : class,new()
         {
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
             foreach (IDatabase Database in Mappings.Keys)
@@ -206,9 +218,14 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Columns, Limit, OrderBy, ReturnValues, Parameters);
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Columns, Limit, OrderBy, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
                 }
+            }
+            foreach (ObjectType ReturnValue in ReturnValues)
+            {
+                if (ReturnValue is IORMObject)
+                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -217,11 +234,12 @@ namespace Utilities.ORM.QueryProviders
         /// Returns a list of objects that meet the criteria
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="CurrentSession">Current session</param>
         /// <param name="Command">Command to run</param>
         /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A list of objects that meet the criteria</returns>
-        public virtual IEnumerable<ObjectType> All<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual IEnumerable<ObjectType> All<ObjectType>(Session CurrentSession, string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
             foreach (IDatabase Database in Mappings.Keys)
@@ -230,9 +248,14 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Command, CommandType, ReturnValues, Parameters);
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Command, CommandType, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
                 }
+            }
+            foreach (ObjectType ReturnValue in ReturnValues)
+            {
+                if (ReturnValue is IORMObject)
+                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -241,9 +264,10 @@ namespace Utilities.ORM.QueryProviders
         /// Returns a list of objects that meet the criteria
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="CurrentSession">Current session</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A list of objects that meet the criteria</returns>
-        public virtual IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual IEnumerable<ObjectType> All<ObjectType>(Session CurrentSession, params IParameter[] Parameters) where ObjectType : class,new()
         {
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
             foreach (IDatabase Database in Mappings.Keys)
@@ -253,16 +277,21 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                    if (Mapping.AllCommand == null)
-                    {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All("*", 0, "", ReturnValues, Parameters);
-                    }
-                    else
-                    {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Mapping.AllCommand.CommandToRun, Mapping.AllCommand.CommandType, ReturnValues, Parameters);
-                    }
+                        if (Mapping.AllCommand == null)
+                        {
+                            ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All("*", 0, "", ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
+                        }
+                        else
+                        {
+                            ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Mapping.AllCommand.CommandToRun, Mapping.AllCommand.CommandType, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
+                        }
                     }
                 }
+            }
+            foreach (ObjectType ReturnValue in ReturnValues)
+            {
+                if (ReturnValue is IORMObject)
+                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -300,11 +329,12 @@ namespace Utilities.ORM.QueryProviders
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <typeparam name="DataType">Property type</typeparam>
+        /// <param name="CurrentSession">Current Session</param>
         /// <param name="Object">Object</param>
         /// <param name="PropertyName">Property name</param>
         /// <param name="Parameters">Extra parameters</param>
         /// <returns>The appropriate property value</returns>
-        public virtual IEnumerable<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+        public virtual IEnumerable<DataType> LoadProperties<ObjectType, DataType>(Session CurrentSession, ObjectType Object, string PropertyName, params IParameter[] Parameters)
             where ObjectType : class,new()
             where DataType : class,new()
         {
@@ -321,12 +351,17 @@ namespace Utilities.ORM.QueryProviders
                         using (MicroORM ORMObject = new MicroORM(Database.Name))
                         {
                             if (Property.CommandToLoad == null)
-                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, Parameters);
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), Parameters);
                             else
-                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, Parameters);
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
                         }
                     }
                 }
+            }
+            foreach (DataType Item in ReturnValue)
+            {
+                if (Item is IORMObject)
+                    ((IORMObject)Item).Session0 = CurrentSession;
             }
             return ReturnValue;
         }
@@ -340,15 +375,16 @@ namespace Utilities.ORM.QueryProviders
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <typeparam name="DataType">Property type</typeparam>
+        /// <param name="CurrentSession">Current session</param>
         /// <param name="Object">Object</param>
         /// <param name="PropertyName">Property name</param>
         /// <param name="Parameters">Extra parameters</param>
         /// <returns>The appropriate property value</returns>
-        public virtual DataType LoadProperty<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+        public virtual DataType LoadProperty<ObjectType, DataType>(Session CurrentSession, ObjectType Object, string PropertyName, params IParameter[] Parameters)
             where ObjectType : class,new()
             where DataType : class,new()
         {
-            DataType ReturnValue = new DataType();
+            DataType ReturnValue = null;
             foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
@@ -360,13 +396,15 @@ namespace Utilities.ORM.QueryProviders
                         using (MicroORM ORMObject = new MicroORM(Database.Name))
                         {
                             if (Property.CommandToLoad == null)
-                                ReturnValue = ORMObject.Map<DataType>().Any("*", ReturnValue, Parameters);
+                                ReturnValue = ORMObject.Map<DataType>().Any("*", ReturnValue, () => Manager.Create<DataType>(), Parameters);
                             else
-                                ReturnValue = ORMObject.Map<DataType>().Any(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, Parameters);
+                                ReturnValue = ORMObject.Map<DataType>().Any(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
                         }
                     }
                 }
             }
+            if (ReturnValue is IORMObject)
+                ((IORMObject)ReturnValue).Session0 = CurrentSession;
             return ReturnValue;
         }
 
@@ -378,13 +416,14 @@ namespace Utilities.ORM.QueryProviders
         /// Returns a paged list of items
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="Session">Current session</param>
         /// <param name="Columns">Columns to load</param>
         /// <param name="OrderBy">Order by clause (minus the ORDER BY part)</param>
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">Current page (starting with 0)</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A paged list of items that match the criteria</returns>
-        public virtual IEnumerable<ObjectType> Paged<ObjectType>(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual IEnumerable<ObjectType> Paged<ObjectType>(Session CurrentSession, string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
         {
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
             foreach (IDatabase Database in Mappings.Keys)
@@ -394,9 +433,14 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().Paged(Columns, OrderBy, PageSize, CurrentPage, ReturnValues, Parameters);
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().Paged(Columns, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
                 }
+            }
+            foreach (ObjectType ReturnValue in ReturnValues)
+            {
+                if (ReturnValue is IORMObject)
+                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -442,6 +486,11 @@ namespace Utilities.ORM.QueryProviders
         /// List of database configurations
         /// </summary>
         public virtual System.Collections.Generic.List<IDatabase> Databases { get; set; }
+
+        /// <summary>
+        /// AOP manager (used to create objects)
+        /// </summary>
+        public virtual Reflection.AOP.AOPManager Manager { get; set; }
 
         #endregion
     }
