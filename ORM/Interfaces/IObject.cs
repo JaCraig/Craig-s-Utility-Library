@@ -24,22 +24,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.DataTypes;
+using Utilities.Validation.Rules;
 #endregion
 
-namespace Utilities.ORM.Mapping.Interfaces
+namespace Utilities.ORM.Interfaces
 {
     /// <summary>
-    /// Mapping manager
+    /// Object interface
     /// </summary>
-    public interface IMappingManager
+    public interface IObject<IDType>
     {
         #region Properties
 
         /// <summary>
-        /// Mappings
+        /// ID
         /// </summary>
-        ListMapping<Type, IMapping> Mappings { get; set; }
+        IDType ID { get; set; }
+
+        /// <summary>
+        /// Date last modified
+        /// </summary>
+        [Required("DateModifed required")]
+        [Between("1/1/1900", "1/1/2100", "Date modified is not valid")]
+        DateTime DateModified { get; set; }
+
+        /// <summary>
+        /// Date created
+        /// </summary>
+        [Required("DateCreated required")]
+        [Between("1/1/1900", "1/1/2100", "Date created is not valid")]
+        DateTime DateCreated { get; set; }
+
+        /// <summary>
+        /// Is this item active?
+        /// </summary>
+        bool Active { get; set; }
 
         #endregion
     }

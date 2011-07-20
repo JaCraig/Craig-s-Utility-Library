@@ -48,8 +48,8 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// Constructor
         /// </summary>
         /// <param name="Expression">Expression pointing to the ID</param>
-        public StringID(Expression<Func<ClassType, string>> Expression)
-            : base(Expression)
+        public StringID(Expression<Func<ClassType, string>> Expression, IMapping Mapping)
+            : base(Expression, Mapping)
         {
             SetDefaultValue(() => "");
             SetFieldName(Name + "_");
@@ -59,6 +59,41 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         #endregion
 
         #region Functions
+
+        public override void SetupLoadCommands()
+        {
+
+        }
+
+        public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override void JoinsSave(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override void CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
+        {
+
+        }
+
+        public override void CascadeSave(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override IParameter GetAsParameter(ClassType Object)
+        {
+            return null;
+        }
 
         public override IID<ClassType, string> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
         {
@@ -85,6 +120,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IID<ClassType, string> DoNotAllowNullValues()
         {
             this.NotNull = true;
+            Validation.ValidationManager.GetValidator<ClassType>().Required(Expression);
             return (IID<ClassType, string>)this;
         }
 
@@ -128,6 +164,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IID<ClassType, string> SetMaxLength(int MaxLength)
         {
             this.MaxLength = MaxLength;
+            Validation.ValidationManager.GetValidator<ClassType>().MaxLength(Expression, MaxLength);
             return (IID<ClassType, string>)this;
         }
 

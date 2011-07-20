@@ -228,6 +228,8 @@
     <Compile Include="MultiThreading\Worker.cs" />
     <Compile Include="ORM\Aspect\Interfaces\IORMObject.cs" />
     <Compile Include="ORM\Aspect\ORMAspect.cs" />
+    <Compile Include="ORM\Database\DatabaseManager.cs" />
+    <Compile Include="ORM\Interfaces\IObject.cs" />
     <Compile Include="ORM\Mapping\BaseClasses\PropertyBase.cs" />
     <Compile Include="ORM\Mapping\Command.cs" />
     <Compile Include="ORM\Mapping\Interfaces\IID.cs" />
@@ -249,6 +251,7 @@
     <Compile Include="ORM\Mapping\PropertyTypes\Reference.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\StringID.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\StringReference.cs" />
+    <Compile Include="ORM\ObjectBaseClass.cs" />
     <Compile Include="ORM\ORM.cs" />
     <Compile Include="ORM\QueryProviders\Interfaces\IDatabase.cs" />
     <Compile Include="ORM\QueryProviders\Default.cs" />
