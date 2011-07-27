@@ -1,0 +1,13 @@
+syntax: regexp
+ExampleApp/*
+ExampleWebApp/*
+UnitTests/*
+syntax: glob
+Utilities.Caching/*
+Utilities.Cisco/*
+Utilities.Classifier/*
+Utilities.CodeGen/*
+Utilities.*/*
+UtilitiesSplitter/*
+Utilities/obj/*
+Utilities/bin/*
