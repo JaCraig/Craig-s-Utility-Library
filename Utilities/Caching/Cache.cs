@@ -27,7 +27,7 @@ using System.Text;
 using Utilities.Caching.Interfaces;
 #endregion
 
-namespace Utilities.Caching
+namespace Utilities.Caching 
 {
     /// <summary>
     /// Acts as a cache
