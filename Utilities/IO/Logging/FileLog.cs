@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 using System;
 using Utilities.IO.Logging.BaseClasses;
 using Utilities.IO.Logging.Enums;
+using System.IO;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.IO.Logging
@@ -38,17 +40,17 @@ namespace Utilities.IO.Logging
         /// Constructor
         /// </summary>
         public FileLog(string FileName)
-            : base(x => Utilities.IO.FileManager.SaveFile("Logging started at "+DateTime.Now+System.Environment.NewLine,FileName))
+            : base(x => new FileInfo(FileName).Save("Logging started at " + DateTime.Now + System.Environment.NewLine))
         {
-            End = x => Utilities.IO.FileManager.SaveFile("Logging ended at " + DateTime.Now + System.Environment.NewLine, FileName, true);
-            Log.Add(MessageType.Debug, x => Utilities.IO.FileManager.SaveFile(x, FileName, true));
-            Log.Add(MessageType.Error, x => Utilities.IO.FileManager.SaveFile(x, FileName, true));
-            Log.Add(MessageType.General, x => Utilities.IO.FileManager.SaveFile(x, FileName, true));
-            Log.Add(MessageType.Info, x => Utilities.IO.FileManager.SaveFile(x, FileName, true));
-            Log.Add(MessageType.Trace, x => Utilities.IO.FileManager.SaveFile(x, FileName, true));
-            Log.Add(MessageType.Warn, x => Utilities.IO.FileManager.SaveFile(x, FileName, true));
-            FormatMessage = (Message, Type, args) => Type.ToString() 
-                + ": " + (args.Length > 0 ? string.Format(Message, args) : Message) 
+            End = x => new FileInfo(FileName).Append("Logging ended at " + DateTime.Now + System.Environment.NewLine);
+            Log.Add(MessageType.Debug, x => new FileInfo(FileName).Append(x));
+            Log.Add(MessageType.Error, x => new FileInfo(FileName).Append(x));
+            Log.Add(MessageType.General, x => new FileInfo(FileName).Append(x));
+            Log.Add(MessageType.Info, x => new FileInfo(FileName).Append(x));
+            Log.Add(MessageType.Trace, x => new FileInfo(FileName).Append(x));
+            Log.Add(MessageType.Warn, x => new FileInfo(FileName).Append(x));
+            FormatMessage = (Message, Type, args) => Type.ToString()
+                + ": " + (args.Length > 0 ? string.Format(Message, args) : Message)
                 + System.Environment.NewLine;
         }
 

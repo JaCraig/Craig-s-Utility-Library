@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Utilities</RootNamespace>
     <AssemblyName>Utilities</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Utilities.snk</AssemblyOriginatorKeyFile>
@@ -97,23 +97,23 @@
     <Compile Include="Caching\CacheItem.cs" />
     <Compile Include="Caching\Interfaces\ICache.cs" />
     <Compile Include="Caching\Interfaces\ICacheItem.cs" />
-    <Compile Include="Cisco\Directory.cs" />
-    <Compile Include="Cisco\DirectoryEntry.cs" />
-    <Compile Include="Cisco\Error.cs" />
-    <Compile Include="Cisco\Execute.cs" />
-    <Compile Include="Cisco\ExecuteItem.cs" />
-    <Compile Include="Cisco\GraphicMenuItem.cs" />
-    <Compile Include="Cisco\Image.cs" />
-    <Compile Include="Cisco\Input.cs" />
-    <Compile Include="Cisco\InputFlag.cs" />
-    <Compile Include="Cisco\InputItem.cs" />
-    <Compile Include="Cisco\Interfaces\IDisplay.cs" />
-    <Compile Include="Cisco\Interfaces\IMenuItem.cs" />
-    <Compile Include="Cisco\MenuItem.cs" />
-    <Compile Include="Cisco\Menu.cs" />
-    <Compile Include="Cisco\SoftKeyItem.cs" />
-    <Compile Include="Cisco\Status.cs" />
-    <Compile Include="Cisco\Text.cs" />
+    <Compile Include="FileFormats\Cisco\Directory.cs" />
+    <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
+    <Compile Include="FileFormats\Cisco\Error.cs" />
+    <Compile Include="FileFormats\Cisco\Execute.cs" />
+    <Compile Include="FileFormats\Cisco\ExecuteItem.cs" />
+    <Compile Include="FileFormats\Cisco\GraphicMenuItem.cs" />
+    <Compile Include="FileFormats\Cisco\Image.cs" />
+    <Compile Include="FileFormats\Cisco\Input.cs" />
+    <Compile Include="FileFormats\Cisco\InputFlag.cs" />
+    <Compile Include="FileFormats\Cisco\InputItem.cs" />
+    <Compile Include="FileFormats\Cisco\Interfaces\IDisplay.cs" />
+    <Compile Include="FileFormats\Cisco\Interfaces\IMenuItem.cs" />
+    <Compile Include="FileFormats\Cisco\MenuItem.cs" />
+    <Compile Include="FileFormats\Cisco\Menu.cs" />
+    <Compile Include="FileFormats\Cisco\SoftKeyItem.cs" />
+    <Compile Include="FileFormats\Cisco\Status.cs" />
+    <Compile Include="FileFormats\Cisco\Text.cs" />
     <Compile Include="CodeGen\BaseClasses\InputBase.cs" />
     <Compile Include="CodeGen\BaseClasses\ParserBase.cs" />
     <Compile Include="CodeGen\BaseClasses\TemplateBase.cs" />
@@ -208,6 +208,11 @@
     <Compile Include="FileFormats\PipeDelimited\PipeDelimited.cs" />
     <Compile Include="FileFormats\RSSHelper\GUID.cs" />
     <Compile Include="FileFormats\RSSHelper\Thumbnail.cs" />
+    <Compile Include="IO\ExtensionMethods\DirectoryInfoExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\Enums\CopyOptions.cs" />
+    <Compile Include="IO\ExtensionMethods\FileInfoExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\UriExtensions.cs" />
     <Compile Include="IO\Logging\BaseClasses\LogBase.cs" />
     <Compile Include="IO\Logging\ConsoleLog.cs" />
     <Compile Include="IO\Logging\Enums\MessageType.cs" />
@@ -391,7 +396,6 @@
     <Compile Include="Exchange\Exchange.cs" />
     <Compile Include="FileFormats\VCalendar.cs" />
     <Compile Include="FileFormats\VCard.cs" />
-    <Compile Include="IO\FileManager.cs" />
     <Compile Include="Compression\GZip.cs" />
     <Compile Include="FileFormats\FOAF\FOAF.cs" />
     <Compile Include="FileFormats\FOAF\Person.cs" />
@@ -447,7 +451,6 @@
     <Compile Include="FileFormats\RSSHelper\Enclosure.cs" />
     <Compile Include="FileFormats\RSSHelper\Item.cs" />
     <Compile Include="FileFormats\RSSHelper\RSS.cs" />
-    <Compile Include="IO\Serialization.cs" />
     <Compile Include="DataTypes\StringHelper.cs" />
     <Compile Include="Web\Ping\Ping.cs" />
     <Compile Include="Web\REST\REST.cs" />

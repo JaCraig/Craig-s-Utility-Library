@@ -26,7 +26,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using Utilities.IO;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.Web.Youtube
@@ -45,7 +45,7 @@ namespace Utilities.Web.Youtube
         /// <param name="Url">The youtube url for the movie</param>
         public static void GetMovie(string FileLocation, string Url)
         {
-            string Content = FileManager.GetFileContents(new Uri(Url));
+            string Content = new Uri(Url).Read();
             Regex TempRegex = new Regex("img.src = '(?<ImageURL>.*)';");
             Match Match = TempRegex.Match(Content);
             Content = Match.Groups["ImageURL"].Value;
@@ -53,25 +53,26 @@ namespace Utilities.Web.Youtube
             TempRegex=new Regex(@"(?<URLBeginning>.*/)(.*)\?(?<Parameters>.*)");
             Match = TempRegex.Match(Content);
             string VideoLocation = Match.Groups["URLBeginning"].Value + "videoplayback?" + Match.Groups["Parameters"].Value;
-            Stream TempStream;
-            WebClient Client;
-            FileManager.GetFileContents(new Uri(VideoLocation), out TempStream, out Client);
-            BinaryReader TempReader = new BinaryReader(TempStream);
             List<byte> Bytes = new List<byte>();
-            while (true)
+            using (WebClient Client = new WebClient())
             {
-                byte[] Buffer = new byte[1024];
-                int Length = TempReader.Read(Buffer, 0, 1024);
-                if (Length == 0)
-                    break;
-                for (int x = 0; x < Length; ++x)
+                using (Stream TempStream = new Uri(VideoLocation).Read(Client))
                 {
-                    Bytes.Add(Buffer[x]);
+                    BinaryReader TempReader = new BinaryReader(TempStream);
+                    while (true)
+                    {
+                        byte[] Buffer = new byte[1024];
+                        int Length = TempReader.Read(Buffer, 0, 1024);
+                        if (Length == 0)
+                            break;
+                        for (int x = 0; x < Length; ++x)
+                        {
+                            Bytes.Add(Buffer[x]);
+                        }
+                    }
                 }
             }
-            TempStream.Dispose();
-            Client.Dispose();
-            FileManager.SaveFile(Bytes.ToArray(), FileLocation);
+            new FileInfo(FileLocation).Save(Bytes.ToArray());
         }
 
         /// <summary>

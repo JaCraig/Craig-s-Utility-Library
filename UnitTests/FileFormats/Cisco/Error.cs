@@ -19,36 +19,41 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
+using MoonUnit.Attributes;
+using MoonUnit;
 
-namespace Utilities.DataTypes.Patterns
+namespace UnitTests.FileFormats.Cisco
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class Error
     {
-        #region Functions
+        protected Utilities.Cisco.Error Entry = null;
+        protected Utilities.Random.Random Random = null;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
+        public Error()
+        {
+            Entry = new Utilities.Cisco.Error();
+            Random = new Utilities.Random.Random();
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
+        [Test]
+        public void NullTest()
+        {
+            Entry.Number = null;
+            Entry.Text = null;
+            Assert.NotEmpty(Entry.ToString());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        [Test]
+        public void RandomTest()
+        {
+            Entry.Number = Random.NextString(30);
+            Entry.Text = Random.NextString(30);
+            Assert.Contains(Entry.Number, Entry.ToString());
+            Assert.Contains(Entry.Text, Entry.ToString());
+        }
     }
 }

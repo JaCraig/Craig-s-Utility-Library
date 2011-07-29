@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6830C59C-3E74-4F20-BEC5-7A194FC9BE7E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UnitTests</RootNamespace>
+    <AssemblyName>UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
+    <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
+    <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
+    <Compile Include="FileFormats\Cisco\Directory.cs" />
+    <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
+    <Compile Include="FileFormats\Cisco\Error.cs" />
+    <Compile Include="FileFormats\Cisco\Execute.cs" />
+    <Compile Include="FileFormats\Cisco\ExecuteItem.cs" />
+    <Compile Include="FileFormats\Cisco\GraphicMenuItem.cs" />
+    <Compile Include="FileFormats\Cisco\Image.cs" />
+    <Compile Include="FileFormats\Cisco\Input.cs" />
+    <Compile Include="FileFormats\Cisco\InputItem.cs" />
+    <Compile Include="FileFormats\Cisco\Menu.cs" />
+    <Compile Include="FileFormats\Cisco\MenuItem.cs" />
+    <Compile Include="FileFormats\Cisco\SoftKeyItem.cs" />
+    <Compile Include="FileFormats\Cisco\Status.cs" />
+    <Compile Include="FileFormats\Cisco\Text.cs" />
+    <Compile Include="IO\ExtensionMethods\Directory.cs" />
+    <Compile Include="IO\ExtensionMethods\File.cs" />
+    <Compile Include="IO\ExtensionMethods\Serialization.cs" />
+    <Compile Include="IO\ExtensionMethods\UriTest.cs" />
+    <Compile Include="IO\Logging\ConsoleLog.cs" />
+    <Compile Include="IO\Logging\FileLog.cs" />
+    <Compile Include="IO\Logging\LoggingManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MoonUnit\MoonUnit\MoonUnit.csproj">
+      <Project>{334111AB-581F-4680-8CA7-BF7BFDB2D34B}</Project>
+      <Name>MoonUnit %28MoonUnit\MoonUnit%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{57A7AF88-994B-46A5-BB9D-46ED06757B3F}</Project>
+      <Name>Utilities %28Utilities\Utilities%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Testing\Test.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Key.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

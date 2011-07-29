@@ -19,36 +19,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
 
-namespace Utilities.DataTypes.Patterns
+using MoonUnit.Attributes;
+using Utilities.DataTypes.Comparison;
+using MoonUnit;
+
+namespace UnitTests.DataTypes.Comparison
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class GenericEqualityComparer
     {
-        #region Functions
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        [Test]
+        public void Compare()
+        {
+            GenericEqualityComparer<string> Comparer = new GenericEqualityComparer<string>();
+            Assert.True(Comparer.Equals("A", "A"));
+            Assert.False(Comparer.Equals("A", "B"));
+            Assert.False(Comparer.Equals("B", "A"));
+        }
     }
 }

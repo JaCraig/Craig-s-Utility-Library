@@ -24,31 +24,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
 #endregion
 
-namespace Utilities.DataTypes.Patterns
+namespace Utilities.IO.ExtensionMethods.Enums
 {
     /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
+    /// Options used in directory copying
     /// </summary>
-    public interface IFluentInterface
+    public enum CopyOptions
     {
-        #region Functions
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        CopyIfNewer,
+        CopyAlways,
+        DoNotOverwrite
     }
 }

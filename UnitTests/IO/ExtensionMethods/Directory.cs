@@ -19,36 +19,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
+using System.IO;
+using MoonUnit;
+using MoonUnit.Attributes;
+using Utilities.IO.ExtensionMethods;
 
-namespace Utilities.DataTypes.Patterns
+namespace UnitTests.IO.ExtensionMethods
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class Directory : IDisposable
     {
-        #region Functions
+        public Directory()
+        {
+            new DirectoryInfo(@".\Testing").Create();
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
+        [Test]
+        public void DeleteAll()
+        {
+            new DirectoryInfo(@".\Testing").DeleteAll();
+            Assert.False(new DirectoryInfo(@".\Testing").Exists);
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
+        [Test]
+        public void CopyTo()
+        {
+            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
+            Assert.True(new DirectoryInfo(@".\Testing").Exists);
+            Assert.Equal(new DirectoryInfo(@".\Testing").Size(), new DirectoryInfo(@"..\..\Data\Testing").Size());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
+        [Test]
+        public void Size()
+        {
+            Assert.Equal(20, new DirectoryInfo(@"..\..\Data\Testing").Size());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        public void Dispose()
+        {
+            new DirectoryInfo(@".\Testing").DeleteAll();
+        }
     }
 }

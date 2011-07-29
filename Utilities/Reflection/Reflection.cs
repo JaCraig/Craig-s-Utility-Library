@@ -26,6 +26,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 using Utilities.DataTypes;
 using Utilities.IO;
 #endregion
@@ -176,7 +177,7 @@ namespace Utilities.Reflection
         public static System.Collections.Generic.List<Assembly> GetAssembliesFromDirectory(string Directory, bool Recursive = false)
         {
             System.Collections.Generic.List<Assembly> ReturnList = new System.Collections.Generic.List<Assembly>();
-            System.Collections.Generic.List<FileInfo> Files = FileManager.FileList(Directory, Recursive);
+            System.Collections.Generic.List<FileInfo> Files = new DirectoryInfo(Directory).GetFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
             foreach (FileInfo File in Files)
             {
                 if (File.Extension.Equals(".dll", StringComparison.CurrentCultureIgnoreCase))
@@ -837,7 +838,7 @@ namespace Utilities.Reflection
         public static System.Collections.Generic.List<Assembly> LoadAssembliesFromDirectory(string Directory, bool Recursive = false)
         {
             System.Collections.Generic.List<Assembly> ReturnValues = new System.Collections.Generic.List<Assembly>();
-            System.Collections.Generic.List<FileInfo> Files = Utilities.IO.FileManager.FileList(Directory, Recursive, ".dll");
+            System.Collections.Generic.List<FileInfo> Files = new DirectoryInfo(Directory).GetFiles("*.dll", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
             foreach (FileInfo File in Files)
             {
                 ReturnValues.Add(LoadAssembly(File.FullName));

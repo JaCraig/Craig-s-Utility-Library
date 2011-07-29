@@ -28,6 +28,7 @@ using System.Drawing.Imaging;
 using Utilities.IO;
 using Utilities.Math;
 using Utilities.Media.Image.Procedural;
+using System.IO;
 #endregion
 
 namespace Utilities.Media.Image
@@ -1201,7 +1202,7 @@ namespace Utilities.Media.Image
         /// <returns>Returns the extracted icon</returns>
         public static Bitmap ExtractIcon(string FileName)
         {
-            if (FileManager.FileExists(FileName))
+            if (new FileInfo(FileName).Exists)
             {
                 return System.Drawing.Icon.ExtractAssociatedIcon(FileName).ToBitmap();
             }

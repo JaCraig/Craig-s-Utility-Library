@@ -19,36 +19,52 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
+using MoonUnit.Attributes;
+using MoonUnit;
 
-namespace Utilities.DataTypes.Patterns
+namespace UnitTests.FileFormats.Cisco
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class Text
     {
-        #region Functions
+        protected Utilities.Cisco.Text Entry = null;
+        protected Utilities.Random.Random Random = null;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
+        public Text()
+        {
+            Entry = new Utilities.Cisco.Text();
+            Random = new Utilities.Random.Random();
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
+        [Test]
+        public void NullTest()
+        {
+            Entry.SoftKeys = null;
+            Entry.Content=null;
+            Entry.Prompt = null;
+            Entry.Title = null;
+            Assert.NotEmpty(Entry.ToString());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
+        [Test]
+        public void NullItemTest()
+        {
+            Entry.SoftKeys.Add(null);
+            Assert.NotEmpty(Entry.ToString());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        [Test]
+        public void RandomTest()
+        {
+            Entry.Content = Random.NextString(30);
+            Entry.Prompt = Random.NextString(30);
+            Entry.Title = Random.NextString(30);
+            Assert.Contains(Entry.Content, Entry.ToString());
+            Assert.Contains(Entry.Prompt, Entry.ToString());
+            Assert.Contains(Entry.Title, Entry.ToString());
+        }
     }
 }

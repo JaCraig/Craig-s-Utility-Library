@@ -19,36 +19,38 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
+using MoonUnit.Attributes;
+using MoonUnit;
 
-namespace Utilities.DataTypes.Patterns
+namespace UnitTests.FileFormats.Cisco
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class Execute
     {
-        #region Functions
+        protected Utilities.Cisco.Execute Entry = null;
+        protected Utilities.Random.Random Random = null;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
+        public Execute()
+        {
+            Entry = new Utilities.Cisco.Execute();
+            Random = new Utilities.Random.Random();
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
+        [Test]
+        public void NullTest()
+        {
+            Entry.ExecuteItems=null;
+            Assert.NotEmpty(Entry.ToString());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        [Test]
+        public void NullItemTest()
+        {
+            Entry.ExecuteItems.Add(null);
+            Assert.NotEmpty(Entry.ToString());
+        }
     }
 }

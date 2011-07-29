@@ -19,36 +19,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
+using System.IO;
+using MoonUnit;
+using MoonUnit.Attributes;
+using Utilities.IO.Logging.Enums;
 
-namespace Utilities.DataTypes.Patterns
+namespace UnitTests.IO.Logging
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class ConsoleLog : IDisposable
     {
-        #region Functions
+        public ConsoleLog() { Log = new Utilities.IO.Logging.ConsoleLog(); }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
+        [Test]
+        public void LogMessage()
+        {
+            foreach (MessageType Type in Enum.GetValues(typeof(MessageType)))
+                Assert.DoesNotThrow<Exception>(() => Log.LogMessage("TestMessage", Type));
+            Assert.DoesNotThrow<Exception>(() => Log.LogMessage("TestMessage{0}", MessageType.Debug, "1"));
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
+        public void Dispose() { Log.Dispose(); }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        private Utilities.IO.Logging.ConsoleLog Log { get; set; }
     }
 }

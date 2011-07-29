@@ -19,36 +19,40 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
+using MoonUnit;
+using MoonUnit.Attributes;
+using Utilities.DataTypes.Patterns.BaseClasses;
 
-namespace Utilities.DataTypes.Patterns
+namespace UnitTests.DataTypes.Patterns.BaseClasses
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class Singleton
     {
-        #region Functions
+        [Test]
+        public void Creation()
+        {
+            Assert.DoesNotThrow<Exception>(() => TestClass.Instance.Function());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
+        [Test]
+        public void Creation2()
+        {
+            Assert.Throws<Exception>(() => TestClass2.Instance.Function());
+        }
+    }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
+    public class TestClass : Singleton<TestClass>
+    {
+        private TestClass() { }
+        public void Function() { }
+    }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+    public class TestClass2 : Singleton<TestClass2>
+    {
+        public TestClass2() { }
+        public void Function() { }
     }
 }

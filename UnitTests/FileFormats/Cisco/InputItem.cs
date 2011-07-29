@@ -19,36 +19,45 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
+using MoonUnit.Attributes;
+using MoonUnit;
 
-namespace Utilities.DataTypes.Patterns
+namespace UnitTests.FileFormats.Cisco
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class InputItem
     {
-        #region Functions
+        protected Utilities.Cisco.InputItem Entry = null;
+        protected Utilities.Random.Random Random = null;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
+        public InputItem()
+        {
+            Entry = new Utilities.Cisco.InputItem();
+            Random = new Utilities.Random.Random();
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
+        [Test]
+        public void NullTest()
+        {
+            Entry.DefaultValue = null;
+            Entry.DisplayName = null;
+            Entry.InputFlags = default(Utilities.Cisco.InputFlag);
+            Entry.QueryStringParam = null;
+            Assert.NotEmpty(Entry.ToString());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        [Test]
+        public void RandomTest()
+        {
+            Entry.DefaultValue = Random.NextString(30);
+            Entry.DisplayName = Random.NextString(30);
+            Entry.QueryStringParam = Random.NextString(30);
+            Assert.Contains(Entry.DefaultValue, Entry.ToString());
+            Assert.Contains(Entry.DisplayName, Entry.ToString());
+            Assert.Contains(Entry.QueryStringParam, Entry.ToString());
+        }
     }
 }

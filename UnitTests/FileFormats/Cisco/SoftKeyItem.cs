@@ -19,36 +19,47 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-#endregion
+using MoonUnit.Attributes;
+using MoonUnit;
 
-namespace Utilities.DataTypes.Patterns
+namespace UnitTests.FileFormats.Cisco
 {
-    /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
-    /// </summary>
-    public interface IFluentInterface
+    public class SoftKeyItem
     {
-        #region Functions
+        protected Utilities.Cisco.SoftKeyItem Entry = null;
+        protected Utilities.Random.Random Random = null;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool Equals(object obj);
+        public SoftKeyItem()
+        {
+            Entry = new Utilities.Cisco.SoftKeyItem();
+            Random = new Utilities.Random.Random();
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        int GetHashCode();
+        [Test]
+        public void NullTest()
+        {
+            Entry.Name = null;
+            Entry.Position = 0;
+            Entry.URL = null;
+            Entry.URLDown = null;
+            Assert.NotEmpty(Entry.ToString());
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        Type GetType();
-
-        #endregion
+        [Test]
+        public void RandomTest()
+        {
+            Entry.Name = Random.NextString(30);
+            Entry.URL = Random.NextString(30);
+            Entry.URLDown = Random.NextString(30);
+            Entry.Position = Random.Next(int.MinValue, int.MaxValue);
+            Assert.Contains(Entry.Name, Entry.ToString());
+            Assert.Contains(Entry.URLDown, Entry.ToString());
+            Assert.Contains(Entry.URL, Entry.ToString());
+            Assert.Contains(Entry.Position.ToString(), Entry.ToString());
+        }
     }
 }
