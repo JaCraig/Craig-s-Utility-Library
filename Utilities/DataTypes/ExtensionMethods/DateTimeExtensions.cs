@@ -21,125 +21,134 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Text;
+using System.Data;
+using System.Data.SqlClient;
 using System.Threading;
-
 #endregion
 
-namespace Utilities.DataTypes
+namespace Utilities.DataTypes.ExtensionMethods
 {
     /// <summary>
-    /// Date related functions
+    /// DateTime extension methods
     /// </summary>
-    public static class DateHelper
+    public static class DateTimeExtensions
     {
-        #region Static Public Functions
+        #region Extension Methods
 
-        /// <summary>
-        /// Determines if two date periods overlap
-        /// </summary>
-        /// <param name="Start1">Start of period 1</param>
-        /// <param name="End1">End of period 1</param>
-        /// <param name="Start2">Start of period 2</param>
-        /// <param name="End2">End of period 2</param>
-        /// <returns>True if they overlap, false otherwise</returns>
-        public static bool DatePeriodsOverlap(DateTime Start1, DateTime End1, DateTime Start2, DateTime End2)
-        {
-            if (Start1 == null)
-                throw new ArgumentNullException("Start1");
-            if (Start2 == null)
-                throw new ArgumentNullException("Start2");
-            if (End1 == null)
-                throw new ArgumentNullException("End1");
-            if (End2 == null)
-                throw new ArgumentNullException("End2");
-            return ((Start1 >= Start2 && Start1 < End2) || (End1 <= End2 && End1 > Start2) || (Start1 <= Start2 && End1 >= End2));
-        }
+        #region IsInFuture
 
         /// <summary>
         /// Determines if the date is some time in the future
         /// </summary>
         /// <param name="Date">Date to check</param>
         /// <returns>True if it is, false otherwise</returns>
-        public static bool IsInFuture(DateTime Date)
+        public static bool IsInFuture(this DateTime Date)
         {
             if (Date == null)
                 throw new ArgumentNullException("Date");
             return DateTime.Now < Date;
         }
 
+        #endregion
+
+        #region IsInPast
+
         /// <summary>
         /// Determines if the date is some time in the past
         /// </summary>
         /// <param name="Date">Date to check</param>
         /// <returns>True if it is, false otherwise</returns>
-        public static bool IsInPast(DateTime Date)
+        public static bool IsInPast(this DateTime Date)
         {
             if (Date == null)
                 throw new ArgumentNullException("Date");
             return DateTime.Now > Date;
         }
 
+        #endregion
+
+        #region DaysLeftInMonth
+
         /// <summary>
         /// Gets the number of days left in the month based on the date passed in
         /// </summary>
         /// <param name="Date">The date to check against</param>
         /// <returns>The number of days left in a month</returns>
-        public static int DaysLeftInMonth(DateTime Date)
+        public static int DaysLeftInMonth(this DateTime Date)
         {
             if (Date == null)
                 throw new ArgumentNullException("Date");
             return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInMonth(Date.Year, Date.Month) - Date.Day;
         }
 
+        #endregion
+
+        #region DaysLeftInYear
+
         /// <summary>
         /// Gets the number of days left in a year based on the date passed in
         /// </summary>
         /// <param name="Date">The date to check against</param>
         /// <returns>The number of days left in a year</returns>
-        public static int DaysLeftInYear(DateTime Date)
+        public static int DaysLeftInYear(this DateTime Date)
         {
             if (Date == null)
                 throw new ArgumentNullException("Date");
             return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInYear(Date.Year) - Date.DayOfYear;
         }
 
+        #endregion
+
+        #region DaysLeftInWeek
+
         /// <summary>
         /// Gets the number of days left in a week
         /// </summary>
         /// <param name="Date">The date to check against</param>
         /// <returns>The number of days left in a week</returns>
-        public static int DaysLeftInWeek(DateTime Date)
+        public static int DaysLeftInWeek(this DateTime Date)
         {
             if (Date == null)
                 throw new ArgumentNullException("Date");
-            return 7 - DataTypeConversion.DayToInt(Date.DayOfWeek.ToString());
+            return 7 - ((int)Date.DayOfWeek + 1);
         }
+
+        #endregion
+
+        #region IsWeekDay
 
         /// <summary>
         /// Determines if this is a week day
         /// </summary>
         /// <param name="Date">Date to check against</param>
         /// <returns>Whether this is a week day or not</returns>
-        public static bool IsWeekDay(DateTime Date)
+        public static bool IsWeekDay(this DateTime Date)
         {
             if (Date == null)
                 throw new ArgumentNullException("Date");
-            if (DataTypeConversion.DayToInt(Date.DayOfWeek.ToString()) < 6)
+            if ((int)Date.DayOfWeek < 6 && (int)Date.DayOfWeek > 0)
                 return true;
             return false;
         }
+
+        #endregion
+
+        #region IsWeekEnd
 
         /// <summary>
         /// Determines if this is a week end
         /// </summary>
         /// <param name="Date">Date to check against</param>
         /// <returns>Whether this is a week end or not</returns>
-        public static bool IsWeekEnd(DateTime Date)
+        public static bool IsWeekEnd(this DateTime Date)
         {
             if (Date == null)
                 throw new ArgumentNullException("Date");
             return !IsWeekDay(Date);
         }
+
+        #endregion
 
         #endregion
     }

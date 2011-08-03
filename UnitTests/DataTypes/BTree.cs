@@ -25,41 +25,44 @@ using System.Linq;
 using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.DataTypes;
 
-namespace UnitTests.DataTypes.Patterns.BaseClasses
+namespace UnitTests.DataTypes
 {
-    public class Singleton
+    public class BTree
     {
         [Test]
         public void Creation()
         {
-            Assert.DoesNotThrow<Exception>(() => TestClass.Instance.Function());
+            BinaryTree<int> Tree = new BinaryTree<int>();
+            Tree.Add(1);
+            Tree.Add(2);
+            Tree.Add(0);
+            Tree.Add(-1);
+            Assert.Equal(-1, Tree.MinValue);
+            Assert.Equal(2, Tree.MaxValue);
         }
 
         [Test]
-        public void Creation2()
+        public void Random()
         {
-            Assert.Throws<Exception>(() => TestClass2.Instance.Function());
+            BinaryTree<int> Tree = new BinaryTree<int>();
+            System.Collections.Generic.List<int> Values = new System.Collections.Generic.List<int>();
+            Random Rand = new Random();
+            for (int x = 0; x < 10; ++x)
+            {
+                int Value = Rand.Next();
+                Values.Add(Value);
+                Tree.Add(Value);
+            }
+            for (int x = 0; x < 10; ++x)
+            {
+                Assert.Contains(Values[x], Tree);
+            }
+            Values.Sort();
+            StringBuilder Builder = new StringBuilder();
+            Values.ForEach((x) => Builder.Append(x.ToString() + " "));
+            Assert.Equal(Builder.ToString(), Tree.ToString());
         }
-
-        [Test]
-        public void EqualityTest()
-        {
-            TestClass Item = TestClass.Instance;
-            Assert.Same(Item, TestClass.Instance);
-        }
-    }
-
-    public class TestClass : Singleton<TestClass>
-    {
-        private TestClass() { }
-        public void Function() { }
-    }
-
-    public class TestClass2 : Singleton<TestClass2>
-    {
-        public TestClass2() { }
-        public void Function() { }
     }
 }

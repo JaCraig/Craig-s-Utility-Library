@@ -25,41 +25,35 @@ using System.Linq;
 using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.DataTypes.Patterns;
 
-namespace UnitTests.DataTypes.Patterns.BaseClasses
+namespace UnitTests.DataTypes.Patterns
 {
-    public class Singleton
+    public class Factory
     {
         [Test]
-        public void Creation()
+        public void Register()
         {
-            Assert.DoesNotThrow<Exception>(() => TestClass.Instance.Function());
+            Factory<string, int> FactoryObject = new Factory<string, int>();
+            FactoryObject.Register("A", 1);
+            Assert.True(FactoryObject.Exists("A"));
+            Assert.Equal(1, FactoryObject.Create("A"));
         }
 
         [Test]
-        public void Creation2()
+        public void Register2()
         {
-            Assert.Throws<Exception>(() => TestClass2.Instance.Function());
+            Factory<string, int> FactoryObject = new Factory<string, int>();
+            FactoryObject.Register("A", () => 1);
+            Assert.True(FactoryObject.Exists("A"));
+            Assert.Equal(1, FactoryObject.Create("A"));
         }
 
         [Test]
-        public void EqualityTest()
+        public void Register3()
         {
-            TestClass Item = TestClass.Instance;
-            Assert.Same(Item, TestClass.Instance);
+            Factory<string, int> FactoryObject = new Factory<string, int>();
+            Assert.False(FactoryObject.Exists("A"));
         }
-    }
-
-    public class TestClass : Singleton<TestClass>
-    {
-        private TestClass() { }
-        public void Function() { }
-    }
-
-    public class TestClass2 : Singleton<TestClass2>
-    {
-        public TestClass2() { }
-        public void Function() { }
     }
 }

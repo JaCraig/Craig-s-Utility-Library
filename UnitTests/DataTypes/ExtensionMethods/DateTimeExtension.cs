@@ -25,41 +25,53 @@ using System.Linq;
 using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Data;
 
-namespace UnitTests.DataTypes.Patterns.BaseClasses
+namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class Singleton
+    public class DateTimeExtension
     {
         [Test]
-        public void Creation()
+        public void IsInFutureTest()
         {
-            Assert.DoesNotThrow<Exception>(() => TestClass.Instance.Function());
+            Assert.True(new DateTime(2100, 1, 1).IsInFuture());
         }
 
         [Test]
-        public void Creation2()
+        public void IsInPastTest()
         {
-            Assert.Throws<Exception>(() => TestClass2.Instance.Function());
+            Assert.True(new DateTime(1900, 1, 1).IsInPast());
         }
 
         [Test]
-        public void EqualityTest()
+        public void DaysLeftInMonthTest()
         {
-            TestClass Item = TestClass.Instance;
-            Assert.Same(Item, TestClass.Instance);
+            Assert.Equal(29, new DateTime(1999, 1, 2).DaysLeftInMonth());
         }
-    }
 
-    public class TestClass : Singleton<TestClass>
-    {
-        private TestClass() { }
-        public void Function() { }
-    }
+        [Test]
+        public void DaysLeftInYearTest()
+        {
+            Assert.Equal(363, new DateTime(1999, 1, 2).DaysLeftInYear());
+        }
 
-    public class TestClass2 : Singleton<TestClass2>
-    {
-        public TestClass2() { }
-        public void Function() { }
+        [Test]
+        public void DaysLeftInWeekTest()
+        {
+            Assert.Equal(0, new DateTime(1999, 1, 2).DaysLeftInWeek());
+        }
+
+        [Test]
+        public void IsWeekDayTest()
+        {
+            Assert.False(new DateTime(1999, 1, 2).IsWeekDay());
+        }
+
+        [Test]
+        public void IsWeekEndTest()
+        {
+            Assert.True(new DateTime(1999, 1, 2).IsWeekEnd());
+        }
     }
 }

@@ -25,41 +25,26 @@ using System.Linq;
 using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.DataTypes;
 
-namespace UnitTests.DataTypes.Patterns.BaseClasses
+namespace UnitTests.DataTypes
 {
-    public class Singleton
+    public class Bag
     {
         [Test]
-        public void Creation()
+        public void RandomTest()
         {
-            Assert.DoesNotThrow<Exception>(() => TestClass.Instance.Function());
+            Bag<string> BagObject = new Bag<string>();
+            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            for (int x = 0; x < 10; ++x)
+            {
+                string Value = Rand.NextString(10);
+                int Count = Rand.Next(1, 10);
+                for(int y=0;y<Count;++y)
+                    BagObject.Add(Value);
+                Assert.Equal(Count, BagObject[Value]);
+            }
+            Assert.Equal(10, BagObject.Count);
         }
-
-        [Test]
-        public void Creation2()
-        {
-            Assert.Throws<Exception>(() => TestClass2.Instance.Function());
-        }
-
-        [Test]
-        public void EqualityTest()
-        {
-            TestClass Item = TestClass.Instance;
-            Assert.Same(Item, TestClass.Instance);
-        }
-    }
-
-    public class TestClass : Singleton<TestClass>
-    {
-        private TestClass() { }
-        public void Function() { }
-    }
-
-    public class TestClass2 : Singleton<TestClass2>
-    {
-        public TestClass2() { }
-        public void Function() { }
     }
 }

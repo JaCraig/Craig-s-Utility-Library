@@ -46,9 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\Bag.cs" />
+    <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
+    <Compile Include="DataTypes\DateSpan.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\TypeConversion.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ValueType.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
+    <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="FileFormats\Cisco\Directory.cs" />
     <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
     <Compile Include="FileFormats\Cisco\Error.cs" />

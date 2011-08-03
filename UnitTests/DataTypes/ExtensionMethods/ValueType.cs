@@ -25,41 +25,42 @@ using System.Linq;
 using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Data;
 
-namespace UnitTests.DataTypes.Patterns.BaseClasses
+namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class Singleton
+    public class ValueType
     {
         [Test]
-        public void Creation()
+        public void Base64Test()
         {
-            Assert.DoesNotThrow<Exception>(() => TestClass.Instance.Function());
+            string Value = "ASDF";
+            Assert.Equal("ASDF", Value.ToBase64().FromBase64());
+            Assert.Equal("QVNERg==", Value.ToBase64());
         }
 
         [Test]
-        public void Creation2()
+        public void ByteArrayTest()
         {
-            Assert.Throws<Exception>(() => TestClass2.Instance.Function());
+            string Value = "ASDF";
+            Assert.Equal("ASDF", Value.ToByteArray().ToEncodedString());
         }
 
         [Test]
-        public void EqualityTest()
+        public void BoolTest()
         {
-            TestClass Item = TestClass.Instance;
-            Assert.Same(Item, TestClass.Instance);
+            int Value=1;
+            Assert.True(Value.ToBool());
+            Assert.Equal(1, Value.ToBool().ToInt());
         }
-    }
 
-    public class TestClass : Singleton<TestClass>
-    {
-        private TestClass() { }
-        public void Function() { }
-    }
-
-    public class TestClass2 : Singleton<TestClass2>
-    {
-        public TestClass2() { }
-        public void Function() { }
+        [Test]
+        public void StringEncodingTest()
+        {
+            string Value = "ASDF";
+            Assert.Equal("ASDF", Value.Encode());
+            Assert.Equal("ASDF", Value.Encode(new ASCIIEncoding(), new UnicodeEncoding()).Encode(new UnicodeEncoding(), new ASCIIEncoding()));
+        }
     }
 }
