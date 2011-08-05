@@ -25,6 +25,7 @@ using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Random
@@ -144,7 +145,7 @@ namespace Utilities.Random
         public virtual string NextLoremIpsum(int NumberOfWords)
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.Append(StringHelper.ToFirstCharacterUpperCase(Words[Next(Words.Length)]));
+            Builder.Append(Words[Next(Words.Length)].ToFirstCharacterUpperCase());
             for (int x = 1; x < NumberOfWords; ++x)
             {
                 Builder.Append(" ").Append(Words[Next(Words.Length)]);

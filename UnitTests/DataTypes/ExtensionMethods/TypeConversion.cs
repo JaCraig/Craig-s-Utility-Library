@@ -79,5 +79,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(DbType.String, SqlDbType.NVarChar.ToDbType());
             Assert.Equal(DbType.Single, SqlDbType.Real.ToDbType());
         }
+
+        [Test]
+        public void FormatToString()
+        {
+            object TestObject = new DateTime(1999, 1, 1);
+            Assert.Equal("January 1, 1999", TestObject.FormatToString("MMMM d, yyyy"));
+        }
     }
 }

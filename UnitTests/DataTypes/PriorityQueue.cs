@@ -25,27 +25,43 @@ using System.Linq;
 using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes;
 using System.Data;
+using Utilities.Events.EventArgs;
+using Utilities.Random;
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace UnitTests.DataTypes
 {
-    public class ValueType
+    public class PriorityQueue
     {
         [Test]
-        public void BoolTest()
+        public void RandomTest()
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
-        }
-
-        [Test]
-        public void UnicodeTest()
-        {
-            string Data="ASDF";
-            byte[] UnicodeBytes = Data.Encode(new ASCIIEncoding(), new UnicodeEncoding()).ToByteArray(new UnicodeEncoding());
-            Assert.True(UnicodeBytes.IsUnicode());
+            PriorityQueue<int> TestObject = new PriorityQueue<int>();
+            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            int Value=0;
+            for (int x = 0; x < 10; ++x)
+            {
+                Value=Rand.Next();
+                TestObject.Add(x, Value);
+                Assert.Equal(Value, TestObject.Peek());
+            }
+            int HighestValue = TestObject.Peek();
+            for (int x = 9; x >= 0; --x)
+            {
+                Value = Rand.Next();
+                TestObject.Add(x, Value);
+                Assert.Equal(HighestValue, TestObject.Peek());
+            }
+            int Count=0;
+            foreach(int Priority in TestObject.Keys)
+            {
+                foreach(int Item in TestObject[Priority])
+                {
+                    ++Count;
+                }
+            }
+            Assert.Equal(20, Count);
         }
     }
 }

@@ -18,39 +18,69 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
+
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
+using System.Data;
+using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Linq;
+using System.Collections.Generic;
 #endregion
 
-namespace Utilities.DataTypes
+namespace Utilities.DataTypes.ExtensionMethods
 {
     /// <summary>
-    /// Holds helper functions for strings
+    /// String extensions
     /// </summary>
-    public static class StringHelper
+    public static class StringExtensions
     {
-        #region Static Public Functions
+        #region Functions
+
+        #region Encode
 
         /// <summary>
-        /// Calls the object's ToString function passing in the formatting
+        /// Converts a string to a string of another encoding
         /// </summary>
-        /// <param name="Input">Input object</param>
-        /// <param name="Format">Format of the output string</param>
-        /// <returns>The formatted string</returns>
-        public static string FormatToString(object Input, string Format)
+        /// <param name="Input">input string</param>
+        /// <param name="OriginalEncodingUsing">The type of encoding the string is currently using (defaults to ASCII)</param>
+        /// <param name="EncodingUsing">The type of encoding the string is converted into (defaults to UTF8)</param>
+        /// <returns>string of the byte array</returns>
+        public static string Encode(this string Input, Encoding OriginalEncodingUsing = null, Encoding EncodingUsing = null)
         {
-            if (Input == null)
+            if (string.IsNullOrEmpty(Input))
                 return "";
-            if (!string.IsNullOrEmpty(Format))
-            {
-                return (string)StringHelper.CallMethod("ToString", Input, Format);
-            }
-            return Input.ToString();
+            if (OriginalEncodingUsing == null)
+                OriginalEncodingUsing = new ASCIIEncoding();
+            if (EncodingUsing == null)
+                EncodingUsing = new UTF8Encoding();
+            return Input.ToByteArray(OriginalEncodingUsing).ToEncodedString(EncodingUsing);
         }
+
+        #endregion
+
+        #region FromBase64
+
+        /// <summary>
+        /// Converts base 64 string based on the encoding passed in
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <returns>string in the encoding format</returns>
+        public static string FromBase64(this string Input, Encoding EncodingUsing = null)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            if (EncodingUsing == null)
+                EncodingUsing = new UTF8Encoding();
+            byte[] TempArray = Convert.FromBase64String(Input);
+            return EncodingUsing.GetString(TempArray);
+        }
+
+        #endregion
+
+        #region Left
 
         /// <summary>
         /// Gets the first x number of characters from the left hand side
@@ -58,12 +88,16 @@ namespace Utilities.DataTypes
         /// <param name="Input">Input string</param>
         /// <param name="Length">x number of characters to return</param>
         /// <returns>The resulting string</returns>
-        public static string Left(string Input, int Length)
+        public static string Left(this string Input, int Length)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
             return Input.Substring(0, Input.Length > Length ? Length : Input.Length);
         }
+
+        #endregion
+
+        #region Right
 
         /// <summary>
         /// Gets the last x number of characters from the right hand side
@@ -71,7 +105,7 @@ namespace Utilities.DataTypes
         /// <param name="Input">Input string</param>
         /// <param name="Length">x number of characters to return</param>
         /// <returns>The resulting string</returns>
-        public static string Right(string Input, int Length)
+        public static string Right(this string Input, int Length)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
@@ -79,12 +113,55 @@ namespace Utilities.DataTypes
             return Input.Substring(Input.Length - Length, Length);
         }
 
+        #endregion
+
+        #region ToBase64
+
+        /// <summary>
+        /// Converts from the specified encoding to a base 64 string
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="OriginalEncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <returns>Bas64 string</returns>
+        public static string ToBase64(this string Input, Encoding OriginalEncodingUsing = null)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            if (OriginalEncodingUsing == null)
+                OriginalEncodingUsing = new UTF8Encoding();
+            byte[] TempArray = OriginalEncodingUsing.GetBytes(Input);
+            return Convert.ToBase64String(TempArray);
+        }
+
+        #endregion
+
+        #region ToByteArray
+
+        /// <summary>
+        /// Converts a string to a byte array
+        /// </summary>
+        /// <param name="Input">input string</param>
+        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <returns>the byte array representing the string</returns>
+        public static byte[] ToByteArray(this string Input, Encoding EncodingUsing = null)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return null;
+            if (EncodingUsing == null)
+                EncodingUsing = new UTF8Encoding();
+            return EncodingUsing.GetBytes(Input);
+        }
+
+        #endregion
+
+        #region ToFirstCharacterUpperCase
+
         /// <summary>
         /// Takes the first character of an input string and makes it uppercase
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>String with the first character capitalized</returns>
-        public static string ToFirstCharacterUpperCase(string Input)
+        public static string ToFirstCharacterUpperCase(this string Input)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
@@ -100,12 +177,16 @@ namespace Utilities.DataTypes
             return new string(InputChars);
         }
 
+        #endregion
+
+        #region ToSentenceCapitalize
+
         /// <summary>
         /// Capitalizes each sentence within the string
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>String with each sentence capitalized</returns>
-        public static string ToSentenceCapitalize(string Input)
+        public static string ToSentenceCapitalize(this string Input)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
@@ -116,19 +197,23 @@ namespace Utilities.DataTypes
                 if (!string.IsNullOrEmpty(InputStrings[x]))
                 {
                     Regex TempRegex = new Regex(InputStrings[x]);
-                    InputStrings[x] = ToFirstCharacterUpperCase(InputStrings[x]);
+                    InputStrings[x] = InputStrings[x].ToFirstCharacterUpperCase();
                     Input = TempRegex.Replace(Input, InputStrings[x]);
                 }
             }
             return Input;
         }
 
+        #endregion
+
+        #region ToTitleCase
+
         /// <summary>
         /// Capitalizes the first character of each word
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>String with each word capitalized</returns>
-        public static string ToTitleCase(string Input)
+        public static string ToTitleCase(this string Input)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
@@ -136,43 +221,20 @@ namespace Utilities.DataTypes
             string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
             for (int x = 0; x < InputStrings.Length; ++x)
             {
-                if (!string.IsNullOrEmpty(InputStrings[x]))
+                if (!string.IsNullOrEmpty(InputStrings[x])
+                    && InputStrings[x].Length>3)
                 {
                     Regex TempRegex = new Regex(InputStrings[x]);
-                    InputStrings[x] = ToFirstCharacterUpperCase(InputStrings[x]);
+                    InputStrings[x] = InputStrings[x].ToFirstCharacterUpperCase();
                     Input = TempRegex.Replace(Input, InputStrings[x]);
                 }
             }
             return Input;
         }
 
-        /// <summary>
-        /// Checks to see if a string is a valid email address
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>True if it is a valid email address, false otherwise</returns>
-        public static bool IsValidEmail(string Input)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return false;
-            Regex TempReg = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
-                  @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
-                  @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
-            return TempReg.IsMatch(Input);
-        }
+        #endregion
 
-        /// <summary>
-        /// Checks to see if a string is a valid domain
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>True if it is a valid domain, false otherwise</returns>
-        public static bool IsValidDomain(string Input)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return false;
-            Regex TempReg = new Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?");
-            return TempReg.IsMatch(Input);
-        }
+        #region NumberTimesOccurs
 
         /// <summary>
         /// returns the number of times a string occurs within the text
@@ -180,27 +242,30 @@ namespace Utilities.DataTypes
         /// <param name="Input">input text</param>
         /// <param name="Match">The string to match (can be regex)</param>
         /// <returns>The number of times the string occurs</returns>
-        public static int NumberTimesOccurs(string Input, string Match)
+        public static int NumberTimesOccurs(this string Input, string Match)
         {
             if (string.IsNullOrEmpty(Input))
                 return 0;
-            Regex TempRegex = new Regex(Match);
-            return TempRegex.Matches(Input).Count;
+            return new Regex(Match).Matches(Input).Count;
         }
+
+        #endregion
+
+        #region Reverse
 
         /// <summary>
         /// Reverses a string
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>The reverse of the input string</returns>
-        public static string ReverseString(string Input)
+        public static string Reverse(this string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            char[] ArrayValues = Input.ToCharArray();
-            Array.Reverse(ArrayValues);
-            return new string(ArrayValues);
+            return new string(Input.Reverse<char>().ToArray());
         }
+
+        #endregion
+
+        #region FilterOutText
 
         /// <summary>
         /// Removes the filter text from the input.
@@ -208,15 +273,18 @@ namespace Utilities.DataTypes
         /// <param name="Input">Input text</param>
         /// <param name="Filter">Regex expression of text to filter out</param>
         /// <returns>The input text minus the filter text.</returns>
-        public static string FilterOutText(string Input, string Filter)
+        public static string FilterOutText(this string Input, string Filter)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
             if (string.IsNullOrEmpty(Filter))
                 return Input;
-            Regex TempRegex = new Regex(Filter);
-            return TempRegex.Replace(Input, "");
+            return new Regex(Filter).Replace(Input, "");
         }
+
+        #endregion
+
+        #region KeepFilterText
 
         /// <summary>
         /// Removes everything that is not in the filter text from the input.
@@ -224,7 +292,7 @@ namespace Utilities.DataTypes
         /// <param name="Input">Input text</param>
         /// <param name="Filter">Regex expression of text to keep</param>
         /// <returns>The input text minus everything not in the filter text.</returns>
-        public static string KeepFilterText(string Input, string Filter)
+        public static string KeepFilterText(this string Input, string Filter)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
@@ -234,31 +302,41 @@ namespace Utilities.DataTypes
             MatchCollection Collection = TempRegex.Matches(Input);
             StringBuilder Builder = new StringBuilder();
             foreach (Match Match in Collection)
-            {
                 Builder.Append(Match.Value);
-            }
             return Builder.ToString();
         }
+
+        #endregion
+
+        #region AlphaNumericOnly
 
         /// <summary>
         /// Keeps only alphanumeric characters
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>the string only containing alphanumeric characters</returns>
-        public static string AlphaNumericOnly(string Input)
+        public static string AlphaNumericOnly(this string Input)
         {
-            return KeepFilterText(Input, "[a-zA-Z0-9]");
+            return Input.KeepFilterText("[a-zA-Z0-9]");
         }
+
+        #endregion
+
+        #region AlphaCharactersOnly
 
         /// <summary>
         /// Keeps only alpha characters
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>the string only containing alpha characters</returns>
-        public static string AlphaCharactersOnly(string Input)
+        public static string AlphaCharactersOnly(this string Input)
         {
-            return KeepFilterText(Input, "[a-zA-Z]");
+            return Input.KeepFilterText("[a-zA-Z]");
         }
+
+        #endregion
+
+        #region NumericOnly
 
         /// <summary>
         /// Keeps only numeric characters
@@ -266,118 +344,28 @@ namespace Utilities.DataTypes
         /// <param name="Input">Input string</param>
         /// <param name="KeepNumericPunctuation">Determines if decimal places should be kept</param>
         /// <returns>the string only containing numeric characters</returns>
-        public static string NumericOnly(string Input, bool KeepNumericPunctuation)
+        public static string NumericOnly(this string Input, bool KeepNumericPunctuation = true)
         {
-            if (KeepNumericPunctuation)
-            {
-                return KeepFilterText(Input, @"[0-9\.]");
-            }
-            return KeepFilterText(Input, "[0-9]");
+            return KeepNumericPunctuation ? Input.KeepFilterText(@"[0-9\.]") : Input.KeepFilterText("[0-9]");
         }
 
-        /// <summary>
-        /// Gets a list of words that are equivalents in terms of anagrams
-        /// </summary>
-        /// <param name="InputArray">Array of words</param>
-        /// <returns>A dictionary containing words that are equivalent anagrams,
-        /// the key of the dictionary is the alphabetically sorted value for the items in the list
-        /// </returns>
-        public static Dictionary<string, System.Collections.Generic.List<string>> GetAnagramEquivalents(System.Collections.Generic.List<string> InputArray)
-        {
-            if (InputArray == null)
-                throw new ArgumentNullException("InputArray");
-            Dictionary<string, System.Collections.Generic.List<string>> ReturnList = new Dictionary<string, System.Collections.Generic.List<string>>();
-            for (int x = 0; x < InputArray.Count; ++x)
-            {
-                char[] InputCharArray = InputArray[x].ToCharArray();
-                Array.Sort(InputCharArray);
-                string InputString = new string(InputCharArray);
-                if (ReturnList.ContainsKey(InputString))
-                {
-                    ReturnList[InputString].Add(InputArray[x]);
-                }
-                else
-                {
-                    ReturnList.Add(InputString, new System.Collections.Generic.List<string>());
-                    ReturnList[InputString].Add(InputArray[x]);
-                }
-            }
-            return ReturnList;
-        }
+        #endregion
+
+        #region IsUnicode
 
         /// <summary>
         /// Determines if a string is unicode
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>True if it's unicode, false otherwise</returns>
-        public static bool IsUnicode(string Input)
+        public static bool IsUnicode(this string Input)
         {
             if (string.IsNullOrEmpty(Input))
                 return true;
-            UnicodeEncoding Encoding = new UnicodeEncoding();
-            string UniInput = Encoding.GetString(Encoding.GetBytes(Input));
-            ASCIIEncoding Encoding2 = new ASCIIEncoding();
-            string ASCIIInput = Encoding2.GetString(Encoding2.GetBytes(Input));
-            if (UniInput == ASCIIInput)
-                return false;
-            return true;
-        }
-
-        /// <summary>
-        /// Determines if a byte array is unicode
-        /// </summary>
-        /// <param name="Input">Input array</param>
-        /// <returns>True if it's unicode, false otherwise</returns>
-        public static bool IsUnicode(byte[] Input)
-        {
-            if (Input == null)
-                return true;
-            UnicodeEncoding Encoding = new UnicodeEncoding();
-            byte[] UniInput = Encoding.GetBytes(Encoding.GetString(Input));
-            ASCIIEncoding Encoding2 = new ASCIIEncoding();
-            byte[] ASCIIInput = Encoding2.GetBytes(Encoding2.GetString(Input));
-            if (UniInput[0] == ASCIIInput[0])
-                return false;
-            return true;
+            return Input.Encode(new UnicodeEncoding(), new UnicodeEncoding()) != Input.Encode(new ASCIIEncoding(), new ASCIIEncoding());
         }
 
         #endregion
-
-        #region Private Static Functions
-
-        /// <summary>
-        /// Calls a method on an object
-        /// </summary>
-        /// <param name="MethodName">Method name</param>
-        /// <param name="Object">Object to call the method on</param>
-        /// <param name="InputVariables">(Optional)input variables for the method</param>
-        /// <returns>The returned value of the method</returns>
-        private static object CallMethod(string MethodName, object Object, params object[] InputVariables)
-        {
-            if (string.IsNullOrEmpty(MethodName) || Object == null)
-                return null;
-            Type ObjectType = Object.GetType();
-            MethodInfo Method = null;
-            if (InputVariables != null)
-            {
-                Type[] MethodInputTypes = new Type[InputVariables.Length];
-                for (int x = 0; x < InputVariables.Length; ++x)
-                {
-                    MethodInputTypes[x] = InputVariables[x].GetType();
-                }
-                Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
-                if (Method != null)
-                {
-                    return Method.Invoke(Object, InputVariables);
-                }
-            }
-            Method = ObjectType.GetMethod(MethodName);
-            if (Method != null)
-            {
-                return Method.Invoke(Object, null);
-            }
-            return null;
-        }
 
         #endregion
     }

@@ -41,8 +41,8 @@ namespace Utilities.DataTypes
         /// </summary>
         public Vector()
         {
-            Items = new T[DefaultSize];
             DefaultSize = 2;
+            Items = new T[DefaultSize];
         }
 
         /// <summary>
@@ -52,9 +52,8 @@ namespace Utilities.DataTypes
         public Vector(int InitialSize)
         {
             if (InitialSize < 1) throw new ArgumentOutOfRangeException("InitialSize");
-
-            Items = new T[InitialSize];
             DefaultSize = InitialSize;
+            Items = new T[InitialSize];
         }
 
         #endregion
@@ -71,13 +70,9 @@ namespace Utilities.DataTypes
             if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
 
             if (this.NumberItems == this.Items.Length)
-            {
                 Array.Resize<T>(ref this.Items, this.Items.Length * 2);
-            }
             if (index < this.NumberItems)
-            {
                 Array.Copy(this.Items, index, this.Items, index + 1, this.NumberItems - index);
-            }
             this.Items[index] = item;
             ++this.NumberItems;
             EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
@@ -88,9 +83,7 @@ namespace Utilities.DataTypes
             if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
 
             if (index < this.NumberItems)
-            {
                 Array.Copy(this.Items, index + 1, this.Items, index, this.NumberItems - (index + 1));
-            }
             this.Items[this.NumberItems - 1] = default(T);
             --this.NumberItems;
             EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
@@ -150,7 +143,7 @@ namespace Utilities.DataTypes
         public virtual bool Remove(T item)
         {
             int Index = this.IndexOf(item);
-            if (Index > 0)
+            if (Index >= 0)
             {
                 this.RemoveAt(Index);
                 return true;
@@ -165,9 +158,7 @@ namespace Utilities.DataTypes
         public virtual IEnumerator<T> GetEnumerator()
         {
             for (int x = 0; x < this.NumberItems; ++x)
-            {
                 yield return this.Items[x];
-            }
         }
 
         #endregion
@@ -177,9 +168,7 @@ namespace Utilities.DataTypes
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             for (int x = 0; x < this.NumberItems; ++x)
-            {
                 yield return this.Items[x];
-            }
         }
 
         #endregion
@@ -195,7 +184,7 @@ namespace Utilities.DataTypes
         /// Internal list of items
         /// </summary>
         protected T[] Items = null;
-        
+
         /// <summary>
         /// Number of items in the list
         /// </summary>
@@ -204,7 +193,7 @@ namespace Utilities.DataTypes
         #endregion
 
         #region Events
-        
+
         /// <summary>
         /// Event that is fired when the vector is changed
         /// </summary>

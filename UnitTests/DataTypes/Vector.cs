@@ -25,27 +25,37 @@ using System.Linq;
 using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes;
 using System.Data;
+using Utilities.Events.EventArgs;
+using Utilities.Random;
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace UnitTests.DataTypes
 {
-    public class ValueType
+    public class Vector
     {
         [Test]
-        public void BoolTest()
+        public void RandomTest()
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
-        }
-
-        [Test]
-        public void UnicodeTest()
-        {
-            string Data="ASDF";
-            byte[] UnicodeBytes = Data.Encode(new ASCIIEncoding(), new UnicodeEncoding()).ToByteArray(new UnicodeEncoding());
-            Assert.True(UnicodeBytes.IsUnicode());
+            Vector<int> TestObject = new Vector<int>();
+            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            int Value = 0;
+            for (int x = 0; x < 10; ++x)
+            {
+                Value = Rand.Next();
+                TestObject.Add(Value);
+                Assert.Equal(Value, TestObject[x]);
+            }
+            int Count = 0;
+            foreach (int Temp in TestObject)
+            {
+                ++Count;
+            }
+            Assert.Equal(10, Count);
+            TestObject.Remove(TestObject[0]);
+            Assert.Equal(9, TestObject.Count);
+            TestObject.Clear();
+            Assert.Equal(0, TestObject.Count);
         }
     }
 }

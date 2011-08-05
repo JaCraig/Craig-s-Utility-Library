@@ -19,33 +19,54 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+#endregion
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace Utilities.DataTypes.BaseTypes
 {
-    public class ValueType
+    /// <summary>
+    /// Base class used to validate input
+    /// </summary>
+    /// <typeparam name="T">Value type</typeparam>
+    public abstract class Validator<T>
     {
-        [Test]
-        public void BoolTest()
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Value">Value that will be validated</param>
+        public Validator(T Value)
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
+            if (!Validate(Value))
+                throw new ArgumentException("Value is not valid");
+            this.Value = Value;
         }
 
-        [Test]
-        public void UnicodeTest()
-        {
-            string Data="ASDF";
-            byte[] UnicodeBytes = Data.Encode(new ASCIIEncoding(), new UnicodeEncoding()).ToByteArray(new UnicodeEncoding());
-            Assert.True(UnicodeBytes.IsUnicode());
-        }
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Value
+        /// </summary>
+        public virtual T Value { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Validates the value
+        /// </summary>
+        /// <param name="Value">Value to validate</param>
+        /// <returns>True if it is valid, false otherwise</returns>
+        protected abstract bool Validate(T Value);
+
+        #endregion
     }
 }

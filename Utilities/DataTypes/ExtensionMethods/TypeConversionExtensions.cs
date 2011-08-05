@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -34,6 +35,23 @@ namespace Utilities.DataTypes.ExtensionMethods
     public static class TypeConversionExtensions
     {
         #region Functions
+
+        #region FormatToString
+
+        /// <summary>
+        /// Calls the object's ToString function passing in the formatting
+        /// </summary>
+        /// <param name="Input">Input object</param>
+        /// <param name="Format">Format of the output string</param>
+        /// <returns>The formatted string</returns>
+        public static string FormatToString(this object Input, string Format)
+        {
+            if (Input == null)
+                return "";
+            return !string.IsNullOrEmpty(Format) ? (string)CallMethod("ToString", Input, Format) : Input.ToString();
+        }
+
+        #endregion
 
         #region ToSQLDbType
 
@@ -132,7 +150,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             return Type.ToDbType().ToType();
         }
-        
+
         /// <summary>
         /// Converts a DbType value to .Net type
         /// </summary>
@@ -162,6 +180,38 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
+
+        #endregion
+
+        #region Private Static Functions
+
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <returns>The returned value of the method</returns>
+        private static object CallMethod(string MethodName, object Object, params object[] InputVariables)
+        {
+            if (string.IsNullOrEmpty(MethodName) || Object == null)
+                return null;
+            Type ObjectType = Object.GetType();
+            MethodInfo Method = null;
+            if (InputVariables != null)
+            {
+                Type[] MethodInputTypes = new Type[InputVariables.Length];
+                for (int x = 0; x < InputVariables.Length; ++x)
+                    MethodInputTypes[x] = InputVariables[x].GetType();
+                Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+                if (Method != null)
+                    return Method.Invoke(Object, InputVariables);
+            }
+            Method = ObjectType.GetMethod(MethodName);
+            if (Method != null)
+                return Method.Invoke(Object, null);
+            return null;
+        }
 
         #endregion
     }

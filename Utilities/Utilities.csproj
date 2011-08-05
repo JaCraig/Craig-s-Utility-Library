@@ -97,8 +97,13 @@
     <Compile Include="Caching\CacheItem.cs" />
     <Compile Include="Caching\Interfaces\ICache.cs" />
     <Compile Include="Caching\Interfaces\ICacheItem.cs" />
+    <Compile Include="DataTypes\Anagram.cs" />
+    <Compile Include="DataTypes\BaseTypes\Validator.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
+    <Compile Include="DataTypes\Domain.cs" />
+    <Compile Include="DataTypes\EmailAddress.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TypeConversionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ValueTypeExtensions.cs" />
     <Compile Include="FileFormats\Cisco\Directory.cs" />
@@ -157,10 +162,8 @@
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
     <Compile Include="DataTypes\List.cs" />
     <Compile Include="DataTypes\ListMapping.cs" />
-    <Compile Include="DataTypes\Pair.cs" />
     <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />
-    <Compile Include="DataTypes\Triple.cs" />
     <Compile Include="DataTypes\Vector.cs" />
     <Compile Include="Environment\ArgsParser.cs" />
     <Compile Include="Environment\DataTypes\Application.cs" />
@@ -453,7 +456,6 @@
     <Compile Include="FileFormats\RSSHelper\Enclosure.cs" />
     <Compile Include="FileFormats\RSSHelper\Item.cs" />
     <Compile Include="FileFormats\RSSHelper\RSS.cs" />
-    <Compile Include="DataTypes\StringHelper.cs" />
     <Compile Include="Web\Ping\Ping.cs" />
     <Compile Include="Web\REST\REST.cs" />
     <Compile Include="Web\Twitter\Twitter.cs" />

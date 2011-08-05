@@ -35,87 +35,6 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
-        #region Encode
-
-        /// <summary>
-        /// Converts a string to a string of another encoding
-        /// </summary>
-        /// <param name="Input">input string</param>
-        /// <param name="OriginalEncodingUsing">The type of encoding the string is currently using (defaults to ASCII)</param>
-        /// <param name="EncodingUsing">The type of encoding the string is converted into (defaults to UTF8)</param>
-        /// <returns>string of the byte array</returns>
-        public static string Encode(this string Input, Encoding OriginalEncodingUsing = null, Encoding EncodingUsing = null)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            if (OriginalEncodingUsing == null)
-                OriginalEncodingUsing = new ASCIIEncoding();
-            if (EncodingUsing == null)
-                EncodingUsing = new UTF8Encoding();
-            return Input.ToByteArray(OriginalEncodingUsing).ToEncodedString(EncodingUsing);
-        }
-
-        #endregion
-
-        #region FromBase64
-
-        /// <summary>
-        /// Converts base 64 string based on the encoding passed in
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
-        /// <returns>string in the encoding format</returns>
-        public static string FromBase64(this string Input, Encoding EncodingUsing = null)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            if (EncodingUsing == null)
-                EncodingUsing = new UTF8Encoding();
-            byte[] TempArray = Convert.FromBase64String(Input);
-            return EncodingUsing.GetString(TempArray);
-        }
-
-        #endregion
-
-        #region ToBase64
-
-        /// <summary>
-        /// Converts from the specified encoding to a base 64 string
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="OriginalEncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
-        /// <returns>Bas64 string</returns>
-        public static string ToBase64(this string Input, Encoding OriginalEncodingUsing = null)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            if (OriginalEncodingUsing == null)
-                OriginalEncodingUsing = new UTF8Encoding();
-            byte[] TempArray = OriginalEncodingUsing.GetBytes(Input);
-            return Convert.ToBase64String(TempArray);
-        }
-
-        #endregion
-
-        #region ToByteArray
-
-        /// <summary>
-        /// Converts a string to a byte array
-        /// </summary>
-        /// <param name="Input">input string</param>
-        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
-        /// <returns>the byte array representing the string</returns>
-        public static byte[] ToByteArray(this string Input, Encoding EncodingUsing = null)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return null;
-            if (EncodingUsing == null)
-                EncodingUsing = new UTF8Encoding();
-            return EncodingUsing.GetBytes(Input);
-        }
-
-        #endregion
-
         #region ToBool
 
         /// <summary>
@@ -159,6 +78,22 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (EncodingUsing == null)
                 EncodingUsing = new UTF8Encoding();
             return EncodingUsing.GetString(Input);
+        }
+
+        #endregion
+
+        #region IsUnicode
+
+        /// <summary>
+        /// Determines if a byte array is unicode
+        /// </summary>
+        /// <param name="Input">Input array</param>
+        /// <returns>True if it's unicode, false otherwise</returns>
+        public static bool IsUnicode(this byte[] Input)
+        {
+            if (Input == null)
+                return true;
+            return Input.ToEncodedString(new UnicodeEncoding()) != Input.ToEncodedString(new ASCIIEncoding());
         }
 
         #endregion

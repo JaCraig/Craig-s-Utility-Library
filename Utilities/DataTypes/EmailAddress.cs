@@ -18,34 +18,48 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
-
+#region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+using System.Text.RegularExpressions;
+using System.Linq;
+using Utilities.DataTypes.BaseTypes;
+#endregion
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace Utilities.DataTypes
 {
-    public class ValueType
+    /// <summary>
+    /// Email address
+    /// </summary>
+    public class EmailAddress : Validator<string>
     {
-        [Test]
-        public void BoolTest()
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Address">String equivalent of the email address</param>
+        public EmailAddress(string Address)
+            : base(Address)
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
         }
 
-        [Test]
-        public void UnicodeTest()
+        #endregion
+
+        #region Functions
+
+        protected override bool Validate(string Value)
         {
-            string Data="ASDF";
-            byte[] UnicodeBytes = Data.Encode(new ASCIIEncoding(), new UnicodeEncoding()).ToByteArray(new UnicodeEncoding());
-            Assert.True(UnicodeBytes.IsUnicode());
+            if (string.IsNullOrEmpty(Value))
+                return false;
+            Regex TempReg = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
+                  @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
+                  @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+            return TempReg.IsMatch(Value);
         }
+
+        #endregion
     }
 }

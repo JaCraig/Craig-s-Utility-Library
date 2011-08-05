@@ -25,27 +25,27 @@ using System.Linq;
 using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes;
 using System.Data;
+using Utilities.Events.EventArgs;
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace UnitTests.DataTypes
 {
-    public class ValueType
+    public class List
     {
         [Test]
-        public void BoolTest()
+        public void ChangedTest()
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
+            Utilities.DataTypes.List<int> TestObject = new Utilities.DataTypes.List<int>();
+            TestObject.Changed = (x, y) => ItemChanged((Utilities.DataTypes.List<int>)x, y);
+            TestObject.PropertyName = "TestObject";
+            TestObject.Add(10);
         }
 
-        [Test]
-        public void UnicodeTest()
+        private object ItemChanged(Utilities.DataTypes.List<int> x, ChangedEventArgs y)
         {
-            string Data="ASDF";
-            byte[] UnicodeBytes = Data.Encode(new ASCIIEncoding(), new UnicodeEncoding()).ToByteArray(new UnicodeEncoding());
-            Assert.True(UnicodeBytes.IsUnicode());
+            Assert.Equal("TestObject", y.Content);
+            return null;
         }
     }
 }

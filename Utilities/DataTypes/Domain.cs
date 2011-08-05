@@ -18,75 +18,43 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
-
 #region Usings
-
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Linq;
+using Utilities.DataTypes.BaseTypes;
 #endregion
 
 namespace Utilities.DataTypes
 {
     /// <summary>
-    /// Pairs two items together
+    /// Domain
     /// </summary>
-    /// <typeparam name="T1">Type for the left hand side</typeparam>
-    /// <typeparam name="T2">Type for the right hand side</typeparam>
-    public class Pair<T1, T2>
+    public class Domain : Validator<string>
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public Pair()
+        /// <param name="Address">String equivalent of the email address</param>
+        public Domain(string Address)
+            : base(Address)
         {
-
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Left">Left hand side of the pair</param>
-        /// <param name="Right">Right hand side of the pair</param>
-        public Pair(T1 Left, T2 Right)
-        {
-            this.Left = Left;
-            this.Right = Right;
         }
 
         #endregion
 
-        #region Properties
+        #region Functions
 
-        /// <summary>
-        /// Left hand item
-        /// </summary>
-        public virtual T1 Left { get; set; }
-
-        /// <summary>
-        /// Right hand item
-        /// </summary>
-        public virtual T2 Right { get; set; }
-
-        #endregion
-
-        #region Public Overridden Properties
-
-        public override int GetHashCode()
+        protected override bool Validate(string Value)
         {
-            if (Left != null && Right != null)
-            {
-                return Left.GetHashCode() ^ Right.GetHashCode();
-            }
-            return 0;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj != null && obj is Pair<T1, T2>)
-            {
-                return Equals(Left, ((Pair<T1, T2>)obj).Left) && Equals(Right, ((Pair<T1, T2>)obj).Right);
-            }
-            return false;
+            if (string.IsNullOrEmpty(Value))
+                return false;
+            return new Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?").IsMatch(Value);
         }
 
         #endregion
