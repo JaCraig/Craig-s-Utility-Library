@@ -18,48 +18,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
-#region Usings
+
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Linq;
-using Utilities.DataTypes.BaseTypes;
-#endregion
+using System.Text;
+using MoonUnit;
+using MoonUnit.Attributes;
+using Utilities.DataTypes;
 
-namespace Utilities.DataTypes
+namespace UnitTests.AI
 {
-    /// <summary>
-    /// Email address
-    /// </summary>
-    public class EmailAddress : Validator<string>
+    public class Anagram
     {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Address">String equivalent of the email address</param>
-        public EmailAddress(string Address)
-            : base(Address)
+        [Test]
+        public void BasicTest()
         {
+            Utilities.AI.Anagram TestObject = new Utilities.AI.Anagram(new string[] { "bat", "bored", "care" }.ToList());
+            Assert.Equal(1, TestObject.FindAnagrams("tab").Count);
+            Assert.Equal("bat", TestObject.FindAnagrams("tab")[0]);
         }
-
-        #endregion
-
-        #region Functions
-
-        protected override bool Validate(string Value)
-        {
-            if (string.IsNullOrEmpty(Value))
-                return false;
-            Regex TempReg = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
-                  @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
-                  @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
-            return TempReg.IsMatch(Value);
-        }
-
-        #endregion
     }
 }

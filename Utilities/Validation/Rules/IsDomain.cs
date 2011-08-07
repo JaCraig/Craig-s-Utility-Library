@@ -18,54 +18,48 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
-
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Linq;
+using Utilities.Validation.BaseClasses;
+using Utilities.Validation.Exceptions;
 #endregion
 
-namespace Utilities.DataTypes.BaseTypes
+namespace Utilities.Validation
 {
     /// <summary>
-    /// Base class used to validate input
+    /// Is Domain
     /// </summary>
-    /// <typeparam name="T">Value type</typeparam>
-    public abstract class Validator<T>
+    public class IsDomain<ObjectType> : Rule<ObjectType,string>
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Value">Value that will be validated</param>
-        public Validator(T Value)
+        /// <param name="ItemToValidate">Item to validate</param>
+        /// <param name="ErrorMessage">Error message</param>
+        public IsDomain(Func<ObjectType, string> ItemToValidate, string ErrorMessage)
+            : base(ItemToValidate, ErrorMessage)
         {
-            if (!Validate(Value))
-                throw new ArgumentException("Value is not valid");
-            this.Value = Value;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Value
-        /// </summary>
-        public virtual T Value { get; set; }
 
         #endregion
 
         #region Functions
 
-        /// <summary>
-        /// Validates the value
-        /// </summary>
-        /// <param name="Value">Value to validate</param>
-        /// <returns>True if it is valid, false otherwise</returns>
-        protected abstract bool Validate(T Value);
+        public override void Validate(ObjectType Object)
+        {
+            string Value = this.ItemToValidate(Object);
+            if (string.IsNullOrEmpty(Value))
+                return;
+            if(!new Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?").IsMatch(Value))
+                throw new NotValid(ErrorMessage);
+        }
 
         #endregion
     }

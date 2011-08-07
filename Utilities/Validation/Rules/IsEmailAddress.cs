@@ -25,24 +25,26 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
-using Utilities.DataTypes.BaseTypes;
+using Utilities.Validation.BaseClasses;
+using Utilities.Validation.Exceptions;
 #endregion
 
-namespace Utilities.DataTypes
+namespace Utilities.Validation
 {
     /// <summary>
-    /// Domain
+    /// Email address
     /// </summary>
-    public class Domain : Validator<string>
+    public class IsEmailAddress<ObjectType> : Rule<ObjectType, string>
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Address">String equivalent of the email address</param>
-        public Domain(string Address)
-            : base(Address)
+        /// <param name="ItemToValidate">Item to validate</param>
+        /// <param name="ErrorMessage">Error message</param>
+        public IsEmailAddress(Func<ObjectType, string> ItemToValidate, string ErrorMessage)
+            : base(ItemToValidate, ErrorMessage)
         {
         }
 
@@ -50,11 +52,16 @@ namespace Utilities.DataTypes
 
         #region Functions
 
-        protected override bool Validate(string Value)
+        public override void Validate(ObjectType Object)
         {
+            string Value = this.ItemToValidate(Object);
             if (string.IsNullOrEmpty(Value))
-                return false;
-            return new Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?").IsMatch(Value);
+                return;
+            Regex TempReg = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
+                  @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
+                  @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+            if(!TempReg.IsMatch(Value))
+                throw new NotValid(ErrorMessage);
         }
 
         #endregion

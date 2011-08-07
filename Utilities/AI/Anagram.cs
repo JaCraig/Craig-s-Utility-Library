@@ -24,9 +24,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.DataTypes;
 #endregion
 
-namespace Utilities.DataTypes
+namespace Utilities.AI
 {
     /// <summary>
     /// Anagram finder
@@ -39,7 +40,7 @@ namespace Utilities.DataTypes
         /// Constructor
         /// </summary>
         /// <param name="DictionaryOfWords">Dictionary of words to use to find anagrams</param>
-        public Anagram(List<string> DictionaryOfWords)
+        public Anagram(System.Collections.Generic.List<string> DictionaryOfWords)
         {
             if (DictionaryOfWords == null)
                 throw new ArgumentNullException("DictionaryOfWords");
@@ -55,7 +56,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Dictionary of words used to find anagrams
         /// </summary>
-        public virtual List<string> InitialDictionary { get; set; }
+        public virtual System.Collections.Generic.List<string> InitialDictionary { get; set; }
 
         /// <summary>
         /// Dictionary of anagram equivalents found in the original dictionary
@@ -89,9 +90,9 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Word">Word to check</param>
         /// <returns>A list of words that are anagrams of the word entered</returns>
-        public virtual List<string> FindAnagrams(string Word)
+        public virtual System.Collections.Generic.List<string> FindAnagrams(string Word)
         {
-            List<string> ReturnValues = new List<string>();
+            System.Collections.Generic.List<string> ReturnValues = new System.Collections.Generic.List<string>();
             ReturnValues.AddRange(DictionaryOfAnagrams[GetAnagramKey(Word)]);
             return ReturnValues;
         }
