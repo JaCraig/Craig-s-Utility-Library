@@ -19,36 +19,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using Utilities.Encryption.ExtensionMethods;
 using System.Security.Cryptography;
-#endregion
 
-namespace Utilities.Encryption
+namespace UnitTests.Encryption.ExtensionMethods
 {
-    /// <summary>
-    /// Utility class to handle MD5 functions
-    /// </summary>
-    public static class MD5
+    public class SymmetricEncryption
     {
-        #region Public Static Functions
-
-        /// <summary>
-        /// Computes a hash using MD5
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>A hash of the input string using MD5</returns>
-        public static string ComputeHash(string Input)
+        [Test]
+        public void BasicTest()
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
-            MD5CryptoServiceProvider MD5 = new MD5CryptoServiceProvider();
-            byte[] InputArray = System.Text.Encoding.ASCII.GetBytes(Input);
-            byte[] HashedArray = MD5.ComputeHash(InputArray);
-            MD5.Clear();
-            return BitConverter.ToString(HashedArray).Replace("-","");
+            string Data = "This is a test of the system.";
+            Assert.NotEqual("This is a test of the system.", Data.Encrypt("Babysfirstkey"));
+            Assert.Equal("This is a test of the system.", Data.Encrypt("Babysfirstkey").Decrypt("Babysfirstkey"));
+            Assert.Equal("This is a test of the system.", Data.Encrypt("Babysfirstkey", AlgorithmUsing: new DESCryptoServiceProvider(), KeySize: 64).Decrypt("Babysfirstkey", AlgorithmUsing: new DESCryptoServiceProvider(), KeySize: 64));
+            Assert.Equal("This is a test of the system.", Data.Encrypt("Babysfirstkey", AlgorithmUsing: new TripleDESCryptoServiceProvider(), KeySize: 192).Decrypt("Babysfirstkey", AlgorithmUsing: new TripleDESCryptoServiceProvider(), KeySize: 192));
         }
-
-        #endregion
     }
 }

@@ -19,36 +19,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.Encryption.ExtensionMethods;
-using System.Security.Cryptography;
-#endregion
+using System.IO;
+using MoonUnit;
+using MoonUnit.Attributes;
 
-namespace Utilities.Web.Gravatar
+namespace UnitTests.Events
 {
-    /// <summary>
-    /// Helper for getting Gravatar images
-    /// </summary>
-    public static class Gravatar
+    public class EventHelper
     {
-        #region Public Static Functions
-
-        /// <summary>
-        /// Gets a Gravatar image link
-        /// </summary>
-        /// <param name="Email">Email identifier</param>
-        /// <param name="AppendJPG">Should jpg be appended to the link?</param>
-        /// <returns>The full path to the Gravatar image link</returns>
-        public static string GetImageLink(string Email,bool AppendJPG=false)
+        [Test]
+        public void NullTest()
         {
-            string Ending = AppendJPG ? ".jpg" : "";
-            return "http://www.gravatar.com/avatar/" + Email.Trim().ToLower().Hash(new MD5CryptoServiceProvider()).ToLower() + Ending;
+            Assert.DoesNotThrow<Exception>(()=>Utilities.Events.EventHelper.Raise("ASD", null));
+            Assert.DoesNotThrow<Exception>(() => Utilities.Events.EventHelper.Raise(new EventArgs(), null));
+            Assert.DoesNotThrow<Exception>(()=>Utilities.Events.EventHelper.Raise(null,this,new EventArgs()));
         }
 
-        #endregion
+        [Test]
+        public void BasicTest()
+        {
+            Utilities.Events.EventHelper.Raise("ASD", (x) => Assert.Equal("ASD", x));
+            Assert.NotNull(Utilities.Events.EventHelper.Raise(new EventArgs(), (x) => x == null ? null : x));
+            Utilities.Events.EventHelper.Raise((x, y) => Assert.Same(this, x), this, new EventArgs());
+        }
     }
 }

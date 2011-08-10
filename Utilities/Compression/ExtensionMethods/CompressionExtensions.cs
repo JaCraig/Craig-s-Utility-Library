@@ -23,50 +23,58 @@ THE SOFTWARE.*/
 using System.IO;
 using System.IO.Compression;
 using System;
+using Utilities.Compression.ExtensionMethods.Enums;
 #endregion
 
-namespace Utilities.Compression
+namespace Utilities.Compression.ExtensionMethods
 {
     /// <summary>
-    /// Utility class used for compressing data
-    /// using deflate.
+    /// Extension methods dealing with compression
     /// </summary>
-    public static class Deflate
+    public static class CompressionExtensions
     {
-        #region Static Functions
+        #region Functions
+
+        #region Compress
 
         /// <summary>
-        /// Compresses data
+        /// Compresses the data using the specified compression type
         /// </summary>
-        /// <param name="Bytes">The byte array to be compressed</param>
-        /// <returns>A byte array of compressed data</returns>
-        public static byte[] Compress(byte[] Bytes)
+        /// <param name="Data">Data to compress</param>
+        /// <param name="CompressionType">Compression type</param>
+        /// <returns>The compressed data</returns>
+        public static byte[] Compress(this byte[] Data, CompressionType CompressionType = CompressionType.Deflate)
         {
-            if (Bytes == null)
-                throw new ArgumentNullException("Bytes");
+            if (Data == null)
+                throw new ArgumentNullException("Data");
             using (MemoryStream Stream = new MemoryStream())
             {
-                using (DeflateStream ZipStream = new DeflateStream(Stream, CompressionMode.Compress, true))
+                using (Stream ZipStream = GetStream(Stream, CompressionMode.Compress, CompressionType))
                 {
-                    ZipStream.Write(Bytes, 0, Bytes.Length);
+                    ZipStream.Write(Data, 0, Data.Length);
                     ZipStream.Close();
                     return Stream.ToArray();
                 }
             }
         }
 
+        #endregion
+
+        #region Decompress
+
         /// <summary>
-        /// Decompresses data
+        /// Decompresses the byte array that is sent in
         /// </summary>
-        /// <param name="Bytes">The byte array to be decompressed</param>
-        /// <returns>A byte array of uncompressed data</returns>
-        public static byte[] Decompress(byte[] Bytes)
+        /// <param name="Data">Data to decompress</param>
+        /// <param name="CompressionType">The compression type used</param>
+        /// <returns>The data decompressed</returns>
+        public static byte[] Decompress(this byte[] Data, CompressionType CompressionType = CompressionType.Deflate)
         {
-            if (Bytes == null)
-                throw new ArgumentNullException("Bytes");
+            if (Data == null)
+                throw new ArgumentNullException("Data");
             using (MemoryStream Stream = new MemoryStream())
             {
-                using (DeflateStream ZipStream = new DeflateStream(new MemoryStream(Bytes), CompressionMode.Decompress, true))
+                using (Stream ZipStream = GetStream(new MemoryStream(Data), CompressionMode.Decompress, CompressionType))
                 {
                     byte[] Buffer = new byte[4096];
                     while (true)
@@ -80,6 +88,20 @@ namespace Utilities.Compression
                 }
             }
         }
+
+        #endregion
+
+        #region GetStream
+
+        private static Stream GetStream(MemoryStream Stream, CompressionMode Mode, CompressionType CompressionType)
+        {
+            if (CompressionType == CompressionType.Deflate)
+                return new DeflateStream(Stream, Mode, true);
+            else
+                return new GZipStream(Stream, Mode, true);
+        }
+
+        #endregion
 
         #endregion
     }

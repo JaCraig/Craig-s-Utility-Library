@@ -19,36 +19,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.Encryption.ExtensionMethods;
-using System.Security.Cryptography;
-#endregion
+using MoonUnit.Attributes;
+using MoonUnit;
+using Utilities.Compression.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Compression.ExtensionMethods.Enums;
 
-namespace Utilities.Web.Gravatar
+namespace UnitTests.Compression.ExtensionMethods
 {
-    /// <summary>
-    /// Helper for getting Gravatar images
-    /// </summary>
-    public static class Gravatar
+    public class CompressionExtensions
     {
-        #region Public Static Functions
-
-        /// <summary>
-        /// Gets a Gravatar image link
-        /// </summary>
-        /// <param name="Email">Email identifier</param>
-        /// <param name="AppendJPG">Should jpg be appended to the link?</param>
-        /// <returns>The full path to the Gravatar image link</returns>
-        public static string GetImageLink(string Email,bool AppendJPG=false)
+        [Test]
+        public void DeflateTest()
         {
-            string Ending = AppendJPG ? ".jpg" : "";
-            return "http://www.gravatar.com/avatar/" + Email.Trim().ToLower().Hash(new MD5CryptoServiceProvider()).ToLower() + Ending;
+            string Data="This is a bit of data that I want to compress";
+            Assert.NotEqual("This is a bit of data that I want to compress", Data.ToByteArray().Compress().ToEncodedString());
+            Assert.Equal("This is a bit of data that I want to compress", Data.ToByteArray().Compress().Decompress().ToEncodedString());
         }
 
-        #endregion
+        [Test]
+        public void GZipTest()
+        {
+            string Data = "This is a bit of data that I want to compress";
+            Assert.NotEqual("This is a bit of data that I want to compress", Data.ToByteArray().Compress(CompressionType.GZip).ToEncodedString());
+            Assert.Equal("This is a bit of data that I want to compress", Data.ToByteArray().Compress(CompressionType.GZip).Decompress(CompressionType.GZip).ToEncodedString());
+        }
     }
 }

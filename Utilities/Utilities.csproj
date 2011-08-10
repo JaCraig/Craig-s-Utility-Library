@@ -98,7 +98,11 @@
     <Compile Include="Caching\Interfaces\ICache.cs" />
     <Compile Include="Caching\Interfaces\ICacheItem.cs" />
     <Compile Include="AI\Anagram.cs" />
+    <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
+    <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
+    <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
+    <Compile Include="Encryption\ExtensionMethods\SymmetricExtensions.cs" />
     <Compile Include="Validation\Rules\IsDomain.cs" />
     <Compile Include="Validation\Rules\IsEmailAddress.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
@@ -362,7 +366,6 @@
     <Compile Include="Web\Craigslist\Craigslist.cs" />
     <Compile Include="Web\CSS.cs" />
     <Compile Include="FileFormats\CSV\CSV.cs" />
-    <Compile Include="Compression\Deflate.cs" />
     <Compile Include="Web\Ebay\Ebay.cs" />
     <Compile Include="Web\Email\SMTP\EmailSender.cs" />
     <Compile Include="Web\Email\Message.cs" />
@@ -385,13 +388,8 @@
     <Compile Include="Web\Email\Pop3\Message.cs" />
     <Compile Include="Web\Email\Pop3\Pop3Client.cs" />
     <Compile Include="Web\Email\Pop3\Pop3Exception.cs" />
-    <Compile Include="Encryption\AESEncryption.cs" />
     <Compile Include="Encryption\CaesarEncryption.cs" />
-    <Compile Include="Encryption\DESEncryption.cs" />
-    <Compile Include="Encryption\MD5.cs" />
     <Compile Include="Encryption\RSAEncryption.cs" />
-    <Compile Include="Encryption\SHA1.cs" />
-    <Compile Include="Encryption\TripleDESEncryption.cs" />
     <Compile Include="Encryption\VernamEncryption.cs" />
     <Compile Include="Environment\Environment.cs" />
     <Compile Include="Environment\ProcessManager.cs" />
@@ -400,7 +398,6 @@
     <Compile Include="Exchange\Exchange.cs" />
     <Compile Include="FileFormats\VCalendar.cs" />
     <Compile Include="FileFormats\VCard.cs" />
-    <Compile Include="Compression\GZip.cs" />
     <Compile Include="FileFormats\FOAF\FOAF.cs" />
     <Compile Include="FileFormats\FOAF\Person.cs" />
     <Compile Include="Web\HTML.cs" />

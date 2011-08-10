@@ -20,35 +20,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System.IO;
+using System.IO.Compression;
 using System;
-using System.Security.Cryptography;
 #endregion
 
-namespace Utilities.Encryption
+namespace Utilities.Compression.ExtensionMethods.Enums
 {
     /// <summary>
-    /// Utility class for doing SHA1 hashes
+    /// Defines the various compression types that are available
     /// </summary>
-    public static class SHA1
+    public enum CompressionType
     {
-        #region Public Static Functions
-
-        /// <summary>
-        /// Computes a hash using SHA1
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>A hash of the input string using SHA1</returns>
-        public static string ComputeHash(string Input)
-        {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
-            SHA1CryptoServiceProvider SHA1 = new SHA1CryptoServiceProvider();
-            byte[] InputArray = System.Text.Encoding.ASCII.GetBytes(Input);
-            byte[] HashedArray = SHA1.ComputeHash(InputArray);
-            SHA1.Clear();
-            return BitConverter.ToString(HashedArray).Replace("-", "");
-        }
-
-        #endregion
+        Deflate=0,
+        GZip=1
     }
 }

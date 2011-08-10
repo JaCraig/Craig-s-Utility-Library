@@ -68,7 +68,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Input">Input string</param>
         /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
         /// <returns>string in the encoding format</returns>
-        public static string FromBase64(this string Input, Encoding EncodingUsing = null)
+        public static string FromBase64(this string Input, Encoding EncodingUsing)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
@@ -76,6 +76,18 @@ namespace Utilities.DataTypes.ExtensionMethods
                 EncodingUsing = new UTF8Encoding();
             byte[] TempArray = Convert.FromBase64String(Input);
             return EncodingUsing.GetString(TempArray);
+        }
+
+        /// <summary>
+        /// Converts base 64 string to a byte array
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>A byte array equivalent of the base 64 string</returns>
+        public static byte[] FromBase64(this string Input)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return new byte[0];
+            return Convert.FromBase64String(Input);
         }
 
         #endregion

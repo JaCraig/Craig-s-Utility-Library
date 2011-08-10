@@ -51,7 +51,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void Base64Test()
         {
             string Value = "ASDF";
-            Assert.Equal("ASDF", Value.ToBase64().FromBase64());
+            Assert.Equal("ASDF", Value.ToBase64().FromBase64(new ASCIIEncoding()));
             Assert.Equal("QVNERg==", Value.ToBase64());
         }
 

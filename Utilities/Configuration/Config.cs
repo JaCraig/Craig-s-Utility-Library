@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using Utilities.Configuration.Interfaces;
 using Utilities.IO.ExtensionMethods;
+using Utilities.Encryption.ExtensionMethods;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -149,8 +150,7 @@ namespace Utilities.Configuration
                 if (Property.CanWrite && Property.CanRead && Property.PropertyType == typeof(string))
                 {
                     Property.SetValue(this,
-                        Utilities.Encryption.AESEncryption.Encrypt((string)Property.GetValue(this, null),
-                            EncryptionPassword),
+                        ((string)Property.GetValue(this, null)).Encrypt(EncryptionPassword),
                         null);
                 }
             }
@@ -170,8 +170,7 @@ namespace Utilities.Configuration
                     if (!string.IsNullOrEmpty(Value))
                     {
                         Property.SetValue(this,
-                            Utilities.Encryption.AESEncryption.Decrypt(Value,
-                                EncryptionPassword),
+                            Value.Decrypt(EncryptionPassword),
                             null);
                     }
                 }

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Anagram.cs" />
+    <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />
     <Compile Include="DataTypes\Vector.cs" />
+    <Compile Include="Encryption\ExtensionMethods\SymmetricEncryption.cs" />
+    <Compile Include="Events\EventHelper.cs" />
     <Compile Include="FileFormats\Cisco\Directory.cs" />
     <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
     <Compile Include="FileFormats\Cisco\Error.cs" />
@@ -101,6 +104,7 @@
   <ItemGroup>
     <None Include="Key.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

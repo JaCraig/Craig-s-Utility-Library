@@ -63,6 +63,22 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region ToBase64String
+
+        /// <summary>
+        /// Converts a byte array into a base 64 string
+        /// </summary>
+        /// <param name="Input">Input array</param>
+        /// <returns>The equivalent byte array in a base 64 string</returns>
+        public static string ToBase64String(this byte[] Input)
+        {
+            if (Input == null)
+                return "";
+            return Convert.ToBase64String(Input);
+        }
+
+        #endregion
+
         #region ToEncodedString
 
         /// <summary>

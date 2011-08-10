@@ -42,9 +42,7 @@ namespace Utilities.Events
         public static void Raise<T>(T EventArgs, Action<T> Delegate) where T : class
         {
             if (Delegate != null)
-            {
                 Delegate(EventArgs);
-            }
         }
 
         /// <summary>
@@ -57,9 +55,7 @@ namespace Utilities.Events
         public static void Raise<T>(EventHandler<T> Delegate, object Sender, T EventArg) where T : System.EventArgs
         {
             if (Delegate != null)
-            {
                 Delegate(Sender, EventArg);
-            }
         }
 
         /// <summary>
@@ -73,9 +69,7 @@ namespace Utilities.Events
         public static T2 Raise<T1, T2>(T1 EventArgs, Func<T1, T2> Delegate) where T1 : class
         {
             if (Delegate != null)
-            {
                 return Delegate(EventArgs);
-            }
             return default(T2);
         }
 
