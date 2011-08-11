@@ -22,9 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Imaging;
-using Utilities.Math;
+using Utilities.Math.ExtensionMethods;
 using System;
-
 #endregion
 
 namespace Utilities.Media.Image
@@ -150,11 +149,11 @@ namespace Utilities.Media.Image
                             BValue = System.Math.Abs(BValue);
                         }
                         RValue = (RValue / Weight) + Offset;
-                        RValue = MathHelper.Clamp(RValue, 255, 0);
+                        RValue = RValue.Clamp(255, 0);
                         GValue = (GValue / Weight) + Offset;
-                        GValue = MathHelper.Clamp(GValue, 255, 0);
+                        GValue = GValue.Clamp(255, 0);
                         BValue = (BValue / Weight) + Offset;
-                        BValue = MathHelper.Clamp(BValue, 255, 0);
+                        BValue = BValue.Clamp(255, 0);
                         MeanPixel = Color.FromArgb(RValue, GValue, BValue);
                     }
                     Image.SetPixel(NewData, x, y, MeanPixel, NewPixelSize);

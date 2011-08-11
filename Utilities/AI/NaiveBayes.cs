@@ -22,11 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using Utilities.DataTypes;
 using System.Collections.Generic;
-using Utilities.Math;
+using Utilities.Math.ExtensionMethods;
 using System;
 #endregion
 
-namespace Utilities.Classifier.NaiveBayes
+namespace Utilities.AI
 {
     /// <summary>
     /// Naive bayes classifier
@@ -39,7 +39,16 @@ namespace Utilities.Classifier.NaiveBayes
         /// <summary>
         /// Constructor
         /// </summary>
-        public NaiveBayes()
+        /// <param name="ATokenWeight">Weight of each token in set A</param>
+        /// <param name="BTokenWeight">Weight of each token in set B</param>
+        /// <param name="MaxInterestingTokenCount">After sorting, this is the maximum number of tokens that are picked to figure out the final probability</param>
+        /// <param name="MaxTokenProbability">Maximum token probability</param>
+        /// <param name="MinTokenProbability">Minimum token probability</param>
+        /// <param name="MinCountForInclusion">Minimum number of times a token needs to be present for it to be included</param>
+        public NaiveBayes(int ATokenWeight = 1, int BTokenWeight = 1,
+            double MinTokenProbability = 0.01, double MaxTokenProbability = 0.999,
+            int MaxInterestingTokenCount = int.MaxValue,
+            int MinCountForInclusion = 1)
         {
             SetA = new Bag<T>();
             SetB = new Bag<T>();
@@ -47,12 +56,12 @@ namespace Utilities.Classifier.NaiveBayes
             Total = 0;
             TotalA = 0;
             TotalB = 0;
-            ATokenWeight = 1;
-            BTokenWeight = 1;
-            MinCountForInclusion = 1;
-            MinTokenProbability = 0.01;
-            MaxTokenProbability = 0.999;
-            MaxInterestingTokenCount = int.MaxValue;
+            this.ATokenWeight = ATokenWeight;
+            this.BTokenWeight = BTokenWeight;
+            this.MinCountForInclusion = MinCountForInclusion;
+            this.MinTokenProbability = MinTokenProbability;
+            this.MaxTokenProbability = MaxTokenProbability;
+            this.MaxInterestingTokenCount = MaxInterestingTokenCount;
         }
 
         #endregion
@@ -112,7 +121,7 @@ namespace Utilities.Classifier.NaiveBayes
         /// <summary>
         /// Maximum token probability (if greater than this amount, it becomes this amount)
         /// </summary>
-        public double MaxTokenProbability { get; set; }
+        public virtual double MaxTokenProbability { get; set; }
 
         /// <summary>
         /// After sorting, this is the maximum number of tokens that are picked to figure out the final probability
@@ -140,36 +149,22 @@ namespace Utilities.Classifier.NaiveBayes
                 SetB = new Bag<T>();
 
             foreach (T TokenA in SetATokens)
-            {
                 SetA.Add(TokenA);
-            }
             foreach (T TokenB in SetBTokens)
-            {
                 SetB.Add(TokenB);
-            }
             TotalA = 0;
             TotalB = 0;
             foreach (T Token in SetA)
-            {
                 TotalA += SetA[Token];
-            }
             foreach (T Token in SetB)
-            {
                 TotalB += SetB[Token];
-            }
             Total = TotalA + TotalB;
             Probabilities = new Dictionary<T, double>();
             foreach (T Token in SetA)
-            {
                 Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
-            }
             foreach (T Token in SetB)
-            {
                 if (!Probabilities.ContainsKey(Token))
-                {
                     Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
-                }
-            }
         }
 
         /// <summary>
@@ -188,17 +183,15 @@ namespace Utilities.Classifier.NaiveBayes
             {
                 double TokenProbability = 0.5;
                 if (Probabilities.ContainsKey(Items[x]))
-                {
                     TokenProbability = Probabilities[Items[x]];
-                }
                 string Difference = ((0.5 - System.Math.Abs(0.5 - TokenProbability))).ToString(".0000000") + Items[x] + x;
                 SortedProbabilities.Add(Difference, TokenProbability);
             }
             double TotalProbability = 1;
             double NegativeTotalProbability = 1;
             int Count = 0;
-            int MaxCount=MathHelper.Min(SortedProbabilities.Count, MaxInterestingTokenCount);
-            foreach(string Probability in SortedProbabilities.Keys)
+            int MaxCount = SortedProbabilities.Count.Min(MaxInterestingTokenCount);
+            foreach (string Probability in SortedProbabilities.Keys)
             {
                 double TokenProbability = SortedProbabilities[Probability];
                 TotalProbability *= TokenProbability;
@@ -228,10 +221,9 @@ namespace Utilities.Classifier.NaiveBayes
             int BCount = SetB.Contains(Item) ? SetB[Item] * BTokenWeight : 0;
             if (ACount + BCount >= MinCountForInclusion)
             {
-                double AProbability=MathHelper.Min(1,(double)ACount/(double)TotalA);
-                double BProbability=MathHelper.Min(1,(double)BCount/(double)TotalB);
-                Probability = MathHelper.Max(MinTokenProbability, 
-                    MathHelper.Min(MaxTokenProbability, AProbability / (AProbability + BProbability)));
+                double AProbability = ((double)ACount / (double)TotalA).Min(1);
+                double BProbability = ((double)BCount / (double)TotalB).Min(1);
+                Probability = MinTokenProbability.Max(MaxTokenProbability.Min(AProbability / (AProbability + BProbability)));
             }
             return Probability;
         }

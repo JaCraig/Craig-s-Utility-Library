@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Anagram.cs" />
+    <Compile Include="AI\NaiveBayes.cs" />
+    <Compile Include="Caching\Cache.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
@@ -63,6 +65,8 @@
     <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />
     <Compile Include="DataTypes\Vector.cs" />
+    <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
+    <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\SymmetricEncryption.cs" />
     <Compile Include="Events\EventHelper.cs" />
     <Compile Include="FileFormats\Cisco\Directory.cs" />
@@ -86,6 +90,11 @@
     <Compile Include="IO\Logging\ConsoleLog.cs" />
     <Compile Include="IO\Logging\FileLog.cs" />
     <Compile Include="IO\Logging\LoggingManager.cs" />
+    <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
+    <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
+    <Compile Include="Math\Matrix.cs" />
+    <Compile Include="Math\Set.cs" />
+    <Compile Include="Math\Vector3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

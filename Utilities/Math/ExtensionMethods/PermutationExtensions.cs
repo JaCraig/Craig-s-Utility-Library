@@ -20,19 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
+using Utilities.DataTypes;
 using System;
-
+using System.Linq;
+using Utilities.DataTypes.Comparison;
+using System.Collections.Generic;
 #endregion
 
-namespace Utilities.Math
+namespace Utilities.Math.ExtensionMethods
 {
     /// <summary>
-    /// Class that creates permutations (not implemented yet)
+    /// Permutation extensions
     /// </summary>
-    public static class Permutation
+    public static class PermutationExtensions
     {
-        #region Public Static Functions
+        #region Functions
+
+        #region Permute
 
         /// <summary>
         /// Finds all permutations of the items within the list
@@ -40,35 +44,36 @@ namespace Utilities.Math
         /// <typeparam name="T">Object type in the list</typeparam>
         /// <param name="Input">Input list</param>
         /// <returns>The list of permutations</returns>
-        public static List<List<T>> Permute<T>(List<T> Input)
+        public static ListMapping<int, T> Permute<T>(this IEnumerable<T> Input)
         {
             if (Input == null)
                 throw new ArgumentNullException("Input");
-            List<T> Current = new List<T>();
+            System.Collections.Generic.List<T> Current = new System.Collections.Generic.List<T>();
             Current.AddRange(Input);
-            List<List<T>> ReturnValue = new List<List<T>>();
-            int Max = MathHelper.Factorial(Input.Count - 1);
-            for (int x = 0; x < Input.Count; ++x)
+            ListMapping<int, T> ReturnValue = new ListMapping<int, T>();
+            int Max = (Input.Count() - 1).Factorial();
+            int CurrentValue = 0;
+            for (int x = 0; x < Input.Count(); ++x)
             {
                 int z = 0;
                 while (z < Max)
                 {
-                    int y = Input.Count - 1;
+                    int y = Input.Count() - 1;
                     while (y > 1)
                     {
                         T TempHolder = Current[y - 1];
                         Current[y - 1] = Current[y];
                         Current[y] = TempHolder;
                         --y;
-                        List<T> TempList = new List<T>();
-                        TempList.AddRange(Current);
-                        ReturnValue.Add(TempList);
+                        foreach (T Item in Current)
+                            ReturnValue.Add(CurrentValue, Item);
                         ++z;
+                        ++CurrentValue;
                         if (z == Max)
                             break;
                     }
                 }
-                if (x + 1 != Input.Count)
+                if (x + 1 != Input.Count())
                 {
                     Current.Clear();
                     Current.AddRange(Input);
@@ -79,6 +84,8 @@ namespace Utilities.Math
             }
             return ReturnValue;
         }
+
+        #endregion
 
         #endregion
     }

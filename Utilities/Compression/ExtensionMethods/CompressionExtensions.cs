@@ -24,6 +24,8 @@ using System.IO;
 using System.IO.Compression;
 using System;
 using Utilities.Compression.ExtensionMethods.Enums;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.Compression.ExtensionMethods
@@ -58,6 +60,20 @@ namespace Utilities.Compression.ExtensionMethods
             }
         }
 
+        /// <summary>
+        /// Compresses a string of data
+        /// </summary>
+        /// <param name="Data">Data to Compress</param>
+        /// <param name="EncodingUsing">Encoding that the data uses (defaults to UTF8)</param>
+        /// <param name="CompressionType">The compression type used</param>
+        /// <returns>The data Compressed</returns>
+        public static string Compress(this string Data, Encoding EncodingUsing = null, CompressionType CompressionType = CompressionType.Deflate)
+        {
+            if (string.IsNullOrEmpty(Data))
+                throw new ArgumentNullException("Data");
+            return Data.ToByteArray(EncodingUsing).Compress(CompressionType).ToBase64String();
+        }
+
         #endregion
 
         #region Decompress
@@ -87,6 +103,20 @@ namespace Utilities.Compression.ExtensionMethods
                     return Stream.ToArray();
                 }
             }
+        }
+
+        /// <summary>
+        /// Decompresses a string of data
+        /// </summary>
+        /// <param name="Data">Data to decompress</param>
+        /// <param name="EncodingUsing">Encoding that the result should use (defaults to UTF8)</param>
+        /// <param name="CompressionType">The compression type used</param>
+        /// <returns>The data decompressed</returns>
+        public static string Decompress(this string Data, Encoding EncodingUsing = null, CompressionType CompressionType = CompressionType.Deflate)
+        {
+            if (string.IsNullOrEmpty(Data))
+                throw new ArgumentNullException("Data");
+            return Data.FromBase64().Decompress(CompressionType).ToEncodedString(EncodingUsing);
         }
 
         #endregion

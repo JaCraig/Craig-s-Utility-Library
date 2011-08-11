@@ -102,7 +102,10 @@
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
+    <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\SymmetricExtensions.cs" />
+    <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
+    <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
     <Compile Include="Validation\Rules\IsDomain.cs" />
     <Compile Include="Validation\Rules\IsEmailAddress.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
@@ -205,7 +208,7 @@
     <Compile Include="FileFormats\BlogML\Posts.cs" />
     <Compile Include="FileFormats\BlogML\Tag.cs" />
     <Compile Include="FileFormats\BlogML\Tags.cs" />
-    <Compile Include="Classifier\NaiveBayes\NaiveBayes.cs" />
+    <Compile Include="AI\NaiveBayes.cs" />
     <Compile Include="FileFormats\Delimited\Cell.cs" />
     <Compile Include="FileFormats\Delimited\Delimited.cs" />
     <Compile Include="FileFormats\Delimited\Row.cs" />
@@ -230,8 +233,6 @@
     <Compile Include="IO\Logging\Interfaces\ILog.cs" />
     <Compile Include="IO\Logging\LoggingManager.cs" />
     <Compile Include="Math\Conversion.cs" />
-    <Compile Include="Math\Math.cs" />
-    <Compile Include="Math\Permutation.cs" />
     <Compile Include="Math\Set.cs" />
     <Compile Include="Media\Image\Procedural\CellularTexture.cs" />
     <Compile Include="Media\Image\ColorMatrix.cs" />
@@ -388,9 +389,7 @@
     <Compile Include="Web\Email\Pop3\Message.cs" />
     <Compile Include="Web\Email\Pop3\Pop3Client.cs" />
     <Compile Include="Web\Email\Pop3\Pop3Exception.cs" />
-    <Compile Include="Encryption\CaesarEncryption.cs" />
     <Compile Include="Encryption\RSAEncryption.cs" />
-    <Compile Include="Encryption\VernamEncryption.cs" />
     <Compile Include="Environment\Environment.cs" />
     <Compile Include="Environment\ProcessManager.cs" />
     <Compile Include="Error\ErrorManager.cs" />

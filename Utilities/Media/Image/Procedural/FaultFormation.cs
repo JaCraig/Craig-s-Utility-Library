@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Utilities.Math.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image.Procedural
@@ -64,7 +65,7 @@ namespace Utilities.Media.Image.Procedural
                     float Value = Heights[x, y];
                     Value = (Value * 0.5f) + 0.5f;
                     Value *= 255;
-                    int RGBValue = Math.MathHelper.Clamp((int)Value, 255, 0);
+                    int RGBValue = ((int)Value).Clamp(255, 0);
                     Image.SetPixel(ImageData, x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
                 }
             }

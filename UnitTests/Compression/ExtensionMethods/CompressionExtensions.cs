@@ -39,6 +39,7 @@ namespace UnitTests.Compression.ExtensionMethods
             string Data="This is a bit of data that I want to compress";
             Assert.NotEqual("This is a bit of data that I want to compress", Data.ToByteArray().Compress().ToEncodedString());
             Assert.Equal("This is a bit of data that I want to compress", Data.ToByteArray().Compress().Decompress().ToEncodedString());
+            Assert.Equal("This is a bit of data that I want to compress", Data.Compress().Decompress());
         }
 
         [Test]
@@ -47,6 +48,7 @@ namespace UnitTests.Compression.ExtensionMethods
             string Data = "This is a bit of data that I want to compress";
             Assert.NotEqual("This is a bit of data that I want to compress", Data.ToByteArray().Compress(CompressionType.GZip).ToEncodedString());
             Assert.Equal("This is a bit of data that I want to compress", Data.ToByteArray().Compress(CompressionType.GZip).Decompress(CompressionType.GZip).ToEncodedString());
+            Assert.Equal("This is a bit of data that I want to compress", Data.Compress(CompressionType: CompressionType.GZip).Decompress(CompressionType: CompressionType.GZip));
         }
     }
 }

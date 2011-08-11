@@ -27,6 +27,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Utilities.IO;
 using Utilities.Math;
+using Utilities.Math.ExtensionMethods;
 using Utilities.Media.Image.Procedural;
 using System.IO;
 #endregion
@@ -243,9 +244,9 @@ namespace Utilities.Media.Image
                     Green = (((Green - 0.5f) * Value) + 0.5f) * 255.0f;
                     Blue = (((Blue - 0.5f) * Value) + 0.5f) * 255.0f;
                     Image.SetPixel(NewData, x, y,
-                        Color.FromArgb(MathHelper.Clamp((int)Red, 255, 0),
-                        MathHelper.Clamp((int)Green, 255, 0),
-                        MathHelper.Clamp((int)Blue, 255, 0)),
+                        Color.FromArgb(((int)Red).Clamp(255, 0),
+                        ((int)Green).Clamp(255, 0),
+                        ((int)Blue).Clamp(255, 0)),
                         NewPixelSize);
                 }
             }
@@ -313,9 +314,9 @@ namespace Utilities.Media.Image
             int[] BlueRamp = new int[256];
             for (int x = 0; x < 256; ++x)
             {
-                RedRamp[x] = MathHelper.Clamp((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5), 255, 0);
-                GreenRamp[x] = MathHelper.Clamp((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5), 255, 0);
-                BlueRamp[x] = MathHelper.Clamp((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5), 255, 0);
+                RedRamp[x] = ((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5)).Clamp(255, 0);
+                GreenRamp[x] = ((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5)).Clamp(255, 0);
+                BlueRamp[x] = ((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5)).Clamp(255, 0);
             }
 
             for (int x = 0; x < NewBitmap.Width; ++x)
@@ -1166,9 +1167,9 @@ namespace Utilities.Media.Image
                     int NewR = (int)TempHistogram.R[Current.R];
                     int NewG = (int)TempHistogram.G[Current.G];
                     int NewB = (int)TempHistogram.B[Current.B];
-                    NewR = MathHelper.Clamp(NewR, 255, 0);
-                    NewG = MathHelper.Clamp(NewG, 255, 0);
-                    NewB = MathHelper.Clamp(NewB, 255, 0);
+                    NewR = NewR.Clamp(255, 0);
+                    NewG = NewG.Clamp(255, 0);
+                    NewB = NewB.Clamp(255, 0);
                     Image.SetPixel(NewData, x, y, Color.FromArgb(NewR, NewG, NewB), NewPixelSize);
                 }
             }
@@ -1362,13 +1363,13 @@ namespace Utilities.Media.Image
             {
                 SedimentValues[X, Y] = PickupRate;
                 Data[X, Y] -= PickupRate;
-                Data[X, Y] = Math.MathHelper.Clamp(Data[X, Y], 1.0f, 0.0f);
+                Data[X, Y] = Data[X, Y].Clamp(1.0f, 0.0f);
             }
             else
             {
                 SedimentValues[X, Y] = Data[X, Y];
                 Data[X, Y] -= PickupRate;
-                Data[X, Y] = Math.MathHelper.Clamp(Data[X, Y], 1.0f, 0.0f);
+                Data[X, Y] = Data[X, Y].Clamp(1.0f, 0.0f);
             }
             for (int i = 0; i < Iterations; ++i)
             {
@@ -1381,9 +1382,9 @@ namespace Utilities.Media.Image
                             List<int> MinX = new List<int>();
                             List<int> MinY = new List<int>();
                             float MinValue = Data[x, y];
-                            for (int BoxX = Math.MathHelper.Clamp(x - 1, Image.Width - 1, 0); BoxX <= Math.MathHelper.Clamp(x + 1, Image.Width - 1, 0); ++BoxX)
+                            for (int BoxX = (x - 1).Clamp(Image.Width - 1, 0); BoxX <= (x + 1).Clamp(Image.Width - 1, 0); ++BoxX)
                             {
-                                for (int BoxY = Math.MathHelper.Clamp(y - 1, Image.Height - 1, 0); BoxY <= Math.MathHelper.Clamp(y + 1, Image.Height - 1, 0); ++BoxY)
+                                for (int BoxY = (y - 1).Clamp(Image.Height - 1, 0); BoxY <= (y + 1).Clamp(Image.Height - 1, 0); ++BoxY)
                                 {
                                     if (BoxX != x || BoxY != y)
                                     {
@@ -1452,7 +1453,7 @@ namespace Utilities.Media.Image
                 for (int y = 0; y < Image.Height; ++y)
                 {
                     Data[x, y] += SedimentValues[x, y];
-                    Data[x, y] = Math.MathHelper.Clamp(Data[x, y], 1.0f, 0.0f);
+                    Data[x, y] = Data[x, y].Clamp(1.0f, 0.0f);
                     Data[x,y]*=255.0f;
                     SetPixel(ReturnData, x, y, Color.FromArgb((int)Data[x, y], (int)Data[x, y], (int)Data[x, y]), ReturnPixelSize);
                 }
@@ -1777,8 +1778,8 @@ namespace Utilities.Media.Image
                     int NewY = TempRandom.Next(-MaxJitter, MaxJitter);
                     NewX += x;
                     NewY += y;
-                    NewX = MathHelper.Clamp(NewX, NewBitmap.Width - 1, 0);
-                    NewY = MathHelper.Clamp(NewY, NewBitmap.Height - 1, 0);
+                    NewX = NewX.Clamp(NewBitmap.Width - 1, 0);
+                    NewY = NewY.Clamp(NewBitmap.Height - 1, 0);
 
                     Image.SetPixel(NewData, x, y, Image.GetPixel(OldData, NewX, NewY, OldPixelSize), NewPixelSize);
                 }
@@ -2086,9 +2087,9 @@ namespace Utilities.Media.Image
                             }
                         }
                     }
-                    Color MedianPixel = Color.FromArgb(Math.MathHelper.Median<int>(RValues),
-                        Math.MathHelper.Median<int>(GValues),
-                        Math.MathHelper.Median<int>(BValues));
+                    Color MedianPixel = Color.FromArgb(RValues.Median(),
+                        GValues.Median(),
+                        BValues.Median());
                     Image.SetPixel(NewData, x, y, MedianPixel, NewPixelSize);
                 }
             }
@@ -2295,15 +2296,15 @@ namespace Utilities.Media.Image
             int OldPixelSize = Image.GetPixelSize(OldData);
             for (int x = 0; x < NewBitmap.Width; x += (PixelSize / 2))
             {
-                int MinX = MathHelper.Clamp(x - (PixelSize / 2), NewBitmap.Width, 0);
-                int MaxX = MathHelper.Clamp(x + (PixelSize / 2), NewBitmap.Width, 0);
+                int MinX = (x - (PixelSize / 2)).Clamp(NewBitmap.Width, 0);
+                int MaxX = (x + (PixelSize / 2)).Clamp(NewBitmap.Width, 0);
                 for (int y = 0; y < NewBitmap.Height; y += (PixelSize / 2))
                 {
                     int RValue = 0;
                     int GValue = 0;
                     int BValue = 0;
-                    int MinY = MathHelper.Clamp(y - (PixelSize / 2), NewBitmap.Height, 0);
-                    int MaxY = MathHelper.Clamp(y + (PixelSize / 2), NewBitmap.Height, 0);
+                    int MinY = (y - (PixelSize / 2)).Clamp(NewBitmap.Height, 0);
+                    int MaxY = (y + (PixelSize / 2)).Clamp(NewBitmap.Height, 0);
                     for (int x2 = MinX; x2 < MaxX; ++x2)
                     {
                         for (int y2 = MinY; y2 < MaxY; ++y2)
@@ -2893,9 +2894,9 @@ namespace Utilities.Media.Image
                                     Color Pixel1 = Image.GetPixel(OldData1, x, y, OldPixelSize1);
                                     Color Pixel2 = Image.GetPixel(OldData2, x, y, OldPixelSize2);
                                     Image.SetPixel(NewData, x, y,
-                                        Color.FromArgb(Math.MathHelper.Clamp(Pixel1.R + Pixel2.R, 255, 0),
-                                            Math.MathHelper.Clamp(Pixel1.G + Pixel2.G, 255, 0),
-                                            Math.MathHelper.Clamp(Pixel1.B + Pixel2.B, 255, 0)),
+                                        Color.FromArgb((Pixel1.R + Pixel2.R).Clamp(255, 0),
+                                            (Pixel1.G + Pixel2.G).Clamp(255, 0),
+                                            (Pixel1.B + Pixel2.B).Clamp(255, 0)),
                                         NewPixelSize);
                                 }
                             }
@@ -3194,7 +3195,7 @@ namespace Utilities.Media.Image
         /// <param name="C">Change value</param>
         /// <param name="Iterations">Number of iterations</param>
         /// <returns>A bitmap image</returns>
-        public static Bitmap ThermalErosion(Bitmap OriginalImage,float T,float C,int Iterations)
+        public static Bitmap ThermalErosion(Bitmap OriginalImage, float T, float C, int Iterations)
         {
             if (OriginalImage == null)
                 throw new ArgumentNullException("OriginalImage");
@@ -3210,12 +3211,12 @@ namespace Utilities.Media.Image
                     {
                         int X1 = x - 1;
                         int Y1 = y - 1;
-                        X1=Math.MathHelper.Clamp(X1, BlackAndWhiteImage.Width-1, 0);
-                        Y1=Math.MathHelper.Clamp(Y1, BlackAndWhiteImage.Height-1, 0);
+                        X1 = X1.Clamp(BlackAndWhiteImage.Width - 1, 0);
+                        Y1 = Y1.Clamp(BlackAndWhiteImage.Height - 1, 0);
                         int X2 = x + 1;
                         int Y2 = y + 1;
-                        X2=Math.MathHelper.Clamp(X2, BlackAndWhiteImage.Width-1, 0);
-                        Y2=Math.MathHelper.Clamp(Y2, BlackAndWhiteImage.Height-1, 0);
+                        X2 = X2.Clamp(BlackAndWhiteImage.Width - 1, 0);
+                        Y2 = Y2.Clamp(BlackAndWhiteImage.Height - 1, 0);
                         HeightDifferences[0] = GetHeightDifferences(x, y, X1, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
                         HeightDifferences[1] = GetHeightDifferences(x, y, x, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
                         HeightDifferences[2] = GetHeightDifferences(x, y, X2, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
@@ -3244,63 +3245,63 @@ namespace Utilities.Media.Image
                         {
                             Height = GetHeight(X1, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + C * (MaxDifference - T) * (HeightDifferences[0] / DifferenceTotal);
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(X1, Y1, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                         if (Y1 != y && HeightDifferences[1] != 0.0f && DifferenceTotal != 0.0f)
                         {
                             Height = GetHeight(x, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + C * (MaxDifference - T) * (HeightDifferences[1] / DifferenceTotal);
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(x, Y1, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                         if (X2 != x && Y1 != y && HeightDifferences[2] != 0.0f && DifferenceTotal != 0.0f)
                         {
                             Height = GetHeight(X2, Y1, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + C * (MaxDifference - T) * (HeightDifferences[2] / DifferenceTotal);
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(X2, Y1, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                         if (X1 != x && HeightDifferences[3] != 0.0f && DifferenceTotal != 0.0f)
                         {
                             Height = GetHeight(X1, y, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + C * (MaxDifference - T) * (HeightDifferences[3] / DifferenceTotal);
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(X1, y, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                         if (X2 != x && HeightDifferences[4] != 0.0f && DifferenceTotal != 0.0f)
                         {
                             Height = GetHeight(X2, y, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + C * (MaxDifference - T) * (HeightDifferences[4] / DifferenceTotal);
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(X2, y, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                         if (X1 != x && Y2 != y && HeightDifferences[5] != 0.0f && DifferenceTotal != 0.0f)
                         {
                             Height = GetHeight(X1, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + C * (MaxDifference - T) * (HeightDifferences[5] / DifferenceTotal);
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(X1, Y2, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                         if (Y2 != y && HeightDifferences[6] != 0.0f && DifferenceTotal != 0.0f)
                         {
                             Height = GetHeight(x, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + C * (MaxDifference - T) * (HeightDifferences[6] / DifferenceTotal);
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(x, Y2, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                         if (X2 != x && Y2 != y && HeightDifferences[7] != 0.0f && DifferenceTotal != 0.0f)
                         {
                             Height = GetHeight(X2, Y2, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + C * (MaxDifference - T) * (HeightDifferences[7] / DifferenceTotal);
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(X2, Y2, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                         if (DifferenceTotal != 0.0f)
                         {
                             Height = GetHeight(x, y, BlackAndWhiteData, BlackAndWhitePixelSize);
                             Height = Height + (MaxDifference - (NumberOver * MaxDifference * T / DifferenceTotal));
-                            Height = Math.MathHelper.Clamp(Height, 1.0f, -1.0f);
+                            Height = Height.Clamp(1.0f, -1.0f);
                             SetHeight(x, y, Height, BlackAndWhiteData, BlackAndWhitePixelSize);
                         }
                     }
@@ -3458,8 +3459,8 @@ namespace Utilities.Media.Image
                         {
                             float XDistortion = x + (GetHeight(x, y, XNoiseData, XNoisePixelSize) * Power);
                             float YDistortion = y + (GetHeight(x, y, YNoiseData, YNoisePixelSize) * Power);
-                            int X1 = Math.MathHelper.Clamp((int)XDistortion, Width - 1, 0);
-                            int Y1 = Math.MathHelper.Clamp((int)YDistortion, Height - 1, 0);
+                            int X1 = ((int)XDistortion).Clamp(Width - 1, 0);
+                            int Y1 = ((int)YDistortion).Clamp(Height - 1, 0);
                             Image.SetPixel(ReturnData, x, y, GetPixel(OriginalData, X1, Y1, OriginalPixelSize), ReturnPixelSize);
                         }
                     }
