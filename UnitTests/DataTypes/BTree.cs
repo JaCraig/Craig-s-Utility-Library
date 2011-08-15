@@ -48,7 +48,7 @@ namespace UnitTests.DataTypes
         {
             BinaryTree<int> Tree = new BinaryTree<int>();
             System.Collections.Generic.List<int> Values = new System.Collections.Generic.List<int>();
-            Random Rand = new Random();
+            System.Random Rand = new System.Random();
             for (int x = 0; x < 10; ++x)
             {
                 int Value = Rand.Next();
