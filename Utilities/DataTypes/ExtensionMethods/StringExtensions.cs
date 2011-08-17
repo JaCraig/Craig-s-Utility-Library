@@ -55,7 +55,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 OriginalEncodingUsing = new ASCIIEncoding();
             if (EncodingUsing == null)
                 EncodingUsing = new UTF8Encoding();
-            return Input.ToByteArray(OriginalEncodingUsing).ToEncodedString(EncodingUsing);
+            return Encoding.Convert(OriginalEncodingUsing, EncodingUsing, Input.ToByteArray(OriginalEncodingUsing)).ToEncodedString(EncodingUsing);
         }
 
         #endregion
@@ -374,7 +374,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return true;
-            return Input.Encode(new UnicodeEncoding(), new UnicodeEncoding()) != Input.Encode(new ASCIIEncoding(), new ASCIIEncoding());
+            return Regex.Replace(Input, @"[^\u0000-\u007F]", "") != Input;
         }
 
         #endregion

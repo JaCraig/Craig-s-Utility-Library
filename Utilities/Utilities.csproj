@@ -101,6 +101,12 @@
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
+    <Compile Include="Reflection\ExtensionMethods\ObjectExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\SymmetricExtensions.cs" />
@@ -241,7 +247,6 @@
     <Compile Include="Media\Image\Procedural\PerlinNoise.cs" />
     <Compile Include="Media\Sound\SpeechToText.cs" />
     <Compile Include="Media\Sound\TextToSpeech.cs" />
-    <Compile Include="MultiThreading\Worker.cs" />
     <Compile Include="ORM\Aspect\Interfaces\IORMObject.cs" />
     <Compile Include="ORM\Aspect\ORMAspect.cs" />
     <Compile Include="ORM\Mapping\BaseClasses\PropertyBase.cs" />

@@ -23,28 +23,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+using MoonUnit;
+using Utilities.Profiler;
+using System.Threading;
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace UnitTests.Profiler
 {
-    public class ValueType
+    public class StopWatch
     {
         [Test]
-        public void BoolTest()
+        public void BasicTest()
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
-        }
-
-        [Test]
-        public void UnicodeTest()
-        {
-            string Value = "\u25EF\u25EF\u25EF";
-            Assert.True(Value.ToByteArray(new UnicodeEncoding()).IsUnicode());
+            Utilities.Profiler.StopWatch TestObject = new Utilities.Profiler.StopWatch();
+            TestObject.Start();
+            Thread.Sleep(100);
+            TestObject.Stop();
+            Assert.Between(TestObject.ElapsedTime, 80, 120);
         }
     }
 }

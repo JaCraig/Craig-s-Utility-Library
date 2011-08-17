@@ -30,21 +30,36 @@ using System.Data;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class ValueType
+    public class IDictionaryExtensions
     {
         [Test]
-        public void BoolTest()
+        public void SortTest()
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
+            IDictionary<string, int> Test = new Dictionary<string, int>();
+            Test.Add("Q", 4);
+            Test.Add("Z", 2);
+            Test.Add("C", 3);
+            Test.Add("A", 1);
+            Test = Test.Sort();
+            string Value = "";
+            foreach (string Key in Test.Keys)
+                Value += Key;
+            Assert.Equal("ACQZ", Value);
         }
 
         [Test]
-        public void UnicodeTest()
+        public void SortByValueTest()
         {
-            string Value = "\u25EF\u25EF\u25EF";
-            Assert.True(Value.ToByteArray(new UnicodeEncoding()).IsUnicode());
+            IDictionary<string, int> Test = new Dictionary<string, int>();
+            Test.Add("Q", 4);
+            Test.Add("Z", 2);
+            Test.Add("C", 3);
+            Test.Add("A", 1);
+            Test = Test.SortByValue();
+            string Value = "";
+            foreach (string Key in Test.Keys)
+                Value += Test[Key].ToString();
+            Assert.Equal("1234", Value);
         }
     }
 }

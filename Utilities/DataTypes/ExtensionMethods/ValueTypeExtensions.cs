@@ -109,7 +109,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (Input == null)
                 return true;
-            return Input.ToEncodedString(new UnicodeEncoding()) != Input.ToEncodedString(new ASCIIEncoding());
+            return Input.ToEncodedString(new UnicodeEncoding()).IsUnicode();
         }
 
         #endregion

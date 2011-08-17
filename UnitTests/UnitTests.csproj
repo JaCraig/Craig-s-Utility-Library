@@ -56,7 +56,12 @@
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TypeConversion.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ValueType.cs" />
@@ -96,6 +101,9 @@
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Set.cs" />
     <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Profiler\Profiler.cs" />
+    <Compile Include="Profiler\ProfilerManager.cs" />
+    <Compile Include="Profiler\StopWatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Random\Random.cs" />
   </ItemGroup>

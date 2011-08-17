@@ -92,11 +92,17 @@ namespace Utilities.Profiler
 
         #endregion
 
-        #region Private Variables
+        #region Variables
+
+        /// <summary>
+        /// Total time that the profiler has taken
+        /// </summary>
+        public virtual long TotalTime { get { return StopWatch.ElapsedTime; } }
 
         private StopWatch StopWatch { get; set; }
         private bool Running = true;
         private string Function { get; set; }
+
         #endregion
     }
 }

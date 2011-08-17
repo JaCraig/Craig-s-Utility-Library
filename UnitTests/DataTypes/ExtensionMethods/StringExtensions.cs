@@ -37,7 +37,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             string Value = "ASDF";
             Assert.Equal("ASDF", Value.Encode());
-            Assert.Equal("ASDF", Value.Encode(new ASCIIEncoding(), new UnicodeEncoding()).Encode(new UnicodeEncoding(), new ASCIIEncoding()));
+            Assert.Equal("ASDF", Value.Encode(new ASCIIEncoding(), new UTF32Encoding()).Encode(new UTF32Encoding(), new ASCIIEncoding()));
         }
 
         [Test]
@@ -142,8 +142,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Test]
         public void IsUnicode()
         {
-            string Value = "ASDF";
-            Assert.True(Value.Encode(new ASCIIEncoding(), new UnicodeEncoding()).IsUnicode());
+            string Value = "\u25EF\u25EF\u25EF";
+            Assert.True(Value.IsUnicode());
         }
     }
 }

@@ -30,21 +30,25 @@ using System.Data;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class ValueType
+    public class ArrayExtensions
     {
         [Test]
-        public void BoolTest()
+        public void ClearTest()
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
+            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            TestObject=TestObject.Clear();
+            foreach (int Item in TestObject)
+                Assert.Equal(0, Item);
         }
 
         [Test]
-        public void UnicodeTest()
+        public void CombineTest()
         {
-            string Value = "\u25EF\u25EF\u25EF";
-            Assert.True(Value.ToByteArray(new UnicodeEncoding()).IsUnicode());
+            int[] TestObject1 = new int[] { 1, 2, 3 };
+            int[] TestObject2 = new int[] { 4, 5, 6 };
+            TestObject1 = TestObject1.Combine(TestObject2);
+            for (int x = 0; x < 6; ++x)
+                Assert.Equal(x + 1, TestObject1[x]);
         }
     }
 }

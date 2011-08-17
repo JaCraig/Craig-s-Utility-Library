@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Text;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.Math.ExtensionMethods;
+using System;
 #endregion
 
 namespace Utilities.Profiler
@@ -44,6 +46,30 @@ namespace Utilities.Profiler
         #region Public Functions
 
         /// <summary>
+        /// Times an action and places 
+        /// </summary>
+        /// <param name="ActionToTime">Action to time</param>
+        /// <param name="FunctionName">Name to associate with the action</param>
+        public virtual void Time(Action ActionToTime,string FunctionName="")
+        {
+            using (Profiler TempProfiler = new Profiler(FunctionName))
+                ActionToTime();
+        }
+
+        /// <summary>
+        /// Times an action and places 
+        /// </summary>
+        /// <param name="FuncToTime">Action to time</param>
+        /// <param name="FunctionName">Name to associate with the action</param>
+        /// <typeparam name="T">Type of the value to return</typeparam>
+        /// <returns>The value returned by the Func</returns>
+        public virtual T Time<T>(Func<T> FuncToTime, string FunctionName = "")
+        {
+            using (Profiler TempProfiler = new Profiler(FunctionName))
+                return FuncToTime();
+        }
+
+        /// <summary>
         /// Adds an item to the manager (used by Profiler class)
         /// </summary>
         /// <param name="FunctionName">Function name/identifier</param>
@@ -52,22 +78,17 @@ namespace Utilities.Profiler
         public virtual void AddItem(string FunctionName, int StartTime, int StopTime)
         {
             ProfilerInfo Profiler = Profilers.Find(x => x.FunctionName == FunctionName);
-            if (Profiler != null)
+            if (Profiler == null)
             {
-                int Time = (StopTime - StartTime);
-                Profiler.TotalTime += Time;
-                if (Profiler.MaxTime < Time)
-                    Profiler.MaxTime = Time;
-                else if (Profiler.MinTime > Time)
-                    Profiler.MinTime = Time;
-                ++Profiler.TimesCalled;
-                return;
+                Profiler = new ProfilerInfo();
+                Profiler.FunctionName = FunctionName;
+                Profilers.Add(Profiler);
             }
-            ProfilerInfo Info = new ProfilerInfo();
-            Info.FunctionName = FunctionName;
-            Info.TotalTime = Info.MaxTime = Info.MinTime = StopTime - StartTime;
-            Info.TimesCalled = 1;
-            Profilers.Add(Info);
+            int Time = (StopTime - StartTime);
+            Profiler.TotalTime += Time;
+            Profiler.MaxTime = Profiler.MaxTime.Max(Time);
+            Profiler.MinTime = Profiler.MinTime.Min(Time);
+            ++Profiler.TimesCalled;
         }
 
         /// <summary>
@@ -103,11 +124,11 @@ namespace Utilities.Profiler
         /// </summary>
         private class ProfilerInfo
         {
-            public string FunctionName;
-            public int TotalTime;
-            public int TimesCalled;
-            public int MaxTime;
-            public int MinTime;
+            public string FunctionName = "";
+            public int TotalTime = 0;
+            public int TimesCalled = 0;
+            public int MaxTime = int.MinValue;
+            public int MinTime = int.MaxValue;
         }
 
         #endregion

@@ -30,21 +30,14 @@ using System.Data;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class ValueType
+    public class IComparableExtensions
     {
         [Test]
-        public void BoolTest()
+        public void BetweenTest()
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
-        }
-
-        [Test]
-        public void UnicodeTest()
-        {
-            string Value = "\u25EF\u25EF\u25EF";
-            Assert.True(Value.ToByteArray(new UnicodeEncoding()).IsUnicode());
+            int Value = 1;
+            Assert.True(Value.Between(0, 2));
+            Assert.False(Value.Between(2, 10));
         }
     }
 }

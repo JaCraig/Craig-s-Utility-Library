@@ -30,21 +30,26 @@ using System.Data;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class ValueType
+    public class ICollectionExtensions
     {
         [Test]
-        public void BoolTest()
+        public void AddIfUniqueTest()
         {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
+            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            Assert.False(TestObject.AddIfUnique(1));
+            Assert.True(TestObject.AddIfUnique(7));
+            Assert.True(TestObject.AddIfUnique(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
+            Assert.Equal(8, TestObject.Count);
         }
 
         [Test]
-        public void UnicodeTest()
+        public void RemoveTest()
         {
-            string Value = "\u25EF\u25EF\u25EF";
-            Assert.True(Value.ToByteArray(new UnicodeEncoding()).IsUnicode());
+            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            TestObject.Remove((x) => x % 2 == 0);
+            Assert.Equal(3, TestObject.Count);
+            foreach (int Item in TestObject)
+                Assert.False(Item % 2 == 0);
         }
     }
 }
