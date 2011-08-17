@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 using Utilities.DataTypes;
 #endregion
 
@@ -41,7 +42,7 @@ namespace Utilities.Web.OAuth
         /// </summary>
         public OAuth()
         {
-            Parameters = new System.Collections.Generic.List<Pair<string, string>>();
+            Parameters = new System.Collections.Generic.List<System.Tuple<string, string>>();
             AddParameter("oauth_consumer_key", "");
             AddParameter("oauth_nonce", "");
             AddParameter("oauth_signature_method", "");
@@ -121,20 +122,9 @@ namespace Utilities.Web.OAuth
         /// <param name="Value">Value text</param>
         protected virtual void AddParameter(string Key, string Value)
         {
-            bool Found = false;
-            foreach (Pair<string, string> Pair in Parameters)
-            {
-                if (Pair.Left == Key)
-                {
-                    Pair.Right = Value;
-                    Found = true;
-                    break;
-                }
-            }
-            if (!Found)
-            {
-                Parameters.Add(new Pair<string, string>(Key, Value));
-            }
+            if (Parameters.FirstOrDefault(x => x.Item1 == Key) != null)
+                Parameters.Remove(Parameters.FirstOrDefault(x => x.Item1 == Key));
+            Parameters.Add(new System.Tuple<string, string>(Key, Value));
         }
 
         #endregion
@@ -175,12 +165,12 @@ namespace Utilities.Web.OAuth
             Parameters.Sort(new PairComparer());
 
             string Splitter = "";
-            foreach (Pair<string, string> Key in Parameters)
+            foreach (System.Tuple<string, string> Key in Parameters)
             {
                 ParameterBuilder.Append(Splitter)
-                    .Append(Key.Left)
+                    .Append(Key.Item1)
                     .Append("=")
-                    .Append(UrlEncode(Key.Right));
+                    .Append(UrlEncode(Key.Item2));
                 Splitter = "&";
             }
 
@@ -245,7 +235,7 @@ namespace Utilities.Web.OAuth
         #region Private Variables
 
         private string UnreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
-        private System.Collections.Generic.List<Pair<string, string>> Parameters { get; set; }
+        private System.Collections.Generic.List<System.Tuple<string, string>> Parameters { get; set; }
         private Random.Random RandomGenerator { get; set; }
 
         #endregion
@@ -255,17 +245,17 @@ namespace Utilities.Web.OAuth
         /// <summary>
         /// Comparer class for the pair type
         /// </summary>
-        private class PairComparer : IComparer<Pair<string, string>>
+        private class PairComparer : IComparer<System.Tuple<string, string>>
         {
-            public int Compare(Pair<string, string> x, Pair<string, string> y)
+            public int Compare(System.Tuple<string, string> x, System.Tuple<string, string> y)
             {
-                if (x.Left == y.Left)
+                if (x.Item1 == y.Item1)
                 {
-                    return string.Compare(x.Right, y.Right);
+                    return string.Compare(x.Item2, y.Item2);
                 }
                 else
                 {
-                    return string.Compare(x.Left, y.Left);
+                    return string.Compare(x.Item1, y.Item1);
                 }
             }
         }

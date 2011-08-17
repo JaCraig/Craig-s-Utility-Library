@@ -25,6 +25,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Linq;
 using Utilities.DataTypes;
 using Utilities.Web.OpenID.Extensions;
 using Utilities.Web.OpenID.Extensions.Interfaces;
@@ -93,13 +94,13 @@ namespace Utilities.Web.OpenID
         /// </summary>
         /// <param name="URL">URL</param>
         /// <returns></returns>
-        public virtual System.Collections.Generic.List<Pair<string, string>> GetAttributes(string URL)
+        public virtual System.Collections.Generic.List<System.Tuple<string, string>> GetAttributes(string URL)
         {
-            System.Collections.Generic.List<Pair<string, string>> Pairs = new System.Collections.Generic.List<Pair<string, string>>();
+            System.Collections.Generic.List<System.Tuple<string, string>> Pairs = new System.Collections.Generic.List<System.Tuple<string, string>>();
             MatchCollection Matches = Keys.Matches(URL);
             foreach (Match Match in Matches)
             {
-                Pairs.Add(new Pair<string, string>(Match.Groups["Left"].Value, Match.Groups["Right"].Value));
+                Pairs.Add(new System.Tuple<string, string>(Match.Groups["Left"].Value, Match.Groups["Right"].Value));
             }
             if (Verify(URL, Pairs))
                 return Pairs;
@@ -116,12 +117,12 @@ namespace Utilities.Web.OpenID
         /// <returns>A redirect URL</returns>
         protected virtual string CreateLoginRedirectUrl()
         {
-            System.Collections.Generic.List<Pair<string, string>> Pairs = new System.Collections.Generic.List<Pair<string, string>>();
-            Pairs.Add(new Pair<string, string>("openid.ns", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0")));
-            Pairs.Add(new Pair<string, string>("openid.mode", "checkid_setup"));
-            Pairs.Add(new Pair<string, string>("openid.identity", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0/identifier_select")));
-            Pairs.Add(new Pair<string, string>("openid.claimed_id", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0/identifier_select")));
-            Pairs.Add(new Pair<string, string>("openid.return_to", HttpUtility.UrlEncode(RedirectURL)));
+            System.Collections.Generic.List<System.Tuple<string, string>> Pairs = new System.Collections.Generic.List<System.Tuple<string, string>>();
+            Pairs.Add(new System.Tuple<string, string>("openid.ns", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0")));
+            Pairs.Add(new System.Tuple<string, string>("openid.mode", "checkid_setup"));
+            Pairs.Add(new System.Tuple<string, string>("openid.identity", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0/identifier_select")));
+            Pairs.Add(new System.Tuple<string, string>("openid.claimed_id", HttpUtility.UrlEncode("http://specs.openid.net/auth/2.0/identifier_select")));
+            Pairs.Add(new System.Tuple<string, string>("openid.return_to", HttpUtility.UrlEncode(RedirectURL)));
             foreach (IExtension Extension in Extensions)
             {
                 Pairs.AddRange(Extension.GenerateURLAttributes());
@@ -129,9 +130,9 @@ namespace Utilities.Web.OpenID
             StringBuilder Builder = new StringBuilder();
             Builder.Append(EndpointURL);
             string Splitter = "?";
-            foreach (Pair<string, string> Pair in Pairs)
+            foreach (System.Tuple<string, string> Pair in Pairs)
             {
-                Builder.Append(Splitter).Append(Pair.Left).Append("=").Append(Pair.Right);
+                Builder.Append(Splitter).Append(Pair.Item1).Append("=").Append(Pair.Item2);
                 Splitter = "&";
             }
             return Builder.ToString();
@@ -186,29 +187,29 @@ namespace Utilities.Web.OpenID
         /// <param name="URL">URL returned</param>
         /// <param name="Pairs">Individual attribute pairs</param>
         /// <returns>true if it is valid, false otherwise</returns>
-        protected virtual bool Verify(string URL, System.Collections.Generic.List<Pair<string, string>> Pairs)
+        protected virtual bool Verify(string URL, System.Collections.Generic.List<System.Tuple<string, string>> Pairs)
         {
-            Pair<string, string> Mode = Pairs.Find(x => x.Left.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase));
-            if (Mode.Right.Equals("cancel", StringComparison.CurrentCultureIgnoreCase))
+            System.Tuple<string, string> Mode = Pairs.Find(x => x.Item1.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase));
+            if (Mode.Item2.Equals("cancel", StringComparison.CurrentCultureIgnoreCase))
                 return false;
-            Pair<string, string> ReturnTo = Pairs.Find(x => x.Left.Equals("openid.return_to", StringComparison.CurrentCultureIgnoreCase));
+            System.Tuple<string, string> ReturnTo = Pairs.Find(x => x.Item1.Equals("openid.return_to", StringComparison.CurrentCultureIgnoreCase));
             if (ReturnTo == null)
                 return false;
-            Match PartialUrl = Regex.Match(URL, "^" + ReturnTo.Right, RegexOptions.IgnoreCase);
+            Match PartialUrl = Regex.Match(URL, "^" + ReturnTo.Item2, RegexOptions.IgnoreCase);
             if (!PartialUrl.Success)
                 return false;
-            if (Pairs.Find(x => x.Left.Equals("openid.identity", StringComparison.CurrentCultureIgnoreCase)) == null
-                || Pairs.Find(x => x.Left.Equals("openid.claimed_id", StringComparison.CurrentCultureIgnoreCase)) == null)
+            if (Pairs.Find(x => x.Item1.Equals("openid.identity", StringComparison.CurrentCultureIgnoreCase)) == null
+                || Pairs.Find(x => x.Item1.Equals("openid.claimed_id", StringComparison.CurrentCultureIgnoreCase)) == null)
                 return false;
             foreach (IExtension Extension in Extensions)
             {
                 if (!Extension.Verify(URL, Pairs))
                     return false;
             }
-            Pair<string, string> Nonce = Pairs.Find(x => x.Left.Equals("openid.response_nonce", StringComparison.CurrentCultureIgnoreCase));
+            System.Tuple<string, string> Nonce = Pairs.Find(x => x.Item1.Equals("openid.response_nonce", StringComparison.CurrentCultureIgnoreCase));
             if (Nonce == null)
                 return false;
-            string CurrentNonce = Nonce.Right;
+            string CurrentNonce = Nonce.Item2;
             foreach (string TempNonce in NonceList)
             {
                 if (CurrentNonce == TempNonce)
@@ -230,15 +231,17 @@ namespace Utilities.Web.OpenID
         /// </summary>
         /// <param name="Pairs">The individual attribute pairs</param>
         /// <returns>The appropriate verification URL</returns>
-        protected virtual string GenerateVerificationUrl(System.Collections.Generic.List<Pair<string, string>> Pairs)
+        protected virtual string GenerateVerificationUrl(System.Collections.Generic.List<System.Tuple<string, string>> Pairs)
         {
-            Pairs.Find(x => x.Left.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase)).Right = "check_authentication";
+            if (Pairs.FirstOrDefault(x => x.Item1.Equals("openid.mode",StringComparison.CurrentCultureIgnoreCase)) != null)
+                Pairs.Remove(Pairs.FirstOrDefault(x => x.Item1.Equals("openid.mode", StringComparison.CurrentCultureIgnoreCase)));
+            Pairs.Add(new System.Tuple<string, string>("openid.mode", "check_authentication"));
             StringBuilder Builder = new StringBuilder();
-            Builder.Append(Pairs.Find(x => x.Left.Equals("openid.op_endpoint", StringComparison.CurrentCultureIgnoreCase)).Right);
+            Builder.Append(Pairs.Find(x => x.Item1.Equals("openid.op_endpoint", StringComparison.CurrentCultureIgnoreCase)).Item2);
             string Splitter = "?";
-            foreach (Pair<string, string> Pair in Pairs)
+            foreach (System.Tuple<string, string> Pair in Pairs)
             {
-                Builder.Append(Splitter).Append(Pair.Left).Append("=").Append(Pair.Right);
+                Builder.Append(Splitter).Append(Pair.Item1).Append("=").Append(Pair.Item2);
                 Splitter = "&";
             }
             return Builder.ToString();

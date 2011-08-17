@@ -18,9 +18,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
+
 #region Usings
 using System;
 using System.Xml.Serialization;
+using Utilities.Math.ExtensionMethods;
 #endregion
 
 namespace Utilities.Math
@@ -95,9 +97,7 @@ namespace Utilities.Math
         public override bool Equals(object obj)
         {
             if (obj is Vector3)
-            {
                 return this == (Vector3)obj;
-            }
             return false;
         }
 
@@ -127,7 +127,7 @@ namespace Utilities.Math
         /// </summary>
         public virtual double Magnitude
         {
-            get { return System.Math.Sqrt((X * X) + (Y * Y) + (Z * Z)); }
+            get { return ((X * X) + (Y * Y) + (Z * Z)).Sqrt(); }
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace Utilities.Math
         /// <returns>Distance between the vectors</returns>
         public static double Distance(Vector3 V1, Vector3 V2)
         {
-            return System.Math.Sqrt(((V1.X - V2.X) * (V1.X - V2.X)) + ((V1.Y - V2.Y) * (V1.Y - V2.Y)) + ((V1.Z - V2.Z) * (V1.Z - V2.Z)));
+            return (((V1.X - V2.X) * (V1.X - V2.X)) + ((V1.Y - V2.Y) * (V1.Y - V2.Y)) + ((V1.Z - V2.Z) * (V1.Z - V2.Z))).Sqrt();
         }
 
         /// <summary>

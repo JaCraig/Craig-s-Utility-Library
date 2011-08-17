@@ -1,0 +1,10 @@
+syntax: regexp
+ExampleApp/*
+ExampleWebApp/*
+syntax: glob
+Utilities.*/*
+UtilitiesSplitter/*
+Utilities/obj/*
+Utilities/bin/*
+UnitTests/bin/*
+UnitTests/obj/*

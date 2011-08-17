@@ -57,7 +57,7 @@ namespace Utilities.Reflection.AOP
             if (AssemblyBuilder != null)
                 return;
             if (string.IsNullOrEmpty(AssemblyDirectory)
-                || !Utilities.IO.FileManager.FileExists(AssemblyDirectory + AssemblyName + ".dll")
+                || !new FileInfo(AssemblyDirectory + AssemblyName + ".dll").Exists
                 || RegenerateAssembly)
             {
                 AssemblyBuilder = new Utilities.Reflection.Emit.Assembly(AssemblyName, AssemblyDirectory);
@@ -92,7 +92,7 @@ namespace Utilities.Reflection.AOP
                     System.Reflection.Assembly TempAssembly = Utilities.Reflection.Reflection.LoadAssembly(AspectLocation);
                     Aspects.AddRange(Utilities.Reflection.Reflection.GetObjectsFromAssembly<IAspect>(TempAssembly));
                 }
-                else if (Utilities.IO.FileManager.DirectoryExists(AspectLocation))
+                else if (new DirectoryInfo(AspectLocation).Exists)
                 {
                     Aspects.AddRange(Utilities.Reflection.Reflection.GetObjectsFromAssembly<IAspect>(AspectLocation));
                 }
@@ -105,7 +105,7 @@ namespace Utilities.Reflection.AOP
             if (AssemblyBuilder != null)
                 return;
             if (string.IsNullOrEmpty(AssemblyDirectory)
-                || !Utilities.IO.FileManager.FileExists(AssemblyDirectory + AssemblyName + ".dll")
+                || !new FileInfo(AssemblyDirectory + AssemblyName + ".dll").Exists
                 || RegenerateAssembly)
             {
                 AssemblyBuilder = new Utilities.Reflection.Emit.Assembly(AssemblyName, AssemblyDirectory);
@@ -140,7 +140,7 @@ namespace Utilities.Reflection.AOP
         public virtual void Save()
         {
             if (!string.IsNullOrEmpty(AssemblyDirectory)
-                && (!Utilities.IO.FileManager.FileExists(AssemblyDirectory + AssemblyName + ".dll")
+                && (!new FileInfo(AssemblyDirectory + AssemblyName + ".dll").Exists
                 || RegenerateAssembly))
             {
                 AssemblyBuilder.Create();
@@ -155,7 +155,7 @@ namespace Utilities.Reflection.AOP
         {
             if (Classes.ContainsKey(Type))
                 return;
-            if (Utilities.IO.FileManager.FileExists(AssemblyDirectory + AssemblyName + ".dll")
+            if (new FileInfo(AssemblyDirectory + AssemblyName + ".dll").Exists
                 && !RegenerateAssembly)
                 throw new ArgumentException("Type specified not found and can't be generated due to being in 'GoDaddy' mode. Delete already generated DLL to add new types or set RegenerateAssembly to true.");
             List<Type> Interfaces = new List<Type>();

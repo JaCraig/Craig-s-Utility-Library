@@ -315,7 +315,7 @@ namespace Utilities.SQL.MicroORM
             Check(Mappings, "Mappings");
             SetupCommand(Command, CommandType, Parameters);
             Mappings.Copy(Object, Helper);
-            return (DataType)Convert.ChangeType(Helper.ExecuteScalar<DataType>(), typeof(DataType));
+            return (DataType)Convert.ChangeType(Helper.ExecuteScalar(), typeof(DataType));
         }
 
         /// <summary>
@@ -453,6 +453,7 @@ namespace Utilities.SQL.MicroORM
             if (TempVal == null)
             {
                 PrimaryKeyVal = Insert<PrimaryKeyType>(Object, Parameters);
+                PrimaryKeyMapping.CopyRightToLeft(PrimaryKeyVal, Object);
                 return;
             }
             Update(Object, Parameters);

@@ -25,10 +25,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utilities.Configuration.Interfaces;
-using Utilities.IO;
+using Utilities.IO.ExtensionMethods;
+using Utilities.Encryption.ExtensionMethods;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
+using System.IO;
 #endregion
 
 namespace Utilities.Configuration
@@ -49,10 +51,10 @@ namespace Utilities.Configuration
         public Config(Func<string, ConfigClassType> StringToObject = null, Func<IConfig, string> ObjectToString = null)
         {
             if (StringToObject == null)
-                StringToObject = (x) => (ConfigClassType)Utilities.IO.Serialization.XMLToObject(x, this.GetType());
+                StringToObject = (x) => (ConfigClassType)x.XMLToObject(this.GetType());
             this.StringToObject = StringToObject;
             if (ObjectToString == null)
-                ObjectToString = (x) => Utilities.IO.Serialization.ObjectToXML(x, ConfigFileLocation);
+                ObjectToString = (x) => x.ToXML(ConfigFileLocation);
             this.ObjectToString = ObjectToString;
         }
 
@@ -95,7 +97,7 @@ namespace Utilities.Configuration
             if (string.IsNullOrEmpty(ConfigFileLocation))
                 return;
             ConfigClassType Temp = default(ConfigClassType);
-            string FileContent = FileManager.GetFileContents(ConfigFileLocation);
+            string FileContent = new FileInfo(ConfigFileLocation).Read();
             if (string.IsNullOrEmpty(FileContent))
             {
                 Save();
@@ -113,7 +115,7 @@ namespace Utilities.Configuration
                 return;
             Encrypt();
             string XML = ObjectToString(this);
-            FileManager.SaveFile(XML, ConfigFileLocation);
+            new FileInfo(ConfigFileLocation).Save(XML);
             //Utilities.IO.Serialization.ObjectToXML(this, ConfigFileLocation);
             Decrypt();
         }
@@ -148,8 +150,7 @@ namespace Utilities.Configuration
                 if (Property.CanWrite && Property.CanRead && Property.PropertyType == typeof(string))
                 {
                     Property.SetValue(this,
-                        Utilities.Encryption.AESEncryption.Encrypt((string)Property.GetValue(this, null),
-                            EncryptionPassword),
+                        ((string)Property.GetValue(this, null)).Encrypt(EncryptionPassword),
                         null);
                 }
             }
@@ -169,8 +170,7 @@ namespace Utilities.Configuration
                     if (!string.IsNullOrEmpty(Value))
                     {
                         Property.SetValue(this,
-                            Utilities.Encryption.AESEncryption.Decrypt(Value,
-                                EncryptionPassword),
+                            Value.Decrypt(EncryptionPassword),
                             null);
                     }
                 }

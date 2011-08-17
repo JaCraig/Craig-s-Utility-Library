@@ -113,7 +113,7 @@ namespace Utilities.ORM.Mapping
             if (IDProperty != null)
                 throw new NotSupportedException("Multiple IDs are not currently supported");
             Setup();
-            ID<ClassType, DataType> Return = new ID<ClassType, DataType>(Expression,this);
+            ID<ClassType, DataType> Return = new ID<ClassType, DataType>(Expression);
             IDProperty = Return;
             return Return;
         }
@@ -123,7 +123,7 @@ namespace Utilities.ORM.Mapping
             if (IDProperty != null)
                 throw new NotSupportedException("Multiple IDs are not currently supported");
             Setup();
-            StringID<ClassType> Return = new StringID<ClassType>(Expression,this);
+            StringID<ClassType> Return = new StringID<ClassType>(Expression);
             IDProperty = Return;
             return Return;
         }
@@ -135,7 +135,7 @@ namespace Utilities.ORM.Mapping
         public IReference<ClassType, DataType> Reference<DataType>(Expression<Func<ClassType, DataType>> Expression)
         {
             Setup();
-            Reference<ClassType, DataType> Return = new Reference<ClassType, DataType>(Expression,this);
+            Reference<ClassType, DataType> Return = new Reference<ClassType, DataType>(Expression);
             Properties.Add(Return);
             return Return;
         }
@@ -143,7 +143,7 @@ namespace Utilities.ORM.Mapping
         public IReference<ClassType, string> Reference(Expression<Func<ClassType, string>> Expression)
         {
             Setup();
-            StringReference<ClassType> Return = new StringReference<ClassType>(Expression,this);
+            StringReference<ClassType> Return = new StringReference<ClassType>(Expression);
             Properties.Add(Return);
             return Return;
         }
@@ -155,7 +155,7 @@ namespace Utilities.ORM.Mapping
         public IMap<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression) where DataType : class,new()
         {
             Setup();
-            Map<ClassType, DataType> Return = new Map<ClassType, DataType>(Expression, this);
+            Map<ClassType, DataType> Return = new Map<ClassType, DataType>(Expression);
             Properties.Add(Return);
             return Return;
         }
@@ -167,7 +167,7 @@ namespace Utilities.ORM.Mapping
         public IManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, DataType>> Expression) where DataType : class,new()
         {
             Setup();
-            ManyToOne<ClassType, DataType> Return = new ManyToOne<ClassType, DataType>(Expression,this);
+            ManyToOne<ClassType, DataType> Return = new ManyToOne<ClassType, DataType>(Expression);
             Properties.Add(Return);
             return Return;
         }
@@ -175,7 +175,7 @@ namespace Utilities.ORM.Mapping
         public IIEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new()
         {
             Setup();
-            IEnumerableManyToOne<ClassType, DataType> Return = new IEnumerableManyToOne<ClassType, DataType>(Expression,this);
+            IEnumerableManyToOne<ClassType, DataType> Return = new IEnumerableManyToOne<ClassType, DataType>(Expression);
             Properties.Add(Return);
             return Return;
         }
@@ -187,7 +187,7 @@ namespace Utilities.ORM.Mapping
         public IManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new()
         {
             Setup();
-            ManyToMany<ClassType, DataType> Return = new ManyToMany<ClassType, DataType>(Expression, this);
+            ManyToMany<ClassType, DataType> Return = new ManyToMany<ClassType, DataType>(Expression);
             Properties.Add(Return);
             return Return;
         }

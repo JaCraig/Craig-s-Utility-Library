@@ -28,7 +28,7 @@ namespace Utilities.Math
     /// <summary>
     /// Conversion helper
     /// </summary>
-    public class Conversion
+    public static class Conversion
     {
         #region Public Static Function
 

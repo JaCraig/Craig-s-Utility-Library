@@ -101,16 +101,22 @@ namespace Utilities.SQL.SQLServer
             string Command = BuildCommands(Database);
             string[] Splitter = { "\n" };
             string[] Commands = Command.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
-            ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
-            string DatabaseConnectionString = Regex.Replace(ConnectionString, "Initial Catalog=(.*?;)", "", RegexOptions.IgnoreCase);
+            string DatabaseConnectionString = Regex.Replace(ConnectionString, "Initial Catalog=(.*?;)", "");
             using (SQLHelper Helper = new SQLHelper(Commands[0], DatabaseConnectionString, CommandType.Text))
             {
-                Helper.ExecuteNonQuery();
+                try
+                {
+                    Helper.Open();
+                    Helper.ExecuteNonQuery();
+                }
+                catch { throw; }
+                finally { Helper.Close(); }
             }
             using (SQLHelper Helper = new SQLHelper("", ConnectionString, CommandType.Text))
             {
                 try
                 {
+                    Helper.Open();
                     Helper.BeginTransaction();
                     for (int x = 1; x < Commands.Length; ++x)
                     {
@@ -120,6 +126,7 @@ namespace Utilities.SQL.SQLServer
                     Helper.Commit();
                 }
                 catch { Helper.Rollback(); throw; }
+                finally { Helper.Close(); }
             }
         }
 
@@ -139,11 +146,11 @@ namespace Utilities.SQL.SQLServer
             string Command = BuildCommands(DesiredDatabase, CurrentDatabase);
             string[] Splitter = { "\n" };
             string[] Commands = Command.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
-            ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
             using (SQLHelper Helper = new SQLHelper("", ConnectionString, CommandType.Text))
             {
                 try
                 {
+                    Helper.Open();
                     Helper.BeginTransaction();
                     for (int x = 0; x < Commands.Length; ++x)
                     {
@@ -153,6 +160,7 @@ namespace Utilities.SQL.SQLServer
                     Helper.Commit();
                 }
                 catch { Helper.Rollback(); throw; }
+                finally { Helper.Close(); }
             }
         }
 
@@ -164,8 +172,6 @@ namespace Utilities.SQL.SQLServer
         public static Database GetDatabaseStructure(string ConnectionString)
         {
             string DatabaseName = Regex.Match(ConnectionString, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", "");
-            if (!DoesDatabaseExist(DatabaseName, ConnectionString))
-                return null;
             Database Temp = new Database(DatabaseName);
             GetTables(ConnectionString, Temp);
             SetupTables(ConnectionString, Temp);
@@ -473,7 +479,7 @@ namespace Utilities.SQL.SQLServer
                         Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ");
                         Builder.Append(Column.ParentTable.Name).Append(" ADD FOREIGN KEY (");
                         Builder.Append(Column.Name).Append(") REFERENCES ").Append(ForeignKey.ParentTable.Name);
-                        Builder.Append("(").Append(ForeignKey.Name).Append(") ON DELETE CASCADE'\n");
+                        Builder.Append("(").Append(ForeignKey.Name).Append(")'\n");
                     }
                 }
             }

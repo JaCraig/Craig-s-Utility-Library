@@ -53,10 +53,22 @@ namespace Utilities.DataTypes
         public virtual T Peek()
         {
             if (Items.ContainsKey(HighestKey))
-            {
                 return Items[HighestKey][0];
-            }
             return default(T);
+        }
+
+        public override void Add(int Priority, List<T> Value)
+        {
+            if (Priority > HighestKey)
+                HighestKey = Priority;
+            base.Add(Priority, Value);
+        }
+
+        public override void Add(System.Collections.Generic.KeyValuePair<int, List<T>> item)
+        {
+            if (item.Key > HighestKey)
+                HighestKey = item.Key;
+            base.Add(item);
         }
 
         public override void Add(int Priority, T Value)
@@ -70,22 +82,19 @@ namespace Utilities.DataTypes
         /// Removes an item from the queue and returns it
         /// </summary>
         /// <returns>The next item in the queue</returns>
-        public virtual T Remove()
+        public virtual T Pop()
         {
             T ReturnValue = default(T);
-            if (Items.ContainsKey(HighestKey) && Items[HighestKey].Count >= 1)
+            if (Items.ContainsKey(HighestKey) && Items[HighestKey].Count > 0)
             {
                 ReturnValue = Items[HighestKey][0];
-                Items[HighestKey].Remove(ReturnValue);
-                if (Items[HighestKey].Count == 0)
+                Remove(HighestKey, ReturnValue);
+                if (!ContainsKey(HighestKey))
                 {
-                    Items.Remove(HighestKey);
                     HighestKey = int.MinValue;
                     foreach (int Key in Items.Keys)
-                    {
                         if (Key > HighestKey)
                             HighestKey = Key;
-                    }
                 }
             }
             return ReturnValue;

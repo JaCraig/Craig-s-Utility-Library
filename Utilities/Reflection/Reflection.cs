@@ -26,7 +26,9 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 using Utilities.DataTypes;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO;
 #endregion
 
@@ -176,7 +178,7 @@ namespace Utilities.Reflection
         public static System.Collections.Generic.List<Assembly> GetAssembliesFromDirectory(string Directory, bool Recursive = false)
         {
             System.Collections.Generic.List<Assembly> ReturnList = new System.Collections.Generic.List<Assembly>();
-            System.Collections.Generic.List<FileInfo> Files = FileManager.FileList(Directory, Recursive);
+            System.Collections.Generic.List<FileInfo> Files = new DirectoryInfo(Directory).GetFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
             foreach (FileInfo File in Files)
             {
                 if (File.Extension.Equals(".dll", StringComparison.CurrentCultureIgnoreCase))
@@ -263,7 +265,7 @@ namespace Utilities.Reflection
         /// <typeparam name="DataType">Data type expecting</typeparam>
         /// <param name="PropertyName">Property name</param>
         /// <returns>A lambda expression that calls a specific property's getter function</returns>
-        public static Expression<Func<ClassType,DataType>> GetPropertyGetter<ClassType,DataType>(string PropertyName)
+        public static Expression<Func<ClassType, DataType>> GetPropertyGetter<ClassType, DataType>(string PropertyName)
         {
             if (string.IsNullOrEmpty(PropertyName))
                 throw new ArgumentNullException("PropertyName");
@@ -299,9 +301,9 @@ namespace Utilities.Reflection
                 throw new ArgumentException("Property is not from the declaring class type specified");
             ParameterExpression ObjectInstance = Expression.Parameter(Property.DeclaringType, "x");
             MemberExpression PropertyGet = Expression.Property(ObjectInstance, Property);
-            if(Property.PropertyType!=typeof(DataType))
+            if (Property.PropertyType != typeof(DataType))
             {
-                UnaryExpression Convert=Expression.Convert(PropertyGet,typeof(DataType));
+                UnaryExpression Convert = Expression.Convert(PropertyGet, typeof(DataType));
                 return Expression.Lambda<Func<ClassType, DataType>>(Convert, ObjectInstance);
             }
             return Expression.Lambda<Func<ClassType, DataType>>(PropertyGet, ObjectInstance);
@@ -340,7 +342,7 @@ namespace Utilities.Reflection
         /// <typeparam name="DataType">Data type expecting</typeparam>
         /// <param name="PropertyName">Property name</param>
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
-        public static Expression<Action<ClassType, DataType>> GetPropertySetter<ClassType,DataType>(string PropertyName)
+        public static Expression<Action<ClassType, DataType>> GetPropertySetter<ClassType, DataType>(string PropertyName)
         {
             if (string.IsNullOrEmpty(PropertyName))
                 throw new ArgumentNullException("PropertyName");
@@ -393,10 +395,10 @@ namespace Utilities.Reflection
             ParameterExpression ObjectInstance = Expression.Parameter(Property.DeclaringType, "x");
             ParameterExpression PropertySet = Expression.Parameter(typeof(DataType), "y");
             MethodCallExpression SetterCall = null;
-            if(Property.PropertyType!=typeof(DataType))
+            if (Property.PropertyType != typeof(DataType))
             {
-                
-                UnaryExpression Convert=Expression.Convert(PropertySet,Property.PropertyType);
+
+                UnaryExpression Convert = Expression.Convert(PropertySet, Property.PropertyType);
                 SetterCall = Expression.Call(ObjectInstance, Property.GetSetMethod(), Convert);
                 return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
             }
@@ -410,7 +412,7 @@ namespace Utilities.Reflection
         /// <typeparam name="ClassType">Class type</typeparam>
         /// <param name="PropertyName">Property name</param>
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
-        public static Expression<Action<ClassType,object>> GetPropertySetter<ClassType>(string PropertyName)
+        public static Expression<Action<ClassType, object>> GetPropertySetter<ClassType>(string PropertyName)
         {
             return GetPropertySetter<ClassType, object>(PropertyName);
         }
@@ -837,7 +839,7 @@ namespace Utilities.Reflection
         public static System.Collections.Generic.List<Assembly> LoadAssembliesFromDirectory(string Directory, bool Recursive = false)
         {
             System.Collections.Generic.List<Assembly> ReturnValues = new System.Collections.Generic.List<Assembly>();
-            System.Collections.Generic.List<FileInfo> Files = Utilities.IO.FileManager.FileList(Directory, Recursive, ".dll");
+            System.Collections.Generic.List<FileInfo> Files = new DirectoryInfo(Directory).GetFiles("*.dll", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
             foreach (FileInfo File in Files)
             {
                 ReturnValues.Add(LoadAssembly(File.FullName));
@@ -1146,11 +1148,11 @@ namespace Utilities.Reflection
             }
             else if (OutputType == typeof(string))
             {
-                return StringHelper.FormatToString(Input, Format);
+                return Input.FormatToString(Format);
             }
             else
             {
-                return CallMethod("Parse", OutputType.Assembly.CreateInstance(OutputType.FullName), StringHelper.FormatToString(Input, DiscoverFormatString(InputType, OutputType, Format)));
+                return CallMethod("Parse", OutputType.Assembly.CreateInstance(OutputType.FullName), Input.FormatToString(DiscoverFormatString(InputType, OutputType, Format)));
             }
         }
 

@@ -71,10 +71,8 @@ namespace Utilities.Math
                 return false;
 
             for (int x = 0; x < this.NumberItems; ++x)
-            {
                 if (!Set.Contains(this.Items[x]))
                     return false;
-            }
             return true;
         }
 
@@ -88,10 +86,8 @@ namespace Utilities.Math
             if (Set == null)
                 return false;
             for (int x = 0; x < this.NumberItems; ++x)
-            {
                 if (Set.Contains(this.Items[x]))
                     return true;
-            }
             return false;
         }
 
@@ -111,16 +107,12 @@ namespace Utilities.Math
                 return null;
             Set<T> ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.NumberItems; ++x)
-            {
                 if (Set2.Contains(Set1.Items[x]))
                     ReturnValue.Add(Set1.Items[x]);
-            }
 
             for (int x = 0; x < Set2.NumberItems; ++x)
-            {
                 if (Set1.Contains(Set2.Items[x]))
                     ReturnValue.Add(Set2.Items[x]);
-            }
 
             return ReturnValue;
         }
@@ -138,13 +130,9 @@ namespace Utilities.Math
 
             Set<T> ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.NumberItems; ++x)
-            {
                 ReturnValue.Add(Set1.Items[x]); ;
-            }
             for (int x = 0; x < Set2.NumberItems; ++x)
-            {
                 ReturnValue.Add(Set2.Items[x]); ;
-            }
             return ReturnValue;
         }
 
@@ -161,10 +149,8 @@ namespace Utilities.Math
 
             Set<T> ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.NumberItems; ++x)
-            {
                 if (!Set2.Contains(Set1.Items[x]))
                     ReturnValue.Add(Set1.Items[x]);
-            }
             return ReturnValue;
         }
 
@@ -176,6 +162,20 @@ namespace Utilities.Math
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("{ ");
+            string Splitter = "";
+            for (int x = 0; x < this.NumberItems; ++x)
+            {
+                Builder.Append(Splitter);
+                Builder.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, "{0}", this.Items[x]);
+                Splitter = ",  ";
+            }
+            Builder.Append(" }");
+            return Builder.ToString();
+        }
+
+        #endregion
+    }
+}
             string Splitter = "";
             for (int x = 0; x < this.NumberItems; ++x)
             {

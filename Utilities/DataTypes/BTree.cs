@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 #endregion
 
@@ -31,26 +32,21 @@ namespace Utilities.DataTypes
     /// Binary tree
     /// </summary>
     /// <typeparam name="T">The type held by the nodes</typeparam>
-    public class BinaryTree<T> : ICollection<T>, IEnumerable<T> where T : IComparable<T>
+    public class BinaryTree<T> : ICollection<T> where T : IComparable<T>
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public BinaryTree()
-        {
-            NumberOfNodes = 0;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
         /// <param name="Root">Root of the binary tree</param>
-        public BinaryTree(TreeNode<T> Root)
+        public BinaryTree(TreeNode<T> Root=null)
         {
             if (Root == null)
-                throw new ArgumentNullException("Root");
+            {
+                NumberOfNodes = 0;
+                return;
+            }
             this.Root = Root;
             foreach (TreeNode<T> Node in Traversal(Root))
             {
@@ -204,23 +200,15 @@ namespace Utilities.DataTypes
             --NumberOfNodes;
             List<T> Values = new List<T>();
             foreach (TreeNode<T> TempNode in Traversal(Item.Left))
-            {
                 Values.Add(TempNode.Value);
-            }
             foreach (TreeNode<T> TempNode in Traversal(Item.Right))
-            {
                 Values.Add(TempNode.Value);
-            }
             if (Item.Parent != null)
             {
                 if (Item.Parent.Left == Item)
-                {
                     Item.Parent.Left = null;
-                }
                 else
-                {
                     Item.Parent.Right = null;
-                }
                 Item.Parent = null;
             }
             else
@@ -228,9 +216,7 @@ namespace Utilities.DataTypes
                 Root = null;
             }
             foreach (T Value in Values)
-            {
                 this.Add(Value);
-            }
             return true;
         }
 
@@ -285,7 +271,7 @@ namespace Utilities.DataTypes
             while (!Found)
             {
                 int ComparedValue = TempNode.Value.CompareTo(item);
-                if (ComparedValue < 0)
+                if (ComparedValue > 0)
                 {
                     if (TempNode.Left == null)
                     {
@@ -298,7 +284,7 @@ namespace Utilities.DataTypes
                         TempNode = TempNode.Left;
                     }
                 }
-                else if (ComparedValue > 0)
+                else if (ComparedValue < 0)
                 {
                     if (TempNode.Right == null)
                     {
@@ -319,6 +305,18 @@ namespace Utilities.DataTypes
         }
 
         #endregion
+
+        #region Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder=new StringBuilder();
+            foreach (T Value in this)
+                Builder.Append(Value.ToString() + " ");
+            return Builder.ToString();
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -332,38 +330,11 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        public TreeNode()
-        {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Value">Value of the node</param>
-        public TreeNode(T Value)
-        {
-            this.Value = Value;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Value">Value of the node</param>
-        /// <param name="Parent">Parent node</param>
-        public TreeNode(T Value, TreeNode<T> Parent)
-        {
-            this.Value = Value;
-            this.Parent = Parent;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
         /// <param name="Value">Value of the node</param>
         /// <param name="Parent">Parent node</param>
         /// <param name="Left">Left node</param>
         /// <param name="Right">Right node</param>
-        public TreeNode(T Value, TreeNode<T> Parent, TreeNode<T> Left, TreeNode<T> Right)
+        public TreeNode(T Value = default(T), TreeNode<T> Parent = null, TreeNode<T> Left = null, TreeNode<T> Right = null)
         {
             this.Value = Value;
             this.Right = Right;
@@ -390,6 +361,35 @@ namespace Utilities.DataTypes
         /// </summary>
         public virtual TreeNode<T> Left { get; set; }
 
+        /// <summary>
+        /// Right node
+        /// </summary>
+        public virtual TreeNode<T> Right { get; set; }
+
+        /// <summary>
+        /// Is this the root
+        /// </summary>
+        public virtual bool IsRoot { get { return Parent == null; } }
+
+        /// <summary>
+        /// Is this a leaf
+        /// </summary>
+        public virtual bool IsLeaf { get { return Left == null && Right == null; } }
+
+        internal bool Visited { get; set; }
+
+        #endregion
+
+        #region Public Overridden Functions
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
+        #endregion
+    }
+}
         /// <summary>
         /// Right node
         /// </summary>

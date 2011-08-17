@@ -103,13 +103,10 @@ namespace Utilities.ORM.QueryProviders
         {
             if (Mappings == null)
                 Mappings = new ListMapping<IDatabase, IMapping>();
-            IEnumerable<IDatabase> Databases = this.Databases.Where(x => Utilities.Reflection.Reflection.IsOfType(x, Mapping.DatabaseConfigType)
+            IDatabase Database = Databases.First(x => Utilities.Reflection.Reflection.IsOfType(x, Mapping.DatabaseConfigType)
                                                         && !string.IsNullOrEmpty(x.ConnectionString));
-            foreach (IDatabase Database in Databases)
-            {
-                Mapping.AddToQueryProvider(Database);
-                Mappings.Add(Database, Mapping);
-            }
+            Mapping.AddToQueryProvider(Database);
+            Mappings.Add(Database, Mapping);
         }
 
         #endregion
@@ -126,7 +123,7 @@ namespace Utilities.ORM.QueryProviders
         /// <returns>First item matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(Session CurrentSession, ObjectType ReturnValue = null, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
@@ -156,7 +153,7 @@ namespace Utilities.ORM.QueryProviders
         /// <returns>First item that matches the criteria</returns>
         public virtual ObjectType Any<ObjectType>(Session CurrentSession, string Columns, ObjectType ReturnValue = null, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
@@ -183,7 +180,7 @@ namespace Utilities.ORM.QueryProviders
         /// <returns>First item that matches the criteria</returns>
         public virtual ObjectType Any<ObjectType>(Session CurrentSession, string Command, CommandType CommandType, ObjectType ReturnValue = null, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
@@ -215,7 +212,7 @@ namespace Utilities.ORM.QueryProviders
         public virtual IEnumerable<ObjectType> All<ObjectType>(Session CurrentSession, string Columns, int Limit, string OrderBy, params IParameter[] Parameters) where ObjectType : class,new()
         {
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
@@ -245,7 +242,7 @@ namespace Utilities.ORM.QueryProviders
         public virtual IEnumerable<ObjectType> All<ObjectType>(Session CurrentSession, string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
@@ -273,7 +270,7 @@ namespace Utilities.ORM.QueryProviders
         public virtual IEnumerable<ObjectType> All<ObjectType>(Session CurrentSession, params IParameter[] Parameters) where ObjectType : class,new()
         {
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
@@ -310,20 +307,13 @@ namespace Utilities.ORM.QueryProviders
         /// <param name="Object">Object to delete</param>
         public virtual void Delete<ObjectType>(ObjectType Object) where ObjectType : class,new()
         {
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                        foreach (IProperty Property in Mapping.Properties)
-                        {
-                            if (Property.Cascade)
-                            {
-                                ((IProperty<ObjectType>)Property).CascadeDelete(Object, ORMObject);
-                            }
-                        }
                         ORMObject.Map<ObjectType>().Delete(Object);
                     }
                 }
@@ -349,7 +339,7 @@ namespace Utilities.ORM.QueryProviders
             where DataType : class,new()
         {
             System.Collections.Generic.List<DataType> ReturnValue = new System.Collections.Generic.List<DataType>();
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
@@ -395,7 +385,7 @@ namespace Utilities.ORM.QueryProviders
             where DataType : class,new()
         {
             DataType ReturnValue = null;
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
@@ -436,7 +426,7 @@ namespace Utilities.ORM.QueryProviders
         public virtual IEnumerable<ObjectType> Paged<ObjectType>(Session CurrentSession, string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
         {
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
@@ -468,41 +458,14 @@ namespace Utilities.ORM.QueryProviders
         /// <param name="Parameters">Extra parameters used in saving the object</param>
         public virtual void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            foreach (IDatabase Database in Mappings.Keys.OrderBy(x=>x.Order))
+            foreach (IDatabase Database in Mappings.Keys)
             {
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    System.Collections.Generic.List<IParameter> Params = Parameters.ToList();
-                    foreach (IProperty Property in Mapping.Properties)
-                    {
-                        IParameter Parameter = ((IProperty<ObjectType>)Property).GetAsParameter(Object);
-                        if (Parameter != null)
-                            Params.Add(Parameter);
-                    }
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
-                        foreach (IProperty Property in Mapping.Properties)
-                        {
-                            if (Property.Cascade)
-                            {
-                                ((IProperty<ObjectType>)Property).CascadeSave(Object, ORMObject);
-                            }
-                        }
-                        ORMObject.Map<ObjectType>().Save<PrimaryKeyType>(Object, Params.ToArray());
-                        foreach (IProperty Property in Mapping.Properties)
-                        {
-                            if (!Property.Cascade && (Property is IManyToMany || Property is IManyToOne || Property is IIEnumerableManyToOne))
-                            {
-                                ((IProperty<ObjectType>)Property).JoinsDelete(Object, ORMObject);
-                                ((IProperty<ObjectType>)Property).JoinsSave(Object, ORMObject);
-                            }
-                            if (Property.Cascade && !(Property is IMap))
-                            {
-                                ((IProperty<ObjectType>)Property).CascadeJoinsDelete(Object, ORMObject);
-                                ((IProperty<ObjectType>)Property).CascadeJoinsSave(Object, ORMObject);
-                            }
-                        }
+                        ORMObject.Map<ObjectType>().Save<PrimaryKeyType>(Object, Parameters);
                     }
                 }
             }

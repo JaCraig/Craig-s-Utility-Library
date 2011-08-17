@@ -77,7 +77,7 @@ namespace Utilities.Web.OpenID
             {
                 Extension.Required = Required;
             }
-            System.Collections.Generic.List<Pair<string, string>> AttributesList = this.GetAttributes(URL);
+            System.Collections.Generic.List<System.Tuple<string, string>> AttributesList = this.GetAttributes(URL);
             if (AttributesList == null)
                 throw new Exception("The information requested was not received");
             Dictionary<Attributes, string> FinalValues = new Dictionary<Attributes, string>();
@@ -85,8 +85,8 @@ namespace Utilities.Web.OpenID
             {
                 FinalValues = Extension.GetValues(AttributesList);
             }
-            Pair<string, string> ID = AttributesList.Find(x => x.Left.Equals("openid.claimed_id", StringComparison.CurrentCultureIgnoreCase));
-            FinalValues.Add(Attributes.ID, ID.Right);
+            System.Tuple<string, string> ID = AttributesList.Find(x => x.Item1.Equals("openid.claimed_id", StringComparison.CurrentCultureIgnoreCase));
+            FinalValues.Add(Attributes.ID, ID.Item2);
             return FinalValues;
         }
 

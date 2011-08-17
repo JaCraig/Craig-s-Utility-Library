@@ -96,9 +96,7 @@ namespace Utilities.DataTypes
         public virtual IEnumerator<T> GetEnumerator()
         {
             foreach (T Key in this.Items.Keys)
-            {
                 yield return Key;
-            }
         }
 
         #endregion
@@ -108,9 +106,7 @@ namespace Utilities.DataTypes
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             foreach (T Key in this.Items.Keys)
-            {
                 yield return Key;
-            }
         }
 
         #endregion
@@ -127,6 +123,10 @@ namespace Utilities.DataTypes
         /// Actual internal container
         /// </summary>
         protected virtual Dictionary<T, int> Items { get; set; }
+
+        #endregion
+    }
+}
 
         #endregion
     }

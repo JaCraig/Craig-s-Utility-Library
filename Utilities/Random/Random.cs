@@ -25,6 +25,7 @@ using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Random
@@ -58,6 +59,8 @@ namespace Utilities.Random
 
         #region Public Functions
 
+        #region NextDate
+
         /// <summary>
         /// returns a random date/time for a specific date range.
         /// </summary>
@@ -75,31 +78,9 @@ namespace Utilities.Random
             return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
         }
 
-        /// <summary>
-        /// returns a randomly generated string
-        /// </summary>
-        /// <param name="Length">Length of the string</param>
-        /// <returns>a randomly generated string of the specified length</returns>
-        public virtual string NextString(int Length)
-        {
-            if (Length < 1)
-                return "";
-            return NextString(Length, ".");
-        }
+        #endregion
 
-        /// <summary>
-        /// Returns a randomly generated string of a specified length, containing
-        /// only a set of characters
-        /// </summary>
-        /// <param name="Length">length of the string</param>
-        /// <param name="AllowedCharacters">Characters that are allowed in the string</param>
-        /// <returns>A randomly generated string of the specified length, containing only the allowed characters.</returns>
-        public virtual string NextString(int Length, string AllowedCharacters)
-        {
-            if (Length < 1)
-                return "";
-            return NextString(Length, AllowedCharacters, Length);
-        }
+        #region NextString
 
         /// <summary>
         /// Returns a randomly generated string of a specified length, containing
@@ -109,7 +90,7 @@ namespace Utilities.Random
         /// <param name="AllowedCharacters">Characters allowed in the string</param>
         /// <param name="NumberOfNonAlphaNumericsAllowed">Number of non alpha numeric characters allowed.</param>
         /// <returns>A randomly generated string of a specified length, containing only a set of characters, and at max a specified number of non alpha numeric characters.</returns>
-        public virtual string NextString(int Length, string AllowedCharacters, int NumberOfNonAlphaNumericsAllowed)
+        public virtual string NextString(int Length, string AllowedCharacters = ".", int NumberOfNonAlphaNumericsAllowed = int.MaxValue)
         {
             if (Length < 1)
                 return "";
@@ -136,6 +117,10 @@ namespace Utilities.Random
             return TempBuilder.ToString();
         }
 
+        #endregion
+
+        #region NextLoremIpsum
+
         /// <summary>
         /// Creates a Lorem Ipsum sentence.
         /// </summary>
@@ -144,11 +129,9 @@ namespace Utilities.Random
         public virtual string NextLoremIpsum(int NumberOfWords)
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.Append(StringHelper.ToFirstCharacterUpperCase(Words[Next(Words.Length)]));
+            Builder.Append(Words[Next(Words.Length)].ToFirstCharacterUpperCase());
             for (int x = 1; x < NumberOfWords; ++x)
-            {
                 Builder.Append(" ").Append(Words[Next(Words.Length)]);
-            }
             Builder.Append(".");
             return Builder.ToString();
         }
@@ -162,16 +145,14 @@ namespace Utilities.Random
         /// <param name="NumberOfSentences">Number of sentences per paragraph</param>
         /// <param name="HTMLFormatting">Determines if this should use HTML formatting or not</param>
         /// <returns>A string containing Lorem Ipsum text</returns>
-        public virtual string NextLoremIpsum(int NumberOfParagraphs, int NumberOfSentences, int MinSentenceLength, int MaxSentenceLength, bool HTMLFormatting)
+        public virtual string NextLoremIpsum(int NumberOfParagraphs, int NumberOfSentences, int MinSentenceLength = 4, int MaxSentenceLength = 10, bool HTMLFormatting = false)
         {
             StringBuilder Builder = new StringBuilder();
             if (HTMLFormatting)
                 Builder.Append("<p>");
             Builder.Append("Lorem ipsum dolor sit amet. ");
-            for (int y = 0; y < NumberOfSentences; ++y)
-            {
+            for (int y = 1; y < NumberOfSentences; ++y)
                 Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength))).Append(" ");
-            }
             if (HTMLFormatting)
                 Builder.Append("</p>");
             for (int x = 1; x < NumberOfParagraphs; ++x)
@@ -179,9 +160,7 @@ namespace Utilities.Random
                 if (HTMLFormatting)
                     Builder.Append("<p>");
                 for (int y = 0; y < NumberOfSentences; ++y)
-                {
                     Builder.Append(NextLoremIpsum(Next(MinSentenceLength, MaxSentenceLength))).Append(" ");
-                }
                 if (HTMLFormatting)
                     Builder.Append("</p>");
                 else
@@ -190,18 +169,9 @@ namespace Utilities.Random
             return Builder.ToString();
         }
 
-        /// <summary>
-        /// Creates a Lorem Ipsum paragraph.
-        /// </summary>
-        /// <param name="NumberOfParagraphs">Number of paragraphs</param>
-        /// <param name="MaxSentenceLength">Maximum sentence length</param>
-        /// <param name="MinSentenceLength">Minimum sentence length</param>
-        /// <param name="NumberOfSentences">Number of sentences per paragraph</param>
-        /// <returns>A string containing Lorem Ipsum text</returns>
-        public virtual string NextLoremIpsum(int NumberOfParagraphs, int NumberOfSentences, int MinSentenceLength, int MaxSentenceLength)
-        {
-            return NextLoremIpsum(NumberOfParagraphs, NumberOfSentences, MinSentenceLength, MaxSentenceLength, false);
-        }
+        #endregion
+
+        #region NextBool
 
         /// <summary>
         /// Returns a random boolean value
@@ -209,10 +179,12 @@ namespace Utilities.Random
         /// <returns>returns a boolean</returns>
         public virtual bool NextBool()
         {
-            if (Next(0, 2) == 1)
-                return true;
-            return false;
+            return Next(0, 2) == 1;
         }
+
+        #endregion
+
+        #region NextEnum
 
         /// <summary>
         /// Gets a random enum value
@@ -225,6 +197,10 @@ namespace Utilities.Random
             int Index = Next(0, Values.Length);
             return (T)Values.GetValue(Index);
         }
+
+        #endregion
+
+        #region NextTimeSpan
 
         /// <summary>
         /// Randomly generates a new time span
@@ -243,32 +219,29 @@ namespace Utilities.Random
             return Start + new TimeSpan((long)(new TimeSpan(End.Ticks - Start.Ticks).Ticks * NextDouble()));
         }
 
-        /// <summary>
-        /// Returns a random color
-        /// </summary>
-        /// <returns>A random color between black and white</returns>
-        public virtual Color NextColor()
-        {
-            return NextColor(Color.Black, Color.White);
-        }
+        #endregion
 
+        #region NextColor
+        
         /// <summary>
         /// Returns a random color within a range
         /// </summary>
-        /// <param name="MinColor">The inclusive minimum color (minimum for A, R, G, and B values)</param>
-        /// <param name="MaxColor">The inclusive maximum color (max for A, R, G, and B values)</param>
+        /// <param name="MinColor">The inclusive minimum color (minimum for A, R, G, and B values). Defaults to Black.</param>
+        /// <param name="MaxColor">The inclusive maximum color (max for A, R, G, and B values). Defaults to White</param>
         /// <returns>A random color between the min and max values</returns>
-        public virtual Color NextColor(Color MinColor, Color MaxColor)
+        public virtual Color NextColor(Color MinColor = default(Color), Color MaxColor = default(Color))
         {
             if (MinColor == null)
-                throw new ArgumentNullException("MinColor");
+                MinColor = Color.Black;
             if (MaxColor == null)
-                throw new ArgumentNullException("MaxColor");
+                MaxColor = Color.White;
             return Color.FromArgb(Next(MinColor.A, MaxColor.A + 1),
                 Next(MinColor.R, MaxColor.R + 1),
                 Next(MinColor.G, MaxColor.G + 1),
                 Next(MinColor.B, MaxColor.B + 1));
         }
+
+        #endregion
 
         #endregion
 

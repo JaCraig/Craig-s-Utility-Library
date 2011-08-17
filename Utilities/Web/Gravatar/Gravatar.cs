@@ -24,6 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.Encryption.ExtensionMethods;
+using System.Security.Cryptography;
 #endregion
 
 namespace Utilities.Web.Gravatar
@@ -44,7 +46,7 @@ namespace Utilities.Web.Gravatar
         public static string GetImageLink(string Email,bool AppendJPG=false)
         {
             string Ending = AppendJPG ? ".jpg" : "";
-            return "http://www.gravatar.com/avatar/" + Utilities.Encryption.MD5.ComputeHash(Email.Trim().ToLower()).ToLower() + Ending;
+            return "http://www.gravatar.com/avatar/" + Email.Trim().ToLower().Hash(new MD5CryptoServiceProvider()).ToLower() + Ending;
         }
 
         #endregion

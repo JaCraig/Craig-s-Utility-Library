@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Imaging;
+using Utilities.Math.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image.Procedural
@@ -32,7 +33,7 @@ namespace Utilities.Media.Image.Procedural
     public static class CellularTexture
     {
         #region Functions
-        
+
         /// <summary>
         /// Generates a cellular texture image
         /// </summary>
@@ -59,7 +60,7 @@ namespace Utilities.Media.Image.Procedural
                 {
                     float Value = GetHeight(x, y, DistanceBuffer, MinimumDistance, MaxDistance);
                     Value *= 255;
-                    int RGBValue = Math.MathHelper.Clamp((int)Value, 255, 0);
+                    int RGBValue = ((int)Value).Clamp(255, 0);
                     Utilities.Media.Image.Image.SetPixel(ImageData, x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
                 }
             }
@@ -68,7 +69,7 @@ namespace Utilities.Media.Image.Procedural
         }
 
         private static float GetHeight(float X, float Y, float[,] DistanceBuffer,
-            float MinimumDistance,float MaxDistance)
+            float MinimumDistance, float MaxDistance)
         {
             return (DistanceBuffer[(int)X, (int)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);
         }

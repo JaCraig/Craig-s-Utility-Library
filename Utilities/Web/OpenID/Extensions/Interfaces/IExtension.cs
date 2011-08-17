@@ -37,7 +37,7 @@ namespace Utilities.Web.OpenID.Extensions.Interfaces
         /// Generates the attributes in a list of pairs
         /// </summary>
         /// <returns>A list of attribute pairs</returns>
-        System.Collections.Generic.List<Pair<string, string>> GenerateURLAttributes();
+        System.Collections.Generic.List<System.Tuple<string, string>> GenerateURLAttributes();
 
         /// <summary>
         /// Parses the URL and gets any attribute values passed back
@@ -45,7 +45,7 @@ namespace Utilities.Web.OpenID.Extensions.Interfaces
         /// <param name="URL">URL</param>
         /// <param name="Pairs">Query string broken down into attribute pairs</param>
         /// <returns>True if it's valid, false otherwise</returns>
-        bool Verify(string URL,System.Collections.Generic.List<Pair<string, string>> Pairs);
+        bool Verify(string URL, System.Collections.Generic.List<System.Tuple<string, string>> Pairs);
 
         #endregion
     }

@@ -25,6 +25,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Xml;
 using System.Data.Common;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL
@@ -127,7 +128,7 @@ namespace Utilities.SQL
         /// <param name="Type">SQL type of the parameter</param>
         public virtual void AddOutputParameter(string ID, SqlDbType Type)
         {
-            AddOutputParameter(ID, Utilities.DataTypes.DataTypeConversion.SqlDbTypeToDbType(Type));
+            AddOutputParameter(ID, Type.ToDbType());
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ namespace Utilities.SQL
         /// <param name="ID">ID associated with the output parameter</param>
         public virtual void AddOutputParameter<DataType>(string ID)
         {
-            AddOutputParameter(ID, Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(typeof(DataType)));
+            AddOutputParameter(ID, typeof(DataType).ToDbType());
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace Utilities.SQL
                 }
                 Parameter.ParameterName = ID;
                 Parameter.Value = null;
-                Parameter.DbType = Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(typeof(string));
+                Parameter.DbType = typeof(string).ToDbType();
                 Parameter.Direction = ParameterDirection.Output;
                 Parameter.Size = Length;
             }
@@ -218,7 +219,7 @@ namespace Utilities.SQL
                 Parameter.ParameterName = ID;
                 Parameter.Value = (string.IsNullOrEmpty(Value)) ? System.DBNull.Value : (object)Value;
                 Parameter.IsNullable = (string.IsNullOrEmpty(Value));
-                Parameter.DbType = Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(typeof(string));
+                Parameter.DbType = typeof(string).ToDbType();
                 Parameter.Direction = ParameterDirection.Input;
                 Parameter.Size = Length;
             }
@@ -232,7 +233,7 @@ namespace Utilities.SQL
         /// <param name="Type">SQL type of the parameter</param>
         public virtual void AddParameter(string ID, object Value, SqlDbType Type)
         {
-            AddParameter(ID, Value, Utilities.DataTypes.DataTypeConversion.SqlDbTypeToDbType(Type));
+            AddParameter(ID, Value, Type.ToDbType());
         }
 
         /// <summary>
@@ -243,7 +244,7 @@ namespace Utilities.SQL
         /// <param name="Value">Value to add</param>
         public virtual void AddParameter<DataType>(string ID, DataType Value)
         {
-            AddParameter(ID, Value, Utilities.DataTypes.DataTypeConversion.NetTypeToDbType(Value.GetType()));
+            AddParameter(ID, Value, Value.GetType().ToDbType());
         }
 
         /// <summary>
@@ -391,28 +392,8 @@ namespace Utilities.SQL
         {
             Open();
             if (ExecutableCommand != null)
-            {
-                object Value = ExecutableCommand.ExecuteScalar();
-                if (!Convert.IsDBNull(Value))
-                    return Value;
-            }
+                return ExecutableCommand.ExecuteScalar();
             return null;
-        }
-
-        /// <summary>
-        /// Executes the stored procedure as a scalar query
-        /// </summary>
-        /// <returns>The object of the first row and first column</returns>
-        public virtual DataType ExecuteScalar<DataType>()
-        {
-            Open();
-            if (ExecutableCommand != null)
-            {
-                object Value = ExecutableCommand.ExecuteScalar();
-                if (!Convert.IsDBNull(Value))
-                    return (DataType)Convert.ChangeType(Value, typeof(DataType));
-            }
-            return default(DataType);
         }
 
         #endregion
@@ -564,8 +545,8 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void Open()
         {
-            if (ExecutableCommand != null
-                && ExecutableCommand.Connection != null
+            if (ExecutableCommand != null 
+                && ExecutableCommand.Connection != null 
                 && ExecutableCommand.Connection.State != ConnectionState.Open)
                 ExecutableCommand.Connection.Open();
         }

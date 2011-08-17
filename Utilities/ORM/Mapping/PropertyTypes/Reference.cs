@@ -49,8 +49,8 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// Constructor
         /// </summary>
         /// <param name="Expression">Expression pointing to the property</param>
-        public Reference(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
-            : base(Expression, Mapping)
+        public Reference(Expression<Func<ClassType, DataType>> Expression)
+            : base(Expression)
         {
             SetDefaultValue(() => default(DataType));
             SetFieldName(Name + "_");
@@ -59,42 +59,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         #endregion
 
         #region Functions
-
-        public override void SetupLoadCommands()
-        {
-
-        }
-
-        public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
-        {
-        }
-
-        public override void JoinsSave(ClassType Object, MicroORM MicroORM)
-        {
-        }
-
-        public override void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
-        {
-        }
-
-        public override void CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
-        {
-        }
-
-        public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
-        {
-
-        }
-
-        public override void CascadeSave(ClassType Object, MicroORM MicroORM)
-        {
-            
-        }
-
-        public override IParameter GetAsParameter(ClassType Object)
-        {
-            return null;
-        }
 
         public override IReference<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
         {
@@ -121,7 +85,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IReference<ClassType, DataType> DoNotAllowNullValues()
         {
             this.NotNull = true;
-            Validation.ValidationManager.GetValidator<ClassType>().Required(Expression);
             return (IReference<ClassType, DataType>)this;
         }
 

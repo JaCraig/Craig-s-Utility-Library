@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.IO.Packaging;
 using System.IO;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.Zip
@@ -74,7 +75,7 @@ namespace Utilities.FileFormats.Zip
                 Folder = Folder.Remove(Folder.Length - 1);
             using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.OpenOrCreate))
             {
-                List<FileInfo> Files = Utilities.IO.FileManager.FileList(Folder, true);
+                List<FileInfo> Files = new DirectoryInfo(Folder).GetFiles().ToList();
                 foreach (FileInfo File in Files)
                 {
                     string FilePath = File.FullName.Replace(Folder, "");
@@ -91,7 +92,7 @@ namespace Utilities.FileFormats.Zip
         {
             if (string.IsNullOrEmpty(File))
                 throw new ArgumentNullException("File");
-            if (!Utilities.IO.FileManager.FileExists(File))
+            if (!new FileInfo(File).Exists)
                 throw new ArgumentException("File");
             using (Package Package = ZipPackage.Open(ZipFileStream))
             {
@@ -107,7 +108,7 @@ namespace Utilities.FileFormats.Zip
         {
             if (string.IsNullOrEmpty(Folder))
                 throw new ArgumentNullException(Folder);
-            Utilities.IO.FileManager.CreateDirectory(Folder);
+            new DirectoryInfo(Folder).Create();
             using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.Open, FileAccess.Read))
             {
                 foreach (PackageRelationship Relationship in Package.GetRelationshipsByType("http://schemas.microsoft.com/opc/2006/sample/document"))
@@ -131,7 +132,7 @@ namespace Utilities.FileFormats.Zip
             if (string.IsNullOrEmpty(Folder))
                 throw new ArgumentNullException(Folder);
             string Location = Folder + System.Web.HttpUtility.UrlDecode(Document.Uri.ToString()).Replace('\\', '/');
-            Utilities.IO.FileManager.CreateDirectory(Path.GetDirectoryName(Location));
+            new DirectoryInfo(Path.GetDirectoryName(Location)).Create();
             byte[] Data = new byte[1024];
             using (FileStream FileStream = new FileStream(Location, FileMode.Create))
             {
@@ -157,12 +158,11 @@ namespace Utilities.FileFormats.Zip
         {
             if (string.IsNullOrEmpty(File))
                 throw new ArgumentNullException("File");
-            if (!Utilities.IO.FileManager.FileExists(FileInfo.FullName))
+            if (!FileInfo.Exists)
                 throw new ArgumentException("File");
             Uri UriPath = PackUriHelper.CreatePartUri(new Uri(File, UriKind.Relative));
             PackagePart PackagePart = Package.CreatePart(UriPath, System.Net.Mime.MediaTypeNames.Text.Xml, CompressionOption.Maximum);
-            byte[] Data = null;
-            Utilities.IO.FileManager.GetFileContents(FileInfo.FullName, out Data);
+            byte[] Data = FileInfo.ReadBinary();
             PackagePart.GetStream().Write(Data, 0, Data.Count());
             Package.CreateRelationship(PackagePart.Uri, TargetMode.Internal, "http://schemas.microsoft.com/opc/2006/sample/document");
         }

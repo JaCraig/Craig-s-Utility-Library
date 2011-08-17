@@ -23,7 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using Utilities.IO;
+using Utilities.IO.ExtensionMethods;
 using Utilities.Web.OAuth;
 
 #endregion
@@ -58,7 +58,7 @@ namespace Utilities.Web.Netflix
         public List<string> AutoComplete(string Term)
         {
             List<string> Results = new List<string>();
-            string Content = FileManager.GetFileContents(new Uri("http://api.netflix.com/catalog/titles/autocomplete?oauth_consumer_key=" + ConsumerKey + "&term=" + Term));
+            string Content = new Uri("http://api.netflix.com/catalog/titles/autocomplete?oauth_consumer_key=" + ConsumerKey + "&term=" + Term).Read();
             XmlDocument Document = new XmlDocument();
             Document.LoadXml(Content);
             foreach (XmlNode Children in Document.ChildNodes)
@@ -100,7 +100,7 @@ namespace Utilities.Web.Netflix
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
             this.Url = new Uri("http://api.netflix.com/catalog/titles/");
-            return new Titles(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            return new Titles(new Uri(GenerateRequest()).Read());
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Utilities.Web.Netflix
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
             this.Url = new Uri(Title.SynopsisLink);
-            string Content = FileManager.GetFileContents(new Uri(GenerateRequest()));
+            string Content = new Uri(GenerateRequest()).Read();
 
             XmlDocument Document = new XmlDocument();
             Document.LoadXml(Content);
@@ -140,7 +140,7 @@ namespace Utilities.Web.Netflix
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
             this.Url = new Uri(Title.CastLink);
-            return new People(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            return new People(new Uri(GenerateRequest()).Read());
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Utilities.Web.Netflix
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
             this.Url = new Uri(Title.DirectorsLink);
-            return new People(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            return new People(new Uri(GenerateRequest()).Read());
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace Utilities.Web.Netflix
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
             this.Url = new Uri(Title.SimilarTitleLink);
-            return new Titles(FileManager.GetFileContents(new Uri(GenerateRequest())));
+            return new Titles(new Uri(GenerateRequest()).Read());
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Utilities.Web.Netflix
             this.TokenSecret = "";
             this.Method = HTTPMethod.GET;
             this.Url = new Uri(Title.FormatsAvailableLink);
-            string Content = FileManager.GetFileContents(new Uri(GenerateRequest()));
+            string Content = new Uri(GenerateRequest()).Read();
             List<string> Results = new List<string>();
             if (!string.IsNullOrEmpty(Content))
             {

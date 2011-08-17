@@ -48,7 +48,7 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Constructor
         /// </summary>
-        public ORMAspect(Utilities.DataTypes.ListMapping<Type, IMapping> Mappings)
+        public ORMAspect(Dictionary<Type, IMapping> Mappings)
         {
             this.InterfacesUsing = new List<Type>();
             this.InterfacesUsing.Add(typeof(IORMObject));
@@ -65,17 +65,14 @@ namespace Utilities.ORM.Aspect
             if (ClassMappings.ContainsKey(BaseType)
                 && Method.Name.StartsWith("set_"))
             {
-                foreach (IMapping Mapping in ClassMappings[BaseType])
+                IMapping Mapping = ClassMappings[BaseType];
+                string PropertyName = Method.Name.Replace("set_", "");
+                IProperty Property = Mapping.Properties.Find(x => x.Name == PropertyName);
+                if (Property != null)
                 {
-                    string PropertyName = Method.Name.Replace("set_", "");
-                    IProperty Property = Mapping.Properties.Find(x => x.Name == PropertyName);
-                    if (Property != null)
-                    {
-                        Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);
-                        if (Field != null)
-                            Field.Assign(Method.Parameters[1]);
-                        return;
-                    }
+                    Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);
+                    if (Field != null)
+                        Field.Assign(Method.Parameters[1]);
                 }
             }
         }
@@ -86,30 +83,27 @@ namespace Utilities.ORM.Aspect
             if (ClassMappings.ContainsKey(BaseType)
                 && Method.Name.StartsWith("get_"))
             {
-                foreach (IMapping Mapping in ClassMappings[BaseType])
+                IMapping Mapping = ClassMappings[BaseType];
+                string PropertyName = Method.Name.Replace("get_", "");
+                IProperty Property = Mapping.Properties.Find(x => x.Name == PropertyName);
+                if (Property != null)
                 {
-                    string PropertyName = Method.Name.Replace("get_", "");
-                    IProperty Property = Mapping.Properties.Find(x => x.Name == PropertyName);
-                    if (Property != null)
-                    {
-                        if (Property is IManyToOne || Property is IMap)
-                            SetupSingleProperty(Method, BaseType, ReturnValue, Property, Mapping);
-                        else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
-                            SetupIEnumerableProperty(Method, BaseType, ReturnValue, Property, Mapping);
-                        return;
-                    }
+                    if (Property is IManyToOne || Property is IMap)
+                        SetupSingleProperty(Method, BaseType, ReturnValue, Property, Mapping);
+                    else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
+                        SetupIEnumerableProperty(Method, BaseType, ReturnValue, Property, Mapping);
                 }
             }
         }
 
         public void SetupExceptionMethod(Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType)
         {
-
+            
         }
 
         public void Setup(object Object)
         {
-
+            
         }
 
         public void SetupInterfaces(Reflection.Emit.TypeBuilder TypeBuilder)
@@ -128,20 +122,16 @@ namespace Utilities.ORM.Aspect
         {
             if (ClassMappings.ContainsKey(TypeBuilder.BaseClass))
             {
-                foreach (IMapping Mapping in ClassMappings[TypeBuilder.BaseClass])
+                IMapping Mapping = ClassMappings[TypeBuilder.BaseClass];
+                foreach (IProperty Property in Mapping.Properties)
                 {
-                    foreach (IProperty Property in Mapping.Properties)
+                    if (Property is IManyToOne || Property is IMap)
                     {
-                        if (Property is IManyToOne || Property is IMap)
-                        {
-                            if(Fields.First(x=>x.Name==Property.DerivedFieldName)==null)
-                                Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, Property.Type));
-                        }
-                        else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
-                        {
-                            if (Fields.First(x => x.Name == Property.DerivedFieldName) == null)
-                                Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, typeof(IEnumerable<>).MakeGenericType(Property.Type)));
-                        }
+                        Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, Property.Type));
+                    }
+                    else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
+                    {
+                        Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, typeof(IEnumerable<>).MakeGenericType(Property.Type)));
                     }
                 }
             }
@@ -183,7 +173,7 @@ namespace Utilities.ORM.Aspect
         /// <param name="ReturnValue">Return value</param>
         /// <param name="Property">Property info</param>
         /// <param name="Mapping">Mapping info</param>
-        private void SetupIEnumerableProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property, IMapping Mapping)
+        private void SetupIEnumerableProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property,IMapping Mapping)
         {
             Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);
             Utilities.Reflection.Emit.Commands.If If1 = Method.If((VariableBase)SessionField, Comparison.NotEqual, null);
@@ -195,8 +185,8 @@ namespace Utilities.ORM.Aspect
                     VariableBase IDParameter = Method.NewObj(typeof(Parameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
                     VariableBase PropertyList = Method.NewObj(typeof(List<IParameter>));
                     PropertyList.Call("Add", new object[] { IDParameter });
-                    MethodInfo LoadPropertiesMethod = typeof(Session).GetMethod("LoadProperties");
-                    LoadPropertiesMethod = LoadPropertiesMethod.MakeGenericMethod(new Type[] { BaseType, Field.DataType.GetGenericArguments()[0] });
+                    MethodInfo LoadPropertiesMethod=typeof(Session).GetMethod("LoadProperties");
+                    LoadPropertiesMethod=LoadPropertiesMethod.MakeGenericMethod(new Type[]{BaseType,Field.DataType.GetGenericArguments()[0]});
                     VariableBase ReturnVal = ((VariableBase)SessionField).Call(LoadPropertiesMethod, new object[] { Method.This, Property.Name, PropertyList.Call("ToArray") });
                     Field.Assign(ReturnVal);
                 }
@@ -218,7 +208,7 @@ namespace Utilities.ORM.Aspect
         /// <param name="BaseType">Base type for the object</param>
         /// <param name="ReturnValue">Return value</param>
         /// <param name="Property">Property info</param>
-        private void SetupSingleProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property, IMapping Mapping)
+        private void SetupSingleProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property,IMapping Mapping)
         {
             Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);
             Utilities.Reflection.Emit.Commands.If If1 = Method.If((VariableBase)SessionField, Comparison.NotEqual, null);
@@ -250,7 +240,7 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Class mappings
         /// </summary>
-        private Utilities.DataTypes.ListMapping<Type, IMapping> ClassMappings { get; set; }
+        private Dictionary<Type, IMapping> ClassMappings { get; set; }
 
         /// <summary>
         /// Fields used for storing Map, ManyToOne, and ManyToMany properties

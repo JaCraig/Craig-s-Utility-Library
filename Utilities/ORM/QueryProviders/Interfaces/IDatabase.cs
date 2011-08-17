@@ -66,12 +66,6 @@ namespace Utilities.ORM.QueryProviders.Interfaces
         /// </summary>
         bool Readable { get; }
 
-        /// <summary>
-        /// Order that this database should be in
-        /// (if only one database is being used, it is ignored)
-        /// </summary>
-        int Order { get; }
-
         #endregion
     }
 }

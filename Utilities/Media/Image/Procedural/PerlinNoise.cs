@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Utilities.Math.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image.Procedural
@@ -64,7 +65,7 @@ namespace Utilities.Media.Image.Procedural
                     float Value = GetValue(x, y, Width, Height, Frequency, Amplitude, Persistance, Octaves, Noise);
                     Value = (Value * 0.5f) + 0.5f;
                     Value *= 255;
-                    int RGBValue=Math.MathHelper.Clamp((int)Value, MaxRGBValue, MinRGBValue);
+                    int RGBValue=((int)Value).Clamp(MaxRGBValue, MinRGBValue);
                     Image.SetPixel(ImageData, x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
                 }
             }

@@ -49,8 +49,8 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// Constructor
         /// </summary>
         /// <param name="Expression">Expression pointing to the ID</param>
-        public ID(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
-            : base(Expression, Mapping)
+        public ID(Expression<Func<ClassType, DataType>> Expression)
+            : base(Expression)
         {
             SetDefaultValue(() => default(DataType));
             SetFieldName(Name + "_");
@@ -60,61 +60,10 @@ namespace Utilities.ORM.Mapping.PropertyTypes
 
         #region Functions
 
-        public override void SetupLoadCommands()
-        {
-        }
-
-        public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
-        {
-        }
-
-        public override void JoinsSave(ClassType Object, MicroORM MicroORM)
-        {
-        }
-
-        public override void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
-        {
-        }
-
-        public override void CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
-        {
-        }
-
-        public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
-        {
-            if (Object == null)
-                return;
-            MicroORM.Map<ClassType>().Delete(Object);
-        }
-
-        public override void CascadeSave(ClassType Object, MicroORM MicroORM)
-        {
-            if (Object == null)
-                return;
-            List<IParameter> Params = new List<IParameter>();
-            foreach (IProperty Property in Mapping.Properties)
-            {
-                IParameter Parameter = ((IProperty<ClassType>)Property).GetAsParameter(Object);
-                if (Parameter != null)
-                    Params.Add(Parameter);
-            }
-            MicroORM.Map<ClassType>().Save<DataType>(Object, Params.ToArray());
-        }
-
         public override IID<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
         {
             this.CommandToLoad = new Command(Command, CommandType);
             return (IID<ClassType, DataType>)this;
-        }
-
-        public override IParameter GetAsParameter(ClassType Object)
-        {
-            if (Object == null)
-                return null;
-            DataType Item=Expression.Compile()(Object);
-            if(Item==null)
-                return null;
-            return new Utilities.ORM.QueryProviders.Parameter<DataType>(Item, FieldName);
         }
 
         public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
@@ -136,7 +85,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IID<ClassType, DataType> DoNotAllowNullValues()
         {
             this.NotNull = true;
-            Validation.ValidationManager.GetValidator<ClassType>().Required(Expression);
             return (IID<ClassType, DataType>)this;
         }
 

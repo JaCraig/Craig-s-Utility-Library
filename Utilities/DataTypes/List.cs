@@ -34,7 +34,12 @@ namespace Utilities.DataTypes
     public class List<T> : System.Collections.Generic.List<T>
     {
         #region Events
+
+        /// <summary>
+        /// Event called if the list is changed
+        /// </summary>
         public virtual EventHandler<ChangedEventArgs> Changed { get; set; }
+
         #endregion
 
         #region Public Functions

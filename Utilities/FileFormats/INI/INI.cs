@@ -25,7 +25,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Utilities.IO;
+using Utilities.IO.ExtensionMethods;
+using System.IO;
 
 #endregion
 
@@ -144,7 +145,7 @@ namespace Utilities.FileFormats.INI
                     Builder.Append(Key + "=" + FileContents[Header][Key] + "\r\n");
                 }
             }
-            FileManager.SaveFile(Builder.ToString(), FileName);
+            new FileInfo(FileName).Save(Builder.ToString());
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace Utilities.FileFormats.INI
             if (string.IsNullOrEmpty(this.FileName))
                 return;
 
-            string Contents = FileManager.GetFileContents(FileName);
+            string Contents = new FileInfo(FileName).Read();
             Regex Section = new Regex("[" + Regex.Escape(" ") + "\t]*" + Regex.Escape("[") + ".*" + Regex.Escape("]\r\n"));
             string[] Sections = Section.Split(Contents);
             MatchCollection SectionHeaders = Section.Matches(Contents);

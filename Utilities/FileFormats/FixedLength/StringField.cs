@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Text;
 using Utilities.DataTypes;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.FileFormats.FixedLength.BaseClasses;
 #endregion
 
@@ -83,7 +84,7 @@ namespace Utilities.FileFormats.FixedLength
             this.Length = Length;
             if (Value.Length > this.Length)
             {
-                this.Value = StringHelper.Left(Value, Length);
+                this.Value = Value.Left(Length);
                 return;
             }
             StringBuilder Builder = new StringBuilder();
