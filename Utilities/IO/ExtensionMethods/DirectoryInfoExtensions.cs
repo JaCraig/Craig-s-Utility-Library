@@ -156,13 +156,14 @@ namespace Utilities.IO.ExtensionMethods
         /// Gets the size of all files within a directory
         /// </summary>
         /// <param name="Directory">Directory</param>
+        /// <param name="SearchPattern">Search pattern used to tell what files to include (defaults to all)</param>
         /// <param name="Recursive">determines if this is a recursive call or not</param>
         /// <returns>The directory size</returns>
-        public static long Size(this DirectoryInfo Directory, bool Recursive = false)
+        public static long Size(this DirectoryInfo Directory,string SearchPattern="*", bool Recursive = false)
         {
             if (Directory == null)
                 throw new ArgumentNullException("Directory");
-            return Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Sum(x => x.Length);
+            return Directory.EnumerateFiles(SearchPattern, Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Sum(x => x.Length);
         }
 
         #endregion

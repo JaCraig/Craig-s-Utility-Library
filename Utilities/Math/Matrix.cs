@@ -329,24 +329,3 @@ namespace Utilities.Math
         #endregion
     }
 }
-                        {
-                            TempMatrix[WidthCounter, z - 1] = this[y, z];
-                        }
-                        ++WidthCounter;
-                    }
-                }
-                if (x % 2 == 0)
-                {
-                    Answer += TempMatrix.Determinant();
-                }
-                else
-                {
-                    Answer -= TempMatrix.Determinant();
-                }
-            }
-            return Answer;
-        }
-
-        #endregion
-    }
-}

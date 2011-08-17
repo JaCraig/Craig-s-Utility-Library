@@ -202,14 +202,3 @@ namespace Utilities.DataTypes
         #endregion
     }
 }
-
-        #region Events
-        
-        /// <summary>
-        /// Event that is fired when the vector is changed
-        /// </summary>
-        public virtual EventHandler<ChangedEventArgs> Changed { get; set; }
-
-        #endregion
-    }
-}

@@ -167,4 +167,3 @@ namespace Utilities.Media.Image
         #endregion
     }
 }
-}

@@ -176,17 +176,3 @@ namespace Utilities.Math
         #endregion
     }
 }
-            string Splitter = "";
-            for (int x = 0; x < this.NumberItems; ++x)
-            {
-                Builder.Append(Splitter);
-                Builder.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, "{0}", this.Items[x]);
-                Splitter = ",  ";
-            }
-            Builder.Append(" }");
-            return Builder.ToString();
-        }
-
-        #endregion
-    }
-}

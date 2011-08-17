@@ -127,7 +127,3 @@ namespace Utilities.DataTypes
         #endregion
     }
 }
-
-        #endregion
-    }
-}

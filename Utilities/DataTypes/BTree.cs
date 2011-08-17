@@ -390,32 +390,3 @@ namespace Utilities.DataTypes
         #endregion
     }
 }
-        /// <summary>
-        /// Right node
-        /// </summary>
-        public virtual TreeNode<T> Right { get; set; }
-
-        /// <summary>
-        /// Is this the root
-        /// </summary>
-        public virtual bool IsRoot { get { return Parent == null; } }
-
-        /// <summary>
-        /// Is this a leaf
-        /// </summary>
-        public virtual bool IsLeaf { get { return Left == null && Right == null; } }
-
-        internal bool Visited { get; set; }
-
-        #endregion
-
-        #region Public Overridden Functions
-
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
-
-        #endregion
-    }
-}

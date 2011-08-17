@@ -76,9 +76,3 @@ namespace Utilities.Events
         #endregion
     }
 }
-            return default(T2);
-        }
-
-        #endregion
-    }
-}

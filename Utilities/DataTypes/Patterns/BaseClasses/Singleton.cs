@@ -74,5 +74,3 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         #endregion
     }
 }
-    }
-}

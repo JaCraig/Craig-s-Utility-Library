@@ -21,33 +21,43 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Security.Cryptography;
+using System.Text;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using Utilities.DataTypes.Comparison;
 #endregion
 
-namespace Utilities.Encryption
+namespace Utilities.DataTypes.ExtensionMethods
 {
     /// <summary>
-    /// Utility class to handle MD5 functions
+    /// IComparable extensions
     /// </summary>
-    public static class MD5
+    public static class IComparableExtensions
     {
-        #region Public Static Functions
+        #region Functions
+
+        #region Between
 
         /// <summary>
-        /// Computes a hash using MD5
+        /// Checks if an item is between two values
         /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>A hash of the input string using MD5</returns>
-        public static string ComputeHash(string Input)
+        /// <typeparam name="T">Type of the value</typeparam>
+        /// <param name="Value">Value to check</param>
+        /// <param name="Min">Minimum value</param>
+        /// <param name="Max">Maximum value</param>
+        /// <param name="Comparer">Comparer used to compare the values (defaults to GenericComparer)"</param>
+        /// <returns>True if it is between the values, false otherwise</returns>
+        public static bool Between<T>(this T Value, T Min, T Max, IComparer<T> Comparer = null) where T : IComparable
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
-            MD5CryptoServiceProvider MD5 = new MD5CryptoServiceProvider();
-            byte[] InputArray = System.Text.Encoding.ASCII.GetBytes(Input);
-            byte[] HashedArray = MD5.ComputeHash(InputArray);
-            MD5.Clear();
-            return BitConverter.ToString(HashedArray).Replace("-","");
+            if(Comparer==null)
+                Comparer=new GenericComparer<T>();
+            return Comparer.Compare(Max, Value) >= 0 && Comparer.Compare(Value, Min) >= 0;
         }
+
+        #endregion
 
         #endregion
     }

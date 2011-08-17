@@ -144,5 +144,3 @@ namespace Utilities.Encryption
         #endregion
     }
 }
-    }
-}
