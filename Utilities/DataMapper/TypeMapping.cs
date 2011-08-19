@@ -27,6 +27,7 @@ using System.Text;
 using System.Linq.Expressions;
 using Utilities.DataMapper.Interfaces;
 using System.Reflection;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataMapper
@@ -70,10 +71,10 @@ namespace Utilities.DataMapper
                 PropertyInfo DestinationProperty=DestinationType.GetProperty(Properties[x].Name);
                 if (DestinationProperty != null)
                 {
-                    Expression<Func<Left,object>>LeftGet= Utilities.Reflection.Reflection.GetPropertyGetter<Left>(DestinationProperty);
-                    Expression<Action<Left,object>> LeftSet= Utilities.Reflection.Reflection.GetPropertySetter<Left>(DestinationProperty);
-                    Expression<Func<Right,object>>RightGet= Utilities.Reflection.Reflection.GetPropertyGetter<Right>(DestinationProperty);
-                    Expression<Action<Right,object>> RightSet= Utilities.Reflection.Reflection.GetPropertySetter<Right>(DestinationProperty);
+                    Expression<Func<Left, object>> LeftGet = DestinationProperty.GetPropertyGetter<Left>();
+                    Expression<Action<Left, object>> LeftSet = LeftGet.GetPropertySetter();
+                    Expression<Func<Right, object>> RightGet = DestinationProperty.GetPropertyGetter<Right>();
+                    Expression<Action<Right, object>> RightSet = RightGet.GetPropertySetter();
                     this.AddMapping(LeftGet.Compile(), LeftSet.Compile(), RightGet.Compile(), RightSet.Compile());
                 }
             }

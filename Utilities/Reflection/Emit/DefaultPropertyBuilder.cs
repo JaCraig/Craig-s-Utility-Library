@@ -27,6 +27,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -133,7 +134,7 @@ namespace Utilities.Reflection.Emit
                 Output.Append("abstract ");
             else if ((GetMethodAttributes & MethodAttributes.HideBySig) > 0)
                 Output.Append("override ");
-            Output.Append(Reflection.GetTypeName(DataType));
+            Output.Append(DataType.GetName());
             Output.Append(" ").Append(Name);
 
             string Splitter = "";

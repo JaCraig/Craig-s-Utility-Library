@@ -27,6 +27,7 @@ using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Utilities.Reflection.ExtensionMethods;
 using System.Web.UI;
 
 
@@ -244,7 +245,7 @@ namespace Utilities.Web
         public static string DumpRequestVariable(HttpRequest Request)
         {
             StringBuilder String = new StringBuilder();
-            String.Append(Reflection.Reflection.DumpProperties(Request));
+            String.Append(Request.DumpProperties());
             return String.ToString();
         }
 
@@ -266,7 +267,7 @@ namespace Utilities.Web
         public static string DumpResponseVariable(HttpResponse Response)
         {
             StringBuilder String = new StringBuilder();
-            String.Append(Reflection.Reflection.DumpProperties(Response));
+            String.Append(Response.DumpProperties());
             return String.ToString();
         }
 
@@ -303,7 +304,7 @@ namespace Utilities.Web
                 String.Append(Key).Append(": ")
                     .Append(Input[Key].ToString())
                     .Append("<br />Properties<br />")
-                    .Append(Reflection.Reflection.DumpProperties(Input[Key]))
+                    .Append(Input[Key].DumpProperties())
                     .Append("<br />");
             }
             return String.ToString();
@@ -332,7 +333,7 @@ namespace Utilities.Web
                 String.Append(Entry.Key).Append(": ")
                     .Append(Entry.Value.ToString())
                     .Append("<br />Properties<br />")
-                    .Append(Reflection.Reflection.DumpProperties(Entry.Value))
+                    .Append(Entry.Value.DumpProperties())
                     .Append("<br />");
             }
             return String.ToString();
@@ -361,7 +362,7 @@ namespace Utilities.Web
                 String.Append(Key).Append(": ")
                     .Append(Input[Key].ToString())
                     .Append("<br />Properties<br />")
-                    .Append(Reflection.Reflection.DumpProperties(Input[Key]))
+                    .Append(Input[Key].DumpProperties())
                     .Append("<br />");
             }
             return String.ToString();

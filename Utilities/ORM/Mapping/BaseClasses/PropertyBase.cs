@@ -29,6 +29,7 @@ using System.Linq.Expressions;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
 using System.Collections;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM.Mapping.BaseClasses
@@ -49,7 +50,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         public PropertyBase(Expression<Func<ClassType, DataType>> Expression)
         {
             this.Expression = Expression;
-            this.Name = Utilities.Reflection.Reflection.GetPropertyName<ClassType, DataType>(Expression);
+            this.Name = Expression.GetPropertyName();
             this.Type = typeof(DataType);
             this.DerivedFieldName = "_" + Name + "Derived";
         }

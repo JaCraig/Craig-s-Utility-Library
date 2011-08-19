@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Utilities.Configuration.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Configuration
@@ -76,7 +77,7 @@ namespace Utilities.Configuration
         public static void RegisterConfigFile(Assembly AssemblyContainingConfig)
         {
             if (AssemblyContainingConfig == null) throw new ArgumentNullException("AssemblyContainingConfig");
-            List<Type> Types = Utilities.Reflection.Reflection.GetTypes(AssemblyContainingConfig, "IConfig");
+            IEnumerable<Type> Types = AssemblyContainingConfig.GetTypes(typeof(IConfig));
             foreach (Type Temp in Types)
             {
                 if (!Temp.ContainsGenericParameters)

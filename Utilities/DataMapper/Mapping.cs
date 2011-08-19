@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using Utilities.DataMapper.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataMapper
@@ -46,12 +47,10 @@ namespace Utilities.DataMapper
         /// <param name="RightExpression">Right expression</param>
         public Mapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
         {
-            string Name = Utilities.Reflection.Reflection.GetPropertyName(LeftExpression);
-            LeftGet = Utilities.Reflection.Reflection.GetPropertyGetter<Left>(Name).Compile();
-            LeftSet = Utilities.Reflection.Reflection.GetPropertySetter<Left>(Name).Compile();
-            Name = Utilities.Reflection.Reflection.GetPropertyName(RightExpression);
-            RightGet = Utilities.Reflection.Reflection.GetPropertyGetter<Right>(Name).Compile();
-            RightSet = Utilities.Reflection.Reflection.GetPropertySetter<Right>(Name).Compile();
+            LeftGet = LeftExpression.Compile();
+            LeftSet = LeftExpression.GetPropertySetter().Compile();
+            RightGet = RightExpression.Compile();
+            RightSet = RightExpression.GetPropertySetter().Compile();
         }
 
         /// <summary>
@@ -64,9 +63,8 @@ namespace Utilities.DataMapper
         {
             this.LeftGet = LeftGet;
             this.LeftSet = LeftSet;
-            string Name = Utilities.Reflection.Reflection.GetPropertyName(RightExpression);
-            RightGet = Utilities.Reflection.Reflection.GetPropertyGetter<Right>(Name).Compile();
-            RightSet = Utilities.Reflection.Reflection.GetPropertySetter<Right>(Name).Compile();
+            RightGet = RightExpression.Compile();
+            RightSet = RightExpression.GetPropertySetter().Compile();
         }
 
         /// <summary>
@@ -77,9 +75,8 @@ namespace Utilities.DataMapper
         /// <param name="RightSet">Right set function</param>
         public Mapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
         {
-            string Name = Utilities.Reflection.Reflection.GetPropertyName(LeftExpression);
-            LeftGet = Utilities.Reflection.Reflection.GetPropertyGetter<Left>(Name).Compile();
-            LeftSet = Utilities.Reflection.Reflection.GetPropertySetter<Left>(Name).Compile();
+            LeftGet = LeftExpression.Compile();
+            LeftSet = LeftExpression.GetPropertySetter().Compile();
             this.RightGet = RightGet;
             this.RightSet = RightSet;
         }

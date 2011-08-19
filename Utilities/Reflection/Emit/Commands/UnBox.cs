@@ -25,6 +25,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -82,7 +83,7 @@ namespace Utilities.Reflection.Emit.Commands
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            Output.Append(Result).Append("=(").Append(Reflection.GetTypeName(ValueType))
+            Output.Append(Result).Append("=(").Append(ValueType.GetName())
                 .Append(")").Append(Value).Append(";\n");
             return Output.ToString();
         }

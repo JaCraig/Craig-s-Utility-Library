@@ -25,6 +25,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -98,7 +99,7 @@ namespace Utilities.Reflection.Emit.Commands
         {
             StringBuilder Output = new StringBuilder();
             Output.Append(Result).Append(" = new ")
-                .Append(Reflection.GetTypeName(Constructor.DeclaringType))
+                .Append(Constructor.DeclaringType.GetName())
                 .Append("(");
             string Seperator = "";
             if (Parameters != null)

@@ -31,6 +31,7 @@ using System.Data;
 using System.Reflection;
 using Utilities.DataTypes.Comparison;
 using Utilities.SQL.MicroORM.Enums;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -338,7 +339,7 @@ namespace Utilities.SQL.MicroORM
             Check(Property, "Property");
             Check(Mappings, "Mappings");
             if (string.IsNullOrEmpty(DatabasePropertyName))
-                DatabasePropertyName = Utilities.Reflection.Reflection.GetPropertyName(Property);
+                DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
@@ -358,7 +359,7 @@ namespace Utilities.SQL.MicroORM
             Check(Property, "Property");
             Check(Mappings, "Mappings");
             if (string.IsNullOrEmpty(DatabasePropertyName))
-                DatabasePropertyName = Utilities.Reflection.Reflection.GetPropertyName(Property);
+                DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,

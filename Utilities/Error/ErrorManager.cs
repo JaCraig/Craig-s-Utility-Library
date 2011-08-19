@@ -23,7 +23,11 @@ THE SOFTWARE.*/
 using System.Text;
 using System.Web;
 using Utilities.Web;
-
+using Utilities.Reflection.ExtensionMethods;
+using System.Reflection;
+using System;
+using System.Linq;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Error
@@ -69,7 +73,7 @@ namespace Utilities.Error
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<strong>Assembly Information</strong><br />");
-            Builder.Append(Reflection.Reflection.DumpAllAssembliesAndProperties());
+            AppDomain.CurrentDomain.GetAssemblies().ForEach(x=>Builder.Append(x.DumpProperties()));
             return Builder.ToString();
         }
 
@@ -81,7 +85,7 @@ namespace Utilities.Error
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<strong>System Information</strong><br />");
-            Builder.Append(Reflection.Reflection.DumpProperties(System.Type.GetType("Utilities.Environment.Environment")));
+            Builder.Append(System.Type.GetType("Utilities.Environment.Environment").DumpProperties());
             return Builder.ToString();
         }
 

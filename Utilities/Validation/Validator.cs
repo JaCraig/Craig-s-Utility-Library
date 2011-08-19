@@ -30,6 +30,7 @@ using Utilities.Validation.Rules;
 using Utilities.Validation.Exceptions;
 using System.Linq.Expressions;
 using System.Reflection;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Validation
@@ -93,59 +94,59 @@ namespace Utilities.Validation
         {
             if (Attribute is Required)
             {
-                Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property);
+                Expression<Func<Type, object>> PropertyGetter = Property.GetPropertyGetter<Type>();
                 this.Required(PropertyGetter, ((Required)Attribute).DefaultValue, Attribute.ErrorMessage);
             }
             else if (Attribute is Regex)
             {
-                Expression<Func<Type, string>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, string>(Property);
+                Expression<Func<Type, string>> PropertyGetter = Property.GetPropertyGetter<Type,string>();
                 this.Regex(PropertyGetter, ((Regex)Attribute).RegexString, Attribute.ErrorMessage);
             }
             else if (Attribute is MaxLength)
             {
-                Expression<Func<Type, string>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, string>(Property);
+                Expression<Func<Type, string>> PropertyGetter = Property.GetPropertyGetter<Type,string>();
                 this.MaxLength(PropertyGetter, ((MaxLength)Attribute).MaxLengthAllowed, Attribute.ErrorMessage);
             }
             else if (Attribute is LessThanOrEqual)
             {
-                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                Expression<Func<Type, IComparable>> PropertyGetter = Property.GetPropertyGetter<Type,IComparable>();
                 this.LessThanOrEqual(PropertyGetter, ((LessThanOrEqual)Attribute).Value, Attribute.ErrorMessage);
             }
             else if (Attribute is LessThan)
             {
-                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                Expression<Func<Type, IComparable>> PropertyGetter = Property.GetPropertyGetter<Type, IComparable>();
                 this.LessThan(PropertyGetter, ((LessThan)Attribute).Value, Attribute.ErrorMessage);
             }
             else if (Attribute is GreaterThanOrEqual)
             {
-                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                Expression<Func<Type, IComparable>> PropertyGetter = Property.GetPropertyGetter<Type, IComparable>();
                 this.GreaterThanOrEqual(PropertyGetter, ((GreaterThanOrEqual)Attribute).Value, Attribute.ErrorMessage);
             }
             else if (Attribute is GreaterThan)
             {
-                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                Expression<Func<Type, IComparable>> PropertyGetter = Property.GetPropertyGetter<Type, IComparable>();
                 this.GreaterThan(PropertyGetter, ((GreaterThan)Attribute).Value, Attribute.ErrorMessage);
             }
             else if (Attribute is Equal)
             {
-                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                Expression<Func<Type, IComparable>> PropertyGetter = Property.GetPropertyGetter<Type, IComparable>();
                 this.Equal(PropertyGetter, ((Equal)Attribute).Value, Attribute.ErrorMessage);
             }
             else if (Attribute is Custom)
             {
-                Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, object>(Property);
+                Expression<Func<Type, object>> PropertyGetter = Property.GetPropertyGetter<Type>();
                 MethodInfo Method = typeof(Type).GetMethod(((Custom)Attribute).Action);
                 Action<Type> Test = (x) => Method.Invoke(x, null);
                 this.Custom(PropertyGetter, Test);
             }
             else if (Attribute is Cascade)
             {
-                Expression<Func<Type, object>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type>(Property);
+                Expression<Func<Type, object>> PropertyGetter = Property.GetPropertyGetter<Type>();
                 this.Cascade(PropertyGetter, Attribute.ErrorMessage);
             }
             else if (Attribute is Between)
             {
-                Expression<Func<Type, IComparable>> PropertyGetter = Utilities.Reflection.Reflection.GetPropertyGetter<Type, IComparable>(Property);
+                Expression<Func<Type, IComparable>> PropertyGetter = Property.GetPropertyGetter<Type, IComparable>();
                 this.Between(PropertyGetter, ((Between)Attribute).MinValue, ((Between)Attribute).MaxValue, Attribute.ErrorMessage);
             }
         }
@@ -167,7 +168,7 @@ namespace Utilities.Validation
             DataType MinValue, DataType MaxValue, string ErrorMessage = "") where DataType : IComparable
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is not between " + MinValue.ToString() + " and " + MaxValue.ToString();
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is not between " + MinValue.ToString() + " and " + MaxValue.ToString();
             Rules.Add(new Between<Type, DataType>(ItemToValidate.Compile(), MinValue, MaxValue, ErrorMessage));
             return this;
         }
@@ -187,7 +188,7 @@ namespace Utilities.Validation
             string ErrorMessage="")
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is not valid:\n";
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is not valid:\n";
             Rules.Add(new Cascade<Type, DataType>(ItemToValidate.Compile(), ErrorMessage));
             return this;
         }
@@ -226,7 +227,7 @@ namespace Utilities.Validation
             DataType Value, string ErrorMessage = "")
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is not equal to " + Value.ToString();
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is not equal to " + Value.ToString();
             Rules.Add(new Equal<Type, DataType>(ItemToValidate.Compile(), Value, ErrorMessage));
             return this;
         }
@@ -247,7 +248,7 @@ namespace Utilities.Validation
             DataType MinValue, string ErrorMessage = "") where DataType : IComparable
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is less than or equal to " + MinValue.ToString();
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is less than or equal to " + MinValue.ToString();
             Rules.Add(new GreaterThan<Type, DataType>(ItemToValidate.Compile(), MinValue, ErrorMessage));
             return this;
         }
@@ -268,7 +269,7 @@ namespace Utilities.Validation
             DataType MinValue, string ErrorMessage = "") where DataType : IComparable
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is less than " + MinValue.ToString();
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is less than " + MinValue.ToString();
             Rules.Add(new GreaterThanOrEqual<Type, DataType>(ItemToValidate.Compile(), MinValue, ErrorMessage));
             return this;
         }
@@ -289,7 +290,7 @@ namespace Utilities.Validation
             DataType MaxValue, string ErrorMessage = "") where DataType : IComparable
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is greater than or equal to " + MaxValue.ToString();
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is greater than or equal to " + MaxValue.ToString();
             Rules.Add(new LessThan<Type, DataType>(ItemToValidate.Compile(), MaxValue, ErrorMessage));
             return this;
         }
@@ -310,7 +311,7 @@ namespace Utilities.Validation
             DataType MaxValue, string ErrorMessage = "") where DataType : IComparable
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is greater than " + MaxValue.ToString();
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is greater than " + MaxValue.ToString();
             Rules.Add(new LessThanOrEqual<Type, DataType>(ItemToValidate.Compile(), MaxValue, ErrorMessage));
             return this;
         }
@@ -329,7 +330,7 @@ namespace Utilities.Validation
         public virtual Validator<Type> MaxLength(Expression<Func<Type, string>> ItemToValidate, int MaxLength, string ErrorMessage = "")
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + "'s length is greater than " + MaxLength.ToString() + " characters";
+                ErrorMessage = ItemToValidate.GetPropertyName() + "'s length is greater than " + MaxLength.ToString() + " characters";
             Rules.Add(new MaxLength<Type>(ItemToValidate.Compile(), MaxLength, ErrorMessage));
             return this;
         }
@@ -348,7 +349,7 @@ namespace Utilities.Validation
         public virtual Validator<Type> Regex(Expression<Func<Type, string>> ItemToValidate, string RegexString, string ErrorMessage = "")
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " does not match";
+                ErrorMessage = ItemToValidate.GetPropertyName() + " does not match";
             Rules.Add(new Regex<Type>(ItemToValidate.Compile(), RegexString, ErrorMessage));
             return this;
         }
@@ -369,7 +370,7 @@ namespace Utilities.Validation
             DataType DefaultValue=default(DataType), string ErrorMessage = "")
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is required";
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is required";
             Rules.Add(new Required<Type, DataType>(ItemToValidate.Compile(), DefaultValue, ErrorMessage));
             return this;
         }
@@ -384,7 +385,7 @@ namespace Utilities.Validation
             string DefaultValue = null, string ErrorMessage = "")
         {
             if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = Utilities.Reflection.Reflection.GetPropertyName(ItemToValidate) + " is required";
+                ErrorMessage = ItemToValidate.GetPropertyName() + " is required";
             Rules.Add(new RequiredString<Type>(ItemToValidate.Compile(), DefaultValue, ErrorMessage));
             return this;
         }

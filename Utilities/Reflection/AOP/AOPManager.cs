@@ -32,6 +32,7 @@ using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.AOP.EventArgs;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.AOP
@@ -64,7 +65,7 @@ namespace Utilities.Reflection.AOP
             }
             else
             {
-                System.Reflection.Assembly TempAssembly = Utilities.Reflection.Reflection.LoadAssembly(AssemblyDirectory + AssemblyName + ".dll");
+                System.Reflection.Assembly TempAssembly = new AssemblyName(AssemblyDirectory + AssemblyName + ".dll").Load();
                 Type[] Types = TempAssembly.GetTypes();
                 foreach (Type Type in Types)
                 {
@@ -89,17 +90,15 @@ namespace Utilities.Reflection.AOP
             {
                 if (AspectLocation.EndsWith(".dll", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    System.Reflection.Assembly TempAssembly = Utilities.Reflection.Reflection.LoadAssembly(AspectLocation);
-                    Aspects.AddRange(Utilities.Reflection.Reflection.GetObjectsFromAssembly<IAspect>(TempAssembly));
+                    Aspects.AddRange(new AssemblyName(AspectLocation).Load().GetObjects<IAspect>());
                 }
                 else if (new DirectoryInfo(AspectLocation).Exists)
                 {
-                    Aspects.AddRange(Utilities.Reflection.Reflection.GetObjectsFromAssembly<IAspect>(AspectLocation));
+                    Aspects.AddRange(new DirectoryInfo(AspectLocation).GetObjects<IAspect>());
                 }
                 else
                 {
-                    System.Reflection.Assembly TempAssembly = System.Reflection.Assembly.Load(AspectLocation);
-                    Aspects.AddRange(Utilities.Reflection.Reflection.GetObjectsFromAssembly<IAspect>(TempAssembly));
+                    Aspects.AddRange(new AssemblyName(AspectLocation).Load().GetObjects<IAspect>());
                 }
             }
             if (AssemblyBuilder != null)
@@ -112,7 +111,7 @@ namespace Utilities.Reflection.AOP
             }
             else
             {
-                System.Reflection.Assembly TempAssembly = Utilities.Reflection.Reflection.LoadAssembly(AssemblyDirectory + AssemblyName + ".dll");
+                System.Reflection.Assembly TempAssembly = new AssemblyName(AssemblyDirectory + AssemblyName + ".dll").Load();
                 Type[] Types = TempAssembly.GetTypes();
                 foreach (Type Type in Types)
                 {

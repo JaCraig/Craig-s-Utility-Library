@@ -31,6 +31,7 @@ using Utilities.DataTypes;
 using Utilities.SQL.MicroORM;
 using System.Data;
 using Utilities.ORM.Aspect.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM.QueryProviders
@@ -77,7 +78,7 @@ namespace Utilities.ORM.QueryProviders
         {
             if (Databases == null)
                 Databases = new System.Collections.Generic.List<IDatabase>();
-            System.Collections.Generic.List<Type> Types = Utilities.Reflection.Reflection.GetTypes(AssemblyUsing, typeof(IDatabase));
+            IEnumerable<Type> Types = AssemblyUsing.GetTypes(typeof(IDatabase));
             foreach (Type Type in Types)
             {
                 Type BaseType = Type.BaseType;
@@ -103,7 +104,7 @@ namespace Utilities.ORM.QueryProviders
         {
             if (Mappings == null)
                 Mappings = new ListMapping<IDatabase, IMapping>();
-            IDatabase Database = Databases.First(x => Utilities.Reflection.Reflection.IsOfType(x, Mapping.DatabaseConfigType)
+            IDatabase Database = Databases.First(x => x.IsOfType(Mapping.DatabaseConfigType)
                                                         && !string.IsNullOrEmpty(x.ConnectionString));
             Mapping.AddToQueryProvider(Database);
             Mappings.Add(Database, Mapping);

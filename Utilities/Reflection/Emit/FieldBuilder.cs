@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -82,7 +83,7 @@ namespace Utilities.Reflection.Emit
                 Output.Append("private ");
             if ((Attributes & FieldAttributes.Static) > 0)
                 Output.Append("static ");
-            Output.Append(Reflection.GetTypeName(DataType));
+            Output.Append(DataType.GetName());
             Output.Append(" ").Append(Name).Append(";");
 
             return Output.ToString();

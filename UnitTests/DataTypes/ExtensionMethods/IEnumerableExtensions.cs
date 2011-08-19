@@ -50,5 +50,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
             foreach (int Value in Temp.RemoveDefaults())
                 Assert.NotEqual(0, Value);
         }
+
+        [Test]
+        public void ForEachTest()
+        {
+            StringBuilder Builder=new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            Temp.ForEach(x => Builder.Append(x));
+            Assert.Equal("00123", Builder.ToString());
+        }
     }
 }

@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit.BaseClasses
@@ -86,7 +87,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns></returns>
         public virtual string GetDefinition()
         {
-            return Reflection.GetTypeName(DataType) + " " + Name;
+            return DataType.GetName() + " " + Name;
         }
 
         /// <summary>

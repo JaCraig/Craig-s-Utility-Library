@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
-
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -111,7 +111,7 @@ namespace Utilities.Reflection.Emit
                 Output.Append("override ");
             else if ((Attributes & MethodAttributes.Virtual) > 0)
                 Output.Append("virtual ");
-            Output.Append(Reflection.GetTypeName(ReturnType));
+            Output.Append(ReturnType.GetName());
             Output.Append(" ").Append(Name).Append("(");
 
             string Splitter="";

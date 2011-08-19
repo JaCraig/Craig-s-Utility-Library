@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Environment
@@ -67,7 +68,7 @@ namespace Utilities.Environment
             foreach (Process TempProcess in Processes)
             {
                 Builder.Append("<strong>" + TempProcess.ProcessName + " Information</strong><br />");
-                Builder.Append(Reflection.Reflection.DumpProperties(TempProcess));
+                Builder.Append(TempProcess.DumpProperties());
                 Builder.Append("<br />");
             }
             return Builder.ToString();

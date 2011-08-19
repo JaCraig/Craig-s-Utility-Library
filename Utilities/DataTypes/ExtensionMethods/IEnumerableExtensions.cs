@@ -39,6 +39,26 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region ForEach
+
+        /// <summary>
+        /// Does an action for each item in the IEnumerable
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Action">Action to do</param>
+        public static void ForEach<T>(this IEnumerable<T> List, Action<T> Action)
+        {
+            if (List == null)
+                throw new ArgumentNullException("List");
+            if (Action == null)
+                throw new ArgumentNullException("Action");
+            foreach (T Item in List)
+                Action(Item);
+        }
+
+        #endregion
+
         #region IsNullOrEmpty
 
         /// <summary>

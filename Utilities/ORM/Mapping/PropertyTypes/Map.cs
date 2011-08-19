@@ -29,6 +29,7 @@ using System.Linq.Expressions;
 using Utilities.ORM.Mapping.BaseClasses;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes
@@ -52,7 +53,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public Map(Expression<Func<ClassType, DataType>> Expression)
             : base(Expression)
         {
-            if (Utilities.Reflection.Reflection.IsIEnumerable(typeof(DataType)))
+            if (typeof(DataType).IsIEnumerable())
                 throw new ArgumentException("Expression is an IEnumerable, use ManyToOne or ManyToMany instead");
             SetDefaultValue(() => default(DataType));
             SetFieldName(typeof(ClassType).Name + "_" + Name + "_ID");
