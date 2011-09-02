@@ -25,6 +25,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading;
+using System.Globalization;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -36,34 +37,18 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Extension Methods
 
-        #region IsInFuture
+        #region DaysInMonth
 
         /// <summary>
-        /// Determines if the date is some time in the future
+        /// Returns the number of days in the month
         /// </summary>
-        /// <param name="Date">Date to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsInFuture(this DateTime Date)
+        /// <param name="Date">Date to get the month from</param>
+        /// <returns>The number of days in the month</returns>
+        public static int DaysInMonth(this DateTime Date)
         {
             if (Date == null)
                 throw new ArgumentNullException("Date");
-            return DateTime.Now < Date;
-        }
-
-        #endregion
-
-        #region IsInPast
-
-        /// <summary>
-        /// Determines if the date is some time in the past
-        /// </summary>
-        /// <param name="Date">Date to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsInPast(this DateTime Date)
-        {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
-            return DateTime.Now > Date;
+            return Date.LastDayOfMonth().Day;
         }
 
         #endregion
@@ -116,6 +101,87 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region FirstDayOfMonth
+
+        /// <summary>
+        /// Returns the first day of a month based on the date sent in
+        /// </summary>
+        /// <param name="Date">Date to get the first day of the month from</param>
+        /// <returns>The first day of the month</returns>
+        public static DateTime FirstDayOfMonth(this DateTime Date)
+        {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
+            return new DateTime(Date.Year, Date.Month, 1);
+        }
+
+        #endregion
+
+        #region FirstDayOfWeek
+
+        /// <summary>
+        /// Returns the first day of a week based on the date sent in
+        /// </summary>
+        /// <param name="Date">Date to get the first day of the week from</param>
+        /// <param name="CultureInfo">The culture to use (defaults to current culture)</param>
+        /// <returns>The first day of the week</returns>
+        public static DateTime FirstDayOfWeek(this DateTime Date,CultureInfo CultureInfo=null)
+        {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
+            if(CultureInfo==null)
+                CultureInfo=CultureInfo.CurrentCulture;
+            return Date.AddDays(CultureInfo.DateTimeFormat.FirstDayOfWeek - Date.DayOfWeek).Date;
+        }
+
+        #endregion
+
+        #region FromUnixTime
+
+        /// <summary>
+        /// Returns the Unix based date as a DateTime object
+        /// </summary>
+        /// <param name="Date">Unix date to convert</param>
+        /// <returns>The Unix Date in DateTime format</returns>
+        public static DateTime FromUnixTime(this int Date)
+        {
+            return new DateTime((Date * TimeSpan.TicksPerSecond) + new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks, DateTimeKind.Utc);
+        }
+
+        #endregion
+
+        #region IsInFuture
+
+        /// <summary>
+        /// Determines if the date is some time in the future
+        /// </summary>
+        /// <param name="Date">Date to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsInFuture(this DateTime Date)
+        {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
+            return DateTime.Now < Date;
+        }
+
+        #endregion
+
+        #region IsInPast
+
+        /// <summary>
+        /// Determines if the date is some time in the past
+        /// </summary>
+        /// <param name="Date">Date to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsInPast(this DateTime Date)
+        {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
+            return DateTime.Now > Date;
+        }
+
+        #endregion
+
         #region IsWeekDay
 
         /// <summary>
@@ -146,6 +212,57 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (Date == null)
                 throw new ArgumentNullException("Date");
             return !IsWeekDay(Date);
+        }
+
+        #endregion
+
+        #region LastDayOfMonth
+
+        /// <summary>
+        /// Returns the last day of the month based on the date sent in
+        /// </summary>
+        /// <param name="Date">Date to get the last day from</param>
+        /// <returns>The last day of the month</returns>
+        public static DateTime LastDayOfMonth(this DateTime Date)
+        {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
+            return Date.AddMonths(1).FirstDayOfMonth().AddDays(-1).Date;
+        }
+
+        #endregion
+
+        #region LastDayOfWeek
+
+        /// <summary>
+        /// Returns the last day of a week based on the date sent in
+        /// </summary>
+        /// <param name="Date">Date to get the last day of the week from</param>
+        /// <param name="CultureInfo">The culture to use (defaults to current culture)</param>
+        /// <returns>The last day of the week</returns>
+        public static DateTime LastDayOfWeek(this DateTime Date, CultureInfo CultureInfo = null)
+        {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
+            if (CultureInfo == null)
+                CultureInfo = CultureInfo.CurrentCulture;
+            return Date.FirstDayOfWeek(CultureInfo).AddDays(6);
+        }
+
+        #endregion
+
+        #region ToUnix
+
+        /// <summary>
+        /// Returns the date in Unix format
+        /// </summary>
+        /// <param name="Date">Date to convert</param>
+        /// <returns>The date in Unix format</returns>
+        public static int ToUnix(this DateTime Date)
+        {
+            if (Date == null)
+                throw new ArgumentNullException("Date");
+            return (int)((Date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / TimeSpan.TicksPerSecond);
         }
 
         #endregion

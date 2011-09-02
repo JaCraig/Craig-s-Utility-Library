@@ -25,6 +25,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.ComponentModel;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -49,6 +50,20 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (Input == null)
                 return "";
             return !string.IsNullOrEmpty(Format) ? (string)CallMethod("ToString", Input, Format) : Input.ToString();
+        }
+
+        #endregion
+
+        #region IsNull
+
+        /// <summary>
+        /// Determines if the object is null
+        /// </summary>
+        /// <param name="Object">The object to check</param>
+        /// <returns>True if it is null, false otherwise</returns>
+        public static bool IsNull(this object Object)
+        {
+            return Object == null;
         }
 
         #endregion
@@ -177,6 +192,22 @@ namespace Utilities.DataTypes.ExtensionMethods
             else if (Type == DbType.DateTimeOffset) return typeof(DateTimeOffset);
             else if (Type == DbType.Binary) return typeof(byte[]);
             return typeof(int);
+        }
+
+        #endregion
+
+        #region NullCheck
+
+        /// <summary>
+        /// Does a null check and either returns the default value (if it is null) or the object
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="DefaultValue">Default value to return in case it is null</param>
+        /// <returns>The default value if it is null, the object otherwise</returns>
+        public static T NullCheck<T>(this T Object, T DefaultValue = default(T))
+        {
+            return Object == null ? DefaultValue : Object;
         }
 
         #endregion

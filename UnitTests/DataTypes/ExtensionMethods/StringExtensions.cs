@@ -145,5 +145,21 @@ namespace UnitTests.DataTypes.ExtensionMethods
             string Value = "\u25EF\u25EF\u25EF";
             Assert.True(Value.IsUnicode());
         }
+
+        [Test]
+        public void To()
+        {
+            Assert.OfType<int>("123".To<int>());
+            Assert.Equal(123, "123".To<int>());
+            Assert.Throws<Exception>(() => "ASD".To<int>());
+        }
+
+        [Test]
+        public void TryTo()
+        {
+            Assert.OfType<int>("123".TryTo<int>());
+            Assert.Equal(123, "123".TryTo<int>());
+            Assert.DoesNotThrow<Exception>(() => "ASD".TryTo<int>());
+        }
     }
 }

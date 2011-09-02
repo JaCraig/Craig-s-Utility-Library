@@ -73,5 +73,47 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.True(new DateTime(1999, 1, 2).IsWeekEnd());
         }
+
+        [Test]
+        public void FirstDayOfMonth()
+        {
+            Assert.Equal(new DateTime(1999, 1, 1), new DateTime(1999, 1, 2).FirstDayOfMonth());
+        }
+
+        [Test]
+        public void LastDayOfMonth()
+        {
+            Assert.Equal(new DateTime(1999, 1, 31), new DateTime(1999, 1, 2).LastDayOfMonth());
+        }
+
+        [Test]
+        public void DaysInMonth()
+        {
+            Assert.Equal(31, new DateTime(1999, 1, 2).DaysInMonth());
+        }
+
+        [Test]
+        public void FirstDayOfWeek()
+        {
+            Assert.Equal(new DateTime(1998, 12, 27), new DateTime(1999, 1, 2).FirstDayOfWeek());
+        }
+
+        [Test]
+        public void LastDayOfWeek()
+        {
+            Assert.Equal(new DateTime(1999, 1, 2), new DateTime(1999, 1, 2).LastDayOfWeek());
+        }
+
+        [Test]
+        public void ToUnix()
+        {
+            Assert.Equal(915166800, new DateTime(1999, 1, 1).ToUnix());
+        }
+
+        [Test]
+        public void FromUnix()
+        {
+            Assert.Equal(new DateTime(2009, 2, 13, 23, 31, 30), 1234567890.FromUnixTime());
+        }
     }
 }

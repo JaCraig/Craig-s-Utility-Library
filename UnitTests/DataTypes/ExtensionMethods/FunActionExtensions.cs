@@ -30,40 +30,32 @@ using System.Data;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class ICollectionExtensions
+    public class FunActionExtensions
     {
         [Test]
-        public void AddIfUniqueTest()
+        public void Execute1()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            Assert.False(TestObject.AddIfUnique(1));
-            Assert.True(TestObject.AddIfUnique(7));
-            Assert.True(TestObject.AddIfUnique(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
-            Assert.Equal(8, TestObject.Count);
+            Func<int> Temp = () => 1;
+            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
         }
 
         [Test]
-        public void RemoveTest()
+        public void Execute2()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            TestObject.Remove((x) => x % 2 == 0);
-            Assert.Equal(3, TestObject.Count);
-            foreach (int Item in TestObject)
-                Assert.False(Item % 2 == 0);
+            Action Temp = () => Test();
+            Assert.Throws<Exception>(() => Temp.Execute());
         }
 
         [Test]
-        public void AddRange()
+        public void Chain()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            Assert.Equal(14, TestObject.AddRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
+            DateTime Temp = new DateTime(1999, 1, 1);
+            Assert.Equal(Temp, Temp.Chain(x => x.AddSeconds(1)));
         }
 
-        [Test]
-        public void RemoveRange()
+        public void Test()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            Assert.Equal(0, TestObject.RemoveRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
+            throw new Exception();
         }
     }
 }

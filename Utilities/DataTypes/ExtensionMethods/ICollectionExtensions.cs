@@ -38,6 +38,27 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region AddRange
+
+        /// <summary>
+        /// Adds a list of items to the collection
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection</typeparam>
+        /// <param name="Collection">Collection</param>
+        /// <param name="Items">Items to add</param>
+        /// <returns>The collection with the added items</returns>
+        public static ICollection<T> AddRange<T>(this ICollection<T> Collection, IEnumerable<T> Items)
+        {
+            if (Collection == null)
+                throw new ArgumentNullException("Collection");
+            if (Items == null)
+                return Collection;
+            Items.ForEach(x=>Collection.Add(x));
+            return Collection;
+        }
+
+        #endregion
+
         #region AddIfUnique
 
         /// <summary>
@@ -90,11 +111,33 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <typeparam name="T">The type of the items in the collection</typeparam>
         /// <param name="Collection">Collection to remove items from</param>
         /// <param name="Predicate">Predicate used to determine what items to remove</param>
-        public static void Remove<T>(this ICollection<T> Collection, Func<T, bool> Predicate)
+        public static ICollection<T> Remove<T>(this ICollection<T> Collection, Func<T, bool> Predicate)
         {
             if (Collection == null)
                 throw new ArgumentNullException("Collection");
             Collection.Where(Predicate).ToList().ForEach(x => Collection.Remove(x));
+            return Collection;
+        }
+
+        #endregion
+
+        #region RemoveRange
+
+        /// <summary>
+        /// Removes all items in the list from the collection
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection</typeparam>
+        /// <param name="Collection">Collection</param>
+        /// <param name="Items">Items to remove</param>
+        /// <returns>The collection with the items removed</returns>
+        public static ICollection<T> RemoveRange<T>(this ICollection<T> Collection, IEnumerable<T> Items)
+        {
+            if (Collection == null)
+                throw new ArgumentNullException("Collection");
+            if (Items == null)
+                return Collection;
+            Items.ForEach(x => Collection.Remove(x));
+            return Collection;
         }
 
         #endregion

@@ -200,8 +200,48 @@ namespace UnitTests.Reflection.ExtensionMethods
             TestObject2.Value = 10;
             Assert.Equal(10, TestObject.Compile()(TestObject2));
         }
+
+        [Test]
+        public void ToLongVersionString()
+        {
+            Assert.Equal("1.0.0.0", typeof(TestClass).Assembly.ToLongVersionString());
+        }
+
+        [Test]
+        public void ToShortVersionString()
+        {
+            Assert.Equal("1.0", typeof(TestClass).Assembly.ToShortVersionString());
+        }
+
+        [Test]
+        public void GetAttributes()
+        {
+            Assert.Equal(1, typeof(TestClass).GetAttributes<TestingAttribute>().Length);
+        }
+
+        [Test]
+        public void GetAttribute()
+        {
+            TestingAttribute TestObject = typeof(TestClass).GetAttribute<TestingAttribute>();
+            Assert.NotNull(TestObject);
+        }
+
+        [Test]
+        public void MarkedWith()
+        {
+            Assert.Equal(1, AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
+                                        .Load()
+                                        .GetTypes<TestInterface>()
+                                        .MarkedWith<TestingAttribute>()
+                                        .Count());
+        }
     }
 
+    public class TestingAttribute : Attribute
+    {
+    }
+
+    [Testing]
     public class TestClass : TestInterface
     {
         public TestClass() { Value = 1; Value2 = 2; }

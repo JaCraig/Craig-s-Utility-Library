@@ -86,5 +86,23 @@ namespace UnitTests.DataTypes.ExtensionMethods
             object TestObject = new DateTime(1999, 1, 1);
             Assert.Equal("January 1, 1999", TestObject.FormatToString("MMMM d, yyyy"));
         }
+
+        [Test]
+        public void NullCheck()
+        {
+            object TestObject = new DateTime(1999, 1, 1);
+            Assert.Equal(TestObject, TestObject.NullCheck());
+            Assert.Same(TestObject, TestObject.NullCheck());
+            TestObject=null;
+            Assert.Equal(new DateTime(1999, 1, 2), TestObject.NullCheck(new DateTime(1999, 1, 2)));
+        }
+
+        [Test]
+        public void IsNull()
+        {
+            Assert.False(new DateTime(1999, 1, 1).IsNull());
+            object TestObject = null;
+            Assert.True(TestObject.IsNull());
+        }
     }
 }

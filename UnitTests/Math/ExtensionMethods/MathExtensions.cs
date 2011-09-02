@@ -108,5 +108,11 @@ namespace UnitTests.Math.ExtensionMethods
             double Value=4;
             Assert.Equal(2, Value.Sqrt());
         }
+
+        public void Round()
+        {
+            double Value = 4.1234;
+            Assert.Equal(4.12, Value.Round());
+        }
     }
 }

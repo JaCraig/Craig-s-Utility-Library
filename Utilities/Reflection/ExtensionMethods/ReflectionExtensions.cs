@@ -171,6 +171,38 @@ namespace Utilities.Reflection.ExtensionMethods
 
         #endregion
 
+        #region GetAttribute
+
+        /// <summary>
+        /// Gets the attribute from the item
+        /// </summary>
+        /// <typeparam name="T">Attribute type</typeparam>
+        /// <param name="Provider">Attribute provider</param>
+        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
+        /// <returns>Attribute specified if it exists</returns>
+        public static T GetAttribute<T>(this ICustomAttributeProvider Provider, bool Inherit=true) where T : Attribute
+        {
+            return Provider.IsDefined(typeof(T), Inherit) ? Provider.GetAttributes<T>(Inherit)[0] : default(T);
+        }
+
+        #endregion
+
+        #region GetAttributes
+
+        /// <summary>
+        /// Gets the attributes from the item
+        /// </summary>
+        /// <typeparam name="T">Attribute type</typeparam>
+        /// <param name="Provider">Attribute provider</param>
+        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
+        /// <returns>Array of attributes</returns>
+        public static T[] GetAttributes<T>(this ICustomAttributeProvider Provider, bool Inherit=true) where T:Attribute
+        {
+            return Provider.IsDefined(typeof(T), Inherit) ? Provider.GetCustomAttributes(typeof(T), Inherit).ToArray(x => (T)x) : new T[0];
+        }
+
+        #endregion
+
         #region GetName
 
         /// <summary>
@@ -636,6 +668,24 @@ namespace Utilities.Reflection.ExtensionMethods
 
         #endregion
 
+        #region MarkedWith
+
+        /// <summary>
+        /// Goes through a list of types and determines if they're marked with a specific attribute
+        /// </summary>
+        /// <typeparam name="T">Attribute type</typeparam>
+        /// <param name="Types">Types to check</param>
+        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
+        /// <returns>The list of types that are marked with an attribute</returns>
+        public static IEnumerable<Type> MarkedWith<T>(this IEnumerable<Type> Types, bool Inherit = true) where T : Attribute
+        {
+            if(Types==null)
+                return null;
+            return Types.Where(x => x.IsDefined(typeof(T), Inherit) && !x.IsAbstract);
+        }
+
+        #endregion
+
         #region MakeShallowCopy
 
         /// <summary>
@@ -693,7 +743,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Property">The property to set</param>
         /// <param name="Value">Value to set the property to</param>
         /// <param name="Format">Allows for formatting if the destination is a string</param>
-        public static void SetProperty(this object Object, PropertyInfo Property, object Value, string Format = "")
+        public static object SetProperty(this object Object, PropertyInfo Property, object Value, string Format = "")
         {
             if (Object == null)
                 throw new ArgumentNullException("Object");
@@ -706,6 +756,7 @@ namespace Utilities.Reflection.ExtensionMethods
             if(!Value.GetType().IsOfType(Property.PropertyType))
                 Value=Convert.ChangeType(Value,Property.PropertyType);
             Property.SetValue(Object, Value, null);
+            return Object;
         }
 
         /// <summary>
@@ -715,7 +766,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Property">The property to set</param>
         /// <param name="Value">Value to set the property to</param>
         /// <param name="Format">Allows for formatting if the destination is a string</param>
-        public static void SetProperty(this object Object, string Property, object Value, string Format = "")
+        public static object SetProperty(this object Object, string Property, object Value, string Format = "")
         {
             if (Object == null)
                 throw new ArgumentNullException("Object");
@@ -733,10 +784,44 @@ namespace Utilities.Reflection.ExtensionMethods
                 TempObjectType = DestinationProperty.PropertyType;
                 TempObject = DestinationProperty.GetValue(TempObject, null);
                 if (TempObject == null)
-                    return;
+                    return Object;
             }
             DestinationProperty = TempObjectType.GetProperty(Properties[Properties.Length - 1]);
             TempObject.SetProperty(DestinationProperty, Value, Format);
+            return Object;
+        }
+
+        #endregion
+
+        #region ToLongVersionString
+
+        /// <summary>
+        /// Gets the long version of the version information
+        /// </summary>
+        /// <param name="Assembly">Assembly to get version information from</param>
+        /// <returns>The long version of the version information</returns>
+        public static string ToLongVersionString(this Assembly Assembly)
+        {
+            if (Assembly == null)
+                throw new ArgumentNullException("Assembly");
+            return Assembly.GetName().Version.ToString();
+        }
+
+        #endregion
+
+        #region ToShortVersionString
+
+        /// <summary>
+        /// Gets the short version of the version information
+        /// </summary>
+        /// <param name="Assembly">Assembly to get version information from</param>
+        /// <returns>The short version of the version information</returns>
+        public static string ToShortVersionString(this Assembly Assembly)
+        {
+            if (Assembly == null)
+                throw new ArgumentNullException("Assembly");
+            Version VersionInfo=Assembly.GetName().Version;
+            return VersionInfo.Major + "." + VersionInfo.Minor;
         }
 
         #endregion

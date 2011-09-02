@@ -198,6 +198,21 @@ namespace Utilities.Math.ExtensionMethods
 
         #endregion
 
+        #region Round
+
+        /// <summary>
+        /// Rounds the value to the number of digits
+        /// </summary>
+        /// <param name="Value">Value to round</param>
+        /// <param name="Digits">Digits to round to</param>
+        /// <returns></returns>
+        public static double Round(this double Value, int Digits = 2)
+        {
+            return System.Math.Round(Value, Digits);
+        }
+
+        #endregion
+
         #region StandardDeviation
 
         /// <summary>

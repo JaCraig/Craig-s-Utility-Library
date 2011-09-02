@@ -47,7 +47,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="List">IEnumerable to iterate over</param>
         /// <param name="Action">Action to do</param>
-        public static void ForEach<T>(this IEnumerable<T> List, Action<T> Action)
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action)
         {
             if (List == null)
                 throw new ArgumentNullException("List");
@@ -55,6 +55,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 throw new ArgumentNullException("Action");
             foreach (T Item in List)
                 Action(Item);
+            return List;
         }
 
         #endregion
@@ -91,6 +92,54 @@ namespace Utilities.DataTypes.ExtensionMethods
                 EqualityComparer = new GenericEqualityComparer<T>();
             foreach (T Item in Value.Where(x => !EqualityComparer.Equals(x, default(T))))
                 yield return Item;
+        }
+
+        #endregion
+
+        #region ToArray
+
+        /// <summary>
+        /// Converts a list to an array
+        /// </summary>
+        /// <typeparam name="Source">Source type</typeparam>
+        /// <typeparam name="Target">Target type</typeparam>
+        /// <param name="List">List to convert</param>
+        /// <param name="ConvertingFunction">Function used to convert each item</param>
+        /// <returns>The array containing the items from the list</returns>
+        public static Target[] ToArray<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        {
+            if (List == null)
+                throw new ArgumentNullException("List");
+            if (ConvertingFunction == null)
+                throw new ArgumentNullException("ConvertingFunction");
+            return List.Select(ConvertingFunction).ToArray();
+        }
+
+        #endregion
+
+        #region ToString
+
+        /// <summary>
+        /// Converts the list to a string where each item is seperated by the Seperator
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">List to convert</param>
+        /// <param name="Seperator">Seperator to use between items</param>
+        /// <returns>The string version of the list</returns>
+        public static string ToString<T>(this IEnumerable<T> List, string Seperator)
+        {
+            if (List == null)
+                throw new ArgumentNullException("List");
+            if (string.IsNullOrEmpty(Seperator))
+                Seperator = "";
+            StringBuilder Builder = new StringBuilder();
+            string TempSeperator = "";
+            foreach (T Item in List)
+            {
+                Builder.Append(TempSeperator).Append(Item.ToString());
+                TempSeperator = Seperator;
+            }
+            return Builder.ToString();
         }
 
         #endregion

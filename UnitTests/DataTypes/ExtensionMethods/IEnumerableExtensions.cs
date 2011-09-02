@@ -59,5 +59,26 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Temp.ForEach(x => Builder.Append(x));
             Assert.Equal("00123", Builder.ToString());
         }
+
+        [Test]
+        public void ToArray()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.DoesNotThrow<Exception>(() => Temp.ToArray<int, double>(x => (double)x));
+            double[] Temp2 = Temp.ToArray<int, double>(x => (double)x);
+            Assert.Equal(0, Temp2[0]);
+            Assert.Equal(0, Temp2[1]);
+            Assert.Equal(1, Temp2[2]);
+            Assert.Equal(2, Temp2[3]);
+            Assert.Equal(3, Temp2[4]);
+        }
+
+        [Test]
+        public void ToStringTest()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Equal("0,0,1,2,3", Temp.ToString(","));
+            Assert.NotEqual("0,0,1,2,3", Temp.ToString());
+        }
     }
 }

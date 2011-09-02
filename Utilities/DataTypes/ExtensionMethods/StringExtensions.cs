@@ -27,6 +27,7 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -375,6 +376,48 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (string.IsNullOrEmpty(Input))
                 return true;
             return Regex.Replace(Input, @"[^\u0000-\u007F]", "") != Input;
+        }
+
+        #endregion
+
+        #region To
+
+        /// <summary>
+        /// Converts the string to the specified type
+        /// </summary>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <param name="Value">Value to convert</param>
+        /// <param name="DefaultValue">Default value to return if it can't be converted</param>
+        /// <returns>Converts the item</returns>
+        public static T To<T>(this string Value, T DefaultValue = default(T))
+        {
+            TypeConverter Converter = TypeDescriptor.GetConverter(typeof(T));
+            if (Converter.CanConvertFrom(Value.GetType()))
+                return string.IsNullOrEmpty(Value) ? DefaultValue : (T)Converter.ConvertFrom(Value);
+            return DefaultValue;
+        }
+
+        #endregion
+
+        #region TryTo
+
+        /// <summary>
+        /// Converts the string to the specified type
+        /// </summary>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <param name="Value">Value to convert</param>
+        /// <param name="DefaultValue">Default value to return if it can't be converted</param>
+        /// <returns>Converts the item</returns>
+        public static T TryTo<T>(this string Value, T DefaultValue = default(T))
+        {
+            try
+            {
+                TypeConverter Converter = TypeDescriptor.GetConverter(typeof(T));
+                if (Converter.CanConvertFrom(Value.GetType()))
+                    return string.IsNullOrEmpty(Value) ? DefaultValue : (T)Converter.ConvertFrom(Value);
+            }
+            catch { }
+            return DefaultValue;
         }
 
         #endregion
