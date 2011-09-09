@@ -19,56 +19,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using MoonUnit;
 using MoonUnit.Attributes;
 using Utilities.IO.ExtensionMethods;
+using System.IO;
+using MoonUnit;
+using System.Reflection;
+using System.Xml;
+#endregion
 
 namespace UnitTests.IO.ExtensionMethods
 {
-    public class Directory : IDisposable
+    public class String
     {
-        public Directory()
+        [Test]
+        public void RemoveIllegalDirectoryNameCharacters()
         {
-            new DirectoryInfo(@".\Testing").Create();
+            Assert.Equal(@"C:\TestDirectory_Stuff__Hope_ThisWorks", @"C:\TestDirectory""Stuff<>Hope|ThisWorks".RemoveIllegalDirectoryNameCharacters());
         }
 
         [Test]
-        public void DeleteAll()
+        public void RemoveIllegalFileNameCharacters()
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
-            Assert.False(new DirectoryInfo(@".\Testing").Exists);
-        }
-
-        [Test]
-        public void CopyTo()
-        {
-            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
-            Assert.True(new DirectoryInfo(@".\Testing").Exists);
-            Assert.Equal(new DirectoryInfo(@".\Testing").Size(), new DirectoryInfo(@"..\..\Data\Testing").Size());
-        }
-
-        [Test]
-        public void Size()
-        {
-            Assert.Equal(20, new DirectoryInfo(@"..\..\Data\Testing").Size());
-        }
-
-        [Test]
-        public void DeleteFiles()
-        {
-            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
-            new DirectoryInfo(@".\Testing").DeleteFiles();
-            Assert.Equal(0, new DirectoryInfo(@".\Testing").Size());
-        }
-
-        public void Dispose()
-        {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            Assert.Equal(@"TestDirectory_Stuff__Hope_ThisWorks.txt", @"TestDirectory""Stuff<>Hope|ThisWorks.txt".RemoveIllegalFileNameCharacters());
         }
     }
 }

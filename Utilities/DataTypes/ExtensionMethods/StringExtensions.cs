@@ -28,6 +28,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Utilities.DataTypes.Formatters;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -235,7 +236,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             for (int x = 0; x < InputStrings.Length; ++x)
             {
                 if (!string.IsNullOrEmpty(InputStrings[x])
-                    && InputStrings[x].Length>3)
+                    && InputStrings[x].Length > 3)
                 {
                     Regex TempRegex = new Regex(InputStrings[x]);
                     InputStrings[x] = InputStrings[x].ToFirstCharacterUpperCase();
@@ -418,6 +419,43 @@ namespace Utilities.DataTypes.ExtensionMethods
             }
             catch { }
             return DefaultValue;
+        }
+
+        #endregion
+
+        #region FormatString
+
+        /// <summary>
+        /// Formats a string based on a format string passed in:
+        /// # = digits
+        /// @ = alpha characters
+        /// \ = escape char
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Format">Format of the output string</param>
+        /// <returns>The formatted string</returns>
+        public static string FormatString(this string Input, string Format)
+        {
+            return new GenericStringFormatter().Format(Input, Format);
+        }
+
+        #endregion
+
+        #region RegexFormat
+
+        /// <summary>
+        /// Uses a regex to format the input string
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Format">Regex string used to</param>
+        /// <param name="OutputFormat">Output format</param>
+        /// <param name="Options">Regex options</param>
+        /// <returns>The input string formatted by using the regex string</returns>
+        public static string RegexFormat(this string Input, string Format, string OutputFormat, RegexOptions Options = RegexOptions.None)
+        {
+            if (string.IsNullOrEmpty(Input))
+                throw new ArgumentNullException("Input");
+            return Regex.Replace(Input, Format, OutputFormat, Options);
         }
 
         #endregion

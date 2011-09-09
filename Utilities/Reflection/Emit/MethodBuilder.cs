@@ -33,7 +33,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining a method within a type
     /// </summary>
-    public class MethodBuilder:Utilities.Reflection.Emit.BaseClasses.MethodBase
+    public class MethodBuilder : Utilities.Reflection.Emit.BaseClasses.MethodBase
     {
         #region Constructor
 
@@ -99,11 +99,11 @@ namespace Utilities.Reflection.Emit
             StringBuilder Output = new StringBuilder();
 
             Output.Append("\n");
-            if ((Attributes & MethodAttributes.Public)>0)
+            if ((Attributes & MethodAttributes.Public) > 0)
                 Output.Append("public ");
-            else if ((Attributes & MethodAttributes.Private)>0)
+            else if ((Attributes & MethodAttributes.Private) > 0)
                 Output.Append("private ");
-            if ((Attributes & MethodAttributes.Static)>0)
+            if ((Attributes & MethodAttributes.Static) > 0)
                 Output.Append("static ");
             if ((Attributes & MethodAttributes.Abstract) > 0)
                 Output.Append("abstract ");
@@ -114,7 +114,7 @@ namespace Utilities.Reflection.Emit
             Output.Append(ReturnType.GetName());
             Output.Append(" ").Append(Name).Append("(");
 
-            string Splitter="";
+            string Splitter = "";
             if (Parameters != null)
             {
                 foreach (ParameterBuilder Parameter in Parameters)
@@ -128,10 +128,7 @@ namespace Utilities.Reflection.Emit
             }
             Output.Append(")");
             Output.Append("\n{\n");
-            foreach (ICommand Command in Commands)
-            {
-                Output.Append(Command.ToString());
-            }
+            Commands.ForEach(x => Output.Append(x.ToString()));
             Output.Append("}\n\n");
 
             return Output.ToString();

@@ -23,52 +23,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.IO.ExtensionMethods;
+using MoonUnit;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Linq.Expressions;
 
-namespace UnitTests.IO.ExtensionMethods
+namespace UnitTests.Reflection.Emit
 {
-    public class Directory : IDisposable
+    public class EnumBuilder
     {
-        public Directory()
-        {
-            new DirectoryInfo(@".\Testing").Create();
-        }
-
         [Test]
-        public void DeleteAll()
+        public void AddLiteral()
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
-            Assert.False(new DirectoryInfo(@".\Testing").Exists);
-        }
-
-        [Test]
-        public void CopyTo()
-        {
-            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
-            Assert.True(new DirectoryInfo(@".\Testing").Exists);
-            Assert.Equal(new DirectoryInfo(@".\Testing").Size(), new DirectoryInfo(@"..\..\Data\Testing").Size());
-        }
-
-        [Test]
-        public void Size()
-        {
-            Assert.Equal(20, new DirectoryInfo(@"..\..\Data\Testing").Size());
-        }
-
-        [Test]
-        public void DeleteFiles()
-        {
-            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
-            new DirectoryInfo(@".\Testing").DeleteFiles();
-            Assert.Equal(0, new DirectoryInfo(@".\Testing").Size());
-        }
-
-        public void Dispose()
-        {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
+            Utilities.Reflection.Emit.EnumBuilder Enum = Assembly.CreateEnum("TestEnum");
+            Assert.DoesNotThrow<Exception>(() => Enum.AddLiteral("TestLiteral1", 1));
+            Assert.DoesNotThrow<Exception>(() => Enum.AddLiteral("TestLiteral2", 2));
+            Assert.DoesNotThrow<Exception>(() => Assembly.Create());
+            Assert.NotNull(Activator.CreateInstance(Enum.DefinedType));
         }
     }
 }

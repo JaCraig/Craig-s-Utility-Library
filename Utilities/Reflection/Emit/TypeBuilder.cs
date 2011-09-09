@@ -32,7 +32,7 @@ namespace Utilities.Reflection.Emit
     /// <summary>
     /// Helper class for defining types
     /// </summary>
-    public class TypeBuilder:IType
+    public class TypeBuilder : IType
     {
         #region Constructor
 
@@ -55,9 +55,7 @@ namespace Utilities.Reflection.Emit
             this.Name = Name;
             this.Interfaces = new List<Type>();
             if (Interfaces != null)
-            {
                 this.Interfaces.AddRange(Interfaces);
-            }
             this.BaseClass = BaseClass;
             this.Attributes = Attributes;
             Methods = new List<IMethodBuilder>();
@@ -70,6 +68,8 @@ namespace Utilities.Reflection.Emit
         #endregion
 
         #region Functions
+
+        #region Create
 
         /// <summary>
         /// Creates the type
@@ -85,6 +85,10 @@ namespace Utilities.Reflection.Emit
             return DefinedType;
         }
 
+        #endregion
+
+        #region CreateMethod
+
         /// <summary>
         /// Creates a method
         /// </summary>
@@ -93,7 +97,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="ReturnType">Return type</param>
         /// <param name="ParameterTypes">Parameter types</param>
         /// <returns>Method builder for the method</returns>
-        public virtual IMethodBuilder CreateMethod(string Name, 
+        public virtual IMethodBuilder CreateMethod(string Name,
             MethodAttributes Attributes = MethodAttributes.Public| MethodAttributes.Virtual,
             Type ReturnType = null, List<Type> ParameterTypes = null)
         {
@@ -101,6 +105,10 @@ namespace Utilities.Reflection.Emit
             Methods.Add(ReturnValue);
             return ReturnValue;
         }
+
+        #endregion
+
+        #region CreateField
 
         /// <summary>
         /// Creates a field
@@ -115,6 +123,10 @@ namespace Utilities.Reflection.Emit
             Fields.Add(ReturnValue);
             return ReturnValue;
         }
+
+        #endregion
+
+        #region CreateProperty
 
         /// <summary>
         /// Creates a property
@@ -138,6 +150,10 @@ namespace Utilities.Reflection.Emit
             return ReturnValue;
         }
 
+        #endregion
+
+        #region CreateDefaultProperty
+
         /// <summary>
         /// Creates a default property (ex int Property{get;set;}
         /// </summary>
@@ -160,6 +176,10 @@ namespace Utilities.Reflection.Emit
             return ReturnValue;
         }
 
+        #endregion
+
+        #region CreateConstructor
+
         /// <summary>
         /// Creates a constructor
         /// </summary>
@@ -168,12 +188,16 @@ namespace Utilities.Reflection.Emit
         /// <param name="CallingConventions">The calling convention used</param>
         /// <returns>Constructor builder for the constructor</returns>
         public virtual IMethodBuilder CreateConstructor(MethodAttributes Attributes = MethodAttributes.Public,
-            List<Type> ParameterTypes = null,CallingConventions CallingConventions=CallingConventions.Standard)
+            List<Type> ParameterTypes = null, CallingConventions CallingConventions = CallingConventions.Standard)
         {
             ConstructorBuilder ReturnValue = new ConstructorBuilder(this, Attributes, ParameterTypes, CallingConventions);
             Constructors.Add(ReturnValue);
             return ReturnValue;
         }
+
+        #endregion
+
+        #region CreateDefaultConstructor
 
         /// <summary>
         /// Creates a default constructor
@@ -186,6 +210,8 @@ namespace Utilities.Reflection.Emit
             Constructors.Add(ReturnValue);
             return ReturnValue;
         }
+
+        #endregion
 
         #endregion
 
@@ -260,14 +286,9 @@ namespace Utilities.Reflection.Emit
             StringBuilder Output = new StringBuilder();
             Output.Append("namespace ").Append(Assembly.Name);
             for (int x = 0; x < NameParts.Length - 1; ++x)
-            {
                 Output.Append(".").Append(NameParts[x]);
-            }
             Output.Append("\n{\n");
-            if ((Attributes & TypeAttributes.Public) > 0)
-                Output.Append("public ");
-            else
-                Output.Append("private ");
+            Output.Append((Attributes & TypeAttributes.Public) > 0 ? "public " : "private ");
             Output.Append("class ");
             Output.Append(NameParts[NameParts.Length - 1]);
             string Seperator = " : ";
@@ -281,29 +302,11 @@ namespace Utilities.Reflection.Emit
                 Output.Append(Seperator).Append(Interface.Name);
                 Seperator = ", ";
             }
-                
             Output.Append("\n{");
-
-            foreach (IMethodBuilder Constructor in Constructors)
-            {
-                Output.Append(Constructor.ToString());
-            }
-
-            foreach (IMethodBuilder Method in Methods)
-            {
-                Output.Append(Method.ToString());
-            }
-
-            foreach (IPropertyBuilder Property in Properties)
-            {
-                Output.Append(Property.GetDefinition());
-            }
-
-            foreach (FieldBuilder Field in Fields)
-            {
-                Output.Append(Field.GetDefinition());
-            }
-
+            Constructors.ForEach(x => Output.Append(x.ToString()));
+            Methods.ForEach(x => Output.Append(x.ToString()));
+            Properties.ForEach(x => Output.Append(x.GetDefinition()));
+            Fields.ForEach(x => Output.Append(x.GetDefinition()));
             Output.Append("\n}\n}\n\n");
             return Output.ToString();
         }

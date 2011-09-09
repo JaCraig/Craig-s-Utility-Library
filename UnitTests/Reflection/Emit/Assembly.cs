@@ -23,52 +23,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.IO.ExtensionMethods;
+using MoonUnit;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Linq.Expressions;
 
-namespace UnitTests.IO.ExtensionMethods
+namespace UnitTests.Reflection.Emit
 {
-    public class Directory : IDisposable
+    public class Assembly
     {
-        public Directory()
+        [Test]
+        public void Create()
         {
-            new DirectoryInfo(@".\Testing").Create();
+            Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
+            Assert.DoesNotThrow<Exception>(() => TestObject.Create());
         }
 
         [Test]
-        public void DeleteAll()
+        public void CreateType()
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
-            Assert.False(new DirectoryInfo(@".\Testing").Exists);
+            Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
+            Utilities.Reflection.Emit.TypeBuilder TypeObject = TestObject.CreateType("TestClass");
+            Assert.NotNull(TypeObject);
+            Assert.DoesNotThrow<Exception>(() => TestObject.Create());
         }
 
         [Test]
-        public void CopyTo()
+        public void CreateEnum()
         {
-            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
-            Assert.True(new DirectoryInfo(@".\Testing").Exists);
-            Assert.Equal(new DirectoryInfo(@".\Testing").Size(), new DirectoryInfo(@"..\..\Data\Testing").Size());
-        }
-
-        [Test]
-        public void Size()
-        {
-            Assert.Equal(20, new DirectoryInfo(@"..\..\Data\Testing").Size());
-        }
-
-        [Test]
-        public void DeleteFiles()
-        {
-            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
-            new DirectoryInfo(@".\Testing").DeleteFiles();
-            Assert.Equal(0, new DirectoryInfo(@".\Testing").Size());
-        }
-
-        public void Dispose()
-        {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
+            Utilities.Reflection.Emit.EnumBuilder EnumObject = TestObject.CreateEnum("TestEnum");
+            Assert.NotNull(EnumObject);
+            Assert.DoesNotThrow<Exception>(() => TestObject.Create());
         }
     }
 }

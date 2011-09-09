@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -61,6 +62,8 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
+        #region AddLiteral
+
         /// <summary>
         /// Adds a literal to the enum (an entry)
         /// </summary>
@@ -70,6 +73,10 @@ namespace Utilities.Reflection.Emit
         {
             Literals.Add(Builder.DefineLiteral(Name, Value));
         }
+
+        #endregion
+
+        #region Create
 
         /// <summary>
         /// Creates the enum
@@ -84,6 +91,8 @@ namespace Utilities.Reflection.Emit
             DefinedType = Builder.CreateType();
             return DefinedType;
         }
+
+        #endregion
 
         #endregion
 
@@ -135,14 +144,9 @@ namespace Utilities.Reflection.Emit
             StringBuilder Output = new StringBuilder();
             Output.Append("namespace ").Append(Assembly.Name);
             for (int x = 0; x < NameParts.Length - 1; ++x)
-            {
                 Output.Append(".").Append(NameParts[x]);
-            }
             Output.Append("\n{\n");
-            if ((Attributes & TypeAttributes.Public) > 0)
-                Output.Append("public ");
-            else
-                Output.Append("private ");
+            Output.Append((Attributes & TypeAttributes.Public) > 0 ? "public " : "private ");
             Output.Append("enum ").Append(NameParts[NameParts.Length - 1]).Append("\n{");
             string Seperator = "";
             foreach (System.Reflection.Emit.FieldBuilder Literal in Literals)

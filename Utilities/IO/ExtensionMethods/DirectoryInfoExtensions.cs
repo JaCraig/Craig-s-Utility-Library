@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Utilities.IO.ExtensionMethods.Enums;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -106,6 +107,25 @@ namespace Utilities.IO.ExtensionMethods
 
         #endregion
 
+        #region DeleteFiles
+
+        /// <summary>
+        /// Deletes files from a directory
+        /// </summary>
+        /// <param name="Directory">Directory to delete the files from</param>
+        /// <param name="Recursive">Should this be recursive?</param>
+        /// <returns>The directory that is sent in</returns>
+        public static DirectoryInfo DeleteFiles(this DirectoryInfo Directory, bool Recursive = false)
+        {
+            if (!Directory.Exists)
+                throw new DirectoryNotFoundException("Directory");
+            Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
+                     .ForEach(x => x.Delete());
+            return Directory;
+        }
+
+        #endregion
+
         #region DeleteFilesNewerThan
 
         /// <summary>
@@ -121,8 +141,9 @@ namespace Utilities.IO.ExtensionMethods
                 throw new DirectoryNotFoundException("Directory");
             if (CompareDate == null)
                 throw new ArgumentNullException("CompareDate");
-            foreach (FileInfo File in Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x.LastWriteTime > CompareDate))
-                File.Delete();
+            Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
+                     .Where(x => x.LastWriteTime > CompareDate)
+                     .ForEach(x => x.Delete());
             return Directory;
         }
 
@@ -143,8 +164,9 @@ namespace Utilities.IO.ExtensionMethods
                 throw new DirectoryNotFoundException("Directory");
             if (CompareDate == null)
                 throw new ArgumentNullException("CompareDate");
-            foreach (FileInfo File in Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x.LastWriteTime < CompareDate))
-                File.Delete();
+            Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
+                     .Where(x => x.LastWriteTime < CompareDate)
+                     .ForEach(x => x.Delete());
             return Directory;
         }
 
@@ -163,7 +185,8 @@ namespace Utilities.IO.ExtensionMethods
         {
             if (Directory == null)
                 throw new ArgumentNullException("Directory");
-            return Directory.EnumerateFiles(SearchPattern, Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Sum(x => x.Length);
+            return Directory.EnumerateFiles(SearchPattern, Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
+                            .Sum(x => x.Length);
         }
 
         #endregion
@@ -179,13 +202,10 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The directory object</returns>
         public static DirectoryInfo SetAttributes(this DirectoryInfo Directory, System.IO.FileAttributes Attributes, bool Recursive = false)
         {
-            foreach (FileInfo File in Directory.EnumerateFiles())
-                File.SetAttributes(Attributes);
+            Directory.EnumerateFiles()
+                     .ForEach(x => x.SetAttributes(Attributes));
             if (Recursive)
-            {
-                foreach (DirectoryInfo TempDirectory in Directory.EnumerateDirectories())
-                    TempDirectory.SetAttributes(Attributes, true);
-            }
+                Directory.EnumerateDirectories().ForEach(x => x.SetAttributes(Attributes, true));
             return Directory;
         }
 

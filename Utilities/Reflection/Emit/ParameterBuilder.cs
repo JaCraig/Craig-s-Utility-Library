@@ -33,13 +33,14 @@ namespace Utilities.Reflection.Emit
     public class ParameterBuilder : VariableBase
     {
         #region Constructor
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="ParameterType">Parameter type</param>
         /// <param name="Number">Position in parameter order</param>
-        public ParameterBuilder(Type ParameterType,int Number):base()
+        public ParameterBuilder(Type ParameterType, int Number)
+            : base()
         {
             if (Number == -1)
             {

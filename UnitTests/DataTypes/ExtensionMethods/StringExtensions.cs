@@ -27,6 +27,7 @@ using MoonUnit;
 using MoonUnit.Attributes;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
+using Utilities.DataTypes.Formatters;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
@@ -160,6 +161,18 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.OfType<int>("123".TryTo<int>());
             Assert.Equal(123, "123".TryTo<int>());
             Assert.DoesNotThrow<Exception>(() => "ASD".TryTo<int>());
+        }
+
+        [Test]
+        public void FormatString()
+        {
+            Assert.Equal("(555) 555-1010", "5555551010".FormatString("(###) ###-####"));
+        }
+
+        [Test]
+        public void RegexFormat()
+        {
+            Assert.Equal("(555) 555-1010", "5555551010".RegexFormat(@"(\d{3})(\d{3})(\d{4})", "($1) $2-$3"));
         }
     }
 }

@@ -93,6 +93,7 @@
     <Compile Include="IO\ExtensionMethods\Directory.cs" />
     <Compile Include="IO\ExtensionMethods\File.cs" />
     <Compile Include="IO\ExtensionMethods\Serialization.cs" />
+    <Compile Include="IO\ExtensionMethods\String.cs" />
     <Compile Include="IO\ExtensionMethods\UriTest.cs" />
     <Compile Include="IO\Logging\ConsoleLog.cs" />
     <Compile Include="IO\Logging\FileLog.cs" />
@@ -107,6 +108,12 @@
     <Compile Include="Profiler\StopWatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Random\Random.cs" />
+    <Compile Include="Reflection\Emit\Assembly.cs" />
+    <Compile Include="Reflection\Emit\EnumBuilder.cs" />
+    <Compile Include="Reflection\Emit\MethodBuilder.cs" />
+    <Compile Include="Reflection\Emit\ParameterBuilder.cs" />
+    <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
+    <Compile Include="Reflection\Emit\TypeBuilder.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

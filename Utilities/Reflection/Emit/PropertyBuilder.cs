@@ -49,10 +49,13 @@ namespace Utilities.Reflection.Emit
         /// <param name="SetMethodAttributes">Set method attributes</param>
         /// <param name="PropertyType">Property type for the property</param>
         /// <param name="Parameters">Parameter types for the property</param>
-        public PropertyBuilder(TypeBuilder TypeBuilder, string Name,
-            PropertyAttributes Attributes, MethodAttributes GetMethodAttributes,
+        public PropertyBuilder(TypeBuilder TypeBuilder, 
+            string Name,
+            PropertyAttributes Attributes, 
+            MethodAttributes GetMethodAttributes,
             MethodAttributes SetMethodAttributes,
-            Type PropertyType, List<Type> Parameters)
+            Type PropertyType, 
+            List<Type> Parameters)
             : base()
         {
             if (TypeBuilder == null)
@@ -80,9 +83,7 @@ namespace Utilities.Reflection.Emit
             GetMethod = new MethodBuilder(Type, "get_" + Name, GetMethodAttributes, Parameters, PropertyType);
             List<Type> SetParameters = new List<System.Type>();
             if (Parameters != null)
-            {
                 SetParameters.AddRange(Parameters);
-            }
             SetParameters.Add(PropertyType);
             SetMethod = new MethodBuilder(Type, "set_" + Name, SetMethodAttributes, SetParameters, typeof(void));
             Builder.SetGetMethod(GetMethod.Builder);
@@ -93,21 +94,25 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
+        #region Load
+
         public override void Load(ILGenerator Generator)
         {
-            if (GetMethod.Builder.IsVirtual)
-                Generator.EmitCall(OpCodes.Callvirt, GetMethod.Builder, null);
-            else
-                Generator.EmitCall(OpCodes.Call, GetMethod.Builder, null);
+            Generator.EmitCall(GetMethod.Builder.IsVirtual ? OpCodes.Callvirt : OpCodes.Call, GetMethod.Builder, null);
         }
+
+        #endregion
+
+        #region Save
 
         public override void Save(ILGenerator Generator)
         {
-            if(SetMethod.Builder.IsVirtual)
-                Generator.EmitCall(OpCodes.Callvirt, SetMethod.Builder, null);
-            else
-                Generator.EmitCall(OpCodes.Call, SetMethod.Builder, null);
+            Generator.EmitCall(SetMethod.Builder.IsVirtual ? OpCodes.Callvirt : OpCodes.Call, SetMethod.Builder, null);
         }
+
+        #endregion
+
+        #region GetDefinition
 
         public override string GetDefinition()
         {
@@ -142,10 +147,7 @@ namespace Utilities.Reflection.Emit
                 Output.Append("]");
             }
             Output.Append(" {\nget\n{\n");
-            foreach (ICommand Command in GetMethod.Commands)
-            {
-                Output.Append(Command.ToString());
-            }
+            GetMethod.Commands.ForEach(x => Output.Append(x.ToString()));
             Output.Append("}\n\n");
             if ((SetMethodAttributes & GetMethodAttributes) != SetMethodAttributes)
             {
@@ -155,14 +157,13 @@ namespace Utilities.Reflection.Emit
                     Output.Append("private ");
             }
             Output.Append("set\n{\n");
-            foreach (ICommand Command in SetMethod.Commands)
-            {
-                Output.Append(Command.ToString());
-            }
+            SetMethod.Commands.ForEach(x => Output.Append(x.ToString()));
             Output.Append("}\n}\n");
 
             return Output.ToString();
         }
+
+        #endregion
 
         #endregion
 
@@ -194,6 +195,8 @@ namespace Utilities.Reflection.Emit
 
         #region Operator Functions
 
+        #region ++
+
         public static PropertyBuilder operator ++(PropertyBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
@@ -202,6 +205,10 @@ namespace Utilities.Reflection.Emit
             return Left;
         }
 
+        #endregion
+
+        #region --
+
         public static PropertyBuilder operator --(PropertyBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
@@ -209,6 +216,8 @@ namespace Utilities.Reflection.Emit
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Subtract(Left, 1));
             return Left;
         }
+
+        #endregion
 
         #endregion
     }

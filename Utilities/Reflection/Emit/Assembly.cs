@@ -28,6 +28,7 @@ using System.Text;
 using System.Threading;
 using Utilities.Reflection.Emit.Enums;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -43,32 +44,9 @@ namespace Utilities.Reflection.Emit
         /// Constructor
         /// </summary>
         /// <param name="Name">Assembly name</param>
-        public Assembly(string Name)
-        {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
-            Setup(Name);
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Name">Assembly name</param>
-        /// <param name="Directory">Directory to save the assembly (if left blank, the assembly is run only and will not be saved)</param>
-        public Assembly(string Name, string Directory)
-        {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
-            Setup(Name, Directory);
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Name">Assembly name</param>
         /// <param name="Directory">Directory to save the assembly (if left blank, the assembly is run only and will not be saved)</param>
         /// <param name="Type">Assembly type (exe or dll)</param>
-        public Assembly(string Name, string Directory, AssemblyType Type)
+        public Assembly(string Name, string Directory = "", AssemblyType Type = AssemblyType.DLL)
         {
             if (string.IsNullOrEmpty(Name))
                 throw new ArgumentNullException("Name");
@@ -78,6 +56,8 @@ namespace Utilities.Reflection.Emit
         #endregion
 
         #region Functions
+
+        #region Setup
 
         /// <summary>
         /// Sets up the assembly
@@ -106,6 +86,10 @@ namespace Utilities.Reflection.Emit
             Enums = new List<EnumBuilder>();
         }
 
+        #endregion
+
+        #region CreateType
+
         /// <summary>
         /// Creates a type builder
         /// </summary>
@@ -122,20 +106,30 @@ namespace Utilities.Reflection.Emit
             return ReturnValue;
         }
 
+        #endregion
+
+        #region CreateEnum
+
         /// <summary>
         /// Creates an enum builder
         /// </summary>
         /// <param name="Name">Name of the enum</param>
-        /// <param name="EnumBaseType">Base type of the enum</param>
+        /// <param name="EnumBaseType">Base type of the enum (defaults to int)</param>
         /// <param name="Attributes">Attributes associated with the type</param>
         /// <returns>An EnumBuilder class</returns>
-        public virtual EnumBuilder CreateEnum(string Name, Type EnumBaseType,
+        public virtual EnumBuilder CreateEnum(string Name, Type EnumBaseType = null,
             TypeAttributes Attributes = TypeAttributes.Public)
         {
+            if (EnumBaseType == null)
+                EnumBaseType = typeof(int);
             EnumBuilder ReturnValue = new EnumBuilder(this, Name, EnumBaseType, Attributes);
             Enums.Add(ReturnValue);
             return ReturnValue;
         }
+
+        #endregion
+
+        #region Create
 
         /// <summary>
         /// Creates all types associated with the assembly and saves the assembly to disk
@@ -144,16 +138,14 @@ namespace Utilities.Reflection.Emit
         public virtual void Create()
         {
             foreach (IType Class in Classes)
-            {
                 Class.Create();
-            }
             foreach (IType Enum in Enums)
-            {
                 Enum.Create();
-            }
             if(!string.IsNullOrEmpty(this.Directory))
                 Builder.Save(Name + (Type == AssemblyType.DLL ? ".dll" : ".exe"));
         }
+
+        #endregion
 
         #endregion
 
@@ -201,14 +193,8 @@ namespace Utilities.Reflection.Emit
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
-            foreach (EnumBuilder Enum in Enums)
-            {
-                Output.Append(Enum.ToString());
-            }
-            foreach (TypeBuilder Class in Classes)
-            {
-                Output.Append(Class.ToString());
-            }
+            Enums.ForEach(x => Output.Append(x.ToString()));
+            Classes.ForEach(x => Output.Append(x.ToString()));
             return Output.ToString();
         }
 
