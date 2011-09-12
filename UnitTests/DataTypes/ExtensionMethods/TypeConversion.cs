@@ -104,5 +104,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
             object TestObject = null;
             Assert.True(TestObject.IsNull());
         }
+
+        [Test]
+        public void IsNullOrDBNull()
+        {
+            Assert.False(new DateTime(1999, 1, 1).IsNullOrDBNull());
+            object TestObject = null;
+            Assert.True(TestObject.IsNullOrDBNull());
+            Assert.True(DBNull.Value.IsNullOrDBNull());
+        }
     }
 }

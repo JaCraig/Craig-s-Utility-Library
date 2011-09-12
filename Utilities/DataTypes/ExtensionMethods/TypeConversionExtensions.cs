@@ -68,6 +68,20 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region IsNullOrDBNull
+
+        /// <summary>
+        /// Determines if the object is null or DBNull
+        /// </summary>
+        /// <param name="Object">The object to check</param>
+        /// <returns>True if it is null/DBNull, false otherwise</returns>
+        public static bool IsNullOrDBNull(this object Object)
+        {
+            return Object == null || Convert.IsDBNull(Object);
+        }
+
+        #endregion
+
         #region ToSQLDbType
 
         /// <summary>

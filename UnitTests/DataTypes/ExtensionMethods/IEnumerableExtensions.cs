@@ -80,5 +80,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("0,0,1,2,3", Temp.ToString(","));
             Assert.NotEqual("0,0,1,2,3", Temp.ToString());
         }
+
+        [Test]
+        public void TrueForEach()
+        {
+            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.True(Temp.TrueForAll(x => x < 4));
+        }
     }
 }

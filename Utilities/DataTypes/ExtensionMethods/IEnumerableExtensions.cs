@@ -144,6 +144,29 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region TrueForAll
+
+        /// <summary>
+        /// Determines if a predicate is true for each item in a list
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the list</typeparam>
+        /// <param name="List">IEnumerable to look through</param>
+        /// <param name="Predicate">Predicate to use to check the IEnumerable</param>
+        /// <returns>True if they all pass the predicate, false otherwise</returns>
+        public static bool TrueForAll<T>(this IEnumerable<T> List, Predicate<T> Predicate)
+        {
+            if (List == null)
+                throw new ArgumentNullException("List");
+            if (Predicate == null)
+                throw new ArgumentNullException("Predicate");
+            foreach (T Item in List)
+                if (!Predicate(Item))
+                    return false;
+            return true;
+        }
+
+        #endregion
+
         #endregion
     }
 }

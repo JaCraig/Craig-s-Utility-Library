@@ -167,6 +167,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void FormatString()
         {
             Assert.Equal("(555) 555-1010", "5555551010".FormatString("(###) ###-####"));
+            Assert.Equal("(555) 555-1010", string.Format(new GenericStringFormatter(), "{0:(###) ###-####}", "5555551010"));
         }
 
         [Test]
