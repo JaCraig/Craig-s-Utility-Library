@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.Linq;
 #endregion
 
 namespace Utilities.LDAP
@@ -97,10 +98,7 @@ namespace Utilities.LDAP
             try
             {
                 List<Entry> Entries = this.FindGroups("cn=" + GroupName);
-                if (Entries.Count < 1)
-                    return new List<Entry>();
-
-                return this.FindActiveUsersAndGroups("memberOf=" + Entries[0].DistinguishedName);
+                return (Entries.Count < 1) ? new List<Entry>() : this.FindActiveUsersAndGroups("memberOf=" + Entries[0].DistinguishedName);
             }
             catch
             {
@@ -173,9 +171,7 @@ namespace Utilities.LDAP
             using (SearchResultCollection Results = Searcher.FindAll())
             {
                 foreach (SearchResult Result in Results)
-                {
                     ReturnedResults.Add(new Entry(Result.GetDirectoryEntry()));
-                }
             }
             return ReturnedResults;
         }
@@ -226,8 +222,7 @@ namespace Utilities.LDAP
         /// <returns>A single entry matching the query</returns>
         public virtual Entry FindOne()
         {
-            SearchResult Result = Searcher.FindOne();
-            return new Entry(Result.GetDirectoryEntry());
+            return new Entry(Searcher.FindOne().GetDirectoryEntry());
         }
 
         #endregion
@@ -261,12 +256,7 @@ namespace Utilities.LDAP
         {
             if (string.IsNullOrEmpty(UserName))
                 throw new ArgumentNullException("UserName");
-            List<Entry> Entries = FindUsers("samAccountName=" + UserName);
-            if (Entries.Count > 0)
-            {
-                return Entries[0];
-            }
-            return null;
+            return FindUsers("samAccountName=" + UserName).FirstOrDefault();
         }
 
         #endregion

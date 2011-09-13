@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -44,9 +45,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The final array</returns>
         public static Array Clear(this Array Array)
         {
-            if(Array==null)
+            if (Array == null)
                 return null;
-            System.Array.Clear(Array,0,Array.Length);
+            System.Array.Clear(Array, 0, Array.Length);
             return Array;
         }
 

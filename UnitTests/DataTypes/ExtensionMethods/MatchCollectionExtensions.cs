@@ -28,43 +28,17 @@ using MoonUnit.Attributes;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class ICollectionExtensions
+    public class MatchCollectionExtensions
     {
         [Test]
-        public void AddIfUniqueTest()
+        public void Where()
         {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            Assert.False(TestObject.AddIfUnique(1));
-            Assert.True(TestObject.AddIfUnique(7));
-            Assert.True(TestObject.AddIfUnique(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
-            Assert.Equal(8, TestObject.Count);
-        }
-
-        [Test]
-        public void RemoveTest()
-        {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            TestObject.Remove((x) => x % 2 == 0);
-            Assert.Equal(3, TestObject.Count);
-            foreach (int Item in TestObject)
-                Assert.False(Item % 2 == 0);
-        }
-
-        [Test]
-        public void AddRange()
-        {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            Assert.Equal(14, TestObject.AddRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
-        }
-
-        [Test]
-        public void RemoveRange()
-        {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            Assert.Equal(0, TestObject.RemoveRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
+            Regex Regex = new System.Text.RegularExpressions.Regex(@"[^\s]");
+            Assert.Equal(3, Regex.Matches("This is a test").Where(x => x.Value == "s").Count());
         }
     }
 }

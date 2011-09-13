@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -33,6 +34,7 @@ using Utilities.Reflection.AOP.EventArgs;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.AOP
@@ -47,41 +49,11 @@ namespace Utilities.Reflection.AOP
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="AspectLocation">Aspect DLL location (optional)</param>
         /// <param name="AssemblyDirectory">Directory to save the generated types (optional)</param>
         /// <param name="AssemblyName">Assembly name to save the generated types as (optional)</param>
         /// <param name="RegenerateAssembly">Should this assembly be regenerated if found? (optional)</param>
-        public AOPManager(string AssemblyDirectory = "", string AssemblyName = "Aspects", bool RegenerateAssembly = false)
-        {
-            this.AssemblyDirectory = AssemblyDirectory;
-            this.AssemblyName = AssemblyName;
-            this.RegenerateAssembly = RegenerateAssembly;
-            if (AssemblyBuilder != null)
-                return;
-            if (string.IsNullOrEmpty(AssemblyDirectory)
-                || !new FileInfo(AssemblyDirectory + AssemblyName + ".dll").Exists
-                || RegenerateAssembly)
-            {
-                AssemblyBuilder = new Utilities.Reflection.Emit.Assembly(AssemblyName, AssemblyDirectory);
-            }
-            else
-            {
-                System.Reflection.Assembly TempAssembly = new AssemblyName(AssemblyDirectory + AssemblyName + ".dll").Load();
-                Type[] Types = TempAssembly.GetTypes();
-                foreach (Type Type in Types)
-                {
-                    Classes.Add(Type.BaseType, Type);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="AspectLocation">Aspect DLL location</param>
-        /// <param name="AssemblyDirectory">Directory to save the generated types (optional)</param>
-        /// <param name="AssemblyName">Assembly name to save the generated types as (optional)</param>
-        /// <param name="RegenerateAssembly">Should this assembly be regenerated if found? (optional)</param>
-        public AOPManager(string AspectLocation,string AssemblyDirectory="",string AssemblyName="Aspects",bool RegenerateAssembly=false)
+        public AOPManager(string AspectLocation = "", string AssemblyDirectory = "", string AssemblyName = "Aspects", bool RegenerateAssembly = false)
         {
             this.AssemblyDirectory = AssemblyDirectory;
             this.AssemblyName = AssemblyName;
@@ -89,17 +61,11 @@ namespace Utilities.Reflection.AOP
             if (!string.IsNullOrEmpty(AspectLocation))
             {
                 if (AspectLocation.EndsWith(".dll", StringComparison.CurrentCultureIgnoreCase))
-                {
                     Aspects.AddRange(new AssemblyName(AspectLocation).Load().GetObjects<IAspect>());
-                }
                 else if (new DirectoryInfo(AspectLocation).Exists)
-                {
                     Aspects.AddRange(new DirectoryInfo(AspectLocation).GetObjects<IAspect>());
-                }
                 else
-                {
                     Aspects.AddRange(new AssemblyName(AspectLocation).Load().GetObjects<IAspect>());
-                }
             }
             if (AssemblyBuilder != null)
                 return;
@@ -111,12 +77,9 @@ namespace Utilities.Reflection.AOP
             }
             else
             {
-                System.Reflection.Assembly TempAssembly = new AssemblyName(AssemblyDirectory + AssemblyName + ".dll").Load();
-                Type[] Types = TempAssembly.GetTypes();
-                foreach (Type Type in Types)
-                {
-                    Classes.Add(Type.BaseType, Type);
-                }
+                new AssemblyName(AssemblyDirectory + AssemblyName + ".dll").Load()
+                                                                           .GetTypes()
+                                                                           .ForEach(x => Classes.Add(x.BaseType, x));
             }
         }
 
@@ -130,7 +93,7 @@ namespace Utilities.Reflection.AOP
         /// <param name="Aspect">Aspect to load</param>
         public virtual void AddAspect(IAspect Aspect)
         {
-            Aspects.Add(Aspect);
+            Aspects.AddIfUnique(Aspect);
         }
 
         /// <summary>
@@ -158,11 +121,7 @@ namespace Utilities.Reflection.AOP
                 && !RegenerateAssembly)
                 throw new ArgumentException("Type specified not found and can't be generated due to being in 'GoDaddy' mode. Delete already generated DLL to add new types or set RegenerateAssembly to true.");
             List<Type> Interfaces = new List<Type>();
-            foreach (IAspect Aspect in Aspects)
-            {
-                if (Aspect.InterfacesUsing != null)
-                    Interfaces.AddRange(Aspect.InterfacesUsing);
-            }
+            Aspects.ForEach(x => Interfaces.AddRange(x.InterfacesUsing == null ? new List<Type>() : x.InterfacesUsing));
             Interfaces.Add(typeof(IEvents));
             Utilities.Reflection.Emit.TypeBuilder Builder = AssemblyBuilder.CreateType(AssemblyName + "." + Type.Name + "Derived",
                             System.Reflection.TypeAttributes.Class | System.Reflection.TypeAttributes.Public,
@@ -173,9 +132,8 @@ namespace Utilities.Reflection.AOP
                 IPropertyBuilder AspectusEnding = Builder.CreateDefaultProperty("Aspectus_Ending", typeof(EventHandler<Ending>));
                 IPropertyBuilder AspectusException = Builder.CreateDefaultProperty("Aspectus_Exception", typeof(EventHandler<Utilities.Reflection.AOP.EventArgs.Exception>));
 
-                foreach (IAspect Aspect in Aspects)
-                    Aspect.SetupInterfaces(Builder);
-                
+                Aspects.ForEach(x => x.SetupInterfaces(Builder));
+
                 Type TempType = Type;
                 List<string> MethodsAlreadyDone = new List<string>();
                 while (TempType != null)
@@ -215,10 +173,7 @@ namespace Utilities.Reflection.AOP
                             if (Method.IsStatic)
                                 MethodAttribute |= MethodAttributes.Static;
                             List<Type> ParameterTypes = new List<Type>();
-                            foreach (ParameterInfo Parameter in Method.GetParameters())
-                            {
-                                ParameterTypes.Add(Parameter.ParameterType);
-                            }
+                            Method.GetParameters().ForEach(x => ParameterTypes.Add(x.ParameterType));
                             IMethodBuilder OverrideMethod = Builder.CreateMethod(Method.Name,
                                 MethodAttribute,
                                 Method.ReturnType,
@@ -255,14 +210,9 @@ namespace Utilities.Reflection.AOP
         public virtual object Create(Type BaseType)
         {
             if (!Classes.ContainsKey(BaseType))
-            {
                 Setup(BaseType);
-            }
             object ReturnObject = Classes[BaseType].Assembly.CreateInstance(Classes[BaseType].FullName);
-            foreach (IAspect Aspect in Aspects)
-            {
-                Aspect.Setup(ReturnObject);
-            }
+            Aspects.ForEach(x => x.Setup(ReturnObject));
             return ReturnObject;
         }
 
@@ -277,51 +227,25 @@ namespace Utilities.Reflection.AOP
                 BaseMethod = BaseType.GetMethod(Method.Name);
             Method.SetCurrentMethod();
             System.Reflection.Emit.Label EndLabel = Method.Generator.DefineLabel();
-            VariableBase ReturnValue = null;
-            if (Method.ReturnType != typeof(void))
-                ReturnValue = Method.CreateLocal("FinalReturnValue", Method.ReturnType);
+            VariableBase ReturnValue = Method.ReturnType != typeof(void) ? Method.CreateLocal("FinalReturnValue", Method.ReturnType) : null;
             Utilities.Reflection.Emit.Commands.Try Try = Method.Try();
             {
                 SetupStart(Method, EndLabel, ReturnValue, AspectusStarting);
-                foreach (IAspect Aspect in Aspects)
-                {
-                    Aspect.SetupStartMethod(Method, BaseType);
-                }
-
-                if (Method.ReturnType != typeof(void))
-                {
-                    List<ParameterBuilder> Parameters = new List<ParameterBuilder>();
-                    for (int x = 1; x < Method.Parameters.Count; ++x)
-                    {
-                        Parameters.Add(Method.Parameters[x]);
-                    }
-                    if (BaseMethod != null)
-                        ReturnValue.Assign(Method.This.Call(BaseMethod, Parameters.ToArray()));
-                }
-                else
-                {
-                    List<ParameterBuilder> Parameters = new List<ParameterBuilder>();
-                    for (int x = 1; x < Method.Parameters.Count; ++x)
-                    {
-                        Parameters.Add(Method.Parameters[x]);
-                    }
-                    if (BaseMethod != null)
-                        Method.This.Call(BaseMethod, Parameters.ToArray());
-                }
+                Aspects.ForEach(x => x.SetupStartMethod(Method, BaseType));
+                List<ParameterBuilder> Parameters = new List<ParameterBuilder>();
+                Method.Parameters.For(1, Method.Parameters.Count - 1, x => Parameters.Add(x));
+                if (Method.ReturnType != typeof(void) && BaseMethod != null)
+                    ReturnValue.Assign(Method.This.Call(BaseMethod, Parameters.ToArray()));
+                else if (BaseMethod != null)
+                    Method.This.Call(BaseMethod, Parameters.ToArray());
                 SetupEnd(Method, ReturnValue, AspectusEnding);
-                foreach (IAspect Aspect in Aspects)
-                {
-                    Aspect.SetupEndMethod(Method, BaseType, ReturnValue);
-                }
+                Aspects.ForEach(x => x.SetupEndMethod(Method, BaseType, ReturnValue));
                 Method.Generator.MarkLabel(EndLabel);
             }
             Utilities.Reflection.Emit.Commands.Catch Catch = Try.StartCatchBlock(typeof(System.Exception));
             {
                 SetupException(Method, Catch, AspectusException);
-                foreach (IAspect Aspect in Aspects)
-                {
-                    Aspect.SetupExceptionMethod(Method, BaseType);
-                }
+                Aspects.ForEach(x => x.SetupExceptionMethod(Method, BaseType));
                 Catch.Rethrow();
             }
             Try.EndTryBlock();
@@ -338,16 +262,10 @@ namespace Utilities.Reflection.AOP
             ExceptionArgs.Call(typeof(Utilities.Reflection.AOP.EventArgs.Exception).GetProperty("InternalException").GetSetMethod(), new object[] { Catch.Exception });
             VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
             Type EventHelperType = typeof(Utilities.Events.EventHelper);
-            MethodInfo[] Methods = EventHelperType.GetMethods();
-            MethodInfo TempMethod = null;
-            foreach (MethodInfo TempMethodInfo in Methods)
-            {
-                if (TempMethodInfo.GetParameters().Length == 3)
-                {
-                    TempMethod = TempMethodInfo;
-                    break;
-                }
-            }
+            MethodInfo[] Methods = EventHelperType.GetMethods()
+                                                  .Where<MethodInfo>(x => x.GetParameters().Length == 3)
+                                                  .ToArray();
+            MethodInfo TempMethod = Methods.Length > 0 ? Methods[0] : null;
             TempMethod = TempMethod.MakeGenericMethod(new Type[] { typeof(Utilities.Reflection.AOP.EventArgs.Exception) });
             Method.Call(null, TempMethod, new object[] { AspectusException, IEventsThis, ExceptionArgs });
         }
@@ -371,16 +289,10 @@ namespace Utilities.Reflection.AOP
 
             VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
             Type EventHelperType = typeof(Utilities.Events.EventHelper);
-            MethodInfo[] Methods = EventHelperType.GetMethods();
-            MethodInfo TempMethod = null;
-            foreach (MethodInfo TempMethodInfo in Methods)
-            {
-                if (TempMethodInfo.GetParameters().Length == 3)
-                {
-                    TempMethod = TempMethodInfo;
-                    break;
-                }
-            }
+            MethodInfo[] Methods = EventHelperType.GetMethods()
+                                                  .Where<MethodInfo>(x => x.GetParameters().Length == 3)
+                                                  .ToArray();
+            MethodInfo TempMethod = Methods.Length > 0 ? Methods[0] : null;
             TempMethod = TempMethod.MakeGenericMethod(new Type[] { typeof(Ending) });
             Method.Call(null, TempMethod, new object[] { AspectusEnding, IEventsThis, EndingArgs });
             if (Method.ReturnType != typeof(void))
@@ -413,16 +325,10 @@ namespace Utilities.Reflection.AOP
 
             VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
             Type EventHelperType = typeof(Utilities.Events.EventHelper);
-            MethodInfo[] Methods = EventHelperType.GetMethods();
-            MethodInfo TempMethod = null;
-            foreach (MethodInfo TempMethodInfo in Methods)
-            {
-                if (TempMethodInfo.GetParameters().Length == 3)
-                {
-                    TempMethod = TempMethodInfo;
-                    break;
-                }
-            }
+            MethodInfo[] Methods = EventHelperType.GetMethods()
+                                                  .Where<MethodInfo>(x => x.GetParameters().Length == 3)
+                                                  .ToArray();
+            MethodInfo TempMethod = Methods.Length > 0 ? Methods[0] : null;
             TempMethod = TempMethod.MakeGenericMethod(new Type[] { typeof(Starting) });
             Method.Call(null, TempMethod, new object[] { AspectusStarting, IEventsThis, StartingArgs });
             if (Method.ReturnType != typeof(void))

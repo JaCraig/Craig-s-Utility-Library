@@ -39,6 +39,35 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region For
+
+        /// <summary>
+        /// Does an action for each item in the IEnumerable between the start and end indexes
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Start">Item to start with</param>
+        /// <param name="End">Item to end with</param>
+        /// <param name="Action">Action to do</param>
+        /// <returns>The original list</returns>
+        public static IEnumerable<T> For<T>(this IEnumerable<T> List, int Start, int End, Action<T> Action)
+        {
+            if (List == null)
+                throw new ArgumentNullException("List");
+            if (Action == null)
+                throw new ArgumentNullException("Action");
+            int x = 0;
+            foreach (T Item in List)
+            {
+                if (x.Between(Start, End))
+                    Action(Item);
+                ++x;
+            }
+            return List;
+        }
+
+        #endregion
+
         #region ForEach
 
         /// <summary>
@@ -47,6 +76,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="List">IEnumerable to iterate over</param>
         /// <param name="Action">Action to do</param>
+        /// <returns>The original list</returns>
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action)
         {
             if (List == null)

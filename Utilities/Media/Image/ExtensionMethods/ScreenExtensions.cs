@@ -24,51 +24,67 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System;
+using System.Collections.Generic;
 #endregion
 
-namespace Utilities.Media
+namespace Utilities.Media.Image.ExtensionMethods
 {
     /// <summary>
-    /// Class for handling screen capture
+    /// Screen extensions
     /// </summary>
-    public static class Screenshot
+    public static class ScreenExtensions
     {
-        #region Public Static Functions
+        #region Functions
+
+        #region TakeScreenShot
 
         /// <summary>
         /// Takes a screenshot of the screen as a whole
         /// (if multiple screens are attached, it takes an image containing them all)
         /// </summary>
-        /// <param name="FileName">Name of the file to save the screenshot.</param>
-        public static void TakeScreenShot(string FileName)
+        /// <param name="Screen">Screen to get the screenshot from</param>
+        /// <param name="FileName">Name of the file to save the screenshot (optional)</param>
+        /// <returns>Returns a bitmap containing the screen shot</returns>
+        public static Bitmap TakeScreenShot(this Screen Screen, string FileName = "")
         {
-            if (string.IsNullOrEmpty(FileName))
-                throw new ArgumentNullException("FileName");
-            using (Bitmap TempBitmap = Screenshot.TakeScreenShot())
+            if (Screen == null)
+                throw new ArgumentNullException("Screen");
+            Bitmap TempBitmap = new Bitmap(Screen.Bounds.Width, Screen.Bounds.Height, PixelFormat.Format32bppArgb);
+            using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
             {
-                TempBitmap.Save(FileName);
+                TempGraphics.CopyFromScreen(Screen.Bounds.X, Screen.Bounds.Y, 0, 0, Screen.Bounds.Size, CopyPixelOperation.SourceCopy);
             }
+            if (!string.IsNullOrEmpty(FileName))
+                TempBitmap.Save(FileName);
+            return TempBitmap;
         }
 
         /// <summary>
         /// Takes a screenshot of the screen as a whole
         /// (if multiple screens are attached, it takes an image containing them all)
         /// </summary>
-        /// <returns>Returns the bitmap object containing the screenshot</returns>
-        public static Bitmap TakeScreenShot()
+        /// <param name="Screens">Screens to get the screenshot from</param>
+        /// <param name="FileName">Name of the file to save the screenshot (optional)</param>
+        /// <returns>Returns a bitmap containing the screen shot</returns>
+        public static Bitmap TakeScreenShot(this IEnumerable<Screen> Screens, string FileName = "")
         {
+            if (Screens == null)
+                throw new ArgumentNullException("Screen");
             Rectangle TotalScreenRect = Rectangle.Empty;
             foreach (Screen CurrentScreen in Screen.AllScreens)
-            {
                 TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);
-            }
             Bitmap TempBitmap = new Bitmap(TotalScreenRect.Width, TotalScreenRect.Height, PixelFormat.Format32bppArgb);
             using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
             {
                 TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);
             }
+            if (!string.IsNullOrEmpty(FileName))
+                TempBitmap.Save(FileName);
             return TempBitmap;
         }
+
+        #endregion
+
         #endregion
     }
 }

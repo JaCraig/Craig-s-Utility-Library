@@ -61,6 +61,15 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
+        public void ForTest()
+        {
+            StringBuilder Builder = new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            Temp.For(0, Temp.Length - 1, x => Builder.Append(x));
+            Assert.Equal("00123", Builder.ToString());
+        }
+
+        [Test]
         public void ToArray()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();

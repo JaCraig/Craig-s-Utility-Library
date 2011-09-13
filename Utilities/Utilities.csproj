@@ -107,8 +107,12 @@
     <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
+    <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="Media\Image\ExtensionMethods\ImageExtensions.cs" />
+    <Compile Include="Media\Image\ExtensionMethods\ScreenExtensions.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />
@@ -399,7 +403,6 @@
     <Compile Include="Web\Email\Pop3\Pop3Exception.cs" />
     <Compile Include="Encryption\RSAEncryption.cs" />
     <Compile Include="Environment\Environment.cs" />
-    <Compile Include="Environment\ProcessManager.cs" />
     <Compile Include="Error\ErrorManager.cs" />
     <Compile Include="Exchange\Appointment.cs" />
     <Compile Include="Exchange\Exchange.cs" />
@@ -425,7 +428,6 @@
     <Compile Include="Media\Image\OilPainting.cs" />
     <Compile Include="Media\Image\Procedural\CellularMap.cs" />
     <Compile Include="Media\Image\RGBHistogram.cs" />
-    <Compile Include="Media\Screenshot.cs" />
     <Compile Include="FileFormats\OPMLHelper\Body.cs" />
     <Compile Include="FileFormats\OPMLHelper\Head.cs" />
     <Compile Include="FileFormats\OPMLHelper\OPML.cs" />

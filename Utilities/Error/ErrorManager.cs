@@ -28,6 +28,8 @@ using System.Reflection;
 using System;
 using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Environment.ExtensionMethods;
+using System.Diagnostics;
 #endregion
 
 namespace Utilities.Error
@@ -97,7 +99,7 @@ namespace Utilities.Error
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<strong>Process Information</strong><br />");
-            Builder.Append(Environment.ProcessManager.GetProcessInformation());
+            Builder.Append(Process.GetProcesses().GetInformation());
             return Builder.ToString();
         }
 

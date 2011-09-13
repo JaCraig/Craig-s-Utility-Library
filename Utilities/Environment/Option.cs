@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Environment
@@ -41,7 +42,7 @@ namespace Utilities.Environment
         /// </summary>
         /// <param name="Text">Option text</param>
         /// <param name="OptionStarter">Starter text for an option ("/", "-", etc.)</param>
-        public Option(string Text,string OptionStarter)
+        public Option(string Text, string OptionStarter)
         {
             if (string.IsNullOrEmpty(Text))
                 throw new ArgumentNullException("Text");
@@ -53,14 +54,9 @@ namespace Utilities.Environment
             Match CommandMatch = CommandParser.Match(Text);
             Command = CommandMatch.Groups["Command"].Value;
             Text = CommandMatch.Groups["Parameters"].Value;
-            MatchCollection ParameterMatchs = ParameterParser.Matches(Text);
-            foreach (Match ParameterMatch in ParameterMatchs)
-            {
-                if(!string.IsNullOrEmpty(ParameterMatch.Value))
-                {
-                    Parameters.Add(ParameterMatch.Groups["Parameter"].Value);
-                }
-            }
+            ParameterParser.Matches(Text)
+                           .Where(x => !string.IsNullOrEmpty(x.Value))
+                           .ForEach(x => Parameters.Add(x.Groups["Parameter"].Value));
         }
 
         #endregion
@@ -70,12 +66,13 @@ namespace Utilities.Environment
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.Append("Command: ").Append(Command).Append("\n");
-            Builder.Append("Parameters: ");
-            foreach (string Parameter in Parameters)
-                Builder.Append(Parameter).Append(" ");
-            Builder.Append("\n");
-            return Builder.ToString();
+            Builder.Append("Command: ")
+                   .Append(Command)
+                   .Append("\n")
+                   .Append("Parameters: ");
+            Parameters.ForEach(x => Builder.Append(x).Append(" "));
+            return Builder.Append("\n")
+                          .ToString();
         }
 
         #endregion

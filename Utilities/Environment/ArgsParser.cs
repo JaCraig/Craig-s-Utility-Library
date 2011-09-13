@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Environment
@@ -45,7 +46,7 @@ namespace Utilities.Environment
             if (string.IsNullOrEmpty(OptionStarter))
                 throw new ArgumentNullException("OptionStarter");
             this.OptionStarter = OptionStarter;
-            OptionRegex = new Regex(string.Format("({0}[^\\s]*)[\\s|\\S|$]([^\"{0}]*)|(\"[^\"]*\")", OptionStarter));
+            OptionRegex = new Regex(string.Format(@"(?<Command>{0}[^\s]+)[\s|\S|$](?<Parameter>""[^""]*""|[^""{0}]*)", OptionStarter));
         }
 
         #endregion
@@ -73,12 +74,12 @@ namespace Utilities.Environment
             string Option = "";
             foreach (Match OptionMatch in Matches)
             {
-                if (OptionMatch.Value.StartsWith(OptionStarter)&&!string.IsNullOrEmpty(Option))
+                if (OptionMatch.Value.StartsWith(OptionStarter) && !string.IsNullOrEmpty(Option))
                 {
                     Result.Add(new Option(Option, OptionStarter));
                     Option = "";
                 }
-                Option += OptionMatch.Value+" ";
+                Option += OptionMatch.Value + " ";
             }
             Result.Add(new Option(Option, OptionStarter));
             return Result;
