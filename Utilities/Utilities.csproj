@@ -111,7 +111,7 @@
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Media\Image\ExtensionMethods\ImageExtensions.cs" />
+    <Compile Include="Media\Image\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\Image\ExtensionMethods\ScreenExtensions.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />

@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -109,6 +111,7 @@
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Set.cs" />
     <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Media\Image\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\Image\ExtensionMethods\ScreenshotExtensions.cs" />
     <Compile Include="Profiler\Profiler.cs" />
     <Compile Include="Profiler\ProfilerManager.cs" />
@@ -141,6 +144,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Image2.jpg" />
+    <Content Include="Data\Image\Lenna.jpg" />
     <Content Include="Data\Testing\Test.txt" />
   </ItemGroup>
   <ItemGroup>

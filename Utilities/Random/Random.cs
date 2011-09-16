@@ -231,9 +231,9 @@ namespace Utilities.Random
         /// <returns>A random color between the min and max values</returns>
         public virtual Color NextColor(Color MinColor = default(Color), Color MaxColor = default(Color))
         {
-            if (MinColor == null)
+            if (MinColor == default(Color))
                 MinColor = Color.Black;
-            if (MaxColor == null)
+            if (MaxColor == default(Color))
                 MaxColor = Color.White;
             return Color.FromArgb(Next(MinColor.A, MaxColor.A + 1),
                 Next(MinColor.R, MaxColor.R + 1),

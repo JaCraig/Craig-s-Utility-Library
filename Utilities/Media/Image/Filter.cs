@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.Math.ExtensionMethods;
+using Utilities.Media.Image.ExtensionMethods;
 using System;
 #endregion
 
@@ -38,21 +39,9 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Constructor
         /// </summary>
-        public Filter()
-        {
-            MyFilter = new int[3, 3];
-            Width = 3;
-            Height = 3;
-            Offset = 0;
-            Absolute = false;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
         /// <param name="Width">Width</param>
         /// <param name="Height">Height</param>
-        public Filter(int Width, int Height)
+        public Filter(int Width = 3, int Height = 3)
         {
             MyFilter = new int[Width, Height];
             this.Width = Width;
@@ -104,10 +93,10 @@ namespace Utilities.Media.Image
             if (Input == null)
                 throw new ArgumentNullException("Input");
             Bitmap NewBitmap = new Bitmap(Input.Width, Input.Height);
-            BitmapData NewData = Image.LockImage(NewBitmap);
-            BitmapData OldData = Image.LockImage(Input);
-            int NewPixelSize = Image.GetPixelSize(NewData);
-            int OldPixelSize = Image.GetPixelSize(OldData);
+            BitmapData NewData = NewBitmap.LockImage();
+            BitmapData OldData = Input.LockImage();
+            int NewPixelSize = NewData.GetPixelSize();
+            int OldPixelSize = OldData.GetPixelSize();
             for (int x = 0; x < Input.Width; ++x)
             {
                 for (int y = 0; y < Input.Height; ++y)
@@ -126,7 +115,7 @@ namespace Utilities.Media.Image
                             {
                                 if (YCurrent + y < Input.Height && YCurrent + y >= 0)
                                 {
-                                    Color Pixel = Image.GetPixel(OldData, XCurrent + x, YCurrent + y, OldPixelSize);
+                                    Color Pixel = OldData.GetPixel(XCurrent + x, YCurrent + y, OldPixelSize);
                                     RValue += MyFilter[x2, y2] * Pixel.R;
                                     GValue += MyFilter[x2, y2] * Pixel.G;
                                     BValue += MyFilter[x2, y2] * Pixel.B;
@@ -137,7 +126,7 @@ namespace Utilities.Media.Image
                         }
                         ++XCurrent;
                     }
-                    Color MeanPixel = Image.GetPixel(OldData, x, y, OldPixelSize);
+                    Color MeanPixel = OldData.GetPixel(x, y, OldPixelSize);
                     if (Weight == 0)
                         Weight = 1;
                     if (Weight > 0)
@@ -156,11 +145,11 @@ namespace Utilities.Media.Image
                         BValue = BValue.Clamp(255, 0);
                         MeanPixel = Color.FromArgb(RValue, GValue, BValue);
                     }
-                    Image.SetPixel(NewData, x, y, MeanPixel, NewPixelSize);
+                    NewData.SetPixel(x, y, MeanPixel, NewPixelSize);
                 }
             }
-            Image.UnlockImage(NewBitmap, NewData);
-            Image.UnlockImage(Input, OldData);
+            NewBitmap.UnlockImage(NewData);
+            Input.UnlockImage(OldData);
             return NewBitmap;
         }
 
