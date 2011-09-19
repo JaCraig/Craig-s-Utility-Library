@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System.Drawing.Imaging;
 using System;
+using Utilities.Media.Image.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image
@@ -50,60 +51,60 @@ namespace Utilities.Media.Image
                 throw new ArgumentNullException("OldImage");
             if (DetectionColor == null)
                 throw new ArgumentNullException("DetectionColor");
-            using (Bitmap NewImage1 = Utilities.Media.Image.Image.ConvertBlackAndWhite(NewImage))
+            using (Bitmap NewImage1 = NewImage.BlackAndWhite())
             {
-                using (Bitmap OldImage1 = Utilities.Media.Image.Image.ConvertBlackAndWhite(OldImage))
+                using (Bitmap OldImage1 = OldImage.BlackAndWhite())
                 {
-                    using (Bitmap NewImage2 = Utilities.Media.Image.Image.SNNBlur(NewImage1, 5))
+                    using (Bitmap NewImage2 = NewImage1.SNNBlur(5))
                     {
-                        using (Bitmap OldImage2 = Utilities.Media.Image.Image.SNNBlur(OldImage1, 5))
+                        using (Bitmap OldImage2 = OldImage1.SNNBlur(5))
                         {
                             using (Bitmap OutputImage = new Bitmap(NewImage2, NewImage2.Width, NewImage2.Height))
                             {
                                 using (Bitmap Overlay = new Bitmap(NewImage, NewImage.Width, NewImage.Height))
                                 {
-                                    BitmapData NewImage2Data = Image.LockImage(NewImage2);
-                                    int NewImage2PixelSize = Image.GetPixelSize(NewImage2Data);
-                                    BitmapData OldImage2Data = Image.LockImage(OldImage2);
-                                    int OldImage2PixelSize = Image.GetPixelSize(OldImage2Data);
-                                    BitmapData OverlayData = Image.LockImage(Overlay);
-                                    int OverlayPixelSize = Image.GetPixelSize(OverlayData);
+                                    BitmapData NewImage2Data = NewImage2.LockImage();
+                                    int NewImage2PixelSize = NewImage2Data.GetPixelSize();
+                                    BitmapData OldImage2Data = OldImage2.LockImage();
+                                    int OldImage2PixelSize = OldImage2Data.GetPixelSize();
+                                    BitmapData OverlayData = Overlay.LockImage();
+                                    int OverlayPixelSize = OverlayData.GetPixelSize();
                                     for (int x = 0; x < OutputImage.Width; ++x)
                                     {
                                         for (int y = 0; y < OutputImage.Height; ++y)
                                         {
-                                            Color NewPixel = Image.GetPixel(NewImage2Data, x, y, NewImage2PixelSize);
-                                            Color OldPixel = Image.GetPixel(OldImage2Data, x, y, OldImage2PixelSize);
+                                            Color NewPixel = NewImage2Data.GetPixel(x, y, NewImage2PixelSize);
+                                            Color OldPixel = OldImage2Data.GetPixel(x, y, OldImage2PixelSize);
                                             if (System.Math.Pow((double)(NewPixel.R - OldPixel.R), 2.0) > Threshold)
                                             {
-                                                Image.SetPixel(OverlayData, x, y, Color.FromArgb(100, 0, 100), OverlayPixelSize);
+                                                OverlayData.SetPixel(x, y, Color.FromArgb(100, 0, 100), OverlayPixelSize);
                                             }
                                             else
                                             {
-                                                Image.SetPixel(OverlayData, x, y, Color.FromArgb(200, 0, 200), OverlayPixelSize);
+                                                OverlayData.SetPixel(x, y, Color.FromArgb(200, 0, 200), OverlayPixelSize);
                                             }
                                         }
                                     }
-                                    Image.UnlockImage(Overlay, OverlayData);
-                                    Image.UnlockImage(NewImage2, NewImage2Data);
-                                    Image.UnlockImage(OldImage2, OldImage2Data);
-                                    using (Bitmap Overlay2 = Utilities.Media.Image.Image.EdgeDetection(Overlay, 25, DetectionColor))
+                                    Overlay.UnlockImage(OverlayData);
+                                    NewImage2.UnlockImage(NewImage2Data);
+                                    OldImage2.UnlockImage(OldImage2Data);
+                                    using (Bitmap Overlay2 = Overlay.EdgeDetection(25, DetectionColor))
                                     {
-                                        BitmapData Overlay2Data = Image.LockImage(Overlay2);
-                                        int Overlay2PixelSize = Image.GetPixelSize(Overlay2Data);
+                                        BitmapData Overlay2Data = Overlay2.LockImage();
+                                        int Overlay2PixelSize = Overlay2Data.GetPixelSize();
                                         for (int x = 0; x < OutputImage.Width; ++x)
                                         {
                                             for (int y = 0; y < OutputImage.Height; ++y)
                                             {
-                                                Color Pixel1 = Image.GetPixel(Overlay2Data, x, y, Overlay2PixelSize);
+                                                Color Pixel1 = Overlay2Data.GetPixel(x, y, Overlay2PixelSize);
                                                 if (Pixel1.R != DetectionColor.R || Pixel1.G != DetectionColor.G || Pixel1.B != DetectionColor.B)
                                                 {
-                                                    Image.SetPixel(Overlay2Data, x, y, Color.FromArgb(200, 0, 200), Overlay2PixelSize);
+                                                    Overlay2Data.SetPixel(x, y, Color.FromArgb(200, 0, 200), Overlay2PixelSize);
                                                 }
                                             }
                                         }
-                                        Image.UnlockImage(Overlay2, Overlay2Data);
-                                        return Utilities.Media.Image.Image.Watermark(OutputImage, Overlay2, 1.0f, 0, 0, Color.FromArgb(200, 0, 200));
+                                        Overlay2.UnlockImage(Overlay2Data);
+                                        return OutputImage.Watermark(Overlay2, 1.0f, 0, 0, Color.FromArgb(200, 0, 200));
                                     }
                                 }
                             }

@@ -24,6 +24,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
 using System;
+using Utilities.Media.Image.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image
@@ -45,10 +46,10 @@ namespace Utilities.Media.Image
             if (Input == null)
                 throw new ArgumentNullException("Input");
             bool ShowLine = true;
-            using (Bitmap TempImage = Image.ConvertBlackAndWhite(Input))
+            using (Bitmap TempImage = Input.BlackAndWhite())
             {
-                BitmapData OldData = Image.LockImage(TempImage);
-                int OldPixelSize = Image.GetPixelSize(OldData);
+                BitmapData OldData = TempImage.LockImage();
+                int OldPixelSize = OldData.GetPixelSize();
                 StringBuilder Builder = new StringBuilder();
                 for (int x = 0; x < TempImage.Height; ++x)
                 {
@@ -56,7 +57,7 @@ namespace Utilities.Media.Image
                     {
                         if (ShowLine)
                         {
-                            Color CurrentPixel = Image.GetPixel(OldData, y, x, OldPixelSize);
+                            Color CurrentPixel = OldData.GetPixel(y, x, OldPixelSize);
                             Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length) / 255)]);
                         }
 
@@ -71,7 +72,7 @@ namespace Utilities.Media.Image
                         ShowLine = true;
                     }
                 }
-                Image.UnlockImage(TempImage, OldData);
+                TempImage.UnlockImage(OldData);
                 return Builder.ToString();
             }
         }

@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System;
+using Utilities.Media.Image.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image
@@ -143,7 +144,7 @@ namespace Utilities.Media.Image
             CreateFilter();
             using (Bitmap TempImage = EdgeDetectionFilter.ApplyFilter(Image))
             {
-                return Media.Image.Image.ConvertBlackAndWhite(TempImage);
+                return TempImage.BlackAndWhite();
             }
         }
 

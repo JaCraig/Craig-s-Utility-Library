@@ -80,9 +80,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="System.Speech">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -252,8 +249,6 @@
     <Compile Include="Media\Image\Procedural\FaultFormation.cs" />
     <Compile Include="Media\Image\Procedural\MidpointDisplacement.cs" />
     <Compile Include="Media\Image\Procedural\PerlinNoise.cs" />
-    <Compile Include="Media\Sound\SpeechToText.cs" />
-    <Compile Include="Media\Sound\TextToSpeech.cs" />
     <Compile Include="ORM\Aspect\Interfaces\IORMObject.cs" />
     <Compile Include="ORM\Aspect\ORMAspect.cs" />
     <Compile Include="ORM\Mapping\BaseClasses\PropertyBase.cs" />
@@ -418,9 +413,7 @@
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Media\Image\ASCIIArt.cs" />
     <Compile Include="Media\Image\BumpMap.cs" />
-    <Compile Include="Media\Image\Draw.cs" />
     <Compile Include="Media\Image\Filter.cs" />
-    <Compile Include="Media\Image\Image.cs" />
     <Compile Include="LDAP\Directory.cs" />
     <Compile Include="LDAP\Entry.cs" />
     <Compile Include="Media\Image\MotionDetection.cs" />

@@ -27,6 +27,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.Math.ExtensionMethods;
+using Utilities.Media.Image.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image.Procedural
@@ -56,8 +57,8 @@ namespace Utilities.Media.Image.Procedural
                 IncreaseVal = GenerateFault(Width, Height, NumberFaults, Heights, IncreaseVal, Generator);
             }
             Bitmap ReturnValue = new Bitmap(Width, Height);
-            BitmapData ImageData = Image.LockImage(ReturnValue);
-            int ImagePixelSize = Image.GetPixelSize(ImageData);
+            BitmapData ImageData = ReturnValue.LockImage();
+            int ImagePixelSize = ImageData.GetPixelSize();
             for (int x = 0; x < Width; ++x)
             {
                 for (int y = 0; y < Height; ++y)
@@ -66,10 +67,10 @@ namespace Utilities.Media.Image.Procedural
                     Value = (Value * 0.5f) + 0.5f;
                     Value *= 255;
                     int RGBValue = ((int)Value).Clamp(255, 0);
-                    Image.SetPixel(ImageData, x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
+                    ImageData.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
                 }
             }
-            Image.UnlockImage(ReturnValue, ImageData);
+            ReturnValue.UnlockImage(ImageData);
             return ReturnValue;
         }
 

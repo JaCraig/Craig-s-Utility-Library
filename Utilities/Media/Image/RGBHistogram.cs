@@ -23,6 +23,9 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System.Drawing.Imaging;
 using System;
+using System.Linq;
+using Utilities.Media.Image.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image
@@ -37,23 +40,14 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Constructor
         /// </summary>
-        public RGBHistogram()
-        {
-            R = new float[256];
-            G = new float[256];
-            B = new float[256];
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
         /// <param name="Image">Image to load</param>
-        public RGBHistogram(Bitmap Image)
+        public RGBHistogram(Bitmap Image = null)
         {
             R = new float[256];
             G = new float[256];
             B = new float[256];
-            LoadImage(Image);
+            if (Image != null)
+                LoadImage(Image);
         }
 
         #endregion
@@ -68,27 +62,24 @@ namespace Utilities.Media.Image
         {
             if (ImageUsing == null)
                 throw new ArgumentNullException("ImageUsing");
-            BitmapData OldData = Image.LockImage(ImageUsing);
-            int PixelSize = Image.GetPixelSize(OldData);
+            BitmapData OldData = ImageUsing.LockImage();
+            int PixelSize = OldData.GetPixelSize();
             Width = ImageUsing.Width;
             Height = ImageUsing.Height;
-            for (int x = 0; x < 256; ++x)
-            {
-                R[x] = 0;
-                G[x] = 0;
-                B[x] = 0;
-            }
+            R.Clear();
+            G.Clear();
+            B.Clear();
             for (int x = 0; x < ImageUsing.Width; ++x)
             {
                 for (int y = 0; y < ImageUsing.Height; ++y)
                 {
-                    Color TempColor = Image.GetPixel(OldData, x, y, PixelSize);
+                    Color TempColor = OldData.GetPixel(x, y, PixelSize);
                     ++R[(int)TempColor.R];
                     ++G[(int)TempColor.G];
                     ++B[(int)TempColor.B];
                 }
             }
-            Image.UnlockImage(ImageUsing, OldData);
+            ImageUsing.UnlockImage(OldData);
         }
 
         /// <summary>
@@ -97,6 +88,8 @@ namespace Utilities.Media.Image
         public virtual void Normalize()
         {
             float TotalPixels = Width * Height;
+            if (TotalPixels <= 0)
+                return;
             for (int x = 0; x < 256; ++x)
             {
                 R[x] /= TotalPixels;
@@ -111,6 +104,36 @@ namespace Utilities.Media.Image
         public virtual void Equalize()
         {
             float TotalPixels = Width * Height;
+            int RMax = int.MinValue;
+            int RMin = int.MaxValue;
+            int GMax = int.MinValue;
+            int GMin = int.MaxValue;
+            int BMax = int.MinValue;
+            int BMin = int.MaxValue;
+            for (int x = 0; x < 256; ++x)
+            {
+                if (R[x] > 0f)
+                {
+                    if (RMax < x)
+                        RMax = x;
+                    if (RMin > x)
+                        RMin = x;
+                }
+                if (G[x] > 0f)
+                {
+                    if (GMax < x)
+                        GMax = x;
+                    if (GMin > x)
+                        GMin = x;
+                }
+                if (B[x] > 0f)
+                {
+                    if (BMax < x)
+                        BMax = x;
+                    if (BMin > x)
+                        BMin = x;
+                }
+            }
 
             float PreviousR = R[0];
             R[0] = R[0] * 256 / TotalPixels;
@@ -123,9 +146,9 @@ namespace Utilities.Media.Image
                 PreviousR += R[x];
                 PreviousG += G[x];
                 PreviousB += B[x];
-                R[x] = PreviousR * 256 / TotalPixels;
-                G[x] = PreviousG * 256 / TotalPixels;
-                B[x] = PreviousB * 256 / TotalPixels;
+                R[x] = ((PreviousR - R[RMin]) / (TotalPixels - R[RMin])) * 255;
+                G[x] = ((PreviousG - G[GMin]) / (TotalPixels - G[GMin])) * 255;
+                B[x] = ((PreviousB - B[BMin]) / (TotalPixels - B[BMin])) * 255;
             }
             Width = 256;
             Height = 1;

@@ -177,16 +177,398 @@ namespace UnitTests.Media.Image.ExtensionMethods
                 using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Crop(100,100,
                                                                 Utilities.Media.Image.ExtensionMethods.BitmapExtensions.Align.Bottom,
                                                                 Utilities.Media.Image.ExtensionMethods.BitmapExtensions.Align.Right,
-                                                                @".\Testing\LennaSepiaTone.jpg")))
+                                                                @".\Testing\LennaCrop.jpg")))
                 {
                     Assert.NotNull(Image);
                 }
             }
         }
 
+        [Test]
+        public void Dilate()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Dilate(5, @".\Testing\LennaDilate.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void DrawRoundedRectangle()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.DrawRoundedRectangle(Color.Red, 20, 20, 40, 40, 4, @".\Testing\LennaDrawRoundedRectangle.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void DrawText()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.DrawText("Test text.", new Font(FontFamily.GenericSansSerif, 20.0f), Brushes.Black, new RectangleF(0, 0, 300, 300), @".\Testing\LennaDrawText.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void EdgeDetection()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.EdgeDetection(25.0f,Color.Red, @".\Testing\LennaEdgeDetection.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Emboss()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Emboss(@".\Testing\LennaEmboss.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Equalize()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Equalize(@".\Testing\LennaEqualize.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Flip()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Flip(true, true, @".\Testing\LennaFlip.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void GaussianBlur()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.GaussianBlur(3, @".\Testing\LennaGaussianBlur.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test("Takes a while to run")]
+        public void GetHTMLPalette()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                List<string> Image = Assert.Do<List<string>>(() => TestObject.GetHTMLPalette());
+                Assert.NotNull(Image);
+                Assert.Equal(37270, Image.Count);
+            }
+        }
+
+        [Test]
+        public void GreenFilter()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.GreenFilter(@".\Testing\LennaGreenFilter.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Jitter()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Jitter(5,@".\Testing\LennaJitter.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void KuwaharaBlur()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.KuwaharaBlur(5, @".\Testing\LennaKuwaharaBlur.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void LaplaceEdgeDetection()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.LaplaceEdgeDetection(@".\Testing\LennaLaplaceEdgeDetection.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void MedianFilter()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.MedianFilter(5, @".\Testing\LennaMedianFilter.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Negative()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Negative(@".\Testing\LennaNegative.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Or()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap TestObject2 = new Bitmap(@"..\..\Data\Image\Image2.jpg"))
+                {
+                    using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Or(TestObject2, @".\Testing\LennaOr.jpg")))
+                    {
+                        Assert.NotNull(Image);
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void Pixelate()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Pixelate(10, @".\Testing\LennaPixelate.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void RedFilter()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.RedFilter(@".\Testing\LennaRedFilter.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Resize()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Resize(50, Utilities.Media.Image.ExtensionMethods.BitmapExtensions.Quality.Low, @".\Testing\LennaResize.jpg")))
+                {
+                    Assert.NotNull(Image);
+                    Assert.Equal(50,Image.Width);
+                    Assert.Equal(50, Image.Height);
+                }
+            }
+        }
+
+        [Test]
+        public void Rotate()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Rotate(50.0f, @".\Testing\LennaRotate.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Sharpen()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Sharpen(@".\Testing\LennaSharpen.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void SharpenLess()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.SharpenLess(@".\Testing\LennaSharpenLess.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void SinWave()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.SinWave(10f, 5f, false, true, @".\Testing\LennaSinWave.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void SobelEdgeDetection()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.SobelEdgeDetection(@".\Testing\LennaSobelEdgeDetection.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void SobelEmboss()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.SobelEmboss(@".\Testing\LennaSobelEmboss.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void SNNBlur()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.SNNBlur(5, @".\Testing\LennaSNNBlur.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void StretchContrast()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.StretchContrast(@".\Testing\LennaStretchContrast.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Threshold()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Threshold(0.5f, @".\Testing\LennaThreshold.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Turbulence()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Turbulence(8, 5.0f, 26542346, @".\Testing\LennaTurbulence.jpg")))
+                {
+                    Assert.NotNull(Image);
+                }
+            }
+        }
+
+        [Test]
+        public void Watermark()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap TestObject2 = new Bitmap(@"..\..\Data\Image\Image2.jpg"))
+                {
+                    using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Watermark(TestObject2, 0.5f, 0, 0, Color.Black, @".\Testing\LennaWatermark.jpg")))
+                    {
+                        Assert.NotNull(Image);
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void Xor()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap TestObject2 = new Bitmap(@"..\..\Data\Image\Image2.jpg"))
+                {
+                    using (Bitmap Image = Assert.Do<Bitmap>(() => TestObject.Xor(TestObject2, @".\Testing\LennaXor.jpg")))
+                    {
+                        Assert.NotNull(Image);
+                    }
+                }
+            }
+        }
+
         public void Dispose()
         {
-            //new DirectoryInfo(@".\Testing").DeleteAll();
+            new DirectoryInfo(@".\Testing").DeleteAll();
         }
     }
 }

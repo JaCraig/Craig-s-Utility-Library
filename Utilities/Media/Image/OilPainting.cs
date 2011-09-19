@@ -24,6 +24,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.Media.Image.Procedural;
+using Utilities.Media.Image.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image
@@ -57,8 +58,8 @@ namespace Utilities.Media.Image
 
         private void SetupImage()
         {
-            BitmapData ImageData = Image.LockImage(_Image);
-            int ImagePixelSize = Image.GetPixelSize(ImageData);
+            BitmapData ImageData = _Image.LockImage();
+            int ImagePixelSize = ImageData.GetPixelSize();
             for (int i = 0; i < _NumberOfPoints; ++i)
             {
                 int Red = 0;
@@ -71,7 +72,7 @@ namespace Utilities.Media.Image
                     {
                         if (Map.ClosestPoint[x, y] == i)
                         {
-                            Color Pixel = Image.GetPixel(ImageData, x, y, ImagePixelSize);
+                            Color Pixel = ImageData.GetPixel(x, y, ImagePixelSize);
                             Red += Pixel.R;
                             Green += Pixel.G;
                             Blue += Pixel.B;
@@ -86,7 +87,7 @@ namespace Utilities.Media.Image
                     {
                         if (Map.ClosestPoint[x, y] == i)
                         {
-                            Image.SetPixel(ImageData, x, y, Color.FromArgb(Red / Counter, Green / Counter, Blue / Counter), ImagePixelSize);
+                            ImageData.SetPixel(x, y, Color.FromArgb(Red / Counter, Green / Counter, Blue / Counter), ImagePixelSize);
                             ++Counter2;
                             if (Counter2 == Counter)
                                 break;
@@ -96,7 +97,7 @@ namespace Utilities.Media.Image
                         break;
                 }
             }
-            Image.UnlockImage(_Image, ImageData);
+            _Image.UnlockImage(ImageData);
         }
 
         #endregion

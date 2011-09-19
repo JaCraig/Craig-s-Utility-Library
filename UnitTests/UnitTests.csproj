@@ -53,6 +53,9 @@
     <Compile Include="AI\Anagram.cs" />
     <Compile Include="AI\NaiveBayes.cs" />
     <Compile Include="Caching\Cache.cs" />
+    <Compile Include="CodeGen\DefaultInput.cs" />
+    <Compile Include="CodeGen\DefaultParser.cs" />
+    <Compile Include="CodeGen\DefaultTemplate.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
@@ -111,8 +114,16 @@
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Set.cs" />
     <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Media\Image\ASCIIArt.cs" />
+    <Compile Include="Media\Image\BumpMap.cs" />
     <Compile Include="Media\Image\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\Image\ExtensionMethods\ScreenshotExtensions.cs" />
+    <Compile Include="Media\Image\MotionDetection.cs" />
+    <Compile Include="Media\Image\NormalMap.cs" />
+    <Compile Include="Media\Image\OilPainting.cs" />
+    <Compile Include="Media\Image\Procedural\CellularTexture.cs" />
+    <Compile Include="Media\Image\Procedural\FaultFormation.cs" />
+    <Compile Include="Media\Image\Procedural\MidpointDisplacement.cs" />
     <Compile Include="Profiler\Profiler.cs" />
     <Compile Include="Profiler\ProfilerManager.cs" />
     <Compile Include="Profiler\StopWatch.cs" />

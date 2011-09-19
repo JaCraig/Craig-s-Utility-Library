@@ -27,6 +27,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.Math.ExtensionMethods;
+using Utilities.Media.Image.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image.Procedural
@@ -51,13 +52,13 @@ namespace Utilities.Media.Image.Procedural
         /// <param name="Octaves">Octaves</param>
         /// <param name="Seed">Random seed</param>
         /// <returns>An image containing perlin noise</returns>
-        public static Bitmap Generate(int Width,int Height,int MaxRGBValue,int MinRGBValue,
-            float Frequency,float Amplitude,float Persistance,int Octaves,int Seed)
+        public static Bitmap Generate(int Width, int Height, int MaxRGBValue, int MinRGBValue,
+            float Frequency, float Amplitude, float Persistance, int Octaves, int Seed)
         {
             Bitmap ReturnValue = new Bitmap(Width, Height);
-            BitmapData ImageData = Image.LockImage(ReturnValue);
-            int ImagePixelSize = Image.GetPixelSize(ImageData);
-            float[,] Noise=GenerateNoise(Seed,Width,Height);
+            BitmapData ImageData = ReturnValue.LockImage();
+            int ImagePixelSize = ImageData.GetPixelSize();
+            float[,] Noise = GenerateNoise(Seed, Width, Height);
             for (int x = 0; x < Width; ++x)
             {
                 for (int y = 0; y < Height; ++y)
@@ -65,36 +66,29 @@ namespace Utilities.Media.Image.Procedural
                     float Value = GetValue(x, y, Width, Height, Frequency, Amplitude, Persistance, Octaves, Noise);
                     Value = (Value * 0.5f) + 0.5f;
                     Value *= 255;
-                    int RGBValue=((int)Value).Clamp(MaxRGBValue, MinRGBValue);
-                    Image.SetPixel(ImageData, x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
+                    int RGBValue = ((int)Value).Clamp(MaxRGBValue, MinRGBValue);
+                    ImageData.SetPixel(x, y, Color.FromArgb(RGBValue, RGBValue, RGBValue), ImagePixelSize);
                 }
             }
-            Image.UnlockImage(ReturnValue, ImageData);
+            ReturnValue.UnlockImage(ImageData);
             return ReturnValue;
         }
 
-        private static float GetValue(int X, int Y, int Width,int Height,float Frequency, float Amplitude,
-            float Persistance, int Octaves,float[,]Noise)
+        private static float GetValue(int X, int Y, int Width, int Height, float Frequency, float Amplitude,
+            float Persistance, int Octaves, float[,] Noise)
         {
             float FinalValue = 0.0f;
             for (int i = 0; i < Octaves; ++i)
             {
-                FinalValue += GetSmoothNoise(X * Frequency, Y * Frequency,Width,Height,Noise) * Amplitude;
+                FinalValue += GetSmoothNoise(X * Frequency, Y * Frequency, Width, Height, Noise) * Amplitude;
                 Frequency *= 2.0f;
                 Amplitude *= Persistance;
             }
-            if (FinalValue < -1.0f)
-            {
-                FinalValue = -1.0f;
-            }
-            else if (FinalValue > 1.0f)
-            {
-                FinalValue = 1.0f;
-            }
+            FinalValue = FinalValue.Clamp(1.0f, -1.0f);
             return FinalValue;
         }
 
-        private static float GetSmoothNoise(float X, float Y,int Width,int Height,float[,]Noise)
+        private static float GetSmoothNoise(float X, float Y, int Width, int Height, float[,] Noise)
         {
             float FractionX = X - (int)X;
             float FractionY = Y - (int)Y;
@@ -112,9 +106,9 @@ namespace Utilities.Media.Image.Procedural
             return FinalValue;
         }
 
-        private static float[,] GenerateNoise(int Seed,int Width,int Height)
+        private static float[,] GenerateNoise(int Seed, int Width, int Height)
         {
-            float[,] Noise = new float[Width,Height];
+            float[,] Noise = new float[Width, Height];
             System.Random RandomGenerator = new System.Random(Seed);
             for (int x = 0; x < Width; ++x)
             {
