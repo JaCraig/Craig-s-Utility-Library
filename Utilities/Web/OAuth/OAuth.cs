@@ -68,6 +68,26 @@ namespace Utilities.Web.OAuth
             return ReturnUrl;
         }
 
+        protected virtual string GenerateHeader(string Realm)
+        {
+            string ReturnValue = "";
+            string Parameters = "";
+            string Splitter = string.IsNullOrEmpty(Realm) ? "" : ", ";
+            string Url = "";
+            string Signature = GenerateSignature(out Url, out Parameters);
+            this.AddParameter("oauth_signature", Signature);
+            this.Parameters.Sort(new PairComparer());
+            Parameters = string.IsNullOrEmpty(Realm) ? "" : "OAuth realm=\"" + UrlEncode(Realm) + "\"";
+
+            foreach (Tuple<string, string> Parameter in this.Parameters)
+            {
+                Parameters += Splitter + UrlEncode(Parameter.Item1) + "=\"" + UrlEncode(Parameter.Item2) + "\"";
+                Splitter = ", ";
+            }
+            ReturnValue = Parameters;
+            return ReturnValue;
+        }
+
         /// <summary>
         /// Generates the signature
         /// </summary>

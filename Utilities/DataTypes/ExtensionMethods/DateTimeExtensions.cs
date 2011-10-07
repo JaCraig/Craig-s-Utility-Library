@@ -148,6 +148,16 @@ namespace Utilities.DataTypes.ExtensionMethods
             return new DateTime((Date * TimeSpan.TicksPerSecond) + new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks, DateTimeKind.Utc);
         }
 
+        /// <summary>
+        /// Returns the Unix based date as a DateTime object
+        /// </summary>
+        /// <param name="Date">Unix date to convert</param>
+        /// <returns>The Unix Date in DateTime format</returns>
+        public static DateTime FromUnixTime(this long Date)
+        {
+            return new DateTime((Date * TimeSpan.TicksPerSecond) + new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks, DateTimeKind.Utc);
+        }
+
         #endregion
 
         #region IsInFuture

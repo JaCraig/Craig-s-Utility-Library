@@ -59,6 +59,56 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region AddIf
+
+        /// <summary>
+        /// Adds an item to the collection if it isn't already in the collection
+        /// </summary>
+        /// <typeparam name="T">Collection type</typeparam>
+        /// <param name="Collection">Collection to add to</param>
+        /// <param name="Item">Item to add to the collection</param>
+        /// <param name="Predicate">Predicate that an item needs to satisfy in order to be added</param>
+        /// <returns>True if it is added, false otherwise</returns>
+        public static bool AddIf<T>(this ICollection<T> Collection, T Item, Predicate<T> Predicate)
+        {
+            if (Collection == null)
+                throw new ArgumentNullException("Collection");
+            if (Predicate == null)
+                throw new ArgumentNullException("Predicate");
+            if (!Predicate(Item))
+                return false;
+            Collection.Add(Item);
+            return true;
+        }
+
+        /// <summary>
+        /// Adds an item to the collection if it isn't already in the collection
+        /// </summary>
+        /// <typeparam name="T">Collection type</typeparam>
+        /// <param name="Collection">Collection to add to</param>
+        /// <param name="Items">Items to add to the collection</param>
+        /// <param name="Predicate">Predicate that an item needs to satisfy in order to be added</param>
+        /// <returns>True if it is added, false otherwise</returns>
+        public static bool AddIf<T>(this ICollection<T> Collection, IEnumerable<T> Items, Predicate<T> Predicate)
+        {
+            if (Collection == null)
+                throw new ArgumentNullException("Collection");
+            if (Predicate == null)
+                throw new ArgumentNullException("Predicate");
+            bool ReturnValue = false;
+            foreach (T Item in Items)
+            {
+                if (Predicate(Item))
+                {
+                    Collection.Add(Item);
+                    ReturnValue = true;
+                }
+            }
+            return ReturnValue;
+        }
+
+        #endregion
+
         #region AddIfUnique
 
         /// <summary>
@@ -72,10 +122,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (Collection == null)
                 throw new ArgumentNullException("Collection");
-            if (Collection.Contains(Item))
-                return false;
-            Collection.Add(Item);
-            return true;
+            return Collection.AddIf(Item, x => !Collection.Contains(x));
         }
 
         /// <summary>
@@ -89,16 +136,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (Collection == null)
                 throw new ArgumentNullException("Collection");
-            bool ReturnValue = false;
-            foreach (T Item in Items)
-            {
-                if (!Collection.Contains(Item))
-                {
-                    Collection.Add(Item);
-                    ReturnValue = true;
-                }
-            }
-            return ReturnValue;
+            return Collection.AddIf(Items, x => !Collection.Contains(x));
         }
 
         #endregion

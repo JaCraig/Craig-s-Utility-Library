@@ -106,12 +106,41 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
+        public void IsDefault()
+        {
+            Assert.False(new DateTime(1999, 1, 1).IsDefault());
+            object TestObject = null;
+            Assert.True(TestObject.IsDefault());
+        }
+
+        [Test]
         public void IsNullOrDBNull()
         {
             Assert.False(new DateTime(1999, 1, 1).IsNullOrDBNull());
             object TestObject = null;
             Assert.True(TestObject.IsNullOrDBNull());
             Assert.True(DBNull.Value.IsNullOrDBNull());
+        }
+
+        [Test]
+        public void ThrowIfNull()
+        {
+            object TempObject = null;
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull("TempName"));
+        }
+
+        [Test]
+        public void ThrowIfDefault()
+        {
+            Assert.Throws<ArgumentNullException>(() => default(DateTime).ThrowIfDefault("TempName"));
+        }
+
+        [Test]
+        public void ThrowIfNullOrDBNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => DBNull.Value.ThrowIfNullOrDBNull("TempName"));
+            object TempObject = null;
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrDBNull("TempName"));
         }
     }
 }

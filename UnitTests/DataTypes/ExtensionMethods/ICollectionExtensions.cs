@@ -34,6 +34,16 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class ICollectionExtensions
     {
         [Test]
+        public void AddIfTest()
+        {
+            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            Assert.False(TestObject.AddIf(1, x => x > 1));
+            Assert.True(TestObject.AddIf(7, x => x > 1));
+            Assert.True(TestObject.AddIf(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }, x => x > 7));
+            Assert.Equal(8, TestObject.Count);
+        }
+
+        [Test]
         public void AddIfUniqueTest()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();

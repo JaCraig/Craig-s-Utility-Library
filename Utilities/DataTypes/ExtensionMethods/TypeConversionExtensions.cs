@@ -26,6 +26,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.ComponentModel;
+using System.Collections.Generic;
+using Utilities.DataTypes.Comparison;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -54,6 +56,24 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region IsDefault
+
+        /// <summary>
+        /// Determines if the object is null
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">The object to check</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <returns>True if it is null, false otherwise</returns>
+        public static bool IsDefault<T>(this T Object, IEqualityComparer<T> EqualityComparer = null)
+        {
+            if (EqualityComparer == null)
+                EqualityComparer = new GenericEqualityComparer<T>();
+            return EqualityComparer.Equals(Object, default(T));
+        }
+
+        #endregion
+
         #region IsNull
 
         /// <summary>
@@ -78,6 +98,52 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static bool IsNullOrDBNull(this object Object)
         {
             return Object == null || Convert.IsDBNull(Object);
+        }
+
+        #endregion
+
+        #region ThrowIfDefault
+
+        /// <summary>
+        /// Determines if the object is equal to default value and throws an ArgumentNullException if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="Name">Name of the argument</param>
+        public static void ThrowIfDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
+        {
+            if (Item.IsDefault(EqualityComparer))
+                throw new ArgumentNullException(Name);
+        }
+
+        #endregion
+
+        #region ThrowIfNull
+
+        /// <summary>
+        /// Determines if the object is null and throws an ArgumentNullException if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Name">Name of the argument</param>
+        public static void ThrowIfNull(this object Item, string Name)
+        {
+            if (Item.IsNull())
+                throw new ArgumentNullException(Name);
+        }
+
+        #endregion
+
+        #region ThrowIfNullOrDBNull
+
+        /// <summary>
+        /// Determines if the object is null or DbNull and throws an ArgumentNullException if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Name">Name of the argument</param>
+        public static void ThrowIfNullOrDBNull(this object Item, string Name)
+        {
+            if (Item.IsNullOrDBNull())
+                throw new ArgumentNullException(Name);
         }
 
         #endregion
