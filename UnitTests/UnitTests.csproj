@@ -87,6 +87,7 @@
     <Compile Include="Environment\ArgsParser.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="Environment\Option.cs" />
+    <Compile Include="Error\ErrorManager.cs" />
     <Compile Include="Events\EventHelper.cs" />
     <Compile Include="FileFormats\Cisco\Directory.cs" />
     <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="FileFormats\Cisco\SoftKeyItem.cs" />
     <Compile Include="FileFormats\Cisco\Status.cs" />
     <Compile Include="FileFormats\Cisco\Text.cs" />
+    <Compile Include="IoC\Manager.cs" />
     <Compile Include="IO\ExtensionMethods\Directory.cs" />
     <Compile Include="IO\ExtensionMethods\File.cs" />
     <Compile Include="IO\ExtensionMethods\Serialization.cs" />

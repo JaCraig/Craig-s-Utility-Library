@@ -49,11 +49,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The collection with the added items</returns>
         public static ICollection<T> AddRange<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
-            if (Collection == null)
-                throw new ArgumentNullException("Collection");
-            if (Items == null)
+            Collection.ThrowIfNull("Collection");
+            if (Items.IsNull())
                 return Collection;
-            Items.ForEach(x=>Collection.Add(x));
+            Items.ForEach(x => Collection.Add(x));
             return Collection;
         }
 
@@ -71,10 +70,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIf<T>(this ICollection<T> Collection, T Item, Predicate<T> Predicate)
         {
-            if (Collection == null)
-                throw new ArgumentNullException("Collection");
-            if (Predicate == null)
-                throw new ArgumentNullException("Predicate");
+            Collection.ThrowIfNull("Collection");
+            Predicate.ThrowIfNull("Predicate");
             if (!Predicate(Item))
                 return false;
             Collection.Add(Item);
@@ -91,19 +88,11 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIf<T>(this ICollection<T> Collection, IEnumerable<T> Items, Predicate<T> Predicate)
         {
-            if (Collection == null)
-                throw new ArgumentNullException("Collection");
-            if (Predicate == null)
-                throw new ArgumentNullException("Predicate");
+            Collection.ThrowIfNull("Collection");
+            Predicate.ThrowIfNull("Predicate");
             bool ReturnValue = false;
             foreach (T Item in Items)
-            {
-                if (Predicate(Item))
-                {
-                    Collection.Add(Item);
-                    ReturnValue = true;
-                }
-            }
+                ReturnValue |= Collection.AddIf(Item, Predicate);
             return ReturnValue;
         }
 
@@ -120,8 +109,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIfUnique<T>(this ICollection<T> Collection, T Item)
         {
-            if (Collection == null)
-                throw new ArgumentNullException("Collection");
+            Collection.ThrowIfNull("Collection");
             return Collection.AddIf(Item, x => !Collection.Contains(x));
         }
 
@@ -134,8 +122,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIfUnique<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
-            if (Collection == null)
-                throw new ArgumentNullException("Collection");
+            Collection.ThrowIfNull("Collection");
             return Collection.AddIf(Items, x => !Collection.Contains(x));
         }
 
@@ -151,8 +138,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Predicate">Predicate used to determine what items to remove</param>
         public static ICollection<T> Remove<T>(this ICollection<T> Collection, Func<T, bool> Predicate)
         {
-            if (Collection == null)
-                throw new ArgumentNullException("Collection");
+            Collection.ThrowIfNull("Collection");
             Collection.Where(Predicate).ToList().ForEach(x => Collection.Remove(x));
             return Collection;
         }
@@ -170,11 +156,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The collection with the items removed</returns>
         public static ICollection<T> RemoveRange<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
-            if (Collection == null)
-                throw new ArgumentNullException("Collection");
-            if (Items == null)
+            Collection.ThrowIfNull("Collection");
+            if (Items.IsNull())
                 return Collection;
-            Items.ForEach(x => Collection.Remove(x));
+            Items.ForEach<T>(x => Collection.Remove(x));
             return Collection;
         }
 

@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utilities.IoC.Mappings.Interfaces;
-using Utilities.IoC.Mappings.Delegates;
 using Utilities.IoC.Providers;
 using Utilities.IoC.Providers.Scope;
 using Utilities.IoC.Providers.Interfaces;

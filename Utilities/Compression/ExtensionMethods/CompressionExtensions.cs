@@ -47,8 +47,7 @@ namespace Utilities.Compression.ExtensionMethods
         /// <returns>The compressed data</returns>
         public static byte[] Compress(this byte[] Data, CompressionType CompressionType = CompressionType.Deflate)
         {
-            if (Data == null)
-                throw new ArgumentNullException("Data");
+            Data.ThrowIfNull("Data");
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (Stream ZipStream = GetStream(Stream, CompressionMode.Compress, CompressionType))
@@ -69,8 +68,7 @@ namespace Utilities.Compression.ExtensionMethods
         /// <returns>The data Compressed</returns>
         public static string Compress(this string Data, Encoding EncodingUsing = null, CompressionType CompressionType = CompressionType.Deflate)
         {
-            if (string.IsNullOrEmpty(Data))
-                throw new ArgumentNullException("Data");
+            Data.ThrowIfNullOrEmpty("Data");
             return Data.ToByteArray(EncodingUsing).Compress(CompressionType).ToBase64String();
         }
 
@@ -86,8 +84,7 @@ namespace Utilities.Compression.ExtensionMethods
         /// <returns>The data decompressed</returns>
         public static byte[] Decompress(this byte[] Data, CompressionType CompressionType = CompressionType.Deflate)
         {
-            if (Data == null)
-                throw new ArgumentNullException("Data");
+            Data.ThrowIfNull("Data");
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (Stream ZipStream = GetStream(new MemoryStream(Data), CompressionMode.Decompress, CompressionType))
@@ -114,8 +111,7 @@ namespace Utilities.Compression.ExtensionMethods
         /// <returns>The data decompressed</returns>
         public static string Decompress(this string Data, Encoding EncodingUsing = null, CompressionType CompressionType = CompressionType.Deflate)
         {
-            if (string.IsNullOrEmpty(Data))
-                throw new ArgumentNullException("Data");
+            Data.ThrowIfNullOrEmpty("Data");
             return Data.FromBase64().Decompress(CompressionType).ToEncodedString(EncodingUsing);
         }
 

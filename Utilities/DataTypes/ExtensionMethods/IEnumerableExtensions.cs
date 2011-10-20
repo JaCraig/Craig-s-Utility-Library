@@ -52,13 +52,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The list of items converted to the specified type</returns>
         public static IEnumerable<Out> Cast<In, Out>(this IEnumerable<In> List, Func<In, Out> Func)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (Func == null)
-                throw new ArgumentNullException("Func");
-            List<Out> ReturnValue = new List<Out>();
-            List.ForEach(x => ReturnValue.Add(Func(x)));
-            return ReturnValue;
+            List.ThrowIfNull("List");
+            Func.ThrowIfNull("Func");
+            return List.ForEach<In, Out>(x => Func(x));
         }
 
         #endregion
@@ -76,18 +72,43 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original list</returns>
         public static IEnumerable<T> For<T>(this IEnumerable<T> List, int Start, int End, Action<T> Action)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (Action == null)
-                throw new ArgumentNullException("Action");
+            List.ThrowIfNull("List");
+            Action.ThrowIfNull("Action");
             int x = 0;
             foreach (T Item in List)
             {
                 if (x.Between(Start, End))
                     Action(Item);
                 ++x;
+                if (x > End)
+                    break;
             }
             return List;
+        }
+
+        /// <summary>
+        /// Does a function for each item in the IEnumerable between the start and end indexes and returns an IEnumerable of the results
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Start">Item to start with</param>
+        /// <param name="End">Item to end with</param>
+        /// <param name="Function">Function to do</param>
+        /// <returns>The resulting list</returns>
+        public static IEnumerable<R> For<T,R>(this IEnumerable<T> List, int Start, int End, Func<T,R> Function)
+        {
+            List.ThrowIfNull("List");
+            Function.ThrowIfNull("Function");
+            int x = 0;
+            foreach (T Item in List)
+            {
+                if (x.Between(Start, End))
+                    yield return Function(Item);
+                ++x;
+                if (x > End)
+                    break;
+            }
         }
 
         #endregion
@@ -103,13 +124,27 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original list</returns>
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (Action == null)
-                throw new ArgumentNullException("Action");
+            List.ThrowIfNull("List");
+            Action.ThrowIfNull("Action");
             foreach (T Item in List)
                 Action(Item);
             return List;
+        }
+
+        /// <summary>
+        /// Does a function for each item in the IEnumerable, returning a list of the results
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Function">Function to do</param>
+        /// <returns>The resulting list</returns>
+        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> List, Func<T, R> Function)
+        {
+            List.ThrowIfNull("List");
+            Function.ThrowIfNull("Function");
+            foreach (T Item in List)
+                yield return Function(Item);
         }
 
         #endregion
@@ -127,10 +162,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original list</returns>
         public static IEnumerable<T> ForParallel<T>(this IEnumerable<T> List, int Start, int End, Action<T> Action)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (Action == null)
-                throw new ArgumentNullException("Action");
+            List.ThrowIfNull("List");
+            Action.ThrowIfNull("Action");
             Parallel.For(Start, End + 1, new Action<int>(x => Action(List.ElementAt(x))));
             return List;
         }
@@ -148,10 +181,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original list</returns>
         public static IEnumerable<T> ForEachParallel<T>(this IEnumerable<T> List, Action<T> Action)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (Action == null)
-                throw new ArgumentNullException("Action");
+            List.ThrowIfNull("List");
+            Action.ThrowIfNull("Action");
             Parallel.ForEach(List, Action);
             return List;
         }
@@ -168,7 +199,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is null or empty, false otherwise</returns>
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> Value)
         {
-            return Value == null || Value.Count() == 0;
+            return Value.IsNull() || Value.Count() == 0;
         }
 
         #endregion
@@ -184,10 +215,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>An IEnumerable with the default values removed</returns>
         public static IEnumerable<T> RemoveDefaults<T>(this IEnumerable<T> Value, IEqualityComparer<T> EqualityComparer = null)
         {
-            if (Value == null)
+            if (Value.IsNull())
                 yield break;
-            if (EqualityComparer == null)
-                EqualityComparer = new GenericEqualityComparer<T>();
+            EqualityComparer = EqualityComparer.NullCheck(new GenericEqualityComparer<T>());
             foreach (T Item in Value.Where(x => !EqualityComparer.Equals(x, default(T))))
                 yield return Item;
         }
@@ -206,11 +236,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The array containing the items from the list</returns>
         public static Target[] ToArray<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (ConvertingFunction == null)
-                throw new ArgumentNullException("ConvertingFunction");
-            return List.Select(ConvertingFunction).ToArray();
+            List.ThrowIfNull("List");
+            ConvertingFunction.ThrowIfNull("ConvertingFunction");
+            return List.Cast(ConvertingFunction).ToArray();
         }
 
         #endregion
@@ -227,12 +255,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The string version of the list</returns>
         public static string ToString<T>(this IEnumerable<T> List, Func<T, string> ItemOutput = null, string Seperator = ",")
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (string.IsNullOrEmpty(Seperator))
-                Seperator = "";
-            if (ItemOutput == null)
-                ItemOutput = x => x.ToString();
+            List.ThrowIfNull("List");
+            Seperator = Seperator.NullCheck("");
+            ItemOutput = ItemOutput.NullCheck(x => x.ToString());
             StringBuilder Builder = new StringBuilder();
             string TempSeperator = "";
             List.ForEach(x =>
@@ -256,14 +281,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if they all pass the predicate, false otherwise</returns>
         public static bool TrueForAll<T>(this IEnumerable<T> List, Predicate<T> Predicate)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (Predicate == null)
-                throw new ArgumentNullException("Predicate");
-            foreach (T Item in List)
-                if (!Predicate(Item))
-                    return false;
-            return true;
+            List.ThrowIfNull("List");
+            Predicate.ThrowIfNull("Predicate");
+            return !List.Any(x => !Predicate(x));
         }
 
         #endregion
@@ -281,10 +301,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The list after the action is run on everything</returns>
         public static IEnumerable<T> TryAll<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (Action == null)
-                throw new ArgumentNullException("Action");
+            List.ThrowIfNull("List");
+            Action.ThrowIfNull("Action");
             foreach (T Item in List)
             {
                 try
@@ -312,10 +330,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The list after the action is run on everything</returns>
         public static IEnumerable<T> TryAllParallel<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
         {
-            if (List == null)
-                throw new ArgumentNullException("List");
-            if (Action == null)
-                throw new ArgumentNullException("Action");
+            List.ThrowIfNull("List");
+            Action.ThrowIfNull("Action");
             Parallel.ForEach<T>(List, delegate(T Item)
             {
                 try

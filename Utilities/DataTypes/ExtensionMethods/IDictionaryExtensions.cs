@@ -51,11 +51,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The sorted dictionary</returns>
         public static IDictionary<T1, T2> Sort<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null) where T1 : IComparable
         {
-            if (Dictionary == null)
-                throw new ArgumentNullException("Dictionary");
-            if (Comparer == null)
-                Comparer = new GenericComparer<T1>();
-            return new SortedDictionary<T1, T2>(Dictionary, Comparer);
+            Dictionary.ThrowIfNull("Dictionary");
+            return new SortedDictionary<T1, T2>(Dictionary, Comparer.NullCheck(new GenericComparer<T1>()));
         }
 
         #endregion
@@ -72,11 +69,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The sorted dictionary</returns>
         public static IDictionary<T1, T2> SortByValue<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null) where T1 : IComparable
         {
-            if (Dictionary == null)
-                throw new ArgumentNullException("Dictionary");
-            if (Comparer == null)
-                Comparer = new GenericComparer<T1>();
-            return new SortedDictionary<T1, T2>(Dictionary, Comparer).OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+            Dictionary.ThrowIfNull("Dictionary");
+            return new SortedDictionary<T1, T2>(Dictionary, Comparer.NullCheck(new GenericComparer<T1>()))
+                            .OrderBy(x => x.Value)
+                            .ToDictionary(x => x.Key, x => x.Value);
         }
 
         #endregion

@@ -75,7 +75,7 @@ namespace Utilities.Error
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<strong>Assembly Information</strong><br />");
-            AppDomain.CurrentDomain.GetAssemblies().ForEach(x=>Builder.Append(x.DumpProperties()));
+            AppDomain.CurrentDomain.GetAssemblies().ForEach<Assembly>(x=>Builder.Append(x.DumpProperties()));
             return Builder.ToString();
         }
 

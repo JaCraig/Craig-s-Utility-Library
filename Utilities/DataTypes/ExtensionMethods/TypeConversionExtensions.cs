@@ -49,9 +49,25 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The formatted string</returns>
         public static string FormatToString(this object Input, string Format)
         {
-            if (Input == null)
+            if (Input.IsNull())
                 return "";
             return !string.IsNullOrEmpty(Format) ? (string)CallMethod("ToString", Input, Format) : Input.ToString();
+        }
+
+        #endregion
+
+        #region IsNotDefault
+
+        /// <summary>
+        /// Determines if the object is not null
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">The object to check</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <returns>False if it is null, true otherwise</returns>
+        public static bool IsNotDefault<T>(this T Object, IEqualityComparer<T> EqualityComparer = null)
+        {
+            return !EqualityComparer.NullCheck(new GenericEqualityComparer<T>()).Equals(Object, default(T));
         }
 
         #endregion
@@ -67,9 +83,21 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is null, false otherwise</returns>
         public static bool IsDefault<T>(this T Object, IEqualityComparer<T> EqualityComparer = null)
         {
-            if (EqualityComparer == null)
-                EqualityComparer = new GenericEqualityComparer<T>();
-            return EqualityComparer.Equals(Object, default(T));
+            return EqualityComparer.NullCheck(new GenericEqualityComparer<T>()).Equals(Object, default(T));
+        }
+
+        #endregion
+
+        #region IsNotNull
+
+        /// <summary>
+        /// Determines if the object is not null
+        /// </summary>
+        /// <param name="Object">The object to check</param>
+        /// <returns>False if it is null, true otherwise</returns>
+        public static bool IsNotNull(this object Object)
+        {
+            return Object != null;
         }
 
         #endregion
@@ -84,6 +112,20 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static bool IsNull(this object Object)
         {
             return Object == null;
+        }
+
+        #endregion
+
+        #region IsNotNullOrDBNull
+
+        /// <summary>
+        /// Determines if the object is not null or DBNull
+        /// </summary>
+        /// <param name="Object">The object to check</param>
+        /// <returns>False if it is null/DBNull, true otherwise</returns>
+        public static bool IsNotNullOrDBNull(this object Object)
+        {
+            return Object != null && !Convert.IsDBNull(Object);
         }
 
         #endregion
@@ -128,6 +170,22 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static void ThrowIfNull(this object Item, string Name)
         {
             if (Item.IsNull())
+                throw new ArgumentNullException(Name);
+        }
+
+        #endregion
+
+        #region ThrowIfNullOrEmpty
+
+        /// <summary>
+        /// Determines if the IEnumerable is null or empty and throws an ArgumentNullException if it is
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Name">Name of the argument</param>
+        public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
+        {
+            if (Item.IsNullOrEmpty())
                 throw new ArgumentNullException(Name);
         }
 
@@ -305,11 +363,11 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The returned value of the method</returns>
         private static object CallMethod(string MethodName, object Object, params object[] InputVariables)
         {
-            if (string.IsNullOrEmpty(MethodName) || Object == null)
+            if (string.IsNullOrEmpty(MethodName) || Object.IsNull())
                 return null;
             Type ObjectType = Object.GetType();
             MethodInfo Method = null;
-            if (InputVariables != null)
+            if (InputVariables.IsNotNull())
             {
                 Type[] MethodInputTypes = new Type[InputVariables.Length];
                 for (int x = 0; x < InputVariables.Length; ++x)
@@ -319,9 +377,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                     return Method.Invoke(Object, InputVariables);
             }
             Method = ObjectType.GetMethod(MethodName);
-            if (Method != null)
-                return Method.Invoke(Object, null);
-            return null;
+            return Method.IsNull() ? null : Method.Invoke(Object, null);
         }
 
         #endregion

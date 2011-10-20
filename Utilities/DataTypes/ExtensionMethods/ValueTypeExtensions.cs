@@ -72,9 +72,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The equivalent byte array in a base 64 string</returns>
         public static string ToBase64String(this byte[] Input)
         {
-            if (Input == null)
-                return "";
-            return Convert.ToBase64String(Input);
+            return Input.IsNull() ? "" : Convert.ToBase64String(Input);
         }
 
         #endregion
@@ -86,14 +84,15 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Input">input array</param>
         /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <param name="Count">Number of bytes starting at the index to convert (use -1 for the entire array starting at the index)</param>
         /// <returns>string of the byte array</returns>
-        public static string ToEncodedString(this byte[] Input, Encoding EncodingUsing = null)
+        public static string ToEncodedString(this byte[] Input, Encoding EncodingUsing = null, int Index = 0, int Count = -1)
         {
-            if (Input == null)
+            if (Input.IsNull())
                 return "";
-            if (EncodingUsing == null)
-                EncodingUsing = new UTF8Encoding();
-            return EncodingUsing.GetString(Input);
+            if (Count == -1)
+                Count = Input.Length - Index;
+            return EncodingUsing.NullCheck(new UTF8Encoding()).GetString(Input, Index, Count);
         }
 
         #endregion
@@ -107,9 +106,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it's unicode, false otherwise</returns>
         public static bool IsUnicode(this byte[] Input)
         {
-            if (Input == null)
-                return true;
-            return Input.ToEncodedString(new UnicodeEncoding()).IsUnicode();
+            return Input.IsNull() ? true : Input.ToEncodedString(new UnicodeEncoding()).IsUnicode();
         }
 
         #endregion

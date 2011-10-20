@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.IO;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Configuration
@@ -51,12 +52,8 @@ namespace Utilities.Configuration
         /// <param name="ObjectToString">Object to string</param>
         public Config(Func<string, ConfigClassType> StringToObject = null, Func<IConfig, string> ObjectToString = null)
         {
-            if (StringToObject == null)
-                StringToObject = (x) => (ConfigClassType)x.XMLToObject(this.GetType());
-            if (ObjectToString == null)
-                ObjectToString = (x) => x.ToXML(ConfigFileLocation);
-            this.ObjectToString = ObjectToString;
-            this.StringToObject = StringToObject;
+            this.ObjectToString = ObjectToString.NullCheck((x) => x.ToXML(ConfigFileLocation));
+            this.StringToObject = StringToObject.NullCheck((x) => (ConfigClassType)x.XMLToObject(this.GetType()));
         }
 
         #endregion
@@ -95,7 +92,7 @@ namespace Utilities.Configuration
 
         public void Load()
         {
-            if (string.IsNullOrEmpty(ConfigFileLocation))
+            if (ConfigFileLocation.IsNullOrEmpty())
                 return;
             string FileContent = new FileInfo(ConfigFileLocation).Read();
             if (string.IsNullOrEmpty(FileContent))
@@ -109,7 +106,7 @@ namespace Utilities.Configuration
 
         public void Save()
         {
-            if (string.IsNullOrEmpty(ConfigFileLocation))
+            if (ConfigFileLocation.IsNullOrEmpty())
                 return;
             Encrypt();
             new FileInfo(ConfigFileLocation).Save(ObjectToString(this));
@@ -122,29 +119,26 @@ namespace Utilities.Configuration
 
         private void LoadProperties(ConfigClassType Temp)
         {
-            if (Temp == null)
+            if (Temp.IsNull())
                 return;
-            foreach (PropertyInfo Property in Temp.GetType().GetProperties())
-                if (Property.CanWrite && Property.CanRead)
-                    this.SetProperty(Property, Temp.GetProperty(Property));
+            foreach (PropertyInfo Property in Temp.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead))
+                this.SetProperty(Property, Temp.GetProperty(Property));
         }
 
         private void Encrypt()
         {
-            if (string.IsNullOrEmpty(EncryptionPassword))
+            if (EncryptionPassword.IsNullOrEmpty())
                 return;
-            foreach (PropertyInfo Property in this.GetType().GetProperties())
-                if (Property.CanWrite && Property.CanRead && Property.PropertyType == typeof(string))
-                    this.SetProperty(Property, ((string)this.GetProperty(Property)).Encrypt(EncryptionPassword));
+            foreach (PropertyInfo Property in this.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead && x.PropertyType == typeof(string)))
+                this.SetProperty(Property, ((string)this.GetProperty(Property)).Encrypt(EncryptionPassword));
         }
 
         private void Decrypt()
         {
-            if (string.IsNullOrEmpty(EncryptionPassword))
+            if (EncryptionPassword.IsNullOrEmpty())
                 return;
-            foreach (PropertyInfo Property in this.GetType().GetProperties())
-                if (Property.CanWrite && Property.CanRead && Property.PropertyType == typeof(string))
-                    this.SetProperty(Property, ((string)this.GetProperty(Property)).Decrypt(EncryptionPassword));
+            foreach (PropertyInfo Property in this.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead && x.PropertyType == typeof(string)))
+                this.SetProperty(Property, ((string)this.GetProperty(Property)).Decrypt(EncryptionPassword));
         }
 
         #endregion

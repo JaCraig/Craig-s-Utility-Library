@@ -146,9 +146,7 @@ namespace Utilities.Caching
         {
             lock (InternalCache)
             {
-                if(Exists(Key))
-                    return (ValueType)InternalCache[Key].Value;
-                return default(ValueType);
+                return Exists(Key) ? (ValueType)InternalCache[Key].Value : default(ValueType);
             }
         }
 

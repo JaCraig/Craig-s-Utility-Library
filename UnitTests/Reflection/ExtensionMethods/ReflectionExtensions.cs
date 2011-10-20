@@ -68,7 +68,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Test]
         public void LoadAssembliesTest()
         {
-            Assert.Equal(11, new DirectoryInfo(@".\").LoadAssemblies().Length);
+            Assert.Equal(11, new DirectoryInfo(@".\").LoadAssemblies().Count());
         }
 
         [Test]

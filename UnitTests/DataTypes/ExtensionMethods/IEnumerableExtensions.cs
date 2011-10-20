@@ -63,14 +63,23 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             StringBuilder Builder = new StringBuilder();
             int[] Temp = new int[] { 0, 0, 1, 2, 3 };
-            Temp.ForEach(x => Builder.Append(x));
+            Temp.ForEach<int>(x => Builder.Append(x));
+            Assert.Equal("00123", Builder.ToString());
+        }
+
+        [Test]
+        public void ForEachTest2()
+        {
+            StringBuilder Builder = new StringBuilder();
+            int[] Temp = new int[] { 0, 0, 1, 2, 3 };
+            Temp.ForEach(x => x.ToString()).ForEach<string>(x => Builder.Append(x));
             Assert.Equal("00123", Builder.ToString());
         }
 
         [Test]
         public void ForEachParallelTest()
         {
-            StringBuilder Builder = new StringBuilder();
+            StringBuilder Builder = new StringBuilder(30);
             int[] Temp = new int[] { 0, 0, 1, 2, 3 };
             Temp.ForEachParallel(x => Builder.Append(x));
             Assert.Equal(5, Builder.ToString().Length);
@@ -83,14 +92,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             StringBuilder Builder = new StringBuilder();
             int[] Temp = new int[] { 0, 0, 1, 2, 3 };
-            Temp.For(0, Temp.Length - 1, x => Builder.Append(x));
+            Temp.For<int>(0, Temp.Length - 1, x => Builder.Append(x));
             Assert.Equal("00123", Builder.ToString());
         }
 
         [Test]
         public void ForParallelTest()
         {
-            StringBuilder Builder = new StringBuilder();
+            StringBuilder Builder = new StringBuilder(30);
             int[] Temp = new int[] { 0, 0, 1, 2, 3 };
             Temp.ForParallel(0, Temp.Length - 1, x => Builder.Append(x));
             Assert.Equal(5, Builder.ToString().Length);
@@ -152,12 +161,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void TryAllParallel()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            List<int> Results = new List<int>();
+            List<int> Results = new List<int>(10);
             Temp.TryAllParallel(x => Results.Add(x == 0 ? 4 : x));
             Assert.Equal(5, Results.Count);
             Assert.Equal(14, Results.Sum());
             List<int?> Temp2 = new int?[] { 0, 0, 1, 2, 3, null }.ToList();
-            List<int?> Results2 = new List<int?>();
+            List<int?> Results2 = new List<int?>(10);
             Temp2.TryAllParallel(x => Results2.Add(x == 0 ? 4 : x.Value + 1), x => Results2.Add(5));
             Assert.Equal(6, Results2.Count);
             Assert.Equal(22, Results2.Sum());

@@ -46,8 +46,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The number of days in the month</returns>
         public static int DaysInMonth(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return Date.LastDayOfMonth().Day;
         }
 
@@ -62,8 +61,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The number of days left in a month</returns>
         public static int DaysLeftInMonth(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInMonth(Date.Year, Date.Month) - Date.Day;
         }
 
@@ -78,8 +76,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The number of days left in a year</returns>
         public static int DaysLeftInYear(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInYear(Date.Year) - Date.DayOfYear;
         }
 
@@ -94,8 +91,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The number of days left in a week</returns>
         public static int DaysLeftInWeek(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return 7 - ((int)Date.DayOfWeek + 1);
         }
 
@@ -110,8 +106,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The first day of the month</returns>
         public static DateTime FirstDayOfMonth(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return new DateTime(Date.Year, Date.Month, 1);
         }
 
@@ -127,11 +122,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The first day of the week</returns>
         public static DateTime FirstDayOfWeek(this DateTime Date,CultureInfo CultureInfo=null)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
-            if(CultureInfo==null)
-                CultureInfo=CultureInfo.CurrentCulture;
-            return Date.AddDays(CultureInfo.DateTimeFormat.FirstDayOfWeek - Date.DayOfWeek).Date;
+            Date.ThrowIfNull("Date");
+            return Date.AddDays(CultureInfo.NullCheck(CultureInfo.CurrentCulture).DateTimeFormat.FirstDayOfWeek - Date.DayOfWeek).Date;
         }
 
         #endregion
@@ -169,8 +161,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is, false otherwise</returns>
         public static bool IsInFuture(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return DateTime.Now < Date;
         }
 
@@ -185,8 +176,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is, false otherwise</returns>
         public static bool IsInPast(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return DateTime.Now > Date;
         }
 
@@ -201,11 +191,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Whether this is a week day or not</returns>
         public static bool IsWeekDay(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
-            if ((int)Date.DayOfWeek < 6 && (int)Date.DayOfWeek > 0)
-                return true;
-            return false;
+            Date.ThrowIfNull("Date");
+            return (int)Date.DayOfWeek < 6 && (int)Date.DayOfWeek > 0;
         }
 
         #endregion
@@ -219,8 +206,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Whether this is a week end or not</returns>
         public static bool IsWeekEnd(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return !IsWeekDay(Date);
         }
 
@@ -235,8 +221,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The last day of the month</returns>
         public static DateTime LastDayOfMonth(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return Date.AddMonths(1).FirstDayOfMonth().AddDays(-1).Date;
         }
 
@@ -252,11 +237,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The last day of the week</returns>
         public static DateTime LastDayOfWeek(this DateTime Date, CultureInfo CultureInfo = null)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
-            if (CultureInfo == null)
-                CultureInfo = CultureInfo.CurrentCulture;
-            return Date.FirstDayOfWeek(CultureInfo).AddDays(6);
+            Date.ThrowIfNull("Date");
+            return Date.FirstDayOfWeek(CultureInfo.NullCheck(CultureInfo.CurrentCulture)).AddDays(6);
         }
 
         #endregion
@@ -270,8 +252,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The date in Unix format</returns>
         public static int ToUnix(this DateTime Date)
         {
-            if (Date == null)
-                throw new ArgumentNullException("Date");
+            Date.ThrowIfNull("Date");
             return (int)((Date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / TimeSpan.TicksPerSecond);
         }
 

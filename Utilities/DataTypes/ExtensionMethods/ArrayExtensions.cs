@@ -45,7 +45,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The final array</returns>
         public static Array Clear(this Array Array)
         {
-            if (Array == null)
+            if (Array.IsNull())
                 return null;
             System.Array.Clear(Array, 0, Array.Length);
             return Array;
@@ -75,17 +75,17 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>A new array containing both arrays' values</returns>
         public static ArrayType[] Combine<ArrayType>(this ArrayType[] Array1, ArrayType[] Array2)
         {
-            if (Array1 == null && Array2 == null)
+            if (Array1.IsNull() && Array2.IsNull())
                 return null;
-            int ResultLength = (Array1 == null ? 0 : Array1.Length) + (Array2 == null ? 0 : Array2.Length);
+            int ResultLength = (Array1.IsNull() ? 0 : Array1.Length) + (Array2.IsNull() ? 0 : Array2.Length);
             ArrayType[] ReturnValue = new ArrayType[ResultLength];
             int StartPosition = 0;
-            if (Array1 != null)
+            if (Array1.IsNotNull())
             {
                 Array.Copy(Array1, ReturnValue, Array1.Length);
                 StartPosition = Array1.Length;
             }
-            if (Array2 != null)
+            if (Array2.IsNotNull())
                 Array.Copy(Array2, 0, ReturnValue, StartPosition, Array2.Length);
             return ReturnValue;
         }

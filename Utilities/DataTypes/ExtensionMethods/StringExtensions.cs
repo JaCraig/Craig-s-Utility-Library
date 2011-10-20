@@ -53,11 +53,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            if (OriginalEncodingUsing == null)
-                OriginalEncodingUsing = new ASCIIEncoding();
-            if (EncodingUsing == null)
-                EncodingUsing = new UTF8Encoding();
-            return Encoding.Convert(OriginalEncodingUsing, EncodingUsing, Input.ToByteArray(OriginalEncodingUsing)).ToEncodedString(EncodingUsing);
+            OriginalEncodingUsing = OriginalEncodingUsing.NullCheck(new ASCIIEncoding());
+            EncodingUsing = EncodingUsing.NullCheck(new UTF8Encoding());
+            return Encoding.Convert(OriginalEncodingUsing, EncodingUsing, Input.ToByteArray(OriginalEncodingUsing))
+                           .ToEncodedString(EncodingUsing);
         }
 
         #endregion
@@ -74,10 +73,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            if (EncodingUsing == null)
-                EncodingUsing = new UTF8Encoding();
             byte[] TempArray = Convert.FromBase64String(Input);
-            return EncodingUsing.GetString(TempArray);
+            return EncodingUsing.NullCheck(new UTF8Encoding()).GetString(TempArray);
         }
 
         /// <summary>
@@ -87,9 +84,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>A byte array equivalent of the base 64 string</returns>
         public static byte[] FromBase64(this string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                return new byte[0];
-            return Convert.FromBase64String(Input);
+            return string.IsNullOrEmpty(Input) ? new byte[0] : Convert.FromBase64String(Input);
         }
 
         #endregion
@@ -104,9 +99,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The resulting string</returns>
         public static string Left(this string Input, int Length)
         {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            return Input.Substring(0, Input.Length > Length ? Length : Input.Length);
+            return string.IsNullOrEmpty(Input) ? "" : Input.Substring(0, Input.Length > Length ? Length : Input.Length);
         }
 
         #endregion
@@ -141,9 +134,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            if (OriginalEncodingUsing == null)
-                OriginalEncodingUsing = new UTF8Encoding();
-            byte[] TempArray = OriginalEncodingUsing.GetBytes(Input);
+            byte[] TempArray = OriginalEncodingUsing.NullCheck(new UTF8Encoding()).GetBytes(Input);
             return Convert.ToBase64String(TempArray);
         }
 
@@ -159,11 +150,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>the byte array representing the string</returns>
         public static byte[] ToByteArray(this string Input, Encoding EncodingUsing = null)
         {
-            if (string.IsNullOrEmpty(Input))
-                return null;
-            if (EncodingUsing == null)
-                EncodingUsing = new UTF8Encoding();
-            return EncodingUsing.GetBytes(Input);
+            return string.IsNullOrEmpty(Input) ? null : EncodingUsing.NullCheck(new UTF8Encoding()).GetBytes(Input);
         }
 
         #endregion
@@ -258,9 +245,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The number of times the string occurs</returns>
         public static int NumberTimesOccurs(this string Input, string Match)
         {
-            if (string.IsNullOrEmpty(Input))
-                return 0;
-            return new Regex(Match).Matches(Input).Count;
+            return string.IsNullOrEmpty(Input) ? 0 : new Regex(Match).Matches(Input).Count;
         }
 
         #endregion
@@ -291,9 +276,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            if (string.IsNullOrEmpty(Filter))
-                return Input;
-            return new Regex(Filter).Replace(Input, "");
+            return string.IsNullOrEmpty(Filter) ? Input : new Regex(Filter).Replace(Input, "");
         }
 
         #endregion
@@ -308,9 +291,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The input text minus everything not in the filter text.</returns>
         public static string KeepFilterText(this string Input, string Filter)
         {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            if (string.IsNullOrEmpty(Filter))
+            if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Filter))
                 return "";
             Regex TempRegex = new Regex(Filter);
             MatchCollection Collection = TempRegex.Matches(Input);
@@ -374,9 +355,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it's unicode, false otherwise</returns>
         public static bool IsUnicode(this string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                return true;
-            return Regex.Replace(Input, @"[^\u0000-\u007F]", "") != Input;
+            return string.IsNullOrEmpty(Input) ? true : Regex.Replace(Input, @"[^\u0000-\u007F]", "") != Input;
         }
 
         #endregion
@@ -453,8 +432,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The input string formatted by using the regex string</returns>
         public static string RegexFormat(this string Input, string Format, string OutputFormat, RegexOptions Options = RegexOptions.None)
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
+            Input.ThrowIfNullOrEmpty("Input");
             return Regex.Replace(Input, Format, OutputFormat, Options);
         }
 

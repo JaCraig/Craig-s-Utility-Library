@@ -26,7 +26,6 @@ using System.Linq;
 using System.Text;
 using Utilities.IoC.Providers.Scope;
 using Utilities.IoC.Providers.Interfaces;
-using Utilities.IoC.Mappings.Delegates;
 #endregion
 
 namespace Utilities.IoC.Mappings.Interfaces

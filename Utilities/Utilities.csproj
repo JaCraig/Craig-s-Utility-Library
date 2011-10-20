@@ -112,7 +112,6 @@
     <Compile Include="IoC\Mappings\BaseClasses\BaseMapping.cs" />
     <Compile Include="IoC\Mappings\BaseClasses\BaseModule.cs" />
     <Compile Include="IoC\Mappings\BaseClasses\MappingKey.cs" />
-    <Compile Include="IoC\Mappings\Delegates\ImplementationDelegate.cs" />
     <Compile Include="IoC\Mappings\Interfaces\IMapping.cs" />
     <Compile Include="IoC\Mappings\Interfaces\IModule.cs" />
     <Compile Include="IoC\Mappings\Internal Classes\Mapping.cs" />

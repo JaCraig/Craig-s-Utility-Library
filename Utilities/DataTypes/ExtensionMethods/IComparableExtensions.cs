@@ -52,8 +52,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is between the values, false otherwise</returns>
         public static bool Between<T>(this T Value, T Min, T Max, IComparer<T> Comparer = null) where T : IComparable
         {
-            if(Comparer==null)
-                Comparer=new GenericComparer<T>();
+            Comparer = Comparer.NullCheck(new GenericComparer<T>());
             return Comparer.Compare(Max, Value) >= 0 && Comparer.Compare(Value, Min) >= 0;
         }
 

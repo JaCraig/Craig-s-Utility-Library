@@ -22,7 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Threading;
-
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataTypes
@@ -72,7 +72,7 @@ namespace Utilities.DataTypes
         /// <returns>The intersection of the two time spans</returns>
         public DateSpan Intersection(DateSpan Span)
         {
-            if (Span == null)
+            if (Span.IsNull())
                 return null;
             if (!Overlap(Span))
                 return null;
@@ -97,11 +97,11 @@ namespace Utilities.DataTypes
 
         public static DateSpan operator +(DateSpan Span1, DateSpan Span2)
         {
-            if (Span1 == null && Span2 == null)
+            if (Span1.IsNull() && Span2.IsNull())
                 return null;
-            if (Span1 == null)
+            if (Span1.IsNull())
                 return new DateSpan(Span2.Start, Span2.End);
-            if (Span2 == null)
+            if (Span2.IsNull())
                 return new DateSpan(Span1.Start, Span1.End);
             DateTime Start = Span1.Start < Span2.Start ? Span1.Start : Span2.Start;
             DateTime End = Span1.End > Span2.End ? Span1.End : Span2.End;

@@ -80,8 +80,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The returned value from the function</returns>
         public static T Execute<T>(this Func<T> Function, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
-            if (Function == null)
-                throw new ArgumentNullException("Function");
+            Function.ThrowIfNull("Function");
             Exception Holder = null;
             long Start = System.Environment.TickCount;
             while (Attempts > 0)
@@ -108,8 +107,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
         public static void Execute(this Action Action, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
-            if (Action == null)
-                throw new ArgumentNullException("Function");
+            Action.ThrowIfNull("Action");
             Exception Holder = null;
             long Start = System.Environment.TickCount;
             while (Attempts > 0)
@@ -124,7 +122,8 @@ namespace Utilities.DataTypes.ExtensionMethods
                 Thread.Sleep(RetryDelay);
                 --Attempts;
             }
-            throw Holder;
+            if(Holder.IsNotNull())
+                throw Holder;
         }
 
         #endregion

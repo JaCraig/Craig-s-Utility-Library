@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.IoC.Mappings.Delegates;
 using Utilities.IoC.Mappings;
 using Utilities.IoC.Providers.Scope;
 #endregion

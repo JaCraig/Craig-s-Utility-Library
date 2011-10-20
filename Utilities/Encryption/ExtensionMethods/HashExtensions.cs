@@ -46,11 +46,9 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The hash of the byte array</returns>
         public static byte[] Hash(this byte[] Data, HashAlgorithm Algorithm = null)
         {
-            if (Data == null)
+            if (Data.IsNull())
                 return null;
-            if (Algorithm == null)
-                Algorithm = new SHA1CryptoServiceProvider();
-            using (HashAlgorithm Hasher = Algorithm)
+            using (HashAlgorithm Hasher = Algorithm.NullCheck(new SHA1CryptoServiceProvider()))
             {
                 byte[] HashedArray = Hasher.ComputeHash(Data);
                 Hasher.Clear();
@@ -67,7 +65,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The hash of the string</returns>
         public static string Hash(this string Data, HashAlgorithm Algorithm = null, Encoding EncodingUsing = null)
         {
-            if (string.IsNullOrEmpty(Data))
+            if (Data.IsNullOrEmpty())
                 return "";
             return BitConverter.ToString(Data.ToByteArray(EncodingUsing).Hash(Algorithm)).Replace("-", "");
         }

@@ -130,6 +130,13 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
+        public void ThrowIfNullOrEmpty()
+        {
+            string TempObject = "";
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrEmpty("TempName"));
+        }
+
+        [Test]
         public void ThrowIfDefault()
         {
             Assert.Throws<ArgumentNullException>(() => default(DateTime).ThrowIfDefault("TempName"));

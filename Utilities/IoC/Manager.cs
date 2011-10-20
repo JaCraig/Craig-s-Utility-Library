@@ -69,14 +69,22 @@ namespace Utilities.IoC
         }
 
         /// <summary>
+        /// Loads all mapping modules found within the assemblies
+        /// </summary>
+        /// <param name="ModuleAssemblies">Module assemblies</param>
+        public void Setup(IEnumerable<Assembly> ModuleAssemblies)
+        {
+            ModuleAssemblies.ForEach(x => Setup(x));
+        }
+
+        /// <summary>
         /// Loads all mapping modules found within a specific directory
         /// </summary>
         /// <param name="Directory">Directory to scan for modules</param>
         /// <param name="RecursiveScan">Determines if sub directories should be scanned</param>
         public void Setup(string Directory, bool ScanSubDirectories = true)
         {
-            new DirectoryInfo(Directory).GetFiles("*.dll", ScanSubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
-                                        .ForEach(x => Setup(AssemblyName.GetAssemblyName(x.FullName).Load()));
+            Setup(new DirectoryInfo(Directory).LoadAssemblies(ScanSubDirectories));
         }
 
         /// <summary>

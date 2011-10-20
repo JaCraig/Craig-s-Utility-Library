@@ -30,6 +30,7 @@ using System.Reflection;
 using Utilities.IoC.Mappings.Attributes;
 using Utilities.IoC.Providers.BaseClasses;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.IoC.Providers.Implementations
@@ -56,6 +57,8 @@ namespace Utilities.IoC.Providers.Implementations
 
         #region Functions
 
+        #region Create
+
         public override object Create()
         {
             ConstructorInfo Constructor = Utils.ConstructorList.ChooseConstructor(ReturnType, MappingManager);
@@ -65,27 +68,16 @@ namespace Utilities.IoC.Providers.Implementations
             return Instance;
         }
 
+        #endregion
+
         #region SetupMethods
 
         private void SetupMethods(object Instance)
         {
-            if (Instance == null)
+            if (Instance.IsNull())
                 return;
-            Type ObjectType = Instance.GetType();
-            MethodInfo[] Methods = ObjectType.GetMethods();
-            foreach (MethodInfo Method in Methods)
-            {
-                if (IsInjectable(Method))
-                {
-                    ParameterInfo[] Parameters = Method.GetParameters();
-                    List<object> ParameterValues = new List<object>();
-                    foreach (ParameterInfo Parameter in Parameters)
-                    {
-                        ParameterValues.Add(CreateInstance(Parameter));
-                    }
-                    Method.Invoke(Instance, ParameterValues.ToArray());
-                }
-            }
+            foreach (MethodInfo Method in Instance.GetType().GetMethods().Where(x => IsInjectable(x)))
+                Method.Invoke(Instance, Method.GetParameters().ForEach(x => CreateInstance(x)).ToArray());
         }
 
         #endregion
@@ -94,17 +86,12 @@ namespace Utilities.IoC.Providers.Implementations
 
         private void SetupProperties(object Instance)
         {
-            if (Instance == null)
+            if (Instance.IsNull())
                 return;
-            Type ObjectType = Instance.GetType();
-            PropertyInfo[] Properties = ObjectType.GetProperties();
-            foreach (PropertyInfo Property in Properties)
-            {
-                if (IsInjectable(Property))
-                {
-                    Property.SetValue(Instance, CreateInstance(Property), null);
-                }
-            }
+            Instance.GetType()
+                .GetProperties()
+                .Where(x => IsInjectable(x))
+                .ForEach<PropertyInfo>(x => Instance.SetProperty(x, CreateInstance(x)));
         }
 
         #endregion
@@ -123,12 +110,7 @@ namespace Utilities.IoC.Providers.Implementations
 
         private bool IsInjectable(object[] Attributes)
         {
-            IEnumerable<Inject> InjectAttributes = Attributes.OfType<Inject>();
-            foreach (Inject InjectAttribute in InjectAttributes)
-            {
-                return true;
-            }
-            return false;
+            return Attributes.OfType<Inject>().Count() > 0;
         }
 
         #endregion
@@ -137,14 +119,11 @@ namespace Utilities.IoC.Providers.Implementations
 
         private object CreateInstance(ConstructorInfo Constructor)
         {
-            if (Constructor.IsNull())
-                return null;
-            if (MappingManager.IsNull())
+            if (Constructor.IsNull() || MappingManager.IsNull())
                 return null;
             List<object> ParameterValues = new List<object>();
-            return Constructor.GetParameters()
-                       .ForEach(x => ParameterValues.Add(CreateInstance(x)))
-                       .Chain<IEnumerable<ParameterInfo>, object>(x => Constructor.Invoke(x.ToArray()));
+            Constructor.GetParameters().ForEach<ParameterInfo>(x => ParameterValues.Add(CreateInstance(x)));
+            return Constructor.Invoke(ParameterValues.ToArray());
         }
 
         private object CreateInstance(ParameterInfo Parameter)

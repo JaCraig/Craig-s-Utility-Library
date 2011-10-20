@@ -19,14 +19,39 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-#endregion
+using MoonUnit.Attributes;
+using MoonUnit;
 
-namespace Utilities.IoC.Mappings.Delegates
+namespace UnitTests.Error
 {
-    public delegate T ImplementationDelegate<T>();
+    public class ErrorManager
+    {
+        [Test]
+        public void GetAssemblyInformation()
+        {
+            string Value = Utilities.Error.ErrorManager.GetAssemblyInformation();
+            Assert.NotNull(Value);
+            Assert.NotEqual("<strong>Assembly Information</strong><br />", Value);
+        }
+
+        [Test]
+        public void GetSystemInformation()
+        {
+            string Value = Utilities.Error.ErrorManager.GetSystemInformation();
+            Assert.NotNull(Value);
+            Assert.NotEqual("<strong>System Information</strong><br />", Value);
+        }
+
+        [Test]
+        public void GetProcessInformation()
+        {
+            string Value = Utilities.Error.ErrorManager.GetSystemInformation();
+            Assert.NotNull(Value);
+            Assert.NotEqual("<strong>Process Information</strong><br />", Value);
+        }
+    }
 }

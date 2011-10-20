@@ -271,7 +271,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Assemblies">Assemblies to search within</param>
         /// <returns>A list of objects that are of the type specified</returns>
-        public static IEnumerable<ClassType> GetObjects<ClassType>(this Assembly[] Assemblies)
+        public static IEnumerable<ClassType> GetObjects<ClassType>(this IEnumerable<Assembly> Assemblies)
         {
             if (Assemblies == null)
                 throw new ArgumentNullException("Assemblies");
@@ -553,7 +553,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Assemblies">Assemblies to check</param>
         /// <typeparam name="BaseType">Class type to search for</typeparam>
         /// <returns>List of types that use the interface</returns>
-        public static IEnumerable<Type> GetTypes<BaseType>(this Assembly[] Assemblies)
+        public static IEnumerable<Type> GetTypes<BaseType>(this IEnumerable<Assembly> Assemblies)
         {
             if (Assemblies == null)
                 throw new ArgumentNullException("Assemblies");
@@ -566,7 +566,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Assemblies">Assemblies to check</param>
         /// <param name="BaseType">Base type to look for</param>
         /// <returns>List of types that use the interface</returns>
-        public static IEnumerable<Type> GetTypes(this Assembly[] Assemblies, Type BaseType)
+        public static IEnumerable<Type> GetTypes(this IEnumerable<Assembly> Assemblies, Type BaseType)
         {
             if (Assemblies == null)
                 throw new ArgumentNullException("Assemblies");
@@ -640,8 +640,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The assembly specified if it exists</returns>
         public static System.Reflection.Assembly Load(this AssemblyName Name)
         {
-            if (Name == null)
-                throw new ArgumentNullException("Name");
+            Name.ThrowIfNull("Name");
             return AppDomain.CurrentDomain.Load(Name);
         }
 
@@ -655,15 +654,10 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Directory">The directory to search in</param>
         /// <param name="Recursive">Determines whether to search recursively or not</param>
         /// <returns>Array of assemblies in the directory</returns>
-        public static Assembly[] LoadAssemblies(this DirectoryInfo Directory, bool Recursive = false)
+        public static IEnumerable<Assembly> LoadAssemblies(this DirectoryInfo Directory, bool Recursive = false)
         {
-            System.Collections.Generic.List<Assembly> ReturnList = new System.Collections.Generic.List<Assembly>();
             foreach (FileInfo File in Directory.GetFiles("*.dll", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-            {
-                AssemblyName Name = AssemblyName.GetAssemblyName(File.FullName);
-                ReturnList.Add(AppDomain.CurrentDomain.Load(Name));
-            }
-            return ReturnList.ToArray();
+                yield return AssemblyName.GetAssemblyName(File.FullName).Load();
         }
 
         #endregion

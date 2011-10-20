@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.AI
@@ -42,8 +43,7 @@ namespace Utilities.AI
         /// <param name="DictionaryOfWords">Dictionary of words to use to find anagrams</param>
         public Anagram(System.Collections.Generic.List<string> DictionaryOfWords)
         {
-            if (DictionaryOfWords == null)
-                throw new ArgumentNullException("DictionaryOfWords");
+            DictionaryOfWords.ThrowIfNull("DictionaryOfWords");
             this.InitialDictionary = DictionaryOfWords;
             this.DictionaryOfAnagrams = new ListMapping<string, string>();
             FindAnagrams();

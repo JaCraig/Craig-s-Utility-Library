@@ -47,10 +47,9 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static byte[] Encrypt(this byte[] Data, byte[] Key, bool OneTimePad)
         {
-            if (Data == null)
+            if (Data.IsNull())
                 return null;
-            if (Key==null)
-                throw new ArgumentNullException("Key");
+            Key.ThrowIfNull("Key");
             if (OneTimePad && Key.Length < Data.Length)
                 throw new ArgumentException("Key is not long enough");
             return Process(Data, Key);
@@ -66,16 +65,15 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static string Encrypt(this string Data, string Key, bool OneTimePad,Encoding EncodingUsing=null)
         {
-            if(string.IsNullOrEmpty(Data))
+            if (Data.IsNull())
                 return "";
-            if(string.IsNullOrEmpty(Key))
-                throw new ArgumentNullException("Key");
+            Key.ThrowIfNull("Key");
             return Data.ToByteArray(EncodingUsing).Encrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToEncodedString(EncodingUsing);
         }
 
         #endregion
 
-        #region Encrypt
+        #region Decrypt
 
         /// <summary>
         /// Decrypts the data using a basic xor of the key (not very secure unless doing a one time pad)
@@ -86,10 +84,9 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The decrypted data</returns>
         public static byte[] Decrypt(this byte[] Data, byte[] Key, bool OneTimePad)
         {
-            if (Data == null)
+            if (Data.IsNull())
                 return null;
-            if (Key == null)
-                throw new ArgumentNullException("Key");
+            Key.ThrowIfNull("Key");
             if (OneTimePad && Key.Length < Data.Length)
                 throw new ArgumentException("Key is not long enough");
             return Process(Data, Key);
@@ -105,10 +102,9 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static string Decrypt(this string Data, string Key, bool OneTimePad, Encoding EncodingUsing = null)
         {
-            if (string.IsNullOrEmpty(Data))
+            if (Data.IsNull())
                 return "";
-            if (string.IsNullOrEmpty(Key))
-                throw new ArgumentNullException("Key");
+            Key.ThrowIfNull("Key");
             return Data.ToByteArray(EncodingUsing).Decrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToEncodedString(EncodingUsing);
         }
 

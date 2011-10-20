@@ -43,12 +43,10 @@ namespace Utilities.Encryption
         /// <param name="Key">Key to use for encryption</param>
         /// <param name="EncodingUsing">Encoding that the input string uses (defaults to UTF8)</param>
         /// <returns>An encrypted string (64bit string)</returns>
-        public static string Encrypt(string Input, string Key,Encoding EncodingUsing=null)
+        public static string Encrypt(string Input, string Key, Encoding EncodingUsing = null)
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
-            if (string.IsNullOrEmpty(Key))
-                throw new ArgumentNullException("Key");
+            Input.ThrowIfNullOrEmpty("Input");
+            Key.ThrowIfNullOrEmpty("Key");
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
@@ -67,10 +65,8 @@ namespace Utilities.Encryption
         /// <returns>A decrypted string</returns>
         public static string Decrypt(string Input, string Key, Encoding EncodingUsing = null)
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
-            if (string.IsNullOrEmpty(Key))
-                throw new ArgumentNullException("Key");
+            Input.ThrowIfNullOrEmpty("Input");
+            Key.ThrowIfNullOrEmpty("Key");
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
@@ -98,12 +94,10 @@ namespace Utilities.Encryption
         /// <param name="Hash">This will be filled with the unsigned hash</param>
         /// <param name="EncodingUsing">Encoding that the input is using (defaults to UTF8)</param>
         /// <returns>A signed hash of the input (64bit string)</returns>
-        public static string SignHash(string Input,string Key,out string Hash,Encoding EncodingUsing=null)
+        public static string SignHash(string Input, string Key, out string Hash, Encoding EncodingUsing = null)
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
-            if (string.IsNullOrEmpty(Key))
-                throw new ArgumentNullException("Key");
+            Input.ThrowIfNullOrEmpty("Input");
+            Key.ThrowIfNullOrEmpty("Key");
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
@@ -124,12 +118,9 @@ namespace Utilities.Encryption
         /// <returns>True if it is verified, false otherwise</returns>
         public static bool VerifyHash(string Hash, string SignedHash, string Key)
         {
-            if (string.IsNullOrEmpty(Hash))
-                throw new ArgumentNullException("Hash");
-            if (string.IsNullOrEmpty(SignedHash))
-                throw new ArgumentNullException("SignedHash");
-            if (string.IsNullOrEmpty(Key))
-                throw new ArgumentNullException("Key");
+            Hash.ThrowIfNullOrEmpty("Hash");
+            SignedHash.ThrowIfNullOrEmpty("SignedHash");
+            Key.ThrowIfNullOrEmpty("Key");
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);

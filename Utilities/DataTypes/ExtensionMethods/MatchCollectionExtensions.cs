@@ -51,10 +51,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The matches that satisfy the predicate</returns>
         public static IEnumerable<Match> Where(this MatchCollection Collection, Predicate<Match> Predicate)
         {
-            if (Collection == null)
+            if (Collection.IsNull())
                 return null;
-            if (Predicate == null)
-                throw new ArgumentNullException("Predicate");
+            Predicate.ThrowIfNull("Predicate");
             List<Match> Matches = new List<Match>();
             foreach (Match Item in Collection)
                 if (Predicate(Item))

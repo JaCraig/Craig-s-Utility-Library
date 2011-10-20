@@ -24,6 +24,8 @@ using Utilities.DataTypes;
 using System.Collections.Generic;
 using Utilities.Math.ExtensionMethods;
 using System;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.AI
@@ -139,25 +141,14 @@ namespace Utilities.AI
         /// <param name="SetBTokens">Set B</param>
         public virtual void LoadTokens(System.Collections.Generic.List<T> SetATokens, System.Collections.Generic.List<T> SetBTokens)
         {
-            if (SetATokens == null)
-                throw new ArgumentNullException("SetATokens");
-            if (SetBTokens == null)
-                throw new ArgumentNullException("SetBTokens");
-            if (SetA == null)
-                SetA = new Bag<T>();
-            if (SetB == null)
-                SetB = new Bag<T>();
-
-            foreach (T TokenA in SetATokens)
-                SetA.Add(TokenA);
-            foreach (T TokenB in SetBTokens)
-                SetB.Add(TokenB);
-            TotalA = 0;
-            TotalB = 0;
-            foreach (T Token in SetA)
-                TotalA += SetA[Token];
-            foreach (T Token in SetB)
-                TotalB += SetB[Token];
+            SetATokens.ThrowIfNull("SetATokens");
+            SetBTokens.ThrowIfNull("SetBTokens");
+            SetA = SetA.NullCheck(new Bag<T>());
+            SetB = SetB.NullCheck(new Bag<T>());
+            SetA.AddRange(SetATokens);
+            SetB.AddRange(SetBTokens);
+            TotalA = SetA.Sum(x => SetA[x]);
+            TotalB = SetB.Sum(x => SetB[x]);
             Total = TotalA + TotalB;
             Probabilities = new Dictionary<T, double>();
             foreach (T Token in SetA)
@@ -174,9 +165,8 @@ namespace Utilities.AI
         /// <returns>The probability that the tokens are from set A</returns>
         public virtual double CalculateProbabilityOfTokens(System.Collections.Generic.List<T> Items)
         {
-            if (Items == null)
-                throw new ArgumentNullException("Items");
-            if (Probabilities == null)
+            Items.ThrowIfNull("Items");
+            if (Probabilities.IsNull())
                 throw new NullReferenceException("Probabilities has not been initialized");
             SortedList<string, double> SortedProbabilities = new SortedList<string, double>();
             for (int x = 0; x < Items.Count; ++x)

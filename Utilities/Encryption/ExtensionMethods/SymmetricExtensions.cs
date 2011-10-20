@@ -57,9 +57,11 @@ namespace Utilities.Encryption.ExtensionMethods
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
             string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            if (string.IsNullOrEmpty(Data))
+            if (Data.IsNullOrEmpty())
                 return "";
-            return Data.ToByteArray(EncodingUsing).Encrypt(Key, AlgorithmUsing, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize).ToBase64String();
+            return Data.ToByteArray(EncodingUsing)
+                       .Encrypt(Key, AlgorithmUsing, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize)
+                       .ToBase64String();
         }
 
         /// <summary>
@@ -79,18 +81,13 @@ namespace Utilities.Encryption.ExtensionMethods
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
             string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            if (Data == null)
+            if (Data.IsNull())
                 return null;
-            if (AlgorithmUsing == null)
-                AlgorithmUsing = new RijndaelManaged();
-            if (string.IsNullOrEmpty(Key))
-                throw new ArgumentNullException("Key");
-            if (string.IsNullOrEmpty(Salt))
-                throw new ArgumentNullException("Salt");
-            if (string.IsNullOrEmpty(HashAlgorithm))
-                throw new ArgumentNullException("HashAlgorithm");
-            if (string.IsNullOrEmpty(InitialVector))
-                throw new ArgumentNullException("InitialVector");
+            AlgorithmUsing = AlgorithmUsing.NullCheck(new RijndaelManaged());
+            Key.ThrowIfNullOrEmpty("Key");
+            Salt.ThrowIfNullOrEmpty("Salt");
+            HashAlgorithm.ThrowIfNullOrEmpty("HashAlgorithm");
+            InitialVector.ThrowIfNullOrEmpty("InitialVector");
             using (PasswordDeriveBytes DerivedPassword = new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations))
             {
                 using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)
@@ -140,10 +137,11 @@ namespace Utilities.Encryption.ExtensionMethods
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
             string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            if (string.IsNullOrEmpty(Data))
+            if (Data.IsNullOrEmpty())
                 return "";
-            byte[] CipherTextBytes = Convert.FromBase64String(Data);
-            return CipherTextBytes.Decrypt(Key, AlgorithmUsing, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize).ToEncodedString(EncodingUsing);
+            return Convert.FromBase64String(Data)
+                          .Decrypt(Key, AlgorithmUsing, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize)
+                          .ToEncodedString(EncodingUsing);
         }
 
 
@@ -164,18 +162,13 @@ namespace Utilities.Encryption.ExtensionMethods
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
             string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            if (Data == null)
+            if (Data.IsNull())
                 return null;
-            if (AlgorithmUsing == null)
-                AlgorithmUsing = new RijndaelManaged();
-            if (string.IsNullOrEmpty(Key))
-                throw new ArgumentNullException("Key");
-            if (string.IsNullOrEmpty(Salt))
-                throw new ArgumentNullException("Salt");
-            if (string.IsNullOrEmpty(HashAlgorithm))
-                throw new ArgumentNullException("HashAlgorithm");
-            if (string.IsNullOrEmpty(InitialVector))
-                throw new ArgumentNullException("InitialVector");
+            AlgorithmUsing = AlgorithmUsing.NullCheck(new RijndaelManaged());
+            Key.ThrowIfNullOrEmpty("Key");
+            Salt.ThrowIfNullOrEmpty("Salt");
+            HashAlgorithm.ThrowIfNullOrEmpty("HashAlgorithm");
+            InitialVector.ThrowIfNullOrEmpty("InitialVector");
             using (PasswordDeriveBytes DerivedPassword = new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations))
             {
                 using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)
