@@ -19,50 +19,57 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+using Utilities.IoC.Providers.BaseClasses;
+using Utilities.IoC.Mappings.Delegates;
+#endregion
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace Utilities.IoC.Providers.Implementations
 {
-    public class FunActionExtensions
+    /// <summary>
+    /// Delegate implementation
+    /// </summary>
+    /// <typeparam name="T">Return type of the delegate</typeparam>
+    public class Delegate<T> : BaseImplementation
     {
-        [Test]
-        public void Execute1()
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Implementation">Implementation delegate</param>
+        public Delegate(Func<T> Implementation)
         {
-            Func<int> Temp = () => 1;
-            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
+            this.Implementation = Implementation;
+            ReturnType = typeof(T);
         }
 
-        [Test]
-        public void Execute2()
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Creates an object based on a delegate
+        /// </summary>
+        /// <returns>An object</returns>
+        public override object Create()
         {
-            Action Temp = () => Test();
-            Assert.Throws<Exception>(() => Temp.Execute());
+            return Implementation();
         }
 
-        [Test]
-        public void Chain()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
-        }
+        #endregion
 
-        [Test]
-        public void Chain2()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
-        }
+        #region Properties
 
-        public void Test()
-        {
-            throw new Exception();
-        }
+        /// <summary>
+        /// Delegate used to create objects
+        /// </summary>
+        protected virtual Func<T> Implementation { get; set; }
+
+        #endregion
     }
 }

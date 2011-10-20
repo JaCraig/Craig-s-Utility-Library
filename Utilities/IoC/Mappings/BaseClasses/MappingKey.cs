@@ -19,50 +19,49 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+using Utilities.IoC.Mappings.Interfaces;
+using Utilities.IoC.Providers;
+#endregion
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace Utilities.IoC.Mappings.BaseClasses
 {
-    public class FunActionExtensions
+    /// <summary>
+    /// Mapping key
+    /// </summary>
+    public class MappingKey : BaseMapping
     {
-        [Test]
-        public void Execute1()
+        #region Constructor
+
+        public MappingKey(Type ServiceType, Type AttributeType, ProviderManager ProviderManager, MappingManager MappingManager)
+            : base(ServiceType, AttributeType, ProviderManager, MappingManager)
         {
-            Func<int> Temp = () => 1;
-            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
         }
 
-        [Test]
-        public void Execute2()
+        #endregion
+
+        #region Functions
+
+        public override bool Equals(object obj)
         {
-            Action Temp = () => Test();
-            Assert.Throws<Exception>(() => Temp.Execute());
+            if (!(obj is IMapping))
+                return false;
+            IMapping ObjectMapping = (IMapping)obj;
+            return ObjectMapping.AttributeType == AttributeType
+                && ObjectMapping.ServiceType == ServiceType;
         }
 
-        [Test]
-        public void Chain()
+        public override int GetHashCode()
         {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
+            int AttributeHash = AttributeType == null ? 1 : AttributeType.GetHashCode();
+            int ServiceHash = ServiceType == null ? 1 : ServiceType.GetHashCode();
+            return ServiceHash * AttributeHash;
         }
 
-        [Test]
-        public void Chain2()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
-        }
-
-        public void Test()
-        {
-            throw new Exception();
-        }
+        #endregion
     }
 }

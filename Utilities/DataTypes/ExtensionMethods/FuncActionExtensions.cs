@@ -52,6 +52,19 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Object;
         }
 
+        /// <summary>
+        /// Allows actions to be chained together
+        /// </summary>
+        /// <typeparam name="T">The type of the object</typeparam>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <param name="Object">Object to run the action on</param>
+        /// <param name="Function">Function to run</param>
+        /// <returns>The result from the function</returns>
+        public static R Chain<T,R>(this T Object, Func<T,R> Function)
+        {
+            return Function(Object);
+        }
+
         #endregion
 
         #region Execute

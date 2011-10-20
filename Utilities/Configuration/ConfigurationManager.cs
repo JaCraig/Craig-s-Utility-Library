@@ -49,6 +49,8 @@ namespace Utilities.Configuration
 
         #region Public Functions
 
+        #region RegisterConfigFile
+
         /// <summary>
         /// Registers a config file
         /// </summary>
@@ -71,22 +73,29 @@ namespace Utilities.Configuration
         }
 
         /// <summary>
+        /// Registers a set of config file
+        /// </summary>
+        /// <param name="ConfigObjects">Config objects to register</param>
+        public static void RegisterConfigFile(IEnumerable<IConfig> ConfigObjects)
+        {
+            if (ConfigObjects == null) throw new ArgumentNullException("ConfigObjects");
+            foreach (IConfig ConfigObject in ConfigObjects)
+                RegisterConfigFile(ConfigObject);
+        }
+
+        /// <summary>
         /// Registers all config files in an assembly
         /// </summary>
         /// <param name="AssemblyContainingConfig">Assembly to search</param>
         public static void RegisterConfigFile(Assembly AssemblyContainingConfig)
         {
             if (AssemblyContainingConfig == null) throw new ArgumentNullException("AssemblyContainingConfig");
-            IEnumerable<Type> Types = AssemblyContainingConfig.GetTypes(typeof(IConfig));
-            foreach (Type Temp in Types)
-            {
-                if (!Temp.ContainsGenericParameters)
-                {
-                    IConfig TempConfig = (IConfig)Temp.Assembly.CreateInstance(Temp.FullName);
-                    RegisterConfigFile(TempConfig);
-                }
-            }
+            RegisterConfigFile(AssemblyContainingConfig.GetObjects<IConfig>());
         }
+
+        #endregion
+
+        #region GetConfigFile
 
         /// <summary>
         /// Gets a specified config file
@@ -103,6 +112,10 @@ namespace Utilities.Configuration
             return (T)ConfigFiles[Name];
         }
 
+        #endregion
+
+        #region ContainsConfigFile
+
         /// <summary>
         /// Determines if a specified config file is registered
         /// </summary>
@@ -111,24 +124,24 @@ namespace Utilities.Configuration
         /// <returns>The config object specified</returns>
         public static bool ContainsConfigFile<T>(string Name)
         {
-            if (!ConfigFiles.ContainsKey(Name))
-                return false;
-            if (!(ConfigFiles[Name] is T))
-                return false;
-            return true;
+            return ConfigFiles.ContainsKey(Name) && ConfigFiles[Name] is T;
         }
+
+        #endregion
+
+        #region ToString
 
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<ul>").Append("<li>").Append(ConfigFiles.Count).Append("</li>");
             foreach (string Name in ConfigFiles.Keys)
-            {
                 Builder.Append("<li>").Append(Name).Append(":").Append(ConfigFiles[Name].GetType().FullName).Append("</li>");
-            }
             Builder.Append("</ul>");
             return Builder.ToString();
         }
+
+        #endregion
 
         #endregion
 

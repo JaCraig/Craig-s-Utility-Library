@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Configuration.Interfaces;
 using Utilities.IO.ExtensionMethods;
 using Utilities.Encryption.ExtensionMethods;
+using Utilities.Reflection.ExtensionMethods;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -52,10 +53,10 @@ namespace Utilities.Configuration
         {
             if (StringToObject == null)
                 StringToObject = (x) => (ConfigClassType)x.XMLToObject(this.GetType());
-            this.StringToObject = StringToObject;
             if (ObjectToString == null)
                 ObjectToString = (x) => x.ToXML(ConfigFileLocation);
             this.ObjectToString = ObjectToString;
+            this.StringToObject = StringToObject;
         }
 
         #endregion
@@ -96,16 +97,13 @@ namespace Utilities.Configuration
         {
             if (string.IsNullOrEmpty(ConfigFileLocation))
                 return;
-            ConfigClassType Temp = default(ConfigClassType);
             string FileContent = new FileInfo(ConfigFileLocation).Read();
             if (string.IsNullOrEmpty(FileContent))
             {
                 Save();
                 return;
             }
-            Temp = StringToObject(FileContent);
-            //Temp = (ConfigClassType)Utilities.IO.Serialization.XMLToObject(FileContent, this.GetType());
-            LoadProperties(Temp);
+            LoadProperties(StringToObject(FileContent));
             Decrypt();
         }
 
@@ -114,9 +112,7 @@ namespace Utilities.Configuration
             if (string.IsNullOrEmpty(ConfigFileLocation))
                 return;
             Encrypt();
-            string XML = ObjectToString(this);
-            new FileInfo(ConfigFileLocation).Save(XML);
-            //Utilities.IO.Serialization.ObjectToXML(this, ConfigFileLocation);
+            new FileInfo(ConfigFileLocation).Save(ObjectToString(this));
             Decrypt();
         }
 
@@ -128,53 +124,27 @@ namespace Utilities.Configuration
         {
             if (Temp == null)
                 return;
-            Type ObjectType = Temp.GetType();
-            PropertyInfo[] Properties = ObjectType.GetProperties();
-            foreach (PropertyInfo Property in Properties)
-            {
+            foreach (PropertyInfo Property in Temp.GetType().GetProperties())
                 if (Property.CanWrite && Property.CanRead)
-                {
-                    Property.SetValue(this, Property.GetValue(Temp, null), null);
-                }
-            }
+                    this.SetProperty(Property, Temp.GetProperty(Property));
         }
 
         private void Encrypt()
         {
             if (string.IsNullOrEmpty(EncryptionPassword))
                 return;
-            Type ObjectType = this.GetType();
-            PropertyInfo[] Properties = ObjectType.GetProperties();
-            foreach (PropertyInfo Property in Properties)
-            {
+            foreach (PropertyInfo Property in this.GetType().GetProperties())
                 if (Property.CanWrite && Property.CanRead && Property.PropertyType == typeof(string))
-                {
-                    Property.SetValue(this,
-                        ((string)Property.GetValue(this, null)).Encrypt(EncryptionPassword),
-                        null);
-                }
-            }
+                    this.SetProperty(Property, ((string)this.GetProperty(Property)).Encrypt(EncryptionPassword));
         }
 
         private void Decrypt()
         {
             if (string.IsNullOrEmpty(EncryptionPassword))
                 return;
-            Type ObjectType = this.GetType();
-            PropertyInfo[] Properties = ObjectType.GetProperties();
-            foreach (PropertyInfo Property in Properties)
-            {
+            foreach (PropertyInfo Property in this.GetType().GetProperties())
                 if (Property.CanWrite && Property.CanRead && Property.PropertyType == typeof(string))
-                {
-                    string Value = (string)Property.GetValue(this, null);
-                    if (!string.IsNullOrEmpty(Value))
-                    {
-                        Property.SetValue(this,
-                            Value.Decrypt(EncryptionPassword),
-                            null);
-                    }
-                }
-            }
+                    this.SetProperty(Property, ((string)this.GetProperty(Property)).Decrypt(EncryptionPassword));
         }
 
         #endregion

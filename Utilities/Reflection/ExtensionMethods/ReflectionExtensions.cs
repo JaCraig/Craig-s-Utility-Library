@@ -259,7 +259,7 @@ namespace Utilities.Reflection.ExtensionMethods
             if (Assembly == null)
                 throw new ArgumentNullException("Assembly");
             System.Collections.Generic.List<ClassType> ReturnValues = new System.Collections.Generic.List<ClassType>();
-            foreach (Type Type in Assembly.GetTypes<ClassType>().Where(x=>!x.ContainsGenericParameters))
+            foreach (Type Type in Assembly.GetTypes<ClassType>().Where(x => !x.ContainsGenericParameters))
                 ReturnValues.Add(Type.CreateInstance<ClassType>());
             return ReturnValues;
         }
@@ -288,7 +288,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Directory">Directory to search within</param>
         /// <returns>A list of objects that are of the type specified</returns>
-        public static IEnumerable<ClassType> GetObjects<ClassType>(this DirectoryInfo Directory,bool Recursive=false)
+        public static IEnumerable<ClassType> GetObjects<ClassType>(this DirectoryInfo Directory, bool Recursive = false)
         {
             if (Directory == null)
                 throw new ArgumentNullException("Directory");
@@ -544,7 +544,7 @@ namespace Utilities.Reflection.ExtensionMethods
                 throw new ArgumentNullException("Assembly");
             if (BaseType == null)
                 throw new ArgumentNullException("BaseType");
-            return Assembly.GetTypes().Where(x => x.IsOfType(BaseType) && x.IsClass);
+            return Assembly.GetTypes().Where(x => x.IsOfType(BaseType) && x.IsClass && !x.IsAbstract);
         }
 
         /// <summary>
@@ -573,7 +573,7 @@ namespace Utilities.Reflection.ExtensionMethods
             if (BaseType == null)
                 throw new ArgumentNullException("BaseType");
             List<Type> ReturnValues = new List<Type>();
-            Assemblies.ForEach(y => ReturnValues.AddRange(y.GetTypes().Where(x => x.IsOfType(BaseType) && x.IsClass)));
+            Assemblies.ForEach(y => ReturnValues.AddRange(y.GetTypes(BaseType)));
             return ReturnValues;
         }
 

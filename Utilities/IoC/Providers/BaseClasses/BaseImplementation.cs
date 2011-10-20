@@ -19,50 +19,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+using Utilities.IoC.Providers.Interfaces;
+#endregion
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace Utilities.IoC.Providers.BaseClasses
 {
-    public class FunActionExtensions
+    public abstract class BaseImplementation : IImplementation
     {
-        [Test]
-        public void Execute1()
-        {
-            Func<int> Temp = () => 1;
-            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
-        }
+        #region Properties
 
-        [Test]
-        public void Execute2()
-        {
-            Action Temp = () => Test();
-            Assert.Throws<Exception>(() => Temp.Execute());
-        }
+        public virtual Type ReturnType { get; set; }
 
-        [Test]
-        public void Chain()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
-        }
+        #endregion
 
-        [Test]
-        public void Chain2()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
-        }
+        #region Functions
 
-        public void Test()
-        {
-            throw new Exception();
-        }
+        public abstract object Create();
+
+        #endregion
     }
 }

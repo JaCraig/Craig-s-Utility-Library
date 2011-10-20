@@ -57,6 +57,8 @@
     <Compile Include="CodeGen\DefaultParser.cs" />
     <Compile Include="CodeGen\DefaultTemplate.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
+    <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />

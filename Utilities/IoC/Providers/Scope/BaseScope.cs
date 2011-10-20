@@ -19,50 +19,55 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+#endregion
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace Utilities.IoC.Providers.Scope
 {
-    public class FunActionExtensions
+    /// <summary>
+    /// Base scope class
+    /// </summary>
+    public abstract class BaseScope
     {
-        [Test]
-        public void Execute1()
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public BaseScope() { }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Name of the scope
+        /// </summary>
+        public abstract string Name { get; }
+
+        #endregion
+
+        #region Functions
+
+        public override bool Equals(object obj)
         {
-            Func<int> Temp = () => 1;
-            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
+            return (obj is BaseScope) && ((BaseScope)obj).Name == Name;
         }
 
-        [Test]
-        public void Execute2()
+        public override int GetHashCode()
         {
-            Action Temp = () => Test();
-            Assert.Throws<Exception>(() => Temp.Execute());
+            return Name.GetHashCode();
         }
 
-        [Test]
-        public void Chain()
+        public override string ToString()
         {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
+            return Name;
         }
 
-        [Test]
-        public void Chain2()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
-        }
-
-        public void Test()
-        {
-            throw new Exception();
-        }
+        #endregion
     }
 }

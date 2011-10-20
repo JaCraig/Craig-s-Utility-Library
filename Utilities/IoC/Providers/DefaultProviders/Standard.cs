@@ -19,50 +19,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+using Utilities.IoC.Providers.Scope;
+using Utilities.IoC.Providers.Interfaces;
+using Utilities.IoC.Mappings;
+using Utilities.IoC.Providers.Implementations;
+#endregion
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace Utilities.IoC.Providers.DefaultProviders
 {
-    public class FunActionExtensions
+    /// <summary>
+    /// Standard provider
+    /// </summary>
+    public class Standard : IProvider
     {
-        [Test]
-        public void Execute1()
+        public IImplementation CreateImplementation(Type ImplementationType, MappingManager MappingManager)
         {
-            Func<int> Temp = () => 1;
-            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
+            return new Implementations.Standard(ImplementationType, MappingManager);
         }
 
-        [Test]
-        public void Execute2()
+
+        public BaseScope ProviderScope
         {
-            Action Temp = () => Test();
-            Assert.Throws<Exception>(() => Temp.Execute());
+            get { return new StandardScope(); }
         }
 
-        [Test]
-        public void Chain()
+        public IImplementation CreateImplementation(IImplementation Implementation, MappingManager MappingManager)
         {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
+            return CreateImplementation(Implementation.ReturnType, MappingManager);
         }
 
-        [Test]
-        public void Chain2()
+        public IImplementation CreateImplementation<ImplementationType>(Func<ImplementationType> Implementation)
         {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
-        }
-
-        public void Test()
-        {
-            throw new Exception();
+            return new Delegate<ImplementationType>(Implementation);
         }
     }
 }
