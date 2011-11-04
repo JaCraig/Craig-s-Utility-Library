@@ -18,23 +18,24 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
+
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text;
 using Utilities.Validation.BaseClasses;
 using Utilities.Validation.Exceptions;
+using System.Text.RegularExpressions;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// Is Domain
+    /// This item is equal to the value
     /// </summary>
-    public class IsDomain<ObjectType> : Rule<ObjectType,string>
+    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
+    public class NotNaN<ObjectType> : Rule<ObjectType, double>
     {
         #region Constructor
 
@@ -43,7 +44,7 @@ namespace Utilities.Validation.Rules
         /// </summary>
         /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ErrorMessage">Error message</param>
-        public IsDomain(Func<ObjectType, string> ItemToValidate, string ErrorMessage)
+        public NotNaN(Func<ObjectType, double> ItemToValidate, string ErrorMessage)
             : base(ItemToValidate, ErrorMessage)
         {
         }
@@ -54,10 +55,7 @@ namespace Utilities.Validation.Rules
 
         public override void Validate(ObjectType Object)
         {
-            string Value = this.ItemToValidate(Object);
-            if (string.IsNullOrEmpty(Value))
-                return;
-            if(!new System.Text.RegularExpressions.Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?").IsMatch(Value))
+            if (double.IsNaN(ItemToValidate(Object)))
                 throw new NotValid(ErrorMessage);
         }
 
@@ -65,9 +63,9 @@ namespace Utilities.Validation.Rules
     }
 
     /// <summary>
-    /// IsDomain attribute
+    /// NotNaN attribute
     /// </summary>
-    public class IsDomain : BaseAttribute
+    public class NotNaN : BaseAttribute
     {
         #region Constructor
 
@@ -75,7 +73,7 @@ namespace Utilities.Validation.Rules
         /// Constructor
         /// </summary>
         /// <param name="ErrorMessage">Error message</param>
-        public IsDomain(string ErrorMessage = "")
+        public NotNaN(string ErrorMessage = "")
             : base(ErrorMessage)
         {
         }

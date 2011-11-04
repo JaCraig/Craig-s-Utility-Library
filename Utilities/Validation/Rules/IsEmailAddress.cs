@@ -29,7 +29,7 @@ using Utilities.Validation.BaseClasses;
 using Utilities.Validation.Exceptions;
 #endregion
 
-namespace Utilities.Validation
+namespace Utilities.Validation.Rules
 {
     /// <summary>
     /// Email address
@@ -57,11 +57,30 @@ namespace Utilities.Validation
             string Value = this.ItemToValidate(Object);
             if (string.IsNullOrEmpty(Value))
                 return;
-            Regex TempReg = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
+            System.Text.RegularExpressions.Regex TempReg = new System.Text.RegularExpressions.Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
                   @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
                   @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
             if(!TempReg.IsMatch(Value))
                 throw new NotValid(ErrorMessage);
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// IsEmailAddress attribute
+    /// </summary>
+    public class IsEmailAddress : BaseAttribute
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ErrorMessage">Error message</param>
+        public IsEmailAddress(string ErrorMessage = "")
+            : base(ErrorMessage)
+        {
         }
 
         #endregion

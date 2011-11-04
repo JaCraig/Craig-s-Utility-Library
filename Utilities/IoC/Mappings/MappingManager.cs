@@ -112,6 +112,12 @@ namespace Utilities.IoC.Mappings
             return Mappings.Find(x => x.Equals(Key));
         }
 
+        /// <summary>
+        /// Gets the mapping that matches this service type and attribute type
+        /// </summary>
+        /// <param name="ServiceType">Service type</param>
+        /// <param name="AttributeType">Attribute type</param>
+        /// <returns>The mapping associated with this service type and attribute type</returns>
         public IMapping GetMapping(Type ServiceType, Type AttributeType)
         {
             MappingKey Key = new MappingKey(ServiceType, AttributeType, ProviderManager, this);

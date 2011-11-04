@@ -18,23 +18,26 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
+
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text;
 using Utilities.Validation.BaseClasses;
 using Utilities.Validation.Exceptions;
+using Utilities.DataTypes.Comparison;
+using System.Collections;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// Is Domain
+    /// This item is empty
     /// </summary>
-    public class IsDomain<ObjectType> : Rule<ObjectType,string>
+    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
+    /// <typeparam name="DataType">Data type of the object validating</typeparam>
+    public class Empty<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
     {
         #region Constructor
 
@@ -43,7 +46,7 @@ namespace Utilities.Validation.Rules
         /// </summary>
         /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ErrorMessage">Error message</param>
-        public IsDomain(Func<ObjectType, string> ItemToValidate, string ErrorMessage)
+        public Empty(Func<ObjectType, IEnumerable<DataType>> ItemToValidate, string ErrorMessage)
             : base(ItemToValidate, ErrorMessage)
         {
         }
@@ -54,10 +57,7 @@ namespace Utilities.Validation.Rules
 
         public override void Validate(ObjectType Object)
         {
-            string Value = this.ItemToValidate(Object);
-            if (string.IsNullOrEmpty(Value))
-                return;
-            if(!new System.Text.RegularExpressions.Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?").IsMatch(Value))
+            foreach (object Item in ItemToValidate(Object))
                 throw new NotValid(ErrorMessage);
         }
 
@@ -65,9 +65,9 @@ namespace Utilities.Validation.Rules
     }
 
     /// <summary>
-    /// IsDomain attribute
+    /// Empty attribute
     /// </summary>
-    public class IsDomain : BaseAttribute
+    public class Empty : BaseAttribute
     {
         #region Constructor
 
@@ -75,7 +75,7 @@ namespace Utilities.Validation.Rules
         /// Constructor
         /// </summary>
         /// <param name="ErrorMessage">Error message</param>
-        public IsDomain(string ErrorMessage = "")
+        public Empty(string ErrorMessage = "")
             : base(ErrorMessage)
         {
         }

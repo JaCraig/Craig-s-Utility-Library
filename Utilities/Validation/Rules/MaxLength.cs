@@ -27,6 +27,8 @@ using System.Text;
 using Utilities.Validation.BaseClasses;
 using Utilities.Validation.Exceptions;
 using System.Text.RegularExpressions;
+using System.Collections;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -35,7 +37,7 @@ namespace Utilities.Validation.Rules
     /// This item's length is less than the length specified
     /// </summary>
     /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    public class MaxLength<ObjectType> : Rule<ObjectType, string>
+    public class MaxLength<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
     {
         #region Constructor
 
@@ -45,7 +47,7 @@ namespace Utilities.Validation.Rules
         /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="MaxLength">Max length of the string</param>
         /// <param name="ErrorMessage">Error message</param>
-        public MaxLength(Func<ObjectType, string> ItemToValidate, int MaxLength, string ErrorMessage)
+        public MaxLength(Func<ObjectType, IEnumerable<DataType>> ItemToValidate, int MaxLength, string ErrorMessage)
             : base(ItemToValidate, ErrorMessage)
         {
             this.MaxLengthAllowed = MaxLength;
@@ -66,9 +68,10 @@ namespace Utilities.Validation.Rules
 
         public override void Validate(ObjectType Object)
         {
-            if (string.IsNullOrEmpty(ItemToValidate(Object)))
+            IEnumerable<DataType> Value = ItemToValidate(Object);
+            if (Value.IsNull())
                 return;
-            if (ItemToValidate(Object).Length > MaxLengthAllowed)
+            if (Value.Count() > MaxLengthAllowed)
                 throw new NotValid(ErrorMessage);
         }
 

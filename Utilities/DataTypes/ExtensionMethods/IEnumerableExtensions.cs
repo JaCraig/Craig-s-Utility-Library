@@ -101,14 +101,16 @@ namespace Utilities.DataTypes.ExtensionMethods
             List.ThrowIfNull("List");
             Function.ThrowIfNull("Function");
             int x = 0;
+            List<R> ReturnValues = new List<R>();
             foreach (T Item in List)
             {
                 if (x.Between(Start, End))
-                    yield return Function(Item);
+                    ReturnValues.Add(Function(Item));
                 ++x;
                 if (x > End)
                     break;
             }
+            return ReturnValues;
         }
 
         #endregion
@@ -143,8 +145,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             List.ThrowIfNull("List");
             Function.ThrowIfNull("Function");
+            List<R> ReturnValues = new List<R>();
             foreach (T Item in List)
-                yield return Function(Item);
+                ReturnValues.Add(Function(Item));
+            return ReturnValues;
         }
 
         #endregion
@@ -168,6 +172,25 @@ namespace Utilities.DataTypes.ExtensionMethods
             return List;
         }
 
+        /// <summary>
+        /// Does an action for each item in the IEnumerable between the start and end indexes in parallel
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Results type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Start">Item to start with</param>
+        /// <param name="End">Item to end with</param>
+        /// <param name="Function">Function to do</param>
+        /// <returns>The resulting list</returns>
+        public static IEnumerable<R> ForParallel<T, R>(this IEnumerable<T> List, int Start, int End, Func<T, R> Function)
+        {
+            List.ThrowIfNull("List");
+            Function.ThrowIfNull("Function");
+            R[] Results = new R[(End + 1) - Start];
+            Parallel.For(Start, End + 1, new Action<int>(x => Results[x - Start] = Function(List.ElementAt(x))));
+            return Results;
+        }
+
         #endregion
 
         #region ForEachParallel
@@ -185,6 +208,21 @@ namespace Utilities.DataTypes.ExtensionMethods
             Action.ThrowIfNull("Action");
             Parallel.ForEach(List, Action);
             return List;
+        }
+
+        /// <summary>
+        /// Does an action for each item in the IEnumerable in parallel
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Results type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Function">Function to do</param>
+        /// <returns>The results in an IEnumerable list</returns>
+        public static IEnumerable<R> ForEachParallel<T, R>(this IEnumerable<T> List, Func<T, R> Function)
+        {
+            List.ThrowIfNull("List");
+            Function.ThrowIfNull("Function");
+            return List.ForParallel(0, List.Count() - 1, Function);
         }
 
         #endregion

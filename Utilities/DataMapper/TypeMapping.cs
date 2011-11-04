@@ -62,7 +62,7 @@ namespace Utilities.DataMapper
         /// <summary>
         /// Automatically maps properties that are named the same thing
         /// </summary>
-        public virtual void AutoMap()
+        public virtual TypeMapping<Left,Right> AutoMap()
         {
             PropertyInfo[] Properties = typeof(Left).GetProperties();
             Type DestinationType = typeof(Right);
@@ -71,13 +71,14 @@ namespace Utilities.DataMapper
                 PropertyInfo DestinationProperty=DestinationType.GetProperty(Properties[x].Name);
                 if (DestinationProperty != null)
                 {
-                    Expression<Func<Left, object>> LeftGet = DestinationProperty.GetPropertyGetter<Left>();
+                    Expression<Func<Left, object>> LeftGet = Properties[x].GetPropertyGetter<Left>();
                     Expression<Action<Left, object>> LeftSet = LeftGet.GetPropertySetter();
                     Expression<Func<Right, object>> RightGet = DestinationProperty.GetPropertyGetter<Right>();
                     Expression<Action<Right, object>> RightSet = RightGet.GetPropertySetter();
                     this.AddMapping(LeftGet.Compile(), LeftSet.Compile(), RightGet.Compile(), RightSet.Compile());
                 }
             }
+            return this;
         }
 
         /// <summary>
@@ -85,9 +86,10 @@ namespace Utilities.DataMapper
         /// </summary>
         /// <param name="LeftExpression">Left expression</param>
         /// <param name="RightExpression">Right expression</param>
-        public virtual void AddMapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
+        public virtual TypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
         {
             Mappings.Add(new Mapping<Left, Right>(LeftExpression, RightExpression));
+            return this;
         }
 
         /// <summary>
@@ -96,9 +98,10 @@ namespace Utilities.DataMapper
         /// <param name="LeftGet">Left get function</param>
         /// <param name="LeftSet">Left set action</param>
         /// <param name="RightExpression">Right expression</param>
-        public virtual void AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression)
+        public virtual TypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression)
         {
             Mappings.Add(new Mapping<Left, Right>(LeftGet, LeftSet, RightExpression));
+            return this;
         }
 
         /// <summary>
@@ -107,9 +110,10 @@ namespace Utilities.DataMapper
         /// <param name="LeftExpression">Left expression</param>
         /// <param name="RightGet">Right get function</param>
         /// <param name="RightSet">Right set function</param>
-        public virtual void AddMapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
+        public virtual TypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
         {
             Mappings.Add(new Mapping<Left, Right>(LeftExpression, RightGet, RightSet));
+            return this;
         }
 
         /// <summary>
@@ -119,9 +123,10 @@ namespace Utilities.DataMapper
         /// <param name="LeftSet">Left set function</param>
         /// <param name="RightGet">Right get function</param>
         /// <param name="RightSet">Right set function</param>
-        public virtual void AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet)
+        public virtual TypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet)
         {
             Mappings.Add(new Mapping<Left, Right>(LeftGet, LeftSet, RightGet, RightSet));
+            return this;
         }
 
         /// <summary>

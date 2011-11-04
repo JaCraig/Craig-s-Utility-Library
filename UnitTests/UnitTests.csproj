@@ -59,6 +59,9 @@
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
+    <Compile Include="DataMapper\Mapping.cs" />
+    <Compile Include="DataMapper\MappingManager.cs" />
+    <Compile Include="DataMapper\TypeMapping.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
@@ -147,6 +150,30 @@
     <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
     <Compile Include="Reflection\Emit\TypeBuilder.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="Validation\Rules\Between.cs" />
+    <Compile Include="Validation\Rules\Cascade.cs" />
+    <Compile Include="Validation\Rules\Contains.cs" />
+    <Compile Include="Validation\Rules\Custom.cs" />
+    <Compile Include="Validation\Rules\DoesNotContain.cs" />
+    <Compile Include="Validation\Rules\Empty.cs" />
+    <Compile Include="Validation\Rules\Equal.cs" />
+    <Compile Include="Validation\Rules\GreaterThan.cs" />
+    <Compile Include="Validation\Rules\GreaterThanOrEqual.cs" />
+    <Compile Include="Validation\Rules\IsDomain.cs" />
+    <Compile Include="Validation\Rules\IsEmailAddress.cs" />
+    <Compile Include="Validation\Rules\LessThan.cs" />
+    <Compile Include="Validation\Rules\LessThanOrEqual.cs" />
+    <Compile Include="Validation\Rules\MaxLength.cs" />
+    <Compile Include="Validation\Rules\MinLength.cs" />
+    <Compile Include="Validation\Rules\NotBetween.cs" />
+    <Compile Include="Validation\Rules\NotEmpty.cs" />
+    <Compile Include="Validation\Rules\NotEqual.cs" />
+    <Compile Include="Validation\Rules\NotNaN.cs" />
+    <Compile Include="Validation\Rules\NotRegex.cs" />
+    <Compile Include="Validation\Rules\Regex.cs" />
+    <Compile Include="Validation\Rules\Required.cs" />
+    <Compile Include="Validation\Rules\RequiredString.cs" />
+    <Compile Include="Validation\ValidationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MoonUnit\MoonUnit\MoonUnit.csproj">

@@ -135,6 +135,9 @@
     <Compile Include="Encryption\ExtensionMethods\SymmetricExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
+    <Compile Include="Validation\Rules\Contains.cs" />
+    <Compile Include="Validation\Rules\DoesNotContain.cs" />
+    <Compile Include="Validation\Rules\Empty.cs" />
     <Compile Include="Validation\Rules\IsDomain.cs" />
     <Compile Include="Validation\Rules\IsEmailAddress.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
@@ -380,6 +383,12 @@
     <Compile Include="Validation\Rules\LessThan.cs" />
     <Compile Include="Validation\Rules\LessThanOrEqual.cs" />
     <Compile Include="Validation\Rules\MaxLength.cs" />
+    <Compile Include="Validation\Rules\MinLength.cs" />
+    <Compile Include="Validation\Rules\NotBetween.cs" />
+    <Compile Include="Validation\Rules\NotEmpty.cs" />
+    <Compile Include="Validation\Rules\NotEqual.cs" />
+    <Compile Include="Validation\Rules\NotNaN.cs" />
+    <Compile Include="Validation\Rules\NotRegex.cs" />
     <Compile Include="Validation\Rules\Regex.cs" />
     <Compile Include="Validation\Rules\Required.cs" />
     <Compile Include="Validation\Rules\RequiredString.cs" />
