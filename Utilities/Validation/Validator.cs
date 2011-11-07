@@ -483,6 +483,21 @@ namespace Utilities.Validation
             return this;
         }
 
+        /// <summary>
+        /// Adds a max length rule
+        /// </summary>
+        /// <param name="MaxLength">Maximum length of the IEnumerable</param>
+        /// <param name="ItemToValidate">Property/Function to validate</param>
+        /// <param name="ErrorMessage">Error message to throw if not valid</param>
+        /// <returns>This</returns>
+        public virtual Validator<Type> MaxLength(Expression<Func<Type, string>> ItemToValidate, int MaxLength, string ErrorMessage = "")
+        {
+            if (string.IsNullOrEmpty(ErrorMessage))
+                ErrorMessage = ItemToValidate.GetPropertyName() + "'s length is greater than " + MaxLength.ToString();
+            Rules.Add(new MaxLength<Type>(ItemToValidate.Compile(), MaxLength, ErrorMessage));
+            return this;
+        }
+
         #endregion
 
         #region MinLength

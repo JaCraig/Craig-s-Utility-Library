@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.ORM.Mapping.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes;
 using System.Data;
 using System.Text.RegularExpressions;
@@ -182,7 +183,7 @@ namespace Utilities.ORM.Database
                     {
                         IMapping MapMapping = Mappings[Key].First(x => x.ObjectType == Property.Type);
                         TempDatabase[Mapping.TableName].AddColumn(Property.FieldName,
-                            DataTypeConversion.NetTypeToSQLDbType(MapMapping.IDProperty.Type).ToString(),
+                            MapMapping.IDProperty.Type.ToSQLDbType().ToString(),
                             MapMapping.IDProperty.MaxLength,
                             !Property.NotNull,
                             false,
@@ -217,7 +218,7 @@ namespace Utilities.ORM.Database
             TempDatabase.AddTable(Property.TableName);
             TempDatabase[Property.TableName].AddColumn("ID_", SqlDbType.Int.ToString(), 0, false, true, true, true, false, "", "", "");
             TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
-                DataTypeConversion.NetTypeToSQLDbType(Mapping.IDProperty.Type).ToString(),
+                Mapping.IDProperty.Type.ToSQLDbType().ToString(),
                 Mapping.IDProperty.MaxLength,
                 false,
                 false,
@@ -228,7 +229,7 @@ namespace Utilities.ORM.Database
                 Mapping.IDProperty.FieldName,
                 "");
             TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
-                DataTypeConversion.NetTypeToSQLDbType(MapMapping.IDProperty.Type).ToString(),
+                MapMapping.IDProperty.Type.ToSQLDbType().ToString(),
                 MapMapping.IDProperty.MaxLength,
                 false,
                 false,
@@ -252,7 +253,7 @@ namespace Utilities.ORM.Database
             TempDatabase.AddTable(Property.TableName);
             TempDatabase[Property.TableName].AddColumn("ID_", SqlDbType.Int.ToString(), 0, false, true, true, true, false, "", "", "");
             TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
-                DataTypeConversion.NetTypeToSQLDbType(Mapping.IDProperty.Type).ToString(),
+                Mapping.IDProperty.Type.ToSQLDbType().ToString(),
                 Mapping.IDProperty.MaxLength,
                 false,
                 false,
@@ -263,7 +264,7 @@ namespace Utilities.ORM.Database
                 Mapping.IDProperty.FieldName,
                 "");
             TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
-                DataTypeConversion.NetTypeToSQLDbType(MapMapping.IDProperty.Type).ToString(),
+                MapMapping.IDProperty.Type.ToSQLDbType().ToString(),
                 MapMapping.IDProperty.MaxLength,
                 false,
                 false,
@@ -295,7 +296,7 @@ namespace Utilities.ORM.Database
         private void SetupProperties(SQL.DataClasses.Table Table, IMapping Mapping)
         {
             Table.AddColumn(Mapping.IDProperty.FieldName,
-                DataTypeConversion.NetTypeToSQLDbType(Mapping.IDProperty.Type).ToString(),
+                Mapping.IDProperty.Type.ToSQLDbType().ToString(),
                 Mapping.IDProperty.MaxLength,
                 Mapping.IDProperty.NotNull,
                 Mapping.IDProperty.AutoIncrement,
@@ -310,7 +311,7 @@ namespace Utilities.ORM.Database
                 if (!(Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne))
                 {
                     Table.AddColumn(Property.FieldName,
-                    DataTypeConversion.NetTypeToSQLDbType(Property.Type).ToString(),
+                    Property.Type.ToSQLDbType().ToString(),
                     Property.MaxLength,
                     !Property.NotNull,
                     Property.AutoIncrement,

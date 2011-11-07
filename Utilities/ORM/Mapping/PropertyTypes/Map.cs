@@ -29,6 +29,7 @@ using System.Linq.Expressions;
 using Utilities.ORM.Mapping.BaseClasses;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
+using System.Data;
 using Utilities.Reflection.ExtensionMethods;
 #endregion
 
@@ -50,18 +51,85 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// Constructor
         /// </summary>
         /// <param name="Expression">Expression pointing to the Map</param>
-        public Map(Expression<Func<ClassType, DataType>> Expression)
-            : base(Expression)
+        public Map(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
+            : base(Expression, Mapping)
         {
             if (typeof(DataType).IsIEnumerable())
                 throw new ArgumentException("Expression is an IEnumerable, use ManyToOne or ManyToMany instead");
             SetDefaultValue(() => default(DataType));
-            SetFieldName(typeof(ClassType).Name + "_" + Name + "_ID");
+            SetFieldName(typeof(DataType).Name + "_" + Name + "_ID");
         }
 
         #endregion
 
         #region Functions
+
+        public override void SetupLoadCommands()
+        {
+            IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
+            LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
+                                FROM " + ForeignMapping.TableName + @"
+                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperty.FieldName + @"
+                                WHERE " + Mapping.TableName + "." + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+        }
+
+        public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override void JoinsSave(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override void CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
+        {
+        }
+
+        public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
+        {
+            if (Object == null)
+                return;
+            DataType Item = Expression.Compile()(Object);
+            if (Item == null)
+                return;
+            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+            {
+                if (Property.Cascade)
+                    ((IProperty<DataType>)Property).CascadeDelete(Item, MicroORM);
+            }
+            ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeDelete(Item, MicroORM);
+        }
+
+        public override void CascadeSave(ClassType Object, MicroORM MicroORM)
+        {
+            if (Object == null)
+                return;
+            DataType Item = Expression.Compile()(Object);
+            if (Item == null)
+                return;
+            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+            {
+                if (Property.Cascade)
+                    ((IProperty<DataType>)Property).CascadeSave(Item, MicroORM);
+            }
+            ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeSave(Item, MicroORM);
+        }
+
+        public override IParameter GetAsParameter(ClassType Object)
+        {
+            if (Object == null)
+                return null;
+            DataType Item = Expression.Compile()(Object);
+            if (Item == null)
+                return null;
+            IParameter Parameter = ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsParameter(Item);
+            Parameter.ID = FieldName;
+            return Parameter;
+        }
 
         public override IMap<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
         {

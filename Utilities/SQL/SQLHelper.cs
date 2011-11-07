@@ -396,6 +396,22 @@ namespace Utilities.SQL
             return null;
         }
 
+        /// <summary>
+        /// Executes the stored procedure as a scalar query
+        /// </summary>
+        /// <returns>The object of the first row and first column</returns>
+        public virtual DataType ExecuteScalar<DataType>()
+        {
+            Open();
+            if (ExecutableCommand != null)
+            {
+                object Value = ExecuteScalar();
+                if (!Convert.IsDBNull(Value))
+                    return (DataType)Convert.ChangeType(Value, typeof(DataType));
+            }
+            return default(DataType);
+        }
+
         #endregion
 
         #region ExecuteXmlReader

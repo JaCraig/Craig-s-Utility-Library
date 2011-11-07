@@ -129,6 +129,9 @@
     <Compile Include="IO\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Media\Image\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\Image\ExtensionMethods\ScreenExtensions.cs" />
+    <Compile Include="ORM\Database\DatabaseManager.cs" />
+    <Compile Include="ORM\Interfaces\IObject.cs" />
+    <Compile Include="ORM\ObjectBaseClass.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />

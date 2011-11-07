@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces
@@ -38,7 +39,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <summary>
         /// Mappings
         /// </summary>
-        Dictionary<Type, IMapping> Mappings { get; set; }
+        ListMapping<Type, IMapping> Mappings { get; set; }
 
         #endregion
     }

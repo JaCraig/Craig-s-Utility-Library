@@ -39,6 +39,15 @@ namespace Utilities.ORM.Mapping.Interfaces
     /// </summary>
     public interface IProperty
     {
+        #region Functions
+
+        /// <summary>
+        /// Sets up the various load commands
+        /// </summary>
+        void SetupLoadCommands();
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -108,7 +117,7 @@ namespace Utilities.ORM.Mapping.Interfaces
 
         #endregion
     }
-    
+
     /// <summary>
     /// Property interface
     /// </summary>
@@ -125,6 +134,54 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <param name="Mapping">Mapping to add the property to</param>
         /// <typeparam name="ClassType">Class type</typeparam>
         void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping);
+
+        /// <summary>
+        /// Gets the property as a parameter
+        /// </summary>
+        /// <returns>The property as a parameter</returns>
+        IParameter GetAsParameter(ClassType Object);
+
+        /// <summary>
+        /// Cascades the save
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM</param>
+        void CascadeSave(ClassType Object, MicroORM MicroORM);
+
+        /// <summary>
+        /// Cascades the delete
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM</param>
+        void CascadeDelete(ClassType Object, MicroORM MicroORM);
+
+        /// <summary>
+        /// Cascade the deleting of joins
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM</param>
+        void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM);
+
+        /// <summary>
+        /// Cascade the saving of joins
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">MicroORM</param>
+        void CascadeJoinsSave(ClassType Object, MicroORM MicroORM);
+
+        /// <summary>
+        /// Deletes the joins
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM</param>
+        void JoinsDelete(ClassType Object, MicroORM MicroORM);
+
+        /// <summary>
+        /// Saves the joins
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">MicroORM</param>
+        void JoinsSave(ClassType Object, MicroORM MicroORM);
 
         #endregion
     }

@@ -28,6 +28,7 @@ using Utilities.ORM.Mapping.Interfaces;
 using System.Linq.Expressions;
 using Utilities.ORM.Mapping.PropertyTypes;
 using System.Reflection;
+using Utilities.DataTypes;
 using Utilities.Reflection.ExtensionMethods;
 #endregion
 
@@ -72,7 +73,7 @@ namespace Utilities.ORM.Mapping
         private void Setup(Assembly AssemblyUsing)
         {
             if (Mappings == null)
-                Mappings = new Dictionary<Type, IMapping>();
+                Mappings = new ListMapping<Type, IMapping>();
             IEnumerable<Type> Types = AssemblyUsing.GetTypes(typeof(IMapping));
             foreach (Type Type in Types)
             {
@@ -87,7 +88,7 @@ namespace Utilities.ORM.Mapping
 
         #region Properties
 
-        public virtual Dictionary<Type, IMapping> Mappings { get; set; }
+        public virtual ListMapping<Type, IMapping> Mappings { get; set; }
 
         #endregion
     }

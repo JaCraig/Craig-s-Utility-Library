@@ -47,12 +47,13 @@ namespace Utilities.ORM.Mapping.BaseClasses
         /// </summary>
         /// <param name="Expression">Expression used to point to the property</param>
         /// <param name="DerivedFieldName">Derived field name</param>
-        public PropertyBase(Expression<Func<ClassType, DataType>> Expression)
+        public PropertyBase(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
         {
             this.Expression = Expression;
-            this.Name = Expression.GetPropertyName();
+            this.Name = Expression.GetPropertyName<ClassType, DataType>();
             this.Type = typeof(DataType);
             this.DerivedFieldName = "_" + Name + "Derived";
+            this.Mapping = (IMapping)Mapping;
         }
 
         #endregion
@@ -70,6 +71,14 @@ namespace Utilities.ORM.Mapping.BaseClasses
         public abstract ReturnType SetMaxLength(int MaxLength);
         public abstract void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping);
         public abstract ReturnType LoadUsingCommand(string Command, System.Data.CommandType CommandType);
+        public abstract IParameter GetAsParameter(ClassType Object);
+        public abstract void CascadeSave(ClassType Object, MicroORM MicroORM);
+        public abstract void CascadeDelete(ClassType Object, MicroORM MicroORM);
+        public abstract void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM);
+        public abstract void CascadeJoinsSave(ClassType Object, MicroORM MicroORM);
+        public abstract void JoinsDelete(ClassType Object, MicroORM MicroORM);
+        public abstract void JoinsSave(ClassType Object, MicroORM MicroORM);
+        public abstract void SetupLoadCommands();
 
         #endregion
 
@@ -90,6 +99,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         public virtual string TableName { get; protected set; }
         public virtual IMapping ForeignKey { get; set; }
         public virtual Command CommandToLoad { get; protected set; }
+        public virtual IMapping Mapping { get; protected set; }
 
         #endregion
     }

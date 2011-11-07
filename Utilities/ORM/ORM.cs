@@ -29,6 +29,7 @@ using Utilities.ORM.QueryProviders;
 using Utilities.ORM.Mapping;
 using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.Aspect;
+using Utilities.ORM.Database;
 #endregion
 
 namespace Utilities.ORM
@@ -67,9 +68,12 @@ namespace Utilities.ORM
             MappingManager = new MappingManager(Assemblies);
             QueryProvider = new Default(Assemblies);
             foreach (Type Key in MappingManager.Mappings.Keys)
-                QueryProvider.AddMapping(MappingManager.Mappings[Key]);
+                foreach (IMapping Mapping in MappingManager.Mappings[Key])
+                    QueryProvider.AddMapping(Mapping);
             Utilities.Reflection.AOP.AOPManager Manager = new Reflection.AOP.AOPManager();
             Manager.AddAspect(new ORMAspect(MappingManager.Mappings));
+            DatabaseManager = new DatabaseManager(QueryProvider.Mappings);
+            DatabaseManager.Setup();
         }
 
         private void Setup(Assembly Assembly)
@@ -77,9 +81,12 @@ namespace Utilities.ORM
             MappingManager = new MappingManager(Assembly);
             QueryProvider = new Default(Assembly);
             foreach (Type Key in MappingManager.Mappings.Keys)
-                QueryProvider.AddMapping(MappingManager.Mappings[Key]);
+                foreach (IMapping Mapping in MappingManager.Mappings[Key])
+                    QueryProvider.AddMapping(Mapping);
             Utilities.Reflection.AOP.AOPManager Manager = new Reflection.AOP.AOPManager();
             Manager.AddAspect(new ORMAspect(MappingManager.Mappings));
+            DatabaseManager = new DatabaseManager(QueryProvider.Mappings);
+            DatabaseManager.Setup();
         }
 
         /// <summary>
@@ -104,6 +111,11 @@ namespace Utilities.ORM
         /// Mapping manager
         /// </summary>
         private static MappingManager MappingManager { get; set; }
+
+        /// <summary>
+        /// Database manager
+        /// </summary>
+        private static DatabaseManager DatabaseManager { get; set; }
 
         #endregion
     }

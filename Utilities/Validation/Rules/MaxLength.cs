@@ -79,6 +79,51 @@ namespace Utilities.Validation.Rules
     }
 
     /// <summary>
+    /// This item's length is less than the length specified
+    /// </summary>
+    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
+    public class MaxLength<ObjectType> : Rule<ObjectType, string>
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ItemToValidate">Item to validate</param>
+        /// <param name="MaxLength">Max length of the string</param>
+        /// <param name="ErrorMessage">Error message</param>
+        public MaxLength(Func<ObjectType, string> ItemToValidate, int MaxLength, string ErrorMessage)
+            : base(ItemToValidate, ErrorMessage)
+        {
+            this.MaxLengthAllowed = MaxLength;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Max length of the string
+        /// </summary>
+        protected virtual int MaxLengthAllowed { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        public override void Validate(ObjectType Object)
+        {
+            string Value = ItemToValidate(Object);
+            if (Value.IsNull())
+                return;
+            if (Value.Count() > MaxLengthAllowed)
+                throw new NotValid(ErrorMessage);
+        }
+
+        #endregion
+    }
+
+    /// <summary>
     /// Max length attribute
     /// </summary>
     public class MaxLength : BaseAttribute

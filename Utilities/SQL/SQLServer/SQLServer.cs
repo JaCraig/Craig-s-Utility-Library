@@ -101,22 +101,16 @@ namespace Utilities.SQL.SQLServer
             string Command = BuildCommands(Database);
             string[] Splitter = { "\n" };
             string[] Commands = Command.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
-            string DatabaseConnectionString = Regex.Replace(ConnectionString, "Initial Catalog=(.*?;)", "");
+            ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
+            string DatabaseConnectionString = Regex.Replace(ConnectionString, "Initial Catalog=(.*?;)", "", RegexOptions.IgnoreCase);
             using (SQLHelper Helper = new SQLHelper(Commands[0], DatabaseConnectionString, CommandType.Text))
             {
-                try
-                {
-                    Helper.Open();
-                    Helper.ExecuteNonQuery();
-                }
-                catch { throw; }
-                finally { Helper.Close(); }
+                Helper.ExecuteNonQuery();
             }
             using (SQLHelper Helper = new SQLHelper("", ConnectionString, CommandType.Text))
             {
                 try
                 {
-                    Helper.Open();
                     Helper.BeginTransaction();
                     for (int x = 1; x < Commands.Length; ++x)
                     {
@@ -126,7 +120,6 @@ namespace Utilities.SQL.SQLServer
                     Helper.Commit();
                 }
                 catch { Helper.Rollback(); throw; }
-                finally { Helper.Close(); }
             }
         }
 
@@ -146,11 +139,11 @@ namespace Utilities.SQL.SQLServer
             string Command = BuildCommands(DesiredDatabase, CurrentDatabase);
             string[] Splitter = { "\n" };
             string[] Commands = Command.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
+            ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
             using (SQLHelper Helper = new SQLHelper("", ConnectionString, CommandType.Text))
             {
                 try
                 {
-                    Helper.Open();
                     Helper.BeginTransaction();
                     for (int x = 0; x < Commands.Length; ++x)
                     {
@@ -160,7 +153,6 @@ namespace Utilities.SQL.SQLServer
                     Helper.Commit();
                 }
                 catch { Helper.Rollback(); throw; }
-                finally { Helper.Close(); }
             }
         }
 
@@ -172,6 +164,8 @@ namespace Utilities.SQL.SQLServer
         public static Database GetDatabaseStructure(string ConnectionString)
         {
             string DatabaseName = Regex.Match(ConnectionString, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", "");
+            if (!DoesDatabaseExist(DatabaseName, ConnectionString))
+                return null;
             Database Temp = new Database(DatabaseName);
             GetTables(ConnectionString, Temp);
             SetupTables(ConnectionString, Temp);
