@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -33,26 +34,26 @@ namespace Utilities.FileFormats.BlogML
     public class Posts
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing post info</param>
         public Posts(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Element.ThrowIfNull("Element");
             PostList = new List<Post>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("post", StringComparison.CurrentCultureIgnoreCase))
-                {
                     PostList.Add(new Post((XmlElement)Children));
-                }
             }
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// List of posts
         /// </summary>

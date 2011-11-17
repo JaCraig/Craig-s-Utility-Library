@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Xml;
 using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -39,26 +40,14 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing the post info</param>
         public Post(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Element.ThrowIfNull("Element");
             DateCreated = DateTime.Now;
             DateModified = DateTime.Now;
-            if (Element.Attributes["id"] != null)
-            {
-                ID = Element.Attributes["id"].Value;
-            }
-            if (Element.Attributes["post-url"] != null)
-            {
-                PostURL = Element.Attributes["post-url"].Value;
-            }
-            if (Element.Attributes["date-created"] != null)
-            {
-                DateCreated = DateTime.Parse(Element.Attributes["date-created"].Value);
-            }
-            if (Element.Attributes["date-modified"] != null)
-            {
-                DateModified = DateTime.Parse(Element.Attributes["date-modified"].Value);
-            }
+            ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
+            PostURL = Element.Attributes["post-url"] != null ? Element.Attributes["post-url"].Value : "";
+            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value) : DateTime.MinValue;
+            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value) : DateCreated;
+
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
@@ -98,6 +87,7 @@ namespace Utilities.FileFormats.BlogML
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// ID of the post
         /// </summary>

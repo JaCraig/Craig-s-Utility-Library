@@ -27,6 +27,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
+using Utilities.DataTypes.ExtensionMethods;
 
 #endregion
 
@@ -38,6 +39,7 @@ namespace Utilities.FileFormats.INI
     public class INI
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -54,9 +56,11 @@ namespace Utilities.FileFormats.INI
         {
             this.FileName = FileName;
         }
+
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// Writes a change to an INI file
         /// </summary>
@@ -91,15 +95,10 @@ namespace Utilities.FileFormats.INI
         /// <param name="Section">Section</param>
         /// <param name="Key">Key</param>
         /// <param name="DefaultValue">Default value if it does not exist</param>
-        public virtual string ReadFromINI(string Section, string Key, string DefaultValue)
+        public virtual string ReadFromINI(string Section, string Key, string DefaultValue="")
         {
-            if (FileContents.Keys.Contains(Section))
-            {
-                if (FileContents[Section].Keys.Contains(Key))
-                {
-                    return FileContents[Section][Key];
-                }
-            }
+            if (FileContents.Keys.Contains(Section) && FileContents[Section].Keys.Contains(Key))
+                return FileContents[Section][Key];
             return DefaultValue;
         }
 
@@ -126,6 +125,40 @@ namespace Utilities.FileFormats.INI
             Builder.Append("</INI>");
             return Builder.ToString();
         }
+
+        /// <summary>
+        /// Deletes a section from the INI file
+        /// </summary>
+        /// <param name="Section">Section to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public virtual bool DeleteFromINI(string Section)
+        {
+            bool ReturnValue = false;
+            if (FileContents.ContainsKey(Section))
+            {
+                ReturnValue = FileContents.Remove(Section);
+                WriteFile();
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Deletes a key from the INI file
+        /// </summary>
+        /// <param name="Section">Section the key is under</param>
+        /// <param name="Key">Key to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public virtual bool DeleteFromINI(string Section, string Key)
+        {
+            bool ReturnValue = false;
+            if (FileContents.ContainsKey(Section) && FileContents[Section].ContainsKey(Key))
+            {
+                ReturnValue = FileContents[Section].Remove(Key);
+                WriteFile();
+            }
+            return ReturnValue;
+        }
+
         #endregion
 
         #region Private Functions
@@ -141,9 +174,7 @@ namespace Utilities.FileFormats.INI
             {
                 Builder.Append("[" + Header + "]\r\n");
                 foreach (string Key in FileContents[Header].Keys)
-                {
                     Builder.Append(Key + "=" + FileContents[Header][Key] + "\r\n");
-                }
             }
             new FileInfo(FileName).Save(Builder.ToString());
         }

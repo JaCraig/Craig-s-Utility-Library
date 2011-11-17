@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -48,17 +49,11 @@ namespace Utilities.FileFormats.Delimited
         /// <param name="FileContent">File content</param>
         public Delimited(string FileContent)
         {
-            if (string.IsNullOrEmpty(FileContent))
-                throw new ArgumentNullException("FileContent");
+            FileContent.ThrowIfNullOrEmpty("FileContent");
             Regex TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
             MatchCollection Matches = TempSplitter.Matches(FileContent);
-            foreach (Match Match in Matches)
-            {
-                if (!string.IsNullOrEmpty(Match.Value))
-                {
-                    Rows.Add(new Row(Match.Value, Delimiter));
-                }
-            }
+            Matches.Where(x => !string.IsNullOrEmpty(x.Value))
+                    .ForEach(x => Rows.Add(new Row(x.Value, Delimiter)));
         }
 
         #endregion
@@ -111,10 +106,7 @@ namespace Utilities.FileFormats.Delimited
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            foreach (Row CurrentRow in Rows)
-            {
-                Builder.Append(CurrentRow.ToString());
-            }
+            Rows.ForEach<Row>(x => Builder.Append(x.ToString()));
             return Builder.ToString();
         }
 

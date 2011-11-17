@@ -220,18 +220,6 @@
     <Compile Include="Environment\WMI.cs" />
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Events\EventHelper.cs" />
-    <Compile Include="FileFormats\APMLHelper\APML.cs" />
-    <Compile Include="FileFormats\APMLHelper\Application.cs" />
-    <Compile Include="FileFormats\APMLHelper\Applications.cs" />
-    <Compile Include="FileFormats\APMLHelper\Author.cs" />
-    <Compile Include="FileFormats\APMLHelper\Body.cs" />
-    <Compile Include="FileFormats\APMLHelper\Concept.cs" />
-    <Compile Include="FileFormats\APMLHelper\Concepts.cs" />
-    <Compile Include="FileFormats\APMLHelper\Data.cs" />
-    <Compile Include="FileFormats\APMLHelper\Head.cs" />
-    <Compile Include="FileFormats\APMLHelper\Profile.cs" />
-    <Compile Include="FileFormats\APMLHelper\Source.cs" />
-    <Compile Include="FileFormats\APMLHelper\Sources.cs" />
     <Compile Include="FileFormats\BlogML\Author.cs" />
     <Compile Include="FileFormats\BlogML\Authors.cs" />
     <Compile Include="FileFormats\BlogML\BlogML.cs" />
@@ -434,8 +422,6 @@
     <Compile Include="Exchange\Exchange.cs" />
     <Compile Include="FileFormats\VCalendar.cs" />
     <Compile Include="FileFormats\VCard.cs" />
-    <Compile Include="FileFormats\FOAF\FOAF.cs" />
-    <Compile Include="FileFormats\FOAF\Person.cs" />
     <Compile Include="Web\HTML.cs" />
     <Compile Include="FileFormats\INI\INI.cs" />
     <Compile Include="Web\Hulu\Hulu.cs" />

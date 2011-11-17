@@ -37,14 +37,8 @@ namespace Utilities.FileFormats.FixedLength.Interfaces
         /// Parses the string into fields
         /// </summary>
         /// <param name="Value">The string value</param>
-        void Parse(string Value);
-
-        /// <summary>
-        /// Parses the string into fields
-        /// </summary>
-        /// <param name="Value">The string value</param>
         /// <param name="Length">Max length of the value</param>
-        void Parse(string Value,int Length);
+        void Parse(string Value,int Length=-1);
 
         #endregion
 

@@ -115,8 +115,7 @@ namespace Utilities.FileFormats.Delimited
                 Builder.Append(Seperator).Append(CurrentCell);
                 Seperator = Delimiter;
             }
-            Builder.Append(System.Environment.NewLine);
-            return Builder.ToString();
+            return Builder.Append(System.Environment.NewLine).ToString();
         }
 
         #endregion

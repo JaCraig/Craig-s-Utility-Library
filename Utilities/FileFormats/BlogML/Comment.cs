@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Xml;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -39,43 +40,20 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Element">Element containing the post info</param>
         public Comment(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
-            if (Element.Attributes["date-created"] != null)
-            {
-                DateCreated = DateTime.Parse(Element.Attributes["date-created"].Value);
-            }
-            if (Element.Attributes["approved"] != null)
-            {
-                Approved = bool.Parse(Element.Attributes["approved"].Value);
-            }
-            if (Element.Attributes["user-name"] != null)
-            {
-                UserName = Element.Attributes["user-name"].Value;
-            }
-            if (Element.Attributes["user-email"] != null)
-            {
-                UserEmail = Element.Attributes["user-email"].Value;
-            }
-            if (Element.Attributes["user-ip"] != null)
-            {
-                UserIP = Element.Attributes["user-ip"].Value;
-            }
-            if (Element.Attributes["user-url"] != null)
-            {
-                UserURL = Element.Attributes["user-url"].Value;
-            }
+            Element.ThrowIfNull("Element");
+            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value) : DateTime.MinValue;
+            Approved = Element.Attributes["approved"] != null ? bool.Parse(Element.Attributes["approved"].Value) : false;
+            UserName = Element.Attributes["user-name"] != null ? Element.Attributes["user-name"].Value : "";
+            UserEmail = Element.Attributes["user-email"] != null ? Element.Attributes["user-email"].Value : "";
+            UserIP = Element.Attributes["user-ip"] != null ? Element.Attributes["user-ip"].Value : "";
+            UserURL = Element.Attributes["user-url"] != null ? Element.Attributes["user-url"].Value : "";
 
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                {
                     Title = Children.InnerText;
-                }
                 else if (Children.Name.Equals("content", StringComparison.CurrentCultureIgnoreCase))
-                {
                     Content = Children.InnerText;
-                }
             }
         }
 

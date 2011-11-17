@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Xml;
 using System;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -32,22 +33,22 @@ namespace Utilities.FileFormats.BlogML
     public class Tag
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the tag info</param>
         public Tag(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Element.ThrowIfNull("Element");
             if (Element.Attributes["ref"] != null)
-            {
                 REF = Element.Attributes["ref"].Value;
-            }
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Gets the REF info for the tag (usually just the tag's name)
         /// </summary>

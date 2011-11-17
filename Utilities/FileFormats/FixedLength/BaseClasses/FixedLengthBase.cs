@@ -32,7 +32,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
     /// Parses and creates a fixed length file
     /// </summary>
     /// <typeparam name="T">Field type</typeparam>
-    public class FixedLengthBase<T>
+    public abstract class FixedLengthBase<T>
     {
         #region Constructor
 
@@ -52,20 +52,8 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// Parses the string into fields
         /// </summary>
         /// <param name="Value">The string value</param>
-        public virtual void Parse(string Value)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Parses the string into fields
-        /// </summary>
-        /// <param name="Value">The string value</param>
         /// <param name="Length">Max length for the record</param>
-        public virtual void Parse(string Value, int Length)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Parse(string Value,int Length=-1);
 
         #endregion
 
@@ -81,9 +69,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         {
             StringBuilder Builder = new StringBuilder();
             foreach (IRecord<T> Record in Records)
-            {
                 Builder.Append(Record.ToString());
-            }
             return Builder.ToString();
         }
 

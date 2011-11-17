@@ -32,7 +32,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
     /// Record base class
     /// </summary>
     /// <typeparam name="T">Field type</typeparam>
-    public class RecordBase<T> : IRecord<T>
+    public abstract class RecordBase<T> : IRecord<T>
     {
         #region Constructor
 
@@ -48,15 +48,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #region IRecord Members
 
-        public virtual void Parse(string Value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Parse(string Value, int Length)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Parse(string Value, int Length = -1);
 
         public virtual int Length { get; set; }
 
@@ -70,9 +62,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         {
             StringBuilder Builder = new StringBuilder();
             foreach (IField<T> Field in Fields)
-            {
                 Builder.Append(Field.ToString());
-            }
             return Builder.ToString();
         }
 

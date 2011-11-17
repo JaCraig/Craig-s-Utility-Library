@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -33,26 +35,26 @@ namespace Utilities.FileFormats.BlogML
     public class Categories
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Element">Categories element</param>
         public Categories(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Element.ThrowIfNull("Element");
             CategoryList = new List<Category>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
-                {
                     CategoryList.Add(new Category((XmlElement)Children));
-                }
             }
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Categories list
         /// </summary>
@@ -67,16 +69,10 @@ namespace Utilities.FileFormats.BlogML
         {
             get
             {
-                foreach (Category Category in CategoryList)
-                {
-                    if (Category.ID.Equals(index))
-                    {
-                        return Category;
-                    }
-                }
-                return null;
+                return CategoryList.FirstOrDefault(x => x.ID.Equals(index));
             }
         }
+
         #endregion
     }
 }

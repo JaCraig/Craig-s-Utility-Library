@@ -38,27 +38,9 @@ namespace Utilities.FileFormats.FixedLength
         /// <summary>
         /// Constructor
         /// </summary>
-        public StringField()
-            : base()
-        {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Value">Value to place in the field</param>
-        public StringField(string Value)
-            : base()
-        {
-            Parse(Value);
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
         /// <param name="Value">Value to place in the field</param>
         /// <param name="Length">Max length of the value</param>
-        public StringField(string Value, int Length)
+        public StringField(string Value = "", int Length = -1)
             : base()
         {
             Parse(Value, Length);
@@ -68,20 +50,10 @@ namespace Utilities.FileFormats.FixedLength
 
         #region Public Overridden Functions
 
-        public override void Parse(string Value)
-        {
-            Parse(Value, Value.Length);
-        }
-
-        public override void Parse(string Value, int Length)
-        {
-            Parse(Value, Length, " ");
-        }
-
-        public override void Parse(string Value, int Length, string FillerCharacter)
+        public override void Parse(string Value, int Length = -1, string FillerCharacter = " ")
         {
             this.Value = Value;
-            this.Length = Length;
+            this.Length = Length >= 0 ? Length : Value.Length;
             if (Value.Length > this.Length)
             {
                 this.Value = Value.Left(Length);
@@ -90,9 +62,7 @@ namespace Utilities.FileFormats.FixedLength
             StringBuilder Builder = new StringBuilder();
             Builder.Append(Value);
             while (Builder.Length < this.Length)
-            {
                 Builder.Append(FillerCharacter);
-            }
             this.Value = Builder.ToString();
         }
 

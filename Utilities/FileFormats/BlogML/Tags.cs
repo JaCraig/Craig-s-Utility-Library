@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -33,26 +34,26 @@ namespace Utilities.FileFormats.BlogML
     public class Tags
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing tags info</param>
         public Tags(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Element.ThrowIfNull("Element");
             TagList = new List<Tag>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("tag", StringComparison.CurrentCultureIgnoreCase))
-                {
                     TagList.Add(new Tag((XmlElement)Children));
-                }
             }
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Tags list
         /// </summary>

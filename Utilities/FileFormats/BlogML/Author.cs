@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Xml;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -32,37 +33,28 @@ namespace Utilities.FileFormats.BlogML
     public class Author
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Element">XML element containing the author info</param>
         public Author(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
-            if (Element.Attributes["id"] != null)
-            {
-                ID = Element.Attributes["id"].Value;
-            }
-            if (Element.Attributes["email"] != null)
-            {
-                Email = Element.Attributes["email"].Value;
-            }
-            if (Element.Attributes["ref"] != null)
-            {
-                REF = Element.Attributes["ref"].Value;
-            }
+            Element.ThrowIfNull("Element");
+            ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
+            Email = Element.Attributes["email"] != null ? Element.Attributes["email"].Value : "";
+            REF = Element.Attributes["ref"] != null ? Element.Attributes["ref"].Value : "";
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                {
                     Title = Children.InnerText;
-                }
             }
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// ID of the author
         /// </summary>

@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -33,26 +35,26 @@ namespace Utilities.FileFormats.BlogML
     public class Authors
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the authors information</param>
         public Authors(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Element.ThrowIfNull("Element");
             AuthorList = new List<Author>();
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("author", StringComparison.CurrentCultureIgnoreCase))
-                {
                     AuthorList.Add(new Author((XmlElement)Children));
-                }
             }
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// List of authors
         /// </summary>
@@ -77,16 +79,10 @@ namespace Utilities.FileFormats.BlogML
         {
             get
             {
-                foreach (Author Author in AuthorList)
-                {
-                    if (Author.ID.Equals(index))
-                    {
-                        return Author;
-                    }
-                }
-                return null;
+                return AuthorList.FirstOrDefault(x => x.ID.Equals(index));
             }
         }
+
         #endregion
     }
 }

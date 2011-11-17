@@ -27,6 +27,7 @@ using System.Text;
 using System.IO.Packaging;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.Zip
@@ -43,10 +44,9 @@ namespace Utilities.FileFormats.Zip
         /// </summary>
         /// <param name="FilePath">Path to the zip file</param>
         /// <param name="Overwrite">Should the zip file be overwritten?</param>
-        public ZipFile(string FilePath, bool Overwrite)
+        public ZipFile(string FilePath, bool Overwrite = true)
         {
-            if (string.IsNullOrEmpty(FilePath))
-                throw new ArgumentNullException("FilePath");
+            FilePath.ThrowIfNullOrEmpty("FilePath");
             ZipFileStream = new FileStream(FilePath, Overwrite ? FileMode.Create : FileMode.OpenOrCreate);
         }
 
@@ -69,18 +69,15 @@ namespace Utilities.FileFormats.Zip
         /// <param name="Folder">Folder to add</param>
         public virtual void AddFolder(string Folder)
         {
-            if (string.IsNullOrEmpty(Folder))
-                throw new ArgumentNullException("Folder");
+            Folder.ThrowIfNullOrEmpty("Folder");
+            Folder = new DirectoryInfo(Folder).FullName;
             if (Folder.EndsWith(@"\"))
                 Folder = Folder.Remove(Folder.Length - 1);
             using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.OpenOrCreate))
             {
-                List<FileInfo> Files = new DirectoryInfo(Folder).GetFiles().ToList();
-                foreach (FileInfo File in Files)
-                {
-                    string FilePath = File.FullName.Replace(Folder, "");
-                    AddFile(FilePath, File, Package);
-                }
+                new DirectoryInfo(Folder)
+                    .GetFiles()
+                    .ForEach(x => AddFile(x.FullName.Replace(Folder, ""), x, Package));
             }
         }
 
@@ -90,13 +87,13 @@ namespace Utilities.FileFormats.Zip
         /// <param name="File">File to add</param>
         public virtual void AddFile(string File)
         {
-            if (string.IsNullOrEmpty(File))
-                throw new ArgumentNullException("File");
-            if (!new FileInfo(File).Exists)
+            File.ThrowIfNullOrEmpty("File");
+            FileInfo TempFileInfo = new FileInfo(File);
+            if (!TempFileInfo.Exists)
                 throw new ArgumentException("File");
             using (Package Package = ZipPackage.Open(ZipFileStream))
             {
-                AddFile(File, new FileInfo(File), Package);
+                AddFile(File, TempFileInfo, Package);
             }
         }
 
@@ -106,9 +103,9 @@ namespace Utilities.FileFormats.Zip
         /// <param name="Folder">Folder to uncompress the file in</param>
         public virtual void UncompressFile(string Folder)
         {
-            if (string.IsNullOrEmpty(Folder))
-                throw new ArgumentNullException(Folder);
+            Folder.ThrowIfNullOrEmpty("Folder");
             new DirectoryInfo(Folder).Create();
+            Folder = new DirectoryInfo(Folder).FullName;
             using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.Open, FileAccess.Read))
             {
                 foreach (PackageRelationship Relationship in Package.GetRelationshipsByType("http://schemas.microsoft.com/opc/2006/sample/document"))
@@ -129,8 +126,7 @@ namespace Utilities.FileFormats.Zip
         /// <param name="Folder">Folder to extract it into</param>
         protected virtual void Extract(PackagePart Document, string Folder)
         {
-            if (string.IsNullOrEmpty(Folder))
-                throw new ArgumentNullException(Folder);
+            Folder.ThrowIfNullOrEmpty("Folder");
             string Location = Folder + System.Web.HttpUtility.UrlDecode(Document.Uri.ToString()).Replace('\\', '/');
             new DirectoryInfo(Path.GetDirectoryName(Location)).Create();
             byte[] Data = new byte[1024];
@@ -156,10 +152,9 @@ namespace Utilities.FileFormats.Zip
         /// <param name="Package">Package to add the file to</param>
         protected virtual void AddFile(string File, FileInfo FileInfo, Package Package)
         {
-            if (string.IsNullOrEmpty(File))
-                throw new ArgumentNullException("File");
+            File.ThrowIfNullOrEmpty("File");
             if (!FileInfo.Exists)
-                throw new ArgumentException("File");
+                throw new ArgumentException("FileInfo");
             Uri UriPath = PackUriHelper.CreatePartUri(new Uri(File, UriKind.Relative));
             PackagePart PackagePart = Package.CreatePart(UriPath, System.Net.Mime.MediaTypeNames.Text.Xml, CompressionOption.Maximum);
             byte[] Data = FileInfo.ReadBinary();

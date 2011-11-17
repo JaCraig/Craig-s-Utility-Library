@@ -30,7 +30,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
     /// Field base class
     /// </summary>
     /// <typeparam name="T">Field type</typeparam>
-    public class FieldBase<T> : IField<T>
+    public abstract class FieldBase<T> : IField<T>
     {
         #region Constructor
 
@@ -45,20 +45,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #region IField Members
 
-        public virtual void Parse(string Value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Parse(string Value, int Length)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Parse(string Value, int Length, string FillerCharacter)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Parse(string Value, int Length = -1, string FillerCharacter = " ");
 
         public virtual int Length { get; set; }
 

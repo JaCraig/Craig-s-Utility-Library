@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Xml;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -32,53 +33,51 @@ namespace Utilities.FileFormats.BlogML
     public class BlogML
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Location">Location of the XML file</param>
         public BlogML(string Location)
         {
-            try
+            Location.ThrowIfNullOrEmpty("Location");
+            XmlDocument Document = new XmlDocument();
+            Document.Load(Location);
+            foreach (XmlNode Children in Document.ChildNodes)
             {
-                if (string.IsNullOrEmpty(Location))
-                    throw new ArgumentNullException("Location");
-                XmlDocument Document = new XmlDocument();
-                Document.Load(Location);
-                foreach (XmlNode Children in Document.ChildNodes)
+                if (Children.Name.Equals("blog", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (Children.Name.Equals("blog", StringComparison.CurrentCultureIgnoreCase))
+                    foreach (XmlNode Child in Children.ChildNodes)
                     {
-                        foreach (XmlNode Child in Children.ChildNodes)
+                        if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Title = Child.InnerText;
-                            }
-                            else if (Child.Name.Equals("sub-title", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                SubTitle = Child.InnerText;
-                            }
-                            else if (Child.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Authors = new Authors((XmlElement)Child);
-                            }
-                            else if (Child.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Categories = new Categories((XmlElement)Child);
-                            }
-                            else if (Child.Name.Equals("posts", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                Posts = new Posts((XmlElement)Child);
-                            }
+                            Title = Child.InnerText;
+                        }
+                        else if (Child.Name.Equals("sub-title", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            SubTitle = Child.InnerText;
+                        }
+                        else if (Child.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Authors = new Authors((XmlElement)Child);
+                        }
+                        else if (Child.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Categories = new Categories((XmlElement)Child);
+                        }
+                        else if (Child.Name.Equals("posts", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Posts = new Posts((XmlElement)Child);
                         }
                     }
                 }
             }
-            catch { }
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Title of the blog
         /// </summary>
