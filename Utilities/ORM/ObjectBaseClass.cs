@@ -91,7 +91,8 @@ namespace Utilities.ORM
             if (!E.Stop)
             {
                 instance = Session.Any<ObjectType>(Params);
-                instance.OnLoaded(new LoadedEventArgs());
+                if(instance!=null)
+                    instance.OnLoaded(new LoadedEventArgs());
             }
             return instance;
         }
