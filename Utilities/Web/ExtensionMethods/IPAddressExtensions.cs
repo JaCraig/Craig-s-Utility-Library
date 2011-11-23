@@ -20,45 +20,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-
+using System.Net;
 #endregion
 
-namespace Utilities.Web.Email
+namespace Utilities.Web.ExtensionMethods
 {
     /// <summary>
-    /// Base message class used for emails
+    /// Extensions related to IP addresses
     /// </summary>
-    public class Message
+    public static class IPAddressExtensions
     {
-        #region Constructor
+        #region GetHostName
+
         /// <summary>
-        /// Constructor
+        /// Gets the host name based off of an IP address
         /// </summary>
-        public Message()
+        /// <param name="IP">IP address</param>
+        /// <returns>the host name associated with the IP</returns>
+        public static string GetHostName(this IPAddress IP)
         {
+            return Dns.GetHostEntry(IP).HostName;
         }
-        #endregion
-
-        #region Properties
-        /// <summary>
-        /// Whom the message is to
-        /// </summary>
-        public virtual string To { get; set; }
 
         /// <summary>
-        /// The subject of the email
+        /// Gets the host name based off of an IP address
         /// </summary>
-        public virtual string Subject { get; set; }
-
-        /// <summary>
-        /// Whom the message is from
-        /// </summary>
-        public virtual string From { get; set; }
-
-        /// <summary>
-        /// Body of the text
-        /// </summary>
-        public virtual string Body { get; set; }
+        /// <param name="IP">IP address</param>
+        /// <returns>the host name associated with the IP</returns>
+        public static string GetHostName(this string IP)
+        {
+            return Dns.GetHostEntry(IP).HostName;
+        }
 
         #endregion
     }

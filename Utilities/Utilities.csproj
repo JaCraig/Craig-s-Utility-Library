@@ -107,6 +107,7 @@
     <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
+    <Compile Include="Error\ExtensionMethods\Extensions.cs" />
     <Compile Include="IoC\Manager.cs" />
     <Compile Include="IoC\Mappings\Attributes\Inject.cs" />
     <Compile Include="IoC\Mappings\BaseClasses\BaseMapping.cs" />
@@ -388,10 +389,12 @@
     <Compile Include="Web\Akismet\Akismet.cs" />
     <Compile Include="Web\Akismet\Comment.cs" />
     <Compile Include="Web\Bing\Bing.cs" />
+    <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\Minification.cs" />
     <Compile Include="Web\Gravatar\Gravatar.cs" />
     <Compile Include="Web\OAuth\OAuth.cs" />
     <Compile Include="Web\Craigslist\Craigslist.cs" />
-    <Compile Include="Web\CSS.cs" />
     <Compile Include="FileFormats\CSV\CSV.cs" />
     <Compile Include="Web\Ebay\Ebay.cs" />
     <Compile Include="Web\Email\SMTP\EmailSender.cs" />
@@ -422,10 +425,8 @@
     <Compile Include="Exchange\Exchange.cs" />
     <Compile Include="FileFormats\VCalendar.cs" />
     <Compile Include="FileFormats\VCard.cs" />
-    <Compile Include="Web\HTML.cs" />
     <Compile Include="FileFormats\INI\INI.cs" />
     <Compile Include="Web\Hulu\Hulu.cs" />
-    <Compile Include="Web\Javascript.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Media\Image\ASCIIArt.cs" />
@@ -473,14 +474,12 @@
     <Compile Include="Web\Ping\Ping.cs" />
     <Compile Include="Web\REST\REST.cs" />
     <Compile Include="Web\Twitter\Twitter.cs" />
-    <Compile Include="Web\Web.cs" />
     <Compile Include="Web\WebBrowserHelper\WebBrowserHelper.cs" />
     <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
     <Compile Include="FileFormats\XFN\People.cs" />
     <Compile Include="FileFormats\XFN\XFNList.cs" />
     <Compile Include="FileFormats\XMDP\Property.cs" />
     <Compile Include="FileFormats\XMDP\XMDP.cs" />
-    <Compile Include="Web\Youtube\Youtube.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Utilities.snk" />

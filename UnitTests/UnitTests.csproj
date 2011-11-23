@@ -179,6 +179,10 @@
     <Compile Include="Validation\Rules\Required.cs" />
     <Compile Include="Validation\Rules\RequiredString.cs" />
     <Compile Include="Validation\ValidationManager.cs" />
+    <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\MinificationExtensions.cs" />
+    <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MoonUnit\MoonUnit\MoonUnit.csproj">
@@ -194,6 +198,9 @@
     <Content Include="Data\Image2.jpg" />
     <Content Include="Data\Image\Lenna.jpg" />
     <Content Include="Data\Testing\Test.txt" />
+    <Content Include="Data\Web\HanselmanSite.html" />
+    <Content Include="Data\Web\RandomCSS.css" />
+    <Content Include="Data\Web\RandomJS.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FileFormats\TestFile.ini" />

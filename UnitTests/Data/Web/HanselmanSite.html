@@ -1,0 +1,699 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="no-js">
+<head profile="http://gmpg.org/xfn/11">
+	<title>Scott Hanselman</title>
+	
+	<link rel="shortcut icon" href="/blog/favicon.ico" type="image/vnd.microsoft.icon" />
+	<meta name="author" content="Scott Hanselman" />
+	<meta name="copyright" content="Scott Hanselman" />
+	<meta content="Scott, Computer, Zen, .NET, C#, Hanselman, Scott, Weblog, Diabetes, Portland, Zimbabwe, ComputerZen.com - Scott Hanselman's Musings" name="keywords" />
+	<meta name="description" content="Scott Hanselman on Programming, User Experience, The Zen of Computers and Life in General" />
+	<link rel="meta" type="application/rdf+xml" title="FOAF" href="/blog/foaf.rdf" />
+	<meta name="DC.title" content="The Blog of Scott Hanselman" />
+	<meta name="t_omni_extblogid" content="msstoextblogs1" />
+	<meta name="t_omni_blogname" content="Scott Hanselman" />
+	<link rel="search" type="application/opensearchdescription+xml" href="/blog/opensearch.xml" title="Hanselman Search">
+	<link rel="openid.server" href="http://www.myopenid.com/server" />
+	<link rel="openid.delegate" href="http://scotthanselman.myopenid.com/" />
+	<link rel="openid2.provider" href="http://www.myopenid.com/server" />
+	<link rel="openid2.local_id" href="http://scotthanselman.myopenid.com/" />
+	
+	<link rel="me" type="text/html" href="http://profiles.google.com/hanselman.scott?rel=me"> 
+	<link rel="me" type="text/html" href="http://feeds.feedburner.com/ScottHanselman"> 
+	<link rel="me" type="text/html" href="http://twitter.com/shanselman"> 
+	<link rel="me" type="text/html" href="http://facebook.com/scott.hanselman.public"> 
+
+	
+	<meta http-equiv="X-XRDS-Location" content="http://www.myopenid.com/xrds?username=scotthanselman.myopenid.com" />
+	<meta name="msapplication-task" content="name=Complete Archives;action-uri=/blog/Archives.aspx;icon-uri=/blog/images/archives.ico" />
+	<meta name="msapplication-task" content="name=Speaking/Videos;action-uri=/blog/CategoryView.aspx?category=Speaking;icon-uri=/blog/images/videos.ico" />
+	<meta name="msapplication-task" content="name=Hanselminutes Podcast;action-uri=/blog/CategoryView.aspx?category=Podcast;icon-uri=/blog/images/podcast.ico" />
+	<meta name="msapplication-task" content="name=This Developer's Life;action-uri=http://www.thisdeveloperslife.com;icon-uri=/blog/images/podcast.ico" />
+	<meta name="msapplication-task" content="name=Scott on Twitter;action-uri=http://twitter.com/shanselman;icon-uri=/blog/images/twitter.ico" />
+	<meta name="msapplication-task" content="name=Scott on Facebook;action-uri=http://facebook.com/scott.hanselman.public;icon-uri=/blog/images/facebook.ico" />
+	<meta name="msapplication-starturl" content="./" />
+	<meta name="application-name" content="Scott Hanselman's Blog" />
+	<meta name="msapplication-tooltip" content="Scott Hanselman's Blog" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+ 
+	<!-- ukey="2C09B74E" -->
+	<!-- to correct the unsightly Flash of Unstyled Content. http://www.bluerobot.com/web/css/fouc.asp -->
+	<script type="text/javascript"></script >
+
+	<link media="all" rel="stylesheet" type="text/css" href="http://www.hanselman.com/blog/themes/Hanselman/templates/../css/hanselman.v5.min.css"></link>
+
+	<link rel="stylesheet" href="/blog/themes/Hanselman/css/hanselman.print.v1.min.css" media="print" />
+  
+   <script type="text/javascript" src="/blog/themes/Hanselman/scripts/hanselman.header.v4.min.js"></script>
+   
+<base href="http://www.hanselman.com/blog/"></base>
+<link rel="alternate" type="application/rss+xml" title="Scott Hanselman" href="http://feeds.feedburner.com/ScottHanselman" />
+<link rel="alternate" type="application/atom+xml" title="Scott Hanselman" href="http://feeds.feedburner.com/ScottHanselman" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.hanselman.com/blog/EditService.asmx/GetRsd" /><link rel="microsummary" type="application/x.microsummary+xml" href="http://www.hanselman.com/blog/Microsummary.ashx" />
+<link rel="canonical" href="http://www.hanselman.com/blog/" />
+</head>
+
+<body><form name="mainForm" method="post" action="/blog/default.aspx" id="mainForm">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTM2MTcxNzAwMGRkcTnJ/3E0f0pE8hfFbN6kPC3rJ90=" />
+</div>
+
+
+  <script language="javascript">
+    <!--
+      function escapeString(searchString) {
+          var newString = escape(searchString);
+          return newString;
+      }
+
+      function doSearch(searchString) {
+          if (searchString != "") {
+              location.href = 'http://www.hanselman.com/blog/googleresults.html?&sa=Search&domains=www.hanselman.com&sitesearch=www.hanselman.com&client=pub-7789616507550168&forid=1&ie=UTF-8&oe=UTF-8&safe=active&cof=GALT%3A%23B47B10%3BGL%3A1%3BDIV%3A%23A9501B%3BVLC%3A6F3C1B%3BAH%3Acenter%3BBGC%3AFFFFFF%3BLBGC%3A336699%3BALC%3AB47B10%3BLC%3AB47B10%3BT%3A000000%3BGFNT%3AA9501B%3BGIMP%3AA9501B%3BFORID%3A11&hl=en&q=' + escapeString(searchString);
+          }
+          return false;
+      }
+    -->
+  </script>
+
+	
+
+	<div id="header">
+		<div class="container">
+			<div id="logo"><a href="/blog"><img width="100" height="100" src="/blog/themes/hanselman/images/logo_zen.png" title="Scott Hanselman" alt="Scott Hanselman" /></a></div>
+			<div id="nav">
+				<ul id="primarynav">
+					<li id="nav-info"><strong>Info</strong>
+						<ul>
+							<li>
+								<a title="Learn more about Scott Hanselman" href="http://www.hanselman.com/blog/AboutMe.aspx">About Me</a>
+							</li>
+							<li>
+								<a title="Contact Scott Hanselman" href="http://www.hanselman.com/blog/contact.html">Contact Me</a>
+							</li>
+						</ul>
+					</li>
+					<li id="nav-podcasts"><strong>Podcasts</strong>
+						<ul>
+							<li>
+								<a title="Hanselminutes is Scott's weekly commute-time podcast." href="http://www.hanselminutes.com/">Hanselminutes</a>
+							</li>
+							<li>
+								<a title="Scott Hanselman and Rob Conery's podcast on developers and what makes them tick." href="http://www.thisdeveloperslife.com/">This Developer&rsquo;s Life</a>
+							</li>
+						</ul>
+					</li>
+					<li id="nav-speaking"><strong>Speaking</strong>
+						<ul>
+							<li>
+								<a title="All of Scott's Speaking Engagements and Videos of Scott speaking around the world." href="http://www.hanselman.com/blog/CategoryView.aspx?category=Speaking">Speaking/Videos</a>
+							</li>
+							<li>
+								<a title="Check out Scott's off the cuff video interviews on HanselminutesOn9" href="http://channel9.msdn.com/Shows/HanselminutesOn9">MSDN Channel 9</a>
+							</li>
+						</ul>
+					</li>
+					<li id="nav-books"><strong>Books</strong>
+						<ul>
+							<li>
+								<a title="Professional ASP.NET 4 in C# and VB from Wrox" href="http://www.amazon.com/gp/product/0470502207?ie=UTF8&ref_=sr_1_1&s=books&qid=1270496811&sr=1-1&linkCode=shr&camp=213733&creative=393185&tag=diabeticbooks">ASP.NET 4</a>
+							</li>
+							<li>
+								<a title="Relationship Hacks: Pragmatic Tips and Concrete Tricks for Navigating a Mixed (Geek/Normal) Marriage" href="http://www.relationshiphacks.com">Relationship Hacks</a>
+							</li>
+						</ul>
+					</li>
+					<li id="nav-popular"><strong>Popular</strong>
+						<ul>
+							<li>
+								<a title="Check out some of the best blog posts that Scott has ever written." href="http://www.hanselman.com/blog/GreatestHits.aspx">Greatest Hits</a>
+							</li>
+							<li>
+								<a title="Scott's famous Ultimate Tools List for developers and power users" href="http://www.hanselman.com/blog/ScottHanselmans2009UltimateDeveloperAndPowerUsersToolListForWindows.aspx">Dev Tools List</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+        <ul id="social">
+          <li>
+            <a title="Subscribe to Scott's blog via RSS"href="http://feeds.feedburner.com/ScottHanselman"><img src="/blog/themes/Hanselman/images/rss.png" width="16" height="16" alt="RSS Feed" /></a>
+          </li>
+          <li>
+            <a rel="me" title="Follow Scott on Twitter and join the oversharing" href="http://twitter.com/shanselman"><img src="/blog/themes/Hanselman/images/twitter.png" width="16" height="16" alt="Twitter" /></a>
+          </li>
+          <li>
+            <a rel="me" title="Like Scott on FaceBook" href="http://facebook.com/scott.hanselman.public"><img src="/blog/themes/Hanselman/images/facebook.png" width="16" height="16" alt="Facebook" /></a>
+          </li>
+          <li>
+            <a title="Scott is on Google+" rel="author" href="http://profiles.google.com/hanselman.scott?rel=author" alt="Google+" title="Google+"><img src="/blog/themes/Hanselman/images/googleplus.png" width="16" height="16" title="Google+" alt="Google+" /></a>
+          </li>
+        </ul>
+				<div id="subnav">
+					<div id="search">
+						<input id="searchString" placeholder="ASP.NET, Learn to Tweet, Be a Better Developer, etc." onkeypress="if (event.keyCode == 13) {doSearch(searchString.value);return false;}" type="text" />
+						<input id="searchButton" name="googleSearchName" id="googleSearchID" type="image" language="javascript" onclick="doSearch(searchString.value);return false;" src="/blog/themes/Hanselman/images/search.png" width="16" height="16" />
+					</div>
+          <div id="archives">
+            <a title="The complete archive of Scott's Blog" href="http://www.hanselman.com/blog/archives.aspx">Posts by Category</a> | <a title="Scott's blog posts in a friendly calendar format" href="http://www.hanselman.com/blog/monthview.aspx">Posts by Date</a>
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="content">
+		<div class="container">
+			<div id="bars">
+
+				<div id="mainbar">
+				
+					<a name="abdfa3c4c-0271-4670-86c4-8d2c9dcd1a07"></a><div class="item">
+
+  <h2>
+    <a class="TitleLinkStyle" rel="bookmark" href="http://www.hanselman.com/blog/FiveAbsolutelyEssentialUtilitiesThatMakeWindowsBetter.aspx">Five Absolutely Essential Utilities that make Windows better</a>
+  </h2>
+  
+  <div class="byline">
+    <span class="item-date">November 18, 2011 6:37 AM</span>
+    <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=bdfa3c4c-0271-4670-86c4-8d2c9dcd1a07#commentstart">Comments [54]</a>
+    <span class="item-categories">Posted in <a class="categoryLinkStyle" href="http://www.hanselman.com/blog/CategoryView.aspx?category=Tools">Tools</a></span>
+  </div>
+  
+  <div class="item-content">
+    <p><em>Yes, I know I'm late in updating my </em><a href="http://www.hanselman.com/tools"><em>Tools List</em></a><em>. I know. Maybe this weekend. </em></p>  <p>Let me tell you about <strong>five tools </strong>that are so useful, so compelling and so &quot;should have been built into Windows&quot; that I now think of them as part of Windows. They are that useful to me. They make Windows better. They improve my workflow and then fade into the background. They are so stable and integrated that they have melted away and now feel as if they are part of Windows itself.</p>  <h3><strong>Bins </strong>by 1UP Industries</h3>  <p><a href="http://www.1upindustries.com/bins/">Bins</a> was actually written by the same author as Fences, below, so you know it's awesome.</p>  <p><a href="http://www.1upindustries.com/bins/"><img title="Animation of Windows 7 Taskbar icons jumping into a bin" alt="Animation of Windows 7 Taskbar icons jumping into a bin" src="http://www.hanselman.com/blog/content/binary/binsanimation.gif" width="370" height="110" /></a></p>  <p>It's actually ridiculously awesome. For example, I've got four browsers pinned to my Windows 7 Taskbar, which is kind of silly. Now, with bins, I can make a, *ahem*, &quot;bin&quot; and put four browser shortcuts in the space of just one regular icon. Then I make can choose a default program for the bin when I just click, or hover to get my others. All this <a href="http://www.1upindustries.com/bins/">functionality for $4.99</a>, and he takes PayPal. Sold. Bins almost makes Windows 7 feel like Windows 7.1.</p>  <h3><strong>Fences </strong>by Stardock</h3>  <p>I mentioned <a href="http://www.stardock.com/products/fences/">Fences</a> here almost two years ago to the day and it's been running happily on all my Windows PCs ever since. I realize that some folks like a clean desktop but if you'd like to get those <a href="http://www.hanselman.com/blog/GetThosePixelsWorkingForYou.aspx">pixels working for you</a> then I think you gotta put some icons on your desk. When they get out of hand, put a fence around them. </p>  <p>One of the best parts about Fences is that it's pretty smart about changing resolutions. Some people don't like a lot of icons because they fear the inevitable &quot;give a presentation, change resolutions and lose all my icon positions&quot; day. With Fences, this is not a problem. All your icons stay in their little boxes. They'll even rearrange magically if you change icon sizes.</p>  <p><a href="http://www.stardock.com/products/fences/"><img style="border-bottom: 0px; border-left: 0px; border-top: 0px; border-right: 0px" title="Fences of icons resizing" border="0" alt="Fences of icons resizing" src="http://www.hanselman.com/blog/content/binary/fences.gif" width="400" height="312" /></a></p>  <p>Fences is truly a fantastic application and one that should be built in. The author of Fences and Bin is a programming god amongst men and I salute you, sir. The next taco is on me. </p>  <h3><strong>Window Pad </strong>by Lexikos in AutoHotkey</h3>  <p>Here's a great graphic from <a href="http://thecrumb.com/2011/02/11/windowpad/">Jim Priest's review</a> of <a href="http://www.autohotkey.com/forum/topic21703.html">Window Pad</a> that says what it does more clearly than I could. It's a multi-monitor aware window-moving tool. You use the Window Key along with the Number Pad to move windows around. Rather than spending time moving your windows with a mouse, you use the positions of the numbers on the number pad to move them. </p>  <p>It's Aero Snap taken to the next level. Rather than just left and right, there's nine positions per monitor that your windows can go, but because the positions correspond to the number pad you already know there's virtually no learning curve. <a href="http://www.autohotkey.com/forum/topic21703.html">WindowPad</a> is brilliant and deserves to be in your Startup Folder. </p>  <p><a href="http://thecrumb.com/2011/02/11/windowpad/"><img style="border-bottom: 0px; border-left: 0px; margin: 0px; display: inline; border-top: 0px; border-right: 0px" title="How Window Pad works by Jim Priest" border="0" alt="How Window Pad works by Jim Priest" src="http://www.hanselman.com/blog/content/binary/WindowsLiveWriter/ThreeEssentialUtilitiesthatmakeWindowsbe_E897/NewScreen_3.png" width="430" height="316" /></a> </p>  <h3><strong>UltraMon Multi-Monitor Taskbar </strong>by Realtime Soft</h3>  <p>I've used UltraMon as my Windows multi-monitor taskbar utility FOREVER. I purchased it in 2002 (that's a decade, kids) and it's been rock solid ever since.</p>  <p>There are a <a href="http://www.hanselman.com/blog/TheNearFinalWordOnMultiMonitorTaskbarsForWindows7UltramonVsDisplayFusion.aspx">few other multi-monitor task bar utilities</a> with Aero Peek and some other functions, but UltraMon is fast fast fast and I never think about it. It's never let me down for ten years.</p>  <p><a href="http://www.realtimesoft.com/ultramon"><img style="border-bottom: 0px; border-left: 0px; border-top: 0px; border-right: 0px" border="0" src="http://www.hanselman.com/blog/content/binary/WindowsLiveWriter/2c1e66a7f845_13347/Choose%20monitor_ce8344d2-f7ab-4490-8389-9a29ca00fdcd.png" width="565" height="172" /></a></p>  <p>Some real contenders are <a href="http://www.displayfusion.com/">DisplayFusion from Binary Fortress</a> and <a href="http://www.actualtools.com/multiplemonitors/">Actual Multiple Monitors</a>. They are both actively developed and have more features and polish than UltraMon. I continue to use UltraMon because it's rock solid.</p>  <p>If you're serious about multiple monitors give them both a week of your time and pick one. You won't regret it. </p>  <h3><strong>DeskSpace </strong>by Otaku Software</h3>  <p>I blogged about <a href="http://www.otakusoftware.com/">DeskSpace</a>&#160;<a href="http://www.hanselman.com/blog/DeskSpaceBeryllike3DCubeVirtualDesktopManagerForVista.aspx">almost four years ago</a>. I revisited it recently and it's not only in active development but it's gorgeous. Sure, there are other free Virtual Desktop managers out there but I challenge you to find one this polished, this gorgeous and this cleanly baked into Windows itself. It tends to use a bit of memory, but I'm willing to take the hit for the experience. <a href="http://www.otakusoftware.com/">DeskSpace</a> is a beautiful, wonderfully functional piece of software and a fun and productive way to add multiple desktops to Windows. </p>  <p><em>P.S. One thing, Fences and virtual desktop systems don't always work well together so I keep the same desktop icons on each virtual desktop and change only the wallpaper. The Windows you choose to keep on different desktops stay there.</em></p>  <p><a href="http://www.otakusoftware.com/deskspace/"><img style="border-bottom: 0px; border-left: 0px; border-top: 0px; border-right: 0px" title="Amazing 3D Virtual Desktop Manager called DeskSpace" border="0" alt="Amazing 3D Virtual Desktop Manager called DeskSpace" src="http://www.hanselman.com/blog/content/binary/deskspace3dani.gif" width="640" height="400" /></a></p>  <p>These five utilities should be built into Windows. But even though they aren't, they feel <strong>baked </strong>in and that's what really counts. Thanks you all, for making my daily Windows experience even better.</p>
+    
+    
+  </div>
+
+  <div class="item-footer">
+    <div class="item-footer-badges">
+      <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=bdfa3c4c-0271-4670-86c4-8d2c9dcd1a07#commentstart">Comments [54]</a>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.hanselman.com/blog/FiveAbsolutelyEssentialUtilitiesThatMakeWindowsBetter.aspx" data-text="Five Absolutely Essential Utilities that make Windows better" data-count="horizontal" data-via="shanselman">Tweet</a>
+      <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+      <g:plusone size="medium" href="http://www.hanselman.com/blog/FiveAbsolutelyEssentialUtilitiesThatMakeWindowsBetter.aspx"></g:plusone>
+    </div>
+    <div class="item-footer-tools">
+      <a href="http://www.hanselman.com/blog/FiveAbsolutelyEssentialUtilitiesThatMakeWindowsBetter.aspx" class="permalink" rel="bookmark">Permalink</a> 
+    </div>
+  </div>
+
+  <script src="http://feeds.feedburner.com/~s/ScottHanselman?i=http://www.hanselman.com/blog/FiveAbsolutelyEssentialUtilitiesThatMakeWindowsBetter.aspx" type="text/javascript"></script>
+  
+  <div class="item-prevnext">
+    
+  </div>
+  
+  <div class="item-ads">
+    <div class="lqm_ad" lqm_tags="Mobile%2CHTML5%2CCSS%2CWeb%2CJavascript%2CAgile%2CCloud%2CHosting%2Cvs%2CASP.NET%2CWP7%2CWPF%2CXML%2CParallelism%2CEntity%20Framework%2CjQuery%2CMVC%2CAJAX" lqm_publisher="lqm.scotthanselman.site" lqm_zone="RON" lqm_format="728x90"    ></div>
+  </div>
+ 
+</div><a name="a506f34f7-07f3-4245-849f-b3e4cfd2a0cd"></a><div class="item">
+
+  <h2>
+    <a class="TitleLinkStyle" rel="bookmark" href="http://www.hanselman.com/blog/ThisDevelopersLife206Play.aspx">This Developer's Life 2.0.6 - Play</a>
+  </h2>
+  
+  <div class="byline">
+    <span class="item-date">November 16, 2011 11:36 PM</span>
+    <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=506f34f7-07f3-4245-849f-b3e4cfd2a0cd#commentstart">Comments [5]</a>
+    <span class="item-categories">Posted in <a class="categoryLinkStyle" href="http://www.hanselman.com/blog/CategoryView.aspx?category=Podcast">Podcast</a></span>
+  </div>
+  
+  <div class="item-content">
+    <p></p>  <p><a href="http://www.thisdeveloperslife.com/post/2-0-6-play"><img style="border-right-width: 0px; margin: 0px 0px 0px 10px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="Play" border="0" alt="Play" align="right" src="http://www.hanselman.com/blog/content/binary/WindowsLiveWriter/ThisDevelopersLife2.0.6Play_D9DC/206-play%5B1%5D_3.jpg" width="400" height="264" /></a>What do you do when you're not staring at your computer screen? What obsession grips you as you drive home? In this episode we ask David Heinemeier Hansson and Pete Brown this very question. </p>  <ul>   <li><a href="http://loudthinking.com/">David Heinemeier Hansson</a> Creator of Rails and budding Racer X </li>    <li><a href="http://10rem.net/">Pete Brown</a> Senior Project Manager, Microsoft and budding Thomas Edison </li> </ul>  <p></p>  <p>I'd also like to encourage you to check out the last two episodes of <a href="http://www.thisdeveloperslife.com/"><strong>This Developer's Life</strong></a>. We realize this isn't your typical podcast. It's not very technical, and it's not packed with information. We mean this show as an antidote to the usual technical talk shows as we try to dig more into issues and emotions that affect developers. We try to get to the center core of the developer and what makes them tick. Give us a listen and if you like the show, please <a href="http://pcast://feeds.feedburner.com/ThisDevelopersLife">review us on iTunes</a> and <a href="http://feeds.feedburner.com/thisdeveloperslife">Subscribe</a>.</p>  <p><strong>Download </strong><a href="http://traffic.libsyn.com/devlife/206-Play.mp3">Episode 2.0.6 &quot;Play&quot; here</a><strong></strong><strong> or </strong><a href="http://www.thisdeveloperslife.com/post/2-0-6-play">listen online</a><strong></strong><strong>.</strong></p>  <p>Also, please check out our last two shows you might have missed. We're very proud of how they turned out.</p>  <hr /><a href="http://www.thisdeveloperslife.com/post/2-0-5-typo"><img title="Episode 2.0.4 - Taste" border="0" alt="Episode 2.0.4 - Taste" align="left" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/3116197169be_AFE5/typeface_f44931bf-6c71-4192-8eae-452609d92a4f.png" width="200" height="152" /></a>   <h3>2.0.5 Typo</h3>  <p>Who cares about typefaces and why should you? Well, these guys do and you should start caring. Rob and Scott explore the world of reading online with one of the godfathers in the world of typeface and fonts.</p>  <p>In this episode we talk to Bill Hill, the bearded Scotsman who created ClearType and Geoffrey Grosenbach, notable typeface enthusiast.</p>  <hr style="clear: both" /><a href="http://www.thisdeveloperslife.com/post/2-0-4-taste"><img title="Episode 2.0.4 - Taste" border="0" alt="Episode 2.0.4 - Taste" align="left" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/3116197169be_AFE5/204-lead_c193714b-7c85-440a-90d0-bc9c5b4eb95a.png" width="200" height="152" /></a>   <h3>2.0.4 Taste</h3>  <p>What is taste? What is style? Do you have it? Scott and Rob have no idea what it is or how to get it - but they know it's important. In this show they talk to a designer who flexxes his good taste for a living - and a developer who is committed to spreading good taste where he can.</p>  <p><a href="http://www.michaeldorian.com/">Michael Bach</a> Designer at Microsoft     <br /><a href="http://blog.peepcode.com/">Geoffrey Grosenbach</a> Owner/Founder of PeepCode </p>  <hr style="clear: both" />  <p>I hope you enjoy the show as much as Rob and I enjoy making it.</p>  <p>Again, big thanks to DevExpress. The bandwidth and other costs are picked up <a href="http://www.devexpress.com/go/TDL.aspx"><strong>DevExpress and CodeRush</strong></a>! Visit them and <a href="http://twitter.com/devexpress">thank them on Twitter</a>.</p>  <p><a href="http://www.devexpress.com/go/TDL.aspx"><img title="This Developer&#39;s Life is brought to you by CodeRush for Visual Studio." border="0" alt="This Developer&#39;s Life is brought to you by CodeRush for Visual Studio." src="http://www.hanselman.com/blog/content/binary/WindowsLiveWriter/17d2c426a60b_CE08/DX_Slogan_350_9cc61513-3486-4eed-9ab6-a8ca54119edc.png" width="350" height="124" /></a></p>  <p><em><a href="http://www.devexpress.com/go/TDL.aspx">This Developer's Life is brought to you by CodeRush for Visual Studio.</a></em></p>
+    
+    
+  </div>
+
+  <div class="item-footer">
+    <div class="item-footer-badges">
+      <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=506f34f7-07f3-4245-849f-b3e4cfd2a0cd#commentstart">Comments [5]</a>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.hanselman.com/blog/ThisDevelopersLife206Play.aspx" data-text="This Developer's Life 2.0.6 - Play" data-count="horizontal" data-via="shanselman">Tweet</a>
+      <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+      <g:plusone size="medium" href="http://www.hanselman.com/blog/ThisDevelopersLife206Play.aspx"></g:plusone>
+    </div>
+    <div class="item-footer-tools">
+      <a href="http://www.hanselman.com/blog/ThisDevelopersLife206Play.aspx" class="permalink" rel="bookmark">Permalink</a> 
+    </div>
+  </div>
+
+  <script src="http://feeds.feedburner.com/~s/ScottHanselman?i=http://www.hanselman.com/blog/ThisDevelopersLife206Play.aspx" type="text/javascript"></script>
+  
+  <div class="item-prevnext">
+    
+  </div>
+  
+  <div class="item-ads">
+    <div class="lqm_ad" lqm_tags="Mobile%2CHTML5%2CCSS%2CWeb%2CJavascript%2CAgile%2CCloud%2CHosting%2Cvs%2CASP.NET%2CWP7%2CWPF%2CXML%2CParallelism%2CEntity%20Framework%2CjQuery%2CMVC%2CAJAX" lqm_publisher="lqm.scotthanselman.site" lqm_zone="RON" lqm_format="728x90"    ></div>
+  </div>
+ 
+</div><a name="ac9e0994d-dbc4-48fb-8c9b-8dfdb9ef565f"></a><div class="item">
+
+  <h2>
+    <a class="TitleLinkStyle" rel="bookmark" href="http://www.hanselman.com/blog/CSIMyComputerWhatIsNetsessionwinexeFromAkamaiAndHowDidItGetOnMySystem.aspx">CSI: My Computer - What is netsession_win.exe from Akamai and how did it get on my system?</a>
+  </h2>
+  
+  <div class="byline">
+    <span class="item-date">November 15, 2011 6:10 AM</span>
+    <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=c9e0994d-dbc4-48fb-8c9b-8dfdb9ef565f#commentstart">Comments [35]</a>
+    <span class="item-categories">Posted in <a class="categoryLinkStyle" href="http://www.hanselman.com/blog/CategoryView.aspx?category=Tools">Tools</a></span>
+  </div>
+  
+  <div class="item-content">
+    <p>I know my system backwards and forwards and I <strong>do not </strong>like noticing stuff running in the background that I don't recognize. Recently I was checking out the Task Manager (right click on the clock, and select Task Manager or press Ctrl-Alt-Del and click Task Manager) and noticed TWO copies of &quot;netsession_win.exe&quot; running with a peak memory working set of about 25 megs. Ok, what's this? It's the Akamai Net Session Interface. Ick.</p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="netsession_win.exe in my Windows Task Manager" border="0" alt="netsession_win.exe in my Windows Task Manager" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Wha.exe-from-Akamai-and-how-did-it-get-o_13227/Windows%20Task%20Manager%20(157)_23e03aa7-8647-46d9-b0d3-9622c4ebcef3.png" width="541" height="250" /></p>  <p>You can always right click on suspicious processes and click Open File Location. This little tip is often enough to jog your memory and go, &quot;Oh, THAT.&quot; </p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="Open File Location in Task Manager&#39;s Context Menu" border="0" alt="Open File Location in Task Manager&#39;s Context Menu" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Wha.exe-from-Akamai-and-how-did-it-get-o_13227/%20(160)_7a026eae-a5f7-4258-95ca-164e5f589b51.png" width="311" height="263" /></p>  <p>Hm, that dropped me into C:\Users\scottha\AppData\Local\Akamai. I know who Akamai is. They are a download accelerator used by lots of companies. Kind of the first large Content Distribution Network or CDN. </p>  <p>Am I sure it's them and not someone evil trying to fake me out? Right click on netsession_win.exe, then Properties.</p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="Akamai&#39;s NetSession digital signature is legit" border="0" alt="Akamai&#39;s NetSession digital signature is legit" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Wha.exe-from-Akamai-and-how-did-it-get-o_13227/image_6403e95a-4bd1-4507-b0aa-2a8406a9bca6.png" width="489" height="469" /></p>  <p>Well, they have a legitimate digital signature, interestingly they signed this on the 11th of November. Looks like this was recently installed automatically by something, perhaps Flash or Adobe Acrobat. </p>  <p>I wonder if someone needs to tell Akamai that their freshly installed service that just (kinda, a little) snuck on my system has a digital certificate that expires in 5 weeks. Are they or one of the companies that uses them going to update this client and cert soon?</p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="Akamai&#39;s digital certiticate expires before Christmas" border="0" alt="Akamai&#39;s digital certiticate expires before Christmas" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Wha.exe-from-Akamai-and-how-did-it-get-o_13227/Certificate%20(161)_bca0d2fb-3949-409d-83bb-837177095f3f.png" width="449" height="552" /></p>  <p>Running services.msc from Start | Run tells me that this runs as an Automatic Service. At least it's a Delayed Start so it doesn't slow down my boot.</p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="Services (158)" border="0" alt="Services (158)" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Wha.exe-from-Akamai-and-how-did-it-get-o_13227/Services%20(158)_ef8bc134-4d63-4674-9e8b-20ec6d6446e6.png" width="644" height="316" /></p>  <p>The only thing I installed on my machine on the 11th was an automatic update to Adobe Flash. That's my #1 suspect right now as it's the only thing that I ran as Administrator that day.</p>  <p>For now,<strong> I'll keep it on my machine </strong>because it:</p>  <ul>   <li>Is from a reputable (so far) company </li>    <li>Is known to be used by folks like Netflix, etc to speed up downloads </li>    <li>Has an uninstall available in Installed Programs </li>    <li>Feels legit </li>    <li>Has a control panel icon and a Read Me with lots of info about what it does (except who installed them) </li>    <li>Has a <a href="http://www.akamai.com/client">customer bill of rights</a> online with details <a href="http://www.akamai.com/client">with test demo pages about their API</a>. </li> </ul>  <p>I will say this, though. Whatever program installed it should have told me first before chaining it in. At least with Evil Toolbars I can <strong>see </strong>them. Not cool Akamai. <strong>Who installed you?</strong></p>  <p>You're on notice.</p>  <p><strong>UPDATE</strong>: Looks like this is using my own computers bandwidth to upload to other Akamai users. They're using our computers and network to make other people's uploads faster. That sounds like I'm running a Torrent and no one asked if it was OK. I'm continuing to dig into this, like disk space usage, etc.</p>
+    
+    
+  </div>
+
+  <div class="item-footer">
+    <div class="item-footer-badges">
+      <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=c9e0994d-dbc4-48fb-8c9b-8dfdb9ef565f#commentstart">Comments [35]</a>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.hanselman.com/blog/CSIMyComputerWhatIsNetsessionwinexeFromAkamaiAndHowDidItGetOnMySystem.aspx" data-text="CSI: My Computer - What is netsession_win.exe from Akamai and how did it get on my system?" data-count="horizontal" data-via="shanselman">Tweet</a>
+      <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+      <g:plusone size="medium" href="http://www.hanselman.com/blog/CSIMyComputerWhatIsNetsessionwinexeFromAkamaiAndHowDidItGetOnMySystem.aspx"></g:plusone>
+    </div>
+    <div class="item-footer-tools">
+      <a href="http://www.hanselman.com/blog/CSIMyComputerWhatIsNetsessionwinexeFromAkamaiAndHowDidItGetOnMySystem.aspx" class="permalink" rel="bookmark">Permalink</a> 
+    </div>
+  </div>
+
+  <script src="http://feeds.feedburner.com/~s/ScottHanselman?i=http://www.hanselman.com/blog/CSIMyComputerWhatIsNetsessionwinexeFromAkamaiAndHowDidItGetOnMySystem.aspx" type="text/javascript"></script>
+  
+  <div class="item-prevnext">
+    
+  </div>
+  
+  <div class="item-ads">
+    <div class="lqm_ad" lqm_tags="Mobile%2CHTML5%2CCSS%2CWeb%2CJavascript%2CAgile%2CCloud%2CHosting%2Cvs%2CASP.NET%2CWP7%2CWPF%2CXML%2CParallelism%2CEntity%20Framework%2CjQuery%2CMVC%2CAJAX" lqm_publisher="lqm.scotthanselman.site" lqm_zone="RON" lqm_format="728x90"    ></div>
+  </div>
+ 
+</div><a name="ac72f1a2d-6402-4a65-b72d-e5ebceb8a3ef"></a><div class="item">
+
+  <h2>
+    <a class="TitleLinkStyle" rel="bookmark" href="http://www.hanselman.com/blog/HowToConvertAPowerPointPresentationFrom43RatioTo169WithoutDistortedOrStretchedImages.aspx">How To: Convert a PowerPoint Presentation from 4:3 ratio to 16:9 without distorted or stretched images</a>
+  </h2>
+  
+  <div class="byline">
+    <span class="item-date">November 15, 2011 5:34 AM</span>
+    <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=c72f1a2d-6402-4a65-b72d-e5ebceb8a3ef#commentstart">Comments [12]</a>
+    <span class="item-categories">Posted in <a class="categoryLinkStyle" href="http://www.hanselman.com/blog/CategoryView.aspx?category=Musings">Musings</a></span>
+  </div>
+  
+  <div class="item-content">
+    <p>It always sucks to show up to a conference with a slide deck that looks lovely with lots of pictures and evocative hipster stock photography all nicely formatted for a 4:3 ratio (1024x768 pixels is common) and then find out their projectors are 16x9 and run something like 1280x720 pixels. </p>  <p>Nobody wants to be THIS stretchy guy:</p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="My giant head with the wrong ratio" border="0" alt="My giant head with the wrong ratio" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Converting-a-PowerPoint-Presentation-fro_12933/image_61a64e6d-8749-4ef7-b22c-9a625a2fc358.png" width="602" height="340" /></p>  <p><strong>It is true that some people have a genetic inability to see that 4:3 content has been uncomfortably stretched to fit a 16:9 screen. </strong>We have a name for these people. They are called &quot;Bad People.™&quot;* </p>  <p>As an aside, there are few sadder technical things than 4:3 content stretched across an expensive 16:9 widescreen HDTV. From electronic stores to hotel lobbies, airport status displays to café menus. Make it stop. </p>  <p>What's the easiest way to convert your 4:3 slide deck to 16:9 in a pitch and still have your images look nice? There' s a number of ways on the internet but they all involve &quot;math&quot; and &quot;ratios&quot; and &quot;thought.&quot; Nonsense. Too hard. Here's what I do.</p>  <h3>Step 0 - Switch to 16:9 and see bad images.</h3>  <p>Click Design | Page Setup and switch from 4:3 to 16:9. Other folks say to enter in custom numbers and do multiplication. Hang in there, this is easier.</p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="First, switch to 16x9" border="0" alt="First, switch to 16x9" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Converting-a-PowerPoint-Presentation-fro_12933/Page%20Setup%20(154)_fce5c215-1b4f-42e4-a3d6-16526e86c325.png" width="488" height="237" /></p>  <p>At this point, all your images WILL be stretched out. </p>  <h3>Step 1 - Fix image ratios without messing up their sizes</h3>  <p>Here's the trick. Right click on an image and select Size and Position. From this dialog, click in the Height box. Now, just click up once and down once. As long as the Lock Aspect Ratio checkbox is checked, just changing the scale by 1 step and then switching back will fix your image. You can do it with your keyboard even faster. </p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="Step two, change the scale up and down" border="0" alt="Step two, change the scale up and down" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Converting-a-PowerPoint-Presentation-fro_12933/Format%20Picture%20(155)_b0b972e9-e488-4d4e-9afa-eadc21560dee.png" width="528" height="520" /></p>  <p>Here's trick #2. You don't need to close the Size and Position dialog. It's modeless. You can leave it open and go from slide to slide quickly changing your images. Just click the image, click Height, then up/down, then do another image. Repeat until it's all done. It'll take just a few seconds per slide.</p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="My enormous corectly ratio-ed head. Or IS IT?!" border="0" alt="My enormous corectly ratio-ed head. Or IS IT?!" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/Converting-a-PowerPoint-Presentation-fro_12933/NuGet%20DevConnections.pptx%20-%20Microsoft%20PowerPoint%20(156)_a5608596-cac4-4cf3-9169-89c6aa3c469a.png" width="600" height="438" /></p>  <p>This trick will fix all your image ratios, but expect to do one more pass to make sure that you're using all the space afforded by this new widescreen layout. Regardless of how you images are sized you might want to make some tweaks to the layout and spacing of your text and images.</p>  <p>How to you switch your slides from 16:9 to 4:3? Exactly the same steps except adjust the ratio in Step 0.</p>  <p>Hope this helps someone.</p>  <p><font size="small">* They aren't really bad people. They are good people with bad presentations. Relax. It's a blog post.</font></p>
+    
+    
+  </div>
+
+  <div class="item-footer">
+    <div class="item-footer-badges">
+      <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=c72f1a2d-6402-4a65-b72d-e5ebceb8a3ef#commentstart">Comments [12]</a>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.hanselman.com/blog/HowToConvertAPowerPointPresentationFrom43RatioTo169WithoutDistortedOrStretchedImages.aspx" data-text="How To: Convert a PowerPoint Presentation from 4:3 ratio to 16:9 without distorted or stretched images" data-count="horizontal" data-via="shanselman">Tweet</a>
+      <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+      <g:plusone size="medium" href="http://www.hanselman.com/blog/HowToConvertAPowerPointPresentationFrom43RatioTo169WithoutDistortedOrStretchedImages.aspx"></g:plusone>
+    </div>
+    <div class="item-footer-tools">
+      <a href="http://www.hanselman.com/blog/HowToConvertAPowerPointPresentationFrom43RatioTo169WithoutDistortedOrStretchedImages.aspx" class="permalink" rel="bookmark">Permalink</a> 
+    </div>
+  </div>
+
+  <script src="http://feeds.feedburner.com/~s/ScottHanselman?i=http://www.hanselman.com/blog/HowToConvertAPowerPointPresentationFrom43RatioTo169WithoutDistortedOrStretchedImages.aspx" type="text/javascript"></script>
+  
+  <div class="item-prevnext">
+    
+  </div>
+  
+  <div class="item-ads">
+    <div class="lqm_ad" lqm_tags="Mobile%2CHTML5%2CCSS%2CWeb%2CJavascript%2CAgile%2CCloud%2CHosting%2Cvs%2CASP.NET%2CWP7%2CWPF%2CXML%2CParallelism%2CEntity%20Framework%2CjQuery%2CMVC%2CAJAX" lqm_publisher="lqm.scotthanselman.site" lqm_zone="RON" lqm_format="728x90"    ></div>
+  </div>
+ 
+</div><a name="a74898957-7b18-4974-980e-0e3ba1c04b5d"></a><div class="item">
+
+  <h2>
+    <a class="TitleLinkStyle" rel="bookmark" href="http://www.hanselman.com/blog/SolvingTheShakespeareMillionMonkeysProblemInRealtimeWithParallelismAndSignalR.aspx">Solving the Shakespeare Million Monkeys Problem in Real-time with Parallelism and SignalR</a>
+  </h2>
+  
+  <div class="byline">
+    <span class="item-date">November 12, 2011 1:09 AM</span>
+    <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=74898957-7b18-4974-980e-0e3ba1c04b5d#commentstart">Comments [26]</a>
+    <span class="item-categories">Posted in <a class="categoryLinkStyle" href="http://www.hanselman.com/blog/CategoryView.aspx?category=ASP.NET">ASP.NET</a>&nbsp;|&nbsp;<a class="categoryLinkStyle" href="http://www.hanselman.com/blog/CategoryView.aspx?category=Javascript">Javascript</a>&nbsp;|&nbsp;<a class="categoryLinkStyle" href="http://www.hanselman.com/blog/CategoryView.aspx?category=SignalR">SignalR</a></span>
+  </div>
+  
+  <div class="item-content">
+    <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: right; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="A monkey with a skull. Oh yes." border="0" alt="A monkey with a skull. Oh yes." align="right" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/a3b68ce09480_D458/HamletMonkey_acc00dbc-496a-4f3d-b63f-cc70ebe8a8c1.jpg" width="233" height="300" />A little <a href="http://channel9.msdn.com/blogs/matthijs/lap-around-net-4-with-scott-hanselman">over 18 months ago</a> I was talking to <a href="http://blogs.msdn.com/toub/">Stephen Toub</a> (he of the <a href="http://www.hanselman.com/blog/BackToParallelBasicsDoYouReallyWantToDoThatOrWhyDoesntTheNewParallelForSupportBigInteger.aspx">Parallel Computing fame</a>) about parallelism and the kinds of problems it could solve. </p>  <p>I said, naively, &quot;could we solve the <a href="http://en.wikipedia.org/wiki/Infinite_monkey_theorem">million monkey's problem</a>?&quot; </p>  <p>He said, &quot;the what?&quot;</p>  <p>&quot;You know, if you have an <a href="http://www.hanselman.com/blog/SolvingTheShakespeareMillionMonkeysProblemInRealtimeWithParallelismAndSignalR.aspx">infinite number of monkeys and an infinite number of keyboards they will eventually write Shakespeare</a>.&quot;</p>  <p>We brainstormed some ideas (since Stephen is a smarter than I, this consisted mostly of him gazing thoughtfully into the air while I sat on my hands) and eventually settled on an genetic algorithm. <strong>We would breed thousands of generations of (hypothetical) monkeys a second and then choose which ones would be allowed to perpetuate the species based solely on their ability to write Shakespeare.</strong></p>  <p>We used the .NET 4 Task Parallel Library to make it easier for the algorithm to scale to available hardware. I mean, anyone can foreach over a million monkeys. But loops like that in parallel over 12 processors takes talent, right? Well, kinda. A lot of it is done for you by the Parallelism Features in .NET and that's the point. It's Parallel Processing for the Masses.</p>  <p>We created a WinForms version of this application and I've used it on and off to demonstrate parallel computing on .NET. Then <a href="http://www.paulbatum.com">Paul Batum</a> and I went to the <a href="http://www.krtconf.com/">Keeping It Realtime</a> conference to demonstrate <a href="http://www.hanselman.com/blog/AsynchronousScalableWebApplicationsWithRealtimePersistentLongrunningConnectionsWithSignalR.aspx">SignalR</a> this <a href="http://www.hanselman.com/blog/YourUsersDontCareIfYouUseWebSockets.aspx">last week</a>. I didn't want to do the same &quot;here's a real-time chat app&quot; or &quot;here's a map that shows its results in real-time&quot; demos that one always does at these kinds of things. I suggested that we port our WinForms Shakespeare Monkey demo to ASP.NET and SignalR and that's what Paul proceeded to do.</p>  <p><img title="Looks like 80,000 generations of monkeys" alt="Looks like 80,000 generations of monkeys" src="http://www.hanselman.com/blog/images/SignalRMonkeys.gif" /></p>  <p>When doing something that is crazy computationally intensive but also needs to return real-time results you might think to use node for the real-time notification part and perhaps spawn off another process and use C or something for the maths and then have them talk to each others. We like node and you can totally <a href="http://www.hanselman.com/blog/InstallingAndRunningNodejsApplicationsWithinIISOnWindowsAreYouMad.aspx">run node on IIS</a> or even <a href="http://www.hanselman.com/blog/WebMatrixAndNodejsTheEasiestWayToGetStartedWithNodeOnWindows.aspx">write node in WebMatrix</a>. However, node is good at some things and .NET is good at some things. </p>  <p>For example, .NET is really good at CPU-bound computationally intensive stuff, like, I dunno, <a href="http://msdn.microsoft.com/en-us/library/hh304369.aspx">parallel matrix multiplication</a> in F# or the like. ASP.NET is good at scaling web sites like Bing, or StackOverflow. You may not think IIS and ASP.NET when you think about real-time, but <a href="http://www.github.com">SignalR</a> uses asynchronous handlers and smart techniques to get awesome scale when using long-polling and scales even more in our labs when using an efficient protocol like <a href="http://blogs.msdn.com/b/ie/archive/2011/09/13/ie10pp3.aspx">WebSockets</a> with the <a href="http://www.paulbatum.com/2011/09/getting-started-with-websockets-in.html">new support for WebSockets in .NET 4.5</a>. </p>  <p>So, we wanted to see if you combined asynchronous background work, use as many processors as you have, get real-time status updates via SignalR over long-polling or Web Sockets, using C#, .NET 4.5, ASP.NET and IIS. </p>  <p>It takes about 80,000 generations of monkeys at thousands of monkey generations a second (there's 200 monkeys per generation) to get the opening line of Hamlet. So that's ~16,000,000 monkeys just to get this much text. As they say, that's a lot of monkeys.</p>  <p>Here's the general idea of the app. The client is pretty lightweight and quite easy. There's two boxes, two buttons and a checkbox along side some text. There's some usual event wireup with started, cancelled, complete, and updateProgress, but see how those are on a monkey variable? That's from $.connection.monkeys. It could be $.connection.foo, of course, as long as it's hanging off $.connection. </p>  <p>Those functions are client side but we raise them from the server over the persistent connection then update some text.</p>  <pre class="brush: js; toolbar: false; auto-links: false;">&lt;script src=&quot;Scripts/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt;    <br />&lt;script src=&quot;Scripts/json2.min.js&quot;&gt;&lt;/script&gt;<br />&lt;script src=&quot;Scripts/jquery.signalR.min.js&quot;&gt;&lt;/script&gt;<br />&lt;script src=&quot;signalr/hubs&quot;&gt;&lt;/script&gt;<br />&lt;script&gt;<br />    $(function () {<br />        $('#targettext').val('To be or not to be, that is the question;\nWhether \'tis nobler in the mind to suffer\n\The slings and arrows of outrageous fortune,\n\Or to take arms against a sea of troubles,\n\And by opposing, end them.');<br /><br />        var monkeys = $.connection.monkeys,<br />            currenttext = $('#currenttext'),<br />            generationSpan = $('#generation'),<br />            gpsSpan = $('#gps');<br /><br />        monkeys.updateProgress = function (text, generation, gps) {<br />            currenttext.val(text);<br />            generationSpan.text(generation);<br />            gpsSpan.text(gps);<br />        };<br /><br />        monkeys.started = function (target) {<br />            $('#status').text('Working...');<br />            $('#targettext').val(target);<br />            $('#cancelbutton').removeAttr('disabled');<br />        };<br /><br />        monkeys.cancelled = function () {<br />            $('#status').text('Cancelled');<br />            $('#cancelbutton').attr('disabled', 'disabled');<br />        };<br /><br />        monkeys.complete = function () {<br />            $('#status').text('Done');<br />            $('#cancelbutton').attr('disabled', 'disabled');<br />        };<br /><br />        $.connection.hub.start({}, function () {<br />            $('#startbutton').click(function (event) {<br />                $('#status').text('Queued...');<br />                monkeys.startTyping($('#targettext').val(), $('#isparallel').is(':checked'));<br />            });<br /><br />            $('#cancelbutton').click(function (event) {<br />                monkeys.stopTyping();<br />            });<br />        });<br /><br />    });<br />&lt;/script&gt;</pre>
+
+<p>The magic start with $.connection.hub.start. The hub client-side code is actually inside ~/signalr/hubs. See how that's include a the top? That client-side proxy is generated based on what hub or hubs are on the server side. </p>
+
+<p>The server side is structured like this:</p>
+
+<pre class="brush: csharp; toolbar: false; auto-links: false;">[HubName(&quot;monkeys&quot;)]<br />public class MonkeyHub : Hub<br />{<br />    public void StartTyping(string targetText, bool parallel)<br />    {<br />    }<br /><br />    public void StopTyping()<br />    {<br />    }<br /><br />}</pre>
+
+<p>The StartTyping and StopTyping .NET methods are callable from the client-side via the monkeys JavaScript object. <strong>So you can call server-side C# from the client-side JavaScript and from the C# server you can call methods in JavaScript on the client. </strong>It'll make the most sense if you debug it and watch the traffic on the wire. The point is that C# and Json objects can flow back and forth which blurs the line nicely between client and server. It's all convention over configuration. That's how we talk between client and server. Now, what about those monkeys?</p>
+
+<p>You can check out the code in full, but StartTyping is the kick off point. Note how it's reporting back to the Hub (calling back to the client) constantly. Paul is using Hub.GetClients to talk to all connected clients as broadcast. This current implementation allows just one monkey job at a time. Other clients that connect will see the job in progress.</p>
+
+<pre class="brush: csharp; toolbar: false; auto-links: false;">public void StartTyping(string targetText, bool parallel)<br />{<br />    var settings = new GeneticAlgorithmSettings { PopulationSize = 200 };<br />    var token = cancellation.Token;<br /><br />    <br />    currentTask = currentTask.ContinueWith((previous) =&gt;<br />    {<br />        // Create the new genetic algorithm<br />        var ga = new TextMatchGeneticAlgorithm(parallel, targetText, settings);<br />        TextMatchGenome? bestGenome = null;<br />        DateTime startedAt = DateTime.Now;<br /><br />        Hub.GetClients&lt;MonkeyHub&gt;().started(targetText);<br /><br />        // Iterate until a solution is found or until cancellation is requested<br />        for (int generation = 1; ; generation++)<br />        {<br />            if (token.IsCancellationRequested)<br />            {<br />                Hub.GetClients&lt;MonkeyHub&gt;().cancelled();<br />                break;<br />            }<br /><br />            // Move to the next generation<br />            ga.MoveNext();<br /><br />            // If we've found the best solution thus far, update the UI<br />            if (bestGenome == null ||<br />                ga.CurrentBest.Fitness &lt; bestGenome.Value.Fitness)<br />            {<br />                bestGenome = ga.CurrentBest;<br />                <br />                int generationsPerSecond = generation / Math.Max(1, (int)((DateTime.Now - startedAt).TotalSeconds));<br />                Hub.GetClients&lt;MonkeyHub&gt;().updateProgress(bestGenome.Value.Text, generation, generationsPerSecond);<br /><br />                if (bestGenome.Value.Fitness == 0)<br />                {<br />                    Hub.GetClients&lt;MonkeyHub&gt;().complete();<br />                    break;<br />                }<br />            }<br />        }                <br />    }, TaskContinuationOptions.OnlyOnRanToCompletion);<br />}</pre>
+
+<p>If he wanted, he could use this.Caller to communicate with the specific client that called StartTyping. Inside ga.MoveNext we make the decision to go parallel or not based on that checkbox. <strong>This is where we pick two random high quality parent monkeys from our population for a potential future monkey. Hopefully one whose typing looks more like Shakespeare and less like a Regular Expression.</strong></p>
+
+<p>By simply changing from Enumerable.Range to ParallelEnumerable.Range we can start taking easily parallelizable things and using all the processors on our machine. <strong>Note the code is the same otherwise.</strong></p>
+
+<pre class="brush: csharp; toolbar: false; auto-links: false;">private TextMatchGenome[] CreateNextGeneration()<br />{<br />    var maxFitness = _currentPopulation.Max(g =&gt; g.Fitness) + 1;<br />    var sumOfMaxMinusFitness = _currentPopulation.Sum(g =&gt; (long)(maxFitness - g.Fitness));<br /><br />    if (_runParallel)<br />    {<br />        return (from i in ParallelEnumerable.Range(0, _settings.PopulationSize / 2)<br />                from child in CreateChildren(<br />                    FindRandomHighQualityParent(sumOfMaxMinusFitness, maxFitness),<br />                    FindRandomHighQualityParent(sumOfMaxMinusFitness, maxFitness))<br />                select child).<br />                ToArray();<br />    }<br />    else<br />    {<br />        return (from i in Enumerable.Range(0, _settings.PopulationSize / 2)<br />                from child in CreateChildren(<br />                    FindRandomHighQualityParent(sumOfMaxMinusFitness, maxFitness),<br />                    FindRandomHighQualityParent(sumOfMaxMinusFitness, maxFitness))<br />                select child).<br />                ToArray();<br />    }<br />}</pre>
+
+<p>My 12 proc desktop does about 3800 generations a second in parallel.</p>
+
+<p><a href="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/a3b68ce09480_D458/Windows%20Task%20Manager%20(112)_2.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="Hexacore Super Computer!" border="0" alt="Hexacore Super Computer!" src="http://www.hanselman.com/blog/content/binary/Windows-Live-Writer/a3b68ce09480_D458/Windows%20Task%20Manager%20(112)_thumb.png" width="600" height="239" /></a></p>
+
+<p>Big thanks to <a href="http://www.paulbatum.com/">Paul</a> for the lovely port of this to SignalR and to Stephen Toub for the algorithm.&#160; </p>
+
+<p>The code for <a href="https://bitbucket.org/shanselman/signalrmonkeys/overview">the SignalR monkeys demo is on my BitBucket</a>. Right now it needs .NET 4.5 and the Visual Studio Developer Preview, but you could remove a few lines and get it working on .NET 4, no problem. </p>
+
+<p>Note that that <a href="http://github.com/signalr">SignalR</a> works on .NET 4 and up and you can play with it today. You can even chat with the developers in the SignalR chat app in the 'aspnet' room at <a title="http://chatapp.apphb.com/" href="http://chatapp.apphb.com">http://chatapp.apphb.com</a>. Just /nick yourself then /join aspnet.</p>
+
+<p>No monkeys were hurt in the writing of this blog post.</p>
+    
+    
+  </div>
+
+  <div class="item-footer">
+    <div class="item-footer-badges">
+      <a class="commentLinkStyle" href="http://www.hanselman.com/blog/CommentView.aspx?guid=74898957-7b18-4974-980e-0e3ba1c04b5d#commentstart">Comments [26]</a>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.hanselman.com/blog/SolvingTheShakespeareMillionMonkeysProblemInRealtimeWithParallelismAndSignalR.aspx" data-text="Solving the Shakespeare Million Monkeys Problem in Real-time with Parallelism and SignalR" data-count="horizontal" data-via="shanselman">Tweet</a>
+      <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+      <g:plusone size="medium" href="http://www.hanselman.com/blog/SolvingTheShakespeareMillionMonkeysProblemInRealtimeWithParallelismAndSignalR.aspx"></g:plusone>
+    </div>
+    <div class="item-footer-tools">
+      <a href="http://www.hanselman.com/blog/SolvingTheShakespeareMillionMonkeysProblemInRealtimeWithParallelismAndSignalR.aspx" class="permalink" rel="bookmark">Permalink</a> 
+    </div>
+  </div>
+
+  <script src="http://feeds.feedburner.com/~s/ScottHanselman?i=http://www.hanselman.com/blog/SolvingTheShakespeareMillionMonkeysProblemInRealtimeWithParallelismAndSignalR.aspx" type="text/javascript"></script>
+  
+  <div class="item-prevnext">
+    
+  </div>
+  
+  <div class="item-ads">
+    <div class="lqm_ad" lqm_tags="Mobile%2CHTML5%2CCSS%2CWeb%2CJavascript%2CAgile%2CCloud%2CHosting%2Cvs%2CASP.NET%2CWP7%2CWPF%2CXML%2CParallelism%2CEntity%20Framework%2CjQuery%2CMVC%2CAJAX" lqm_publisher="lqm.scotthanselman.site" lqm_zone="RON" lqm_format="728x90"    ></div>
+  </div>
+ 
+</div>
+
+					<div id="paging">
+						<div class="paging-prev">
+							<a href="http://www.hanselman.com/blog/default.aspx?page=1"><span>&laquo;</span>Older Posts</a>
+						</div>
+						<div class="paging-next">
+							
+						</div>
+						
+					</div>
+
+				</div>
+				
+
+<div id="subscribepop" style="float: right; position: absolute; display:none; ">
+  <img src="http://hanselman.com/blog/images/subscribe2.png"/>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        // cache the menu object for optimum performance
+        var $pop = $("#subscribepop"),
+      $social = $("#social"),
+      $giantHead = $("#hanselmanHeadShot"),
+      pos, width,
+      distance = 95;
+
+        /* Adapted from @robfitz source at http://blog.thestartuptoolkit.com */
+
+        var showPop = function (e) {
+
+            var dx = e.pageX - $giantHead.offset().left;
+            var dy = e.pageY - $giantHead.offset().top;
+
+            if (dx > 0) {
+                if (dx < $giantHead.outerWidth()) {
+                    dx = 0;
+                }
+                else {
+                    dx -= $giantHead.outerWidth();
+                }
+            }
+            if (dy > 0) {
+                if (dy < $giantHead.outerHeight()) {
+                    dy = 0;
+                }
+                else {
+                    dy -= $giantHead.outerHeight();
+                }
+            }
+
+            dx = Math.abs(dx);
+            dy = Math.abs(dy);
+            var d = distance + 1;
+
+            if (dx < distance || dy < distance) {
+                d = Math.sqrt(dx * dx + dy * dy);
+            }
+
+            if (d < distance) {
+                //get the position of the placeholder element
+                pos = $social.offset();
+                width = $pop.width();
+                //show the menu directly over the placeholder
+                $pop.css({ "left": (pos.left - 170) + "px", "top": (pos.top + 70) + "px" }).show();
+                if (d < distance / 5) { /* not using */ }
+
+                // how close to the target we're getting.
+                // this will change the fade of the image
+                var percent = Math.floor(100 * d / distance);
+                $pop.show();
+                $pop.css({ opacity: 1 - (percent / 100) });
+            }
+            else {
+                $pop.hide();
+            }
+
+        }
+
+        $(document).mousemove(showPop);
+        $(window).resize(showPop);
+    });
+</script>
+
+				
+				
+
+				<div id="sidebar">
+
+					<div id="sidebar-bio" class="sidebar-item first">
+						<h2>About Scott</h2>
+						<img id="hanselmanHeadShot" class="msPinSite" width="85" height="113" src="http://www.hanselman.com/blog/images/hanselmanactionpose.jpg" alt="Scott Hanselman" title="Drag this image to your Windows 7 Taskbar to pin this site with IE9 - Scott Hanselman" />
+						<strong>Scott Hanselman</strong> is a former professor, former Chief Architect in finance, now speaker, consultant, father, diabetic, and Microsoft employee. I am a failed stand-up comic, a cornrower, and a book author.<br />
+						<a title="Learn more about Scott Hanselman" href="http://www.hanselman.com/blog/AboutMe.aspx">About</a> | <a title="Contact Scott Hanselman" href="http://www.hanselman.com/blog/contact.html">Contact</a>
+					</div>
+
+					<div id="sidebar-twitter" class="sidebar-item">
+						<div id="twitter-latest">
+							<div id="twitter_div">
+								<span id="twitter_update_list"></span>
+							</div>
+						</div>
+						<div id="twitter-badge">
+							<a href="http://twitter.com/shanselman" title="Follow Scott on Twitter and join the oversharing" class="twitter-follow-button">Follow @shanselman</a>
+							<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+						</div>
+					</div>
+
+					<div class="sidebar-item">
+						<div class="left">
+							<h2>Sponsored By</h2>
+							<div id="lqdmad">
+								<div class="lqm_ad" lqm_tags="Mobile%2CHTML5%2CCSS%2CWeb%2CJavascript%2CAgile%2CCloud%2CHosting%2Cvs%2CASP.NET%2CWP7%2CWPF%2CXML%2CParallelism%2CEntity%20Framework%2CjQuery%2CMVC%2CAJAX" lqm_channel="1" lqm_publisher="lqm.scotthanselman.site" lqm_zone="RON" lqm_format="20"></div>
+								<p class="dmAdText">
+									<a title="Ads via DevMavens" href="http://lakequincy.com/devmavens">Ads Via Dev<b>Mavens</b></a>
+								</p>
+							</div>
+						</div>
+
+						<div class="right">
+							<h2>Hosting By</h2>
+							<a title="Dedicated Windows Server Hosting by ORCS Web" rel="nofollow" href="http://www.orcsweb.com"><img alt="Dedicated Windows Server Hosting by ORCS Web" class="ad" border="0" valign="top" vspace="4" width="120" height="90" src="/blog/images/PoM-180x150.gif" /></a>
+						</div>
+					</div>
+
+					<div class="sidebar-item">
+						<h2>Latest Videos</h2>
+						
+						<p><a title="Scott being silly on stage in Europe" href="http://youtu.be/KVbsNgN4wJg"><img src="http://www.hanselman.com/blog/images/hanselmaninbulgaria.JPG" width="260" height="141" /></a><br />
+						<strong><a title="Scott at DevReach in Bulgaria in October" href="http://youtu.be/KVbsNgN4wJg">Scott at DevReach in Bulgaria in October</a></strong></p>
+						<p><a title="Scott being silly on stage in Europe" href="http://www.hanselman.com/blog/DeveloperStandUpComedyCoding4Fun.aspx"><img src="http://www.hanselman.com/blog/images/rotating/standupvideo.png" width="260" height="141" /></a><br />
+						<strong><a title="Scott being silly on stage in Europe" href="http://www.hanselman.com/blog/DeveloperStandUpComedyCoding4Fun.aspx">Developer Stand up Comedy - Coding 4 Fun</a></strong></p>
+						<p><a title="Scott speaking in the Netherlands this year" href="http://www.hanselman.com/blog/TechDaysDevDaysNetherlandsAndBelgium.aspx"><img src="http://www.hanselman.com/blog/images/rotating/techdaysvideo.png" width="260" height="140"/></a><br />
+						<strong><a title="Scott speaking in the Netherlands this year" href="http://www.hanselman.com/blog/TechDaysDevDaysNetherlandsAndBelgium.aspx">TechDays/DevDays Netherlands and Belgium:</a></strong></p>
+					</div>
+
+					<div class="sidebar-item">
+						<h2>Podcasts</h2>
+						<div class="left">
+							<strong><a title="A weekly audio talk show focusing on all things tech. Guaranteed to not waste your time." href="http://www.hanselminutes.com/">Hanselminutes</a></strong><br />
+							A weekly audio talk show focusing on all things tech.
+						</div>
+						<div class="right">
+							<strong><a title="True stories about the lives of software developers." href="http://www.thisdeveloperslife.com/">This Developer&rsquo;s Life</a></strong><br />
+							True stories about the lives of software developers.
+						</div>
+					</div>
+
+
+					<div class="sidebar-item">
+						<h2>Books</h2>
+						<div class="left">
+							<a title="Professional ASP.NET MVC 3 from Wrox" href="http://www.amazon.com/Professional-ASP-NET-MVC-Jon-Galloway/dp/1118076583/ref=sr_1_1?s=books&ie=UTF8&qid=1313786031&sr=1-1&tag=diabeticbooks"><img width="120" height="150" src="http://img2.imagesbn.com/images/118440000/118441660.JPG" /></a>
+						</div>
+						<div class="right">
+							<a title="Professional ASP.NET 4 in C# and VB from Wrox" href="http://www.amazon.com/gp/product/0470502207?ie=UTF8&ref_=sr_1_1&s=books&qid=1270496811&sr=1-1&linkCode=shr&camp=213733&creative=393185&tag=diabeticbooks"><img width="120" height="151" src="http://img2.imagesbn.com/images/80720000/80726592.JPG" /></a>
+						</div>
+					</div>
+
+					<div class="sidebar-item">
+						<div class="left">
+							<h2>Blog Archives</h2>
+							<p><a title="The complete HanselArchive" href="http://www.hanselman.com/blog/archives.aspx">Posts by Category</a><br />
+							<a title="Blog posts in calendar form." href="http://www.hanselman.com/blog/monthview.aspx">Posts by Month</a></p>
+						</div>
+						<div class="right">
+							<h2>Popular Posts</h2>
+							<p><a title="The best of the best" href="http://www.hanselman.com/blog/GreatestHits.aspx">Greatest Hits</a><br />
+							<a title="The famous Tools List. Yes, I know I need to update it." href="http://www.hanselman.com/tools">Dev Tools List</a></p>
+						</div>
+					</div>
+
+					<div id="sidebar-banner" class="sidebar-item last">
+						<div class="lqm_ad" lqm_tags="Mobile%2CHTML5%2CCSS%2CWeb%2CJavascript%2CAgile%2CCloud%2CHosting%2Cvs%2CASP.NET%2CWP7%2CWPF%2CXML%2CParallelism%2CEntity%20Framework%2CjQuery%2CMVC%2CAJAX" lqm_channel="1"  lqm_zone="RON" lqm_publisher="lqm.scotthanselman.site" lqm_zone="1" lqm_format="18"></div>
+						<a title="Ads to pay the bills." href="http://lakequincy.com?1">Ads by Lake Quincy Media</a>
+					</div>
+
+					<div id="sidebar-banner" class="sidebar-item last">
+						<div class="lqm_ad" lqm_tags="Mobile%2CHTML5%2CCSS%2CWeb%2CJavascript%2CAgile%2CCloud%2CHosting%2Cvs%2CASP.NET%2CWP7%2CWPF%2CXML%2CParallelism%2CEntity%20Framework%2CjQuery%2CMVC%2CAJAX" lqm_channel="1"  lqm_zone="RON" lqm_publisher="lqm.scotthanselman.site" lqm_zone="1" lqm_format="18"></div>
+						<a title="Ads to keep the lights on." href="http://lakequincy.com?1">Ads by Lake Quincy Media</a>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+  
+  <div id="disclaimer">
+    <div class="container">
+      <strong>Disclaimer:</strong> The opinions expressed herein are my own personal opinions and do not represent my employer&rsquo;s view in any way.
+    </div>
+  </div>
+
+	<div id="footer">
+		<div class="container">
+    
+      <ul>
+        <li>&copy; Copyright 2011, <a title="Scott Hanselman" href="http://profiles.google.com/hanselman.scott?rel=me">Scott Hanselman</a></li>
+        <li>Powered by <a href="http://dasblog.info/">newtelligence dasBlog 2.4.279.6007</a></li>
+        <li>Dedicated Windows Server Hosting by <a title="Awesome Windows Web Host" href="https://www.orcsweb.com">ORCS Web</a></li>
+        <li>Site design by <a title="Amazing Site Design by Jeremy Kratz" href="http://www.jeremykratz.com/">Jeremy Kratz</a></li>
+      </ul>
+
+      <div id="creativecommons">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" title="Creative Commons License" src="http://www.hanselman.com/blog/themes/TheRightStuff2/images/cc88x31.png"/></a>
+        <!--
+        <rdf:RDF xmlns="http://creativecommons.org/ns#"
+          xmlns:dc="http://purl.org/dc/elements/1.1/"
+          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <Work rdf:about="">
+        <license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/3.0/" />
+        </Work>
+
+        <License rdf:about="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+           <requires rdf:resource="http://creativecommons.org/ns#Attribution" />
+           <permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
+           <permits rdf:resource="http://creativecommons.org/ns#Distribution" />
+           <permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+           <requires rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+           <prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse" />
+           <requires rdf:resource="http://creativecommons.org/ns#Notice" />
+        </License>
+
+        </rdf:RDF>
+        -->
+      </div>
+			
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	    var _gaq = _gaq || [];
+	    _gaq.push(['_setAccount', 'UA-130207-1']);
+	    _gaq.push(['_trackPageview']);
+
+	    (function () {
+	        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	    })();
+
+	</script>
+
+	<noscript><a href='http://www.omniture.com' title='Web Analytics'><img src='http://mssto.112.2o7.net/b/ss/msstoextblogsnojs/1/H.20.2--NS/0'  height='1' width='1' border='0' alt='' /></a></noscript>
+
+	<script type="text/javascript" src="/blog/themes/Hanselman/scripts/hanselman.footer.v4.min.js"></script>
+	
+
+	<script type="text/javascript">
+	    SyntaxHighlighter.config.bloggerMode = true;
+	    SyntaxHighlighter.config.stripBrs = true;
+	    SyntaxHighlighter.defaults['auto-links'] = false;
+	    SyntaxHighlighter.all();
+	    dp.SyntaxHighlighter.HighlightAll('code');
+	</script>
+
+	<!-- lake quincy -->
+	<script type='text/javascript' language='Javascript' src='http://s1.lqcdn.com/m.min.js?dt=2.3.110104.1'></script>
+	<script type='text/javascript' language='Javascript'>	    if ($.LqmAds) $.LqmAds();</script>
+
+	<!--  Place this tag after the last plusone tag -->
+	<script type="text/javascript">
+	    (function () {
+	        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+	        po.src = 'https://apis.google.com/js/plusone.js';
+	        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	    })();
+	</script>
+
+	<script type="text/javascript" charset="utf-8">
+	    $(document).ready(function () {
+	        $("div .item-content a:[href$=.jpg],a[href$=.png],a[href$=.gif]").fancybox();
+	    });
+	</script>
+
+	<script type="text/javascript" src="http://twitter.com/statuses/user_timeline/shanselman.json?callback=twitterCallback2&count=10"></script>
+
+	<script>
+	    _ga.trackSocial();
+	</script>
+
+	<script type="text/javascript">
+	    __compete_code = '8eb4f9e43ba97005b7a932ab527cc47e';
+	    (function () {
+	        var s = document.createElement('script'),
+			e = document.getElementsByTagName('script')[0];
+	        s.src = (document.location.protocol.toLowerCase() === 'https:' ? 'https:' : 'http:') +
+			'//c.compete.com/bootstrap/8eb4f9e43ba97005b7a932ab527cc47e/bootstrap.js';
+	        s.type = 'text/javascript';
+	        s.async = true;
+	        if (e) { e.parentNode.insertBefore(s, e); }
+	    } ());
+	</script>
+</form></body>
+</html>

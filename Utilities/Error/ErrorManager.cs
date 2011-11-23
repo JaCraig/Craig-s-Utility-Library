@@ -22,13 +22,13 @@ THE SOFTWARE.*/
 #region Usings
 using System.Text;
 using System.Web;
-using Utilities.Web;
 using Utilities.Reflection.ExtensionMethods;
 using System.Reflection;
 using System;
 using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Environment.ExtensionMethods;
+using Utilities.Error.ExtensionMethods;
 using System.Diagnostics;
 #endregion
 
@@ -51,19 +51,19 @@ namespace Utilities.Error
             StringBuilder Builder = new StringBuilder();
             HttpContext Current = HttpContext.Current;
             Builder.Append("<strong>Request Variables</strong><br />");
-            Builder.Append(HTML.DumpRequestVariable(Current.Request));
+            Builder.Append(Current.Request.DumpRequestVariable());
             Builder.Append("<br /><br /><strong>Response Variables</strong><br />");
-            Builder.Append(HTML.DumpResponseVariable(Current.Response));
+            Builder.Append(Current.Response.DumpResponseVariable());
             Builder.Append("<br /><br /><strong>Server Variables</strong><br />");
-            Builder.Append(HTML.DumpServerVars(Current.Request));
+            Builder.Append(Current.Request.DumpServerVars());
             Builder.Append("<br /><br /><strong>Session Variables</strong><br />");
-            Builder.Append(HTML.DumpSession(Current.Session));
+            Builder.Append(Current.Session.DumpSession());
             Builder.Append("<br /><br /><strong>Cookie Variables</strong><br />");
-            Builder.Append(HTML.DumpCookies(Current.Request.Cookies));
+            Builder.Append(Current.Request.Cookies.DumpCookies());
             Builder.Append("<br /><br /><strong>Cache Variables</strong><br />");
-            Builder.Append(HTML.DumpCache(Current.Cache));
+            Builder.Append(Current.Cache.DumpCache());
             Builder.Append("<br /><br /><strong>Application State Variables</strong><br />");
-            Builder.Append(HTML.DumpApplicationState(Current.Application));
+            Builder.Append(Current.Application.DumpApplicationState());
             return Builder.ToString();
         }
 
@@ -75,7 +75,7 @@ namespace Utilities.Error
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<strong>Assembly Information</strong><br />");
-            AppDomain.CurrentDomain.GetAssemblies().ForEach<Assembly>(x=>Builder.Append(x.DumpProperties()));
+            AppDomain.CurrentDomain.GetAssemblies().ForEach<Assembly>(x => Builder.Append(x.DumpProperties()));
             return Builder.ToString();
         }
 

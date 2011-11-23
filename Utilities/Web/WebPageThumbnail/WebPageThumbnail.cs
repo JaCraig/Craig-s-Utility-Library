@@ -59,7 +59,7 @@ namespace Utilities.Web.WebPageThumbnail
         /// <param name="Url">Url to take the screen shot of</param>
         /// <param name="Width">Width of the image (-1 for full size)</param>
         /// <param name="Height">Height of the image (-1 for full size)</param>
-        public void GenerateBitmap(string FileName, string Url, int Width, int Height)
+        public void GenerateBitmap(string FileName, string Url, int Width = -1, int Height = -1)
         {
             this.Url = Url;
             this.FileName = FileName;
@@ -106,22 +106,8 @@ namespace Utilities.Web.WebPageThumbnail
             WebBrowser Browser = (WebBrowser)sender;
             Browser.ScriptErrorsSuppressed = true;
             Browser.ScrollBarsEnabled = false;
-            if (Width == -1)
-            {
-                Browser.Width = Browser.Document.Body.ScrollRectangle.Width;
-            }
-            else
-            {
-                Browser.Width = Width;
-            }
-            if (Height == -1)
-            {
-                Browser.Height = Browser.Document.Body.ScrollRectangle.Height;
-            }
-            else
-            {
-                Browser.Height = Height;
-            }
+            Browser.Width = Width == -1 ? Browser.Document.Body.ScrollRectangle.Width : Width;
+            Browser.Height = Height == -1 ? Browser.Document.Body.ScrollRectangle.Height : Height;
             using (Bitmap Image = new Bitmap(Browser.Width, Browser.Height))
             {
                 Browser.BringToFront();
