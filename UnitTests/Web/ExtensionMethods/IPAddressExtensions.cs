@@ -19,47 +19,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Linq.Expressions;
+using Utilities.Web.ExtensionMethods;
+using System.Net;
+using Utilities.DataTypes.ExtensionMethods;
 
-#endregion
-
-namespace Utilities.Web.Email
+namespace UnitTests.Web.ExtensionMethods
 {
-    /// <summary>
-    /// Base message class used for emails
-    /// </summary>
-    public class Message
+    public class IPAddressExtensions
     {
-        #region Constructor
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Message()
+        [Test]
+        public void GetHostName()
         {
+            IPAddress Address = IPAddress.Parse("72.14.204.147");
+            Assert.Equal("iad04s01-in-f147.1e100.net", Address.GetHostName());
+            Assert.Equal("iad04s01-in-f147.1e100.net", "72.14.204.147".GetHostName());
         }
-        #endregion
-
-        #region Properties
-        /// <summary>
-        /// Whom the message is to
-        /// </summary>
-        public virtual string To { get; set; }
-
-        /// <summary>
-        /// The subject of the email
-        /// </summary>
-        public virtual string Subject { get; set; }
-
-        /// <summary>
-        /// Whom the message is from
-        /// </summary>
-        public virtual string From { get; set; }
-
-        /// <summary>
-        /// Body of the text
-        /// </summary>
-        public virtual string Body { get; set; }
-
-        #endregion
     }
 }

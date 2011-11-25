@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading;
+using System.Linq;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Web.Email.SMTP

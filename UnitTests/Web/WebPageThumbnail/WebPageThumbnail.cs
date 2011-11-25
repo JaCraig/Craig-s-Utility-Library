@@ -19,29 +19,41 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Linq.Expressions;
+using Utilities.Web.ExtensionMethods;
 using System.Net;
-#endregion
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.IO.ExtensionMethods;
 
-namespace Utilities.Web
+namespace UnitTests.Web.WebPageThumbnail
 {
-    /// <summary>
-    /// Helps with web related taaks
-    /// </summary>
-    public static class Web
+    public class WebPageThumbnail:IDisposable
     {
-        #region Public Static Functions
-
-        /// <summary>
-        /// Gets the host name based off of an IP address
-        /// </summary>
-        /// <param name="IP">IP address</param>
-        /// <returns>the host name associated with the IP</returns>
-        public static string GetHostFromIP(string IP)
+        public WebPageThumbnail()
         {
-            return Dns.GetHostEntry(IP).HostName;
+            new DirectoryInfo(@".\Testing").Create();
         }
 
-        #endregion
+        [Test]
+        public void CreateThumbnail()
+        {
+            Utilities.Web.WebPageThumbnail.WebPageThumbnail TestObject = new Utilities.Web.WebPageThumbnail.WebPageThumbnail();
+            TestObject.GenerateBitmap(new FileInfo(@".\Testing\Image.bmp").FullName, "http://www.google.com");
+            Assert.True(new FileInfo(@".\Testing\Image.bmp").Exists);
+        }
+
+        public void Dispose()
+        {
+            new DirectoryInfo(@".\Testing").DeleteAll();
+        }
     }
 }
