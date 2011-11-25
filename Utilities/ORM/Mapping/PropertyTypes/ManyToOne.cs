@@ -68,6 +68,8 @@ namespace Utilities.ORM.Mapping.PropertyTypes
 
         public override void SetupLoadCommands()
         {
+            if (this.CommandToLoad != null)
+                return;
             IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
             LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"

@@ -134,12 +134,12 @@ namespace Utilities.ORM.Aspect
                     {
                         if (Property is IManyToOne || Property is IMap)
                         {
-                            if (Fields.First(x => x.Name == Property.DerivedFieldName) == null)
+                            if (Fields.FirstOrDefault(x => x.Name == Property.DerivedFieldName) == null)
                                 Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, Property.Type));
                         }
                         else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
                         {
-                            if (Fields.First(x => x.Name == Property.DerivedFieldName) == null)
+                            if (Fields.FirstOrDefault(x => x.Name == Property.DerivedFieldName) == null)
                                 Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, typeof(IEnumerable<>).MakeGenericType(Property.Type)));
                         }
                     }
