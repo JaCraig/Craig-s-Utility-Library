@@ -70,6 +70,7 @@
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
     <Compile Include="DataTypes\ExtensionMethods\FunActionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />

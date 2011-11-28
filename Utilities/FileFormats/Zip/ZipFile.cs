@@ -91,9 +91,9 @@ namespace Utilities.FileFormats.Zip
             FileInfo TempFileInfo = new FileInfo(File);
             if (!TempFileInfo.Exists)
                 throw new ArgumentException("File");
-            using (Package Package = ZipPackage.Open(ZipFileStream))
+            using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.OpenOrCreate))
             {
-                AddFile(File, TempFileInfo, Package);
+                AddFile(TempFileInfo.Name, TempFileInfo, Package);
             }
         }
 

@@ -33,7 +33,7 @@ using Utilities.DataTypes.Comparison;
 namespace Utilities.DataTypes.ExtensionMethods
 {
     /// <summary>
-    /// Extensions converting between types
+    /// Extensions converting between types, checking if something is null, etc.
     /// </summary>
     public static class TypeConversionExtensions
     {
@@ -140,6 +140,22 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static bool IsNullOrDBNull(this object Object)
         {
             return Object == null || Convert.IsDBNull(Object);
+        }
+
+        #endregion
+
+        #region NullCheck
+
+        /// <summary>
+        /// Does a null check and either returns the default value (if it is null) or the object
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="DefaultValue">Default value to return in case it is null</param>
+        /// <returns>The default value if it is null, the object otherwise</returns>
+        public static T NullCheck<T>(this T Object, T DefaultValue = default(T))
+        {
+            return Object == null ? DefaultValue : Object;
         }
 
         #endregion
@@ -334,18 +350,54 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region NullCheck
+        #region TryTo
 
         /// <summary>
-        /// Does a null check and either returns the default value (if it is null) or the object
+        /// Attempts to convert the object to another type and returns the value
         /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="DefaultValue">Default value to return in case it is null</param>
-        /// <returns>The default value if it is null, the object otherwise</returns>
-        public static T NullCheck<T>(this T Object, T DefaultValue = default(T))
+        /// <typeparam name="T">Type to convert from</typeparam>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <param name="Object">Object to convert</param>
+        /// <param name="DefaultValue">Default value to return if there is an issue or it can't be converted</param>
+        /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
+        public static R TryTo<T, R>(this T Object, R DefaultValue = default(R))
         {
-            return Object == null ? DefaultValue : Object;
+            try
+            {
+                if (Object.IsNullOrDBNull())
+                    return DefaultValue;
+                if ((Object as IConvertible).IsNotNull())
+                    return (R)Convert.ChangeType(Object, typeof(R));
+                if (typeof(R).IsAssignableFrom(Object.GetType()))
+                    return (R)(object)Object;
+                TypeConverter Converter = TypeDescriptor.GetConverter(Object.GetType());
+                if (Converter.CanConvertTo(typeof(R)))
+                    return (R)Converter.ConvertTo(Object, typeof(R));
+                return Object.ToString().To<R>(DefaultValue);
+            }
+            catch { }
+            return DefaultValue;
+        }
+
+        #endregion
+
+        #region Return
+
+        /// <summary>
+        /// Used to determine if an object, or it's properties are null (Although can be used for other things)
+        /// </summary>
+        /// <typeparam name="T">Input type</typeparam>
+        /// <typeparam name="R">Output type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="Function">Property, function, etc. to run</param>
+        /// <param name="DefaultValue">Default value to return if Object is null</param>
+        /// <returns>The value returned by the function or the default value if the object is null or the function returns a null value</returns>
+        public static R Return<T, R>(this T Object, Func<T, R> Function, R DefaultValue = default(R))
+        {
+            if (Object.IsNull())
+                return DefaultValue;
+            R ReturnValue = Function(Object);
+            return ReturnValue.IsNull() ? DefaultValue : ReturnValue;
         }
 
         #endregion

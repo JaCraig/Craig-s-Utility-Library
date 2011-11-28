@@ -27,58 +27,26 @@ using MoonUnit;
 using MoonUnit.Attributes;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
+using System.Collections;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class FunActionExtensions
+    public class GenericObjectExtensions
     {
         [Test]
-        public void Execute1()
+        public void If()
         {
-            Func<int> Temp = () => 1;
-            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
+            MyTestClass Temp = new MyTestClass();
+            Assert.Same(Temp, Temp.If(x => x.B == 10));
+            Assert.NotSame(Temp, Temp.If(x => x.B == 1));
         }
 
         [Test]
-        public void Execute2()
+        public void NotIf()
         {
-            Action Temp = () => Test();
-            Assert.Throws<Exception>(() => Temp.Execute());
-        }
-
-        [Test]
-        public void Chain()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
-        }
-
-        [Test]
-        public void Chain2()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
-        }
-
-        [Test]
-        public void Do()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp, Temp.Do<DateTime>(x => x.AddSeconds(1)));
-            Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Do<DateTime?>(x => x.Value.AddSeconds(1), DateTime.MaxValue));
-        }
-
-        [Test]
-        public void Do2()
-        {
-            DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp.AddSeconds(1), Temp.Do(x => x.AddSeconds(1)));
-            Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Do(x => x.Value.AddSeconds(1), DateTime.MaxValue));
-        }
-
-        public void Test()
-        {
-            throw new Exception();
+            MyTestClass Temp = new MyTestClass();
+            Assert.NotSame(Temp, Temp.NotIf(x => x.B == 10));
+            Assert.Same(Temp, Temp.NotIf(x => x.B == 1));
         }
     }
 }

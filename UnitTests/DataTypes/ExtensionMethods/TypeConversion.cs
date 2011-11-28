@@ -35,7 +35,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Test]
         public void TypeToDbType()
         {
-            Assert.Equal(DbType.Int32,typeof(int).ToDbType());
+            Assert.Equal(DbType.Int32, typeof(int).ToDbType());
             Assert.Equal(DbType.String, typeof(string).ToDbType());
             Assert.Equal(DbType.Single, typeof(float).ToDbType());
         }
@@ -93,7 +93,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             object TestObject = new DateTime(1999, 1, 1);
             Assert.Equal(TestObject, TestObject.NullCheck());
             Assert.Same(TestObject, TestObject.NullCheck());
-            TestObject=null;
+            TestObject = null;
             Assert.Equal(new DateTime(1999, 1, 2), TestObject.NullCheck(new DateTime(1999, 1, 2)));
         }
 
@@ -149,5 +149,35 @@ namespace UnitTests.DataTypes.ExtensionMethods
             object TempObject = null;
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrDBNull("TempName"));
         }
+
+        [Test]
+        public void TryConvert()
+        {
+            Assert.Equal(1, (1.0f).TryTo(0));
+            Assert.Equal("2011", (2011).TryTo(""));
+            Assert.NotNull(new MyTestClass().TryTo<MyTestClass, IMyTestClass>());
+            Assert.NotNull(((object)new MyTestClass()).TryTo<object, IMyTestClass>());
+        }
+
+        [Test]
+        public void Return()
+        {
+            Assert.Null(new MyTestClass().Return(x => x.A));
+            Assert.NotNull(new MyTestClass().Return(x => x.A, new MyTestClass()));
+            Assert.Equal(10, new MyTestClass().Return(x => x.A, new MyTestClass()).Return(x => x.B));
+            Assert.Equal(0, new MyTestClass().Return(x => x.A).Return(x => x.B));
+            Assert.Equal(0, ((MyTestClass)null).Return(x => x.A).Return(x => x.B));
+        }
+    }
+
+    public class MyTestClass:IMyTestClass
+    {
+        public MyTestClass() { B = 10; }
+        public virtual MyTestClass A { get; set; }
+        public virtual int B { get; set; }
+    }
+
+    public interface IMyTestClass
+    {
     }
 }

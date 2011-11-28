@@ -29,6 +29,7 @@ using Utilities.Math.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Drawing.Drawing2D;
 using Utilities.Media.Image.Procedural;
+using System.IO;
 #endregion
 
 namespace Utilities.Media.Image.ExtensionMethods
@@ -1977,6 +1978,26 @@ namespace Utilities.Media.Image.ExtensionMethods
             if (!string.IsNullOrEmpty(FileName))
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
+        }
+
+        #endregion
+
+        #region ToBase64
+
+        /// <summary>
+        /// Converts an image to a base64 string and returns it
+        /// </summary>
+        /// <param name="Image">Image to convert</param>
+        /// <param name="DesiredFormat">Desired image format (defaults to Jpeg)</param>
+        /// <returns>The image in base64 string format</returns>
+        public static string ToBase64(this Bitmap Image,ImageFormat DesiredFormat=null)
+        {
+            DesiredFormat = DesiredFormat.NullCheck(ImageFormat.Jpeg);
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                Image.Save(Stream, DesiredFormat);
+                return Stream.ToArray().ToBase64String();
+            }
         }
 
         #endregion

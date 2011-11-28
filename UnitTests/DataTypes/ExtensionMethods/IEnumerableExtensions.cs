@@ -33,10 +33,10 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class IEnumerableExtensions
     {
         [Test]
-        public void Cast()
+        public void ForEachTest3()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.DoesNotThrow<Exception>(() => Temp.Cast<int, float>(x => x > 0 ? (float)x : 1.0f));
+            Assert.DoesNotThrow<Exception>(() => Temp.ForEach<int, float>(x => x > 0 ? (float)x : 1.0f));
         }
 
         [Test]

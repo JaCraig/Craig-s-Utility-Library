@@ -60,9 +60,43 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Object">Object to run the action on</param>
         /// <param name="Function">Function to run</param>
         /// <returns>The result from the function</returns>
-        public static R Chain<T,R>(this T Object, Func<T,R> Function)
+        public static R Chain<T, R>(this T Object, Func<T, R> Function)
         {
             return Function(Object);
+        }
+
+        #endregion
+
+        #region Do
+
+        /// <summary>
+        /// Similar to Chain, except checks if the Object or Action is null first and returns the default value if they are
+        /// </summary>
+        /// <typeparam name="T">The object type</typeparam>
+        /// <param name="Object">Object to run the action on</param>
+        /// <param name="Action">Action to run</param>
+        /// <param name="DefaultValue">Default value to return if the action or object is null</param>
+        /// <returns>The original object or the default value</returns>
+        public static T Do<T>(this T Object, Action<T> Action, T DefaultValue = default(T))
+        {
+            if (Object.IsNull() || Action.IsNull())
+                return DefaultValue;
+            return Object.Chain(Action);
+        }
+
+        /// <summary>
+        /// Similar to Chain, except checks if the Object or Function is null first and returns the default value if they are
+        /// </summary>
+        /// <typeparam name="T">The object type</typeparam>
+        /// <param name="Object">Object to run the function on</param>
+        /// <param name="Function">Function to run</param>
+        /// <param name="DefaultValue">Default value to return if the action or object is null</param>
+        /// <returns>The result of the function or the default value</returns>
+        public static R Do<T, R>(this T Object, Func<T, R> Function, R DefaultValue = default(R))
+        {
+            if (Object.IsNull() || Function.IsNull())
+                return DefaultValue;
+            return Object.Chain(Function);
         }
 
         #endregion
@@ -122,7 +156,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 Thread.Sleep(RetryDelay);
                 --Attempts;
             }
-            if(Holder.IsNotNull())
+            if (Holder.IsNotNull())
                 throw Holder;
         }
 

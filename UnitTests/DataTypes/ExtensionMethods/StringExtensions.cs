@@ -158,9 +158,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Test]
         public void TryTo()
         {
-            Assert.OfType<int>("123".TryTo<int>());
-            Assert.Equal(123, "123".TryTo<int>());
-            Assert.DoesNotThrow<Exception>(() => "ASD".TryTo<int>());
+            Assert.OfType<int>("123".TryTo<string,int>());
+            Assert.Equal(123, "123".TryTo<string,int>());
+            Assert.DoesNotThrow<Exception>(() => "ASD".TryTo<string, int>());
         }
 
         [Test]

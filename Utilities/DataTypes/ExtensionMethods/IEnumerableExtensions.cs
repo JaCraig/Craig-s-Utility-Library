@@ -40,25 +40,6 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
-        #region Cast
-
-        /// <summary>
-        /// Casts each item in the list to a specific type
-        /// </summary>
-        /// <typeparam name="In">Type coming in</typeparam>
-        /// <typeparam name="Out">Type going out</typeparam>
-        /// <param name="List">List containing the items</param>
-        /// <param name="Func">Function to convert the items</param>
-        /// <returns>The list of items converted to the specified type</returns>
-        public static IEnumerable<Out> Cast<In, Out>(this IEnumerable<In> List, Func<In, Out> Func)
-        {
-            List.ThrowIfNull("List");
-            Func.ThrowIfNull("Func");
-            return List.ForEach<In, Out>(x => Func(x));
-        }
-
-        #endregion
-
         #region For
 
         /// <summary>
@@ -276,7 +257,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             List.ThrowIfNull("List");
             ConvertingFunction.ThrowIfNull("ConvertingFunction");
-            return List.Cast(ConvertingFunction).ToArray();
+            return List.ForEach(ConvertingFunction).ToArray();
         }
 
         #endregion

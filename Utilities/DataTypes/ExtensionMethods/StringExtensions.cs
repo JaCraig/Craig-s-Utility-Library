@@ -373,30 +373,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             TypeConverter Converter = TypeDescriptor.GetConverter(typeof(T));
             if (Converter.CanConvertFrom(Value.GetType()))
-                return string.IsNullOrEmpty(Value) ? DefaultValue : (T)Converter.ConvertFrom(Value);
-            return DefaultValue;
-        }
-
-        #endregion
-
-        #region TryTo
-
-        /// <summary>
-        /// Converts the string to the specified type
-        /// </summary>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <param name="Value">Value to convert</param>
-        /// <param name="DefaultValue">Default value to return if it can't be converted</param>
-        /// <returns>Converts the item</returns>
-        public static T TryTo<T>(this string Value, T DefaultValue = default(T))
-        {
-            try
-            {
-                TypeConverter Converter = TypeDescriptor.GetConverter(typeof(T));
-                if (Converter.CanConvertFrom(Value.GetType()))
-                    return string.IsNullOrEmpty(Value) ? DefaultValue : (T)Converter.ConvertFrom(Value);
-            }
-            catch { }
+                return Value.IsNullOrEmpty() ? DefaultValue : (T)Converter.ConvertFrom(Value);
             return DefaultValue;
         }
 

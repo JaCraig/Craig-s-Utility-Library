@@ -54,6 +54,21 @@ namespace UnitTests.FileFormats.Zip
             Assert.True(new FileInfo(@".\Testing2\TestFile.ini").Exists);
         }
 
+        [Test]
+        public void Create2()
+        {
+            using (Utilities.FileFormats.Zip.ZipFile TestObject = new Utilities.FileFormats.Zip.ZipFile(@".\Testing3\Test.zip"))
+            {
+                TestObject.AddFile(@".\Testing\TestFile.ini");
+            }
+            using (Utilities.FileFormats.Zip.ZipFile TestObject = new Utilities.FileFormats.Zip.ZipFile(@".\Testing3\Test.zip", false))
+            {
+                TestObject.UncompressFile(@".\Testing2");
+            }
+            Assert.True(new FileInfo(@".\Testing3\Test.zip").Exists);
+            Assert.True(new FileInfo(@".\Testing2\TestFile.ini").Exists);
+        }
+
         public void Dispose()
         {
             new DirectoryInfo(@".\Testing").DeleteAll();
