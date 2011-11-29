@@ -55,6 +55,7 @@ namespace UnitTests.Reflection.Emit
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
+            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
             Assert.DoesNotThrow<Exception>(() => Field.Assign(12));
         }
@@ -64,6 +65,7 @@ namespace UnitTests.Reflection.Emit
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
+            IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
             Assert.DoesNotThrow<Exception>(() => Field.Call("ToString"));
         }
