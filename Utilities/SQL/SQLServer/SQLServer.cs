@@ -640,7 +640,7 @@ namespace Utilities.SQL.SQLServer
                     try
                     {
                         Helper.Open();
-                        Helper.AddParameter("@ProcedureName", Procedure.Name, 128);
+                        Helper.AddParameter("@ProcedureName",128, Procedure.Name);
                         Helper.ExecuteReader();
                         while (Helper.Read())
                         {
@@ -672,7 +672,7 @@ namespace Utilities.SQL.SQLServer
                     try
                     {
                         Helper.Open();
-                        Helper.AddParameter("@ViewName", View.Name, 128);
+                        Helper.AddParameter("@ViewName",128, View.Name);
                         Helper.ExecuteReader();
                         if (Helper.Read())
                         {
@@ -688,7 +688,7 @@ namespace Utilities.SQL.SQLServer
                     try
                     {
                         Helper.Open();
-                        Helper.AddParameter("@ViewName", View.Name, 128);
+                        Helper.AddParameter("@ViewName",128, View.Name);
                         Helper.ExecuteReader();
                         while (Helper.Read())
                         {
@@ -720,7 +720,7 @@ namespace Utilities.SQL.SQLServer
                     try
                     {
                         Helper.Open();
-                        Helper.AddParameter("@TableName", Table.Name, 128);
+                        Helper.AddParameter("@TableName",128, Table.Name);
                         Helper.ExecuteReader();
                         while (Helper.Read())
                         {
@@ -754,7 +754,7 @@ namespace Utilities.SQL.SQLServer
                     try
                     {
                         Helper.Open();
-                        Helper.AddParameter("@TableName", Table.Name, 128);
+                        Helper.AddParameter("@TableName",128, Table.Name);
                         Helper.ExecuteReader();
                         while (Helper.Read())
                         {
@@ -822,7 +822,7 @@ namespace Utilities.SQL.SQLServer
                 try
                 {
                     Helper.Open();
-                    Helper.AddParameter("@Name", Name, 200);
+                    Helper.AddParameter("@Name",200, Name);
                     Helper.ExecuteReader();
                     if (Helper.Read())
                         Exists = true;

@@ -33,7 +33,7 @@ namespace Utilities.SQL.MicroORM
     /// Parameter class
     /// </summary>
     /// <typeparam name="DataType">Type of the parameter</typeparam>
-    public class Parameter<DataType>:IParameter
+    public class Parameter<DataType> : IParameter
     {
         #region Constructor
 

@@ -26,6 +26,7 @@ using System.Data.SqlClient;
 using System.Xml;
 using System.Data.Common;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.SQL.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL
@@ -119,81 +120,6 @@ namespace Utilities.SQL
 
         #region Functions
 
-        #region AddOutputParameter
-
-        /// <summary>
-        /// Adds an output parameter
-        /// </summary>
-        /// <param name="ID">Name of the parameter</param>
-        /// <param name="Type">SQL type of the parameter</param>
-        public virtual void AddOutputParameter(string ID, SqlDbType Type)
-        {
-            AddOutputParameter(ID, Type.ToDbType());
-        }
-
-        /// <summary>
-        /// Adds an output parameter
-        /// </summary>
-        /// <param name="ID">Name of the parameter</param>
-        /// <param name="Type">SQL type of the parameter</param>
-        public virtual void AddOutputParameter(string ID, DbType Type)
-        {
-            if (ExecutableCommand != null)
-            {
-                DbParameter Parameter = null;
-                if (ExecutableCommand.Parameters.Contains(ID))
-                    Parameter = ExecutableCommand.Parameters[ID];
-                else
-                {
-                    Parameter = ExecutableCommand.CreateParameter();
-                    ExecutableCommand.Parameters.Add(Parameter);
-                }
-                Parameter.ParameterName = ID;
-                Parameter.Value = null;
-                Parameter.DbType = Type;
-                Parameter.Direction = ParameterDirection.Output;
-            }
-        }
-
-        /// <summary>
-        /// Adds an output parameter
-        /// </summary>
-        /// <typeparam name="DataType">Data type of the parameter</typeparam>
-        /// <param name="ID">ID associated with the output parameter</param>
-        public virtual void AddOutputParameter<DataType>(string ID)
-        {
-            AddOutputParameter(ID, typeof(DataType).ToDbType());
-        }
-
-        /// <summary>
-        /// Adds an output parameter
-        /// </summary>
-        /// <param name="ID">Name of the parameter</param>
-        /// <param name="Length">Length of the string (either -1 or 5000 should be used to indicate nvarchar(max))</param>
-        public virtual void AddOutputParameter(string ID, int Length)
-        {
-            if (Length == 5000)
-                Length = -1;
-            if (ExecutableCommand != null)
-            {
-                DbParameter Parameter = null;
-                if (ExecutableCommand.Parameters.Contains(ID))
-                    Parameter = ExecutableCommand.Parameters[ID];
-                else
-                {
-                    Parameter = ExecutableCommand.CreateParameter();
-                    ExecutableCommand.Parameters.Add(Parameter);
-                }
-                Parameter.ParameterName = ID;
-                Parameter.Value = null;
-                Parameter.DbType = typeof(string).ToDbType();
-                Parameter.Direction = ParameterDirection.Output;
-                Parameter.Size = Length;
-            }
-        }
-
-        #endregion
-
         #region AddParameter
 
         /// <summary>
@@ -201,28 +127,12 @@ namespace Utilities.SQL
         /// </summary>
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
-        /// <param name="Length">Size of the string(either -1 or 5000 should be used to indicate nvarchar(max))</param>
-        public virtual void AddParameter(string ID, string Value, int Length)
+        /// <param name="Length">Size of the string(either -1 or greater than 4000 should be used to indicate nvarchar(max))</param>
+        /// <param name="Direction">Parameter direction (defaults to input)</param>
+        public virtual void AddParameter(string ID, int Length, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
         {
-            if (Length == 5000)
-                Length = -1;
             if (ExecutableCommand != null)
-            {
-                DbParameter Parameter = null;
-                if (ExecutableCommand.Parameters.Contains(ID))
-                    Parameter = ExecutableCommand.Parameters[ID];
-                else
-                {
-                    Parameter = ExecutableCommand.CreateParameter();
-                    ExecutableCommand.Parameters.Add(Parameter);
-                }
-                Parameter.ParameterName = ID;
-                Parameter.Value = (string.IsNullOrEmpty(Value)) ? System.DBNull.Value : (object)Value;
-                Parameter.IsNullable = (string.IsNullOrEmpty(Value));
-                Parameter.DbType = typeof(string).ToDbType();
-                Parameter.Direction = ParameterDirection.Input;
-                Parameter.Size = Length;
-            }
+                ExecutableCommand.AddParameter(ID, Length, Value, Direction);
         }
 
         /// <summary>
@@ -231,9 +141,10 @@ namespace Utilities.SQL
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
         /// <param name="Type">SQL type of the parameter</param>
-        public virtual void AddParameter(string ID, object Value, SqlDbType Type)
+        /// <param name="Direction">Parameter direction (defaults to input)</param>
+        public virtual void AddParameter(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
-            AddParameter(ID, Value, Type.ToDbType());
+            AddParameter(ID, Type.ToDbType(), Value, Direction);
         }
 
         /// <summary>
@@ -242,9 +153,10 @@ namespace Utilities.SQL
         /// <typeparam name="DataType">Data type of the parameter</typeparam>
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
-        public virtual void AddParameter<DataType>(string ID, DataType Value)
+        /// <param name="Direction">Parameter direction (defaults to input)</param>
+        public virtual void AddParameter<DataType>(string ID, DataType Value = default(DataType), ParameterDirection Direction = ParameterDirection.Input)
         {
-            AddParameter(ID, Value, Value.GetType().ToDbType());
+            AddParameter(ID, Value.GetType().ToDbType(), Value, Direction);
         }
 
         /// <summary>
@@ -253,24 +165,11 @@ namespace Utilities.SQL
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
         /// <param name="Type">SQL type of the parameter</param>
-        public virtual void AddParameter(string ID, object Value, DbType Type)
+        /// <param name="Direction">Parameter direction (defaults to input)</param>
+        public virtual void AddParameter(string ID, DbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
             if (ExecutableCommand != null)
-            {
-                DbParameter Parameter = null;
-                if (ExecutableCommand.Parameters.Contains(ID))
-                    Parameter = ExecutableCommand.Parameters[ID];
-                else
-                {
-                    Parameter = ExecutableCommand.CreateParameter();
-                    ExecutableCommand.Parameters.Add(Parameter);
-                }
-                Parameter.ParameterName = ID;
-                Parameter.Value = (Value == null) ? System.DBNull.Value : Value;
-                Parameter.IsNullable = (Value == null);
-                Parameter.DbType = Type;
-                Parameter.Direction = ParameterDirection.Input;
-            }
+                ExecutableCommand.AddParameter(ID, Type, Value, Direction);
         }
 
         #endregion
@@ -282,8 +181,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void BeginTransaction()
         {
-            Open();
-            Transaction = Connection.BeginTransaction();
+            Transaction = ExecutableCommand.BeginTransaction();
             Command = _Command;
         }
 
@@ -296,8 +194,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void ClearParameters()
         {
-            if (ExecutableCommand != null)
-                ExecutableCommand.Parameters.Clear();
+            ExecutableCommand.ClearParameters();
         }
 
         #endregion
@@ -309,10 +206,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void Close()
         {
-            if (ExecutableCommand != null
-                && ExecutableCommand.Connection != null
-                && ExecutableCommand.Connection.State != ConnectionState.Closed)
-                ExecutableCommand.Connection.Close();
+            ExecutableCommand.Close();
         }
 
         #endregion
@@ -324,8 +218,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void Commit()
         {
-            if (Transaction != null)
-                Transaction.Commit();
+            ExecutableCommand.Commit();
         }
 
         #endregion
@@ -338,16 +231,7 @@ namespace Utilities.SQL
         /// <returns>A dataset filled with the results of the query</returns>
         public virtual DataSet ExecuteDataSet()
         {
-            Open();
-            if (ExecutableCommand != null)
-            {
-                DbDataAdapter Adapter = Factory.CreateDataAdapter();
-                Adapter.SelectCommand = ExecutableCommand;
-                DataSet ReturnSet = new DataSet();
-                Adapter.Fill(ReturnSet);
-                return ReturnSet;
-            }
-            return null;
+            return ExecutableCommand.ExecuteDataSet(Factory);
         }
 
         #endregion
@@ -361,9 +245,7 @@ namespace Utilities.SQL
         public virtual int ExecuteNonQuery()
         {
             Open();
-            if (ExecutableCommand != null)
-                return ExecutableCommand.ExecuteNonQuery();
-            return 0;
+            return (ExecutableCommand != null) ? ExecutableCommand.ExecuteNonQuery() : 0;
         }
 
         #endregion
@@ -387,29 +269,11 @@ namespace Utilities.SQL
         /// <summary>
         /// Executes the stored procedure as a scalar query
         /// </summary>
-        /// <returns>The object of the first row and first column</returns>
-        public virtual object ExecuteScalar()
-        {
-            Open();
-            if (ExecutableCommand != null)
-                return ExecutableCommand.ExecuteScalar();
-            return null;
-        }
-
-        /// <summary>
-        /// Executes the stored procedure as a scalar query
-        /// </summary>
+        /// <typeparam name="DataType">Data type to return</typeparam>
         /// <returns>The object of the first row and first column</returns>
         public virtual DataType ExecuteScalar<DataType>()
         {
-            Open();
-            if (ExecutableCommand != null)
-            {
-                object Value = ExecuteScalar();
-                if (!Convert.IsDBNull(Value))
-                    return (DataType)Convert.ChangeType(Value, typeof(DataType));
-            }
-            return default(DataType);
+            return ExecutableCommand.ExecuteScalar<DataType>();
         }
 
         #endregion
@@ -435,63 +299,16 @@ namespace Utilities.SQL
         /// <summary>
         /// Returns a parameter's value
         /// </summary>
-        /// <param name="ID">Parameter name</param>
-        /// <param name="Default">Default value for the parameter</param>
-        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public virtual object GetParameter(string ID, object Default)
-        {
-            if (Reader == null)
-                return Default;
-            bool Found = false;
-            for (int x = 0; x < Reader.FieldCount; ++x)
-            {
-                if (Reader.GetName(x) == ID)
-                {
-                    Found = true;
-                    break;
-                }
-            }
-            if (Found && !Convert.IsDBNull(Reader[ID]))
-                return Reader[ID];
-            return Default;
-        }
-
-        /// <summary>
-        /// Returns a parameter's value
-        /// </summary>
         /// <typeparam name="DataType">Data type of the object</typeparam>
         /// <param name="ID">Parameter name</param>
         /// <param name="Default">Default value for the parameter</param>
+        /// <param name="Direction">Parameter direction (defaults to input)</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public virtual DataType GetParameter<DataType>(string ID, DataType Default)
+        public virtual DataType GetParameter<DataType>(string ID, DataType Default = default(DataType),ParameterDirection Direction=ParameterDirection.Input)
         {
-            if (Reader == null)
-                return Default;
-            bool Found = false;
-            for (int x = 0; x < Reader.FieldCount; ++x)
-            {
-                if (Reader.GetName(x) == ID)
-                {
-                    Found = true;
-                    break;
-                }
-            }
-            if (Found && !Convert.IsDBNull(Reader[ID]))
-                return (DataType)Convert.ChangeType(Reader[ID], typeof(DataType));
-            return Default;
-        }
-
-        /// <summary>
-        /// Returns a parameter's value
-        /// </summary>
-        /// <param name="Position">Position in the row</param>
-        /// <param name="Default">Default value for the parameter</param>
-        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public virtual object GetParameter(int Position, object Default)
-        {
-            if (Reader != null && !Convert.IsDBNull(Reader[Position]))
-                return Reader[Position];
-            return Default;
+            if (Direction == ParameterDirection.Output)
+                return ExecutableCommand.GetOutputParameter<DataType>(ID, Default);
+            return Reader.GetParameter<DataType>(ID, Default);
         }
 
         /// <summary>
@@ -501,42 +318,9 @@ namespace Utilities.SQL
         /// <param name="Position">Position in the row</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public virtual DataType GetParameter<DataType>(int Position, DataType Default)
+        public virtual DataType GetParameter<DataType>(int Position, DataType Default = default(DataType))
         {
-            if (Reader != null && !Convert.IsDBNull(Reader[Position]))
-                return (DataType)Convert.ChangeType(Reader[Position], typeof(DataType));
-            return Default;
-        }
-
-        #endregion
-
-        #region GetOutputParameter
-
-        /// <summary>
-        /// Returns an output parameter's value
-        /// </summary>
-        /// <param name="ID">Parameter name</param>
-        /// <param name="Default">Default value for the parameter</param>
-        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public virtual object GetOutputParameter(string ID, object Default)
-        {
-            if (ExecutableCommand != null && !Convert.IsDBNull(ExecutableCommand.Parameters[ID]))
-                return ExecutableCommand.Parameters[ID].Value;
-            return Default;
-        }
-
-        /// <summary>
-        /// Returns an output parameter's value
-        /// </summary>
-        /// <typeparam name="DataType">Data type of the object</typeparam>
-        /// <param name="ID">Parameter name</param>
-        /// <param name="Default">Default value for the parameter</param>
-        /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public virtual DataType GetOutputParameter<DataType>(string ID, DataType Default)
-        {
-            if (ExecutableCommand != null && !Convert.IsDBNull(ExecutableCommand.Parameters[ID]))
-                return (DataType)Convert.ChangeType(ExecutableCommand.Parameters[ID].Value, typeof(DataType));
-            return Default;
+            return Reader.GetParameter<DataType>(Position, Default);
         }
 
         #endregion
@@ -561,10 +345,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void Open()
         {
-            if (ExecutableCommand != null 
-                && ExecutableCommand.Connection != null 
-                && ExecutableCommand.Connection.State != ConnectionState.Open)
-                ExecutableCommand.Connection.Open();
+            ExecutableCommand.Open();
         }
 
         #endregion
@@ -577,7 +358,7 @@ namespace Utilities.SQL
         /// <returns>True if there is more rows, false otherwise</returns>
         public virtual bool Read()
         {
-            return (Reader != null) ? Reader.Read() : false;
+            return (Reader.IsNotNull()) ? Reader.Read() : false;
         }
 
         #endregion
@@ -614,8 +395,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual void Rollback()
         {
-            if (Transaction != null)
-                Transaction.Rollback();
+            ExecutableCommand.Rollback();
         }
 
         #endregion

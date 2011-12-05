@@ -102,7 +102,9 @@ namespace Utilities.IO.ExtensionMethods
         {
             if (!Info.Exists)
                 return;
-            System.IO.Directory.Delete(Info.FullName, true);
+            Info.DeleteFiles();
+            Info.EnumerateDirectories().ForEach(x => x.DeleteAll());
+            Info.Delete(false);
         }
 
         #endregion

@@ -30,6 +30,7 @@ using Utilities.SQL.MicroORM.Interfaces;
 using System.Data;
 using System.Reflection;
 using Utilities.DataTypes.Comparison;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.MicroORM.Enums;
 using Utilities.Reflection.ExtensionMethods;
 #endregion
@@ -167,9 +168,9 @@ namespace Utilities.SQL.MicroORM
         /// <returns>A list of all objects that meet the specified criteria</returns>
         public virtual IEnumerable<ClassType> All(string Command, CommandType CommandType, IEnumerable<ClassType> Objects = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
-            Check(Command, "Command");
-            Check(Helper, "Helper");
-            Check(Mappings, "Mappings");
+            Command.ThrowIfNullOrEmpty("Command");
+            Helper.ThrowIfNull("Helper");
+            Mappings.ThrowIfNull("Mappings");
             List<ClassType> Return = Objects == null ? new List<ClassType>() : Objects.ToList();
             ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             SetupCommand(Command, CommandType, Parameters);
@@ -177,7 +178,7 @@ namespace Utilities.SQL.MicroORM
             while (Helper.Read())
             {
                 bool Add = false;
-                object CurrentKey = Helper.GetParameter(PrimaryKey, null);
+                object CurrentKey = Helper.GetParameter<object>(PrimaryKey, null);
                 ClassType Temp = default(ClassType);
                 if (Objects != null) Temp = Objects.FirstOrDefault(x => GetPrimaryKey(x).Equals(CurrentKey));
                 if (Temp == default(ClassType))
@@ -203,7 +204,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns>A list of all objects that meet the specified criteria</returns>
         public virtual IEnumerable<ClassType> All(string Columns = "*", int Limit = 0, string OrderBy = "", IEnumerable<ClassType> Objects = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
-            Check(Columns, "Columns");
+            Columns.ThrowIfNullOrEmpty("Columns");
             return All(SetupSelectCommand(Columns, Limit, OrderBy, Parameters), CommandType.Text, Objects, ObjectCreator, Parameters);
         }
 
@@ -223,7 +224,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns>An object fitting the criteria specified or null if none are found</returns>
         public virtual ClassType Any(string Columns = "*", ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
-            Check(Columns, "Columns");
+            Columns.ThrowIfNullOrEmpty("Columns");
             return Any(SetupSelectCommand(Columns, 1, "", Parameters), CommandType.Text, ObjectToReturn, ObjectCreator, Parameters);
         }
 
@@ -240,9 +241,9 @@ namespace Utilities.SQL.MicroORM
         /// <returns>An object fitting the criteria specified or null if none are found</returns>
         public virtual ClassType Any(string Command, CommandType CommandType, ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
-            Check(Mappings, "Mappings");
-            Check(Command, "Command");
-            Check(Helper, "Helper");
+            Mappings.ThrowIfNull("Mappings");
+            Command.ThrowIfNullOrEmpty("Command");
+            Helper.ThrowIfNull("Helper");
             ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             SetupCommand(Command, CommandType, Parameters);
             Helper.ExecuteReader();
@@ -265,35 +266,40 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Command">Command to use</param>
         /// <param name="CommandType">Command type</param>
         /// <param name="Object">Object to delete</param>
-        public virtual void Delete(string Command, CommandType CommandType, ClassType Object)
+        /// <returns>The number of rows deleted</returns>
+        public virtual int Delete(string Command, CommandType CommandType, ClassType Object)
         {
-            Check(Object, "Object");
-            Check(Command, "Command");
-            Check(Helper, "Helper");
-            Check(Mappings, "Mappings");
+            Object.ThrowIfNull("Object");
+            Command.ThrowIfNullOrEmpty("Command");
+            Helper.ThrowIfNull("Helper");
+            Mappings.ThrowIfNull("Mappings");
             SetupCommand(Command, CommandType, null);
             Mappings.Copy(Object, Helper);
-            Helper.ExecuteNonQuery();
+            return Helper.ExecuteNonQuery();
         }
 
         /// <summary>
         /// Deletes an object from the database
         /// </summary>
         /// <param name="Object">Object to delete</param>
-        public virtual void Delete(ClassType Object)
+        /// <returns>The number of rows deleted</returns>
+        public virtual int Delete(ClassType Object)
         {
-            Delete(SetupDeleteCommand(), CommandType.Text, Object);
+            return Delete(SetupDeleteCommand(), CommandType.Text, Object);
         }
 
         /// <summary>
         /// Deletes a list of objects from the database
         /// </summary>
         /// <param name="Objects">Objects to delete</param>
-        public virtual void Delete(IEnumerable<ClassType> Objects)
+        /// <returns>The number of rows deleted</returns>
+        public virtual int Delete(IEnumerable<ClassType> Objects)
         {
-            string Command=SetupDeleteCommand();
+            string Command = SetupDeleteCommand();
+            int ReturnValue = 0;
             foreach (ClassType Object in Objects)
-                Delete(Command, CommandType.Text, Object);
+                ReturnValue += Delete(Command, CommandType.Text, Object);
+            return ReturnValue;
         }
 
         #endregion
@@ -307,16 +313,17 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Command">Command to run</param>
         /// <param name="CommandType">Command type</param>
         /// <param name="Object">Object to insert</param>
+        /// <param name="Parameters">Parameters sent into the function</param>
         /// <returns>The returned object from the query (usually the newly created row's ID)</returns>
         public virtual DataType Insert<DataType>(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
         {
-            Check(Object, "Object");
-            Check(Command, "Command");
-            Check(Helper, "Helper");
-            Check(Mappings, "Mappings");
+            Object.ThrowIfNull("Object");
+            Command.ThrowIfNullOrEmpty("Command");
+            Helper.ThrowIfNull("Helper");
+            Mappings.ThrowIfNull("Mappings");
             SetupCommand(Command, CommandType, Parameters);
             Mappings.Copy(Object, Helper);
-            return (DataType)Convert.ChangeType(Helper.ExecuteScalar(), typeof(DataType));
+            return Helper.ExecuteScalar<DataType>();
         }
 
         /// <summary>
@@ -324,6 +331,7 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         /// <typeparam name="DataType">Data type expected (should be the same type as the primary key)</typeparam>
         /// <param name="Object">Object to insert</param>
+        /// <param name="Parameters">Parameters sent into the function</param>
         /// <returns>The returned object from the query (the newly created row's ID)</returns>
         public virtual DataType Insert<DataType>(ClassType Object, params IParameter[] Parameters)
         {
@@ -336,9 +344,9 @@ namespace Utilities.SQL.MicroORM
 
         public virtual IMapping<ClassType> Map<DataType>(Expression<Func<ClassType, DataType>> Property, string DatabasePropertyName = "", DataType DefaultValue = default(DataType), Mode Mode = Mode.Read|Mode.Write)
         {
-            Check(Property, "Property");
-            Check(Mappings, "Mappings");
-            if (string.IsNullOrEmpty(DatabasePropertyName))
+            Property.ThrowIfNull("Property");
+            Mappings.ThrowIfNull("Mappings");
+            if (DatabasePropertyName.IsNullOrEmpty())
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
@@ -356,15 +364,15 @@ namespace Utilities.SQL.MicroORM
 
         public virtual IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName="", int Length=64,string DefaultValue="", Mode Mode = Mode.Read|Mode.Write)
         {
-            Check(Property, "Property");
-            Check(Mappings, "Mappings");
-            if (string.IsNullOrEmpty(DatabasePropertyName))
+            Property.ThrowIfNull("Property");
+            Mappings.ThrowIfNull("Mappings");
+            if (DatabasePropertyName.IsNullOrEmpty())
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
                 ((Mode & Mode.Read) == Mode.Read) ? new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, DefaultValue)) : null,
-                ((Mode & Mode.Write) == Mode.Write) ? new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, (string)y, Length)) : null);
+                ((Mode & Mode.Write) == Mode.Write) ? new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, Length, (string)y)) : null);
             ParameterNames.Add(DatabasePropertyName);
             if (DatabasePropertyName == PrimaryKey)
             {
@@ -386,7 +394,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns>The number of pages that the table contains for the specified page size</returns>
         public virtual int PageCount(int PageSize = 25, params IParameter[] Parameters)
         {
-            Check(Helper, "Helper");
+            Helper.ThrowIfNull("Helper");
             SetupCommand(SetupPageCountCommand(PageSize, Parameters), CommandType.Text, Parameters);
             Helper.ExecuteReader();
             if (Helper.Read())
@@ -414,7 +422,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns>A list of objects that fit the specified criteria</returns>
         public virtual IEnumerable<ClassType> Paged(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, IEnumerable<ClassType> Objects = null,Func<ClassType> ObjectCreator=null, params IParameter[] Parameters)
         {
-            Check(Columns, "Columns");
+            Columns.ThrowIfNullOrEmpty("Columns");
             return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, Parameters), CommandType.Text, Objects, ObjectCreator, Parameters);
         }
 
@@ -490,23 +498,27 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Command">Command to use</param>
         /// <param name="CommandType">Command type</param>
         /// <param name="Object">Object to update</param>
-        public virtual void Update(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
+        /// <param name="Parameters">Parameters sent into the function</param>
+        /// <returns>The number of rows updated</returns>
+        public virtual int Update(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
         {
-            Check(Helper, "Helper");
-            Check(Mappings, "Mappings");
-            Check(Command, "Command");
+            Helper.ThrowIfNull("Helper");
+            Mappings.ThrowIfNull("Mappings");
+            Command.ThrowIfNullOrEmpty("Command");
             SetupCommand(Command, CommandType, Parameters);
             Mappings.Copy(Object, Helper);
-            Helper.ExecuteNonQuery();
+            return Helper.ExecuteNonQuery();
         }
 
         /// <summary>
         /// Updates an object in the database
         /// </summary>
         /// <param name="Object">Object to update</param>
-        public virtual void Update(ClassType Object, params IParameter[] Parameters)
+        /// <param name="Parameters">Parameters sent into the function</param>
+        /// <returns>The number of rows updated</returns>
+        public virtual int Update(ClassType Object, params IParameter[] Parameters)
         {
-            Update(SetupUpdateCommand(Parameters), CommandType.Text, Object, Parameters);
+            return Update(SetupUpdateCommand(Parameters), CommandType.Text, Object, Parameters);
         }
 
         #endregion
@@ -514,32 +526,6 @@ namespace Utilities.SQL.MicroORM
         #endregion
 
         #region Protected Functions
-
-        #region Check
-
-        /// <summary>
-        /// Checks if an object is null, throwing an exception if it is
-        /// </summary>
-        /// <param name="Object">Object to check</param>
-        /// <param name="Name">Parameter name</param>
-        protected virtual void Check(object Object, string Name)
-        {
-            if (Object == null)
-                throw new ArgumentNullException(Name);
-        }
-
-        /// <summary>
-        /// Checks if a string is null/empty, throwing an exception if it is
-        /// </summary>
-        /// <param name="String">String to check</param>
-        /// <param name="Name">Parameter name</param>
-        protected virtual void Check(string String, string Name)
-        {
-            if (string.IsNullOrEmpty(String))
-                throw new ArgumentNullException(Name);
-        }
-
-        #endregion
 
         #region SetupCommand
 
@@ -551,17 +537,12 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Parameters">Parameter list</param>
         protected virtual void SetupCommand(string Command, CommandType CommandType, IParameter[] Parameters)
         {
-            Check(Helper, "Helper");
-            Check(Command, "Command");
+            Helper.ThrowIfNull("Helper");
+            Command.ThrowIfNullOrEmpty("Command");
             Helper.Command = Command;
             Helper.CommandType = CommandType;
-            if (Parameters != null)
-            {
-                foreach (IParameter Parameter in Parameters)
-                {
-                    Parameter.AddParameter(Helper);
-                }
-            }
+            if (Parameters.IsNotNull())
+                Parameters.ForEach(x => x.AddParameter(Helper));
         }
 
         #endregion
@@ -621,7 +602,7 @@ namespace Utilities.SQL.MicroORM
         protected virtual string SetupPageCountCommand(int PageSize, IParameter[] Parameters)
         {
             string WhereCommand = "";
-            if (Parameters != null && Parameters.Length > 0)
+            if (!Parameters.IsNullOrEmpty())
             {
                 WhereCommand += " WHERE ";
                 string Splitter = "";
@@ -649,11 +630,11 @@ namespace Utilities.SQL.MicroORM
         /// <returns>The command string</returns>
         protected virtual string SetupPagedCommand(string Columns, string OrderBy, int PageSize, int CurrentPage, IParameter[] Parameters)
         {
-            if (string.IsNullOrEmpty(OrderBy))
+            if (OrderBy.IsNullOrEmpty())
                 OrderBy = PrimaryKey;
 
             string WhereCommand = "";
-            if (Parameters != null && Parameters.Length > 0)
+            if (!Parameters.IsNullOrEmpty())
             {
                 WhereCommand += " WHERE ";
                 string Splitter = "";
@@ -684,7 +665,7 @@ namespace Utilities.SQL.MicroORM
         protected virtual string SetupSelectCommand(string Columns, int Limit, string OrderBy, IParameter[] Parameters)
         {
             string Command = (Limit > 0 ? "SELECT TOP " + Limit : "SELECT") + " {0} FROM {1}";
-            if (Parameters != null && Parameters.Length > 0)
+            if (!Parameters.IsNullOrEmpty())
             {
                 Command += " WHERE ";
                 string Splitter = "";
@@ -694,7 +675,7 @@ namespace Utilities.SQL.MicroORM
                     Splitter = " AND ";
                 }
             }
-            if (!string.IsNullOrEmpty(OrderBy))
+            if (!OrderBy.IsNullOrEmpty())
                 Command += OrderBy.Trim().ToLower().StartsWith("order by", StringComparison.CurrentCultureIgnoreCase) ? " " + OrderBy : " ORDER BY " + OrderBy;
             return string.Format(Command, Columns, TableName);
         }
@@ -740,9 +721,7 @@ namespace Utilities.SQL.MicroORM
         public void Dispose()
         {
             if (Helper != null)
-            {
                 Helper = null;
-            }
         }
 
         #endregion

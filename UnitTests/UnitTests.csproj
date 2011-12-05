@@ -156,6 +156,10 @@
     <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
     <Compile Include="Reflection\Emit\TypeBuilder.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="SQL\MicroORM\Database.cs" />
+    <Compile Include="SQL\MicroORM\Mapping.cs" />
+    <Compile Include="SQL\MicroORM\Parameter.cs" />
+    <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="Validation\Rules\Between.cs" />
     <Compile Include="Validation\Rules\Cascade.cs" />
     <Compile Include="Validation\Rules\Contains.cs" />

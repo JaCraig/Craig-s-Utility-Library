@@ -140,6 +140,8 @@
     <Compile Include="Encryption\ExtensionMethods\SymmetricExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
+    <Compile Include="SQL\ExtensionMethods\DbCommandExtensions.cs" />
+    <Compile Include="SQL\ExtensionMethods\DbDataReaderExtensions.cs" />
     <Compile Include="Validation\Rules\Contains.cs" />
     <Compile Include="Validation\Rules\DoesNotContain.cs" />
     <Compile Include="Validation\Rules\Empty.cs" />
