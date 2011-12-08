@@ -124,7 +124,7 @@ namespace Utilities.Environment.DataTypes
         {
             get
             {
-                if (_OperatingSystem==null)
+                if (_OperatingSystem == null)
                 {
                     _OperatingSystem = new OperatingSystem(Name, UserName, Password);
                 }
@@ -133,6 +133,23 @@ namespace Utilities.Environment.DataTypes
         }
 
         protected OperatingSystem _OperatingSystem = null;
+
+        /// <summary>
+        /// Holds a list of users that have logged into the machine recently
+        /// </summary>
+        public virtual User LatestUsers
+        {
+            get
+            {
+                if (_User == null)
+                {
+                    _User = new User(Name, UserName, Password);
+                }
+                return _User;
+            }
+        }
+
+        protected User _User = null;
 
 
         #endregion

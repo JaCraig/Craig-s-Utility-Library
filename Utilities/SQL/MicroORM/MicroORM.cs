@@ -96,11 +96,9 @@ namespace Utilities.SQL.MicroORM
         {
             if (!Databases.ContainsKey(Database))
                 Databases.Add(Database, new Database("", Database));
-            if(Databases[Database].Mappings.ContainsKey(typeof(ClassType)))
-                return (Mapping<ClassType>)Databases[Database].Mappings[typeof(ClassType)];
-            Mapping<ClassType> Mapping = new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement, ParameterStarter);
-            Databases[Database].Mappings.Add(typeof(ClassType), Mapping);
-            return Mapping;
+            if(!Databases[Database].Mappings.ContainsKey(typeof(ClassType)))
+                Databases[Database].Mappings.Add(typeof(ClassType), new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement, ParameterStarter));
+            return (Mapping<ClassType>)Databases[Database].Mappings[typeof(ClassType)];
         }
 
         /// <summary>
@@ -126,6 +124,20 @@ namespace Utilities.SQL.MicroORM
                 Databases[Name].Connection = ConnectionString;
             else
                 Databases.Add(Name, new Database(ConnectionString, Name));
+        }
+
+        /// <summary>
+        /// Clears a database object of all mappings
+        /// </summary>
+        /// <param name="Database">Database object to clear</param>
+        public static void ClearMappings(string Database="Default")
+        {
+            if (Databases.ContainsKey(Database))
+            {
+                foreach (Type Key in Databases[Database].Mappings.Keys)
+                    Databases[Database].Mappings[Key].Dispose();
+                Databases[Database].Mappings.Clear();
+            }
         }
 
         #endregion

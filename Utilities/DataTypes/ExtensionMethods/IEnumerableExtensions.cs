@@ -40,6 +40,30 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region Exists
+
+        /// <summary>
+        /// Used to determine if an item in the IEnumerable matches a predicate
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">List to search</param>
+        /// <param name="Match">The predicate used to check if something exists</param>
+        /// <returns>True if at least one item matches the predicate, false otherwise</returns>
+        public static bool Exists<T>(this IEnumerable<T> List,Predicate<T> Match)
+        {
+            Match.ThrowIfNull("Match");
+            if (List.IsNull())
+                return false;
+            foreach (T Item in List)
+            {
+                if (Match(Item))
+                    return true;
+            }
+            return false;
+        }
+
+        #endregion
+
         #region For
 
         /// <summary>

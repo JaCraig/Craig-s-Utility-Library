@@ -107,6 +107,7 @@
     <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
+    <Compile Include="Environment\DataTypes\User.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="Error\ExtensionMethods\Extensions.cs" />
     <Compile Include="IoC\Manager.cs" />

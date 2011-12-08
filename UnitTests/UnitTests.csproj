@@ -158,6 +158,7 @@
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="SQL\MicroORM\Database.cs" />
     <Compile Include="SQL\MicroORM\Mapping.cs" />
+    <Compile Include="SQL\MicroORM\MicroORM.cs" />
     <Compile Include="SQL\MicroORM\Parameter.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="Validation\Rules\Between.cs" />

@@ -51,6 +51,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
+        public void Exists()
+        {
+            IEnumerable<int> Temp =  new int[] { 1, 2, 3 }.ToList();
+            Assert.True(Temp.Exists(x => x > 2));
+            Assert.False(Temp.Exists(x => x < 1));
+        }
+
+        [Test]
         public void RemoveDefaultsTest()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();

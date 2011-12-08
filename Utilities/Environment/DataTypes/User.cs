@@ -25,14 +25,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Management;
+using System.Text.RegularExpressions;
 #endregion
 
 namespace Utilities.Environment.DataTypes
 {
     /// <summary>
-    /// Holds operating system info
+    /// Holds user data
     /// </summary>
-    public class OperatingSystem
+    public class User
     {
         #region Constructor
 
@@ -42,24 +43,24 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Name">Computer name</param>
         /// <param name="Password">Password</param>
         /// <param name="UserName">Username</param>
-        public OperatingSystem(string Name = "", string UserName = "", string Password = "")
+        public User(string Name = "", string UserName = "", string Password = "")
         {
             if (string.IsNullOrEmpty(Name))
                 throw new ArgumentNullException("Name");
-            GetOperatingSystemInfo(Name, UserName, Password);
+            GetCurrentUser(Name, UserName, Password);
         }
 
         #endregion
 
         #region Properties
 
-        public virtual DateTime LastBootUpTime { get; set; }
+        public virtual List<string> UserNames { get; set; }
 
         #endregion
 
         #region Functions
 
-        protected virtual void GetOperatingSystemInfo(string Name, string UserName, string Password)
+        protected virtual void GetCurrentUser(string Name, string UserName, string Password)
         {
             if (string.IsNullOrEmpty(Name))
                 throw new ArgumentNullException("Name");
@@ -76,18 +77,24 @@ namespace Utilities.Environment.DataTypes
                 Scope = new ManagementScope("\\\\" + Name + "\\root\\cimv2");
             }
             Scope.Connect();
-            ObjectQuery Query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            ObjectQuery Query = new ObjectQuery("SELECT * FROM Win32_LoggedOnUser");
+            List<string> TempUserNames = new List<string>();
             using (ManagementObjectSearcher Searcher = new ManagementObjectSearcher(Scope, Query))
             {
                 using (ManagementObjectCollection Collection = Searcher.Get())
                 {
-                    foreach (ManagementObject TempNetworkAdapter in Collection)
+                    foreach (ManagementObject TempObject in Collection)
                     {
-                        if (TempNetworkAdapter.Properties["LastBootUpTime"].Value != null)
-                        {
-                            LastBootUpTime = ManagementDateTimeConverter.ToDateTime(TempNetworkAdapter.Properties["LastBootUpTime"].Value.ToString());
-                        }
+                        TempUserNames.Add(TempObject["Antecedent"].ToString());
                     }
+                }
+            }
+            foreach (string TempName in UserNames)
+            {
+                if (Regex.IsMatch(TempName, "Domain=\"(?<Domain>.*)\",Name=\"(?<Name>.*)\""))
+                {
+                    Match Value = Regex.Match(TempName, "Domain=\"(?<Domain>.*)\",Name=\"(?<Name>.*)\"");
+                    UserNames.Add(Value.Groups["Domain"].Value + "\\" + Value.Groups["Name"].Value);
                 }
             }
         }
