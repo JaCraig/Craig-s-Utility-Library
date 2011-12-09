@@ -474,13 +474,6 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    System.Collections.Generic.List<IParameter> Params = Parameters.ToList();
-                    foreach (IProperty Property in Mapping.Properties)
-                    {
-                        IParameter Parameter = ((IProperty<ObjectType>)Property).GetAsParameter(Object);
-                        if (Parameter != null)
-                            Params.Add(Parameter);
-                    }
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
                         foreach (IProperty Property in Mapping.Properties)
@@ -489,6 +482,13 @@ namespace Utilities.ORM.QueryProviders
                             {
                                 ((IProperty<ObjectType>)Property).CascadeSave(Object, ORMObject);
                             }
+                        }
+                        System.Collections.Generic.List<IParameter> Params = Parameters.ToList();
+                        foreach (IProperty Property in Mapping.Properties)
+                        {
+                            IParameter Parameter = ((IProperty<ObjectType>)Property).GetAsParameter(Object);
+                            if (Parameter != null)
+                                Params.Add(Parameter);
                         }
                         ORMObject.Map<ObjectType>().Save<PrimaryKeyType>(Object, Params.ToArray());
                         foreach (IProperty Property in Mapping.Properties)
