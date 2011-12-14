@@ -39,11 +39,11 @@ namespace Utilities.SQL.DataClasses
         /// <param name="Definition">Definition</param>
         /// <param name="Type">Type</param>
         /// <param name="ParentTable">Parent table</param>
-        public Trigger(string Name, string Definition, int Type, Table ParentTable)
+        public Trigger(string Name, string Definition, TriggerType Type, Table ParentTable)
         {
             this.Name = Name;
             this.Definition = Definition;
-            this.Type = (TriggerType)Type;
+            this.Type = Type;
             this.ParentTable = ParentTable;
         }
 

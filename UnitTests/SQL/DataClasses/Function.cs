@@ -19,35 +19,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using System.Data;
+using Utilities.SQL.DataClasses.Interfaces;
 
-#endregion
-
-namespace Utilities.SQL.DataClasses.Interfaces
+namespace UnitTests.SQL.DataClasses
 {
-    /// <summary>
-    /// Interface for table like structures
-    /// </summary>
-    public interface ITable
+    public class Function
     {
-        #region Properties
-
-        /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
-        /// Columns
-        /// </summary>
-        List<IColumn> Columns { get; set; }
-
-        /// <summary>
-        /// Parent of the table structure
-        /// </summary>
-        Database ParentDatabase { get; set; }
-
-        #endregion
+        [Test]
+        public void Create()
+        {
+            Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
+            Utilities.SQL.DataClasses.Function Function = Database.AddFunction("TestFunction", "Definition");
+            Assert.Equal(Function, Database.Functions[0]);
+            Assert.Equal("TestFunction", Function.Name);
+            Assert.Equal("Definition", Function.Definition);
+            Assert.Equal(Database, Function.ParentDatabase);
+        }
     }
 }

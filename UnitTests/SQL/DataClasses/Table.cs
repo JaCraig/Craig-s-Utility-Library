@@ -19,35 +19,38 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using System.Data;
+using Utilities.SQL.DataClasses.Interfaces;
 
-#endregion
-
-namespace Utilities.SQL.DataClasses.Interfaces
+namespace UnitTests.SQL.DataClasses
 {
-    /// <summary>
-    /// Interface for table like structures
-    /// </summary>
-    public interface ITable
+    public class Table
     {
-        #region Properties
+        [Test]
+        public void Create()
+        {
+            Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
+            Utilities.SQL.DataClasses.Table Table = Database.AddTable("TestTable");
+            Assert.Equal(Table, Database.Tables[0]);
+            Assert.Equal("TestTable", Table.Name);
+        }
 
-        /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
-        /// Columns
-        /// </summary>
-        List<IColumn> Columns { get; set; }
-
-        /// <summary>
-        /// Parent of the table structure
-        /// </summary>
-        Database ParentDatabase { get; set; }
-
-        #endregion
+        [Test]
+        public void AddColumns()
+        {
+            Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
+            Utilities.SQL.DataClasses.Table Table = Database.AddTable("TestTable");
+            IColumn Column = Table.AddColumn<int>("Column1", DbType.Int32);
+            Assert.Equal(Column, Table.Columns[0]);
+            Assert.Equal("Column1", Column.Name);
+            Assert.Equal(DbType.Int32, Column.DataType);
+            Assert.Equal("", Column.Default);
+        }
     }
 }

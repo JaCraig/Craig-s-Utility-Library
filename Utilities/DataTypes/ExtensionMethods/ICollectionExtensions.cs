@@ -38,6 +38,25 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region AddAndReturn
+
+        /// <summary>
+        /// Adds an item to a list and returns the item
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Collection">Collection to add to</param>
+        /// <param name="Item">Item to add to the collection</param>
+        /// <returns>The original item</returns>
+        public static T AddAndReturn<T>(this ICollection<T> Collection,T Item)
+        {
+            Collection.ThrowIfNull("Collection");
+            Item.ThrowIfNull("Item");
+            Collection.Add(Item);
+            return Item;
+        }
+
+        #endregion
+
         #region AddRange
 
         /// <summary>

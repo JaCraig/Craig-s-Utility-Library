@@ -112,10 +112,10 @@ namespace Utilities.ORM.Database
         private SQL.DataClasses.Table SetupAuditTables(SQL.DataClasses.Table Table)
         {
             SQL.DataClasses.Table AuditTable = new Utilities.SQL.DataClasses.Table(Table.Name + "Audit", Table.ParentDatabase);
-            AuditTable.AddColumn("ID", SqlDbType.Int.ToString(), 0, false, true, true, true, false, "", "", "");
-            AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.ToString(), 1, false, false, false, false, false, "", "", "");
-            foreach (SQL.DataClasses.Column Column in Table.Columns)
-                AuditTable.AddColumn(Column.Name, Column.DataType.ToString(), Column.Length, Column.Nullable, false, false, false, false, "", "", "");
+            AuditTable.AddColumn("ID", DbType.Int32, 0, false, true, true, true, false, "", "", 0);
+            AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.ToDbType(), 1, false, false, false, false, false, "", "", "");
+            foreach (SQL.DataClasses.Interfaces.IColumn Column in Table.Columns)
+                AuditTable.AddColumn(Column.Name, Column.DataType, Column.Length, Column.Nullable, false, false, false, false, "", "", "");
             return AuditTable;
         }
 
@@ -131,7 +131,7 @@ namespace Utilities.ORM.Database
                 .Append(Table.Name).Append(" FOR DELETE AS IF @@rowcount=0 RETURN")
                 .Append(" INSERT INTO dbo.").Append(Table.Name).Append("Audit").Append("(");
             string Splitter = "";
-            foreach (Utilities.SQL.DataClasses.Column Column in Table.Columns)
+            foreach (Utilities.SQL.DataClasses.Interfaces.IColumn Column in Table.Columns)
             {
                 Columns.Append(Splitter).Append(Column.Name);
                 Splitter = ",";
@@ -140,7 +140,7 @@ namespace Utilities.ORM.Database
             Builder.Append(",AuditType) SELECT ");
             Builder.Append(Columns.ToString());
             Builder.Append(",'D' FROM deleted");
-            Table.AddTrigger(Table.Name + "_Audit_D", Builder.ToString(), (int)TriggerType.INSERT);
+            Table.AddTrigger(Table.Name + "_Audit_D", Builder.ToString(), TriggerType.INSERT);
         }
 
         #endregion
@@ -157,7 +157,7 @@ namespace Utilities.ORM.Database
                 .Append(" BEGIN SET @AuditType='I' END ELSE BEGIN SET @AuditType='U' END")
                 .Append(" INSERT INTO dbo.").Append(Table.Name).Append("Audit").Append("(");
             string Splitter = "";
-            foreach (Utilities.SQL.DataClasses.Column Column in Table.Columns)
+            foreach (Utilities.SQL.DataClasses.Interfaces.IColumn Column in Table.Columns)
             {
                 Columns.Append(Splitter).Append(Column.Name);
                 Splitter = ",";
@@ -166,7 +166,7 @@ namespace Utilities.ORM.Database
             Builder.Append(",AuditType) SELECT ");
             Builder.Append(Columns.ToString());
             Builder.Append(",@AuditType FROM inserted");
-            Table.AddTrigger(Table.Name + "_Audit_IU", Builder.ToString(), (int)TriggerType.INSERT);
+            Table.AddTrigger(Table.Name + "_Audit_IU", Builder.ToString(), TriggerType.INSERT);
         }
 
         #endregion
@@ -183,7 +183,7 @@ namespace Utilities.ORM.Database
                     {
                         IMapping MapMapping = Mappings[Key].First(x => x.ObjectType == Property.Type);
                         TempDatabase[Mapping.TableName].AddColumn(Property.FieldName,
-                            MapMapping.IDProperty.Type.ToSQLDbType().ToString(),
+                            MapMapping.IDProperty.Type.ToDbType(),
                             MapMapping.IDProperty.MaxLength,
                             !Property.NotNull,
                             false,
@@ -216,9 +216,9 @@ namespace Utilities.ORM.Database
                 return;
             IMapping MapMapping = Mappings[Key].First(x => x.ObjectType == Property.Type);
             TempDatabase.AddTable(Property.TableName);
-            TempDatabase[Property.TableName].AddColumn("ID_", SqlDbType.Int.ToString(), 0, false, true, true, true, false, "", "", "");
+            TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
             TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
-                Mapping.IDProperty.Type.ToSQLDbType().ToString(),
+                Mapping.IDProperty.Type.ToDbType(),
                 Mapping.IDProperty.MaxLength,
                 false,
                 false,
@@ -229,7 +229,7 @@ namespace Utilities.ORM.Database
                 Mapping.IDProperty.FieldName,
                 "");
             TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
-                MapMapping.IDProperty.Type.ToSQLDbType().ToString(),
+                MapMapping.IDProperty.Type.ToDbType(),
                 MapMapping.IDProperty.MaxLength,
                 false,
                 false,
@@ -251,9 +251,9 @@ namespace Utilities.ORM.Database
                 return;
             IMapping MapMapping = Mappings[Key].First(x => x.ObjectType == Property.Type);
             TempDatabase.AddTable(Property.TableName);
-            TempDatabase[Property.TableName].AddColumn("ID_", SqlDbType.Int.ToString(), 0, false, true, true, true, false, "", "", "");
+            TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
             TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
-                Mapping.IDProperty.Type.ToSQLDbType().ToString(),
+                Mapping.IDProperty.Type.ToDbType(),
                 Mapping.IDProperty.MaxLength,
                 false,
                 false,
@@ -264,7 +264,7 @@ namespace Utilities.ORM.Database
                 Mapping.IDProperty.FieldName,
                 "");
             TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
-                MapMapping.IDProperty.Type.ToSQLDbType().ToString(),
+                MapMapping.IDProperty.Type.ToDbType(),
                 MapMapping.IDProperty.MaxLength,
                 false,
                 false,
@@ -296,7 +296,7 @@ namespace Utilities.ORM.Database
         private void SetupProperties(SQL.DataClasses.Table Table, IMapping Mapping)
         {
             Table.AddColumn(Mapping.IDProperty.FieldName,
-                Mapping.IDProperty.Type.ToSQLDbType().ToString(),
+                Mapping.IDProperty.Type.ToDbType(),
                 Mapping.IDProperty.MaxLength,
                 Mapping.IDProperty.NotNull,
                 Mapping.IDProperty.AutoIncrement,
@@ -311,7 +311,7 @@ namespace Utilities.ORM.Database
                 if (!(Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne))
                 {
                     Table.AddColumn(Property.FieldName,
-                    Property.Type.ToSQLDbType().ToString(),
+                    Property.Type.ToDbType(),
                     Property.MaxLength,
                     !Property.NotNull,
                     Property.AutoIncrement,

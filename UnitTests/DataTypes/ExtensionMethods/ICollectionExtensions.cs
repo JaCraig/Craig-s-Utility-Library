@@ -34,6 +34,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class ICollectionExtensions
     {
         [Test]
+        public void AddAndReturnTest()
+        {
+            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            int Item = 7;
+            Assert.Equal(Item, TestObject.AddAndReturn(Item));
+        }
+
+        [Test]
         public void AddIfTest()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();

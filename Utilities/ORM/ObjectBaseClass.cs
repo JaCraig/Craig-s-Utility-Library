@@ -28,6 +28,7 @@ using Utilities.ORM.Interfaces;
 using Utilities.Events.EventArgs;
 using Utilities.ORM.QueryProviders;
 using Utilities.ORM.QueryProviders.Interfaces;
+using System.Data;
 #endregion
 
 namespace Utilities.ORM
@@ -111,6 +112,77 @@ namespace Utilities.ORM
             if (!E.Stop)
             {
                 instance = Session.All<ObjectType>(Params);
+                foreach (ObjectType Item in instance)
+                {
+                    Item.OnLoaded(new LoadedEventArgs());
+                }
+            }
+            return instance;
+        }
+
+        /// <summary>
+        /// Loads the item based on the ID
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <returns>The specified item</returns>
+        public static ObjectType Any(string Command, CommandType CommandType, params IParameter[] Params)
+        {
+            return Any(ORM.CreateSession(), Command, CommandType, Params);
+        }
+
+        /// <summary>
+        /// Loads the items based on type
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <returns>All items that fit the specified query</returns>
+        public static IEnumerable<ObjectType> All(string Command, CommandType CommandType, params IParameter[] Params)
+        {
+            return All(ORM.CreateSession(), Command, CommandType, Params);
+        }
+
+        /// <summary>
+        /// Loads the item based on the ID
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <param name="Session">ORM session variable</param>
+        /// <returns>The specified item</returns>
+        public static ObjectType Any(Session Session, string Command, CommandType CommandType, params IParameter[] Params)
+        {
+            ObjectType instance = new ObjectType();
+            LoadingEventArgs E = new LoadingEventArgs();
+            E.Content = Params;
+            instance.OnLoading(E);
+            if (!E.Stop)
+            {
+                instance = Session.Any<ObjectType>(Command, CommandType, Params);
+                if (instance != null)
+                    instance.OnLoaded(new LoadedEventArgs());
+            }
+            return instance;
+        }
+
+        /// <summary>
+        /// Loads the items based on type
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <param name="Session">ORM session variable</param>
+        /// <returns>All items that fit the specified query</returns>
+        public static IEnumerable<ObjectType> All(Session Session, string Command, CommandType CommandType, params IParameter[] Params)
+        {
+            IEnumerable<ObjectType> instance = new List<ObjectType>();
+            LoadingEventArgs E = new LoadingEventArgs();
+            ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
+            if (!E.Stop)
+            {
+                instance = Session.All<ObjectType>(Command, CommandType, Params);
                 foreach (ObjectType Item in instance)
                 {
                     Item.OnLoaded(new LoadedEventArgs());

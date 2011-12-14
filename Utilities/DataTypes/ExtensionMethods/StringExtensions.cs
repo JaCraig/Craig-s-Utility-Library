@@ -360,25 +360,6 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region To
-
-        /// <summary>
-        /// Converts the string to the specified type
-        /// </summary>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <param name="Value">Value to convert</param>
-        /// <param name="DefaultValue">Default value to return if it can't be converted</param>
-        /// <returns>Converts the item</returns>
-        public static T To<T>(this string Value, T DefaultValue = default(T))
-        {
-            TypeConverter Converter = TypeDescriptor.GetConverter(typeof(T));
-            if (Converter.CanConvertFrom(Value.GetType()))
-                return Value.IsNullOrEmpty() ? DefaultValue : (T)Converter.ConvertFrom(Value);
-            return DefaultValue;
-        }
-
-        #endregion
-
         #region FormatString
 
         /// <summary>

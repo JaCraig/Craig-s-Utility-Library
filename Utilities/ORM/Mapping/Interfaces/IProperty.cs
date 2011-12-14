@@ -203,6 +203,11 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// </summary>
         Expression<Func<ClassType, DataType>> Expression { get; }
 
+        /// <summary>
+        /// Compiled version of the expression
+        /// </summary>
+        Func<ClassType, DataType> CompiledExpression { get; }
+
         #endregion
     }
 

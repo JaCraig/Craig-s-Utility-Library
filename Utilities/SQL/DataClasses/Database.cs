@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
-
+using Utilities.DataTypes.ExtensionMethods;
 
 #endregion
 
@@ -115,18 +115,18 @@ namespace Utilities.SQL.DataClasses
         /// Adds a table to the database
         /// </summary>
         /// <param name="TableName">Table name</param>
-        public virtual void AddTable(string TableName)
+        public virtual Table AddTable(string TableName)
         {
-            Tables.Add(new Table(TableName, this));
+            return Tables.AddAndReturn(new Table(TableName, this));
         }
 
         /// <summary>
         /// Adds a view to the database
         /// </summary>
         /// <param name="ViewName">View name</param>
-        public virtual void AddView(string ViewName)
+        public virtual View AddView(string ViewName)
         {
-            Views.Add(new View(ViewName, this));
+            return Views.AddAndReturn(new View(ViewName, this));
         }
 
         /// <summary>
@@ -134,9 +134,9 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="ProcedureName">Procedure name</param>
         /// <param name="Definition">Definition</param>
-        public virtual void AddStoredProcedure(string ProcedureName, string Definition)
+        public virtual StoredProcedure AddStoredProcedure(string ProcedureName, string Definition)
         {
-            StoredProcedures.Add(new StoredProcedure(ProcedureName, Definition,this));
+            return StoredProcedures.AddAndReturn(new StoredProcedure(ProcedureName, Definition, this));
         }
 
         /// <summary>
@@ -144,9 +144,9 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="Name">Function name</param>
         /// <param name="Definition">Function definition</param>
-        public virtual void AddFunction(string Name, string Definition)
+        public virtual Function AddFunction(string Name, string Definition)
         {
-            Functions.Add(new Function(Name, Definition, this));
+            return Functions.AddAndReturn(new Function(Name, Definition, this));
         }
 
         #endregion

@@ -25,6 +25,9 @@ using System.Data;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.SQL.DataClasses;
+using Utilities.SQL.DataClasses.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.SQL.DataClasses.Enums;
 #endregion
 
 namespace Utilities.SQL.SQLServer
@@ -353,14 +356,14 @@ namespace Utilities.SQL.SQLServer
         private static string GetAlterTableCommand(Table DesiredTable, Table CurrentTable)
         {
             StringBuilder Builder = new StringBuilder();
-            foreach (Column Column in DesiredTable.Columns)
+            foreach (IColumn Column in DesiredTable.Columns)
             {
-                Column CurrentColumn = CurrentTable[Column.Name];
+                IColumn CurrentColumn = CurrentTable[Column.Name];
                 if (CurrentColumn == null)
                 {
                     Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ").Append(DesiredTable.Name)
-                        .Append(" ADD ").Append(Column.Name).Append(" ").Append(Column.DataType.ToString());
-                    if (Column.DataType == SqlDbType.VarChar || Column.DataType == SqlDbType.NVarChar)
+                        .Append(" ADD ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
+                    if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                     {
                         if (Column.Length == -1 || Column.Length == 5000)
                         {
@@ -372,7 +375,7 @@ namespace Utilities.SQL.SQLServer
                         }
                     }
                     Builder.Append("'\n");
-                    foreach (Column ForeignKey in Column.ForeignKey)
+                    foreach (IColumn ForeignKey in Column.ForeignKey)
                     {
                         Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ").Append(DesiredTable.Name)
                             .Append(" ADD FOREIGN KEY (").Append(Column.Name).Append(") REFERENCES ")
@@ -381,13 +384,13 @@ namespace Utilities.SQL.SQLServer
                 }
                 else if (CurrentColumn.DataType != Column.DataType
                     || (CurrentColumn.DataType == Column.DataType
-                        && CurrentColumn.DataType == SqlDbType.NVarChar
+                        && CurrentColumn.DataType == SqlDbType.NVarChar.ToDbType()
                         && CurrentColumn.Length != Column.Length * 2
                         && (CurrentColumn.Length != -1 && Column.Length != -1)))
                 {
                     Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ").Append(DesiredTable.Name)
-                        .Append(" ALTER COLUMN ").Append(Column.Name).Append(" ").Append(Column.DataType.ToString());
-                    if (Column.DataType == SqlDbType.VarChar || Column.DataType == SqlDbType.NVarChar)
+                        .Append(" ALTER COLUMN ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
+                    if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                     {
                         if (Column.Length == -1 || Column.Length == 5000)
                         {
@@ -464,11 +467,11 @@ namespace Utilities.SQL.SQLServer
         private static string GetForeignKeyCommand(Table Table)
         {
             StringBuilder Builder = new StringBuilder();
-            foreach (Column Column in Table.Columns)
+            foreach (IColumn Column in Table.Columns)
             {
                 if (Column.ForeignKey.Count > 0)
                 {
-                    foreach (Column ForeignKey in Column.ForeignKey)
+                    foreach (IColumn ForeignKey in Column.ForeignKey)
                     {
                         Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ");
                         Builder.Append(Column.ParentTable.Name).Append(" ADD FOREIGN KEY (");
@@ -523,10 +526,10 @@ namespace Utilities.SQL.SQLServer
             StringBuilder Builder = new StringBuilder();
             Builder.Append("EXEC dbo.sp_executesql @statement = N'CREATE TABLE ").Append(Table.Name).Append("(");
             string Splitter = "";
-            foreach (Column Column in Table.Columns)
+            foreach (IColumn Column in Table.Columns)
             {
-                Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.ToString());
-                if (Column.DataType == SqlDbType.VarChar || Column.DataType == SqlDbType.NVarChar)
+                Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
+                if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                 {
                     if (Column.Length == -1 || Column.Length == 5000)
                     {
@@ -561,7 +564,7 @@ namespace Utilities.SQL.SQLServer
             }
             Builder.Append(")'\n");
             int Counter = 0;
-            foreach (Column Column in Table.Columns)
+            foreach (IColumn Column in Table.Columns)
             {
                 if (Column.Index && Column.Unique)
                 {
@@ -648,7 +651,7 @@ namespace Utilities.SQL.SQLServer
                             string Name = (string)Helper.GetParameter("NAME", "");
                             int Length = int.Parse(Helper.GetParameter("LENGTH", 0).ToString());
                             string Default = (string)Helper.GetParameter("DEFAULT VALUE", "");
-                            Procedure.AddColumn(Name, Type, Length, Default);
+                            Procedure.AddColumn<string>(Name, Type.TryTo<string,SqlDbType>().ToDbType(), Length, Default);
                         }
                     }
                     catch { }
@@ -696,7 +699,7 @@ namespace Utilities.SQL.SQLServer
                             string ColumnType = (string)Helper.GetParameter("COLUMN TYPE", "");
                             int MaxLength = (int)(int.Parse(Helper.GetParameter("MAX LENGTH", 0).ToString()));
                             bool Nullable = (bool)Helper.GetParameter("IS NULLABLE", false);
-                            View.AddColumn(ColumnName, ColumnType, MaxLength, Nullable);
+                            View.AddColumn<string>(ColumnName, ColumnType.TryTo<string, SqlDbType>().ToDbType(), MaxLength, Nullable);
                         }
                     }
                     catch { }
@@ -741,7 +744,7 @@ namespace Utilities.SQL.SQLServer
                             }
                             else
                             {
-                                Table.AddColumn(ColumnName, ColumnType, MaxLength, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue);
+                                Table.AddColumn(ColumnName, ColumnType.TryTo<string, SqlDbType>().ToDbType(), MaxLength, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue);
                             }
                         }
                     }
@@ -761,7 +764,7 @@ namespace Utilities.SQL.SQLServer
                             string Name = (string)Helper.GetParameter("Name", "");
                             int Type = (int)Helper.GetParameter("Type", 0);
                             string Definition = (string)Helper.GetParameter("Definition", "");
-                            Table.AddTrigger(Name, Definition, Type);
+                            Table.AddTrigger(Name, Definition, Type.ToString().TryTo<string, TriggerType>());
                         }
                     }
                     catch { }

@@ -25,6 +25,7 @@ using System.Text;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.Math.ExtensionMethods;
 using System;
+using System.Linq;
 #endregion
 
 namespace Utilities.Profiler
@@ -111,6 +112,19 @@ namespace Utilities.Profiler
             return Builder.ToString();
         }
 
+        /// <summary>
+        /// Returns profiler information about a specific function
+        /// </summary>
+        /// <param name="FunctionName">Function name</param>
+        /// <returns>The associated profiler information</returns>
+        public virtual ProfilerInfo this[string FunctionName]
+        {
+            get
+            {
+                return this.Profilers.FirstOrDefault(x=>x.FunctionName==FunctionName);
+            }
+        }
+
         #endregion
 
         #region Private Properties
@@ -122,7 +136,7 @@ namespace Utilities.Profiler
         /// <summary>
         /// Holds the profiler information
         /// </summary>
-        private class ProfilerInfo
+        public class ProfilerInfo
         {
             public string FunctionName = "";
             public int TotalTime = 0;

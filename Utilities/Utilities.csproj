@@ -99,7 +99,6 @@
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\FuncActionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
@@ -141,6 +140,7 @@
     <Compile Include="Encryption\ExtensionMethods\SymmetricExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
+    <Compile Include="SQL\DataClasses\Interfaces\IColumn.cs" />
     <Compile Include="SQL\ExtensionMethods\DbCommandExtensions.cs" />
     <Compile Include="SQL\ExtensionMethods\DbDataReaderExtensions.cs" />
     <Compile Include="Validation\Rules\Contains.cs" />

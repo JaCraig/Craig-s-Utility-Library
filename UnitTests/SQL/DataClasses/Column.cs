@@ -19,35 +19,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using Utilities.SQL.DataClasses.Interfaces;
+using Utilities.SQL.DataClasses;
+using System.Data;
 
-#endregion
-
-namespace Utilities.SQL.DataClasses.Interfaces
+namespace UnitTests.SQL.DataClasses
 {
-    /// <summary>
-    /// Interface for table like structures
-    /// </summary>
-    public interface ITable
+    public class Column
     {
-        #region Properties
-
-        /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
-        /// Columns
-        /// </summary>
-        List<IColumn> Columns { get; set; }
-
-        /// <summary>
-        /// Parent of the table structure
-        /// </summary>
-        Database ParentDatabase { get; set; }
-
-        #endregion
+        [Test]
+        public void Creation()
+        {
+            IColumn Column = new Column<int>("Column1", System.Data.DbType.Int32, 0, false, false, false, false, false, "", "", 0, null);
+            Assert.Equal("Column1", Column.Name);
+            Assert.Equal("", Column.Default);
+            Assert.Equal(DbType.Int32, Column.DataType);
+            Assert.Equal(false, Column.Nullable);
+            Assert.Equal(false, Column.AutoIncrement);
+            Assert.Equal(false, Column.Index);
+            Assert.Equal(0, Column.Length);
+            Assert.Equal(false, Column.PrimaryKey);
+            Assert.Equal(false, Column.Unique);
+        }
     }
 }

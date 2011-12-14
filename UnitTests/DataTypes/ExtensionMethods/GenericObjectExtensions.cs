@@ -48,5 +48,64 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.NotSame(Temp, Temp.NotIf(x => x.B == 10));
             Assert.Same(Temp, Temp.NotIf(x => x.B == 1));
         }
+
+        [Test]
+        public void Execute1()
+        {
+            Func<int> Temp = () => 1;
+            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
+        }
+
+        [Test]
+        public void Execute2()
+        {
+            Action Temp = () => Test();
+            Assert.Throws<Exception>(() => Temp.Execute());
+        }
+
+        [Test]
+        public void Chain()
+        {
+            DateTime Temp = new DateTime(1999, 1, 1);
+            Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
+        }
+
+        [Test]
+        public void Chain2()
+        {
+            DateTime Temp = new DateTime(1999, 1, 1);
+            Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
+        }
+
+        [Test]
+        public void Do()
+        {
+            DateTime Temp = new DateTime(1999, 1, 1);
+            Assert.Equal(Temp, Temp.Do<DateTime>(x => x.AddSeconds(1)));
+            Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Do<DateTime?>(x => x.Value.AddSeconds(1), DateTime.MaxValue));
+        }
+
+        [Test]
+        public void Do2()
+        {
+            DateTime Temp = new DateTime(1999, 1, 1);
+            Assert.Equal(Temp.AddSeconds(1), Temp.Do(x => x.AddSeconds(1)));
+            Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Do(x => x.Value.AddSeconds(1), DateTime.MaxValue));
+        }
+
+        [Test]
+        public void Return()
+        {
+            Assert.Null(new MyTestClass().Return(x => x.A));
+            Assert.NotNull(new MyTestClass().Return(x => x.A, new MyTestClass()));
+            Assert.Equal(10, new MyTestClass().Return(x => x.A, new MyTestClass()).Return(x => x.B));
+            Assert.Equal(0, new MyTestClass().Return(x => x.A).Return(x => x.B));
+            Assert.Equal(0, ((MyTestClass)null).Return(x => x.A).Return(x => x.B));
+        }
+
+        public void Test()
+        {
+            throw new Exception();
+        }
     }
 }

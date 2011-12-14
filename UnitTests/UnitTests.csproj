@@ -69,7 +69,6 @@
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\FunActionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
@@ -156,11 +155,19 @@
     <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
     <Compile Include="Reflection\Emit\TypeBuilder.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="SQL\DataClasses\Column.cs" />
+    <Compile Include="SQL\DataClasses\Database.cs" />
+    <Compile Include="SQL\DataClasses\Function.cs" />
+    <Compile Include="SQL\DataClasses\StoredProcedure.cs" />
+    <Compile Include="SQL\DataClasses\Table.cs" />
+    <Compile Include="SQL\DataClasses\Trigger.cs" />
+    <Compile Include="SQL\DataClasses\View.cs" />
     <Compile Include="SQL\MicroORM\Database.cs" />
     <Compile Include="SQL\MicroORM\Mapping.cs" />
     <Compile Include="SQL\MicroORM\MicroORM.cs" />
     <Compile Include="SQL\MicroORM\Parameter.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
+    <Compile Include="SQL\SQLServer\SQLServer.cs" />
     <Compile Include="Validation\Rules\Between.cs" />
     <Compile Include="Validation\Rules\Cascade.cs" />
     <Compile Include="Validation\Rules\Contains.cs" />
@@ -214,6 +221,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CodeGen\Templates\" />
+    <Folder Include="ORM\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

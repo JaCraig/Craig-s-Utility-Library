@@ -81,7 +81,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            DataType Item = Expression.Compile()(Object);
+            DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return;
             IParameter CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsParameter(Object);
@@ -96,7 +96,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            DataType Item = Expression.Compile()(Object);
+            DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return;
             IParameter CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsParameter(Object);
@@ -115,7 +115,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            DataType Item = Expression.Compile()(Object);
+            DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return;
             foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
@@ -130,7 +130,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            DataType Item = Expression.Compile()(Object);
+            DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return;
             foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
@@ -145,7 +145,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            DataType Item = Expression.Compile()(Object);
+            DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return;
             foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
@@ -160,7 +160,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            DataType Item = Expression.Compile()(Object);
+            DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return;
             foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)

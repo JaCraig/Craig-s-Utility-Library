@@ -82,7 +82,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            IEnumerable<DataType> List = Expression.Compile()(Object);
+            IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
                 return;
             foreach (DataType Item in List)
@@ -103,7 +103,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            IEnumerable<DataType> List = Expression.Compile()(Object);
+            IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
                 return;
             foreach (DataType Item in List)
@@ -128,7 +128,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            IEnumerable<DataType> List = Expression.Compile()(Object);
+            IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
                 return;
             foreach (DataType Item in List)
@@ -149,7 +149,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            IEnumerable<DataType> List = Expression.Compile()(Object);
+            IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
                 return;
             foreach (DataType Item in List)
@@ -170,7 +170,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            IEnumerable<DataType> List = Expression.Compile()(Object);
+            IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
                 return;
             foreach (DataType Item in List)
@@ -191,7 +191,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            IEnumerable<DataType> List = Expression.Compile()(Object);
+            IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
                 return;
             foreach (DataType Item in List)

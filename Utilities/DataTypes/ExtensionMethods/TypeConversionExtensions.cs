@@ -272,7 +272,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             else if (Type == typeof(string)) return DbType.String;
             else if (Type == typeof(char)) return DbType.StringFixedLength;
             else if (Type == typeof(Guid)) return DbType.Guid;
-            else if (Type == typeof(DateTime)) return DbType.DateTime;
+            else if (Type == typeof(DateTime)) return DbType.DateTime2;
             else if (Type == typeof(DateTimeOffset)) return DbType.DateTimeOffset;
             else if (Type == typeof(byte[])) return DbType.Binary;
             else if (Type == typeof(byte?)) return DbType.Byte;
@@ -289,7 +289,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             else if (Type == typeof(bool?)) return DbType.Boolean;
             else if (Type == typeof(char?)) return DbType.StringFixedLength;
             else if (Type == typeof(Guid?)) return DbType.Guid;
-            else if (Type == typeof(DateTime?)) return DbType.DateTime;
+            else if (Type == typeof(DateTime?)) return DbType.DateTime2;
             else if (Type == typeof(DateTimeOffset?)) return DbType.DateTimeOffset;
             return DbType.Int32;
         }
@@ -342,6 +342,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             else if (Type == DbType.String) return typeof(string);
             else if (Type == DbType.StringFixedLength) return typeof(char);
             else if (Type == DbType.Guid) return typeof(Guid);
+            else if (Type == DbType.DateTime2) return typeof(DateTime);
             else if (Type == DbType.DateTime) return typeof(DateTime);
             else if (Type == DbType.DateTimeOffset) return typeof(DateTimeOffset);
             else if (Type == DbType.Binary) return typeof(byte[]);
@@ -366,6 +367,14 @@ namespace Utilities.DataTypes.ExtensionMethods
             {
                 if (Object.IsNullOrDBNull())
                     return DefaultValue;
+                if ((Object as string).IsNotNull())
+                {
+                    string ObjectValue = Object as string;
+                    if (typeof(R).IsEnum)
+                        return (R)System.Enum.Parse(typeof(R), ObjectValue, true);
+                    if (ObjectValue.IsNullOrEmpty())
+                        return DefaultValue;
+                }
                 if ((Object as IConvertible).IsNotNull())
                     return (R)Convert.ChangeType(Object, typeof(R));
                 if (typeof(R).IsAssignableFrom(Object.GetType()))
@@ -373,31 +382,11 @@ namespace Utilities.DataTypes.ExtensionMethods
                 TypeConverter Converter = TypeDescriptor.GetConverter(Object.GetType());
                 if (Converter.CanConvertTo(typeof(R)))
                     return (R)Converter.ConvertTo(Object, typeof(R));
-                return Object.ToString().To<R>(DefaultValue);
+                if ((Object as string).IsNotNull())
+                    return Object.ToString().TryTo<string, R>(DefaultValue);
             }
             catch { }
             return DefaultValue;
-        }
-
-        #endregion
-
-        #region Return
-
-        /// <summary>
-        /// Used to determine if an object, or it's properties are null (Although can be used for other things)
-        /// </summary>
-        /// <typeparam name="T">Input type</typeparam>
-        /// <typeparam name="R">Output type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="Function">Property, function, etc. to run</param>
-        /// <param name="DefaultValue">Default value to return if Object is null</param>
-        /// <returns>The value returned by the function or the default value if the object is null or the function returns a null value</returns>
-        public static R Return<T, R>(this T Object, Func<T, R> Function, R DefaultValue = default(R))
-        {
-            if (Object.IsNull())
-                return DefaultValue;
-            R ReturnValue = Function(Object);
-            return ReturnValue.IsNull() ? DefaultValue : ReturnValue;
         }
 
         #endregion

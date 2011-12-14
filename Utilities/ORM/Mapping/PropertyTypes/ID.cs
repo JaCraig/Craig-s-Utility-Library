@@ -111,7 +111,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return null;
-            DataType Item = Expression.Compile()(Object);
+            DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return null;
             return new Utilities.ORM.QueryProviders.Parameter<DataType>(Item, FieldName);

@@ -19,35 +19,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using System.Data;
+using Utilities.SQL.DataClasses.Interfaces;
+using Utilities.SQL.DataClasses.Enums;
 
-#endregion
-
-namespace Utilities.SQL.DataClasses.Interfaces
+namespace UnitTests.SQL.DataClasses
 {
-    /// <summary>
-    /// Interface for table like structures
-    /// </summary>
-    public interface ITable
+    public class Trigger
     {
-        #region Properties
-
-        /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
-        /// Columns
-        /// </summary>
-        List<IColumn> Columns { get; set; }
-
-        /// <summary>
-        /// Parent of the table structure
-        /// </summary>
-        Database ParentDatabase { get; set; }
-
-        #endregion
+        [Test]
+        public void Create()
+        {
+            Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
+            Utilities.SQL.DataClasses.Table Table = Database.AddTable("TestTable");
+            Utilities.SQL.DataClasses.Trigger TempTrigger = Table.AddTrigger("Trigger", "Definition", TriggerType.INSERT);
+            Assert.Equal(TempTrigger, Table.Triggers[0]);
+            Assert.Equal("Trigger", TempTrigger.Name);
+            Assert.Equal("Definition", TempTrigger.Definition);
+            Assert.Equal(TriggerType.INSERT, TempTrigger.Type);
+            Assert.Equal(Table, TempTrigger.ParentTable);
+        }
     }
 }

@@ -22,6 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using Utilities.SQL.DataClasses.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
+using System.Data;
+using Utilities.SQL.DataClasses.Enums;
 #endregion
 
 namespace Utilities.SQL.DataClasses
@@ -42,7 +46,7 @@ namespace Utilities.SQL.DataClasses
         {
             this.Name = Name;
             this.ParentDatabase = ParentDatabase;
-            Columns = new List<Column>();
+            Columns = new List<IColumn>();
             Triggers = new List<Trigger>();
         }
 
@@ -51,7 +55,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         public Table()
         {
-            Columns = new List<Column>();
+            Columns = new List<IColumn>();
             Triggers = new List<Trigger>();
         }
 
@@ -60,7 +64,7 @@ namespace Utilities.SQL.DataClasses
         #region Public Properties
 
         public virtual string Name { get; set; }
-        public virtual List<Column> Columns { get; set; }
+        public virtual List<IColumn> Columns { get; set; }
         public virtual Database ParentDatabase { get; set; }
 
         /// <summary>
@@ -86,11 +90,12 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ForeignKeyTable">Foreign key table</param>
         /// <param name="ForeignKeyColumn">Foreign key column</param>
         /// <param name="DefaultValue">Default value</param>
-        public virtual void AddColumn(string ColumnName,string ColumnType,int Length,bool Nullable,
-            bool Identity,bool Index,bool PrimaryKey,bool Unique,string ForeignKeyTable,string ForeignKeyColumn,
-            string DefaultValue)
+        /// <typeparam name="T">Column type</typeparam>
+        public virtual IColumn AddColumn<T>(string ColumnName, DbType ColumnType, int Length = 0, bool Nullable = true,
+            bool Identity = false, bool Index = false, bool PrimaryKey = false, bool Unique = false,
+            string ForeignKeyTable = "", string ForeignKeyColumn = "", T DefaultValue = default(T))
         {
-            Columns.Add(new Column(ColumnName, ColumnType, Length, Nullable, Identity, Index, PrimaryKey,Unique,ForeignKeyTable,ForeignKeyColumn,DefaultValue, this));
+            return Columns.AddAndReturn(new Column<T>(ColumnName, ColumnType, Length, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue, this));
         }
 
         /// <summary>
@@ -100,12 +105,7 @@ namespace Utilities.SQL.DataClasses
         /// <returns>True if it exists, false otherwise</returns>
         public virtual bool ContainsColumn(string ColumnName)
         {
-            foreach (Column Column in this.Columns)
-            {
-                if (Column.Name == ColumnName)
-                    return true;
-            }
-            return false;
+            return this[ColumnName] != null;
         }
 
         /// <summary>
@@ -116,14 +116,7 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ForeignKeyColumn">Foreign key column</param>
         public virtual void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn)
         {
-            foreach (Column Column in this.Columns)
-            {
-                if (Column.Name == ColumnName)
-                {
-                    Column.AddForeignKey(ForeignKeyTable, ForeignKeyColumn);
-                    break;
-                }
-            }
+            this[ColumnName].Do(x => x.AddForeignKey(ForeignKeyTable, ForeignKeyColumn));
         }
 
         /// <summary>
@@ -131,10 +124,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         public virtual void SetupForeignKeys()
         {
-            foreach (Column Column in this.Columns)
-            {
-                Column.SetupForeignKeys();
-            }
+            this.Columns.ForEach(x => x.SetupForeignKeys());
         }
 
         /// <summary>
@@ -143,9 +133,9 @@ namespace Utilities.SQL.DataClasses
         /// <param name="Name">Trigger name</param>
         /// <param name="Definition">Trigger definition</param>
         /// <param name="Type">The trigger type</param>
-        public virtual void AddTrigger(string Name, string Definition, int Type)
+        public virtual Trigger AddTrigger(string Name, string Definition, TriggerType Type)
         {
-            Triggers.Add(new Trigger(Name, Definition, Type, this));
+            return Triggers.AddAndReturn(new Trigger(Name, Definition, Type, this));
         }
 
         /// <summary>
@@ -153,18 +143,11 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="Name">Column name</param>
         /// <returns>The specified column</returns>
-        public virtual Column this[string Name]
+        public virtual IColumn this[string Name]
         {
             get
             {
-                foreach (Column Column in this.Columns)
-                {
-                    if (Column.Name == Name)
-                    {
-                        return Column;
-                    }
-                }
-                return null;
+                return this.Columns.FirstOrDefault(x => x.Name == Name);
             }
         }
 

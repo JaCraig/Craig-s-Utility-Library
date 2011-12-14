@@ -158,16 +158,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.NotNull(new MyTestClass().TryTo<MyTestClass, IMyTestClass>());
             Assert.NotNull(((object)new MyTestClass()).TryTo<object, IMyTestClass>());
         }
-
-        [Test]
-        public void Return()
-        {
-            Assert.Null(new MyTestClass().Return(x => x.A));
-            Assert.NotNull(new MyTestClass().Return(x => x.A, new MyTestClass()));
-            Assert.Equal(10, new MyTestClass().Return(x => x.A, new MyTestClass()).Return(x => x.B));
-            Assert.Equal(0, new MyTestClass().Return(x => x.A).Return(x => x.B));
-            Assert.Equal(0, ((MyTestClass)null).Return(x => x.A).Return(x => x.B));
-        }
     }
 
     public class MyTestClass:IMyTestClass

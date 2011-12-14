@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Data;
 using Utilities.SQL.DataClasses.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL.DataClasses
@@ -30,7 +31,8 @@ namespace Utilities.SQL.DataClasses
     /// <summary>
     /// Column class
     /// </summary>
-    public class Column
+    /// <typeparam name="T">Data type of the column</typeparam>
+    public class Column<T> : IColumn
     {
         #region Constructor
 
@@ -39,7 +41,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         public Column()
         {
-            this.ForeignKey = new List<Column>();
+            this.ForeignKey = new List<IColumn>();
             this.ForeignKeyColumns = new List<string>();
             this.ForeignKeyTables = new List<string>();
         }
@@ -59,23 +61,23 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ForeignKeyColumn">Foreign key column</param>
         /// <param name="DefaultValue">Default value</param>
         /// <param name="ParentTable">Parent table</param>
-        public Column(string Name,string ColumnType,int Length,bool Nullable,
-            bool Identity,bool Index,bool PrimaryKey,bool Unique,string ForeignKeyTable,
-            string ForeignKeyColumn,string DefaultValue,ITable ParentTable)
+        public Column(string Name, DbType ColumnType, int Length, bool Nullable,
+            bool Identity, bool Index, bool PrimaryKey, bool Unique, string ForeignKeyTable,
+            string ForeignKeyColumn, T DefaultValue, ITable ParentTable)
         {
             this.Name = Name;
-            this.ForeignKey = new List<Column>();
+            this.ForeignKey = new List<IColumn>();
             this.ForeignKeyColumns = new List<string>();
             this.ForeignKeyTables = new List<string>();
             this.ParentTable = ParentTable;
-            this.DataType = (SqlDbType)System.Enum.Parse(typeof(SqlDbType), ColumnType, true);
+            this.DataType = ColumnType;
             this.Length = Length;
             this.Nullable = Nullable;
             this.AutoIncrement = Identity;
             this.Index = Index;
             this.PrimaryKey = PrimaryKey;
             this.Unique = Unique;
-            this.Default = DefaultValue;
+            this.Default = DefaultValue.IsDefault() ? "" : DefaultValue.ToString();
             AddForeignKey(ForeignKeyTable, ForeignKeyColumn);
         }
 
@@ -91,7 +93,7 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Data type
         /// </summary>
-        public virtual SqlDbType DataType { get; set; }
+        public virtual DbType DataType { get; set; }
 
         /// <summary>
         /// Data length
@@ -101,7 +103,7 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Foreign keys
         /// </summary>
-        public virtual List<Column> ForeignKey { get; set; }
+        public virtual List<IColumn> ForeignKey { get; set; }
 
         /// <summary>
         /// Primary key?
@@ -176,7 +178,7 @@ namespace Utilities.SQL.DataClasses
                     {
                         if (Table.Name == ForeignKeyTables[x])
                         {
-                            foreach (Column Column in Table.Columns)
+                            foreach (IColumn Column in Table.Columns)
                             {
                                 if (Column.Name == ForeignKeyColumns[x])
                                 {

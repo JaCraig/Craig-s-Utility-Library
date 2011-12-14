@@ -54,6 +54,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
             this.Type = typeof(DataType);
             this.DerivedFieldName = "_" + Name + "Derived";
             this.Mapping = (IMapping)Mapping;
+            this.CompiledExpression = this.Expression.Compile();
         }
 
         #endregion
@@ -100,6 +101,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         public virtual IMapping ForeignKey { get; set; }
         public virtual Command CommandToLoad { get; protected set; }
         public virtual IMapping Mapping { get; protected set; }
+        public virtual Func<ClassType, DataType> CompiledExpression { get; protected set; }
 
         #endregion
     }

@@ -34,6 +34,18 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class StringExtensions
     {
         [Test]
+        public void ToEnumTest()
+        {
+            Assert.Equal(EnumValues.Value1, "Value1".TryTo<string, EnumValues>());
+        }
+
+        enum EnumValues
+        {
+            Value1,
+            Value2
+        }
+
+        [Test]
         public void StringEncodingTest()
         {
             string Value = "ASDF";
@@ -145,14 +157,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             string Value = "\u25EF\u25EF\u25EF";
             Assert.True(Value.IsUnicode());
-        }
-
-        [Test]
-        public void To()
-        {
-            Assert.OfType<int>("123".To<int>());
-            Assert.Equal(123, "123".To<int>());
-            Assert.Throws<Exception>(() => "ASD".To<int>());
         }
 
         [Test]

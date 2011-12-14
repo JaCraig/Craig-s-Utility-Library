@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using Utilities.SQL.DataClasses.Interfaces;
+using System.Data;
 #endregion
 
 namespace Utilities.SQL.DataClasses
@@ -44,7 +45,7 @@ namespace Utilities.SQL.DataClasses
             this.Name = Name;
             this.Definition = Definition;
             this.ParentDatabase = ParentDatabase;
-            Columns = new List<Column>();
+            Columns = new List<IColumn>();
         }
 
         #endregion
@@ -53,7 +54,7 @@ namespace Utilities.SQL.DataClasses
 
         public virtual string Name { get; set; }
         public virtual Database ParentDatabase { get; set; }
-        public virtual List<Column> Columns { get; set; }
+        public virtual List<IColumn> Columns { get; set; }
 
         /// <summary>
         /// Definition
@@ -71,9 +72,9 @@ namespace Utilities.SQL.DataClasses
         /// <param name="Type">Data type</param>
         /// <param name="Length">Max data length</param>
         /// <param name="Default">Default value</param>
-        public virtual void AddColumn(string Name, string Type, int Length, string Default)
+        public virtual void AddColumn<T>(string Name, DbType Type, int Length, T Default)
         {
-            Columns.Add(new Column(Name, Type, Length, false, false, false, false, false, "", "", Default, this));
+            Columns.Add(new Column<T>(Name, Type, Length, false, false, false, false, false, "", "", Default, this));
         }
 
         #endregion

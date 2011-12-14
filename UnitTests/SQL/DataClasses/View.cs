@@ -19,35 +19,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using System.Data;
+using Utilities.SQL.DataClasses.Interfaces;
+using Utilities.SQL.DataClasses.Enums;
 
-#endregion
-
-namespace Utilities.SQL.DataClasses.Interfaces
+namespace UnitTests.SQL.DataClasses
 {
-    /// <summary>
-    /// Interface for table like structures
-    /// </summary>
-    public interface ITable
+    public class View
     {
-        #region Properties
+        [Test]
+        public void Create()
+        {
+            Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
+            Utilities.SQL.DataClasses.View View = Database.AddView("TestView");
+            Assert.Equal(View, Database.Views[0]);
+            Assert.Equal("TestView", View.Name);
+        }
 
-        /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
-        /// Columns
-        /// </summary>
-        List<IColumn> Columns { get; set; }
-
-        /// <summary>
-        /// Parent of the table structure
-        /// </summary>
-        Database ParentDatabase { get; set; }
-
-        #endregion
+        [Test]
+        public void AddColumn()
+        {
+            Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
+            Utilities.SQL.DataClasses.View View = Database.AddView("TestView");
+            View.AddColumn<int>("Column1", DbType.Int32, 0, true);
+            Assert.Equal(1, View.Columns.Count);
+        }
     }
 }

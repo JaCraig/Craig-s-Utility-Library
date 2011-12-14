@@ -498,7 +498,7 @@ namespace Utilities.ORM.QueryProviders
                                 ((IProperty<ObjectType>)Property).JoinsDelete(Object, ORMObject);
                                 ((IProperty<ObjectType>)Property).JoinsSave(Object, ORMObject);
                             }
-                            if (Property.Cascade && !(Property is IMap))
+                            if (Property.Cascade)
                             {
                                 ((IProperty<ObjectType>)Property).CascadeJoinsDelete(Object, ORMObject);
                                 ((IProperty<ObjectType>)Property).CascadeJoinsSave(Object, ORMObject);
