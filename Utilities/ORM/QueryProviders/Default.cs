@@ -427,12 +427,12 @@ namespace Utilities.ORM.QueryProviders
         /// Returns a paged list of items
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
-        /// <param name="Session">Current session</param>
         /// <param name="Columns">Columns to load</param>
         /// <param name="OrderBy">Order by clause (minus the ORDER BY part)</param>
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">Current page (starting with 0)</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
+        /// <param name="CurrentSession">Current session to use in the query</param>
         /// <returns>A paged list of items that match the criteria</returns>
         public virtual IEnumerable<ObjectType> Paged<ObjectType>(Session CurrentSession, string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
         {

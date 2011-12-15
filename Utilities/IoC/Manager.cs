@@ -81,7 +81,7 @@ namespace Utilities.IoC
         /// Loads all mapping modules found within a specific directory
         /// </summary>
         /// <param name="Directory">Directory to scan for modules</param>
-        /// <param name="RecursiveScan">Determines if sub directories should be scanned</param>
+        /// <param name="ScanSubDirectories">Determines if sub directories should be scanned</param>
         public void Setup(string Directory, bool ScanSubDirectories = true)
         {
             Setup(new DirectoryInfo(Directory).LoadAssemblies(ScanSubDirectories));

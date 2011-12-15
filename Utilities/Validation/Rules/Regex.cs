@@ -43,6 +43,7 @@ namespace Utilities.Validation.Rules
         /// Constructor
         /// </summary>
         /// <param name="ItemToValidate">Item to validate</param>
+        /// <param name="RegexString">Regex string</param>
         /// <param name="ErrorMessage">Error message</param>
         public Regex(Func<ObjectType, string> ItemToValidate,string RegexString, string ErrorMessage)
             : base(ItemToValidate, ErrorMessage)

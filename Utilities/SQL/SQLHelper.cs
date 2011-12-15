@@ -44,6 +44,7 @@ namespace Utilities.SQL
         /// <param name="Command">Stored procedure/SQL Text to use</param>
         /// <param name="ConnectionUsing">The connection string to user</param>
         /// <param name="CommandType">The command type of the command sent in</param>
+        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
         public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DbType = "System.Data.SqlClient")
         {
             Factory = DbProviderFactories.GetFactory(DbType);

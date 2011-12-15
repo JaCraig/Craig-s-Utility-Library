@@ -49,6 +49,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// Constructor
         /// </summary>
         /// <param name="Expression">Expression pointing to the property</param>
+        /// <param name="Mapping">Mapping that the reference is added to</param>
         public StringReference(Expression<Func<ClassType, string>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {

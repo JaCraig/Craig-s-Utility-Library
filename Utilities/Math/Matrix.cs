@@ -42,7 +42,7 @@ namespace Utilities.Math
         /// <param name="Width">Width of the matrix</param>
         /// <param name="Height">Height of the matrix</param>
         /// <param name="Values">Values to use in the matrix</param>
-        public Matrix(int Width, int Height,double[,]Values=null)
+        public Matrix(int Width, int Height, double[,] Values = null)
         {
             _Width = Width;
             _Height = Height;

@@ -419,6 +419,7 @@ namespace Utilities.ORM
         /// Called when the item is Loading
         /// </summary>
         /// <param name="e">LoadingEventArgs item</param>
+        /// <param name="sender">Sender item</param>
         protected static void OnLoading(object sender, LoadingEventArgs e)
         {
             Utilities.Events.EventHelper.Raise<LoadingEventArgs>(Loading, sender, e);
@@ -442,6 +443,7 @@ namespace Utilities.ORM
         /// Called when the item is Loaded
         /// </summary>
         /// <param name="e">LoadedEventArgs item</param>
+        /// <param name="sender">Sender item</param>
         protected static void OnLoaded(object sender, LoadedEventArgs e)
         {
             Utilities.Events.EventHelper.Raise<LoadedEventArgs>(Loaded, sender, e);

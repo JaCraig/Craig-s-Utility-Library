@@ -41,6 +41,8 @@ namespace Utilities.IoC.Mappings.Internal_Classes
         /// Constructor
         /// </summary>
         /// <param name="ServiceType">Service type</param>
+        /// <param name="MappingManager">Mapping manager</param>
+        /// <param name="ProviderManager">Provider manager</param>
         public Mapping(Type ServiceType, ProviderManager ProviderManager, MappingManager MappingManager)
             : base(ServiceType, null, ProviderManager, MappingManager)
         {
@@ -51,6 +53,8 @@ namespace Utilities.IoC.Mappings.Internal_Classes
         /// </summary>
         /// <param name="ServiceType">Service type</param>
         /// <param name="AttributeType">Attribute type</param>
+        /// <param name="MappingManager">Mapping manager</param>
+        /// <param name="ProviderManager">Provider manager</param>
         public Mapping(Type ServiceType, Type AttributeType, ProviderManager ProviderManager, MappingManager MappingManager)
             : base(ServiceType, AttributeType, ProviderManager, MappingManager)
         {

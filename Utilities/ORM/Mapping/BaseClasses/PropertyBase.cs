@@ -46,7 +46,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         /// Constructor
         /// </summary>
         /// <param name="Expression">Expression used to point to the property</param>
-        /// <param name="DerivedFieldName">Derived field name</param>
+        /// <param name="Mapping">Mapping the StringID is added to</param>
         public PropertyBase(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
         {
             this.Expression = Expression;

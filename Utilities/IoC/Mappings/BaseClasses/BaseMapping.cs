@@ -44,6 +44,8 @@ namespace Utilities.IoC.Mappings.BaseClasses
         /// </summary>
         /// <param name="ServiceType">Service type</param>
         /// <param name="AttributeType">Attribute type</param>
+        /// <param name="MappingManager">Mapping manager</param>
+        /// <param name="ProviderManager">Provider manager</param>
         public BaseMapping(Type ServiceType, Type AttributeType, ProviderManager ProviderManager, MappingManager MappingManager)
         {
             this.ServiceType = ServiceType;

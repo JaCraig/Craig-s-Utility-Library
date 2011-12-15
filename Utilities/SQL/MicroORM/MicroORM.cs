@@ -91,6 +91,7 @@ namespace Utilities.SQL.MicroORM
         /// <param name="PrimaryKey">Primary key</param>
         /// <param name="AutoIncrement">Auto incrementing primar key</param>
         /// <param name="ParameterStarter">Parameter starter</param>
+        /// <param name="Database">Database to use</param>
         /// <returns>The created mapping (or an already created one if it exists</returns>
         public static Mapping<ClassType> Map<ClassType>(string TableName, string PrimaryKey, bool AutoIncrement = true, string ParameterStarter = "@", string Database = "Default") where ClassType : class,new()
         {

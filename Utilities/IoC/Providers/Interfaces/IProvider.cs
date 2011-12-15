@@ -41,6 +41,7 @@ namespace Utilities.IoC.Providers.Interfaces
         /// Creates an implementation based off of a type
         /// </summary>
         /// <param name="ImplementationType">Implementation type</param>
+        /// <param name="MappingManager">Mapping manager</param>
         /// <returns>an implementation class</returns>
         IImplementation CreateImplementation(Type ImplementationType, MappingManager MappingManager);
 
@@ -55,6 +56,7 @@ namespace Utilities.IoC.Providers.Interfaces
         /// Creates an implementation based off an existing implementation
         /// </summary>
         /// <param name="Implementation">Implementation class</param>
+        /// <param name="MappingManager">Mapping manager</param>
         /// <returns>Potentially a new implementation class (if appropriate)</returns>
         IImplementation CreateImplementation(IImplementation Implementation, MappingManager MappingManager);
 

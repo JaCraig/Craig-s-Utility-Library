@@ -255,6 +255,7 @@ namespace Utilities.Validation
         /// <typeparam name="DataType">Data type that the property/function should return</typeparam>
         /// <param name="ItemToValidate">Property/Function to validate</param>
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
+        /// <param name="Value">Value to search for</param>
         /// <returns>This</returns>
         public virtual Validator<Type> Contains<DataType>(Expression<Func<Type, IEnumerable<DataType>>> ItemToValidate, DataType Value,
             string ErrorMessage = "")
@@ -293,6 +294,7 @@ namespace Utilities.Validation
         /// <typeparam name="DataType">Data type that the property/function should return</typeparam>
         /// <param name="ItemToValidate">Property/Function to validate</param>
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
+        /// <param name="Value">Value to search for</param>
         /// <returns>This</returns>
         public virtual Validator<Type> DoesNotContain<DataType>(Expression<Func<Type, IEnumerable<DataType>>> ItemToValidate, DataType Value,
             string ErrorMessage = "")
@@ -663,6 +665,7 @@ namespace Utilities.Validation
         /// </summary>
         /// <param name="ItemToValidate">Property/Function to validate</param>
         /// <param name="ErrorMessage">Error message to throw if not valid</param>
+        /// <param name="DefaultValue">Default value</param>
         /// <returns>This</returns>
         public virtual Validator<Type> Required(Expression<Func<Type, string>> ItemToValidate,
             string DefaultValue = null, string ErrorMessage = "")
