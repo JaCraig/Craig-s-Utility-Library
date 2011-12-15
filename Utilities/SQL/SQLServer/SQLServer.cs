@@ -650,6 +650,8 @@ namespace Utilities.SQL.SQLServer
                             string Type = (string)Helper.GetParameter("TYPE", "");
                             string Name = (string)Helper.GetParameter("NAME", "");
                             int Length = int.Parse(Helper.GetParameter("LENGTH", 0).ToString());
+                            if (Type == "nvarchar")
+                                Length /= 2;
                             string Default = (string)Helper.GetParameter("DEFAULT VALUE", "");
                             Procedure.AddColumn<string>(Name, Type.TryTo<string,SqlDbType>().ToDbType(), Length, Default);
                         }
@@ -698,6 +700,8 @@ namespace Utilities.SQL.SQLServer
                             string ColumnName = (string)Helper.GetParameter("Column", "");
                             string ColumnType = (string)Helper.GetParameter("COLUMN TYPE", "");
                             int MaxLength = (int)(int.Parse(Helper.GetParameter("MAX LENGTH", 0).ToString()));
+                            if (ColumnType == "nvarchar")
+                                MaxLength /= 2;
                             bool Nullable = (bool)Helper.GetParameter("IS NULLABLE", false);
                             View.AddColumn<string>(ColumnName, ColumnType.TryTo<string, SqlDbType>().ToDbType(), MaxLength, Nullable);
                         }
@@ -730,6 +734,8 @@ namespace Utilities.SQL.SQLServer
                             string ColumnName = (string)Helper.GetParameter("Column", "");
                             string ColumnType = (string)Helper.GetParameter("COLUMN TYPE", "");
                             int MaxLength = (int)(int.Parse(Helper.GetParameter("MAX LENGTH", 0).ToString()));
+                            if (ColumnType == "nvarchar")
+                                MaxLength /= 2;
                             bool Nullable = (bool)Helper.GetParameter("IS NULLABLE", false);
                             bool Identity = (bool)Helper.GetParameter("IS IDENTITY", false);
                             bool Index = (bool)((int)Helper.GetParameter("IS INDEX", 0) != 0);

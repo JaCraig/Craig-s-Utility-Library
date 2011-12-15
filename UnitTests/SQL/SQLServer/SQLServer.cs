@@ -60,6 +60,61 @@ namespace UnitTests.SQL.SQLServer
             }
         }
 
+        [Test]
+        public void UpdateDatabase()
+        {
+            Database Database = new Database("TestDatabase");
+            Table TestTable = Database.AddTable("TestTable");
+            TestTable.AddColumn<string>("ID_", DbType.Int32);
+            TestTable.AddColumn<string>("Value1", DbType.String, 100);
+            TestTable.AddColumn<string>("Value2", DbType.Double);
+            Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Database Database2 = new Database("TestDatabase");
+            TestTable = Database2.AddTable("TestTable");
+            TestTable.AddColumn<string>("ID_", DbType.Int32);
+            TestTable.AddColumn<string>("Value1", DbType.String, 100);
+            TestTable.AddColumn<string>("Value2", DbType.Double);
+            TestTable.AddColumn<string>("Value3", DbType.Boolean);
+            Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database2, Database, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(ID_,Value1,Value2,Value3) VALUES (@ID_,@Value1,@Value2,@Value3)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.AddParameter<int>("@ID_", 1);
+                Helper.AddParameter<string>("@Value1", "Test String");
+                Helper.AddParameter<float>("@Value2", 3.0f);
+                Helper.AddParameter<bool>("@Value3", true);
+                Assert.Equal(1, Helper.ExecuteNonQuery());
+            }
+            Database Database3 = Utilities.SQL.SQLServer.SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Assert.Equal(Database2.Tables[0].Name, Database3.Tables[0].Name);
+            Assert.Equal(Database2.Tables[0].Columns.Count, Database3.Tables[0].Columns.Count);
+            Assert.Equal(DbType.Int32, Database3.Tables[0].Columns.First(x => x.Name == "ID_").DataType);
+            Assert.Equal(DbType.String, Database3.Tables[0].Columns.First(x => x.Name == "Value1").DataType);
+            Assert.Equal(DbType.Double, Database3.Tables[0].Columns.First(x => x.Name == "Value2").DataType);
+            Assert.Equal(100, Database3.Tables[0].Columns.First(x => x.Name == "Value1").Length);
+            Assert.Equal(4, Database3.Tables[0].Columns.First(x => x.Name == "ID_").Length);
+            Assert.Equal(8, Database3.Tables[0].Columns.First(x => x.Name == "Value2").Length);
+        }
+
+        [Test]
+        public void GetDatabaseStructure()
+        {
+            Database Database = new Database("TestDatabase");
+            Table TestTable = Database.AddTable("TestTable");
+            TestTable.AddColumn<string>("ID_", DbType.Int32);
+            TestTable.AddColumn<string>("Value1", DbType.String, 100);
+            TestTable.AddColumn<string>("Value2", DbType.Double);
+            Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Database Database2 = Utilities.SQL.SQLServer.SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Assert.Equal(Database.Tables[0].Name, Database2.Tables[0].Name);
+            Assert.Equal(Database.Tables[0].Columns.Count, Database2.Tables[0].Columns.Count);
+            Assert.Equal(DbType.Int32, Database2.Tables[0].Columns.First(x => x.Name == "ID_").DataType);
+            Assert.Equal(DbType.String, Database2.Tables[0].Columns.First(x => x.Name == "Value1").DataType);
+            Assert.Equal(DbType.Double, Database2.Tables[0].Columns.First(x => x.Name == "Value2").DataType);
+            Assert.Equal(100, Database2.Tables[0].Columns.First(x => x.Name == "Value1").Length);
+            Assert.Equal(4, Database2.Tables[0].Columns.First(x => x.Name == "ID_").Length);
+            Assert.Equal(8, Database2.Tables[0].Columns.First(x => x.Name == "Value2").Length);
+        }
+
         public void Dispose()
         {
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
