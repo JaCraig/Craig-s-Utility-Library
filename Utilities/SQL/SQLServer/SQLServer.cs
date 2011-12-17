@@ -198,11 +198,18 @@ namespace Utilities.SQL.SQLServer
                 if (CurrentTable == null)
                 {
                     Builder.Append(GetTableCommand(Table));
-                    Builder.Append(GetForeignKeyCommand(Table));
                 }
                 else
                 {
                     Builder.Append(GetAlterTableCommand(Table, CurrentTable));
+                }
+            }
+            foreach (Table Table in DesiredDatabase.Tables)
+            {
+                Table CurrentTable = CurrentDatabase[Table.Name];
+                if (CurrentTable == null)
+                {
+                    Builder.Append(GetForeignKeyCommand(Table));
                 }
             }
             foreach (Table Table in DesiredDatabase.Tables)
