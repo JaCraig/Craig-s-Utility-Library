@@ -53,9 +53,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{57A7AF88-994B-46A5-BB9D-46ED06757B3F}</Project>
-      <Name>Utilities %28Utilities\Utilities%29</Name>
+    <ProjectReference Include="..\Utilities.IO\Utilities.IO.csproj">
+      <Project>{ECC62635-0319-44F3-993E-75BA8FC6F150}</Project>
+      <Name>Utilities.IO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
