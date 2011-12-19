@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{57A7AF88-994B-46A5-BB9D-46ED06757B3F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{67AD2D0B-1222-4DAD-81D3-4632D82D686D} = {67AD2D0B-1222-4DAD-81D3-4632D82D686D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{6830C59C-3E74-4F20-BEC5-7A194FC9BE7E}"
 EndProject
