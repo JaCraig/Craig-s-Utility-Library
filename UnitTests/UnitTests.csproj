@@ -40,6 +40,9 @@
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MoonUnit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=947a4582277ddbe3, processorArchitecture=MSIL">
+      <HintPath>..\DLLs\MoonUnit.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -198,10 +201,6 @@
     <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MoonUnit\MoonUnit\MoonUnit.csproj">
-      <Project>{334111AB-581F-4680-8CA7-BF7BFDB2D34B}</Project>
-      <Name>MoonUnit %28MoonUnit\MoonUnit%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{57A7AF88-994B-46A5-BB9D-46ED06757B3F}</Project>
       <Name>Utilities %28Utilities\Utilities%29</Name>
