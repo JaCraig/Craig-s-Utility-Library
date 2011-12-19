@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{77E47844-BD84-4439-90F0-4FD698D2DC3F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Utilities.IoC</RootNamespace>
+    <AssemblyName>Utilities.IoC</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IoC\Manager.cs" />
+    <Compile Include="IoC\Mappings\Attributes\Inject.cs" />
+    <Compile Include="IoC\Mappings\BaseClasses\BaseMapping.cs" />
+    <Compile Include="IoC\Mappings\BaseClasses\BaseModule.cs" />
+    <Compile Include="IoC\Mappings\BaseClasses\MappingKey.cs" />
+    <Compile Include="IoC\Mappings\Interfaces\IMapping.cs" />
+    <Compile Include="IoC\Mappings\Interfaces\IModule.cs" />
+    <Compile Include="IoC\Mappings\Internal Classes\Mapping.cs" />
+    <Compile Include="IoC\Mappings\MappingManager.cs" />
+    <Compile Include="IoC\Providers\BaseClasses\BaseImplementation.cs" />
+    <Compile Include="IoC\Providers\DefaultProviders\Standard.cs" />
+    <Compile Include="IoC\Providers\Implementations\Delegate.cs" />
+    <Compile Include="IoC\Providers\Implementations\Standard.cs" />
+    <Compile Include="IoC\Providers\Interfaces\IImplementation.cs" />
+    <Compile Include="IoC\Providers\Interfaces\IProvider.cs" />
+    <Compile Include="IoC\Providers\ProviderManager.cs" />
+    <Compile Include="IoC\Providers\Scope\BaseScope.cs" />
+    <Compile Include="IoC\Providers\Scope\StandardScope.cs" />
+    <Compile Include="IoC\Utils\ConstructorList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
+      <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
+      <Name>Utilities.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.IO\Utilities.IO.csproj">
+      <Project>{ECC62635-0319-44F3-993E-75BA8FC6F150}</Project>
+      <Name>Utilities.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Reflection\Utilities.Reflection.csproj">
+      <Project>{CB6FE6D5-5D42-4E95-A365-41304BA931C7}</Project>
+      <Name>Utilities.Reflection</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

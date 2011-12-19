@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9D3780AF-92CE-480F-A815-0D0E9CE61AB3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Utilities.ORM</RootNamespace>
+    <AssemblyName>Utilities.ORM</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ORM\Mapping\BaseClasses\PropertyBase.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IID.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IIEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IManyToMany.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IManyToOne.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IMap.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IMappingManager.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IReference.cs" />
+    <Compile Include="ORM\Mapping\Mapping.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IMapping.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IProperty.cs" />
+    <Compile Include="ORM\Mapping\MappingManager.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\ID.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\IEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\ManyToMany.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\ManyToOne.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\Map.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\Reference.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\StringID.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\StringReference.cs" />
+    <Compile Include="ORM\QueryProviders\Interfaces\IDatabase.cs" />
+    <Compile Include="ORM\QueryProviders\Default.cs" />
+    <Compile Include="ORM\Aspect\Interfaces\IORMObject.cs" />
+    <Compile Include="ORM\Aspect\ORMAspect.cs" />
+    <Compile Include="ORM\Mapping\Command.cs" />
+    <Compile Include="ORM\ORM.cs" />
+    <Compile Include="ORM\QueryProviders\Interfaces\IParameter.cs" />
+    <Compile Include="ORM\QueryProviders\Parameter.cs" />
+    <Compile Include="ORM\Session.cs" />
+    <Compile Include="ORM\Database\DatabaseManager.cs" />
+    <Compile Include="ORM\Interfaces\IObject.cs" />
+    <Compile Include="ORM\ObjectBaseClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
+      <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
+      <Name>Utilities.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Events\Utilities.Events.csproj">
+      <Project>{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}</Project>
+      <Name>Utilities.Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Reflection\Utilities.Reflection.csproj">
+      <Project>{CB6FE6D5-5D42-4E95-A365-41304BA931C7}</Project>
+      <Name>Utilities.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.SQL\Utilities.SQL.csproj">
+      <Project>{C47DBD66-BFF5-43B3-9293-EC48C06AADE3}</Project>
+      <Name>Utilities.SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Validation\Utilities.Validation.csproj">
+      <Project>{EF933948-E8F5-4B57-9A7B-1C92BEBCA670}</Project>
+      <Name>Utilities.Validation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

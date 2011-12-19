@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AC3DB1D8-25B5-4BFF-ABFA-25AD90611836}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Utilities.FileFormats</RootNamespace>
+    <AssemblyName>Utilities.FileFormats</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FileFormats\BlogML\Author.cs" />
+    <Compile Include="FileFormats\BlogML\Authors.cs" />
+    <Compile Include="FileFormats\BlogML\BlogML.cs" />
+    <Compile Include="FileFormats\BlogML\Categories.cs" />
+    <Compile Include="FileFormats\BlogML\Category.cs" />
+    <Compile Include="FileFormats\BlogML\Post.cs" />
+    <Compile Include="FileFormats\BlogML\Posts.cs" />
+    <Compile Include="FileFormats\BlogML\Tag.cs" />
+    <Compile Include="FileFormats\BlogML\Tags.cs" />
+    <Compile Include="FileFormats\CSV\CSV.cs" />
+    <Compile Include="FileFormats\FixedLength\BaseClasses\FieldBase.cs" />
+    <Compile Include="FileFormats\FixedLength\BaseClasses\FixedLengthBase.cs" />
+    <Compile Include="FileFormats\FixedLength\BaseClasses\RecordBase.cs" />
+    <Compile Include="FileFormats\FixedLength\Interfaces\IField.cs" />
+    <Compile Include="FileFormats\FixedLength\Interfaces\IRecord.cs" />
+    <Compile Include="FileFormats\FixedLength\StringField.cs" />
+    <Compile Include="FileFormats\INI\INI.cs" />
+    <Compile Include="FileFormats\OPMLHelper\Body.cs" />
+    <Compile Include="FileFormats\OPMLHelper\Head.cs" />
+    <Compile Include="FileFormats\OPMLHelper\OPML.cs" />
+    <Compile Include="FileFormats\OPMLHelper\Outline.cs" />
+    <Compile Include="FileFormats\RSD\API.cs" />
+    <Compile Include="FileFormats\RSD\APIs.cs" />
+    <Compile Include="FileFormats\RSD\RSD.cs" />
+    <Compile Include="FileFormats\RSSHelper\Channel.cs" />
+    <Compile Include="FileFormats\RSSHelper\Document.cs" />
+    <Compile Include="FileFormats\RSSHelper\Enclosure.cs" />
+    <Compile Include="FileFormats\RSSHelper\GUID.cs" />
+    <Compile Include="FileFormats\RSSHelper\Item.cs" />
+    <Compile Include="FileFormats\RSSHelper\RSS.cs" />
+    <Compile Include="FileFormats\RSSHelper\Thumbnail.cs" />
+    <Compile Include="FileFormats\VCalendar.cs" />
+    <Compile Include="FileFormats\VCard.cs" />
+    <Compile Include="FileFormats\XFN\People.cs" />
+    <Compile Include="FileFormats\XFN\XFNList.cs" />
+    <Compile Include="FileFormats\XMDP\Property.cs" />
+    <Compile Include="FileFormats\XMDP\XMDP.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FileFormats\BlogML\Comment.cs" />
+    <Compile Include="FileFormats\BlogML\Comments.cs" />
+    <Compile Include="FileFormats\Delimited\Cell.cs" />
+    <Compile Include="FileFormats\Delimited\Delimited.cs" />
+    <Compile Include="FileFormats\Delimited\Row.cs" />
+    <Compile Include="FileFormats\PipeDelimited\PipeDelimited.cs" />
+    <Compile Include="FileFormats\Zip\ZipFile.cs" />
+    <Compile Include="FileFormats\Cisco\Directory.cs" />
+    <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
+    <Compile Include="FileFormats\Cisco\Error.cs" />
+    <Compile Include="FileFormats\Cisco\Execute.cs" />
+    <Compile Include="FileFormats\Cisco\ExecuteItem.cs" />
+    <Compile Include="FileFormats\Cisco\GraphicMenuItem.cs" />
+    <Compile Include="FileFormats\Cisco\Image.cs" />
+    <Compile Include="FileFormats\Cisco\Input.cs" />
+    <Compile Include="FileFormats\Cisco\InputFlag.cs" />
+    <Compile Include="FileFormats\Cisco\InputItem.cs" />
+    <Compile Include="FileFormats\Cisco\Interfaces\IDisplay.cs" />
+    <Compile Include="FileFormats\Cisco\Interfaces\IMenuItem.cs" />
+    <Compile Include="FileFormats\Cisco\MenuItem.cs" />
+    <Compile Include="FileFormats\Cisco\Menu.cs" />
+    <Compile Include="FileFormats\Cisco\SoftKeyItem.cs" />
+    <Compile Include="FileFormats\Cisco\Status.cs" />
+    <Compile Include="FileFormats\Cisco\Text.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
+      <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
+      <Name>Utilities.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.IO\Utilities.IO.csproj">
+      <Project>{ECC62635-0319-44F3-993E-75BA8FC6F150}</Project>
+      <Name>Utilities.IO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Key.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

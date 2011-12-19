@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{82A17DB8-06B1-420A-8374-B9347D6AB6BE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Utilities.Web</RootNamespace>
+    <AssemblyName>Utilities.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Bing\Bing.cs" />
+    <Compile Include="Web\Craigslist\Craigslist.cs" />
+    <Compile Include="Web\Ebay\Ebay.cs" />
+    <Compile Include="Web\Email\Message.cs" />
+    <Compile Include="Web\Email\MIME\Attribute.cs" />
+    <Compile Include="Web\Email\MIME\Code.cs" />
+    <Compile Include="Web\Email\MIME\CodeManager.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeAddress.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeBase.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeBase64.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeParameter.cs" />
+    <Compile Include="Web\Email\MIME\CodeTypes\CodeQP.cs" />
+    <Compile Include="Web\Email\MIME\Constants.cs" />
+    <Compile Include="Web\Email\MIME\Field.cs" />
+    <Compile Include="Web\Email\MIME\MediaEnum.cs" />
+    <Compile Include="Web\Email\MIME\MediaType.cs" />
+    <Compile Include="Web\Email\MIME\MIMEBody.cs" />
+    <Compile Include="Web\Email\MIME\MIMEHeader.cs" />
+    <Compile Include="Web\Email\MIME\MIMEMessage.cs" />
+    <Compile Include="Web\Email\MIME\MIMEType.cs" />
+    <Compile Include="Web\Email\Pop3\Message.cs" />
+    <Compile Include="Web\Email\Pop3\Pop3Client.cs" />
+    <Compile Include="Web\Email\Pop3\Pop3Exception.cs" />
+    <Compile Include="Web\Email\SMTP\EmailSender.cs" />
+    <Compile Include="Web\Hulu\Hulu.cs" />
+    <Compile Include="Web\Netflix\BoxArt.cs" />
+    <Compile Include="Web\Netflix\Netflix.cs" />
+    <Compile Include="Web\Netflix\People.cs" />
+    <Compile Include="Web\Netflix\Person.cs" />
+    <Compile Include="Web\Netflix\Title.cs" />
+    <Compile Include="Web\Netflix\TitleInformation.cs" />
+    <Compile Include="Web\Netflix\Titles.cs" />
+    <Compile Include="Web\OAuth\OAuth.cs" />
+    <Compile Include="Web\OpenSearch\OpenSearch.cs" />
+    <Compile Include="Web\PingBack\Manager.cs" />
+    <Compile Include="Web\PingBack\PingBack.cs" />
+    <Compile Include="Web\PingBack\TrackBack.cs" />
+    <Compile Include="Web\Ping\Ping.cs" />
+    <Compile Include="Web\REST\REST.cs" />
+    <Compile Include="Web\Twitter\Twitter.cs" />
+    <Compile Include="Web\WebBrowserHelper\WebBrowserHelper.cs" />
+    <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
+    <Compile Include="Web\OpenID\OpenID.cs" />
+    <Compile Include="Web\OpenID\Extensions\AttributeExchange.cs" />
+    <Compile Include="Web\OpenID\Extensions\Enums\Attributes.cs" />
+    <Compile Include="Web\OpenID\Extensions\Interfaces\IExtension.cs" />
+    <Compile Include="Web\OpenID\GenericProvider.cs" />
+    <Compile Include="Web\Gravatar\Gravatar.cs" />
+    <Compile Include="Web\Akismet\Akismet.cs" />
+    <Compile Include="Web\Akismet\Comment.cs" />
+    <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\Minification.cs" />
+    <Compile Include="Web\ExtensionMethods\RequestExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
+      <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
+      <Name>Utilities.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Encryption\Utilities.Encryption.csproj">
+      <Project>{44710730-9426-49E8-822A-4A5ACC6FF4EE}</Project>
+      <Name>Utilities.Encryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.FileFormats\Utilities.FileFormats.csproj">
+      <Project>{AC3DB1D8-25B5-4BFF-ABFA-25AD90611836}</Project>
+      <Name>Utilities.FileFormats</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.IO\Utilities.IO.csproj">
+      <Project>{ECC62635-0319-44F3-993E-75BA8FC6F150}</Project>
+      <Name>Utilities.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Random\Utilities.Random.csproj">
+      <Project>{0E9BF3FB-E640-4895-82C6-8FC9F32F95DB}</Project>
+      <Name>Utilities.Random</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Reflection\Utilities.Reflection.csproj">
+      <Project>{CB6FE6D5-5D42-4E95-A365-41304BA931C7}</Project>
+      <Name>Utilities.Reflection</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Key.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

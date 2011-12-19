@@ -1,0 +1,78 @@
+﻿/*
+Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.*/
+
+#region Usings
+using System;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Security;
+#endregion
+
+namespace Utilities.Encryption.ExtensionMethods
+{
+    /// <summary>
+    /// Hash based extensions
+    /// </summary>
+    public static class HashExtensions
+    {
+        #region Functions
+
+        #region Hash
+
+        /// <summary>
+        /// Computes the hash of a byte array
+        /// </summary>
+        /// <param name="Data">Byte array to hash</param>
+        /// <param name="Algorithm">Hash algorithm to use (defaults to SHA1)</param>
+        /// <returns>The hash of the byte array</returns>
+        public static byte[] Hash(this byte[] Data, HashAlgorithm Algorithm = null)
+        {
+            if (Data.IsNull())
+                return null;
+            using (HashAlgorithm Hasher = Algorithm.NullCheck(new SHA1CryptoServiceProvider()))
+            {
+                byte[] HashedArray = Hasher.ComputeHash(Data);
+                Hasher.Clear();
+                return HashedArray;
+            }
+        }
+
+        /// <summary>
+        /// Computes the hash of a string
+        /// </summary>
+        /// <param name="Data">string to hash</param>
+        /// <param name="Algorithm">Algorithm to use (defaults to SHA1)</param>
+        /// <param name="EncodingUsing">Encoding used by the string (defaults to UTF8)</param>
+        /// <returns>The hash of the string</returns>
+        public static string Hash(this string Data, HashAlgorithm Algorithm = null, Encoding EncodingUsing = null)
+        {
+            if (Data.IsNullOrEmpty())
+                return "";
+            return BitConverter.ToString(Data.ToByteArray(EncodingUsing).Hash(Algorithm)).Replace("-", "");
+        }
+
+        #endregion
+
+        #endregion
+    }
+}
