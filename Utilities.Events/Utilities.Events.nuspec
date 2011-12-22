@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+	<metadata>
+		<id>CraigsUtilityLibrary-Events</id>
+		<version>3.0</version>
+		<title>Craig's Utility Library Events Namespace</title>
+		<authors>James Craig</authors>
+		<owners>James Craig</owners>
+		<licenseUrl>http://cul.codeplex.com/license</licenseUrl>
+		<projectUrl>http://cul.codeplex.com/</projectUrl>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<description>Craig's Utility Library is one of the largest collections of utility classes and extension methods for .Net. It includes code to help with tasks including encryption, compression, serialization, file management, email, image manipulation, Active Directory, Exchange, SQL, various file formats (CSV, iCal, etc.), Cisco phone apps, WMI queries, randomization, math related classes, various data types, OAuth, OpenID, REST, reflection, code gen, various web services (Twitter, Hulu, Netflix, etc.), events, speech synthesis, speech recognition, code profiling, etc. Note that this is the package that will be updated going forward.</description>
+		<releaseNotes>This includes code from the nightly build once all unit tests are passed (as such it should contain the latest code)</releaseNotes>
+		<copyright>Copyright 2011</copyright>
+		<tags>utility utilities</tags>
+	</metadata>
+	<files>
+		<file src="bin\Release\*.dll" target="lib\net40" />
+		<file src="bin\Release\*.pdb" target="lib\net40" />
+	</files>
+</package>
