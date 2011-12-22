@@ -280,7 +280,7 @@ namespace UnitTests.Media.Image.ExtensionMethods
             }
         }
 
-        [Test("Takes a while to run")]
+        [Test]
         public void GetHTMLPalette()
         {
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
