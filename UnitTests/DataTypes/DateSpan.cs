@@ -70,5 +70,26 @@ namespace UnitTests.DataTypes
             Assert.Equal(new DateTime(1999, 1, 1), Span3.Start);
             Assert.Equal(new DateTime(2009, 1, 1), Span3.End);
         }
+
+        [Test]
+        public void DifferenceTest()
+        {
+            Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
+            Assert.Equal(4, Span1.Years);
+            Assert.Equal(0, Span1.Months);
+            Assert.Equal(0, Span1.Days);
+            Assert.Equal(0, Span1.Hours);
+            Assert.Equal(0, Span1.Minutes);
+            Assert.Equal(0, Span1.Seconds);
+            Assert.Equal(0, Span1.MilliSeconds);
+            Utilities.DataTypes.DateSpan Span2 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1, 2, 3, 4), new DateTime(2003, 11, 15, 6, 45, 32));
+            Assert.Equal(4, Span2.Years);
+            Assert.Equal(10, Span2.Months);
+            Assert.Equal(14, Span2.Days);
+            Assert.Equal(4, Span2.Hours);
+            Assert.Equal(42, Span2.Minutes);
+            Assert.Equal(28, Span2.Seconds);
+            Assert.Equal(0, Span2.MilliSeconds);
+        }
     }
 }

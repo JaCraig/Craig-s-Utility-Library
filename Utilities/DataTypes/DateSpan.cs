@@ -61,6 +61,41 @@ namespace Utilities.DataTypes
         /// </summary>
         public virtual DateTime End { get; protected set; }
 
+        /// <summary>
+        /// Years between the two dates
+        /// </summary>
+        public virtual int Years { get { return (End - Start).Years(); } }
+
+        /// <summary>
+        /// Months between the two dates
+        /// </summary>
+        public virtual int Months { get { return (End - Start).Months(); } }
+
+        /// <summary>
+        /// Days between the two dates
+        /// </summary>
+        public virtual int Days { get { return (End - Start).DaysRemainder(); } }
+
+        /// <summary>
+        /// Hours between the two dates
+        /// </summary>
+        public virtual int Hours { get { return (End - Start).Hours; } }
+
+        /// <summary>
+        /// Minutes between the two dates
+        /// </summary>
+        public virtual int Minutes { get { return (End - Start).Minutes; } }
+
+        /// <summary>
+        /// Seconds between the two dates
+        /// </summary>
+        public virtual int Seconds { get { return (End - Start).Seconds; } }
+
+        /// <summary>
+        /// Milliseconds between the two dates
+        /// </summary>
+        public virtual int MilliSeconds { get { return (End - Start).Milliseconds; } }
+
         #endregion
 
         #region Functions

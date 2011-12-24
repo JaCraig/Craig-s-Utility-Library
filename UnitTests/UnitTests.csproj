@@ -79,6 +79,7 @@
     <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TypeConversion.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ValueType.cs" />
     <Compile Include="DataTypes\List.cs" />
