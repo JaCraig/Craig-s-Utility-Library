@@ -42,10 +42,10 @@ namespace UtilitiesSplitter
             }
             foreach (Project Project in Projects)
             {
-                if (new FileInfo("..\\..\\..\\Utilities\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj").Exists)
+                if (new FileInfo("..\\..\\..\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj").Exists)
                 {
                     bool Changed = false;
-                    string ProjectText = new FileInfo("..\\..\\..\\Utilities\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj").Read();
+                    string ProjectText = new FileInfo("..\\..\\..\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj").Read();
                     XmlDocument ProjectDoc = new XmlDocument();
 
                     ProjectDoc.LoadXml(ProjectText);
@@ -62,7 +62,7 @@ namespace UtilitiesSplitter
                         else if (!Path.StartsWith("Properties"))
                         {
                             Node.ParentNode.RemoveChild(Node);
-                            new FileInfo("..\\..\\..\\Utilities\\Utilities." + Project.Name + "\\" + Path).Delete();
+                            new FileInfo("..\\..\\..\\Utilities." + Project.Name + "\\" + Path).Delete();
                             Changed = true;
                         }
                     }
@@ -80,7 +80,7 @@ namespace UtilitiesSplitter
                     }
                     if (Changed)
                     {
-                        ProjectDoc.Save("..\\..\\..\\Utilities\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj");
+                        ProjectDoc.Save("..\\..\\..\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj");
                     }
                 }
             }
