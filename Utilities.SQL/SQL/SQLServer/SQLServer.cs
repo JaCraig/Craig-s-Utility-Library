@@ -372,7 +372,7 @@ namespace Utilities.SQL.SQLServer
                         .Append(" ADD ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
                     if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                     {
-                        if (Column.Length == -1 || Column.Length == 5000)
+                        if (Column.Length < 0 || Column.Length >= 4000)
                         {
                             Builder.Append("(MAX)");
                         }
@@ -399,7 +399,7 @@ namespace Utilities.SQL.SQLServer
                         .Append(" ALTER COLUMN ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
                     if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                     {
-                        if (Column.Length == -1 || Column.Length == 5000)
+                        if (Column.Length < 0 || Column.Length >= 4000)
                         {
                             Builder.Append("(MAX)");
                         }
@@ -538,7 +538,7 @@ namespace Utilities.SQL.SQLServer
                 Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
                 if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                 {
-                    if (Column.Length == -1 || Column.Length == 5000)
+                    if (Column.Length < 0 || Column.Length >= 4000)
                     {
                         Builder.Append("(MAX)");
                     }

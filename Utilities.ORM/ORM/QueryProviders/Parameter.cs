@@ -43,8 +43,9 @@ namespace Utilities.ORM.QueryProviders
         /// <param name="Value">Value of the parameter</param>
         /// <param name="Name">Name associated with the parameter (field name)</param>
         /// <param name="ParameterStarter">Symbol used by the database to denote a parameter</param>
-        public Parameter(DataType Value, string Name, string ParameterStarter = "@")
-            : base(Value, Name, ParameterStarter)
+        /// <param name="Length">Max length of the string (if it is a string)</param>
+        public Parameter(DataType Value, string Name, int Length = 0, string ParameterStarter = "@")
+            : base(Value, Name, Length, ParameterStarter)
         {
         }
 

@@ -165,7 +165,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IID<ClassType, string> SetMaxLength(int MaxLength)
         {
             this.MaxLength = MaxLength;
-            if (MaxLength != -1)
+            if (MaxLength >= 0 && MaxLength < 4000)
                 Validation.ValidationManager.GetValidator<ClassType>().MaxLength(Expression, MaxLength);
             return (IID<ClassType, string>)this;
         }

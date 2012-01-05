@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utilities.SQL.MicroORM.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -44,10 +45,12 @@ namespace Utilities.SQL.MicroORM
         /// <param name="ID">Name of the parameter</param>
         /// <param name="ParameterStarter">What the database expects as the
         /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
-        public Parameter(DataType Value, string ID, string ParameterStarter = "@")
+        /// <param name="Length">Max length of the string (if it is a string)</param>
+        public Parameter(DataType Value, string ID,int Length=0, string ParameterStarter = "@")
         {
             this.Value = Value;
             this.ID = ID;
+            this.Length = Length;
             this.ParameterStarter = ParameterStarter;
         }
 
@@ -70,11 +73,22 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         public string ParameterStarter { get; set; }
 
+        /// <summary>
+        /// Max length of the string (if it is a string)
+        /// </summary>
+        public int Length { get; set; }
+
         #endregion
 
         #region Functions
 
-        public void AddParameter(SQLHelper Helper) { Helper.AddParameter(ID, Value); }
+        public void AddParameter(SQLHelper Helper)
+        {
+            if (!typeof(DataType).IsOfType(typeof(string)))
+                Helper.AddParameter(ID, Value);
+            else
+                Helper.AddParameter(ID, Length, Value.ToString());
+        }
 
         public override string ToString() { return ID + "=" + ParameterStarter + ID; }
 

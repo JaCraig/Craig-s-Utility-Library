@@ -457,7 +457,7 @@ namespace Utilities.SQL.MicroORM
                 Update(Object, Parameters);
                 return;
             }
-            Parameter<PrimaryKeyType> Param1 = new Parameter<PrimaryKeyType>(PrimaryKeyVal, PrimaryKey, ParameterStarter);
+            Parameter<PrimaryKeyType> Param1 = new Parameter<PrimaryKeyType>(PrimaryKeyVal, PrimaryKey, -1, ParameterStarter);
             ClassType TempVal = Any(PrimaryKey, null, null, Param1);
             if (TempVal == null)
             {

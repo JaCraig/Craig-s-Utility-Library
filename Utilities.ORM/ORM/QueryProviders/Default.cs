@@ -129,7 +129,7 @@ namespace Utilities.ORM.QueryProviders
         {
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
@@ -159,7 +159,7 @@ namespace Utilities.ORM.QueryProviders
         {
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
+                if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
@@ -186,7 +186,7 @@ namespace Utilities.ORM.QueryProviders
         {
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
+                if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
@@ -218,7 +218,7 @@ namespace Utilities.ORM.QueryProviders
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
+                if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
@@ -248,7 +248,7 @@ namespace Utilities.ORM.QueryProviders
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                if (Mappings[Database].First(x => x.ObjectType == typeof(ObjectType)) != null)
+                if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
@@ -276,7 +276,7 @@ namespace Utilities.ORM.QueryProviders
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
@@ -313,7 +313,7 @@ namespace Utilities.ORM.QueryProviders
         {
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
@@ -352,10 +352,10 @@ namespace Utilities.ORM.QueryProviders
             System.Collections.Generic.List<DataType> ReturnValue = new System.Collections.Generic.List<DataType>();
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    IProperty Property = Mapping.Properties.First(x => x.Type == typeof(DataType)
+                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Type == typeof(DataType)
                         && x.Name == PropertyName);
                     if (Property != null)
                     {
@@ -398,10 +398,10 @@ namespace Utilities.ORM.QueryProviders
             DataType ReturnValue = null;
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    IProperty Property = Mapping.Properties.First(x => x.Type == typeof(DataType) && x.Name == PropertyName);
+                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Type == typeof(DataType) && x.Name == PropertyName);
                     if (Property != null)
                     {
                         using (MicroORM ORMObject = new MicroORM(Database.Name))
@@ -439,7 +439,7 @@ namespace Utilities.ORM.QueryProviders
             System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
@@ -471,7 +471,7 @@ namespace Utilities.ORM.QueryProviders
         {
             foreach (IDatabase Database in Mappings.Keys.OrderBy(x => x.Order))
             {
-                IMapping Mapping = Mappings[Database].First(x => x.ObjectType == typeof(ObjectType));
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))

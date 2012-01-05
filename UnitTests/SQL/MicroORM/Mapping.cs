@@ -44,7 +44,7 @@ namespace UnitTests.SQL.MicroORM
                 Helper.ExecuteNonQuery();
 
             }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Table TestTable(ID_ INT PRIMARY KEY IDENTITY,StringValue_ NVARCHAR(100),LongValue_ BIGINT,BoolValue_ BIT,FloatValue_ FLOAT)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Table TestTable(ID_ INT PRIMARY KEY IDENTITY,StringValue_ NVARCHAR(100),LongValue_ BIGINT,BoolValue_ BIT,FloatValue_ FLOAT,StringMaxValue_ NVARCHAR(MAX))", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
                 Helper.ExecuteNonQuery();
             }
@@ -81,8 +81,9 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.StringValue, "StringValue_", 100)
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
-                Assert.Equal(5, TestObject.ParameterNames.Count());
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                Assert.Equal(6, TestObject.ParameterNames.Count());
                 Assert.NotNull(TestObject.Mappings);
                 Assert.NotNull(TestObject.Helper);
             }
@@ -97,12 +98,15 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.StringValue, "StringValue_", 100)
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                Utilities.Random.Random Rand = new Utilities.Random.Random(12345);
                 ObjectClass1 TempObject=new ObjectClass1();
                 TempObject.StringValue="Test String";
                 TempObject.BoolValue=true;
                 TempObject.FloatValue=1234.5f;
                 TempObject.LongValue=12345;
+                TempObject.StringMaxValue = Rand.NextString(6000);
                 TempObject.ID = TestObject.Insert<int>(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
@@ -114,6 +118,7 @@ namespace UnitTests.SQL.MicroORM
                         Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
                         Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
                         Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
+                        Assert.Equal(TempObject.StringMaxValue, Helper.GetParameter<string>("StringMaxValue_", ""));
                     }
                     else
                     {
@@ -132,17 +137,22 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.StringValue, "StringValue_", 100)
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                Utilities.Random.Random Rand = new Utilities.Random.Random(12346);
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test";
                 TempObject.BoolValue = false;
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
+                TempObject.StringMaxValue = Rand.NextString(6000);
                 TempObject.ID = TestObject.Insert<int>(TempObject);
+                Rand = new Utilities.Random.Random(12345);
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
+                TempObject.StringMaxValue = Rand.NextString(6000);
                 TestObject.Update(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
@@ -154,6 +164,7 @@ namespace UnitTests.SQL.MicroORM
                         Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
                         Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
                         Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
+                        Assert.Equal(TempObject.StringMaxValue, Helper.GetParameter<string>("StringMaxValue_", ""));
                     }
                     else
                     {
@@ -172,17 +183,22 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.StringValue, "StringValue_", 100)
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                Utilities.Random.Random Rand = new Utilities.Random.Random(12346);
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test";
                 TempObject.BoolValue = false;
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
+                TempObject.StringMaxValue = Rand.NextString(6000);
                 TestObject.Save<int>(TempObject);
+                Rand = new Utilities.Random.Random(12345);
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
+                TempObject.StringMaxValue = Rand.NextString(6000);
                 TestObject.Save<int>(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
@@ -194,6 +210,7 @@ namespace UnitTests.SQL.MicroORM
                         Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
                         Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
                         Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
+                        Assert.Equal(TempObject.StringMaxValue, Helper.GetParameter<string>("StringMaxValue_", ""));
                     }
                     else
                     {
@@ -212,12 +229,16 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.StringValue, "StringValue_", 100)
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                Utilities.Random.Random Rand = new Utilities.Random.Random(12345);
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
+                TempObject.StringMaxValue = Rand.NextString(6000);
+                string StringMaxValue = TempObject.StringMaxValue;
                 TestObject.Save<int>(TempObject);
                 TempObject = TestObject.Any();
                 Assert.Equal("Test String", TempObject.StringValue);
@@ -225,6 +246,7 @@ namespace UnitTests.SQL.MicroORM
                 Assert.Equal(true, TempObject.BoolValue);
                 Assert.Equal(12345, TempObject.LongValue);
                 Assert.Equal(1, TempObject.ID);
+                Assert.Equal(StringMaxValue, TempObject.StringMaxValue);
             }
         }
 
@@ -237,12 +259,15 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.StringValue, "StringValue_", 100)
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                Utilities.Random.Random Rand = new Utilities.Random.Random(12345);
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
+                TempObject.StringMaxValue = Rand.NextString(6000);
                 TestObject.Save<int>(TempObject);
                 IEnumerable<ObjectClass1> Objects = TestObject.All();
                 Assert.Equal(1, Objects.Count());
@@ -253,9 +278,10 @@ namespace UnitTests.SQL.MicroORM
                     Assert.Equal(true, Item.BoolValue);
                     Assert.Equal(12345, Item.LongValue);
                     Assert.Equal(1, Item.ID);
+                    Assert.Equal(TempObject.StringMaxValue, Item.StringMaxValue);
                 }
                 List<ObjectClass1> Objects2 = new List<ObjectClass1>();
-                Utilities.Random.Random Rand = new Utilities.Random.Random();
+                Rand = new Utilities.Random.Random();
                 for (int x = 0; x < 10; ++x)
                 {
                     TempObject = new ObjectClass1();
@@ -263,6 +289,7 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.BoolValue = Rand.NextBool();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next(0, 100);
+                    TempObject.StringMaxValue = Rand.NextString(6000);
                     Objects2.Add(TempObject);
                 }
                 TestObject.Save<int>(Objects2);
@@ -280,7 +307,8 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.StringValue, "StringValue_", 100)
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
                 List<ObjectClass1> Objects2 = new List<ObjectClass1>();
                 Utilities.Random.Random Rand = new Utilities.Random.Random();
                 for (int x = 0; x < 115; ++x)
@@ -290,6 +318,7 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.BoolValue = Rand.NextBool();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next(0, 100);
+                    TempObject.StringMaxValue = Rand.NextString(6000);
                     Objects2.Add(TempObject);
                 }
                 TestObject.Save<int>(Objects2);
@@ -316,12 +345,15 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.StringValue, "StringValue_", 100)
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_");
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                Utilities.Random.Random Rand = new Utilities.Random.Random();
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test";
                 TempObject.BoolValue = false;
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
+                TempObject.StringMaxValue = Rand.NextString(6000);
                 TestObject.Save<int>(TempObject);
                 Assert.Equal(1, TestObject.Delete(TempObject));
                 
@@ -357,6 +389,7 @@ namespace UnitTests.SQL.MicroORM
     {
         public virtual int ID { get; set; }
         public virtual string StringValue { get; set; }
+        public virtual string StringMaxValue { get; set; }
         public virtual float FloatValue { get; set; }
         public virtual bool BoolValue { get; set; }
         public virtual long LongValue { get; set; }
