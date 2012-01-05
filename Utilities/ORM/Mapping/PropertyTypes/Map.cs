@@ -70,10 +70,20 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             if (this.CommandToLoad != null)
                 return;
             IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
-            LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
+            if (ForeignMapping.TableName == Mapping.TableName)
+            {
+                LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @"2.*
+                                FROM " + ForeignMapping.TableName + @" AS "+ForeignMapping.TableName+@"2
+                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + FieldName + "=" + ForeignMapping.TableName + "2." + ForeignMapping.IDProperty.FieldName + @"
+                                WHERE " + Mapping.TableName + "." + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+            }
+            else
+            {
+                LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
                                 INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperty.FieldName + @"
                                 WHERE " + Mapping.TableName + "." + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+            }
         }
 
         public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
