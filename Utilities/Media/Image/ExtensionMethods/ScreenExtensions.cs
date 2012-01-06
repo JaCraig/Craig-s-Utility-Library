@@ -77,13 +77,17 @@ namespace Utilities.Media.Image.ExtensionMethods
             foreach (Screen CurrentScreen in Screen.AllScreens)
                 TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);
             Bitmap TempBitmap = new Bitmap(TotalScreenRect.Width > 1 ? TotalScreenRect.Width : 1, TotalScreenRect.Height > 1 ? TotalScreenRect.Width : 1, PixelFormat.Format32bppArgb);
-            if (TotalScreenRect.Width > 1 && TotalScreenRect.Height > 1)
+            try
             {
-                using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
+                if (TotalScreenRect.Width > 1 && TotalScreenRect.Height > 1)
                 {
-                    TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);
+                    using (Graphics TempGraphics = Graphics.FromImage(TempBitmap))
+                    {
+                        TempGraphics.CopyFromScreen(TotalScreenRect.X, TotalScreenRect.Y, 0, 0, TotalScreenRect.Size, CopyPixelOperation.SourceCopy);
+                    }
                 }
             }
+            catch { }
             if (!string.IsNullOrEmpty(FileName))
                 TempBitmap.Save(FileName);
             return TempBitmap;
