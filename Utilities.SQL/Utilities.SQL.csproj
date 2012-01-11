@@ -58,9 +58,7 @@
     <Compile Include="SQL\DataClasses\View.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
-    <Compile Include="SQL\MicroORM\Interfaces\IParameter.cs" />
     <Compile Include="SQL\MicroORM\MicroORM.cs" />
-    <Compile Include="SQL\MicroORM\Parameter.cs" />
     <Compile Include="SQL\MicroORM\Interfaces\IMapping.cs" />
     <Compile Include="SQL\MicroORM\Mapping.cs" />
     <Compile Include="SQL\MicroORM\Enums\Mode.cs" />
@@ -68,6 +66,15 @@
     <Compile Include="SQL\ExtensionMethods\DbCommandExtensions.cs" />
     <Compile Include="SQL\ExtensionMethods\DbDataReaderExtensions.cs" />
     <Compile Include="SQL\DataClasses\Interfaces\IColumn.cs" />
+    <Compile Include="SQL\ParameterTypes\AndParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\LikeParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\NotEqualParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\OrParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\EqualParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\StringNotEqualParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\StringEqualParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\Interfaces\IParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\BetweenParameter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataMapper\Utilities.DataMapper.csproj">

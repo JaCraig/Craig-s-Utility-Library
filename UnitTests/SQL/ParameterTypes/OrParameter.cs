@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,19 +32,17 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System.Data;
 using Utilities.SQL.MicroORM;
+using Utilities.SQL.ParameterTypes;
 
-namespace UnitTests.SQL.MicroORM
+namespace UnitTests.SQL.ParameterTypes
 {
-    public class Parameter
+    public class OrParameter
     {
         [Test]
         public void Creation()
         {
-            Parameter<int> TestObject = new Parameter<int>(12, "ID");
-            Assert.Equal("ID", TestObject.ID);
-            Assert.Equal(12, TestObject.Value);
-            Assert.Equal("@", TestObject.ParameterStarter);
-            Assert.Equal("ID=@ID", TestObject.ToString());
+            Utilities.SQL.ParameterTypes.OrParameter TestObject = new Utilities.SQL.ParameterTypes.OrParameter(new EqualParameter<int>(1, "Left"), new EqualParameter<int>(2, "Right"));
+            Assert.Equal("(Left=@Left OR Right=@Right)", TestObject.ToString());
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
                 Assert.DoesNotThrow<Exception>(() => TestObject.AddParameter(Helper));

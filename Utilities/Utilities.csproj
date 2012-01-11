@@ -144,6 +144,14 @@
     <Compile Include="SQL\DataClasses\Interfaces\IColumn.cs" />
     <Compile Include="SQL\ExtensionMethods\DbCommandExtensions.cs" />
     <Compile Include="SQL\ExtensionMethods\DbDataReaderExtensions.cs" />
+    <Compile Include="SQL\ParameterTypes\AndParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\BetweenParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\LikeParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\NotEqualParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\OrParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\EqualParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\StringNotEqualParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\StringEqualParameter.cs" />
     <Compile Include="Validation\Rules\Contains.cs" />
     <Compile Include="Validation\Rules\DoesNotContain.cs" />
     <Compile Include="Validation\Rules\Empty.cs" />
@@ -294,8 +302,6 @@
     <Compile Include="ORM\ORM.cs" />
     <Compile Include="ORM\QueryProviders\Interfaces\IDatabase.cs" />
     <Compile Include="ORM\QueryProviders\Default.cs" />
-    <Compile Include="ORM\QueryProviders\Interfaces\IParameter.cs" />
-    <Compile Include="ORM\QueryProviders\Parameter.cs" />
     <Compile Include="ORM\Session.cs" />
     <Compile Include="Profiler\StopWatch.cs" />
     <Compile Include="Reflection\AOP\AOPManager.cs" />
@@ -360,10 +366,9 @@
     <Compile Include="SQL\MicroORM\Database.cs" />
     <Compile Include="SQL\MicroORM\Enums\Mode.cs" />
     <Compile Include="SQL\MicroORM\Interfaces\IMapping.cs" />
-    <Compile Include="SQL\MicroORM\Interfaces\IParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\Interfaces\IParameter.cs" />
     <Compile Include="SQL\MicroORM\MicroORM.cs" />
     <Compile Include="SQL\MicroORM\Mapping.cs" />
-    <Compile Include="SQL\MicroORM\Parameter.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
     <Compile Include="Validation\BaseClasses\BaseAttribute.cs" />

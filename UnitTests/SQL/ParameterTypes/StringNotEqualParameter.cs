@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,36 +19,38 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MoonUnit.Attributes;
+using MoonUnit;
+using Utilities.SQL;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Linq.Expressions;
+using System.Data;
 using Utilities.SQL.MicroORM;
-using Utilities.ORM.QueryProviders.Interfaces;
-#endregion
+using Utilities.SQL.ParameterTypes;
 
-namespace Utilities.ORM.QueryProviders
+namespace UnitTests.SQL.ParameterTypes
 {
-    /// <summary>
-    /// Parameter class
-    /// </summary>
-    public class Parameter<DataType> : Utilities.SQL.MicroORM.Parameter<DataType>,IParameter
+    public class StringNotEqualParameter
     {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Value">Value of the parameter</param>
-        /// <param name="Name">Name associated with the parameter (field name)</param>
-        /// <param name="ParameterStarter">Symbol used by the database to denote a parameter</param>
-        /// <param name="Length">Max length of the string (if it is a string)</param>
-        public Parameter(DataType Value, string Name, int Length = 0, string ParameterStarter = "@")
-            : base(Value, Name, Length, ParameterStarter)
+        [Test]
+        public void Creation()
         {
+            Utilities.SQL.ParameterTypes.StringNotEqualParameter TestObject = new Utilities.SQL.ParameterTypes.StringNotEqualParameter("ASDF", "ID", 100);
+            Assert.Equal("ID", TestObject.ID);
+            Assert.Equal("ASDF", TestObject.Value);
+            Assert.Equal("@", TestObject.ParameterStarter);
+            Assert.Equal("ID<>@ID", TestObject.ToString());
+            Assert.Equal(100, TestObject.Length);
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Assert.DoesNotThrow<Exception>(() => TestObject.AddParameter(Helper));
+            }
         }
-
-        #endregion
     }
 }

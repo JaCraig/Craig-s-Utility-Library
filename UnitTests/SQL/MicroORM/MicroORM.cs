@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System.Data;
 using Utilities.SQL.MicroORM;
+using Utilities.SQL.ParameterTypes;
 
 namespace UnitTests.SQL.MicroORM
 {
@@ -144,6 +145,52 @@ namespace UnitTests.SQL.MicroORM
                 {
                     Assert.Fail("Nothing was inserted");
                 }
+            }
+        }
+
+        [Test]
+        public void AnyDifferentParameterTypes()
+        {
+            Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Utilities.SQL.MicroORM.MicroORM.Map<ObjectClass1>("TestTable", "ID_")
+                    .Map(x => x.ID, "ID_")
+                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.FloatValue, "FloatValue_")
+                    .Map(x => x.BoolValue, "BoolValue_")
+                    .Map(x => x.LongValue, "LongValue_");
+            for (int x = 0; x < 30; ++x)
+            {
+                using (Utilities.SQL.MicroORM.MicroORM ORM = new Utilities.SQL.MicroORM.MicroORM())
+                {
+                    ObjectClass1 TempObject = new ObjectClass1();
+                    TempObject.StringValue = "Test String";
+                    TempObject.BoolValue = true;
+                    TempObject.FloatValue = 1234.5f;
+                    TempObject.LongValue = x;
+                    TempObject.ID = ORM.Map<ObjectClass1>().Insert<int>(TempObject);
+                }
+            }
+            using (Utilities.SQL.MicroORM.MicroORM ORM = new Utilities.SQL.MicroORM.MicroORM())
+            {
+                ObjectClass1 TempObject = ORM.Map<ObjectClass1>().Any("*", null, null, new EqualParameter<long>(20, "LongValue_"));
+                Assert.Equal(21, TempObject.ID);
+                Assert.Equal(20, TempObject.LongValue);
+                IEnumerable<ObjectClass1> TempObjects= ORM.Map<ObjectClass1>().All("*",0,"", null, null, new NotEqualParameter<long>(20, "LongValue_"));
+                Assert.Equal(29, TempObjects.Count());
+                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new BetweenParameter<long>(20, 25, "LongValue_"));
+                Assert.Equal(6, TempObjects.Count());
+                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new AndParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new NotEqualParameter<long>(20, "LongValue_")));
+                Assert.Equal(5, TempObjects.Count());
+                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new OrParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new EqualParameter<long>(29, "LongValue_")));
+                Assert.Equal(7, TempObjects.Count());
+                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new LikeParameter("Test%", "StringValue_", 100));
+                Assert.Equal(30, TempObjects.Count());
+                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new LikeParameter("Test2%", "StringValue_", 100));
+                Assert.Equal(0, TempObjects.Count());
+                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new StringEqualParameter("Test String", "StringValue_", 100));
+                Assert.Equal(30, TempObjects.Count());
+                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new StringNotEqualParameter("Test String", "StringValue_", 100));
+                Assert.Equal(0, TempObjects.Count());
             }
         }
 

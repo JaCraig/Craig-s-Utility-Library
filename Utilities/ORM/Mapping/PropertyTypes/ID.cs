@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ using Utilities.ORM.Mapping.BaseClasses;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Enums;
+using Utilities.SQL.Interfaces;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes
@@ -115,7 +116,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return null;
-            return new Utilities.ORM.QueryProviders.Parameter<DataType>(Item, FieldName);
+            return new Utilities.SQL.ParameterTypes.EqualParameter<DataType>(Item, FieldName);
         }
 
         public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)

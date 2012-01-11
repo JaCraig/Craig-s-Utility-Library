@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,37 +19,37 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-#endregion
+using MoonUnit.Attributes;
+using MoonUnit;
+using Utilities.SQL;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Linq.Expressions;
+using System.Data;
+using Utilities.SQL.MicroORM;
+using Utilities.SQL.ParameterTypes;
 
-namespace Utilities.SQL.MicroORM.Interfaces
+namespace UnitTests.SQL.ParameterTypes
 {
-    /// <summary>
-    /// Parameter interface
-    /// </summary>
-    public interface IParameter
+    public class EqualParameter
     {
-        #region Functions
-
-        /// <summary>
-        /// Adds this parameter to the SQLHelper
-        /// </summary>
-        /// <param name="Helper">SQLHelper</param>
-        void AddParameter(SQLHelper Helper);
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// The Name that the parameter goes by
-        /// </summary>
-        string ID { get; set; }
-
-        #endregion
+        [Test]
+        public void Creation()
+        {
+            EqualParameter<int> TestObject = new EqualParameter<int>(12, "ID");
+            Assert.Equal("ID", TestObject.ID);
+            Assert.Equal(12, TestObject.Value);
+            Assert.Equal("@", TestObject.ParameterStarter);
+            Assert.Equal("ID=@ID", TestObject.ToString());
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Assert.DoesNotThrow<Exception>(() => TestObject.AddParameter(Helper));
+            }
+        }
     }
 }

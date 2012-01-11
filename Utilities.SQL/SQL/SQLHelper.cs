@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ using System.Xml;
 using System.Data.Common;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.ExtensionMethods;
+using Utilities.SQL.Interfaces;
 #endregion
 
 namespace Utilities.SQL
@@ -171,6 +172,16 @@ namespace Utilities.SQL
         {
             if (ExecutableCommand != null)
                 ExecutableCommand.AddParameter(ID, Type, Value, Direction);
+        }
+
+        /// <summary>
+        /// Adds parameters to the call
+        /// </summary>
+        /// <param name="Parameters">Parameters to add</param>
+        public virtual void AddParameter(params IParameter[] Parameters)
+        {
+            Parameters.ThrowIfNull("Parameters");
+            Parameters.ForEach(x => x.AddParameter(this));
         }
 
         #endregion

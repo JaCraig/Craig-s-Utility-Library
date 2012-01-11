@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,15 +26,15 @@ using System.Linq;
 using System.Text;
 using Utilities.SQL.MicroORM.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.SQL.Interfaces;
 #endregion
 
-namespace Utilities.SQL.MicroORM
+namespace Utilities.SQL.ParameterTypes
 {
     /// <summary>
-    /// Parameter class
+    /// Parameter class handling strings that instead of looking for equality, uses the SQL Like command
     /// </summary>
-    /// <typeparam name="DataType">Type of the parameter</typeparam>
-    public class Parameter<DataType> : IParameter
+    public class LikeParameter : IParameter
     {
         #region Constructor
 
@@ -45,8 +45,8 @@ namespace Utilities.SQL.MicroORM
         /// <param name="ID">Name of the parameter</param>
         /// <param name="ParameterStarter">What the database expects as the
         /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
-        /// <param name="Length">Max length of the string (if it is a string)</param>
-        public Parameter(DataType Value, string ID,int Length=0, string ParameterStarter = "@")
+        /// <param name="Length">Max length allowed for the string</param>
+        public LikeParameter(string Value, string ID, int Length, string ParameterStarter = "@")
         {
             this.Value = Value;
             this.ID = ID;
@@ -61,7 +61,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Value of the parameter
         /// </summary>
-        public DataType Value { get; set; }
+        public string Value { get; set; }
 
         /// <summary>
         /// Name of the parameter
@@ -74,7 +74,7 @@ namespace Utilities.SQL.MicroORM
         public string ParameterStarter { get; set; }
 
         /// <summary>
-        /// Max length of the string (if it is a string)
+        /// Max length of the string
         /// </summary>
         public int Length { get; set; }
 
@@ -84,13 +84,10 @@ namespace Utilities.SQL.MicroORM
 
         public void AddParameter(SQLHelper Helper)
         {
-            if (!typeof(DataType).IsOfType(typeof(string)))
-                Helper.AddParameter(ID, Value);
-            else
-                Helper.AddParameter(ID, Length, Value.ToString());
+            Helper.AddParameter(ID, Length, Value);
         }
 
-        public override string ToString() { return ID + "=" + ParameterStarter + ID; }
+        public override string ToString() { return ID + " LIKE " + ParameterStarter + ID; }
 
         #endregion
     }

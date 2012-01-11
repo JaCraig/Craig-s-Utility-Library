@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,8 @@ using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.MicroORM.Enums;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.SQL.Interfaces;
+using Utilities.SQL.ParameterTypes;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -457,7 +459,11 @@ namespace Utilities.SQL.MicroORM
                 Update(Object, Parameters);
                 return;
             }
-            Parameter<PrimaryKeyType> Param1 = new Parameter<PrimaryKeyType>(PrimaryKeyVal, PrimaryKey, -1, ParameterStarter);
+            IParameter Param1 = null;
+            if (typeof(PrimaryKeyType).IsOfType(typeof(string)))
+                Param1 = new StringEqualParameter(PrimaryKeyVal.ToString(), PrimaryKey, -1, ParameterStarter);
+            else
+                Param1 = new EqualParameter<PrimaryKeyType>(PrimaryKeyVal, PrimaryKey, ParameterStarter);
             ClassType TempVal = Any(PrimaryKey, null, null, Param1);
             if (TempVal == null)
             {
@@ -542,7 +548,7 @@ namespace Utilities.SQL.MicroORM
             Helper.Command = Command;
             Helper.CommandType = CommandType;
             if (Parameters.IsNotNull())
-                Parameters.ForEach(x => x.AddParameter(Helper));
+                Helper.AddParameter(Parameters);
         }
 
         #endregion

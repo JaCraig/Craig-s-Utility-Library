@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -225,7 +225,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 if (!string.IsNullOrEmpty(InputStrings[x])
                     && InputStrings[x].Length > 3)
                 {
-                    Regex TempRegex = new Regex(InputStrings[x]);
+                    Regex TempRegex = new Regex(InputStrings[x].Replace(")", @"\)").Replace("(", @"\(").Replace("*", @"\*"));
                     InputStrings[x] = InputStrings[x].ToFirstCharacterUpperCase();
                     Input = TempRegex.Replace(Input, InputStrings[x]);
                 }

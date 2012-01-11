@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,8 @@ using Utilities.Reflection.Emit.Enums;
 using System.Reflection.Emit;
 using Utilities.ORM.QueryProviders;
 using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL.ParameterTypes;
+using Utilities.SQL.Interfaces;
 #endregion
 
 namespace Utilities.ORM.Aspect
@@ -192,7 +194,7 @@ namespace Utilities.ORM.Aspect
                 {
                     //Load data
                     VariableBase IDValue = Method.This.Call(BaseType.GetProperty(Mapping.IDProperty.Name).GetGetMethod());
-                    VariableBase IDParameter = Method.NewObj(typeof(Parameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
+                    VariableBase IDParameter = Method.NewObj(typeof(EqualParameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
                     VariableBase PropertyList = Method.NewObj(typeof(List<IParameter>));
                     PropertyList.Call("Add", new object[] { IDParameter });
                     MethodInfo LoadPropertiesMethod = typeof(Session).GetMethod("LoadProperties");
@@ -227,7 +229,7 @@ namespace Utilities.ORM.Aspect
                 {
                     //Load Data
                     VariableBase IDValue = Method.This.Call(BaseType.GetProperty(Mapping.IDProperty.Name).GetGetMethod());
-                    VariableBase IDParameter = Method.NewObj(typeof(Parameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
+                    VariableBase IDParameter = Method.NewObj(typeof(EqualParameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
                     VariableBase PropertyList = Method.NewObj(typeof(List<IParameter>));
                     PropertyList.Call("Add", new object[] { IDParameter });
                     MethodInfo LoadPropertyMethod = typeof(Session).GetMethod("LoadProperty");

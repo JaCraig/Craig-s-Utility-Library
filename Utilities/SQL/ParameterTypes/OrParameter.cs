@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,30 +24,59 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utilities.SQL.MicroORM;
-using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL.MicroORM.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
+using Utilities.SQL.Interfaces;
 #endregion
 
-namespace Utilities.ORM.QueryProviders
+namespace Utilities.SQL.ParameterTypes
 {
     /// <summary>
-    /// Parameter class
+    /// Parameter class that ORs two other parameters together
     /// </summary>
-    public class Parameter<DataType> : Utilities.SQL.MicroORM.Parameter<DataType>,IParameter
+    public class OrParameter : IParameter
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Value">Value of the parameter</param>
-        /// <param name="Name">Name associated with the parameter (field name)</param>
-        /// <param name="ParameterStarter">Symbol used by the database to denote a parameter</param>
-        /// <param name="Length">Max length of the string (if it is a string)</param>
-        public Parameter(DataType Value, string Name, int Length = 0, string ParameterStarter = "@")
-            : base(Value, Name, Length, ParameterStarter)
+        public OrParameter(IParameter Left, IParameter Right)
         {
+            this.Left = Left;
+            this.Right = Right;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Left parameter
+        /// </summary>
+        public IParameter Left { get; set; }
+
+        /// <summary>
+        /// Right parameter
+        /// </summary>
+        public IParameter Right { get; set; }
+
+        /// <summary>
+        /// Not used
+        /// </summary>
+        public string ID { get { return ""; } set { } }
+
+        #endregion
+
+        #region Functions
+
+        public void AddParameter(SQLHelper Helper)
+        {
+            Left.AddParameter(Helper);
+            Right.AddParameter(Helper);
+        }
+
+        public override string ToString() { return "(" + Left.ToString() + " OR " + Right.ToString() + ")"; }
 
         #endregion
     }

@@ -73,8 +73,6 @@
     <Compile Include="ORM\Aspect\ORMAspect.cs" />
     <Compile Include="ORM\Mapping\Command.cs" />
     <Compile Include="ORM\ORM.cs" />
-    <Compile Include="ORM\QueryProviders\Interfaces\IParameter.cs" />
-    <Compile Include="ORM\QueryProviders\Parameter.cs" />
     <Compile Include="ORM\Session.cs" />
     <Compile Include="ORM\Database\DatabaseManager.cs" />
     <Compile Include="ORM\Interfaces\IObject.cs" />
