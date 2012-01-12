@@ -396,6 +396,39 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region NextSequence
+
+        /// <summary>
+        /// Function that is useful for generating a string in a series. so a becomes b, b becomes c, etc. 
+        /// and after hitting the max character, it goes to two characters (so ~ becomes aa, then ab, ac, etc).
+        /// </summary>
+        /// <param name="Sequence">Current sequence</param>
+        /// <returns>The next item in the sequence</returns>
+        public static string NextSequence(this string Sequence,char Min=' ',char Max='~')
+        {
+            byte[] Values = Sequence.ToByteArray();
+            byte MinValue = (byte)Min;
+            byte MaxValue = (byte)Max;
+            byte Remainder = 1;
+            for (int x = Sequence.Length - 1; x >= 0; --x)
+            {
+                Values[x] += Remainder;
+                Remainder = 0;
+                if (Values[x] > MaxValue)
+                {
+                    Remainder = 1;
+                    Values[x] = (byte)Min;
+                }
+                else
+                    break;
+            }
+            if (Remainder == 1)
+                return Min + Values.ToEncodedString();
+            return Values.ToEncodedString();
+        }
+
+        #endregion
+
         #endregion
     }
 }

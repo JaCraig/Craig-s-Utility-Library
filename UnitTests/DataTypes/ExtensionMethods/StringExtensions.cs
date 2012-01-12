@@ -179,5 +179,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.Equal("(555) 555-1010", "5555551010".RegexFormat(@"(\d{3})(\d{3})(\d{4})", "($1) $2-$3"));
         }
+
+        [Test]
+        public void NextSequence()
+        {
+            Assert.Equal("b", "a".NextSequence());
+            Assert.Equal("c", "b".NextSequence());
+            Assert.Equal("  ", "~".NextSequence());
+            Assert.Equal("!", " ".NextSequence());
+        }
     }
 }
