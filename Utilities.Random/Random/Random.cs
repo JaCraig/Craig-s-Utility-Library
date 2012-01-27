@@ -293,6 +293,30 @@ namespace Utilities.Random
         "diam", "voluptua", "at", "vero", "eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea",
         "rebum", "stet", "clita", "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum" };
 
+        private static Random GlobalSeed = new Random();
+        [ThreadStatic]
+        private static Random Local;
+
+        #endregion
+
+        #region Static Functions
+
+        #region ThreadSafeNext
+
+        public static int ThreadSafeNext(int Min = int.MinValue, int Max = int.MaxValue)
+        {
+            if (Local == null)
+            {
+                int Seed;
+                lock (GlobalSeed) 
+                    Seed = GlobalSeed.Next();
+                Local = new Random(Seed);
+            }
+            return Local.Next(Min, Max);
+        }
+
+        #endregion
+
         #endregion
     }
 }

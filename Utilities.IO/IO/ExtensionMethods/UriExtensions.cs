@@ -99,9 +99,9 @@ namespace Utilities.IO.ExtensionMethods
                         {
                             byte[] Buffer = new byte[1024];
                             int Count = Reader.Read(Buffer, 0, Buffer.Length);
-                            FinalStream.Write(Buffer, 0, Count);
-                            if (Count < Buffer.Length)
+                            if (Count == 0)
                                 break;
+                            FinalStream.Write(Buffer, 0, Count);
                         }
                         byte[] ReturnValue = FinalStream.ToArray();
                         Reader.Close();

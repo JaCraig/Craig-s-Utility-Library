@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using MoonUnit.Attributes;
 using MoonUnit;
+using System.Threading.Tasks;
 
 namespace UnitTests.Random
 {
@@ -77,6 +78,15 @@ namespace UnitTests.Random
         {
             Utilities.Random.Random Rand = new Utilities.Random.Random();
             Assert.DoesNotThrow<Exception>(() => Rand.NextColor());
+        }
+
+        [Test]
+        public void ThreadSafeNext()
+        {
+            Parallel.For(0, 100, x =>
+            {
+                Assert.DoesNotThrow<Exception>(() => Utilities.Random.Random.ThreadSafeNext(-20, 20));
+            });
         }
     }
 

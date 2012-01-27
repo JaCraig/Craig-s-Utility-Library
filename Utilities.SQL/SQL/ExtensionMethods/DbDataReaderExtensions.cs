@@ -60,7 +60,7 @@ namespace Utilities.SQL.ExtensionMethods
                     break;
                 }
             }
-            return Found && Reader[ID].IsNotNullOrDBNull() ? Reader[ID].TryTo<object, DataType>() : Default;
+            return Found && Reader[ID].IsNotNullOrDBNull() ? Reader[ID].TryTo<object, DataType>(Default) : Default;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Utilities.SQL.ExtensionMethods
         {
             if (Reader.IsNull())
                 return Default;
-            return Reader[Position].IsNotNullOrDBNull() ? Reader[Position].TryTo<object, DataType>() : Default;
+            return Reader[Position].IsNotNullOrDBNull() ? Reader[Position].TryTo<object, DataType>(Default) : Default;
         }
 
         #endregion

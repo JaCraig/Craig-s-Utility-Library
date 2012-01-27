@@ -30,6 +30,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using System.Drawing.Drawing2D;
 using Utilities.Media.Image.Procedural;
 using System.IO;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.Media.Image.ExtensionMethods
@@ -42,7 +43,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         #region Functions
 
         #region AddNoise
-
+        
         /// <summary>
         /// adds noise to the image
         /// </summary>
@@ -52,33 +53,30 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>New image object with the noise added</returns>
         public static Bitmap AddNoise(this Bitmap OriginalImage, int Amount = 10, string FileName = "")
         {
-            if (OriginalImage == null)
-                throw new ArgumentNullException("OriginalImage");
+            OriginalImage.ThrowIfNull("OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
             BitmapData OldData = OriginalImage.LockImage();
             int NewPixelSize = NewData.GetPixelSize();
             int OldPixelSize = OldData.GetPixelSize();
-            Random.Random TempRandom = new Random.Random();
-            for (int x = 0; x < NewBitmap.Width; ++x)
+            int Height = NewBitmap.Height;
+            int Width = NewBitmap.Width;
+            Parallel.For(0, Width, x =>
             {
-                for (int y = 0; y < NewBitmap.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     Color CurrentPixel = OldData.GetPixel(x, y, OldPixelSize);
-                    int R = CurrentPixel.R + TempRandom.Next(-Amount, Amount + 1);
-                    int G = CurrentPixel.G + TempRandom.Next(-Amount, Amount + 1);
-                    int B = CurrentPixel.B + TempRandom.Next(-Amount, Amount + 1);
-                    R = R > 255 ? 255 : R;
-                    R = R < 0 ? 0 : R;
-                    G = G > 255 ? 255 : G;
-                    G = G < 0 ? 0 : G;
-                    B = B > 255 ? 255 : B;
-                    B = B < 0 ? 0 : B;
+                    int R = CurrentPixel.R + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
+                    int G = CurrentPixel.G + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
+                    int B = CurrentPixel.B + Random.Random.ThreadSafeNext(-Amount, Amount + 1);
+                    R = R.Clamp(255, 0);
+                    G = G.Clamp(255, 0);
+                    B = B.Clamp(255, 0);
                     Color TempValue = Color.FromArgb(R, G, B);
                     NewData.SetPixel(x, y, TempValue, NewPixelSize);
                 }
-            }
+            });
             NewBitmap.UnlockImage(NewData);
             OriginalImage.UnlockImage(OldData);
             if (!string.IsNullOrEmpty(FileName))
@@ -99,8 +97,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustBrightness(this Bitmap Image, int Value = 0, string FileName = "")
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
+            Image.ThrowIfNull("Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             float FinalValue = (float)Value / 255.0f;
             ColorMatrix TempMatrix = new ColorMatrix();
@@ -140,10 +137,12 @@ namespace Utilities.Media.Image.ExtensionMethods
             int OldPixelSize = OldData.GetPixelSize();
             Value = (100.0f + Value) / 100.0f;
             Value *= Value;
+            int Width = NewBitmap.Width;
+            int Height = NewBitmap.Height;
 
-            for (int x = 0; x < NewBitmap.Width; ++x)
+            Parallel.For(0, Width, x =>
             {
-                for (int y = 0; y < NewBitmap.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     Color Pixel = OldData.GetPixel(x, y, OldPixelSize);
                     float Red = Pixel.R / 255.0f;
@@ -158,7 +157,7 @@ namespace Utilities.Media.Image.ExtensionMethods
                         ((int)Blue).Clamp(255, 0)),
                         NewPixelSize);
                 }
-            }
+            });
             NewBitmap.UnlockImage(NewData);
             OriginalImage.UnlockImage(OldData);
             if (!string.IsNullOrEmpty(FileName))
@@ -179,8 +178,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustGamma(this Bitmap OriginalImage, float Value = 1.0f, string FileName = "")
         {
-            if (OriginalImage == null)
-                throw new ArgumentNullException("OriginalImage");
+            OriginalImage.ThrowIfNull("OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -188,27 +186,25 @@ namespace Utilities.Media.Image.ExtensionMethods
             int NewPixelSize = NewData.GetPixelSize();
             int OldPixelSize = OldData.GetPixelSize();
 
-            int[] RedRamp = new int[256];
-            int[] GreenRamp = new int[256];
-            int[] BlueRamp = new int[256];
-            for (int x = 0; x < 256; ++x)
+            int[] Ramp = new int[256];
+            Parallel.For(0, 256, x =>
             {
-                RedRamp[x] = ((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5)).Clamp(255, 0);
-                GreenRamp[x] = ((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5)).Clamp(255, 0);
-                BlueRamp[x] = ((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5)).Clamp(255, 0);
-            }
+                Ramp[x] = ((int)((255.0 * System.Math.Pow(x / 255.0, 1.0 / Value)) + 0.5)).Clamp(255, 0);
+            });
+            int Width = NewBitmap.Width;
+            int Height = NewBitmap.Height;
 
-            for (int x = 0; x < NewBitmap.Width; ++x)
+            Parallel.For(0, Width, x =>
             {
-                for (int y = 0; y < NewBitmap.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     Color Pixel = OldData.GetPixel(x, y, OldPixelSize);
-                    int Red = RedRamp[Pixel.R];
-                    int Green = GreenRamp[Pixel.G];
-                    int Blue = BlueRamp[Pixel.B];
+                    int Red = Ramp[Pixel.R];
+                    int Green = Ramp[Pixel.G];
+                    int Blue = Ramp[Pixel.B];
                     NewData.SetPixel(x, y, Color.FromArgb(Red, Green, Blue), NewPixelSize);
                 }
-            }
+            });
 
             NewBitmap.UnlockImage(NewData);
             OriginalImage.UnlockImage(OldData);
@@ -230,10 +226,8 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap image</returns>
         public static Bitmap And(this Bitmap Image1, Bitmap Image2, string FileName = "")
         {
-            if (Image1 == null)
-                throw new ArgumentNullException("Image1");
-            if (Image2 == null)
-                throw new ArgumentNullException("Image2");
+            Image1.ThrowIfNull("Image1");
+            Image2.ThrowIfNull("Image2");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -242,9 +236,11 @@ namespace Utilities.Media.Image.ExtensionMethods
             int NewPixelSize = NewData.GetPixelSize();
             int OldPixelSize1 = OldData1.GetPixelSize();
             int OldPixelSize2 = OldData2.GetPixelSize();
-            for (int x = 0; x < NewBitmap.Width; ++x)
+            int Width = NewBitmap.Width;
+            int Height = NewBitmap.Height;
+            Parallel.For(0, Width, x =>
             {
-                for (int y = 0; y < NewBitmap.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     Color Pixel1 = OldData1.GetPixel(x, y, OldPixelSize1);
                     Color Pixel2 = OldData2.GetPixel(x, y, OldPixelSize2);
@@ -254,7 +250,7 @@ namespace Utilities.Media.Image.ExtensionMethods
                             Pixel1.B & Pixel2.B),
                         NewPixelSize);
                 }
-            }
+            });
             NewBitmap.UnlockImage(NewData);
             Image1.UnlockImage(OldData1);
             Image2.UnlockImage(OldData2);
@@ -275,8 +271,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap object of the black and white image</returns>
         public static Bitmap BlackAndWhite(this Bitmap Image, string FileName = "")
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
+            Image.ThrowIfNull("Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
@@ -304,8 +299,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap object</returns>
         public static Bitmap BlueFilter(this Bitmap Image, string FileName = "")
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
+            Image.ThrowIfNull("Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
@@ -334,8 +328,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap object</returns>
         public static Bitmap BoxBlur(this Bitmap Image, int Size = 3, string FileName = "")
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
+            Image.ThrowIfNull("Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Filter TempFilter = new Filter(Size, Size);
             for (int x = 0; x < Size; ++x)
@@ -360,8 +353,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>The colorized image</returns>
         public static Bitmap Colorize(this Bitmap OriginalImage, Color[] Colors, string FileName = "")
         {
-            if (OriginalImage == null)
-                throw new ArgumentNullException("OriginalImage");
+            OriginalImage.ThrowIfNull("OriginalImage");
             if (Colors.Length < 256)
                 return new Bitmap(1, 1);
             ImageFormat FormatUsing = FileName.GetImageFormat();
@@ -370,14 +362,16 @@ namespace Utilities.Media.Image.ExtensionMethods
             BitmapData OldData = OriginalImage.LockImage();
             int NewPixelSize = NewData.GetPixelSize();
             int OldPixelSize = OldData.GetPixelSize();
-            for (int x = 0; x < OriginalImage.Width; ++x)
+            int Width = OriginalImage.Width;
+            int Height = OriginalImage.Height;
+            Parallel.For(0, Width, x =>
             {
-                for (int y = 0; y < OriginalImage.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     int ColorUsing = OldData.GetPixel(x, y, OldPixelSize).R;
                     NewData.SetPixel(x, y, Colors[ColorUsing], NewPixelSize);
                 }
-            }
+            });
             NewBitmap.UnlockImage(NewData);
             OriginalImage.UnlockImage(OldData);
             if (!string.IsNullOrEmpty(FileName))
@@ -401,8 +395,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A Bitmap object of the cropped image</returns>
         public static Bitmap Crop(this Bitmap ImageUsing, int Width, int Height, Align VAlignment, Align HAlignment, string FileName = "")
         {
-            if (ImageUsing == null)
-                throw new ArgumentNullException("ImageUsing");
+            ImageUsing.ThrowIfNull("ImageUsing");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap TempBitmap = ImageUsing;
             System.Drawing.Rectangle TempRectangle = new System.Drawing.Rectangle();
@@ -447,8 +440,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A Bitmap object of the resulting image</returns>
         public static Bitmap Dilate(this Bitmap OriginalImage, int Size, string FileName = "")
         {
-            if (OriginalImage == null)
-                throw new ArgumentNullException("OriginalImage");
+            OriginalImage.ThrowIfNull("OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -457,9 +449,11 @@ namespace Utilities.Media.Image.ExtensionMethods
             int OldPixelSize = OldData.GetPixelSize();
             int ApetureMin = -(Size / 2);
             int ApetureMax = (Size / 2);
-            for (int x = 0; x < NewBitmap.Width; ++x)
+            int Width = NewBitmap.Width;
+            int Height = NewBitmap.Height;
+            Parallel.For(0, Width, x =>
             {
-                for (int y = 0; y < NewBitmap.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     int RValue = 0;
                     int GValue = 0;
@@ -467,20 +461,17 @@ namespace Utilities.Media.Image.ExtensionMethods
                     for (int x2 = ApetureMin; x2 < ApetureMax; ++x2)
                     {
                         int TempX = x + x2;
-                        if (TempX >= 0 && TempX < NewBitmap.Width)
+                        if (TempX >= 0 && TempX < Width)
                         {
                             for (int y2 = ApetureMin; y2 < ApetureMax; ++y2)
                             {
                                 int TempY = y + y2;
-                                if (TempY >= 0 && TempY < NewBitmap.Height)
+                                if (TempY >= 0 && TempY < Height)
                                 {
                                     Color TempColor = OldData.GetPixel(TempX, TempY, OldPixelSize);
-                                    if (TempColor.R > RValue)
-                                        RValue = TempColor.R;
-                                    if (TempColor.G > GValue)
-                                        GValue = TempColor.G;
-                                    if (TempColor.B > BValue)
-                                        BValue = TempColor.B;
+                                    RValue = RValue.Max(TempColor.R);
+                                    GValue = GValue.Max(TempColor.G);
+                                    BValue = BValue.Max(TempColor.B);
                                 }
                             }
                         }
@@ -488,7 +479,7 @@ namespace Utilities.Media.Image.ExtensionMethods
                     Color TempPixel = Color.FromArgb(RValue, GValue, BValue);
                     NewData.SetPixel(x, y, TempPixel, NewPixelSize);
                 }
-            }
+            });
             NewBitmap.UnlockImage(NewData);
             OriginalImage.UnlockImage(OldData);
             if (!string.IsNullOrEmpty(FileName))
@@ -524,10 +515,8 @@ namespace Utilities.Media.Image.ExtensionMethods
         public static Bitmap DrawRoundedRectangle(this Bitmap Image, Color BoxColor, int XPosition, int YPosition,
             int Height, int Width, int CornerRadius, string FileName = "")
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
-            if (BoxColor == null)
-                throw new ArgumentNullException("BoxColor");
+            Image.ThrowIfNull("Image");
+            BoxColor.ThrowIfNull("BoxColor");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
@@ -572,14 +561,10 @@ namespace Utilities.Media.Image.ExtensionMethods
             Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin,
             string FileName = "")
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
-            if (FontToUse == null)
-                throw new ArgumentNullException("FontToUse");
-            if (BrushUsing == null)
-                throw new ArgumentNullException("BrushUsing");
-            if (BoxToDrawWithin == null)
-                throw new ArgumentNullException("BoxToDrawWithin");
+            Image.ThrowIfNull("Image");
+            FontToUse.ThrowIfNull("FontToUse");
+            BrushUsing.ThrowIfNull("BrushUsing");
+            BoxToDrawWithin.ThrowIfNull("BoxToDrawWithin");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
             using (Graphics TempGraphics = Graphics.FromImage(NewBitmap))
@@ -605,47 +590,41 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap which has the edges drawn on it</returns>
         public static Bitmap EdgeDetection(this Bitmap OriginalImage, float Threshold, Color EdgeColor, string FileName = "")
         {
-            if (OriginalImage == null)
-                throw new ArgumentNullException("OriginalImage");
-            if (EdgeColor == null)
-                throw new ArgumentNullException("EdgeColor");
+            OriginalImage.ThrowIfNull("OriginalImage");
+            EdgeColor.ThrowIfNull("EdgeColor");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage, OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
             BitmapData OldData = OriginalImage.LockImage();
             int NewPixelSize = NewData.GetPixelSize();
             int OldPixelSize = OldData.GetPixelSize();
-            for (int x = 0; x < NewBitmap.Width; ++x)
+            int Width = NewBitmap.Width;
+            int Height = NewBitmap.Height;
+            Parallel.For(0, Width, x =>
             {
-                for (int y = 0; y < NewBitmap.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     Color CurrentColor = OldData.GetPixel(x, y, OldPixelSize);
-                    if (y < NewBitmap.Height - 1 && x < NewBitmap.Width - 1)
+                    if (y < Height - 1 && x < Width - 1)
                     {
                         Color TempColor = OldData.GetPixel(x + 1, y + 1, OldPixelSize);
                         if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
-                        {
                             NewData.SetPixel(x, y, EdgeColor, NewPixelSize);
-                        }
                     }
-                    else if (y < NewBitmap.Height - 1)
+                    else if (y < Height - 1)
                     {
                         Color TempColor = OldData.GetPixel(x, y + 1, OldPixelSize);
                         if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
-                        {
                             NewData.SetPixel(x, y, EdgeColor, NewPixelSize);
-                        }
                     }
-                    else if (x < NewBitmap.Width - 1)
+                    else if (x < Width - 1)
                     {
                         Color TempColor = OldData.GetPixel(x + 1, y, OldPixelSize);
                         if (Distance(CurrentColor.R, TempColor.R, CurrentColor.G, TempColor.G, CurrentColor.B, TempColor.B) > Threshold)
-                        {
                             NewData.SetPixel(x, y, EdgeColor, NewPixelSize);
-                        }
                     }
                 }
-            }
+            });
             NewBitmap.UnlockImage(NewData);
             OriginalImage.UnlockImage(OldData);
             if (!string.IsNullOrEmpty(FileName))
