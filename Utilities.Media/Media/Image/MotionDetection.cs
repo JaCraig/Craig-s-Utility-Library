@@ -24,6 +24,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System;
 using Utilities.Media.Image.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.Media.Image
@@ -45,12 +47,9 @@ namespace Utilities.Media.Image
         /// <returns>A bitmap indicating where changes between frames have occurred overlayed on top of the new image.</returns>
         public static Bitmap Process(Bitmap NewImage, Bitmap OldImage, int Threshold, Color DetectionColor)
         {
-            if (NewImage == null)
-                throw new ArgumentNullException("NewImage");
-            if (OldImage == null)
-                throw new ArgumentNullException("OldImage");
-            if (DetectionColor == null)
-                throw new ArgumentNullException("DetectionColor");
+            NewImage.ThrowIfNull("NewImage");
+            OldImage.ThrowIfNull("OldImage");
+            DetectionColor.ThrowIfNull("DetectionColor");
             using (Bitmap NewImage1 = NewImage.BlackAndWhite())
             {
                 using (Bitmap OldImage1 = OldImage.BlackAndWhite())
@@ -69,9 +68,11 @@ namespace Utilities.Media.Image
                                     int OldImage2PixelSize = OldImage2Data.GetPixelSize();
                                     BitmapData OverlayData = Overlay.LockImage();
                                     int OverlayPixelSize = OverlayData.GetPixelSize();
-                                    for (int x = 0; x < OutputImage.Width; ++x)
+                                    int Width = OutputImage.Width;
+                                    int Height = OutputImage.Height;
+                                    Parallel.For(0, Width, x =>
                                     {
-                                        for (int y = 0; y < OutputImage.Height; ++y)
+                                        for (int y = 0; y < Height; ++y)
                                         {
                                             Color NewPixel = NewImage2Data.GetPixel(x, y, NewImage2PixelSize);
                                             Color OldPixel = OldImage2Data.GetPixel(x, y, OldImage2PixelSize);
@@ -84,7 +85,7 @@ namespace Utilities.Media.Image
                                                 OverlayData.SetPixel(x, y, Color.FromArgb(200, 0, 200), OverlayPixelSize);
                                             }
                                         }
-                                    }
+                                    });
                                     Overlay.UnlockImage(OverlayData);
                                     NewImage2.UnlockImage(NewImage2Data);
                                     OldImage2.UnlockImage(OldImage2Data);
@@ -92,9 +93,11 @@ namespace Utilities.Media.Image
                                     {
                                         BitmapData Overlay2Data = Overlay2.LockImage();
                                         int Overlay2PixelSize = Overlay2Data.GetPixelSize();
-                                        for (int x = 0; x < OutputImage.Width; ++x)
+                                        Width = OutputImage.Width;
+                                        Height = OutputImage.Height;
+                                        Parallel.For(0, Width, x =>
                                         {
-                                            for (int y = 0; y < OutputImage.Height; ++y)
+                                            for (int y = 0; y < Height; ++y)
                                             {
                                                 Color Pixel1 = Overlay2Data.GetPixel(x, y, Overlay2PixelSize);
                                                 if (Pixel1.R != DetectionColor.R || Pixel1.G != DetectionColor.G || Pixel1.B != DetectionColor.B)
@@ -102,7 +105,7 @@ namespace Utilities.Media.Image
                                                     Overlay2Data.SetPixel(x, y, Color.FromArgb(200, 0, 200), Overlay2PixelSize);
                                                 }
                                             }
-                                        }
+                                        });
                                         Overlay2.UnlockImage(Overlay2Data);
                                         return OutputImage.Watermark(Overlay2, 1.0f, 0, 0, Color.FromArgb(200, 0, 200));
                                     }

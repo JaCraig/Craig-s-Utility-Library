@@ -26,6 +26,7 @@ using System;
 using System.Linq;
 using Utilities.Media.Image.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.Media.Image
@@ -60,8 +61,7 @@ namespace Utilities.Media.Image
         /// <param name="ImageUsing">Image to load</param>
         public virtual void LoadImage(Bitmap ImageUsing)
         {
-            if (ImageUsing == null)
-                throw new ArgumentNullException("ImageUsing");
+            ImageUsing.ThrowIfNull("ImageUsing");
             BitmapData OldData = ImageUsing.LockImage();
             int PixelSize = OldData.GetPixelSize();
             Width = ImageUsing.Width;
@@ -69,9 +69,9 @@ namespace Utilities.Media.Image
             R.Clear();
             G.Clear();
             B.Clear();
-            for (int x = 0; x < ImageUsing.Width; ++x)
+            for (int x = 0; x < Width; ++x)
             {
-                for (int y = 0; y < ImageUsing.Height; ++y)
+                for (int y = 0; y < Height; ++y)
                 {
                     Color TempColor = OldData.GetPixel(x, y, PixelSize);
                     ++R[(int)TempColor.R];

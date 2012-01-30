@@ -25,6 +25,8 @@ using System.Drawing.Imaging;
 using Utilities.Math.ExtensionMethods;
 using Utilities.Media.Image.ExtensionMethods;
 using System;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.Media.Image
@@ -90,16 +92,17 @@ namespace Utilities.Media.Image
         /// <returns>Returns a separate image with the filter applied</returns>
         public virtual Bitmap ApplyFilter(Bitmap Input)
         {
-            if (Input == null)
-                throw new ArgumentNullException("Input");
+            Input.ThrowIfNull("Input");
             Bitmap NewBitmap = new Bitmap(Input.Width, Input.Height);
             BitmapData NewData = NewBitmap.LockImage();
             BitmapData OldData = Input.LockImage();
             int NewPixelSize = NewData.GetPixelSize();
             int OldPixelSize = OldData.GetPixelSize();
-            for (int x = 0; x < Input.Width; ++x)
+            int Width2 = Input.Width;
+            int Height2 = Input.Height;
+            Parallel.For(0, Width2, x =>
             {
-                for (int y = 0; y < Input.Height; ++y)
+                for (int y = 0; y < Height2; ++y)
                 {
                     int RValue = 0;
                     int GValue = 0;
@@ -108,12 +111,12 @@ namespace Utilities.Media.Image
                     int XCurrent = -Width / 2;
                     for (int x2 = 0; x2 < Width; ++x2)
                     {
-                        if (XCurrent + x < Input.Width && XCurrent + x >= 0)
+                        if (XCurrent + x < Width2 && XCurrent + x >= 0)
                         {
                             int YCurrent = -Height / 2;
                             for (int y2 = 0; y2 < Height; ++y2)
                             {
-                                if (YCurrent + y < Input.Height && YCurrent + y >= 0)
+                                if (YCurrent + y < Height2 && YCurrent + y >= 0)
                                 {
                                     Color Pixel = OldData.GetPixel(XCurrent + x, YCurrent + y, OldPixelSize);
                                     RValue += MyFilter[x2, y2] * Pixel.R;
@@ -147,7 +150,7 @@ namespace Utilities.Media.Image
                     }
                     NewData.SetPixel(x, y, MeanPixel, NewPixelSize);
                 }
-            }
+            });
             NewBitmap.UnlockImage(NewData);
             Input.UnlockImage(OldData);
             return NewBitmap;

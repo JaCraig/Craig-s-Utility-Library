@@ -24,6 +24,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System;
 using Utilities.Media.Image.ExtensionMethods;
+using System.Threading.Tasks;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image
@@ -94,24 +96,25 @@ namespace Utilities.Media.Image
         /// </summary>
         public virtual Bitmap Create(Bitmap ImageUsing)
         {
-            if (ImageUsing == null)
-                throw new ArgumentNullException("ImageUsing");
+            ImageUsing.ThrowIfNull("ImageUsing");
             CreateFilter();
             using (Bitmap TempImageX = FilterX.Create(ImageUsing))
             {
                 using (Bitmap TempImageY = FilterY.Create(ImageUsing))
                 {
                     Bitmap ReturnImage = new Bitmap(TempImageX.Width, TempImageX.Height);
-                    Math.Vector3 TempVector = new Utilities.Math.Vector3(0.0, 0.0, 0.0);
                     BitmapData TempImageXData = TempImageX.LockImage();
                     BitmapData TempImageYData = TempImageY.LockImage();
                     BitmapData ReturnImageData = ReturnImage.LockImage();
                     int TempImageXPixelSize = TempImageXData.GetPixelSize();
                     int TempImageYPixelSize = TempImageYData.GetPixelSize();
                     int ReturnImagePixelSize = ReturnImageData.GetPixelSize();
-                    for (int y = 0; y < TempImageX.Height; ++y)
+                    int Width = TempImageX.Width;
+                    int Height = TempImageX.Height;
+                    Parallel.For(0, Height, y =>
                     {
-                        for (int x = 0; x < TempImageX.Width; ++x)
+                        Math.Vector3 TempVector = new Utilities.Math.Vector3(0.0, 0.0, 0.0);
+                        for (int x = 0; x < Width; ++x)
                         {
                             Color TempPixelX = TempImageXData.GetPixel(x, y, TempImageXPixelSize);
                             Color TempPixelY = TempImageYData.GetPixel(x, y, TempImageYPixelSize);
@@ -128,7 +131,7 @@ namespace Utilities.Media.Image
                                     (int)TempVector.Z),
                                 ReturnImagePixelSize);
                         }
-                    }
+                    });
                     TempImageX.UnlockImage(TempImageXData);
                     TempImageY.UnlockImage(TempImageYData);
                     ReturnImage.UnlockImage(ReturnImageData);

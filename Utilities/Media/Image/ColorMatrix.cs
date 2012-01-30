@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System.Drawing.Imaging;
 using System;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image
@@ -61,8 +62,7 @@ namespace Utilities.Media.Image
         /// <returns>An image with the color matrix applied</returns>
         public virtual Bitmap Apply(Bitmap OriginalImage)
         {
-            if (OriginalImage == null)
-                throw new ArgumentNullException("OriginalImage");
+            OriginalImage.ThrowIfNull("OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
             {

@@ -25,6 +25,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.Media.Image.Procedural;
 using Utilities.Media.Image.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.Media.Image
@@ -44,8 +46,7 @@ namespace Utilities.Media.Image
         /// <param name="NumberOfPoints">Number of points for the painting</param>
         public OilPainting(Bitmap Image, int Seed, int NumberOfPoints)
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
+            Image.ThrowIfNull("Image");
             _Image = new Bitmap(Image);
             _NumberOfPoints = NumberOfPoints;
             Map = new CellularMap(Seed, Image.Width, Image.Height, NumberOfPoints);
@@ -60,15 +61,17 @@ namespace Utilities.Media.Image
         {
             BitmapData ImageData = _Image.LockImage();
             int ImagePixelSize = ImageData.GetPixelSize();
-            for (int i = 0; i < _NumberOfPoints; ++i)
+            int Width = _Image.Width;
+            int Height = _Image.Height;
+            Parallel.For(0, _NumberOfPoints, i =>
             {
                 int Red = 0;
                 int Green = 0;
                 int Blue = 0;
                 int Counter = 0;
-                for (int x = 0; x < _Image.Width; ++x)
+                for (int x = 0; x < Width; ++x)
                 {
-                    for (int y = 0; y < _Image.Height; ++y)
+                    for (int y = 0; y < Height; ++y)
                     {
                         if (Map.ClosestPoint[x, y] == i)
                         {
@@ -81,9 +84,9 @@ namespace Utilities.Media.Image
                     }
                 }
                 int Counter2 = 0;
-                for (int x = 0; x < _Image.Width; ++x)
+                for (int x = 0; x < Width; ++x)
                 {
-                    for (int y = 0; y < _Image.Height; ++y)
+                    for (int y = 0; y < Height; ++y)
                     {
                         if (Map.ClosestPoint[x, y] == i)
                         {
@@ -96,7 +99,7 @@ namespace Utilities.Media.Image
                     if (Counter2 == Counter)
                         break;
                 }
-            }
+            });
             _Image.UnlockImage(ImageData);
         }
 

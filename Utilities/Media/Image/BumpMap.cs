@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System;
 using Utilities.Media.Image.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image
@@ -139,8 +140,7 @@ namespace Utilities.Media.Image
         /// </summary>
         public virtual Bitmap Create(Bitmap Image)
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
+            Image.ThrowIfNull("Image");
             CreateFilter();
             using (Bitmap TempImage = EdgeDetectionFilter.ApplyFilter(Image))
             {
