@@ -1163,7 +1163,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         {
             double TempVal = (Value - Min);
             TempVal /= (double)(Max - Min);
-            return (int)(TempVal * 255);
+            return ((int)(TempVal * 255)).Clamp(255, 0);
         }
 
         #endregion
