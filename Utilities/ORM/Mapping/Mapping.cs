@@ -29,6 +29,7 @@ using System.Linq.Expressions;
 using Utilities.ORM.Mapping.PropertyTypes;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM.Mapping
@@ -67,8 +68,8 @@ namespace Utilities.ORM.Mapping
 
         public void AddToQueryProvider(IDatabase Database)
         {
-            Mapping<ClassType> Map = MicroORM.Map<ClassType>(TableName, IDProperty.FieldName, IDProperty.AutoIncrement, Database.ParameterStarter, Database.Name);
-            ((IProperty<ClassType>)IDProperty).AddToQueryProvider(Database, Map);
+            Mapping<ClassType> Map = MicroORM.Map<ClassType>(TableName, IDProperty.Return(x=>x.FieldName), IDProperty.Return(x=>x.AutoIncrement), Database.Return(x=>x.ParameterStarter), Database.Return(x=>x.Name));
+            ((IProperty<ClassType>)IDProperty).Do(x => x.AddToQueryProvider(Database, Map));
             foreach (IProperty Property in Properties)
                 ((IProperty<ClassType>)Property).AddToQueryProvider(Database, Map);
         }

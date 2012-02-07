@@ -446,7 +446,7 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Parameters">Extra parameters to be added to the insert/update function</param>
         public virtual void Save<PrimaryKeyType>(ClassType Object, params IParameter[] Parameters)
         {
-            PrimaryKeyType PrimaryKeyVal = (PrimaryKeyType)GetPrimaryKey(Object);
+            PrimaryKeyType PrimaryKeyVal = GetPrimaryKey(Object).TryTo(default(PrimaryKeyType));
             GenericEqualityComparer<PrimaryKeyType> Comparer = new GenericEqualityComparer<PrimaryKeyType>();
             if (Comparer.Equals(PrimaryKeyVal, default(PrimaryKeyType)))
             {

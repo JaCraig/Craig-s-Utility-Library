@@ -30,6 +30,7 @@ using Utilities.ORM.QueryProviders;
 using Utilities.ORM.QueryProviders.Interfaces;
 using System.Data;
 using Utilities.SQL.Interfaces;
+using Utilities.SQL.ParameterTypes;
 #endregion
 
 namespace Utilities.ORM

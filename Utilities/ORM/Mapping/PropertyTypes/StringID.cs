@@ -55,7 +55,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             SetDefaultValue(() => "");
             SetFieldName(Name + "_");
-            SetMaxLength(100);
+            this.MaxLength = 100;
         }
 
         #endregion
