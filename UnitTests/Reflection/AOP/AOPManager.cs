@@ -74,6 +74,7 @@ namespace UnitTests.Reflection.AOP
         [Test]
         public void CreateTest()
         {
+            Assert.DoesNotThrow<Exception>(() => Manager.AddAspect(new TestAspect()));
             TestClass TestObject = Manager.Create<TestClass>();
             Assert.NotNull(TestObject);
             Assert.Equal("A", TestObject.TestMethod());
@@ -82,6 +83,7 @@ namespace UnitTests.Reflection.AOP
         public void Dispose()
         {
             new DirectoryInfo(@".\TestingDLL").Delete(true);
+            Utilities.Reflection.AOP.AOPManager.Destroy();
         }
     }
 

@@ -140,6 +140,22 @@
     <Compile Include="Media\Image\Procedural\CellularTexture.cs" />
     <Compile Include="Media\Image\Procedural\FaultFormation.cs" />
     <Compile Include="Media\Image\Procedural\MidpointDisplacement.cs" />
+    <Compile Include="ORM\Test1\Config\Test1Config.cs" />
+    <Compile Include="ORM\Test1\Models\Account.cs" />
+    <Compile Include="ORM\Test1\Models\Group.cs" />
+    <Compile Include="ORM\Test1\Models\Mappings\AccountMapping.cs" />
+    <Compile Include="ORM\Test1\Models\Mappings\GroupMapping.cs" />
+    <Compile Include="ORM\Test1\Models\Mappings\RoleMapping.cs" />
+    <Compile Include="ORM\Test1\Models\Mappings\UserMapping.cs" />
+    <Compile Include="ORM\Test1\Models\Role.cs" />
+    <Compile Include="ORM\Test1\Models\User.cs" />
+    <Compile Include="ORM\Test1\ORMTest1.cs" />
+    <Compile Include="ORM\Test2\Config\Test2Config.cs" />
+    <Compile Include="ORM\Test2\Models\Mappings\ProjectMapping.cs" />
+    <Compile Include="ORM\Test2\Models\Mappings\TaskMapping.cs" />
+    <Compile Include="ORM\Test2\Models\Project.cs" />
+    <Compile Include="ORM\Test2\Models\Task.cs" />
+    <Compile Include="ORM\Test2\ORMTest2.cs" />
     <Compile Include="Profiler\Profiler.cs" />
     <Compile Include="Profiler\ProfilerManager.cs" />
     <Compile Include="Profiler\StopWatch.cs" />
@@ -228,7 +244,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CodeGen\Templates\" />
-    <Folder Include="ORM\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -368,8 +368,7 @@ namespace UnitTests.SQL.MicroORM
 
         public void Dispose()
         {
-            Utilities.SQL.MicroORM.MicroORM.ClearMappings();
-            Utilities.SQL.MicroORM.MicroORM.ClearMappings("DatabaseTestName");
+            Utilities.SQL.MicroORM.MicroORM.ClearAllMappings();
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
                 Helper.ExecuteNonQuery();

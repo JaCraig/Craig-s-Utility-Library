@@ -74,10 +74,20 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             if (this.CommandToLoad != null)
                 return;
             IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
-            LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
+            if (ForeignMapping == Mapping)
+            {
+                LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
+                                FROM " + ForeignMapping.TableName + @"
+                                INNER JOIN " + TableName + " ON " + TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperty.FieldName + @"
+                                WHERE " + TableName + "." + Mapping.TableName + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+            }
+            else
+            {
+                LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
                                 INNER JOIN " + TableName + " ON " + TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperty.FieldName + @"
                                 WHERE " + TableName + "." + Mapping.TableName + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+            }
         }
 
         public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
@@ -117,7 +127,14 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                     IParameter ForeignIDParameter = ((IProperty<DataType>)ForeignMapping.IDProperty).GetAsParameter(Item);
                     CurrentIDParameter.ID = "ID1";
                     ForeignIDParameter.ID = "ID2";
-                    MicroORM.Command = "INSERT INTO " + TableName + "(" + Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + ") VALUES (@ID1,@ID2)";
+                    if (ForeignMapping == Mapping)
+                    {
+                        MicroORM.Command = "INSERT INTO " + TableName + "(" + Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "2) VALUES (@ID1,@ID2)";
+                    }
+                    else
+                    {
+                        MicroORM.Command = "INSERT INTO " + TableName + "(" + Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + ") VALUES (@ID1,@ID2)";
+                    }
                     MicroORM.CommandType = CommandType.Text;
                     CurrentIDParameter.AddParameter(MicroORM);
                     ForeignIDParameter.AddParameter(MicroORM);

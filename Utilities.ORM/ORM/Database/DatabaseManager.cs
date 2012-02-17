@@ -194,13 +194,9 @@ namespace Utilities.ORM.Database
                             MapMapping.IDProperty.FieldName,
                             "");
                     }
-                    else if (Property is IManyToMany || Property is IIEnumerableManyToOne)
+                    else if (Property is IManyToOne || Property is IManyToMany || Property is IIEnumerableManyToOne)
                     {
                         SetupJoiningTablesEnumerable(Mapping, Property, Key, TempDatabase);
-                    }
-                    else if (Property is IManyToOne)
-                    {
-                        SetupJoiningTablesClass(Mapping, Property, Key, TempDatabase);
                     }
                 }
             }
@@ -215,65 +211,60 @@ namespace Utilities.ORM.Database
             if (TempDatabase.Tables.FirstOrDefault(x => x.Name == Property.TableName) != null)
                 return;
             IMapping MapMapping = Mappings[Key].First(x => x.ObjectType == Property.Type);
-            TempDatabase.AddTable(Property.TableName);
-            TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
-            TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
-                Mapping.IDProperty.Type.ToDbType(),
-                Mapping.IDProperty.MaxLength,
-                false,
-                false,
-                false,
-                false,
-                false,
-                Mapping.TableName,
-                Mapping.IDProperty.FieldName,
-                "");
-            TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
-                MapMapping.IDProperty.Type.ToDbType(),
-                MapMapping.IDProperty.MaxLength,
-                false,
-                false,
-                false,
-                false,
-                false,
-                MapMapping.TableName,
-                MapMapping.IDProperty.FieldName,
-                "");
-        }
-
-        #endregion
-
-        #region SetupJoiningTablesClass
-
-        private void SetupJoiningTablesClass(IMapping Mapping, IProperty Property, IDatabase Key, SQL.DataClasses.Database TempDatabase)
-        {
-            if (TempDatabase.Tables.FirstOrDefault(x => x.Name == Property.TableName) != null)
-                return;
-            IMapping MapMapping = Mappings[Key].First(x => x.ObjectType == Property.Type);
-            TempDatabase.AddTable(Property.TableName);
-            TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
-            TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
-                Mapping.IDProperty.Type.ToDbType(),
-                Mapping.IDProperty.MaxLength,
-                false,
-                false,
-                false,
-                false,
-                false,
-                Mapping.TableName,
-                Mapping.IDProperty.FieldName,
-                "");
-            TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
-                MapMapping.IDProperty.Type.ToDbType(),
-                MapMapping.IDProperty.MaxLength,
-                false,
-                false,
-                false,
-                false,
-                false,
-                MapMapping.TableName,
-                MapMapping.IDProperty.FieldName,
-                "");
+            if (MapMapping == Mapping)
+            {
+                TempDatabase.AddTable(Property.TableName);
+                TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
+                TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
+                    Mapping.IDProperty.Type.ToDbType(),
+                    Mapping.IDProperty.MaxLength,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    Mapping.TableName,
+                    Mapping.IDProperty.FieldName,
+                    "");
+                TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName + "2",
+                    MapMapping.IDProperty.Type.ToDbType(),
+                    MapMapping.IDProperty.MaxLength,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    MapMapping.TableName,
+                    MapMapping.IDProperty.FieldName,
+                    "");
+            }
+            else
+            {
+                TempDatabase.AddTable(Property.TableName);
+                TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
+                TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
+                    Mapping.IDProperty.Type.ToDbType(),
+                    Mapping.IDProperty.MaxLength,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    Mapping.TableName,
+                    Mapping.IDProperty.FieldName,
+                    "");
+                TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
+                    MapMapping.IDProperty.Type.ToDbType(),
+                    MapMapping.IDProperty.MaxLength,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    MapMapping.TableName,
+                    MapMapping.IDProperty.FieldName,
+                    "");
+            }
         }
 
         #endregion

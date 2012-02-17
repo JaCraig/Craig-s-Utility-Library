@@ -98,6 +98,18 @@ namespace Utilities.ORM
             return new Session(QueryProvider);
         }
 
+        /// <summary>
+        /// Deletes all mappings, etc. Basically clears out everything so you can recreate items (only really useful for testing)
+        /// </summary>
+        public static void Destroy()
+        {
+            Utilities.SQL.MicroORM.MicroORM.ClearAllMappings();
+            Reflection.AOP.AOPManager.Destroy();
+            MappingManager = null;
+            QueryProvider = null;
+            DatabaseManager = null;
+        }
+
         #endregion
 
         #region Properties

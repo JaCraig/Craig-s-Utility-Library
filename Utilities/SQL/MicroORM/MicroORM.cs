@@ -141,6 +141,15 @@ namespace Utilities.SQL.MicroORM
             }
         }
 
+        /// <summary>
+        /// Clears all database objects of all mappings
+        /// </summary>
+        public static void ClearAllMappings()
+        {
+            foreach (string Database in Databases.Keys)
+                ClearMappings(Database);
+        }
+
         #endregion
 
         #region IDisposable Members

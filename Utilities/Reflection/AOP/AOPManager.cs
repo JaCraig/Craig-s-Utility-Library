@@ -88,6 +88,16 @@ namespace Utilities.Reflection.AOP
         #region Functions
 
         /// <summary>
+        /// Clears out the AOP data (really only used in testing)
+        /// </summary>
+        public static void Destroy()
+        {
+            AssemblyBuilder = null;
+            Classes = new Dictionary<Type, Type>();
+            Aspects = new List<IAspect>();
+        }
+
+        /// <summary>
         /// Adds an aspect to the manager (only needed if loading aspects manually)
         /// </summary>
         /// <param name="Aspect">Aspect to load</param>
