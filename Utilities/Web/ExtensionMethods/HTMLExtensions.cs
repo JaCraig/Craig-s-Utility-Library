@@ -180,7 +180,7 @@ namespace Utilities.Web.ExtensionMethods
                         .Replace(" ", "-");
             Input = RemoveExtraHyphen(Input);
             Input = RemoveDiacritics(Input);
-            return HttpUtility.UrlEncode(Input).Replace("%", string.Empty);
+            return Input.URLEncode().Replace("%", string.Empty);
         }
 
         #endregion
@@ -226,6 +226,38 @@ namespace Utilities.Web.ExtensionMethods
             if (!HTML.Exists)
                 throw new ArgumentException("File does not exist");
             return HTML.Read().StripHTML();
+        }
+
+        #endregion
+
+        #region URLDecode
+
+        /// <summary>
+        /// URL decodes a string
+        /// </summary>
+        /// <param name="Input">Input to decode</param>
+        /// <returns>A decoded string</returns>
+        public static string URLDecode(this string Input)
+        {
+            if (Input.IsNullOrEmpty())
+                return "";
+            return HttpUtility.UrlDecode(Input);
+        }
+
+        #endregion
+
+        #region URLEncode
+
+        /// <summary>
+        /// URL encodes a string
+        /// </summary>
+        /// <param name="Input">Input to encode</param>
+        /// <returns>An encoded string</returns>
+        public static string URLEncode(this string Input)
+        {
+            if (Input.IsNullOrEmpty())
+                return "";
+            return HttpUtility.UrlEncode(Input);
         }
 
         #endregion
