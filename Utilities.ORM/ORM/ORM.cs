@@ -90,6 +90,17 @@ namespace Utilities.ORM
         }
 
         /// <summary>
+        /// Can be used to setup various bits of data that are normally created on the fly as the system is used
+        /// </summary>
+        public void Setup()
+        {
+            Utilities.Reflection.AOP.AOPManager Manager = new Reflection.AOP.AOPManager();
+            foreach (Type Key in MappingManager.Mappings.Keys)
+                foreach (IMapping Mapping in MappingManager.Mappings[Key])
+                    Manager.Setup(Mapping.ObjectType);
+        }
+
+        /// <summary>
         /// Creates a session to allow you to make queries to the system
         /// </summary>
         /// <returns>A session object</returns>

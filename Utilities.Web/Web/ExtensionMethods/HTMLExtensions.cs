@@ -233,10 +233,10 @@ namespace Utilities.Web.ExtensionMethods
         #region URLDecode
 
         /// <summary>
-        /// URL encodes a string
+        /// URL decodes a string
         /// </summary>
-        /// <param name="Input">Input to encode</param>
-        /// <returns>An encoded string</returns>
+        /// <param name="Input">Input to decode</param>
+        /// <returns>A decoded string</returns>
         public static string URLDecode(this string Input)
         {
             if (Input.IsNullOrEmpty())
