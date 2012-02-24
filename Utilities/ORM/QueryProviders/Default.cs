@@ -459,6 +459,33 @@ namespace Utilities.ORM.QueryProviders
 
         #endregion
 
+        #region PageCount
+
+        /// <summary>
+        /// Gets the number of pages based on the specified info
+        /// </summary>
+        /// <param name="CurrentSession">Current session</param>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <returns>The number of pages that the table contains for the specified page size</returns>
+        public virtual int PageCount<ObjectType>(Session CurrentSession, int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
+        {
+            foreach (IDatabase Database in Mappings.Keys.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    {
+                        return ORMObject.Map<ObjectType>().PageCount(PageSize, Parameters);
+                    }
+                }
+            }
+            return 0;
+        }
+
+        #endregion
+
         #region Save
 
         /// <summary>

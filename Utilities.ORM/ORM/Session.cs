@@ -217,6 +217,22 @@ namespace Utilities.ORM
 
         #endregion
 
+        #region PageCount
+
+        /// <summary>
+        /// Gets the number of pages based on the specified 
+        /// </summary>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
+        /// <returns>The number of pages that the table contains for the specified page size</returns>
+        public virtual int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
+        {
+            return QueryProvider.PageCount<ObjectType>(this, PageSize, Parameters);
+        }
+
+        #endregion
+
         #region Save
 
         /// <summary>

@@ -263,6 +263,49 @@ namespace UnitTests.ORM.Test2
             }
         }
 
+        [Test]
+        public void Paged()
+        {
+            for (int x = 0; x < 100; ++x)
+            {
+                Task TempTask = new Task();
+                TempTask.Description = "This is a test";
+                TempTask.DueDate = new DateTime(1900, 1, 1);
+                TempTask.Name = "Test task";
+                TempTask.Save();
+            }
+
+            IEnumerable<Task> TestObject = Task.Paged();
+            Assert.Equal(25, TestObject.Count());
+            foreach (Task TestTask in TestObject)
+            {
+                Assert.Between(TestTask.ID, 1, 25);
+            }
+
+            TestObject = Task.Paged(CurrentPage: 1);
+            Assert.Equal(25, TestObject.Count());
+            foreach (Task TestTask in TestObject)
+            {
+                Assert.Between(TestTask.ID, 26, 50);
+            }
+
+            TestObject = Task.Paged(CurrentPage: 2);
+            Assert.Equal(25, TestObject.Count());
+            foreach (Task TestTask in TestObject)
+            {
+                Assert.Between(TestTask.ID, 51, 75);
+            }
+
+            TestObject = Task.Paged(CurrentPage: 3);
+            Assert.Equal(25, TestObject.Count());
+            foreach (Task TestTask in TestObject)
+            {
+                Assert.Between(TestTask.ID, 76, 100);
+            }
+
+            Assert.Equal(4, Task.PageCount());
+        }
+
         public void Dispose()
         {
             Utilities.ORM.ORM.Destroy();
