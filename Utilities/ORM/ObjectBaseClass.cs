@@ -243,6 +243,50 @@ namespace Utilities.ORM
 
         #endregion
 
+        #region PagedCommand
+
+        /// <summary>
+        /// Loads the items based on type
+        /// </summary>
+        /// <param name="OrderBy">What the data is ordered by</param>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">Current page (0 based)</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <param name="Command">Command to run</param>
+        /// <returns>All items that fit the specified query</returns>
+        public static IEnumerable<ObjectType> PagedCommand(string Command,string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
+        {
+            return PagedCommand(ORM.CreateSession(), Command, OrderBy, PageSize, CurrentPage, Params);
+        }
+
+        /// <summary>
+        /// Loads the items based on type
+        /// </summary>
+        /// <param name="OrderBy">What the data is ordered by</param>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">Current page (0 based)</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <param name="Session">ORM session variable</param>
+        /// <param name="Command">Command to run</param>
+        /// <returns>All items that fit the specified query</returns>
+        public static IEnumerable<ObjectType> PagedCommand(Session Session,string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
+        {
+            IEnumerable<ObjectType> instance = new List<ObjectType>();
+            LoadingEventArgs E = new LoadingEventArgs();
+            ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
+            if (!E.Stop)
+            {
+                instance = Session.PagedCommand<ObjectType>(Command, OrderBy, PageSize, CurrentPage, Params);
+                foreach (ObjectType Item in instance)
+                {
+                    Item.OnLoaded(new LoadedEventArgs());
+                }
+            }
+            return instance;
+        }
+
+        #endregion
+
         #region PageCount
 
         /// <summary>
@@ -266,6 +310,31 @@ namespace Utilities.ORM
         public static int PageCount(Session Session, int PageSize = 25, params IParameter[] Params)
         {
             return Session.PageCount<ObjectType>(PageSize, Params);
+        }
+
+        /// <summary>
+        /// Gets the page count based on page size
+        /// </summary>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <param name="Command">Command to run</param>
+        /// <returns>All items that fit the specified query</returns>
+        public static int PageCount(string Command,int PageSize = 25, params IParameter[] Params)
+        {
+            return PageCount(ORM.CreateSession(), Command, PageSize, Params);
+        }
+
+        /// <summary>
+        /// Gets the page count based on page size
+        /// </summary>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <param name="Session">ORM session variable</param>
+        /// <param name="Command">Command to run</param>
+        /// <returns>All items that fit the specified query</returns>
+        public static int PageCount(Session Session,string Command, int PageSize = 25, params IParameter[] Params)
+        {
+            return Session.PageCount<ObjectType>(Command, PageSize, Params);
         }
 
         #endregion

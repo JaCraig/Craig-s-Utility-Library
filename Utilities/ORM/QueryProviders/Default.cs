@@ -459,6 +459,43 @@ namespace Utilities.ORM.QueryProviders
 
         #endregion
 
+        #region PagedCommand
+
+        /// <summary>
+        /// Returns a paged list of items
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="Command">Command to use</param>
+        /// <param name="OrderBy">Order by clause (minus the ORDER BY part)</param>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">Current page (starting with 0)</param>
+        /// <param name="Parameters">Parameters used in the where clause</param>
+        /// <param name="CurrentSession">Current session to use in the query</param>
+        /// <returns>A paged list of items that match the criteria</returns>
+        public virtual IEnumerable<ObjectType> PagedCommand<ObjectType>(Session CurrentSession, string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
+        {
+            System.Collections.Generic.List<ObjectType> ReturnValues = new System.Collections.Generic.List<ObjectType>();
+            foreach (IDatabase Database in Mappings.Keys.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    {
+                        ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().PagedCommand(Command, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
+                    }
+                }
+            }
+            foreach (ObjectType ReturnValue in ReturnValues)
+            {
+                if (ReturnValue is IORMObject)
+                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
+            }
+            return ReturnValues;
+        }
+
+        #endregion
+
         #region PageCount
 
         /// <summary>
@@ -478,6 +515,29 @@ namespace Utilities.ORM.QueryProviders
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
                         return ORMObject.Map<ObjectType>().PageCount(PageSize, Parameters);
+                    }
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the number of pages based on the specified info
+        /// </summary>
+        /// <param name="CurrentSession">Current session</param>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <returns>The number of pages that the table contains for the specified page size</returns>
+        public virtual int PageCount<ObjectType>(Session CurrentSession,string Command, int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
+        {
+            foreach (IDatabase Database in Mappings.Keys.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    {
+                        return ORMObject.Map<ObjectType>().PageCount(Command, PageSize, Parameters);
                     }
                 }
             }

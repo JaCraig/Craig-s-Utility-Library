@@ -28,6 +28,7 @@ using System.Data.Common;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
+using Utilities.DataTypes.Patterns;
 #endregion
 
 namespace Utilities.SQL
@@ -35,7 +36,7 @@ namespace Utilities.SQL
     /// <summary>
     /// SQL Helper class
     /// </summary>
-    public class SQLHelper : IDisposable
+    public class SQLHelper : IDisposable, IFluentInterface
     {
         #region Constructors
 
@@ -131,10 +132,11 @@ namespace Utilities.SQL
         /// <param name="Value">Value to add</param>
         /// <param name="Length">Size of the string(either -1 or greater than 4000 should be used to indicate nvarchar(max))</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
-        public virtual void AddParameter(string ID, int Length, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
+        public virtual SQLHelper AddParameter(string ID, int Length, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
         {
             if (ExecutableCommand != null)
                 ExecutableCommand.AddParameter(ID, Length, Value, Direction);
+            return this;
         }
 
         /// <summary>
@@ -144,9 +146,9 @@ namespace Utilities.SQL
         /// <param name="Value">Value to add</param>
         /// <param name="Type">SQL type of the parameter</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
-        public virtual void AddParameter(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
+        public virtual SQLHelper AddParameter(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
-            AddParameter(ID, Type.ToDbType(), Value, Direction);
+            return AddParameter(ID, Type.ToDbType(), Value, Direction);
         }
 
         /// <summary>
@@ -156,9 +158,9 @@ namespace Utilities.SQL
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
-        public virtual void AddParameter<DataType>(string ID, DataType Value = default(DataType), ParameterDirection Direction = ParameterDirection.Input)
+        public virtual SQLHelper AddParameter<DataType>(string ID, DataType Value = default(DataType), ParameterDirection Direction = ParameterDirection.Input)
         {
-            AddParameter(ID, Value.GetType().ToDbType(), Value, Direction);
+            return AddParameter(ID, Value.GetType().ToDbType(), Value, Direction);
         }
 
         /// <summary>
@@ -168,20 +170,22 @@ namespace Utilities.SQL
         /// <param name="Value">Value to add</param>
         /// <param name="Type">SQL type of the parameter</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
-        public virtual void AddParameter(string ID, DbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
+        public virtual SQLHelper AddParameter(string ID, DbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
             if (ExecutableCommand != null)
                 ExecutableCommand.AddParameter(ID, Type, Value, Direction);
+            return this;
         }
 
         /// <summary>
         /// Adds parameters to the call
         /// </summary>
         /// <param name="Parameters">Parameters to add</param>
-        public virtual void AddParameter(params IParameter[] Parameters)
+        public virtual SQLHelper AddParameter(params IParameter[] Parameters)
         {
             Parameters.ThrowIfNull("Parameters");
             Parameters.ForEach(x => x.AddParameter(this));
+            return this;
         }
 
         #endregion
@@ -191,10 +195,11 @@ namespace Utilities.SQL
         /// <summary>
         /// Begins a transaction
         /// </summary>
-        public virtual void BeginTransaction()
+        public virtual SQLHelper BeginTransaction()
         {
             Transaction = ExecutableCommand.BeginTransaction();
             Command = _Command;
+            return this;
         }
 
         #endregion
@@ -204,9 +209,10 @@ namespace Utilities.SQL
         /// <summary>
         /// Clears the parameters
         /// </summary>
-        public virtual void ClearParameters()
+        public virtual SQLHelper ClearParameters()
         {
             ExecutableCommand.ClearParameters();
+            return this;
         }
 
         #endregion
@@ -216,9 +222,10 @@ namespace Utilities.SQL
         /// <summary>
         /// Closes the connection
         /// </summary>
-        public virtual void Close()
+        public virtual SQLHelper Close()
         {
             ExecutableCommand.Close();
+            return this;
         }
 
         #endregion
@@ -228,9 +235,10 @@ namespace Utilities.SQL
         /// <summary>
         /// Commits a transaction
         /// </summary>
-        public virtual void Commit()
+        public virtual SQLHelper Commit()
         {
             ExecutableCommand.Commit();
+            return this;
         }
 
         #endregion
@@ -267,11 +275,12 @@ namespace Utilities.SQL
         /// <summary>
         /// Executes the stored procedure and returns a reader object
         /// </summary>
-        public virtual void ExecuteReader()
+        public virtual SQLHelper ExecuteReader()
         {
             Open();
             if (ExecutableCommand != null)
                 Reader = ExecutableCommand.ExecuteReader();
+            return this;
         }
 
         #endregion
@@ -316,7 +325,7 @@ namespace Utilities.SQL
         /// <param name="Default">Default value for the parameter</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public virtual DataType GetParameter<DataType>(string ID, DataType Default = default(DataType),ParameterDirection Direction=ParameterDirection.Input)
+        public virtual DataType GetParameter<DataType>(string ID, DataType Default = default(DataType), ParameterDirection Direction = ParameterDirection.Input)
         {
             if (Direction == ParameterDirection.Output)
                 return ExecutableCommand.GetOutputParameter<DataType>(ID, Default);
@@ -342,10 +351,11 @@ namespace Utilities.SQL
         /// <summary>
         /// Goes to the next result set (used if multiple queries are sent in)
         /// </summary>
-        public virtual void NextResult()
+        public virtual SQLHelper NextResult()
         {
             if (Reader != null)
                 Reader.NextResult();
+            return this;
         }
 
         #endregion
@@ -355,9 +365,10 @@ namespace Utilities.SQL
         /// <summary>
         /// Opens the connection
         /// </summary>
-        public virtual void Open()
+        public virtual SQLHelper Open()
         {
             ExecutableCommand.Open();
+            return this;
         }
 
         #endregion
@@ -405,9 +416,10 @@ namespace Utilities.SQL
         /// <summary>
         /// Rolls back a transaction
         /// </summary>
-        public virtual void Rollback()
+        public virtual SQLHelper Rollback()
         {
             ExecutableCommand.Rollback();
+            return this;
         }
 
         #endregion

@@ -407,6 +407,25 @@ namespace Utilities.SQL.MicroORM
             return 0;
         }
 
+        /// <summary>
+        /// Gets the number of pages based on the specified 
+        /// </summary>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <returns>The number of pages that the table contains for the specified page size</returns>
+        public virtual int PageCount(string Command, int PageSize = 25, params IParameter[] Parameters)
+        {
+            Helper.ThrowIfNull("Helper");
+            SetupCommand(SetupPageCountCommand(Command), CommandType.Text, Parameters);
+            Helper.ExecuteReader();
+            if (Helper.Read())
+            {
+                int Total = Helper.GetParameter("Total", 0);
+                return Total % PageSize == 0 ? Total / PageSize : (Total / PageSize) + 1;
+            }
+            return 0;
+        }
+
         #endregion
 
         #region Paged
@@ -426,6 +445,27 @@ namespace Utilities.SQL.MicroORM
         {
             Columns.ThrowIfNullOrEmpty("Columns");
             return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, Parameters), CommandType.Text, Objects, ObjectCreator, Parameters);
+        }
+
+        #endregion
+
+        #region PagedCommand
+
+        /// <summary>
+        /// Gets a paged list of objects fitting the specified criteria
+        /// </summary>
+        /// <param name="Command">Command to return data from</param>
+        /// <param name="OrderBy">Order by clause</param>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">The current page (starting at 0)</param>
+        /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
+        /// <param name="ObjectCreator">Function used to create the individual objects (if set to null, it uses the default constructor)</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <returns>A list of objects that fit the specified criteria</returns>
+        public virtual IEnumerable<ClassType> PagedCommand(string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, IEnumerable<ClassType> Objects = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
+        {
+            Command.ThrowIfNullOrEmpty("Command");
+            return All(SetupPagedCommand(Command, OrderBy, PageSize, CurrentPage), CommandType.Text, Objects, ObjectCreator, Parameters);
         }
 
         #endregion
@@ -618,7 +658,17 @@ namespace Utilities.SQL.MicroORM
                     Splitter = " AND ";
                 }
             }
-            return string.Format("SELECT COUNT({0}) as Total FROM {1} {2}", PrimaryKey, TableName, WhereCommand);
+            return SetupPageCountCommand(string.Format("SELECT {0} FROM {1} {2}", PrimaryKey, TableName, WhereCommand));
+        }
+
+        /// <summary>
+        /// Sets up the page count command
+        /// </summary>
+        /// <param name="Query">Query to use to count the number of rows</param>
+        /// <returns>The string command</returns>
+        protected virtual string SetupPageCountCommand(string Query)
+        {
+            return string.Format("SELECT COUNT(*) as Total FROM ({0}) as Query", Query);
         }
 
         #endregion
@@ -650,10 +700,23 @@ namespace Utilities.SQL.MicroORM
                     Splitter = " AND ";
                 }
             }
-            string Command = string.Format("SELECT {0} FROM (SELECT ROW_NUMBER() OVER (ORDER BY {1}) AS Row, {0} FROM {2} {3}) AS Paged ", Columns, OrderBy, TableName, WhereCommand);
+            return SetupPagedCommand(string.Format("SELECT {0} FROM {1} {2}", Columns, TableName, WhereCommand), OrderBy, PageSize, CurrentPage);
+        }
+
+        /// <summary>
+        /// Sets up the paged select command
+        /// </summary>
+        /// <param name="Query">Query used in getting the paged data</param>
+        /// <param name="OrderBy">Order by clause</param>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">Current page</param>
+        /// <returns>The command string</returns>
+        protected virtual string SetupPagedCommand(string Query,string OrderBy,int PageSize,int CurrentPage)
+        {
+            if (OrderBy.IsNullOrEmpty())
+                OrderBy = PrimaryKey;
             int PageStart = CurrentPage * PageSize;
-            Command += string.Format(" WHERE Row>{0} AND Row<={1}", PageStart, PageStart + PageSize);
-            return Command;
+            return string.Format("SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {1}) AS Row, Query.* FROM ({0}) as Query) AS Paged WHERE Row>{2} AND Row<={3}", Query, OrderBy, PageStart, PageStart + PageSize);
         }
 
         #endregion

@@ -306,6 +306,38 @@ namespace UnitTests.ORM.Test2
             Assert.Equal(4, Task.PageCount());
         }
 
+        [Test]
+        public void Paged2()
+        {
+            for (int x = 0; x < 100; ++x)
+            {
+                Task TempTask = new Task();
+                TempTask.Description = "This is a test";
+                TempTask.DueDate = new DateTime(1900, 1, 1);
+                TempTask.Name = "Test task";
+                TempTask.Save();
+            }
+
+            IEnumerable<Task> TestObject = Task.PagedCommand("SELECT * FROM Task_ WHERE ID_>@ID", "", 25, 0, new EqualParameter<long>(50, "ID"));
+            Assert.Equal(25, TestObject.Count());
+            foreach (Task TestTask in TestObject)
+            {
+                Assert.Between(TestTask.ID, 51, 75);
+            }
+
+            TestObject = Task.PagedCommand("SELECT * FROM Task_ WHERE ID_>@ID", "", 25, 1, new EqualParameter<long>(50, "ID"));
+            Assert.Equal(25, TestObject.Count());
+            foreach (Task TestTask in TestObject)
+            {
+                Assert.Between(TestTask.ID, 76, 100);
+            }
+
+            TestObject = Task.PagedCommand("SELECT * FROM Task_ WHERE ID_>@ID", "", 25, 2, new EqualParameter<long>(50, "ID"));
+            Assert.Equal(0, TestObject.Count());
+
+            Assert.Equal(2, Task.PageCount("SELECT * FROM Task_ WHERE ID_>@ID", 25, new EqualParameter<long>(50, "ID")));
+        }
+
         public void Dispose()
         {
             Utilities.ORM.ORM.Destroy();

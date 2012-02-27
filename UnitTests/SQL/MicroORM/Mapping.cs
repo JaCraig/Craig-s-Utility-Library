@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System.Data;
 using Utilities.SQL.MicroORM;
+using Utilities.SQL.ParameterTypes;
 
 namespace UnitTests.SQL.MicroORM
 {
@@ -333,6 +334,52 @@ namespace UnitTests.SQL.MicroORM
                 Objects = TestObject.Paged(CurrentPage: 4);
                 Assert.Equal(15, Objects.Count());
                 Assert.Equal(5, TestObject.PageCount());
+            }
+        }
+
+        [Test]
+        public void Paged2()
+        {
+            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            {
+                TestObject.Map(x => x.ID, "ID_")
+                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.FloatValue, "FloatValue_")
+                    .Map(x => x.BoolValue, "BoolValue_")
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                List<ObjectClass1> Objects2 = new List<ObjectClass1>();
+                Utilities.Random.Random Rand = new Utilities.Random.Random();
+                for (int x = 0; x < 115; ++x)
+                {
+                    ObjectClass1 TempObject = new ObjectClass1();
+                    TempObject.StringValue = Rand.NextString(10);
+                    TempObject.BoolValue = Rand.NextBool();
+                    TempObject.FloatValue = (float)Rand.NextDouble();
+                    TempObject.LongValue = Rand.Next(0, 100);
+                    TempObject.StringMaxValue = Rand.NextString(6000);
+                    Objects2.Add(TempObject);
+                }
+                TestObject.Save<int>(Objects2);
+                IEnumerable<ObjectClass1> Objects = TestObject.PagedCommand("SELECT * FROM TestTable");
+                Assert.Equal(25, Objects.Count());
+                Objects = TestObject.PagedCommand("SELECT * FROM TestTable", CurrentPage: 1);
+                Assert.Equal(25, Objects.Count());
+                Objects = TestObject.PagedCommand("SELECT * FROM TestTable", CurrentPage: 2);
+                Assert.Equal(25, Objects.Count());
+                Objects = TestObject.PagedCommand("SELECT * FROM TestTable", CurrentPage: 3);
+                Assert.Equal(25, Objects.Count());
+                Objects = TestObject.PagedCommand("SELECT * FROM TestTable", CurrentPage: 4);
+                Assert.Equal(15, Objects.Count());
+                Assert.Equal(5, TestObject.PageCount("SELECT * FROM TestTable"));
+
+                Objects = TestObject.PagedCommand("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 0, null, null, new EqualParameter<int>(50, "ID"));
+                Assert.Equal(25, Objects.Count());
+                Objects = TestObject.PagedCommand("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 1, null, null, new EqualParameter<int>(50, "ID"));
+                Assert.Equal(25, Objects.Count());
+                Objects = TestObject.PagedCommand("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 2, null, null, new EqualParameter<int>(50, "ID"));
+                Assert.Equal(15, Objects.Count());
+                Assert.Equal(3, TestObject.PageCount("SELECT * FROM TestTable WHERE ID_>@ID", 25, new EqualParameter<int>(50, "ID")));
             }
         }
 

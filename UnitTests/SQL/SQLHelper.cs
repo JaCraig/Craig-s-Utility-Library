@@ -67,15 +67,15 @@ namespace UnitTests.SQL
             Guid TempGuid = Guid.NewGuid();
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@StringValue1,@StringValue2,@BigIntValue,@BitValue,@DecimalValue,@FloatValue,@DateTimeValue,@GUIDValue)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.AddParameter<string>("@StringValue1", "Test String");
-                Helper.AddParameter<string>("@StringValue2", "Test String");
-                Helper.AddParameter<long>("@BigIntValue", 12345);
-                Helper.AddParameter<bool>("@BitValue", true);
-                Helper.AddParameter<decimal>("@DecimalValue", 1234.5678m);
-                Helper.AddParameter<float>("@FloatValue", 12345.6534f);
-                Helper.AddParameter<Guid>("@GUIDValue", TempGuid);
-                Helper.AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 12, 31));
-                Helper.ExecuteNonQuery();
+                Helper.AddParameter<string>("@StringValue1", "Test String")
+                    .AddParameter<string>("@StringValue2", "Test String")
+                    .AddParameter<long>("@BigIntValue", 12345)
+                    .AddParameter<bool>("@BitValue", true)
+                    .AddParameter<decimal>("@DecimalValue", 1234.5678m)
+                    .AddParameter<float>("@FloatValue", 12345.6534f)
+                    .AddParameter<Guid>("@GUIDValue", TempGuid)
+                    .AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 12, 31))
+                    .ExecuteNonQuery();
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
@@ -104,15 +104,15 @@ namespace UnitTests.SQL
             Guid TempGuid = Guid.NewGuid();
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@StringValue1,@StringValue2,@BigIntValue,@BitValue,@DecimalValue,@FloatValue,@DateTimeValue,@GUIDValue)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.AddParameter<string>("@StringValue1", "");
-                Helper.AddParameter<string>("@StringValue2", "Test String");
-                Helper.AddParameter<long>("@BigIntValue", 12345);
-                Helper.AddParameter<bool>("@BitValue", true);
-                Helper.AddParameter<decimal>("@DecimalValue", 1234.5678m);
-                Helper.AddParameter<float>("@FloatValue", 12345.6534f);
-                Helper.AddParameter<Guid>("@GUIDValue", TempGuid);
-                Helper.AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 12, 31));
-                Helper.ExecuteNonQuery();
+                Helper.AddParameter<string>("@StringValue1", "")
+                    .AddParameter<string>("@StringValue2", "Test String")
+                    .AddParameter<long>("@BigIntValue", 12345)
+                    .AddParameter<bool>("@BitValue", true)
+                    .AddParameter<decimal>("@DecimalValue", 1234.5678m)
+                    .AddParameter<float>("@FloatValue", 12345.6534f)
+                    .AddParameter<Guid>("@GUIDValue", TempGuid)
+                    .AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 12, 31))
+                    .ExecuteNonQuery();
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
@@ -141,15 +141,15 @@ namespace UnitTests.SQL
             Guid TempGuid = Guid.NewGuid();
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@StringValue1,@StringValue2,@BigIntValue,@BitValue,@DecimalValue,@FloatValue,@DateTimeValue,@GUIDValue)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.AddParameter<string>("@StringValue1", "Test");
-                Helper.AddParameter<string>("@StringValue2", "Test");
-                Helper.AddParameter<long>("@BigIntValue", 123);
-                Helper.AddParameter<bool>("@BitValue", false);
-                Helper.AddParameter<decimal>("@DecimalValue", 1234);
-                Helper.AddParameter<float>("@FloatValue", 12345);
-                Helper.AddParameter<Guid>("@GUIDValue", Guid.NewGuid());
-                Helper.AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 1, 1));
-                Helper.ClearParameters();
+                Helper.AddParameter<string>("@StringValue1", "Test")
+                    .AddParameter<string>("@StringValue2", "Test")
+                    .AddParameter<long>("@BigIntValue", 123)
+                    .AddParameter<bool>("@BitValue", false)
+                    .AddParameter<decimal>("@DecimalValue", 1234)
+                    .AddParameter<float>("@FloatValue", 12345)
+                    .AddParameter<Guid>("@GUIDValue", Guid.NewGuid())
+                    .AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 1, 1))
+                    .ClearParameters();
                 Helper.AddParameter<string>("@StringValue1", "Test String");
                 Helper.AddParameter<string>("@StringValue2", "Test String");
                 Helper.AddParameter<long>("@BigIntValue", 12345);

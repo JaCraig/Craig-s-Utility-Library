@@ -73,7 +73,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(string Columns, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(this,Columns,null, Parameters);
+            return QueryProvider.Any<ObjectType>(this, Columns, null, Parameters);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(this,null, Parameters);
+            return QueryProvider.Any<ObjectType>(this, null, Parameters);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Utilities.ORM
         /// <returns>A single object matching the criteria</returns>
         public virtual ObjectType Any<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(this,Command, CommandType, null, Parameters);
+            return QueryProvider.Any<ObjectType>(this, Command, CommandType, null, Parameters);
         }
 
         #endregion
@@ -115,7 +115,7 @@ namespace Utilities.ORM
         /// <returns>All items that match the criteria</returns>
         public virtual IEnumerable<ObjectType> All<ObjectType>(string Columns, int Limit, string OrderBy, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.All<ObjectType>(this,Columns, Limit, OrderBy, Parameters);
+            return QueryProvider.All<ObjectType>(this, Columns, Limit, OrderBy, Parameters);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Utilities.ORM
         /// <returns>All items that match the criteria</returns>
         public virtual IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.All<ObjectType>(this,Parameters);
+            return QueryProvider.All<ObjectType>(this, Parameters);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Utilities.ORM
         /// <returns>All items that match the criteria</returns>
         public virtual IEnumerable<ObjectType> All<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
-            return QueryProvider.All<ObjectType>(this,Command, CommandType, Parameters);
+            return QueryProvider.All<ObjectType>(this, Command, CommandType, Parameters);
         }
 
         #endregion
@@ -217,6 +217,25 @@ namespace Utilities.ORM
 
         #endregion
 
+        #region PagedCommand
+
+        /// <summary>
+        /// Returns a paged list of items
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="Command">Command to call</param>
+        /// <param name="OrderBy">Order by clause (minus the ORDER BY part)</param>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">Current page (starting with 0)</param>
+        /// <param name="Parameters">Parameters used in the where clause</param>
+        /// <returns>A paged list of items that match the criteria</returns>
+        public virtual IEnumerable<ObjectType> PagedCommand<ObjectType>(string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
+        {
+            return QueryProvider.PagedCommand<ObjectType>(this, Command, OrderBy, PageSize, CurrentPage, Parameters);
+        }
+
+        #endregion
+
         #region PageCount
 
         /// <summary>
@@ -229,6 +248,18 @@ namespace Utilities.ORM
         public virtual int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.PageCount<ObjectType>(this, PageSize, Parameters);
+        }
+
+        /// <summary>
+        /// Gets the number of pages based on the specified 
+        /// </summary>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
+        /// <returns>The number of pages that the table contains for the specified page size</returns>
+        public virtual int PageCount<ObjectType>(string Command, int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
+        {
+            return QueryProvider.PageCount<ObjectType>(this, Command, PageSize, Parameters);
         }
 
         #endregion
