@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using MoonUnit.Attributes;
 using MoonUnit;
+using System.Data;
 
 namespace UnitTests.FileFormats.CSV
 {
@@ -52,6 +53,34 @@ namespace UnitTests.FileFormats.CSV
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
             Assert.Equal(1, TestObject.NumberOfRows);
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
+        }
+
+        [Test]
+        public void Load4()
+        {
+            Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV();
+            TestObject.Parse("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
+            Assert.Equal(1, TestObject.NumberOfRows);
+            Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
+        }
+
+        [Test]
+        public void ToDataTable()
+        {
+            DataTable TestObject = new Utilities.FileFormats.CSV.CSV("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38").ToDataTable();
+            Assert.Equal(2, TestObject.Rows.Count);
+            Assert.Equal("Year", TestObject.Columns[0].ColumnName);
+            Assert.Equal("Make", TestObject.Columns[1].ColumnName);
+            Assert.Equal("Model", TestObject.Columns[2].ColumnName);
+            Assert.Equal("Length", TestObject.Columns[3].ColumnName);
+            Assert.Equal("1997", TestObject.Rows[0].ItemArray[0]);
+            Assert.Equal("Ford", TestObject.Rows[0].ItemArray[1]);
+            Assert.Equal("E350", TestObject.Rows[0].ItemArray[2]);
+            Assert.Equal("2.34", TestObject.Rows[0].ItemArray[3]);
+            Assert.Equal("2000", TestObject.Rows[1].ItemArray[0]);
+            Assert.Equal("Mercury", TestObject.Rows[1].ItemArray[1]);
+            Assert.Equal("Cougar", TestObject.Rows[1].ItemArray[2]);
+            Assert.Equal("2.38", TestObject.Rows[1].ItemArray[3]);
         }
     }
 }

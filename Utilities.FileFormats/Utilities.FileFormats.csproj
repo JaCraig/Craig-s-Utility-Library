@@ -110,6 +110,8 @@
     <Compile Include="FileFormats\Cisco\SoftKeyItem.cs" />
     <Compile Include="FileFormats\Cisco\Status.cs" />
     <Compile Include="FileFormats\Cisco\Text.cs" />
+    <Compile Include="FileFormats\ExtensionMethods\ExtensionMethods.cs" />
+    <Compile Include="FileFormats\GenericDelimited\GenericDelimited.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">

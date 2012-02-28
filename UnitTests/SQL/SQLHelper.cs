@@ -31,6 +31,7 @@ using System.IO;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Data;
+using Utilities.DataTypes.ExtensionMethods;
 
 namespace UnitTests.SQL
 {
@@ -346,6 +347,135 @@ namespace UnitTests.SQL
                 Helper.ExecuteNonQuery();
                 Assert.Equal(12345, Helper.GetParameter<long>("@ASD", 0, ParameterDirection.Output));
             }
+        }
+
+        [Test]
+        public void BulkCopy()
+        {
+            Guid TempGuid=Guid.NewGuid();
+            List<BulkCopyObject> Objects = new List<BulkCopyObject>();
+            for (int x = 0; x < 100; ++x)
+            {
+                BulkCopyObject TempObject = new BulkCopyObject();
+                TempObject.BigIntValue = 12345;
+                TempObject.BitValue = true;
+                TempObject.DateTimeValue = new DateTime(1999, 12, 31);
+                TempObject.DecimalValue = 1234.5678m;
+                TempObject.FloatValue = 12345.6534f;
+                TempObject.GUIDValue = TempGuid;
+                TempObject.ID = x+1;
+                TempObject.StringValue1 = "Test String";
+                TempObject.StringValue2 = "Test String";
+                Objects.Add(TempObject);
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteBulkCopy(Objects.ToDataTable(),"TestTable");
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader();
+                bool Inserted=false;
+                while (Helper.Read())
+                {
+                    Inserted=true;
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue1", ""));
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue2", ""));
+                    Assert.Equal(12345, Helper.GetParameter<long>("BigIntValue", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BitValue", false));
+                    Assert.Equal(1234.5678m, Helper.GetParameter<decimal>("DecimalValue", 0));
+                    Assert.Equal(12345.6534f, Helper.GetParameter<float>("FloatValue", 0));
+                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", Guid.Empty));
+                    Assert.Equal(new DateTime(1999, 12, 31), Helper.GetParameter<DateTime>("DateTimeValue", DateTime.Now));
+                }
+                if(!Inserted)
+                {
+                    Assert.Fail("Nothing was inserted");
+                }
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) as [ItemCount] FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader();
+                if (Helper.Read())
+                {
+                    Assert.Equal(100, Helper.GetParameter<int>("ItemCount", 0));
+                }
+                else
+                {
+                    Assert.Fail("Nothing was inserted");
+                }
+            }
+        }
+
+        [Test]
+        public void BulkCopy2()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            List<BulkCopyObject> Objects = new List<BulkCopyObject>();
+            for (int x = 0; x < 100; ++x)
+            {
+                BulkCopyObject TempObject = new BulkCopyObject();
+                TempObject.BigIntValue = 12345;
+                TempObject.BitValue = true;
+                TempObject.DateTimeValue = new DateTime(1999, 12, 31);
+                TempObject.DecimalValue = 1234.5678m;
+                TempObject.FloatValue = 12345.6534f;
+                TempObject.GUIDValue = TempGuid;
+                TempObject.ID = x + 1;
+                TempObject.StringValue1 = "Test String";
+                TempObject.StringValue2 = "Test String";
+                Objects.Add(TempObject);
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteBulkCopy(Objects, "TestTable");
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader();
+                bool Inserted = false;
+                while (Helper.Read())
+                {
+                    Inserted = true;
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue1", ""));
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue2", ""));
+                    Assert.Equal(12345, Helper.GetParameter<long>("BigIntValue", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BitValue", false));
+                    Assert.Equal(1234.5678m, Helper.GetParameter<decimal>("DecimalValue", 0));
+                    Assert.Equal(12345.6534f, Helper.GetParameter<float>("FloatValue", 0));
+                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", Guid.Empty));
+                    Assert.Equal(new DateTime(1999, 12, 31), Helper.GetParameter<DateTime>("DateTimeValue", DateTime.Now));
+                }
+                if (!Inserted)
+                {
+                    Assert.Fail("Nothing was inserted");
+                }
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) as [ItemCount] FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader();
+                if (Helper.Read())
+                {
+                    Assert.Equal(100, Helper.GetParameter<int>("ItemCount", 0));
+                }
+                else
+                {
+                    Assert.Fail("Nothing was inserted");
+                }
+            }
+        }
+
+        public class BulkCopyObject
+        {
+            public int ID{get;set;}
+            public string StringValue1{get;set;}
+            public string StringValue2{get;set;}
+            public long BigIntValue{get;set;}
+            public bool BitValue{get;set;}
+            public decimal DecimalValue{get;set;}
+            public float FloatValue{get;set;}
+            public DateTime DateTimeValue{get;set;}
+            public Guid GUIDValue { get; set; }
         }
 
         public void Dispose()

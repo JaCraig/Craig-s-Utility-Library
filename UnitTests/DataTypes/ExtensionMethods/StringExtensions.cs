@@ -188,5 +188,17 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("  ", "~".NextSequence());
             Assert.Equal("!", " ".NextSequence());
         }
+
+        [Test]
+        public void MaskRight()
+        {
+            Assert.Equal("5555######", "5555551010".MaskRight());
+        }
+
+        [Test]
+        public void MaskLeft()
+        {
+            Assert.Equal("####551010", "5555551010".MaskLeft());
+        }
     }
 }

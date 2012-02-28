@@ -25,6 +25,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System;
 using Utilities.DataTypes.ExtensionMethods;
+using System.IO;
+using Utilities.IO.ExtensionMethods;
+using System.Data;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -49,11 +52,7 @@ namespace Utilities.FileFormats.Delimited
         /// <param name="FileContent">File content</param>
         public Delimited(string FileContent)
         {
-            FileContent.ThrowIfNullOrEmpty("FileContent");
-            Regex TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
-            MatchCollection Matches = TempSplitter.Matches(FileContent);
-            Matches.Where(x => !string.IsNullOrEmpty(x.Value))
-                    .ForEach(x => Rows.Add(new Row(x.Value, Delimiter)));
+            Parse(FileContent);
         }
 
         #endregion
@@ -94,6 +93,63 @@ namespace Utilities.FileFormats.Delimited
         /// The delimiter used to seperate values (must be overridden)
         /// </summary>
         protected abstract string Delimiter { get; }
+
+        #endregion
+
+        #region Public Functions
+
+        /// <summary>
+        /// Parses file content and adds it to the delimited file
+        /// </summary>
+        /// <param name="FileContent">File content</param>
+        public void Parse(string FileContent)
+        {
+            FileContent.ThrowIfNullOrEmpty("FileContent");
+            Regex TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
+            MatchCollection Matches = TempSplitter.Matches(FileContent);
+            Matches.Where(x => !string.IsNullOrEmpty(x.Value))
+                    .ForEach(x => Rows.Add(new Row(x.Value, Delimiter)));
+        }
+
+        /// <summary>
+        /// Converts the delimited file to a DataTable
+        /// </summary>
+        /// <param name="FirstRowIsHeader">Determines if the first row should be treated as a header or not</param>
+        /// <param name="Headers">Headers for the columns if the first row is not a header</param>
+        /// <returns>The delimited file as a DataTable</returns>
+        public DataTable ToDataTable(bool FirstRowIsHeader = true, params string[] Headers)
+        {
+            DataTable ReturnValue = new DataTable();
+            if (FirstRowIsHeader)
+            {
+                foreach (Cell Cell in Rows[0].Cells)
+                    ReturnValue.Columns.Add(Cell.Value);
+            }
+            else
+            {
+                foreach (string HeaderValue in Headers)
+                    ReturnValue.Columns.Add(HeaderValue);
+            }
+            for (int y = FirstRowIsHeader ? 1 : 0; y < Rows.Count; ++y)
+            {
+                object[] TempRow = new object[ReturnValue.Columns.Count];
+                for (int x = 0; x < Rows[y].Cells.Count; ++x)
+                {
+                    TempRow[x] = Rows[y][x].Value;
+                }
+                ReturnValue.Rows.Add(TempRow);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Exports the delimited file to a specific location
+        /// </summary>
+        /// <param name="Location">Location to save the delimited file to</param>
+        public void ToFile(string Location)
+        {
+            new FileInfo(Location).Save(this.ToString());
+        }
 
         #endregion
 

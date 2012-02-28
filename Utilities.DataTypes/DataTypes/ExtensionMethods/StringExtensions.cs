@@ -429,6 +429,46 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region MaskLeft
+
+        /// <summary>
+        /// Masks characters to the left ending at a specific character
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="EndPosition">End position (counting from the left)</param>
+        /// <param name="Mask">Mask character to use</param>
+        /// <returns>The masked string</returns>
+        public static string MaskLeft(this string Input, int EndPosition = 4, char Mask = '#')
+        {
+            string Appending = "";
+            for (int x = 0; x < EndPosition; ++x)
+                Appending += Mask;
+            return Appending + Input.Remove(0, EndPosition);
+        }
+
+        #endregion
+
+        #region MaskRight
+
+        /// <summary>
+        /// Masks characters to the right starting at a specific character
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="StartPosition">Start position (counting from the left)</param>
+        /// <param name="Mask">Mask character to use</param>
+        /// <returns>The masked string</returns>
+        public static string MaskRight(this string Input, int StartPosition = 4, char Mask = '#')
+        {
+            if (StartPosition > Input.Length)
+                return Input;
+            string Appending = "";
+            for (int x = 0; x < Input.Length-StartPosition; ++x)
+                Appending += Mask;
+            return Input.Remove(StartPosition) + Appending;
+        }
+
+        #endregion
+
         #endregion
     }
 }

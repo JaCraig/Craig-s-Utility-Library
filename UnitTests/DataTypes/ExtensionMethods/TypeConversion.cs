@@ -158,6 +158,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.NotNull(new MyTestClass().TryTo<MyTestClass, IMyTestClass>());
             Assert.NotNull(((object)new MyTestClass()).TryTo<object, IMyTestClass>());
         }
+
+        [Test]
+        public void ToList()
+        {
+            List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
+            List<PreDataTable> Temp2 = Temp.ToDataTable().ToList<PreDataTable>();
+            Assert.Equal(Temp, Temp2);
+        }
     }
 
     public class MyTestClass:IMyTestClass

@@ -111,7 +111,9 @@
     <Compile Include="FileFormats\Cisco\Status.cs" />
     <Compile Include="FileFormats\Cisco\Text.cs" />
     <Compile Include="FileFormats\CSV\CSV.cs" />
+    <Compile Include="FileFormats\ExtensionMethods\ExtensionMethods.cs" />
     <Compile Include="FileFormats\FixedLength\FixedLength.cs" />
+    <Compile Include="FileFormats\GenericDelimited\GenericDelimited.cs" />
     <Compile Include="FileFormats\INI\INI.cs" />
     <Compile Include="FileFormats\PipeDelimited\PipeDelimited.cs" />
     <Compile Include="FileFormats\Zip\ZipFile.cs" />

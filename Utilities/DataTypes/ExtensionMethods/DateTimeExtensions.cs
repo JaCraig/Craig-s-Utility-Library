@@ -37,6 +37,52 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Extension Methods
 
+        #region AddWeeks
+
+        /// <summary>
+        /// Adds the number of weeks to the date
+        /// </summary>
+        /// <param name="Date">Date input</param>
+        /// <param name="NumberOfWeeks">Number of weeks to add</param>
+        /// <returns>The date after the number of weeks are added</returns>
+        public static DateTime AddWeeks(this DateTime Date,int NumberOfWeeks)
+        {
+            return Date.AddDays(NumberOfWeeks * 7);
+        }
+
+        #endregion
+
+        #region Age
+
+        /// <summary>
+        /// Calculates age based on date supplied
+        /// </summary>
+        /// <param name="Date">Birth date</param>
+        /// <param name="CalculateFrom">Date to calculate from</param>
+        /// <returns>The total age in years</returns>
+        public static int Age(this DateTime Date, DateTime CalculateFrom = default(DateTime))
+        {
+            if (CalculateFrom.IsDefault())
+                CalculateFrom = DateTime.Now;
+            return (CalculateFrom-Date).Years();
+        }
+
+        #endregion
+
+        #region BeginningOfDay
+
+        /// <summary>
+        /// Returns the beginning of the day
+        /// </summary>
+        /// <param name="Input">Input date</param>
+        /// <returns>The beginning of the day</returns>
+        public static DateTime BeginningOfDay(this DateTime Input)
+        {
+            return new DateTime(Input.Year, Input.Month, Input.Day, 0, 0, 0);
+        }
+
+        #endregion
+
         #region DaysInMonth
 
         /// <summary>
@@ -93,6 +139,20 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Date.ThrowIfNull("Date");
             return 7 - ((int)Date.DayOfWeek + 1);
+        }
+
+        #endregion
+
+        #region EndOfDay
+
+        /// <summary>
+        /// Returns the end of the day
+        /// </summary>
+        /// <param name="Input">Input date</param>
+        /// <returns>The end of the day</returns>
+        public static DateTime EndOfDay(this DateTime Input)
+        {
+            return new DateTime(Input.Year, Input.Month, Input.Day, 23, 59, 59);
         }
 
         #endregion
@@ -182,6 +242,20 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region IsToday
+
+        /// <summary>
+        /// Is this today?
+        /// </summary>
+        /// <param name="Date">Date to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsToday(this DateTime Date)
+        {
+            return (Date.Date.BeginningOfDay() == DateTime.Today);
+        }
+
+        #endregion
+
         #region IsWeekDay
 
         /// <summary>
@@ -254,6 +328,48 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Date.ThrowIfNull("Date");
             return (int)((Date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / TimeSpan.TicksPerSecond);
+        }
+
+        #endregion
+
+        #region SetTime
+
+        /// <summary>
+        /// Sets the time portion of a specific date
+        /// </summary>
+        /// <param name="Date">Date input</param>
+        /// <param name="Hour">Hour to set</param>
+        /// <param name="Minutes">Minutes to set</param>
+        /// <param name="Seconds">Seconds to set</param>
+        /// <returns>Sets the time portion of the specified date</returns>
+        public static DateTime SetTime(this DateTime Date, int Hour, int Minutes, int Seconds)
+        {
+            return Date.SetTime(new TimeSpan(Hour, Minutes, Seconds));
+        }
+
+        /// <summary>
+        /// Sets the time portion of a specific date
+        /// </summary>
+        /// <param name="Date">Date input</param>
+        /// <param name="Time">Time to set</param>
+        /// <returns>Sets the time portion of the specified date</returns>
+        public static DateTime SetTime(this DateTime Date, TimeSpan Time)
+        {
+            return Date.Date.Add(Time);
+        }
+
+        #endregion
+
+        #region UTCOffset
+
+        /// <summary>
+        /// Gets the UTC offset
+        /// </summary>
+        /// <param name="Date">Date to get the offset of</param>
+        /// <returns>UTC offset</returns>
+        public static double UTCOffset(this DateTime Date)
+        {
+            return (Date - Date.ToUniversalTime()).TotalHours;
         }
 
         #endregion

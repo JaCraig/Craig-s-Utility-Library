@@ -105,6 +105,18 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
+        public void BeginningOfDay()
+        {
+            Assert.Equal(new DateTime(1999, 1, 2), new DateTime(1999, 1, 2, 12, 1, 1).BeginningOfDay());
+        }
+
+        [Test]
+        public void EndOfDay()
+        {
+            Assert.Equal(new DateTime(1999, 1, 2, 23, 59, 59), new DateTime(1999, 1, 2, 12, 1, 1).EndOfDay());
+        }
+
+        [Test]
         public void ToUnix()
         {
             Assert.Equal(915166800, new DateTime(1999, 1, 1).ToUnix());
@@ -114,6 +126,36 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void FromUnix()
         {
             Assert.Equal(new DateTime(2009, 2, 13, 23, 31, 30), 1234567890.FromUnixTime());
+        }
+
+        [Test]
+        public void UTCOffset()
+        {
+            Assert.Equal(-5, new DateTime(1999, 1, 2, 23, 1, 1, DateTimeKind.Local).UTCOffset());
+        }
+
+        [Test]
+        public void Age()
+        {
+            Assert.Equal(41, new DateTime(1940, 1, 1).Age(new DateTime(1981, 1, 1)));
+        }
+
+        [Test]
+        public void IsToday()
+        {
+            Assert.True(DateTime.Now.IsToday());
+        }
+
+        [Test]
+        public void SetTime()
+        {
+            Assert.Equal(new DateTime(2009, 1, 1, 14, 2, 12), new DateTime(2009, 1, 1, 2, 3, 4).SetTime(14, 2, 12));
+        }
+
+        [Test]
+        public void AddWeeks()
+        {
+            Assert.Equal(new DateTime(2009, 1, 15, 2, 3, 4), new DateTime(2009, 1, 1, 2, 3, 4).AddWeeks(2));
         }
     }
 }

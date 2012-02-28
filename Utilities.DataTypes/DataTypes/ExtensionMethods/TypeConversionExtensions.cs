@@ -28,6 +28,7 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Collections.Generic;
 using Utilities.DataTypes.Comparison;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -304,6 +305,40 @@ namespace Utilities.DataTypes.ExtensionMethods
             SqlParameter Parameter = new SqlParameter();
             Parameter.SqlDbType = Type;
             return Parameter.DbType;
+        }
+
+        #endregion
+
+        #region ToList
+
+        /// <summary>
+        /// Attempts to convert the DataTable to a list of objects
+        /// </summary>
+        /// <typeparam name="T">Type the objects should be in the list</typeparam>
+        /// <param name="Data">DataTable to convert</param>
+        /// <param name="Creator">Function used to create each object</param>
+        /// <returns>The DataTable converted to a list of objects</returns>
+        public static System.Collections.Generic.List<T> ToList<T>(this DataTable Data, Func<T> Creator = null) where T : new()
+        {
+            if (Data.IsNull())
+                return new List<T>();
+            Creator = Creator.NullCheck(() => new T());
+            Type TType = typeof(T);
+            PropertyInfo[] Properties = TType.GetProperties();
+            System.Collections.Generic.List<T> Results = new System.Collections.Generic.List<T>();
+            for (int x = 0; x < Data.Rows.Count; ++x)
+            {
+                T RowObject = Creator();
+
+                for (int y = 0; y < Data.Columns.Count; ++y)
+                {
+                    PropertyInfo Property = Properties.FirstOrDefault(z => z.Name == Data.Columns[y].ColumnName);
+                    if (!Property.IsNull())
+                        Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]], new object[] { });
+                }
+                Results.Add(RowObject);
+            }
+            return Results;
         }
 
         #endregion

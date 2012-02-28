@@ -29,6 +29,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.DataTypes.Patterns;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.SQL
@@ -238,6 +239,41 @@ namespace Utilities.SQL
         public virtual SQLHelper Commit()
         {
             ExecutableCommand.Commit();
+            return this;
+        }
+
+        #endregion
+
+        #region ExecuteBulkCopy
+
+        /// <summary>
+        /// Does a bulk copy of the data (only usable on SQL Server)
+        /// </summary>
+        /// <param name="Data">Data to copy over</param>
+        /// <param name="DestinationTable">Table to copy the data to</param>
+        /// <param name="Options">Options used during the copy</param>
+        /// <returns>Returns this SQLHelper object</returns>
+        public virtual SQLHelper ExecuteBulkCopy<T>(IEnumerable<T> Data, string DestinationTable, SqlBulkCopyOptions Options = SqlBulkCopyOptions.Default)
+        {
+            return ExecuteBulkCopy(Data.ToDataTable(), DestinationTable, Options);
+        }
+
+        /// <summary>
+        /// Does a bulk copy of the data (only usable on SQL Server)
+        /// </summary>
+        /// <param name="Data">Data to copy over</param>
+        /// <param name="DestinationTable">Table to copy the data to</param>
+        /// <param name="Options">Options used during the copy</param>
+        /// <returns>Returns this SQLHelper object</returns>
+        public virtual SQLHelper ExecuteBulkCopy(DataTable Data, string DestinationTable, SqlBulkCopyOptions Options = SqlBulkCopyOptions.Default)
+        {
+            using (SqlBulkCopy Copier = new SqlBulkCopy(Connection.ConnectionString, Options))
+            {
+                foreach (DataColumn Column in Data.Columns)
+                    Copier.ColumnMappings.Add(Column.ColumnName, Column.ColumnName);
+                Copier.DestinationTableName = DestinationTable;
+                Copier.WriteToServer(Data);
+            }
             return this;
         }
 

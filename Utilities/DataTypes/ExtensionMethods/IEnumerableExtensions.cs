@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Utilities.DataTypes.Comparison;
 using System.Threading.Tasks;
+using System.Reflection;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -282,6 +283,47 @@ namespace Utilities.DataTypes.ExtensionMethods
             List.ThrowIfNull("List");
             ConvertingFunction.ThrowIfNull("ConvertingFunction");
             return List.ForEach(ConvertingFunction).ToArray();
+        }
+
+        #endregion
+
+        #region ToDataTable
+
+        /// <summary>
+        /// Converts the IEnumerable to a DataTable
+        /// </summary>
+        /// <typeparam name="T">Type of the objects in the IEnumerable</typeparam>
+        /// <param name="List">List to convert</param>
+        /// <param name="Columns">Column names (if empty, uses property names)</param>
+        /// <returns>The list as a DataTable</returns>
+        public static DataTable ToDataTable<T>(this IEnumerable<T> List,params string[] Columns)
+        {
+            DataTable ReturnValue = new DataTable();
+            if (List.IsNullOrEmpty())
+                return ReturnValue;
+            PropertyInfo[] Properties = typeof(T).GetProperties();
+            if (Columns.Length == 0)
+            {
+                Columns = new string[Properties.Length];
+                for (int x = 0; x < Columns.Length; ++x)
+                {
+                    Columns[x] = Properties[x].Name;
+                }
+            }
+            for (int x = 0; x < Columns.Length; ++x)
+            {
+                ReturnValue.Columns.Add(Columns[x], Properties.First(z => z.Name == Columns[x]).PropertyType);
+            }
+            object[] Row = new object[Columns.Length];
+            foreach (T Item in List)
+            {
+                for (int x = 0; x < Row.Length; ++x)
+                {
+                    Row[x] = Properties.First(z => z.Name == Columns[x]).GetValue(Item, new object[] { });
+                }
+                ReturnValue.Rows.Add(Row);
+            }
+            return ReturnValue;
         }
 
         #endregion

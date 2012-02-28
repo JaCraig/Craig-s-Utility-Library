@@ -153,6 +153,20 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
+        public void ToDataTable()
+        {
+            List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
+            Assert.DoesNotThrow<Exception>(() => Temp.ToDataTable());
+            DataTable Temp2 = Temp.ToDataTable();
+            Assert.Equal(1, Temp2.Rows[0].ItemArray[0]);
+            Assert.Equal("A", Temp2.Rows[0].ItemArray[1]);
+            Assert.Equal(2, Temp2.Rows[1].ItemArray[0]);
+            Assert.Equal("B", Temp2.Rows[1].ItemArray[1]);
+            Assert.Equal(3, Temp2.Rows[2].ItemArray[0]);
+            Assert.Equal("C", Temp2.Rows[2].ItemArray[1]);
+        }
+
+        [Test]
         public void ToStringTest()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
@@ -202,6 +216,28 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Temp2.TryAllParallel(x => Results2.Add(x == 0 ? 4 : x.Value + 1), x => Results2.Add(5));
             Assert.Equal(6, Results2.Count);
             Assert.Equal(22, Results2.Sum());
+        }
+    }
+
+    public class PreDataTable
+    {
+        public virtual int ID { get; set; }
+        public virtual string Value { get; set; }
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode() + Value.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is PreDataTable))
+                return false;
+            return GetHashCode() == obj.GetHashCode();
         }
     }
 }

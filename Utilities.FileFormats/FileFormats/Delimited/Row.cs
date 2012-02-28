@@ -44,6 +44,15 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="Delimiter">Delimiter to parse the individual cells</param>
+        public Row(string Delimiter)
+        {
+            this.Delimiter = Delimiter;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         /// <param name="Content">Content of the row</param>
         /// <param name="Delimiter">Delimiter to parse the individual cells</param>
         public Row(string Content, string Delimiter)
