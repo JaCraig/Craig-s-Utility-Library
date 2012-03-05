@@ -334,7 +334,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 {
                     PropertyInfo Property = Properties.FirstOrDefault(z => z.Name == Data.Columns[y].ColumnName);
                     if (!Property.IsNull())
-                        Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]], new object[] { });
+                        Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]].TryTo(Property.PropertyType, null), new object[] { });
                 }
                 Results.Add(RowObject);
             }
@@ -400,25 +400,62 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             try
             {
+                return (R)Object.TryTo(typeof(R), DefaultValue);
+                //if (Object.IsNullOrDBNull())
+                //    return DefaultValue;
+                //if ((Object as string).IsNotNull())
+                //{
+                //    string ObjectValue = Object as string;
+                //    if (typeof(R).IsEnum)
+                //        return (R)System.Enum.Parse(typeof(R), ObjectValue, true);
+                //    if (ObjectValue.IsNullOrEmpty())
+                //        return DefaultValue;
+                //}
+                //if ((Object as IConvertible).IsNotNull())
+                //    return (R)Convert.ChangeType(Object, typeof(R));
+                //if (typeof(R).IsAssignableFrom(Object.GetType()))
+                //    return (R)(object)Object;
+                //TypeConverter Converter = TypeDescriptor.GetConverter(Object.GetType());
+                //if (Converter.CanConvertTo(typeof(R)))
+                //    return (R)Converter.ConvertTo(Object, typeof(R));
+                //if ((Object as string).IsNotNull())
+                //    return Object.ToString().TryTo<string, R>(DefaultValue);
+            }
+            catch { }
+            return DefaultValue;
+        }
+
+        /// <summary>
+        /// Attempts to convert the object to another type and returns the value
+        /// </summary>
+        /// <typeparam name="T">Type to convert from</typeparam>
+        /// <param name="ResultType">Result type</param>
+        /// <param name="Object">Object to convert</param>
+        /// <param name="DefaultValue">Default value to return if there is an issue or it can't be converted</param>
+        /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
+        public static object TryTo<T>(this T Object, Type ResultType, object DefaultValue = null)
+        {
+            try
+            {
                 if (Object.IsNullOrDBNull())
                     return DefaultValue;
                 if ((Object as string).IsNotNull())
                 {
                     string ObjectValue = Object as string;
-                    if (typeof(R).IsEnum)
-                        return (R)System.Enum.Parse(typeof(R), ObjectValue, true);
+                    if (ResultType.IsEnum)
+                        return System.Enum.Parse(ResultType, ObjectValue, true);
                     if (ObjectValue.IsNullOrEmpty())
                         return DefaultValue;
                 }
                 if ((Object as IConvertible).IsNotNull())
-                    return (R)Convert.ChangeType(Object, typeof(R));
-                if (typeof(R).IsAssignableFrom(Object.GetType()))
-                    return (R)(object)Object;
+                    return Convert.ChangeType(Object, ResultType);
+                if (ResultType.IsAssignableFrom(Object.GetType()))
+                    return Object;
                 TypeConverter Converter = TypeDescriptor.GetConverter(Object.GetType());
-                if (Converter.CanConvertTo(typeof(R)))
-                    return (R)Converter.ConvertTo(Object, typeof(R));
+                if (Converter.CanConvertTo(ResultType))
+                    return Converter.ConvertTo(Object, ResultType);
                 if ((Object as string).IsNotNull())
-                    return Object.ToString().TryTo<string, R>(DefaultValue);
+                    return Object.ToString().TryTo<string>(ResultType, DefaultValue);
             }
             catch { }
             return DefaultValue;
