@@ -41,6 +41,32 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region ElementsBetween
+
+        /// <summary>
+        /// Returns elements starting at the index and ending at the end index
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">List to search</param>
+        /// <param name="Start">Start index (inclusive)</param>
+        /// <param name="End">End index (exclusive)</param>
+        /// <returns>The items between the start and end index</returns>
+        public static IEnumerable<T> ElementsBetween<T>(this IEnumerable<T> List, int Start,int End)
+        {
+            if (List.IsNull())
+                return List;
+            if (End > List.Count())
+                End = List.Count();
+            if (Start < 0)
+                Start = 0;
+            System.Collections.Generic.List<T> ReturnList = new System.Collections.Generic.List<T>();
+            for (int x = Start; x < End; ++x)
+                ReturnList.Add(List.ElementAt(x));
+            return ReturnList;
+        }
+
+        #endregion
+
         #region Exists
 
         /// <summary>
@@ -61,6 +87,32 @@ namespace Utilities.DataTypes.ExtensionMethods
                     return true;
             }
             return false;
+        }
+
+        #endregion
+
+        #region First
+
+        /// <summary>
+        /// Returns the first X number of items from the list
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Count">Numbers of items to return</param>
+        /// <returns>The first X items from the list</returns>
+        public static IEnumerable<T> First<T>(this IEnumerable<T> List, int Count)
+        {
+            List.ThrowIfNull("List");
+            if (Count > List.Count())
+                Count = List.Count();
+            if (Count < 0)
+                Count = 0;
+            System.Collections.Generic.List<T> ReturnValues = new System.Collections.Generic.List<T>();
+            for (int x = 0; x < Count; ++x)
+            {
+                ReturnValues.Add(List.ElementAt(x));
+            }
+            return ReturnValues;
         }
 
         #endregion
@@ -244,6 +296,32 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> Value)
         {
             return Value.IsNull() || Value.Count() == 0;
+        }
+
+        #endregion
+
+        #region Last
+
+        /// <summary>
+        /// Returns the last X number of items from the list
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Count">Numbers of items to return</param>
+        /// <returns>The last X items from the list</returns>
+        public static IEnumerable<T> Last<T>(this IEnumerable<T> List, int Count)
+        {
+            List.ThrowIfNull("List");
+            if (Count > List.Count())
+                Count = List.Count();
+            if (Count < 0)
+                Count = 0;
+            System.Collections.Generic.List<T> ReturnValues = new System.Collections.Generic.List<T>();
+            for (int x = List.Count() - Count; x < List.Count(); ++x)
+            {
+                ReturnValues.Add(List.ElementAt(x));
+            }
+            return ReturnValues;
         }
 
         #endregion

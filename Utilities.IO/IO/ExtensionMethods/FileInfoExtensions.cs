@@ -159,6 +159,24 @@ namespace Utilities.IO.ExtensionMethods
 
         #endregion
 
+        #region Execute
+
+        /// <summary>
+        /// Executes the file
+        /// </summary>
+        /// <param name="File">File to execute</param>
+        /// <returns>The process object created when the executable is started</returns>
+        public static System.Diagnostics.Process Execute(this FileInfo File)
+        {
+            if (File == null)
+                throw new ArgumentNullException("File");
+            if(!File.Exists)
+                throw new FileNotFoundException("File note found",File.FullName);
+            return System.Diagnostics.Process.Start(File.FullName);
+        }
+
+        #endregion
+
         #region Save
 
         /// <summary>

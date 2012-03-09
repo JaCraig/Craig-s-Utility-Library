@@ -65,8 +65,18 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void RemoveTest()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            TestObject.Remove((x) => x % 2 == 0);
-            Assert.Equal(3, TestObject.Count);
+            TestObject = TestObject.Remove((x) => x % 2 == 0).ToList();
+            Assert.Equal(3, TestObject.Count());
+            foreach (int Item in TestObject)
+                Assert.False(Item % 2 == 0);
+        }
+
+        [Test]
+        public void RemoveTest2()
+        {
+            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            TestObject = TestObject.Remove((x) => x % 2 == 0).ToArray();
+            Assert.Equal(3, TestObject.Count());
             foreach (int Item in TestObject)
                 Assert.False(Item % 2 == 0);
         }
@@ -75,7 +85,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void AddRange()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            Assert.Equal(14, TestObject.AddRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
+            List<int> Results = TestObject.AddRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).ToList();
+            Assert.Equal(14, Results.Count);
+            Assert.Equal(6, TestObject.Count);
         }
 
         [Test]
@@ -83,6 +95,17 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
             Assert.Equal(0, TestObject.RemoveRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
+        }
+
+        [Test]
+        public void RemoveRange2()
+        {
+            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            Assert.Equal(0, TestObject.RemoveRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
+            TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            Assert.Equal(1, TestObject.RemoveRange<int>(new int[] { 1, 2, 3, 4, 5 }).Count);
+            TestObject = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6 };
+            Assert.Equal(1, TestObject.RemoveRange<int>(new int[] { 1, 2, 3, 4, 5 }).Count);
         }
     }
 }

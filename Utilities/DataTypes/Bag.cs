@@ -22,6 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 
 #endregion
 
@@ -40,6 +42,24 @@ namespace Utilities.DataTypes
         public Bag()
         {
             Items = new Dictionary<T, int>();
+        }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Adds a list of items to the bag
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection</typeparam>
+        /// <param name="Items">Items to add</param>
+        /// <returns>The bag with the added items</returns>
+        public Bag<T> AddRange(IEnumerable<T> Items)
+        {
+            if (Items.IsNull())
+                return this;
+            Items.ForEach(x => this.Add(x));
+            return this;
         }
 
         #endregion
@@ -71,7 +91,7 @@ namespace Utilities.DataTypes
         /// <param name="arrayIndex">Not used</param>
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            Array.Copy(this.Items.ToList().ToArray(x => x.Key), 0, array, arrayIndex, this.Count);
         }
 
         public virtual int Count

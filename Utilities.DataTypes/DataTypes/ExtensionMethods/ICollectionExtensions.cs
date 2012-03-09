@@ -71,6 +71,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             Collection.ThrowIfNull("Collection");
             if (Items.IsNull())
                 return Collection;
+            Collection = Collection.ToList();
             Items.ForEach(x => Collection.Add(x));
             return Collection;
         }
@@ -158,8 +159,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static ICollection<T> Remove<T>(this ICollection<T> Collection, Func<T, bool> Predicate)
         {
             Collection.ThrowIfNull("Collection");
-            Collection.Where(Predicate).ToList().ForEach(x => Collection.Remove(x));
-            return Collection;
+            return Collection.Where(x => !Predicate(x)).ToList();
         }
 
         #endregion
@@ -178,8 +178,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             Collection.ThrowIfNull("Collection");
             if (Items.IsNull())
                 return Collection;
-            Items.ForEach<T>(x => Collection.Remove(x));
-            return Collection;
+            return Collection.Where(x => !Items.Contains(x)).ToList();
         }
 
         #endregion

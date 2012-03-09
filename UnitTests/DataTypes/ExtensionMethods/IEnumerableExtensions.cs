@@ -217,6 +217,27 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(6, Results2.Count);
             Assert.Equal(22, Results2.Sum());
         }
+
+        [Test]
+        public void ElementsBetween()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.ElementsBetween(0, 3));
+        }
+
+        [Test]
+        public void First()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.First(3));
+        }
+
+        [Test]
+        public void Last()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Equal(new int[] { 1, 2, 3 }.ToList(), Temp.Last(3));
+        }
     }
 
     public class PreDataTable
