@@ -401,25 +401,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             try
             {
                 return (R)Object.TryTo(typeof(R), DefaultValue);
-                //if (Object.IsNullOrDBNull())
-                //    return DefaultValue;
-                //if ((Object as string).IsNotNull())
-                //{
-                //    string ObjectValue = Object as string;
-                //    if (typeof(R).IsEnum)
-                //        return (R)System.Enum.Parse(typeof(R), ObjectValue, true);
-                //    if (ObjectValue.IsNullOrEmpty())
-                //        return DefaultValue;
-                //}
-                //if ((Object as IConvertible).IsNotNull())
-                //    return (R)Convert.ChangeType(Object, typeof(R));
-                //if (typeof(R).IsAssignableFrom(Object.GetType()))
-                //    return (R)(object)Object;
-                //TypeConverter Converter = TypeDescriptor.GetConverter(Object.GetType());
-                //if (Converter.CanConvertTo(typeof(R)))
-                //    return (R)Converter.ConvertTo(Object, typeof(R));
-                //if ((Object as string).IsNotNull())
-                //    return Object.ToString().TryTo<string, R>(DefaultValue);
             }
             catch { }
             return DefaultValue;

@@ -46,24 +46,6 @@ namespace Utilities.DataTypes
 
         #endregion
 
-        #region Functions
-
-        /// <summary>
-        /// Adds a list of items to the bag
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the collection</typeparam>
-        /// <param name="Items">Items to add</param>
-        /// <returns>The bag with the added items</returns>
-        public Bag<T> AddRange(IEnumerable<T> Items)
-        {
-            if (Items.IsNull())
-                return this;
-            Items.ForEach(x => this.Add(x));
-            return this;
-        }
-
-        #endregion
-
         #region ICollection<T> Members
 
         public virtual void Add(T item)

@@ -242,6 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FileFormats\TestFile.ini" />
+    <None Include="Data\Test.bat" />
     <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>

@@ -40,6 +40,34 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region Center
+
+        /// <summary>
+        /// Centers the input string (if it's longer than the length) and pads it using the padding string
+        /// </summary>
+        /// <param name="Input"></param>
+        /// <param name="Length"></param>
+        /// <param name="Padding"></param>
+        /// <returns>The centered string</returns>
+        public static string Center(this string Input,int Length,string Padding=" ")
+        {
+            if (Input.IsNullOrEmpty())
+                Input = "";
+            string Output = "";
+            for (int x = 0; x < (Length - Input.Length) / 2; ++x)
+            {
+                Output += Padding[x % Padding.Length];
+            }
+            Output += Input;
+            for (int x = 0; x < (Length - Input.Length) / 2; ++x)
+            {
+                Output += Padding[x % Padding.Length];
+            }
+            return Output;
+        }
+
+        #endregion
+
         #region Encode
 
         /// <summary>

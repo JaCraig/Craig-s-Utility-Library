@@ -26,6 +26,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Globalization;
+using System.Collections.Generic;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -79,6 +81,21 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static DateTime BeginningOfDay(this DateTime Input)
         {
             return new DateTime(Input.Year, Input.Month, Input.Day, 0, 0, 0);
+        }
+
+        #endregion
+
+        #region ConvertToTimeZone
+
+        /// <summary>
+        /// Converts a DateTime to a specific time zone
+        /// </summary>
+        /// <param name="Date">DateTime to convert</param>
+        /// <param name="TimeZone">Time zone to convert to</param>
+        /// <returns>The converted DateTime</returns>
+        public static DateTime ConvertToTimeZone(this DateTime Date, TimeZoneInfo TimeZone)
+        {
+            return TimeZoneInfo.ConvertTime(Date, TimeZone);
         }
 
         #endregion
@@ -313,6 +330,20 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Date.ThrowIfNull("Date");
             return Date.FirstDayOfWeek(CultureInfo.NullCheck(CultureInfo.CurrentCulture)).AddDays(6);
+        }
+
+        #endregion
+
+        #region LocalTimeZone
+
+        /// <summary>
+        /// Gets the local time zone
+        /// </summary>
+        /// <param name="Date">Date object</param>
+        /// <returns>The local time zone</returns>
+        public static TimeZoneInfo LocalTimeZone(this DateTime Date)
+        {
+            return TimeZoneInfo.Local;
         }
 
         #endregion

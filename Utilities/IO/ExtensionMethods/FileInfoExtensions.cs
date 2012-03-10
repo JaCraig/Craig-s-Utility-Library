@@ -26,6 +26,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Utilities.IO.ExtensionMethods.Enums;
+using System.Diagnostics;
+using System.Security;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -165,14 +167,48 @@ namespace Utilities.IO.ExtensionMethods
         /// Executes the file
         /// </summary>
         /// <param name="File">File to execute</param>
+        /// <param name="Arguments">Arguments sent to the executable</param>
+        /// <param name="Domain">Domain of the user</param>
+        /// <param name="Password">Password of the user</param>
+        /// <param name="User">User to run the file as</param>
+        /// <param name="WindowStyle">Window style</param>
+        /// <param name="WorkingDirectory">Working directory</param>
         /// <returns>The process object created when the executable is started</returns>
-        public static System.Diagnostics.Process Execute(this FileInfo File)
+        public static System.Diagnostics.Process Execute(this FileInfo File, string Arguments = "", string Domain = "", string User = "", string Password = "", ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal, string WorkingDirectory = "")
         {
             if (File == null)
                 throw new ArgumentNullException("File");
-            if(!File.Exists)
-                throw new FileNotFoundException("File note found",File.FullName);
-            return System.Diagnostics.Process.Start(File.FullName);
+            if (!File.Exists)
+                throw new FileNotFoundException("File note found", File.FullName);
+            ProcessStartInfo Info = new ProcessStartInfo();
+            Info.Arguments = Arguments;
+            Info.Domain = Domain;
+            Info.Password = new SecureString();
+            foreach (char Char in Password)
+                Info.Password.AppendChar(Char);
+            Info.UserName = User;
+            Info.WindowStyle = WindowStyle;
+            Info.UseShellExecute = false;
+            Info.WorkingDirectory = string.IsNullOrEmpty(WorkingDirectory) ? File.DirectoryName : WorkingDirectory;
+            return File.Execute(Info);
+        }
+
+        /// <summary>
+        /// Executes the file
+        /// </summary>
+        /// <param name="File">File to execute</param>
+        /// <param name="Info">Info used to execute the file</param>
+        /// <returns>The process object created when the executable is started</returns>
+        public static System.Diagnostics.Process Execute(this FileInfo File, ProcessStartInfo Info)
+        {
+            if (File == null)
+                throw new ArgumentNullException("File");
+            if (!File.Exists)
+                throw new FileNotFoundException("File note found", File.FullName);
+            if (Info == null)
+                throw new ArgumentNullException("Info");
+            Info.FileName = File.FullName;
+            return System.Diagnostics.Process.Start(Info);
         }
 
         #endregion

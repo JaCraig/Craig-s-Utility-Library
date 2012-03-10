@@ -200,5 +200,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.Equal("####551010", "5555551010".MaskLeft());
         }
+
+        [Test]
+        public void Center()
+        {
+            Assert.Equal("****This is a test****", "This is a test".Center(22, "*"));
+            Assert.Equal("abcaThis is a testabca", "This is a test".Center(22, "abc"));
+        }
     }
 }

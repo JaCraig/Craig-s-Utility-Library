@@ -157,5 +157,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.Equal(new DateTime(2009, 1, 15, 2, 3, 4), new DateTime(2009, 1, 1, 2, 3, 4).AddWeeks(2));
         }
+
+        [Test]
+        public void ConvertToTimeZone()
+        {
+            Assert.Equal(new DateTime(2009, 1, 14, 23, 3, 4), new DateTime(2009, 1, 15, 2, 3, 4).ConvertToTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")));
+        }
     }
 }

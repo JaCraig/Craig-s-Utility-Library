@@ -26,6 +26,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Net;
+using System.Diagnostics;
+using System.Security;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -35,6 +37,22 @@ namespace Utilities.IO.ExtensionMethods
     /// </summary>
     public static class UriExtensions
     {
+        #region Execute
+
+        /// <summary>
+        /// opens the URL in a browser
+        /// </summary>
+        /// <param name="URL">URL to execute</param>
+        /// <returns>The process object created when opening the URL</returns>
+        public static System.Diagnostics.Process Execute(this Uri URL)
+        {
+            if (URL == null)
+                throw new ArgumentNullException("URL");
+            return System.Diagnostics.Process.Start(URL.ToString());
+        }
+
+        #endregion
+
         #region Read
 
         /// <summary>

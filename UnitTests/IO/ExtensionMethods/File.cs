@@ -74,6 +74,12 @@ namespace UnitTests.IO.ExtensionMethods
             new FileInfo(@".\Testing\Test2.txt").SaveAsync("This is yet another test", SaveAsyncCallback, null);
         }
 
+        [Test]
+        public void Execute()
+        {
+            Assert.DoesNotThrow<Exception>(() => new FileInfo(@"..\..\Data\Test.bat").Execute(WindowStyle: System.Diagnostics.ProcessWindowStyle.Hidden));
+        }
+
         public void SaveAsyncCallback(IAsyncResult Result)
         {
             Assert.True(Result.IsCompleted);

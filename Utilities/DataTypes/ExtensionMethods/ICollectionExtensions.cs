@@ -71,7 +71,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             Collection.ThrowIfNull("Collection");
             if (Items.IsNull())
                 return Collection;
-            Collection = Collection.ToList();
             Items.ForEach(x => Collection.Add(x));
             return Collection;
         }

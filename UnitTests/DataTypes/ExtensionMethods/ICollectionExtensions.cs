@@ -87,7 +87,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
             List<int> Results = TestObject.AddRange<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).ToList();
             Assert.Equal(14, Results.Count);
-            Assert.Equal(6, TestObject.Count);
+            Assert.Equal(14, TestObject.Count);
         }
 
         [Test]
