@@ -29,6 +29,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Utilities.DataTypes.Formatters;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -374,6 +376,24 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region Pluralize
+
+        /// <summary>
+        /// Pluralizes a word
+        /// </summary>
+        /// <param name="Word">Word to pluralize</param>
+        /// <param name="Culture">Culture info used to pluralize the word (defaults to current culture)</param>
+        /// <returns>The word pluralized</returns>
+        public static string Pluralize(this string Word,CultureInfo Culture=null)
+        {
+            if(Word.IsNullOrEmpty())
+                return "";
+            Culture=Culture.NullCheck(CultureInfo.CurrentCulture);
+            return PluralizationService.CreateService(Culture).Pluralize(Word);
+        }
+
+        #endregion
+
         #region IsUnicode
 
         /// <summary>
@@ -420,6 +440,24 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Input.ThrowIfNullOrEmpty("Input");
             return Regex.Replace(Input, Format, OutputFormat, Options);
+        }
+
+        #endregion
+
+        #region Singularize
+
+        /// <summary>
+        /// Singularizes a word
+        /// </summary>
+        /// <param name="Word">Word to singularize</param>
+        /// <param name="Culture">Culture info used to singularize the word (defaults to current culture)</param>
+        /// <returns>The word singularized</returns>
+        public static string Singularize(this string Word, CultureInfo Culture = null)
+        {
+            if (Word.IsNullOrEmpty())
+                return "";
+            Culture = Culture.NullCheck(CultureInfo.CurrentCulture);
+            return PluralizationService.CreateService(Culture).Singularize(Word);
         }
 
         #endregion

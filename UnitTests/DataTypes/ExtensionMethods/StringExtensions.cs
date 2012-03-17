@@ -207,5 +207,23 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("****This is a test****", "This is a test".Center(22, "*"));
             Assert.Equal("abcaThis is a testabca", "This is a test".Center(22, "abc"));
         }
+
+        [Test]
+        public void Pluralize()
+        {
+            Assert.Equal("sheep", "sheep".Pluralize());
+            Assert.Equal("children", "child".Pluralize());
+            Assert.Equal("mice", "mice".Pluralize());
+            Assert.Equal("tests", "test".Pluralize());
+        }
+
+        [Test]
+        public void Singularize()
+        {
+            Assert.Equal("sheep", "sheep".Singularize());
+            Assert.Equal("child", "children".Singularize());
+            Assert.Equal("mouse", "mice".Singularize());
+            Assert.Equal("test", "tests".Singularize());
+        }
     }
 }

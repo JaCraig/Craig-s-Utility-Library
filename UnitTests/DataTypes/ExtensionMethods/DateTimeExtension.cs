@@ -163,5 +163,38 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.Equal(new DateTime(2009, 1, 14, 23, 3, 4), new DateTime(2009, 1, 15, 2, 3, 4).ConvertToTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")));
         }
+
+        [Test]
+        public void FirstDayOfYear()
+        {
+            Assert.Equal(new DateTime(2009, 1, 1, 0, 0, 0), new DateTime(2009, 1, 15, 2, 3, 4).FirstDayOfYear());
+        }
+
+        [Test]
+        public void LastDayOfYear()
+        {
+            Assert.Equal(new DateTime(2009, 12, 31, 0, 0, 0), new DateTime(2009, 1, 15, 2, 3, 4).LastDayOfYear());
+        }
+
+        [Test]
+        public void FirstDayOfQuarter()
+        {
+            Assert.Equal(new DateTime(2009, 1, 1), new DateTime(2009, 1, 15, 2, 3, 4).FirstDayOfQuarter());
+            Assert.Equal(new DateTime(2009, 4, 1), new DateTime(2009, 4, 1, 2, 3, 4).FirstDayOfQuarter());
+            Assert.Equal(new DateTime(2009, 1, 1), new DateTime(2009, 3, 29, 2, 3, 4).FirstDayOfQuarter());
+            Assert.Equal(new DateTime(2009, 7, 1), new DateTime(2009, 7, 1, 2, 3, 4).FirstDayOfQuarter());
+            Assert.Equal(new DateTime(2009, 4, 1), new DateTime(2009, 6, 29, 2, 3, 4).FirstDayOfQuarter());
+            Assert.Equal(new DateTime(2009, 10, 1), new DateTime(2009, 10, 1, 2, 3, 4).FirstDayOfQuarter());
+            Assert.Equal(new DateTime(2009, 7, 1), new DateTime(2009, 9, 29, 2, 3, 4).FirstDayOfQuarter());
+            Assert.Equal(new DateTime(2010, 1, 1), new DateTime(2010, 1, 1).FirstDayOfQuarter());
+            Assert.Equal(new DateTime(2009, 10, 1), new DateTime(2009, 12, 31, 2, 3, 4).FirstDayOfQuarter());
+        }
+
+        [Test]
+        public void LastDayOfQuarter()
+        {
+            Assert.Equal(new DateTime(2009, 3, 31), new DateTime(2009, 1, 15, 2, 3, 4).LastDayOfQuarter());
+            Assert.Equal(new DateTime(2009, 6, 30), new DateTime(2009, 4, 1, 2, 3, 4).LastDayOfQuarter());
+        }
     }
 }

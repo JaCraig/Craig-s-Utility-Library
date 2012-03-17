@@ -189,6 +189,30 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region FirstDayOfQuarter
+
+        /// <summary>
+        /// Returns the first day of a quarter based on the date sent in
+        /// </summary>
+        /// <param name="Date">Date to get the first day of the quarter from</param>
+        /// <param name="Quarter1Start">Beginning of the first quarter (defaults to the beginning of the year)</param>
+        /// <returns>The first day of the quarter</returns>
+        public static DateTime FirstDayOfQuarter(this DateTime Date, DateTime Quarter1Start = default(DateTime))
+        {
+            Date.ThrowIfNull("Date");
+            if (Quarter1Start.IsDefault())
+                Quarter1Start = Date.FirstDayOfYear();
+            if (Date.Between(Quarter1Start, Quarter1Start.AddMonths(3).AddDays(-1).EndOfDay()))
+                return Quarter1Start.Date;
+            else if (Date.Between(Quarter1Start.AddMonths(3), Quarter1Start.AddMonths(6).AddDays(-1).EndOfDay()))
+                return Quarter1Start.AddMonths(3).Date;
+            else if (Date.Between(Quarter1Start.AddMonths(6), Quarter1Start.AddMonths(9).AddDays(-1).EndOfDay()))
+                return Quarter1Start.AddMonths(6).Date;
+            return Quarter1Start.AddMonths(9).Date;
+        }
+
+        #endregion
+
         #region FirstDayOfWeek
 
         /// <summary>
@@ -201,6 +225,21 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Date.ThrowIfNull("Date");
             return Date.AddDays(CultureInfo.NullCheck(CultureInfo.CurrentCulture).DateTimeFormat.FirstDayOfWeek - Date.DayOfWeek).Date;
+        }
+
+        #endregion
+
+        #region FirstDayOfYear
+
+        /// <summary>
+        /// Returns the first day of a year based on the date sent in
+        /// </summary>
+        /// <param name="Date">Date to get the first day of the year from</param>
+        /// <returns>The first day of the year</returns>
+        public static DateTime FirstDayOfYear(this DateTime Date)
+        {
+            Date.ThrowIfNull("Date");
+            return new DateTime(Date.Year, 1, 1);
         }
 
         #endregion
@@ -318,6 +357,30 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region LastDayOfQuarter
+
+        /// <summary>
+        /// Returns the last day of a quarter based on the date sent in
+        /// </summary>
+        /// <param name="Date">Date to get the last day of the quarter from</param>
+        /// <param name="Quarter1Start">Beginning of the first quarter (defaults to the beginning of the year)</param>
+        /// <returns>The last day of the quarter</returns>
+        public static DateTime LastDayOfQuarter(this DateTime Date, DateTime Quarter1Start = default(DateTime))
+        {
+            Date.ThrowIfNull("Date");
+            if (Quarter1Start.IsDefault())
+                Quarter1Start = Date.FirstDayOfYear();
+            if (Date.Between(Quarter1Start, Quarter1Start.AddMonths(3).AddDays(-1).EndOfDay()))
+                return Quarter1Start.AddMonths(3).AddDays(-1).Date;
+            else if (Date.Between(Quarter1Start.AddMonths(3), Quarter1Start.AddMonths(6).AddDays(-1).EndOfDay()))
+                return Quarter1Start.AddMonths(6).AddDays(-1).Date;
+            else if (Date.Between(Quarter1Start.AddMonths(6), Quarter1Start.AddMonths(9).AddDays(-1).EndOfDay()))
+                return Quarter1Start.AddMonths(9).AddDays(-1).Date;
+            return Quarter1Start.AddYears(1).AddDays(-1).Date;
+        }
+
+        #endregion
+
         #region LastDayOfWeek
 
         /// <summary>
@@ -330,6 +393,21 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Date.ThrowIfNull("Date");
             return Date.FirstDayOfWeek(CultureInfo.NullCheck(CultureInfo.CurrentCulture)).AddDays(6);
+        }
+
+        #endregion
+
+        #region LastDayOfYear
+
+        /// <summary>
+        /// Returns the last day of the year based on the date sent in
+        /// </summary>
+        /// <param name="Date">Date to get the last day from</param>
+        /// <returns>The last day of the year</returns>
+        public static DateTime LastDayOfYear(this DateTime Date)
+        {
+            Date.ThrowIfNull("Date");
+            return new DateTime(Date.Year, 12, 31);
         }
 
         #endregion
