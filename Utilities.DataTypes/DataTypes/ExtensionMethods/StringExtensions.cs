@@ -42,6 +42,34 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region AlphaCharactersOnly
+
+        /// <summary>
+        /// Keeps only alpha characters
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>the string only containing alpha characters</returns>
+        public static string AlphaCharactersOnly(this string Input)
+        {
+            return Input.KeepFilterText("[a-zA-Z]");
+        }
+
+        #endregion
+
+        #region AlphaNumericOnly
+
+        /// <summary>
+        /// Keeps only alphanumeric characters
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>the string only containing alphanumeric characters</returns>
+        public static string AlphaNumericOnly(this string Input)
+        {
+            return Input.KeepFilterText("[a-zA-Z0-9]");
+        }
+
+        #endregion
+
         #region Center
 
         /// <summary>
@@ -91,6 +119,61 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region ExpandTabs
+
+        /// <summary>
+        /// Expands tabs and replaces them with spaces
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="TabSize">Number of spaces</param>
+        /// <returns>The input string, with the tabs replaced with spaces</returns>
+        public static string ExpandTabs(this string Input, int TabSize = 4)
+        {
+            if (Input.IsNullOrEmpty())
+                return Input;
+            string Spaces = "";
+            for (int x = 0; x < TabSize; ++x)
+                Spaces += " ";
+            return Input.Replace("\t", Spaces);
+        }
+
+        #endregion
+
+        #region FilterOutText
+
+        /// <summary>
+        /// Removes the filter text from the input.
+        /// </summary>
+        /// <param name="Input">Input text</param>
+        /// <param name="Filter">Regex expression of text to filter out</param>
+        /// <returns>The input text minus the filter text.</returns>
+        public static string FilterOutText(this string Input, string Filter)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            return string.IsNullOrEmpty(Filter) ? Input : new Regex(Filter).Replace(Input, "");
+        }
+
+        #endregion
+
+        #region FormatString
+
+        /// <summary>
+        /// Formats a string based on a format string passed in:
+        /// # = digits
+        /// @ = alpha characters
+        /// \ = escape char
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Format">Format of the output string</param>
+        /// <returns>The formatted string</returns>
+        public static string FormatString(this string Input, string Format)
+        {
+            return new GenericStringFormatter().Format(Input, Format);
+        }
+
+        #endregion
+
         #region FromBase64
 
         /// <summary>
@@ -119,6 +202,42 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region IsUnicode
+
+        /// <summary>
+        /// Determines if a string is unicode
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>True if it's unicode, false otherwise</returns>
+        public static bool IsUnicode(this string Input)
+        {
+            return string.IsNullOrEmpty(Input) ? true : Regex.Replace(Input, @"[^\u0000-\u007F]", "") != Input;
+        }
+
+        #endregion
+
+        #region KeepFilterText
+
+        /// <summary>
+        /// Removes everything that is not in the filter text from the input.
+        /// </summary>
+        /// <param name="Input">Input text</param>
+        /// <param name="Filter">Regex expression of text to keep</param>
+        /// <returns>The input text minus everything not in the filter text.</returns>
+        public static string KeepFilterText(this string Input, string Filter)
+        {
+            if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Filter))
+                return "";
+            Regex TempRegex = new Regex(Filter);
+            MatchCollection Collection = TempRegex.Matches(Input);
+            StringBuilder Builder = new StringBuilder();
+            foreach (Match Match in Collection)
+                Builder.Append(Match.Value);
+            return Builder.ToString();
+        }
+
+        #endregion
+
         #region Left
 
         /// <summary>
@@ -130,6 +249,159 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string Left(this string Input, int Length)
         {
             return string.IsNullOrEmpty(Input) ? "" : Input.Substring(0, Input.Length > Length ? Length : Input.Length);
+        }
+
+        #endregion
+
+        #region MaskLeft
+
+        /// <summary>
+        /// Masks characters to the left ending at a specific character
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="EndPosition">End position (counting from the left)</param>
+        /// <param name="Mask">Mask character to use</param>
+        /// <returns>The masked string</returns>
+        public static string MaskLeft(this string Input, int EndPosition = 4, char Mask = '#')
+        {
+            string Appending = "";
+            for (int x = 0; x < EndPosition; ++x)
+                Appending += Mask;
+            return Appending + Input.Remove(0, EndPosition);
+        }
+
+        #endregion
+
+        #region MaskRight
+
+        /// <summary>
+        /// Masks characters to the right starting at a specific character
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="StartPosition">Start position (counting from the left)</param>
+        /// <param name="Mask">Mask character to use</param>
+        /// <returns>The masked string</returns>
+        public static string MaskRight(this string Input, int StartPosition = 4, char Mask = '#')
+        {
+            if (StartPosition > Input.Length)
+                return Input;
+            string Appending = "";
+            for (int x = 0; x < Input.Length - StartPosition; ++x)
+                Appending += Mask;
+            return Input.Remove(StartPosition) + Appending;
+        }
+
+        #endregion
+
+        #region NextSequence
+
+        /// <summary>
+        /// Function that is useful for generating a string in a series. so a becomes b, b becomes c, etc. 
+        /// and after hitting the max character, it goes to two characters (so ~ becomes aa, then ab, ac, etc).
+        /// </summary>
+        /// <param name="Sequence">Current sequence</param>
+        /// <returns>The next item in the sequence</returns>
+        public static string NextSequence(this string Sequence, char Min = ' ', char Max = '~')
+        {
+            byte[] Values = Sequence.ToByteArray();
+            byte MinValue = (byte)Min;
+            byte MaxValue = (byte)Max;
+            byte Remainder = 1;
+            for (int x = Sequence.Length - 1; x >= 0; --x)
+            {
+                Values[x] += Remainder;
+                Remainder = 0;
+                if (Values[x] > MaxValue)
+                {
+                    Remainder = 1;
+                    Values[x] = (byte)Min;
+                }
+                else
+                    break;
+            }
+            if (Remainder == 1)
+                return Min + Values.ToEncodedString();
+            return Values.ToEncodedString();
+        }
+
+        #endregion
+
+        #region NumericOnly
+
+        /// <summary>
+        /// Keeps only numeric characters
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="KeepNumericPunctuation">Determines if decimal places should be kept</param>
+        /// <returns>the string only containing numeric characters</returns>
+        public static string NumericOnly(this string Input, bool KeepNumericPunctuation = true)
+        {
+            return KeepNumericPunctuation ? Input.KeepFilterText(@"[0-9\.]") : Input.KeepFilterText("[0-9]");
+        }
+
+        #endregion
+
+        #region NumberTimesOccurs
+
+        /// <summary>
+        /// returns the number of times a string occurs within the text
+        /// </summary>
+        /// <param name="Input">input text</param>
+        /// <param name="Match">The string to match (can be regex)</param>
+        /// <returns>The number of times the string occurs</returns>
+        public static int NumberTimesOccurs(this string Input, string Match)
+        {
+            return string.IsNullOrEmpty(Input) ? 0 : new Regex(Match).Matches(Input).Count;
+        }
+
+        #endregion
+
+        #region Pluralize
+
+        /// <summary>
+        /// Pluralizes a word
+        /// </summary>
+        /// <param name="Word">Word to pluralize</param>
+        /// <param name="Culture">Culture info used to pluralize the word (defaults to current culture)</param>
+        /// <returns>The word pluralized</returns>
+        public static string Pluralize(this string Word, CultureInfo Culture = null)
+        {
+            if (Word.IsNullOrEmpty())
+                return "";
+            Culture = Culture.NullCheck(CultureInfo.CurrentCulture);
+            return PluralizationService.CreateService(Culture).Pluralize(Word);
+        }
+
+        #endregion
+
+        #region RegexFormat
+
+        /// <summary>
+        /// Uses a regex to format the input string
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Format">Regex string used to</param>
+        /// <param name="OutputFormat">Output format</param>
+        /// <param name="Options">Regex options</param>
+        /// <returns>The input string formatted by using the regex string</returns>
+        public static string RegexFormat(this string Input, string Format, string OutputFormat, RegexOptions Options = RegexOptions.None)
+        {
+            Input.ThrowIfNullOrEmpty("Input");
+            return Regex.Replace(Input, Format, OutputFormat, Options);
+        }
+
+        #endregion
+
+        #region Reverse
+
+        /// <summary>
+        /// Reverses a string
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>The reverse of the input string</returns>
+        public static string Reverse(this string Input)
+        {
+            return new string(Input.Reverse<char>().ToArray());
         }
 
         #endregion
@@ -148,6 +420,71 @@ namespace Utilities.DataTypes.ExtensionMethods
                 return "";
             Length = Input.Length > Length ? Length : Input.Length;
             return Input.Substring(Input.Length - Length, Length);
+        }
+
+        #endregion
+
+        #region Singularize
+
+        /// <summary>
+        /// Singularizes a word
+        /// </summary>
+        /// <param name="Word">Word to singularize</param>
+        /// <param name="Culture">Culture info used to singularize the word (defaults to current culture)</param>
+        /// <returns>The word singularized</returns>
+        public static string Singularize(this string Word, CultureInfo Culture = null)
+        {
+            if (Word.IsNullOrEmpty())
+                return "";
+            Culture = Culture.NullCheck(CultureInfo.CurrentCulture);
+            return PluralizationService.CreateService(Culture).Singularize(Word);
+        }
+
+        #endregion
+
+        #region StripLeft
+
+        /// <summary>
+        /// Strips out any of the characters specified starting on the left side of the input string (stops when a character not in the list is found)
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Characters">Characters to string (defaults to a space)</param>
+        /// <returns>The Input string with specified characters stripped out</returns>
+        public static string StripLeft(this string Input, string Characters = " ")
+        {
+            if (Input.IsNullOrEmpty())
+                return Input;
+            if (Characters.IsNullOrEmpty())
+                return Input;
+            return Input.SkipWhile(x => Characters.Contains(x)).ToString(x => x.ToString(), "");
+        }
+
+        #endregion
+
+        #region StripRight
+
+        /// <summary>
+        /// Strips out any of the characters specified starting on the right side of the input string (stops when a character not in the list is found)
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Characters">Characters to string (defaults to a space)</param>
+        /// <returns>The Input string with specified characters stripped out</returns>
+        public static string StripRight(this string Input, string Characters = " ")
+        {
+            if (Input.IsNullOrEmpty())
+                return Input;
+            if (Characters.IsNullOrEmpty())
+                return Input;
+            int Position = Input.Length - 1;
+            for (int x = Input.Length - 1; x >= 0; --x)
+            {
+                if (!Characters.Contains(Input[x]))
+                {
+                    Position = x + 1;
+                    break;
+                }
+            }
+            return Input.Left(Position);
         }
 
         #endregion
@@ -261,276 +598,6 @@ namespace Utilities.DataTypes.ExtensionMethods
                 }
             }
             return Input;
-        }
-
-        #endregion
-
-        #region NumberTimesOccurs
-
-        /// <summary>
-        /// returns the number of times a string occurs within the text
-        /// </summary>
-        /// <param name="Input">input text</param>
-        /// <param name="Match">The string to match (can be regex)</param>
-        /// <returns>The number of times the string occurs</returns>
-        public static int NumberTimesOccurs(this string Input, string Match)
-        {
-            return string.IsNullOrEmpty(Input) ? 0 : new Regex(Match).Matches(Input).Count;
-        }
-
-        #endregion
-
-        #region Reverse
-
-        /// <summary>
-        /// Reverses a string
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>The reverse of the input string</returns>
-        public static string Reverse(this string Input)
-        {
-            return new string(Input.Reverse<char>().ToArray());
-        }
-
-        #endregion
-
-        #region FilterOutText
-
-        /// <summary>
-        /// Removes the filter text from the input.
-        /// </summary>
-        /// <param name="Input">Input text</param>
-        /// <param name="Filter">Regex expression of text to filter out</param>
-        /// <returns>The input text minus the filter text.</returns>
-        public static string FilterOutText(this string Input, string Filter)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            return string.IsNullOrEmpty(Filter) ? Input : new Regex(Filter).Replace(Input, "");
-        }
-
-        #endregion
-
-        #region KeepFilterText
-
-        /// <summary>
-        /// Removes everything that is not in the filter text from the input.
-        /// </summary>
-        /// <param name="Input">Input text</param>
-        /// <param name="Filter">Regex expression of text to keep</param>
-        /// <returns>The input text minus everything not in the filter text.</returns>
-        public static string KeepFilterText(this string Input, string Filter)
-        {
-            if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Filter))
-                return "";
-            Regex TempRegex = new Regex(Filter);
-            MatchCollection Collection = TempRegex.Matches(Input);
-            StringBuilder Builder = new StringBuilder();
-            foreach (Match Match in Collection)
-                Builder.Append(Match.Value);
-            return Builder.ToString();
-        }
-
-        #endregion
-
-        #region AlphaNumericOnly
-
-        /// <summary>
-        /// Keeps only alphanumeric characters
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>the string only containing alphanumeric characters</returns>
-        public static string AlphaNumericOnly(this string Input)
-        {
-            return Input.KeepFilterText("[a-zA-Z0-9]");
-        }
-
-        #endregion
-
-        #region AlphaCharactersOnly
-
-        /// <summary>
-        /// Keeps only alpha characters
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>the string only containing alpha characters</returns>
-        public static string AlphaCharactersOnly(this string Input)
-        {
-            return Input.KeepFilterText("[a-zA-Z]");
-        }
-
-        #endregion
-
-        #region NumericOnly
-
-        /// <summary>
-        /// Keeps only numeric characters
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="KeepNumericPunctuation">Determines if decimal places should be kept</param>
-        /// <returns>the string only containing numeric characters</returns>
-        public static string NumericOnly(this string Input, bool KeepNumericPunctuation = true)
-        {
-            return KeepNumericPunctuation ? Input.KeepFilterText(@"[0-9\.]") : Input.KeepFilterText("[0-9]");
-        }
-
-        #endregion
-
-        #region Pluralize
-
-        /// <summary>
-        /// Pluralizes a word
-        /// </summary>
-        /// <param name="Word">Word to pluralize</param>
-        /// <param name="Culture">Culture info used to pluralize the word (defaults to current culture)</param>
-        /// <returns>The word pluralized</returns>
-        public static string Pluralize(this string Word,CultureInfo Culture=null)
-        {
-            if(Word.IsNullOrEmpty())
-                return "";
-            Culture=Culture.NullCheck(CultureInfo.CurrentCulture);
-            return PluralizationService.CreateService(Culture).Pluralize(Word);
-        }
-
-        #endregion
-
-        #region IsUnicode
-
-        /// <summary>
-        /// Determines if a string is unicode
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>True if it's unicode, false otherwise</returns>
-        public static bool IsUnicode(this string Input)
-        {
-            return string.IsNullOrEmpty(Input) ? true : Regex.Replace(Input, @"[^\u0000-\u007F]", "") != Input;
-        }
-
-        #endregion
-
-        #region FormatString
-
-        /// <summary>
-        /// Formats a string based on a format string passed in:
-        /// # = digits
-        /// @ = alpha characters
-        /// \ = escape char
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="Format">Format of the output string</param>
-        /// <returns>The formatted string</returns>
-        public static string FormatString(this string Input, string Format)
-        {
-            return new GenericStringFormatter().Format(Input, Format);
-        }
-
-        #endregion
-
-        #region RegexFormat
-
-        /// <summary>
-        /// Uses a regex to format the input string
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="Format">Regex string used to</param>
-        /// <param name="OutputFormat">Output format</param>
-        /// <param name="Options">Regex options</param>
-        /// <returns>The input string formatted by using the regex string</returns>
-        public static string RegexFormat(this string Input, string Format, string OutputFormat, RegexOptions Options = RegexOptions.None)
-        {
-            Input.ThrowIfNullOrEmpty("Input");
-            return Regex.Replace(Input, Format, OutputFormat, Options);
-        }
-
-        #endregion
-
-        #region Singularize
-
-        /// <summary>
-        /// Singularizes a word
-        /// </summary>
-        /// <param name="Word">Word to singularize</param>
-        /// <param name="Culture">Culture info used to singularize the word (defaults to current culture)</param>
-        /// <returns>The word singularized</returns>
-        public static string Singularize(this string Word, CultureInfo Culture = null)
-        {
-            if (Word.IsNullOrEmpty())
-                return "";
-            Culture = Culture.NullCheck(CultureInfo.CurrentCulture);
-            return PluralizationService.CreateService(Culture).Singularize(Word);
-        }
-
-        #endregion
-
-        #region NextSequence
-
-        /// <summary>
-        /// Function that is useful for generating a string in a series. so a becomes b, b becomes c, etc. 
-        /// and after hitting the max character, it goes to two characters (so ~ becomes aa, then ab, ac, etc).
-        /// </summary>
-        /// <param name="Sequence">Current sequence</param>
-        /// <returns>The next item in the sequence</returns>
-        public static string NextSequence(this string Sequence,char Min=' ',char Max='~')
-        {
-            byte[] Values = Sequence.ToByteArray();
-            byte MinValue = (byte)Min;
-            byte MaxValue = (byte)Max;
-            byte Remainder = 1;
-            for (int x = Sequence.Length - 1; x >= 0; --x)
-            {
-                Values[x] += Remainder;
-                Remainder = 0;
-                if (Values[x] > MaxValue)
-                {
-                    Remainder = 1;
-                    Values[x] = (byte)Min;
-                }
-                else
-                    break;
-            }
-            if (Remainder == 1)
-                return Min + Values.ToEncodedString();
-            return Values.ToEncodedString();
-        }
-
-        #endregion
-
-        #region MaskLeft
-
-        /// <summary>
-        /// Masks characters to the left ending at a specific character
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="EndPosition">End position (counting from the left)</param>
-        /// <param name="Mask">Mask character to use</param>
-        /// <returns>The masked string</returns>
-        public static string MaskLeft(this string Input, int EndPosition = 4, char Mask = '#')
-        {
-            string Appending = "";
-            for (int x = 0; x < EndPosition; ++x)
-                Appending += Mask;
-            return Appending + Input.Remove(0, EndPosition);
-        }
-
-        #endregion
-
-        #region MaskRight
-
-        /// <summary>
-        /// Masks characters to the right starting at a specific character
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="StartPosition">Start position (counting from the left)</param>
-        /// <param name="Mask">Mask character to use</param>
-        /// <returns>The masked string</returns>
-        public static string MaskRight(this string Input, int StartPosition = 4, char Mask = '#')
-        {
-            if (StartPosition > Input.Length)
-                return Input;
-            string Appending = "";
-            for (int x = 0; x < Input.Length-StartPosition; ++x)
-                Appending += Mask;
-            return Input.Remove(StartPosition) + Appending;
         }
 
         #endregion

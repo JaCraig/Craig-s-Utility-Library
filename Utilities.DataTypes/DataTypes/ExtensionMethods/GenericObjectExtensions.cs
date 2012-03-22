@@ -221,6 +221,46 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region ThrowIfTrue
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for the item
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static T ThrowIfTrue<T>(this T Item, Predicate<T> Predicate, Exception Exception)
+        {
+            Predicate.ThrowIfNull("Predicate");
+            Exception.ThrowIfNull("Exception");
+            if (Predicate(Item))
+                throw Exception;
+            return Item;
+        }
+
+        #endregion
+
+        #region ThrowIfFalse
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is false for the item
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is false</param>
+        /// <returns>the original Item</returns>
+        public static T ThrowIfFalse<T>(this T Item, Predicate<T> Predicate, Exception Exception)
+        {
+            Predicate.ThrowIfNull("Predicate");
+            Exception.ThrowIfNull("Exception");
+            return Item.ThrowIfTrue(x => !Predicate(x), Exception);
+        }
+
+        #endregion
+
         #endregion
     }
 }

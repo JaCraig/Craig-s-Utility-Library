@@ -53,7 +53,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Test]
         public void Exists()
         {
-            IEnumerable<int> Temp =  new int[] { 1, 2, 3 }.ToList();
+            IEnumerable<int> Temp = new int[] { 1, 2, 3 }.ToList();
             Assert.True(Temp.Exists(x => x > 2));
             Assert.False(Temp.Exists(x => x < 1));
         }
@@ -170,7 +170,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ToStringTest()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.Equal("0,0,1,2,3", Temp.ToString(Seperator:","));
+            Assert.Equal("0,0,1,2,3", Temp.ToString(Seperator: ","));
             Assert.NotEqual("0,0,1,2,3", Temp.ToString());
         }
 
@@ -179,6 +179,52 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.True(Temp.TrueForAll(x => x < 4));
+        }
+
+        [Test]
+        public void ThrowIfTrueForAll()
+        {
+            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Throws<Exception>(() => Temp.ThrowIfTrueForAll(new Exception(), x => x < 4));
+            Assert.DoesNotThrow<Exception>(() => Temp.ThrowIfTrueForAll(new Exception(), x => x > 4));
+        }
+
+        [Test]
+        public void ThrowIfFalseForAll()
+        {
+            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Throws<Exception>(() => Temp.ThrowIfFalseForAll(new Exception(), x => x > 4));
+            Assert.DoesNotThrow<Exception>(() => Temp.ThrowIfFalseForAll(new Exception(), x => x < 4));
+        }
+
+        [Test]
+        public void ThrowIfTrueForAny()
+        {
+            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Throws<Exception>(() => Temp.ThrowIfTrueForAny(new Exception(), x => x < 1));
+            Assert.DoesNotThrow<Exception>(() => Temp.ThrowIfTrueForAny(new Exception(), x => x > 4));
+        }
+
+        [Test]
+        public void ThrowIfFalseForAny()
+        {
+            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.Throws<Exception>(() => Temp.ThrowIfFalseForAny(new Exception(), x => x > 2));
+            Assert.DoesNotThrow<Exception>(() => Temp.ThrowIfFalseForAny(new Exception(), x => x < 4));
+        }
+
+        [Test]
+        public void TrueForAny()
+        {
+            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.True(Temp.TrueForAny(x => x < 4, x => x == 0));
+        }
+
+        [Test]
+        public void TrueForEach2()
+        {
+            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
+            Assert.True(Temp.TrueForAll(x => x < 4, x => x >= 0));
         }
 
         [Test]

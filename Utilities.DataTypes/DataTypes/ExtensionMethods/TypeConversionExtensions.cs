@@ -169,10 +169,12 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Item">The object to check</param>
         /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
         /// <param name="Name">Name of the argument</param>
-        public static void ThrowIfDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
         {
             if (Item.IsDefault(EqualityComparer))
                 throw new ArgumentNullException(Name);
+            return Item;
         }
 
         #endregion
@@ -184,10 +186,12 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Item">The object to check</param>
         /// <param name="Name">Name of the argument</param>
-        public static void ThrowIfNull(this object Item, string Name)
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNull<T>(this T Item, string Name)
         {
             if (Item.IsNull())
                 throw new ArgumentNullException(Name);
+            return Item;
         }
 
         #endregion
@@ -200,10 +204,12 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <typeparam name="T">Item type</typeparam>
         /// <param name="Item">The object to check</param>
         /// <param name="Name">Name of the argument</param>
-        public static void ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
+        /// <returns>Returns Item</returns>
+        public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
         {
             if (Item.IsNullOrEmpty())
                 throw new ArgumentNullException(Name);
+            return Item;
         }
 
         #endregion
@@ -215,10 +221,12 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Item">The object to check</param>
         /// <param name="Name">Name of the argument</param>
-        public static void ThrowIfNullOrDBNull(this object Item, string Name)
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNullOrDBNull<T>(this T Item, string Name)
         {
             if (Item.IsNullOrDBNull())
                 throw new ArgumentNullException(Name);
+            return Item;
         }
 
         #endregion

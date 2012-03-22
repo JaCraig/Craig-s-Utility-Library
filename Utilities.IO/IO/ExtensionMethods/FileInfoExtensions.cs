@@ -103,6 +103,22 @@ namespace Utilities.IO.ExtensionMethods
 
         #endregion
 
+        #region DriveInfo
+
+        /// <summary>
+        /// Gets the drive information for a file
+        /// </summary>
+        /// <param name="File">The file to get the drive info of</param>
+        /// <returns>The drive info connected to the file</returns>
+        public static DriveInfo DriveInfo(this FileInfo File)
+        {
+            if (File == null)
+                throw new ArgumentNullException("File");
+            return File.Directory.DriveInfo();
+        }
+
+        #endregion
+
         #region Read
 
         /// <summary>

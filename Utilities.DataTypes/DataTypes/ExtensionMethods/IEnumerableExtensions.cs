@@ -91,6 +91,48 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region FalseForAll
+
+        /// <summary>
+        /// Determines if the predicates are false for each item in a list
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the list</typeparam>
+        /// <param name="List">IEnumerable to look through</param>
+        /// <param name="Predicates">Predicates to use to check the IEnumerable</param>
+        /// <returns>True if they all fail all of the predicates, false otherwise</returns>
+        public static bool FalseForAll<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
+        {
+            List.ThrowIfNull("List");
+            Predicates.ThrowIfNull("Predicate");
+            foreach (Predicate<T> Predicate in Predicates)
+                if (List.All(x => Predicate(x)))
+                    return false;
+            return true;
+        }
+
+        #endregion
+
+        #region FalseForAny
+
+        /// <summary>
+        /// Determines if the predicates are false for any item in a list
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the list</typeparam>
+        /// <param name="List">IEnumerable to look through</param>
+        /// <param name="Predicates">Predicates to use to check the IEnumerable</param>
+        /// <returns>True if any fail any of the predicates, false otherwise</returns>
+        public static bool FalseForAny<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
+        {
+            List.ThrowIfNull("List");
+            Predicates.ThrowIfNull("Predicate");
+            foreach (Predicate<T> Predicate in Predicates)
+                if (List.Any(x => !Predicate(x)))
+                    return true;
+            return false;
+        }
+
+        #endregion
+
         #region First
 
         /// <summary>
@@ -346,6 +388,94 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region ThrowIfTrueForAll
+
+        /// <summary>
+        /// Throws the specified exception if the predicates are true for all items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <typeparam name="E">Exception type</typeparam>
+        /// <param name="Items">The list</param>
+        /// <param name="Predicates">Predicates to check</param>
+        /// <param name="Exception">Exception to throw if predicates are true</param>
+        /// <returns>the original IEnumerable</returns>
+        public static IEnumerable<T> ThrowIfTrueForAll<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
+        {
+            Predicates.ThrowIfNull("Predicates");
+            Exception.ThrowIfNull("Exception");
+            if (Items.TrueForAll(Predicates))
+                throw Exception;
+            return Items;
+        }
+
+        #endregion
+
+        #region ThrowIfFalseForAll
+
+        /// <summary>
+        /// Throws the specified exception if the predicates are false for all items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <typeparam name="E">Exception type</typeparam>
+        /// <param name="Items">The list</param>
+        /// <param name="Predicates">Predicates to check</param>
+        /// <param name="Exception">Exception to throw if predicates are false</param>
+        /// <returns>the original list</returns>
+        public static IEnumerable<T> ThrowIfFalseForAll<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
+        {
+            Predicates.ThrowIfNull("Predicates");
+            Exception.ThrowIfNull("Exception");
+            if (Items.FalseForAll(Predicates))
+                throw Exception;
+            return Items;
+        }
+
+        #endregion
+
+        #region ThrowIfTrueForAny
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for any items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <typeparam name="E">Exception type</typeparam>
+        /// <param name="Items">The list</param>
+        /// <param name="Predicates">Predicates to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original IEnumerable</returns>
+        public static IEnumerable<T> ThrowIfTrueForAny<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
+        {
+            Predicates.ThrowIfNull("Predicates");
+            Exception.ThrowIfNull("Exception");
+            if (Items.TrueForAny(Predicates))
+                throw Exception;
+            return Items;
+        }
+
+        #endregion
+
+        #region ThrowIfFalseForAny
+
+        /// <summary>
+        /// Throws the specified exception if the predicates are false for any items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <typeparam name="E">Exception type</typeparam>
+        /// <param name="Items">The list</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicates are false</param>
+        /// <returns>the original list</returns>
+        public static IEnumerable<T> ThrowIfFalseForAny<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
+        {
+            Predicates.ThrowIfNull("Predicates");
+            Exception.ThrowIfNull("Exception");
+            if (Items.FalseForAny(Predicates))
+                throw Exception;
+            return Items;
+        }
+
+        #endregion
+
         #region ToArray
 
         /// <summary>
@@ -436,17 +566,41 @@ namespace Utilities.DataTypes.ExtensionMethods
         #region TrueForAll
 
         /// <summary>
-        /// Determines if a predicate is true for each item in a list
+        /// Determines if the predicates are true for each item in a list
         /// </summary>
         /// <typeparam name="T">The type of the items in the list</typeparam>
         /// <param name="List">IEnumerable to look through</param>
-        /// <param name="Predicate">Predicate to use to check the IEnumerable</param>
-        /// <returns>True if they all pass the predicate, false otherwise</returns>
-        public static bool TrueForAll<T>(this IEnumerable<T> List, Predicate<T> Predicate)
+        /// <param name="Predicates">Predicates to use to check the IEnumerable</param>
+        /// <returns>True if they all pass all of the predicates, false otherwise</returns>
+        public static bool TrueForAll<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
         {
             List.ThrowIfNull("List");
-            Predicate.ThrowIfNull("Predicate");
-            return !List.Any(x => !Predicate(x));
+            Predicates.ThrowIfNull("Predicate");
+            foreach (Predicate<T> Predicate in Predicates)
+                if (List.Any(x => !Predicate(x)))
+                    return false;
+            return true;
+        }
+
+        #endregion
+
+        #region TrueForAny
+
+        /// <summary>
+        /// Determines if the predicates are true for any item in a list
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the list</typeparam>
+        /// <param name="List">IEnumerable to look through</param>
+        /// <param name="Predicates">Predicates to use to check the IEnumerable</param>
+        /// <returns>True if any pass any of the predicates, false otherwise</returns>
+        public static bool TrueForAny<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
+        {
+            List.ThrowIfNull("List");
+            Predicates.ThrowIfNull("Predicate");
+            foreach (Predicate<T> Predicate in Predicates)
+                if (List.Any(x => Predicate(x)))
+                    return true;
+            return false;
         }
 
         #endregion

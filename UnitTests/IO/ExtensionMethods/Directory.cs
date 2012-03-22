@@ -66,6 +66,12 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal(0, new DirectoryInfo(@".\Testing").Size());
         }
 
+        [Test]
+        public void DriveInfo()
+        {
+            Assert.NotNull(new DirectoryInfo(@".\Testing").DriveInfo());
+        }
+
         public void Dispose()
         {
             new DirectoryInfo(@".\Testing").DeleteAll();

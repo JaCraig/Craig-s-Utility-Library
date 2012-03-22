@@ -62,6 +62,12 @@ namespace UnitTests.IO.ExtensionMethods
         }
 
         [Test]
+        public void DriveInfo()
+        {
+            Assert.NotNull(new FileInfo(@".\Testing\Test.txt").DriveInfo());
+        }
+
+        [Test]
         public void Save()
         {
             new FileInfo(@".\Testing\Test2.txt").Save("This is yet another test");

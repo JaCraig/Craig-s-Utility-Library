@@ -103,6 +103,20 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(0, ((MyTestClass)null).Return(x => x.A).Return(x => x.B));
         }
 
+        [Test]
+        public void ThrowIfTrue()
+        {
+            Assert.DoesNotThrow<Exception>(() => "ASDF".ThrowIfTrue(x => string.IsNullOrEmpty(x), new Exception()));
+            Assert.Throws<Exception>(() => "ASDF".ThrowIfTrue(x => !string.IsNullOrEmpty(x), new Exception()));
+        }
+
+        [Test]
+        public void ThrowIfFalse()
+        {
+            Assert.Throws<Exception>(() => "ASDF".ThrowIfFalse(x => string.IsNullOrEmpty(x), new Exception()));
+            Assert.DoesNotThrow<Exception>(() => "ASDF".ThrowIfFalse(x => !string.IsNullOrEmpty(x), new Exception()));
+        }
+
         public void Test()
         {
             throw new Exception();

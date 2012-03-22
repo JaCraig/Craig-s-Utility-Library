@@ -146,6 +146,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
+        public void ExpandTabs()
+        {
+            Assert.Equal("The    brown    fox    is    awsome. But the blue fox is not. 2222", "The\tbrown\tfox\tis\tawsome. But the blue fox is not. 2222".ExpandTabs());
+        }
+
+        [Test]
         public void NumericOnly()
         {
             string Value = "The brown fox is awsome. But the blue fox is not. 2222";
@@ -178,6 +184,18 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void RegexFormat()
         {
             Assert.Equal("(555) 555-1010", "5555551010".RegexFormat(@"(\d{3})(\d{3})(\d{4})", "($1) $2-$3"));
+        }
+
+        [Test]
+        public void StripLeft()
+        {
+            Assert.Equal("1010", "5555551010".StripLeft("5432"));
+        }
+
+        [Test]
+        public void StripRight()
+        {
+            Assert.Equal("555555", "5555551010".StripRight("10"));
         }
 
         [Test]

@@ -220,6 +220,22 @@ namespace Utilities.IO.ExtensionMethods
 
         #endregion
 
+        #region DriveInfo
+
+        /// <summary>
+        /// Gets the drive information for a directory
+        /// </summary>
+        /// <param name="Directory">The directory to get the drive info of</param>
+        /// <returns>The drive info connected to the directory</returns>
+        public static DriveInfo DriveInfo(this DirectoryInfo Directory)
+        {
+            if (Directory == null)
+                throw new ArgumentNullException("Directory");
+            return new DriveInfo(Directory.Root.FullName);
+        }
+
+        #endregion
+
         #region Size
 
         /// <summary>
