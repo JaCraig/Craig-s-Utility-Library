@@ -255,6 +255,7 @@ namespace Utilities.ORM
         /// </summary>
         /// <param name="PageSize">Page size</param>
         /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Command">Command to get the page count of</param>
         /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
         public virtual int PageCount<ObjectType>(string Command, int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()

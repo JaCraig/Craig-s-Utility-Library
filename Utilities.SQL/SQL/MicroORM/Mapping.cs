@@ -412,6 +412,7 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         /// <param name="PageSize">Page size</param>
         /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Command">Command to get the page count of</param>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
         public virtual int PageCount(string Command, int PageSize = 25, params IParameter[] Parameters)
         {

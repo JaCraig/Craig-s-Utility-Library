@@ -2,7 +2,7 @@
 <package>
 	<metadata>
 		<id>CraigsUtilityLibrary-Profiler</id>
-		<version>3.0</version>
+		<version>3.1</version>
 		<title>Craig's Utility Library Profiler Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,8 +14,8 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.0" />
-			<dependency id="CraigsUtilityLibrary-Math" version="3.0" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.1" />
+			<dependency id="CraigsUtilityLibrary-Math" version="3.1" />
 		</dependencies>
 	</metadata>
 	<files>

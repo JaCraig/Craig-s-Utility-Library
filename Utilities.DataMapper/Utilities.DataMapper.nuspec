@@ -2,7 +2,7 @@
 <package>
 	<metadata>
 		<id>CraigsUtilityLibrary-DataMapper</id>
-		<version>3.0</version>
+		<version>3.1</version>
 		<title>Craig's Utility Library DataMapper Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,7 +14,7 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-Reflection" version="3.0" />
+			<dependency id="CraigsUtilityLibrary-Reflection" version="3.1" />
 		</dependencies>
 	</metadata>
 	<files>

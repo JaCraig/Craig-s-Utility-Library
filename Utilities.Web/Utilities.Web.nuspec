@@ -2,7 +2,7 @@
 <package>
 	<metadata>
 		<id>CraigsUtilityLibrary-Web</id>
-		<version>3.0</version>
+		<version>3.1</version>
 		<title>Craig's Utility Library Web Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,12 +14,12 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.0" />
-			<dependency id="CraigsUtilityLibrary-Encryption" version="3.0" />
-			<dependency id="CraigsUtilityLibrary-FileFormats" version="3.0" />
-			<dependency id="CraigsUtilityLibrary-IO" version="3.0" />
-			<dependency id="CraigsUtilityLibrary-Random" version="3.0" />
-			<dependency id="CraigsUtilityLibrary-Reflection" version="3.0" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.1" />
+			<dependency id="CraigsUtilityLibrary-Encryption" version="3.1" />
+			<dependency id="CraigsUtilityLibrary-FileFormats" version="3.1" />
+			<dependency id="CraigsUtilityLibrary-IO" version="3.1" />
+			<dependency id="CraigsUtilityLibrary-Random" version="3.1" />
+			<dependency id="CraigsUtilityLibrary-Reflection" version="3.1" />
 		</dependencies>
 	</metadata>
 	<files>
