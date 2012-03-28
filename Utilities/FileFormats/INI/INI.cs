@@ -159,6 +159,18 @@ namespace Utilities.FileFormats.INI
             return ReturnValue;
         }
 
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            foreach (string Header in FileContents.Keys)
+            {
+                Builder.Append("[" + Header + "]\r\n");
+                foreach (string Key in FileContents[Header].Keys)
+                    Builder.Append(Key + "=" + FileContents[Header][Key] + "\r\n");
+            }
+            return Builder.ToString();
+        }
+
         #endregion
 
         #region Private Functions
@@ -169,14 +181,7 @@ namespace Utilities.FileFormats.INI
         {
             if (string.IsNullOrEmpty(this.FileName))
                 return;
-            StringBuilder Builder = new StringBuilder();
-            foreach (string Header in FileContents.Keys)
-            {
-                Builder.Append("[" + Header + "]\r\n");
-                foreach (string Key in FileContents[Header].Keys)
-                    Builder.Append(Key + "=" + FileContents[Header][Key] + "\r\n");
-            }
-            new FileInfo(FileName).Save(Builder.ToString());
+            new FileInfo(FileName).Save(this.ToString());
         }
 
         /// <summary>
