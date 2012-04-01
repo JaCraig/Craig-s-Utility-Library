@@ -39,7 +39,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
     /// Reference class
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
-    /// <typeparam name="DataType">Data type</typeparam>
     public class StringReference<ClassType> : PropertyBase<ClassType, string, IReference<ClassType, string>>,
         IReference<ClassType, string>
         where ClassType : class,new()

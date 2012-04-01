@@ -144,6 +144,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// from an object type (used for static classes)
         /// </summary>
         /// <param name="ObjectType">Object type to dunp</param>
+        /// <param name="HTMLOutput">Should this be output as an HTML string</param>
         /// <returns>An HTML formatted table containing the information about the object type</returns>
         public static string DumpProperties(this Type ObjectType, bool HTMLOutput = true)
         {
@@ -287,6 +288,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// </summary>
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Directory">Directory to search within</param>
+        /// <param name="Recursive">Should this be recursive</param>
         /// <returns>A list of objects that are of the type specified</returns>
         public static IEnumerable<ClassType> GetObjects<ClassType>(this DirectoryInfo Directory, bool Recursive = false)
         {
@@ -465,7 +467,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// </summary>
         /// <typeparam name="ClassType">Class type</typeparam>
         /// <typeparam name="DataType">Data type expecting</typeparam>
-        /// <param name="PropertyName">Property name</param>
+        /// <param name="Property">Property</param>
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
         public static Expression<Action<ClassType, DataType>> GetPropertySetter<ClassType, DataType>(this Expression<Func<ClassType, DataType>> Property)
         {

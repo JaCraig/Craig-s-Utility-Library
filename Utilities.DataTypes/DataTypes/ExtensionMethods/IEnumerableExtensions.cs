@@ -462,7 +462,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <typeparam name="T">Item type</typeparam>
         /// <typeparam name="E">Exception type</typeparam>
         /// <param name="Items">The list</param>
-        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Predicates">Predicates to check</param>
         /// <param name="Exception">Exception to throw if predicates are false</param>
         /// <returns>the original list</returns>
         public static IEnumerable<T> ThrowIfFalseForAny<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception

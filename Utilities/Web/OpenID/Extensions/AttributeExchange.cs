@@ -133,6 +133,12 @@ namespace Utilities.Web.OpenID.Extensions
             return ReturnValues;
         }
 
+        /// <summary>
+        /// Verifies the attributes
+        /// </summary>
+        /// <param name="URL">URL</param>
+        /// <param name="Pairs">Data tuple</param>
+        /// <returns>True if it is verified, false otherwise</returns>
         public virtual bool Verify(string URL, System.Collections.Generic.List<System.Tuple<string, string>> Pairs)
         {
             System.Tuple<string, string> Pair = Pairs.Find(x => x.Item2 == "http://openid.net/srv/ax/1.0");
@@ -221,6 +227,10 @@ namespace Utilities.Web.OpenID.Extensions
             return true;
         }
 
+        /// <summary>
+        /// Gets the URL Attributes
+        /// </summary>
+        /// <returns>The list of tuples</returns>
         public virtual System.Collections.Generic.List<System.Tuple<string, string>> GenerateURLAttributes()
         {
             System.Collections.Generic.List<System.Tuple<string, string>> ReturnValues = new System.Collections.Generic.List<System.Tuple<string, string>>();

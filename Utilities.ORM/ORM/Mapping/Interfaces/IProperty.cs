@@ -133,7 +133,6 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// </summary>
         /// <param name="Database">Database associated with mapping</param>
         /// <param name="Mapping">Mapping to add the property to</param>
-        /// <typeparam name="ClassType">Class type</typeparam>
         void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping);
 
         /// <summary>

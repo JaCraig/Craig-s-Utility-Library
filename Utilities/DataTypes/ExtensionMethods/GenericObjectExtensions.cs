@@ -147,6 +147,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// Similar to Chain, except checks if the Object or Function is null first and returns the default value if they are
         /// </summary>
         /// <typeparam name="T">The object type</typeparam>
+        /// <typeparam name="R">The return type</typeparam>
         /// <param name="Object">Object to run the function on</param>
         /// <param name="Function">Function to run</param>
         /// <param name="DefaultValue">Default value to return if the action or object is null</param>

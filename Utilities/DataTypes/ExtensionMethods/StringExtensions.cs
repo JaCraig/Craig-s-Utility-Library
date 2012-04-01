@@ -300,6 +300,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// and after hitting the max character, it goes to two characters (so ~ becomes aa, then ab, ac, etc).
         /// </summary>
         /// <param name="Sequence">Current sequence</param>
+        /// <param name="Min">Min character</param>
+        /// <param name="Max">Max character</param>
         /// <returns>The next item in the sequence</returns>
         public static string NextSequence(this string Sequence, char Min = ' ', char Max = '~')
         {

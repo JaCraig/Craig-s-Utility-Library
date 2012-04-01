@@ -44,6 +44,7 @@ namespace Utilities.Web.ExtensionMethods
         /// Combines and minifies various files
         /// </summary>
         /// <param name="Input">input strings (file contents)</param>
+        /// <param name="Type">Type of minification</param>
         /// <returns>A minified/packed string</returns>
         public static string Combine(this IEnumerable<string> Input, MinificationType Type = MinificationType.HTML)
         {
@@ -57,6 +58,7 @@ namespace Utilities.Web.ExtensionMethods
         /// Combines and minifies various files
         /// </summary>
         /// <param name="Input">input strings (file contents)</param>
+        /// <param name="Type">Type of minification</param>
         /// <returns>A minified/packed string</returns>
         public static string Combine(this IEnumerable<FileInfo> Input, MinificationType Type = MinificationType.HTML)
         {
@@ -74,6 +76,7 @@ namespace Utilities.Web.ExtensionMethods
         /// Minifies the file based on the data type specified
         /// </summary>
         /// <param name="Input">Input text</param>
+        /// <param name="Type">Type of minification to run</param>
         /// <returns>A stripped file</returns>
         public static string Minify(this string Input, MinificationType Type = MinificationType.HTML)
         {
@@ -90,6 +93,7 @@ namespace Utilities.Web.ExtensionMethods
         /// Minifies the file based on the data type specified
         /// </summary>
         /// <param name="Input">Input file</param>
+        /// <param name="Type">Type of minification to run</param>
         /// <returns>A stripped file</returns>
         public static string Minify(this FileInfo Input, MinificationType Type = MinificationType.HTML)
         {
@@ -180,8 +184,17 @@ namespace Utilities.Web.ExtensionMethods
     /// </summary>
     public enum MinificationType
     {
+        /// <summary>
+        /// CSS
+        /// </summary>
         CSS,
+        /// <summary>
+        /// Javascript
+        /// </summary>
         JavaScript,
+        /// <summary>
+        /// HTML
+        /// </summary>
         HTML
     }
 

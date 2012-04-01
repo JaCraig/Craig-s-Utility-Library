@@ -63,7 +63,14 @@ namespace Utilities.Web.OpenSearch
 
         #region Protected Properties
 
+        /// <summary>
+        /// REST helper
+        /// </summary>
         protected virtual REST.REST RestHelper { get; set; }
+        
+        /// <summary>
+        /// API Location
+        /// </summary>
         protected virtual string APILocation { get; set; }
 
         #endregion

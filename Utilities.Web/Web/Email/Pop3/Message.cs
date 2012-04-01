@@ -67,6 +67,9 @@ namespace Utilities.Web.Email.Pop3
 
         #region Public Overridden Properties
 
+        /// <summary>
+        /// Body of the text
+        /// </summary>
         public override string Body
         {
             get
@@ -82,6 +85,9 @@ namespace Utilities.Web.Email.Pop3
             }
         }
 
+        /// <summary>
+        /// Whom the message is from
+        /// </summary>
         public override string From
         {
             get
@@ -90,6 +96,9 @@ namespace Utilities.Web.Email.Pop3
             }
         }
 
+        /// <summary>
+        /// Whom the message is to
+        /// </summary>
         public override string To
         {
             get
@@ -98,6 +107,9 @@ namespace Utilities.Web.Email.Pop3
             }
         }
 
+        /// <summary>
+        /// The subject of the email
+        /// </summary>
         public override string Subject
         {
             get

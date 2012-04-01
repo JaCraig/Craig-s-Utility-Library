@@ -111,7 +111,7 @@ namespace Utilities.Environment.ExtensionMethods
         /// <summary>
         /// Kills a process asyncronously
         /// </summary>
-        /// <param name="ProcessName">Name of the process to kill</param>
+        /// <param name="Process">Process to kill</param>
         /// <param name="TimeToKill">Amount of time until the process is killed</param>
         private static void KillProcessAsyncHelper(Process Process, int TimeToKill)
         {

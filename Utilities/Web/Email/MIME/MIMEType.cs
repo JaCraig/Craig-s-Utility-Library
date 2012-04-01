@@ -68,8 +68,8 @@ namespace Utilities.Web.Email.MIME
 								   new MediaType( MediaEnum.MEDIA_AUDIO, "basic", "wav" ),
 								   new MediaType( MediaEnum.MEDIA_AUDIO, "basic", "mp3" ),
 
-								   new MediaType( MediaEnum.MEDIA_VEDIO, "mpeg", "mpg" ),
-								   new MediaType( MediaEnum.MEDIA_VEDIO, "mpeg", "mpeg" ),
+								   new MediaType( MediaEnum.MEDIA_VIDEO, "mpeg", "mpg" ),
+								   new MediaType( MediaEnum.MEDIA_VIDEO, "mpeg", "mpeg" ),
 
 								   new MediaType( MediaEnum.MEDIA_UNKNOWN, "", "" )		// add new subtypes before this line
 							   };

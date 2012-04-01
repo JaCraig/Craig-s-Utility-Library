@@ -28,6 +28,7 @@ using System.IO;
 using Utilities.IO.ExtensionMethods.Enums;
 using System.Diagnostics;
 using System.Security;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -157,21 +158,9 @@ namespace Utilities.IO.ExtensionMethods
                 return new byte[0];
             using (FileStream Reader = File.OpenRead())
             {
-                using (MemoryStream TempReader = new MemoryStream())
-                {
-                    while (true)
-                    {
-                        byte[] Buffer = new byte[1024];
-                        int Count = Reader.Read(Buffer, 0, 1024);
-                        TempReader.Write(Buffer, 0, Count);
-                        if (Count < 1024)
-                            break;
-                    }
-                    Reader.Close();
-                    byte[] Output = TempReader.ToArray();
-                    TempReader.Close();
-                    return Output;
-                }
+                byte[] Output = Reader.ReadAllBinary();
+                Reader.Close();
+                return Output;
             }
         }
 

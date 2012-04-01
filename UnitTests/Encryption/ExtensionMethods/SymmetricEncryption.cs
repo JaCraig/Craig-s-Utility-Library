@@ -27,6 +27,7 @@ using MoonUnit.Attributes;
 using MoonUnit;
 using Utilities.Encryption.ExtensionMethods;
 using System.Security.Cryptography;
+using Utilities.DataTypes.ExtensionMethods;
 
 namespace UnitTests.Encryption.ExtensionMethods
 {
@@ -40,6 +41,16 @@ namespace UnitTests.Encryption.ExtensionMethods
             Assert.Equal("This is a test of the system.", Data.Encrypt("Babysfirstkey").Decrypt("Babysfirstkey"));
             Assert.Equal("This is a test of the system.", Data.Encrypt("Babysfirstkey", AlgorithmUsing: new DESCryptoServiceProvider(), KeySize: 64).Decrypt("Babysfirstkey", AlgorithmUsing: new DESCryptoServiceProvider(), KeySize: 64));
             Assert.Equal("This is a test of the system.", Data.Encrypt("Babysfirstkey", AlgorithmUsing: new TripleDESCryptoServiceProvider(), KeySize: 192).Decrypt("Babysfirstkey", AlgorithmUsing: new TripleDESCryptoServiceProvider(), KeySize: 192));
+        }
+
+        [Test]
+        public void BasicTest2()
+        {
+            string Data = "This is a test of the system.";
+            Assert.NotEqual("This is a test of the system.", Data.Encrypt(new Rfc2898DeriveBytes("Babysfirstkey", "Kosher123".ToByteArray(), 2)));
+            Assert.Equal("This is a test of the system.", Data.Encrypt(new Rfc2898DeriveBytes("Babysfirstkey", "Kosher123".ToByteArray(), 2)).Decrypt(new Rfc2898DeriveBytes("Babysfirstkey", "Kosher123".ToByteArray(), 2)));
+            Assert.Equal("This is a test of the system.", Data.Encrypt(new Rfc2898DeriveBytes("Babysfirstkey", "Kosher123".ToByteArray(), 2), AlgorithmUsing: new DESCryptoServiceProvider(), KeySize: 64).Decrypt(new Rfc2898DeriveBytes("Babysfirstkey", "Kosher123".ToByteArray(), 2), AlgorithmUsing: new DESCryptoServiceProvider(), KeySize: 64));
+            Assert.Equal("This is a test of the system.", Data.Encrypt(new Rfc2898DeriveBytes("Babysfirstkey", "Kosher123".ToByteArray(), 2), AlgorithmUsing: new TripleDESCryptoServiceProvider(), KeySize: 192).Decrypt(new Rfc2898DeriveBytes("Babysfirstkey", "Kosher123".ToByteArray(), 2), AlgorithmUsing: new TripleDESCryptoServiceProvider(), KeySize: 192));
         }
     }
 }

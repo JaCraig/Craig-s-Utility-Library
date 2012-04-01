@@ -41,6 +41,9 @@ namespace Utilities.Web.Email.MIME.CodeTypes
 
         #region Protected Overriden Functions
 
+        /// <summary>
+        /// Fold character
+        /// </summary>
         protected override string[] FoldCharacters
         {
             get
@@ -50,6 +53,9 @@ namespace Utilities.Web.Email.MIME.CodeTypes
             }
         }
 
+        /// <summary>
+        /// Is auto folded
+        /// </summary>
         protected override bool IsAutoFold
         {
             get
@@ -58,6 +64,9 @@ namespace Utilities.Web.Email.MIME.CodeTypes
             }
         }
 
+        /// <summary>
+        /// Delimiter needed
+        /// </summary>
         protected override bool DelimeterNeeded
         {
             get
@@ -66,6 +75,9 @@ namespace Utilities.Web.Email.MIME.CodeTypes
             }
         }
 
+        /// <summary>
+        /// Delimiter characters
+        /// </summary>
         protected override char[] DelimeterCharacters
         {
             get

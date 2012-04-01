@@ -42,6 +42,12 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         #endregion
 
         #region Public Overridden Functions
+
+        /// <summary>
+        /// Decodes the string
+        /// </summary>
+        /// <param name="Input">String to decode</param>
+        /// <param name="Output">Output in bytes</param>
         public override void Decode(string Input, out byte[] Output)
         {
             if (string.IsNullOrEmpty(Input))
@@ -71,6 +77,11 @@ namespace Utilities.Web.Email.MIME.CodeTypes
             }
         }
 
+        /// <summary>
+        /// Encodes the data
+        /// </summary>
+        /// <param name="Input">Input data</param>
+        /// <returns>The encoded string</returns>
         public override string Encode(byte[] Input)
         {
             if (Input == null)
@@ -195,8 +206,12 @@ namespace Utilities.Web.Email.MIME.CodeTypes
 				Builder=null;
 			}
 		}
-
+        
+        /// <summary>
+        /// Max char length
+        /// </summary>
         protected const int MAX_CHAR_LEN = 75;
+
         #endregion
     }
 }

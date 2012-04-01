@@ -37,6 +37,7 @@ namespace Utilities.Validation.Rules
     /// This item's length is less than the length specified
     /// </summary>
     /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
+    /// <typeparam name="DataType">Data type that the rule applies to</typeparam>
     public class MaxLength<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
     {
         #region Constructor

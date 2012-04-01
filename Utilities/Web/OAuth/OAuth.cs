@@ -68,6 +68,11 @@ namespace Utilities.Web.OAuth
             return ReturnUrl;
         }
 
+        /// <summary>
+        /// Generates the header
+        /// </summary>
+        /// <param name="Realm">Realm</param>
+        /// <returns>The string containing the header info</returns>
         protected virtual string GenerateHeader(string Realm)
         {
             string ReturnValue = "";
@@ -290,9 +295,21 @@ namespace Utilities.Web.OAuth
     /// </summary>
     public enum HTTPMethod
     {
+        /// <summary>
+        /// Get
+        /// </summary>
         GET,
+        /// <summary>
+        /// Post
+        /// </summary>
         POST,
+        /// <summary>
+        /// Delete
+        /// </summary>
         DELETE,
+        /// <summary>
+        /// Put
+        /// </summary>
         PUT
     }
 
@@ -301,8 +318,17 @@ namespace Utilities.Web.OAuth
     /// </summary>
     public enum Signature
     {
+        /// <summary>
+        /// Plain text
+        /// </summary>
         PLAINTEXT,
+        /// <summary>
+        /// RSA/SHA1
+        /// </summary>
         RSASHA1,
+        /// <summary>
+        /// HMAC/SHA1
+        /// </summary>
         HMACSHA1
     }
 

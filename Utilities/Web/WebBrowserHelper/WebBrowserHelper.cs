@@ -1,6 +1,7 @@
-﻿/**
+﻿/*
  * Modified from code originally found here: http://support.microsoft.com/kb/326201
- **/
+ */
+
 #region Usings
 using System;
 using System.Runtime.InteropServices;
@@ -21,43 +22,104 @@ namespace Utilities.Web.WebBrowserHelper
         [StructLayout(LayoutKind.Explicit, Size = 80)]
         public struct INTERNET_CACHE_ENTRY_INFOA
         {
+            /// <summary>
+            /// Struct size
+            /// </summary>
             [FieldOffset(0)]
             public uint dwStructSize;
+            /// <summary>
+            /// Source URL name
+            /// </summary>
             [FieldOffset(4)]
             public IntPtr lpszSourceUrlName;
+            /// <summary>
+            /// Local file name
+            /// </summary>
             [FieldOffset(8)]
             public IntPtr lpszLocalFileName;
+            /// <summary>
+            /// Entry type
+            /// </summary>
             [FieldOffset(12)]
             public uint CacheEntryType;
+            /// <summary>
+            /// Use count
+            /// </summary>
             [FieldOffset(16)]
             public uint dwUseCount;
+            /// <summary>
+            /// Hit rate
+            /// </summary>
             [FieldOffset(20)]
             public uint dwHitRate;
+            /// <summary>
+            /// Size low
+            /// </summary>
             [FieldOffset(24)]
             public uint dwSizeLow;
+            /// <summary>
+            /// Size high
+            /// </summary>
             [FieldOffset(28)]
             public uint dwSizeHigh;
+            /// <summary>
+            /// Last modified time
+            /// </summary>
             [FieldOffset(32)]
             public System.Runtime.InteropServices.ComTypes.FILETIME LastModifiedTime;
+            /// <summary>
+            /// Expire time
+            /// </summary>
             [FieldOffset(40)]
             public System.Runtime.InteropServices.ComTypes.FILETIME ExpireTime;
+            /// <summary>
+            /// Last access time
+            /// </summary>
             [FieldOffset(48)]
             public System.Runtime.InteropServices.ComTypes.FILETIME LastAccessTime;
+            /// <summary>
+            /// Last sync time
+            /// </summary>
             [FieldOffset(56)]
             public System.Runtime.InteropServices.ComTypes.FILETIME LastSyncTime;
+            /// <summary>
+            /// Header info
+            /// </summary>
             [FieldOffset(64)]
             public IntPtr lpHeaderInfo;
+            /// <summary>
+            /// Header info size
+            /// </summary>
             [FieldOffset(68)]
             public uint dwHeaderInfoSize;
+            /// <summary>
+            /// File extension
+            /// </summary>
             [FieldOffset(72)]
             public IntPtr lpszFileExtension;
+            /// <summary>
+            /// Reserved
+            /// </summary>
             [FieldOffset(76)]
             public uint dwReserved;
+            /// <summary>
+            /// Exempt delta
+            /// </summary>
             [FieldOffset(76)]
             public uint dwExemptDelta;
         }
 
         // For PInvoke: Initiates the enumeration of the cache groups in the Internet cache
+        /// <summary>
+        /// Finds first url cache group
+        /// </summary>
+        /// <param name="dwFlags"></param>
+        /// <param name="dwFilter"></param>
+        /// <param name="lpSearchCondition"></param>
+        /// <param name="dwSearchCondition"></param>
+        /// <param name="lpGroupId"></param>
+        /// <param name="lpReserved"></param>
+        /// <returns></returns>
         [DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
@@ -72,6 +134,13 @@ namespace Utilities.Web.WebBrowserHelper
             IntPtr lpReserved);
 
         // For PInvoke: Retrieves the next cache group in a cache group enumeration
+        /// <summary>
+        /// Finds next URL Cache Group
+        /// </summary>
+        /// <param name="hFind"></param>
+        /// <param name="lpGroupId"></param>
+        /// <param name="lpReserved"></param>
+        /// <returns></returns>
         [DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
@@ -83,6 +152,13 @@ namespace Utilities.Web.WebBrowserHelper
             IntPtr lpReserved);
 
         // For PInvoke: Releases the specified GROUPID and any associated state in the cache index file
+        /// <summary>
+        /// Deletes an URL from a Cache group
+        /// </summary>
+        /// <param name="GroupId"></param>
+        /// <param name="dwFlags"></param>
+        /// <param name="lpReserved"></param>
+        /// <returns></returns>
         [DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
@@ -94,6 +170,13 @@ namespace Utilities.Web.WebBrowserHelper
             IntPtr lpReserved);
 
         // For PInvoke: Begins the enumeration of the Internet cache
+        /// <summary>
+        /// Find first URL cache entry
+        /// </summary>
+        /// <param name="lpszUrlSearchPattern"></param>
+        /// <param name="lpFirstCacheEntryInfo"></param>
+        /// <param name="lpdwFirstCacheEntryInfoBufferSize"></param>
+        /// <returns></returns>
         [DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
@@ -105,6 +188,13 @@ namespace Utilities.Web.WebBrowserHelper
             ref int lpdwFirstCacheEntryInfoBufferSize);
 
         // For PInvoke: Retrieves the next entry in the Internet cache
+        /// <summary>
+        /// Find nexxt URL cache entry
+        /// </summary>
+        /// <param name="hFind"></param>
+        /// <param name="lpNextCacheEntryInfo"></param>
+        /// <param name="lpdwNextCacheEntryInfoBufferSize"></param>
+        /// <returns></returns>
         [DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
@@ -116,6 +206,11 @@ namespace Utilities.Web.WebBrowserHelper
             ref int lpdwNextCacheEntryInfoBufferSize);
 
         // For PInvoke: Removes the file that is associated with the source name from the cache, if the file exists
+        /// <summary>
+        /// Deletes an URL cache entry
+        /// </summary>
+        /// <param name="lpszUrlName"></param>
+        /// <returns></returns>
         [DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,

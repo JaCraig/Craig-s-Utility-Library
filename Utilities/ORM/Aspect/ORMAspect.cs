@@ -220,6 +220,7 @@ namespace Utilities.ORM.Aspect
         /// <param name="BaseType">Base type for the object</param>
         /// <param name="ReturnValue">Return value</param>
         /// <param name="Property">Property info</param>
+        /// <param name="Mapping">Mapping info</param>
         private void SetupSingleProperty(IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue, IProperty Property, IMapping Mapping)
         {
             Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);

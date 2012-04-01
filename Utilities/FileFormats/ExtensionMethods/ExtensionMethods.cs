@@ -87,6 +87,7 @@ namespace Utilities.FileFormats.ExtensionMethods
         /// </summary>
         /// <typeparam name="T">Type of the items within the list</typeparam>
         /// <param name="List">The list to convert</param>
+        /// <param name="Delimiter">Delimiter to use</param>
         /// <returns>The delimited file containing the list</returns>
         public static Delimited.Delimited ToDelimitedFile<T>(this IEnumerable<T> List, string Delimiter = "\t")
         {
@@ -97,6 +98,7 @@ namespace Utilities.FileFormats.ExtensionMethods
         /// Converts an IEnumerable to a delimited file
         /// </summary>
         /// <param name="Data">The DataTable to convert</param>
+        /// <param name="Delimiter">Delimiter to use</param>
         /// <returns>The delimited file containing the list</returns>
         public static Delimited.Delimited ToDelimitedFile(this DataTable Data, string Delimiter = "\t")
         {

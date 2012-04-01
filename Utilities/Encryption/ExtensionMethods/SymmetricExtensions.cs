@@ -67,6 +67,30 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <summary>
         /// Encrypts a byte array
         /// </summary>
+        /// <param name="Data">Data to encrypt</param>
+        /// <param name="Key">Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc. Really anything that implements DeriveBytes)</param>
+        /// <param name="AlgorithmUsing">Algorithm to use for encryption (defaults to AES)</param>
+        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
+        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <param name="EncodingUsing">Encoding that the original string is using (defaults to UTF8)</param>
+        /// <returns>An encrypted byte array</returns>
+        public static string Encrypt(this string Data,
+            DeriveBytes Key,
+            Encoding EncodingUsing = null,
+            SymmetricAlgorithm AlgorithmUsing = null,
+            string InitialVector = "OFRna73m*aze01xY",
+            int KeySize = 256)
+        {
+            if (Data.IsNullOrEmpty())
+                return "";
+            return Data.ToByteArray(EncodingUsing)
+                       .Encrypt(Key, AlgorithmUsing, InitialVector, KeySize)
+                       .ToBase64String();
+        }
+
+        /// <summary>
+        /// Encrypts a byte array
+        /// </summary>
         /// <param name="Data">Data to be encrypted</param>
         /// <param name="Key">Password to encrypt with</param>
         /// <param name="AlgorithmUsing">Algorithm to use for encryption (defaults to AES)</param>
@@ -81,14 +105,29 @@ namespace Utilities.Encryption.ExtensionMethods
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
             string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
+            return Data.Encrypt(new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations), AlgorithmUsing, InitialVector, KeySize);
+        }
+
+        /// <summary>
+        /// Encrypts a byte array
+        /// </summary>
+        /// <param name="Data">Data to encrypt</param>
+        /// <param name="Key">Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc. Really anything that implements DeriveBytes)</param>
+        /// <param name="AlgorithmUsing">Algorithm to use for encryption (defaults to AES)</param>
+        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
+        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <returns>An encrypted byte array</returns>
+        public static byte[] Encrypt(this byte[] Data,
+            DeriveBytes Key,
+            SymmetricAlgorithm AlgorithmUsing = null,
+            string InitialVector = "OFRna73m*aze01xY",
+            int KeySize = 256)
+        {
             if (Data.IsNull())
                 return null;
             AlgorithmUsing = AlgorithmUsing.NullCheck(new RijndaelManaged());
-            Key.ThrowIfNullOrEmpty("Key");
-            Salt.ThrowIfNullOrEmpty("Salt");
-            HashAlgorithm.ThrowIfNullOrEmpty("HashAlgorithm");
             InitialVector.ThrowIfNullOrEmpty("InitialVector");
-            using (PasswordDeriveBytes DerivedPassword = new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations))
+            using (DeriveBytes DerivedPassword = Key)
             {
                 using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)
                 {
@@ -122,6 +161,30 @@ namespace Utilities.Encryption.ExtensionMethods
         /// Decrypts a string
         /// </summary>
         /// <param name="Data">Text to be decrypted (Base 64 string)</param>
+        /// <param name="Key">Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc. Really anything that implements DeriveBytes)</param>
+        /// <param name="EncodingUsing">Encoding that the output string should use (defaults to UTF8)</param>
+        /// <param name="AlgorithmUsing">Algorithm to use for decryption (defaults to AES)</param>
+        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
+        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <returns>A decrypted string</returns>
+        public static string Decrypt(this string Data,
+            DeriveBytes Key,
+            Encoding EncodingUsing = null,
+            SymmetricAlgorithm AlgorithmUsing = null,
+            string InitialVector = "OFRna73m*aze01xY",
+            int KeySize = 256)
+        {
+            if (Data.IsNullOrEmpty())
+                return "";
+            return Convert.FromBase64String(Data)
+                          .Decrypt(Key, AlgorithmUsing, InitialVector, KeySize)
+                          .ToEncodedString(EncodingUsing);
+        }
+
+        /// <summary>
+        /// Decrypts a string
+        /// </summary>
+        /// <param name="Data">Text to be decrypted (Base 64 string)</param>
         /// <param name="Key">Password to decrypt with</param>
         /// <param name="EncodingUsing">Encoding that the output string should use (defaults to UTF8)</param>
         /// <param name="AlgorithmUsing">Algorithm to use for decryption (defaults to AES)</param>
@@ -148,6 +211,49 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <summary>
         /// Decrypts a byte array
         /// </summary>
+        /// <param name="Data">Data to encrypt</param>
+        /// <param name="Key">Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc. Really anything that implements DeriveBytes)</param>
+        /// <param name="AlgorithmUsing">Algorithm to use for encryption (defaults to AES)</param>
+        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
+        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <returns>An encrypted byte array</returns>
+        public static byte[] Decrypt(this byte[] Data,
+            DeriveBytes Key,
+            SymmetricAlgorithm AlgorithmUsing = null,
+            string InitialVector = "OFRna73m*aze01xY",
+            int KeySize = 256)
+        {
+            if (Data.IsNull())
+                return null;
+            AlgorithmUsing = AlgorithmUsing.NullCheck(new RijndaelManaged());
+            InitialVector.ThrowIfNullOrEmpty("InitialVector");
+            using (DeriveBytes DerivedPassword = Key)
+            {
+                using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)
+                {
+                    SymmetricKey.Mode = CipherMode.CBC;
+                    byte[] PlainTextBytes = null;
+                    using (ICryptoTransform Decryptor = SymmetricKey.CreateDecryptor(DerivedPassword.GetBytes(KeySize / 8), InitialVector.ToByteArray()))
+                    {
+                        using (MemoryStream MemStream = new MemoryStream(Data))
+                        {
+                            using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
+                            {
+                                PlainTextBytes = CryptoStream.ReadAllBinary();
+                                MemStream.Close();
+                                CryptoStream.Close();
+                            }
+                        }
+                    }
+                    SymmetricKey.Clear();
+                    return PlainTextBytes;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Decrypts a byte array
+        /// </summary>
         /// <param name="Data">Data to be decrypted</param>
         /// <param name="Key">Password to decrypt with</param>
         /// <param name="AlgorithmUsing">Algorithm to use for decryption</param>
@@ -162,38 +268,7 @@ namespace Utilities.Encryption.ExtensionMethods
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
             string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            if (Data.IsNull())
-                return null;
-            AlgorithmUsing = AlgorithmUsing.NullCheck(new RijndaelManaged());
-            Key.ThrowIfNullOrEmpty("Key");
-            Salt.ThrowIfNullOrEmpty("Salt");
-            HashAlgorithm.ThrowIfNullOrEmpty("HashAlgorithm");
-            InitialVector.ThrowIfNullOrEmpty("InitialVector");
-            using (PasswordDeriveBytes DerivedPassword = new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations))
-            {
-                using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)
-                {
-                    SymmetricKey.Mode = CipherMode.CBC;
-                    byte[] PlainTextBytes = new byte[Data.Length];
-                    int ByteCount = 0;
-                    using (ICryptoTransform Decryptor = SymmetricKey.CreateDecryptor(DerivedPassword.GetBytes(KeySize / 8), InitialVector.ToByteArray()))
-                    {
-                        using (MemoryStream MemStream = new MemoryStream(Data))
-                        {
-                            using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
-                            {
-
-                                ByteCount = CryptoStream.Read(PlainTextBytes, 0, PlainTextBytes.Length);
-                                MemStream.Close();
-                                CryptoStream.Close();
-                            }
-                        }
-                    }
-                    SymmetricKey.Clear();
-                    Array.Resize(ref PlainTextBytes, ByteCount);
-                    return PlainTextBytes;
-                }
-            }
+            return Data.Decrypt(new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations), AlgorithmUsing, InitialVector, KeySize);
         }
 
         #endregion

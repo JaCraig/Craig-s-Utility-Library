@@ -59,7 +59,7 @@ namespace Utilities.Validation
         /// <summary>
         /// Gets a specific validator
         /// </summary>
-        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="ObjectType">Object type</param>
         /// <returns>The specified validator</returns>
         public static IValidator GetValidator(Type ObjectType)
         {
@@ -88,7 +88,6 @@ namespace Utilities.Validation
         /// <summary>
         /// Validates an list of objects
         /// </summary>
-        /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Objects">List of objects to validate</param>
         public static void Validate(IEnumerable Objects)
         {

@@ -71,7 +71,6 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <summary>
         /// Sets a property as a reference type
         /// </summary>
-        /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>the reference object</returns>
         IReference<ClassType, string> Reference(Expression<Func<ClassType, string>> Expression);

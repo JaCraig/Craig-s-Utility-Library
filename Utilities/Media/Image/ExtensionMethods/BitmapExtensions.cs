@@ -1682,7 +1682,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <summary>
         /// Sobel edge detection function
         /// </summary>
-        /// <param name="Image">Image to manipulate</param>
+        /// <param name="Input">Image to manipulate</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEdgeDetection(this Bitmap Input, string FileName = "")

@@ -30,8 +30,37 @@ namespace Utilities.Web.Email.MIME
     /// </summary>
     public enum MediaEnum
     {
-        MEDIA_TEXT = 0, MEDIA_IMAGE, MEDIA_AUDIO, MEDIA_VEDIO, MEDIA_APPLICATION,
-        MEDIA_MULTIPART, MEDIA_MESSAGE,
+        /// <summary>
+        /// Media text
+        /// </summary>
+        MEDIA_TEXT = 0,
+        /// <summary>
+        /// Media image
+        /// </summary>
+        MEDIA_IMAGE,
+        /// <summary>
+        /// Media audio
+        /// </summary>
+        MEDIA_AUDIO,
+        /// <summary>
+        /// Media Video
+        /// </summary>
+        MEDIA_VIDEO,
+        /// <summary>
+        /// Media application
+        /// </summary>
+        MEDIA_APPLICATION,
+        /// <summary>
+        /// Media multipart
+        /// </summary>
+        MEDIA_MULTIPART,
+        /// <summary>
+        /// Media message
+        /// </summary>
+        MEDIA_MESSAGE,
+        /// <summary>
+        /// Media unknown
+        /// </summary>
         MEDIA_UNKNOWN
     }
 }

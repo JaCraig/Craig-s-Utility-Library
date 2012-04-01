@@ -63,7 +63,7 @@ namespace Utilities.Web.ExtensionMethods
         /// Adds a script file to the header of the current page
         /// </summary>
         /// <param name="File">Script file</param>
-        /// <param name="Directory">Script directory</param>
+        /// <param name="Page">Page to add it to</param>
         public static void AddScriptFile(this System.Web.UI.Page Page, FileInfo File)
         {
             File.ThrowIfNull("File");
@@ -191,6 +191,7 @@ namespace Utilities.Web.ExtensionMethods
         /// Adds the specified encoding to the response headers.
         /// </summary>
         /// <param name="Encoding">Encoding to set</param>
+        /// <param name="Context">Context to set the encoding on</param>
         public static void SetEncoding(this HttpContext Context, string Encoding)
         {
             Context.ThrowIfNull("Context");
