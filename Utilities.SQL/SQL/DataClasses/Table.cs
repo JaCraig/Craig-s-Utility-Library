@@ -63,8 +63,17 @@ namespace Utilities.SQL.DataClasses
 
         #region Public Properties
 
+        /// <summary>
+        /// Name of the table
+        /// </summary>
         public virtual string Name { get; set; }
+        /// <summary>
+        /// Columns in the table
+        /// </summary>
         public virtual List<IColumn> Columns { get; set; }
+        /// <summary>
+        /// Parent database
+        /// </summary>
         public virtual Database ParentDatabase { get; set; }
 
         /// <summary>

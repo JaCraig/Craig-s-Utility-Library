@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -37,6 +38,13 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Constructor
         /// </summary>
+        public Comment()
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         /// <param name="Element">Element containing the post info</param>
         public Comment(XmlElement Element)
         {
@@ -47,6 +55,7 @@ namespace Utilities.FileFormats.BlogML
             UserEmail = Element.Attributes["user-email"] != null ? Element.Attributes["user-email"].Value : "";
             UserIP = Element.Attributes["user-ip"] != null ? Element.Attributes["user-ip"].Value : "";
             UserURL = Element.Attributes["user-url"] != null ? Element.Attributes["user-url"].Value : "";
+            ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
 
             foreach (XmlNode Children in Element.ChildNodes)
             {
@@ -100,6 +109,23 @@ namespace Utilities.FileFormats.BlogML
         /// User URL
         /// </summary>
         public virtual string UserURL { get; set; }
+
+        /// <summary>
+        /// ID
+        /// </summary>
+        public virtual string ID { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendFormat("<comment id=\"{0}\" parentid=\"00000000-0000-0000-0000-000000000000\" date-created=\"{1}\" date-modified=\"{1}\" approved=\"true\" user-name=\"{2}\" user-email=\"{3}\" user-ip=\"{4}\" user-url=\"{5}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), UserName, UserEmail, UserIP, UserURL);
+            Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n<content type=\"text\"><![CDATA[{1}]]></content>\n</comment>\n", Title, Content);
+            return Builder.ToString();
+        }
 
         #endregion
     }

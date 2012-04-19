@@ -52,8 +52,17 @@ namespace Utilities.SQL.DataClasses
 
         #region Public Properties
 
+        /// <summary>
+        /// Name of the stored procedure
+        /// </summary>
         public virtual string Name { get; set; }
+        /// <summary>
+        /// Parent database
+        /// </summary>
         public virtual Database ParentDatabase { get; set; }
+        /// <summary>
+        /// Columns in the stored procedure
+        /// </summary>
         public virtual List<IColumn> Columns { get; set; }
 
         /// <summary>

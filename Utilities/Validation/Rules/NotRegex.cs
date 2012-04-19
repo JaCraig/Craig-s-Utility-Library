@@ -55,12 +55,19 @@ namespace Utilities.Validation.Rules
 
         #region Properties
 
+        /// <summary>
+        /// Regex used to validate the object
+        /// </summary>
         protected virtual System.Text.RegularExpressions.Regex ValidationRegex { get; set; }
 
         #endregion
 
         #region Functions
 
+        /// <summary>
+        /// Validates an object
+        /// </summary>
+        /// <param name="Object">Object to validate</param>
         public override void Validate(ObjectType Object)
         {
             if (string.IsNullOrEmpty(ItemToValidate(Object)))

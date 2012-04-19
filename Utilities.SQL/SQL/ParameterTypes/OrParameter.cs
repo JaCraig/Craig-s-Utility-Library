@@ -70,12 +70,20 @@ namespace Utilities.SQL.ParameterTypes
 
         #region Functions
 
+        /// <summary>
+        /// Adds the parameter to the SQLHelper
+        /// </summary>
+        /// <param name="Helper">SQLHelper to add the parameter to</param>
         public void AddParameter(SQLHelper Helper)
         {
             Left.AddParameter(Helper);
             Right.AddParameter(Helper);
         }
 
+        /// <summary>
+        /// Outputs the param as a string
+        /// </summary>
+        /// <returns>The param as a string</returns>
         public override string ToString() { return "(" + Left.ToString() + " OR " + Right.ToString() + ")"; }
 
         #endregion

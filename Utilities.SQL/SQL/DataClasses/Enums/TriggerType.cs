@@ -30,8 +30,17 @@ namespace Utilities.SQL.DataClasses.Enums
     /// </summary>
     public enum TriggerType
     {
+        /// <summary>
+        /// Insert
+        /// </summary>
         INSERT=1,
+        /// <summary>
+        /// Update
+        /// </summary>
         UPDATE,
+        /// <summary>
+        /// Delete
+        /// </summary>
         DELETE
     }
 }

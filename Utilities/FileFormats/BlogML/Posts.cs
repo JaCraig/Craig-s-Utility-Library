@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -34,6 +35,14 @@ namespace Utilities.FileFormats.BlogML
     public class Posts
     {
         #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Posts()
+        {
+            PostList = new List<Post>();
+        }
 
         /// <summary>
         /// Constructor
@@ -58,6 +67,22 @@ namespace Utilities.FileFormats.BlogML
         /// List of posts
         /// </summary>
         public virtual List<Post> PostList { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLine("<posts>");
+            foreach (Post Post in PostList)
+            {
+                Builder.AppendLine(Post.ToString());
+            }
+            Builder.AppendLine("</posts>");
+            return Builder.ToString();
+        }
 
         #endregion
     }

@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -37,6 +38,13 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Constructor
         /// </summary>
+        public Author()
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         /// <param name="Element">XML element containing the author info</param>
         public Author(XmlElement Element)
         {
@@ -44,6 +52,8 @@ namespace Utilities.FileFormats.BlogML
             ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
             Email = Element.Attributes["email"] != null ? Element.Attributes["email"].Value : "";
             REF = Element.Attributes["ref"] != null ? Element.Attributes["ref"].Value : "";
+            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value) : DateTime.Now;
+            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value) : DateTime.Now;
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
@@ -74,6 +84,37 @@ namespace Utilities.FileFormats.BlogML
         /// Determines if this should be a reference to an author
         /// </summary>
         public virtual string REF { get; set; }
+
+        /// <summary>
+        /// Date created
+        /// </summary>
+        public virtual DateTime DateCreated { get; set; }
+
+        /// <summary>
+        /// Date modified
+        /// </summary>
+        public virtual DateTime DateModified { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<author ");
+            if (REF.IsNullOrEmpty())
+            {
+                Builder.AppendFormat("id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" email=\"{3}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), Email);
+                Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
+                Builder.AppendLine("</author>");
+            }
+            else
+            {
+                Builder.AppendFormat("ref=\"{0}\" />\n", ID);
+            }
+            return Builder.ToString();
+        }
 
         #endregion
     }

@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -37,6 +38,16 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Constructor
         /// </summary>
+        public BlogML()
+        {
+            Authors = new Authors();
+            Categories = new Categories();
+            Posts = new Posts();
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         /// <param name="Location">Location of the XML file</param>
         public BlogML(string Location)
         {
@@ -47,6 +58,8 @@ namespace Utilities.FileFormats.BlogML
             {
                 if (Children.Name.Equals("blog", StringComparison.CurrentCultureIgnoreCase))
                 {
+                    DateCreated = Children.Attributes["date-created"] != null ? DateTime.Parse(Children.Attributes["date-created"].Value) : DateTime.Now;
+                    RootURL = Children.Attributes["root-url"] != null ? Children.Attributes["root-url"].Value : "";
                     foreach (XmlNode Child in Children.ChildNodes)
                     {
                         if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
@@ -102,6 +115,34 @@ namespace Utilities.FileFormats.BlogML
         /// Posts of the blog
         /// </summary>
         public virtual Posts Posts { get; set; }
+
+        /// <summary>
+        /// Date created
+        /// </summary>
+        public virtual DateTime DateCreated { get; set; }
+
+        /// <summary>
+        /// Root URL
+        /// </summary>
+        public virtual string RootURL { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+                .AppendFormat("<blog root-url=\"{0}\" date-created=\"{1}\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.blogml.com/2006/09/BlogML\">\n", RootURL, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"))
+                .AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title)
+                .AppendFormat("<sub-title type=\"text\"><![CDATA[{0}]]></title>\n", SubTitle)
+                .AppendLine(Authors.ToString())
+                .AppendLine(Categories.ToString())
+                .AppendLine(Posts.ToString())
+                .AppendLine("</blog>");
+            return Builder.ToString();
+        }
 
         #endregion
     }

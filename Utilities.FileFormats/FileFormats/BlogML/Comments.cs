@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -34,6 +35,11 @@ namespace Utilities.FileFormats.BlogML
     public class Comments
     {
         #region Constructor
+
+        public Comments()
+        {
+            CommentList = new List<Comment>();
+        }
 
         /// <summary>
         /// Constructor
@@ -58,6 +64,22 @@ namespace Utilities.FileFormats.BlogML
         /// List of comments
         /// </summary>
         public virtual List<Comment> CommentList { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLine("<comments>");
+            foreach (Comment Comment in CommentList)
+            {
+                Builder.AppendLine(Comment.ToString());
+            }
+            Builder.AppendLine("</comments>");
+            return Builder.ToString();
+        }
 
         #endregion
     }

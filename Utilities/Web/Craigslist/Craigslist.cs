@@ -66,41 +66,149 @@ namespace Utilities.Web.Craigslist
     /// </summary>
     public enum Category
     {
+        /// <summary>
+        /// All for sale
+        /// </summary>
         All_For_Sale,
+        /// <summary>
+        /// For sale arts and crafts
+        /// </summary>
         For_Sale_Arts_Crafts,
+        /// <summary>
+        /// For sale auto parts
+        /// </summary>
         For_Sale_Auto_Parts,
+        /// <summary>
+        /// For sale baby kid stuff
+        /// </summary>
         For_Sale_Baby_Kid_Stuff,
+        /// <summary>
+        /// for sale barter
+        /// </summary>
         For_Sale_Barter,
+        /// <summary>
+        /// for sale bicycles
+        /// </summary>
         For_Sale_Bicycles,
+        /// <summary>
+        /// for sale boats
+        /// </summary>
         For_Sale_Boats,
+        /// <summary>
+        /// for sale books
+        /// </summary>
         For_Sale_Books,
+        /// <summary>
+        /// for sale business
+        /// </summary>
         For_Sale_Business,
+        /// <summary>
+        /// for sale cars and trucks all
+        /// </summary>
         For_Sale_Cars_And_Trucks_All,
+        /// <summary>
+        /// for sale cars and trucks dealer
+        /// </summary>
         For_Sale_Cars_And_Trucks_Dealer,
+        /// <summary>
+        /// for sale cars and trucks owner
+        /// </summary>
         For_Sale_Cars_And_Trucks_Owner,
+        /// <summary>
+        /// for sale CDs, DVDs, VHS
+        /// </summary>
         For_Sale_CDs_DVDs_VHS,
+        /// <summary>
+        /// for sale clothing
+        /// </summary>
         For_Sale_Clothing,
+        /// <summary>
+        /// for sale collectibles
+        /// </summary>
         For_Sale_Collectibles,
+        /// <summary>
+        /// for sale computer tech
+        /// </summary>
         For_Sale_Computers_Tech,
+        /// <summary>
+        /// for sale electronics
+        /// </summary>
         For_Sale_Electronics,
+        /// <summary>
+        /// for sale farm garden
+        /// </summary>
         For_Sale_Farm_Garden,
+        /// <summary>
+        /// for sale free stuff
+        /// </summary>
         For_Sale_Free_Stuff,
+        /// <summary>
+        /// for sale furniture all
+        /// </summary>
         For_Sale_Furniture_All,
+        /// <summary>
+        /// for sale furniture by dealer
+        /// </summary>
         For_Sale_Furniture_By_Dealer,
+        /// <summary>
+        /// for sale furniture by owner
+        /// </summary>
         For_Sale_Furniture_By_Owner,
+        /// <summary>
+        /// for sale games toys
+        /// </summary>
         For_Sale_Games_Toys,
+        /// <summary>
+        /// for sale garage sales
+        /// </summary>
         For_Sale_Garage_Sales,
+        /// <summary>
+        /// for sale general
+        /// </summary>
         For_Sale_General,
+        /// <summary>
+        /// for sale household
+        /// </summary>
         For_Sale_Household,
+        /// <summary>
+        /// for sale items wanted
+        /// </summary>
         For_Sale_Items_Wanted,
+        /// <summary>
+        /// for sale jewelry
+        /// </summary>
         For_Sale_Jewelry,
+        /// <summary>
+        /// for sale materials
+        /// </summary>
         For_Sale_Materials,
+        /// <summary>
+        /// for sale motorcycles
+        /// </summary>
         For_Sale_Motorcycles,
+        /// <summary>
+        /// for sale musical instruments
+        /// </summary>
         For_Sale_Musical_Instruments,
+        /// <summary>
+        /// for sale photo/video
+        /// </summary>
         For_Sale_Photo_Video,
+        /// <summary>
+        /// for sale recreational vehicles
+        /// </summary>
         For_Sale_Recreational_Vehicles,
+        /// <summary>
+        /// for sale sporting goods
+        /// </summary>
         For_Sale_Sporting_Goods,
+        /// <summary>
+        /// for sale tickets
+        /// </summary>
         For_Sale_Tickets,
+        /// <summary>
+        /// for sale tools
+        /// </summary>
         For_Sale_Tools
     }
 

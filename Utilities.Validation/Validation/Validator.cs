@@ -79,6 +79,9 @@ namespace Utilities.Validation
 
         #region Properties
 
+        /// <summary>
+        /// Rules to validate an object with
+        /// </summary>
         public virtual List<IRule<Type>> Rules { get; set; }
 
         #endregion
@@ -680,6 +683,10 @@ namespace Utilities.Validation
 
         #region Validate
 
+        /// <summary>
+        /// Validates an object
+        /// </summary>
+        /// <param name="Object">Pnkect to validate</param>
         public virtual void Validate(object Object)
         {
             Validate((Type)Object);

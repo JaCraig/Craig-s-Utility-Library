@@ -30,7 +30,7 @@ namespace Utilities.SQL.DataClasses
     /// <summary>
     /// View class
     /// </summary>
-    public class View:ITable
+    public class View : ITable
     {
         #region Constructor
 
@@ -39,7 +39,7 @@ namespace Utilities.SQL.DataClasses
         /// </summary>
         /// <param name="Name">Name</param>
         /// <param name="ParentDatabase">Parent dataabse</param>
-        public View(string Name,Database ParentDatabase)
+        public View(string Name, Database ParentDatabase)
         {
             this.Name = Name;
             this.ParentDatabase = ParentDatabase;
@@ -50,8 +50,17 @@ namespace Utilities.SQL.DataClasses
 
         #region Public Properties
 
+        /// <summary>
+        /// Name of the view
+        /// </summary>
         public virtual string Name { get; set; }
+        /// <summary>
+        /// Parent database
+        /// </summary>
         public virtual Database ParentDatabase { get; set; }
+        /// <summary>
+        /// Columns in the view
+        /// </summary>
         public virtual List<IColumn> Columns { get; set; }
 
         /// <summary>

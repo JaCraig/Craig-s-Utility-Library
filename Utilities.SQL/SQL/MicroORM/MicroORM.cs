@@ -154,6 +154,9 @@ namespace Utilities.SQL.MicroORM
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Disposes of the instance of the MicroORM
+        /// </summary>
         public override void Dispose()
         {
             base.Dispose();

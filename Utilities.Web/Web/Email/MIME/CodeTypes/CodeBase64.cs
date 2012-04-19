@@ -41,6 +41,12 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         #endregion
 
         #region Public Overridden Functions
+        
+        /// <summary>
+        /// Decodes from base64
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Output">output array</param>
         public override void Decode(string Input, out byte[] Output)
         {
             if (string.IsNullOrEmpty(Input))
@@ -48,6 +54,11 @@ namespace Utilities.Web.Email.MIME.CodeTypes
             Output = System.Convert.FromBase64String(Input);
         }
 
+        /// <summary>
+        /// Encodes to Base64
+        /// </summary>
+        /// <param name="Input">Input</param>
+        /// <returns>byte array as base64</returns>
         public override string Encode(byte[] Input)
         {
             if (Input==null)

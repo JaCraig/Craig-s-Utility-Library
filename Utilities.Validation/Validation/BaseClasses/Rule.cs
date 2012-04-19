@@ -68,6 +68,10 @@ namespace Utilities.Validation.BaseClasses
 
         #region Functions
 
+        /// <summary>
+        /// Validates an object
+        /// </summary>
+        /// <param name="Object">Object to validate</param>
         public abstract void Validate(ObjectType Object);
 
         #endregion

@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Xml;
 using System;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -33,6 +34,13 @@ namespace Utilities.FileFormats.BlogML
     public class Tag
     {
         #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Tag()
+        {
+        }
 
         /// <summary>
         /// Constructor
@@ -53,6 +61,17 @@ namespace Utilities.FileFormats.BlogML
         /// Gets the REF info for the tag (usually just the tag's name)
         /// </summary>
         public virtual string REF { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendFormat("<tag ref=\"{0}\" />", REF);
+            return Builder.ToString();
+        }
 
         #endregion
     }

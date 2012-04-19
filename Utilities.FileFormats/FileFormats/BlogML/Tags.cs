@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -34,6 +35,14 @@ namespace Utilities.FileFormats.BlogML
     public class Tags
     {
         #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Tags()
+        {
+            TagList = new List<Tag>();
+        }
 
         /// <summary>
         /// Constructor
@@ -67,6 +76,22 @@ namespace Utilities.FileFormats.BlogML
         public virtual Tag this[int index]
         {
             get { return TagList[index]; }
+        }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLine("<tags>");
+            foreach (Tag Tag in TagList)
+            {
+                Builder.AppendLine(Tag.ToString());
+            }
+            Builder.AppendLine("</tags>");
+            return Builder.ToString();
         }
 
         #endregion

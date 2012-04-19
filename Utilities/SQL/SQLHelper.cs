@@ -464,6 +464,9 @@ namespace Utilities.SQL
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Closes the connection (if open) and disposes of the objects.
+        /// </summary>
         public virtual void Dispose()
         {
             Close();

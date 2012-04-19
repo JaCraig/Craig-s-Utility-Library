@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -35,6 +36,14 @@ namespace Utilities.FileFormats.BlogML
     public class Categories
     {
         #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Categories()
+        {
+            CategoryList = new List<Category>();
+        }
 
         /// <summary>
         /// Constructor
@@ -71,6 +80,22 @@ namespace Utilities.FileFormats.BlogML
             {
                 return CategoryList.FirstOrDefault(x => x.ID.Equals(index));
             }
+        }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLine("<catergories>");
+            foreach(Category Category in CategoryList)
+            {
+                Builder.AppendLine(Category.ToString());
+            }
+            Builder.AppendLine("</categories>");
+            return Builder.ToString();
         }
 
         #endregion

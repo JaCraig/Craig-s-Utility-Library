@@ -35,14 +35,41 @@ namespace Utilities.Web.Akismet
     {
         #region Properties
 
+        /// <summary>
+        /// User IP
+        /// </summary>
         public virtual string UserIP { get; set; }
+        /// <summary>
+        /// User Agent
+        /// </summary>
         public virtual string UserAgent { get; set; }
+        /// <summary>
+        /// Referrer
+        /// </summary>
         public virtual string Referrer { get; set; }
+        /// <summary>
+        /// Permalink
+        /// </summary>
         public virtual string Permalink { get; set; }
+        /// <summary>
+        /// Comment type
+        /// </summary>
         public virtual string CommentType { get; set; }
+        /// <summary>
+        /// User name
+        /// </summary>
         public virtual string UserName { get; set; }
+        /// <summary>
+        /// User email
+        /// </summary>
         public virtual string UserEmail { get; set; }
+        /// <summary>
+        /// User URL
+        /// </summary>
         public virtual string UserUrl { get; set; }
+        /// <summary>
+        /// Content
+        /// </summary>
         public virtual string Content { get; set; }
 
         #endregion

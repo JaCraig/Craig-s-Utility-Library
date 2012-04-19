@@ -31,8 +31,17 @@ namespace Utilities.SQL.MicroORM.Enums
     [Flags]
     public enum Mode
     {
+        /// <summary>
+        /// Neither readable or writable
+        /// </summary>
         Neither=0,
+        /// <summary>
+        /// Readable
+        /// </summary>
         Read=0x01,
+        /// <summary>
+        /// Writable
+        /// </summary>
         Write=0x02
     };
 }

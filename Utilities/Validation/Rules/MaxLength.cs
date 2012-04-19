@@ -67,6 +67,10 @@ namespace Utilities.Validation.Rules
 
         #region Functions
 
+        /// <summary>
+        /// Validates an object
+        /// </summary>
+        /// <param name="Object">Object to validate</param>
         public override void Validate(ObjectType Object)
         {
             IEnumerable<DataType> Value = ItemToValidate(Object);
@@ -112,6 +116,10 @@ namespace Utilities.Validation.Rules
 
         #region Functions
 
+        /// <summary>
+        /// Validates an object
+        /// </summary>
+        /// <param name="Object">Object to validate</param>
         public override void Validate(ObjectType Object)
         {
             string Value = ItemToValidate(Object);

@@ -279,6 +279,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Writes out the type builder to a readable string
+        /// </summary>
+        /// <returns>Code version of the type builder</returns>
         public override string ToString()
         {
             string[] Splitter = { "." };

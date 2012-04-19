@@ -55,6 +55,10 @@ namespace Utilities.Validation.Rules
 
         #region Functions
 
+        /// <summary>
+        /// Validates an object
+        /// </summary>
+        /// <param name="Object">Object to validate</param>
         public override void Validate(ObjectType Object)
         {
             try

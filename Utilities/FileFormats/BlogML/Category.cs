@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -37,12 +38,22 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Constructor
         /// </summary>
+        public Category()
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         /// <param name="Element">XML element with the category info</param>
         public Category(XmlElement Element)
         {
             Element.ThrowIfNull("Element");
             ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
             REF = Element.Attributes["ref"] != null ? Element.Attributes["ref"].Value : "";
+            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value) : DateTime.Now;
+            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value) : DateTime.Now;
+            ParentREF = Element.Attributes["parentref"] != null ? Element.Attributes["parentref"].Value : "";
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
@@ -68,6 +79,42 @@ namespace Utilities.FileFormats.BlogML
         /// Determines if this is a reference to a category
         /// </summary>
         public virtual string REF { get; set; }
+
+        /// <summary>
+        /// Parent ref
+        /// </summary>
+        public virtual string ParentREF { get; set; }
+
+        /// <summary>
+        /// Date createed
+        /// </summary>
+        public virtual DateTime DateCreated { get; set; }
+
+        /// <summary>
+        /// Date modified
+        /// </summary>
+        public virtual DateTime DateModified { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<category ");
+            if(REF.IsNullOrEmpty())
+            {
+                Builder.AppendFormat("id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" parentref=\"{3}\">", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), ParentREF);
+                Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
+                Builder.AppendLine("</category>");
+            }
+            else
+            {
+                Builder.AppendFormat("ref=\"{0}\" />\n",REF);
+            }
+            return Builder.ToString();
+        }
 
         #endregion
     }

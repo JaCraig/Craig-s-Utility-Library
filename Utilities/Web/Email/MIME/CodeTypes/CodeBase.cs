@@ -41,6 +41,12 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         #endregion
 
         #region Public Overridden Functions
+
+        /// <summary>
+        /// Decodes a string
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Output">Output string</param>
         public override void Decode(string Input, out string Output)
         {
             Output = "";
@@ -101,6 +107,11 @@ namespace Utilities.Web.Email.MIME.CodeTypes
             }
         }
 
+        /// <summary>
+        /// Encodes a string
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <returns>encoded string</returns>
         public override string Encode(string Input)
         {
             StringBuilder Builder = new StringBuilder();

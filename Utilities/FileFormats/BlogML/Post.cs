@@ -24,6 +24,7 @@ using System;
 using System.Xml;
 using System.Collections.Generic;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -34,6 +35,18 @@ namespace Utilities.FileFormats.BlogML
     public class Post
     {
         #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Post()
+        {
+            Authors = new Authors();
+            Categories = new Categories();
+            Tags = new Tags();
+            Comments = new Comments();
+        }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -147,6 +160,27 @@ namespace Utilities.FileFormats.BlogML
         /// Comments associated with the post
         /// </summary>
         public virtual Comments Comments { get; set; }
+
+        #endregion
+
+        #region Overridden Functions
+
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendFormat("<post id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" post-url=\"{3}\" type=\"normal\" hasexcerpt=\"true\" views=\"0\" is-published=\"True\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), PostURL);
+            Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
+            Builder.AppendFormat("<content type=\"text\"><![CDATA[{0}]]></content>\n", Content);
+            Builder.AppendFormat("<post-name type=\"text\"><![CDATA[{0}]]></post-name>\n", Title);
+            Builder.AppendFormat("<excerpt type=\"text\"><![CDATA[{0}]]></excerpt>\n", Excerpt);
+            Builder.AppendLine(Authors.ToString());
+            Builder.AppendLine(Categories.ToString());
+            Builder.AppendLine(Tags.ToString());
+            Builder.AppendLine(Comments.ToString());
+            Builder.AppendLine("<trackbacks />");
+            Builder.AppendLine("</post>");
+            return Builder.ToString();
+        }
 
         #endregion
     }
