@@ -89,10 +89,10 @@ namespace Utilities.FileFormats.BlogML
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.AppendLine("<catergories>");
+            Builder.AppendLine("<categories>");
             foreach(Category Category in CategoryList)
             {
-                Builder.AppendLine(Category.ToString());
+                Builder.Append(Category.ToString());
             }
             Builder.AppendLine("</categories>");
             return Builder.ToString();

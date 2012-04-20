@@ -171,7 +171,7 @@ namespace Utilities.FileFormats.BlogML
             Builder.AppendFormat("<post id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" post-url=\"{3}\" type=\"normal\" hasexcerpt=\"true\" views=\"0\" is-published=\"True\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), PostURL);
             Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
             Builder.AppendFormat("<content type=\"text\"><![CDATA[{0}]]></content>\n", Content);
-            Builder.AppendFormat("<post-name type=\"text\"><![CDATA[{0}]]></post-name>\n", Title);
+            Builder.AppendFormat("<post-name type=\"text\"><![CDATA[{0}]]></post-name>\n", PostName);
             Builder.AppendFormat("<excerpt type=\"text\"><![CDATA[{0}]]></excerpt>\n", Excerpt);
             Builder.AppendLine(Authors.ToString());
             Builder.AppendLine(Categories.ToString());

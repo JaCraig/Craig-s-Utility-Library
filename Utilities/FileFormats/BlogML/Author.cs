@@ -111,7 +111,7 @@ namespace Utilities.FileFormats.BlogML
             }
             else
             {
-                Builder.AppendFormat("ref=\"{0}\" />\n", ID);
+                Builder.AppendFormat("ref=\"{0}\" />\n", REF);
             }
             return Builder.ToString();
         }

@@ -105,7 +105,7 @@ namespace Utilities.FileFormats.BlogML
             Builder.Append("<category ");
             if(REF.IsNullOrEmpty())
             {
-                Builder.AppendFormat("id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" parentref=\"{3}\">", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), ParentREF);
+                Builder.AppendFormat("id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" parentref=\"{3}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), ParentREF);
                 Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
                 Builder.AppendLine("</category>");
             }

@@ -136,10 +136,10 @@ namespace Utilities.FileFormats.BlogML
             Builder.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
                 .AppendFormat("<blog root-url=\"{0}\" date-created=\"{1}\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.blogml.com/2006/09/BlogML\">\n", RootURL, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"))
                 .AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title)
-                .AppendFormat("<sub-title type=\"text\"><![CDATA[{0}]]></title>\n", SubTitle)
-                .AppendLine(Authors.ToString())
-                .AppendLine(Categories.ToString())
-                .AppendLine(Posts.ToString())
+                .AppendFormat("<sub-title type=\"text\"><![CDATA[{0}]]></sub-title>\n", SubTitle)
+                .Append(Authors.ToString())
+                .Append(Categories.ToString())
+                .Append(Posts.ToString())
                 .AppendLine("</blog>");
             return Builder.ToString();
         }
