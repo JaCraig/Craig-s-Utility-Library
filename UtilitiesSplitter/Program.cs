@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
+using System.Text.RegularExpressions;
 
 namespace UtilitiesSplitter
 {
@@ -83,6 +84,23 @@ namespace UtilitiesSplitter
                         ProjectDoc.Save("..\\..\\..\\Utilities." + Project.Name + "\\Utilities." + Project.Name + ".csproj");
                     }
                 }
+            }
+            SetupNuSpecFiles();
+        }
+
+        private static void SetupNuSpecFiles()
+        {
+            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories))
+            {
+                string FileContents = File.Read();
+                Match VersionMatch = Regex.Match(FileContents, "<version>(?<VersionNumber>.*)</version>");
+                string[] VersionInfo = VersionMatch.Groups["VersionNumber"].Value.Split('.');
+                string NewVersion = VersionInfo[0] + "." + VersionInfo[1] + ".";
+                if (VersionInfo.Length > 2)
+                    NewVersion += (int.Parse(VersionInfo[2]) + 1).ToString("D4");
+                else
+                    NewVersion += "0001";
+                File.Save(Regex.Replace(FileContents, "<version>(?<VersionNumber>.*)</version>", "<version>" + NewVersion + "</version>"));
             }
         }
     }
