@@ -79,6 +79,10 @@
     <Compile Include="ORM\Database\DatabaseManager.cs" />
     <Compile Include="ORM\Interfaces\IObject.cs" />
     <Compile Include="ORM\ObjectBaseClass.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IListManyToMany.cs" />
+    <Compile Include="ORM\Mapping\Interfaces\IListManyToOne.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\ListManyToMany.cs" />
+    <Compile Include="ORM\Mapping\PropertyTypes\ListManyToOne.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

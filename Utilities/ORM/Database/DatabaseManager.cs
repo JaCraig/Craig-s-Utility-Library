@@ -194,7 +194,7 @@ namespace Utilities.ORM.Database
                             MapMapping.IDProperty.FieldName,
                             "");
                     }
-                    else if (Property is IManyToOne || Property is IManyToMany || Property is IIEnumerableManyToOne)
+                    else if (Property is IManyToOne || Property is IManyToMany || Property is IIEnumerableManyToOne||Property is IListManyToMany||Property is IListManyToOne)
                     {
                         SetupJoiningTablesEnumerable(Mapping, Property, Key, TempDatabase);
                     }
@@ -299,7 +299,7 @@ namespace Utilities.ORM.Database
                 "");
             foreach (IProperty Property in Mapping.Properties)
             {
-                if (!(Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne))
+                if (!(Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne))
                 {
                     Table.AddColumn(Property.FieldName,
                     Property.Type.ToDbType(),

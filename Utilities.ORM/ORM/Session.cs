@@ -178,6 +178,26 @@ namespace Utilities.ORM
 
         #endregion
 
+        #region LoadListProperties
+
+        /// <summary>
+        /// Loads a property (primarily used internally for lazy loading)
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Parameters">Extra parameters (generally will be the ID of the object)</param>
+        /// <returns>The appropriate property value</returns>
+        public virtual List<DataType> LoadListProperties<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+            where ObjectType : class,new()
+            where DataType : class,new()
+        {
+            return QueryProvider.LoadListProperties<ObjectType, DataType>(this, Object, PropertyName, Parameters);
+        }
+
+        #endregion
+
         #region LoadProperty
 
         /// <summary>

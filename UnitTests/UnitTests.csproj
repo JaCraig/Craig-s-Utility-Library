@@ -143,6 +143,12 @@
     <Compile Include="Media\Image\Procedural\CellularTexture.cs" />
     <Compile Include="Media\Image\Procedural\FaultFormation.cs" />
     <Compile Include="Media\Image\Procedural\MidpointDisplacement.cs" />
+    <Compile Include="ORM\ListTest\Config\ListTestConfig.cs" />
+    <Compile Include="ORM\ListTest\Models\Mappings\Project2Mapping.cs" />
+    <Compile Include="ORM\ListTest\Models\Mappings\Task2Mapping.cs" />
+    <Compile Include="ORM\ListTest\Models\Project2.cs" />
+    <Compile Include="ORM\ListTest\Models\Task2.cs" />
+    <Compile Include="ORM\ListTest\ORMListTest.cs" />
     <Compile Include="ORM\Test1\Config\Test1Config.cs" />
     <Compile Include="ORM\Test1\Models\Account.cs" />
     <Compile Include="ORM\Test1\Models\Group.cs" />

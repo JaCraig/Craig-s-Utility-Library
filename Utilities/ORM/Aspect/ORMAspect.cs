@@ -98,6 +98,8 @@ namespace Utilities.ORM.Aspect
                             SetupSingleProperty(Method, BaseType, ReturnValue, Property, Mapping);
                         else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
                             SetupIEnumerableProperty(Method, BaseType, ReturnValue, Property, Mapping);
+                        else if (Property is IListManyToMany || Property is IListManyToOne)
+                            SetupListProperty(Method, BaseType, ReturnValue, Property, Mapping);
                         return;
                     }
                 }
@@ -144,6 +146,11 @@ namespace Utilities.ORM.Aspect
                             if (Fields.FirstOrDefault(x => x.Name == Property.DerivedFieldName) == null)
                                 Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, typeof(IEnumerable<>).MakeGenericType(Property.Type)));
                         }
+                        else if (Property is IListManyToOne || Property is IListManyToMany)
+                        {
+                            if (Fields.FirstOrDefault(x => x.Name == Property.DerivedFieldName) == null)
+                                Fields.Add(TypeBuilder.CreateField(Property.DerivedFieldName, typeof(List<>).MakeGenericType(Property.Type)));
+                        }
                     }
                 }
             }
@@ -175,6 +182,42 @@ namespace Utilities.ORM.Aspect
             return TypeBuilder.CreateDefaultProperty(Name, PropertyType, PropertyAttributes.SpecialName,
                 MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.Public,
                 MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.Public);
+        }
+
+        /// <summary>
+        /// Sets up a property (List)
+        /// </summary>
+        /// <param name="Method">Method builder</param>
+        /// <param name="BaseType">Base type for the object</param>
+        /// <param name="ReturnValue">Return value</param>
+        /// <param name="Property">Property info</param>
+        /// <param name="Mapping">Mapping info</param>
+        private void SetupListProperty(IMethodBuilder Method, Type BaseType, VariableBase ReturnValue, IProperty Property, IMapping Mapping)
+        {
+            Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);
+            Utilities.Reflection.Emit.Commands.If If1 = Method.If((VariableBase)SessionField, Comparison.NotEqual, null);
+            {
+                Utilities.Reflection.Emit.Commands.If If2 = Method.If(Field, Comparison.Equal, null);
+                {
+                    //Load data
+                    VariableBase IDValue = Method.This.Call(BaseType.GetProperty(Mapping.IDProperty.Name).GetGetMethod());
+                    VariableBase IDParameter = Method.NewObj(typeof(EqualParameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
+                    VariableBase PropertyList = Method.NewObj(typeof(List<IParameter>));
+                    PropertyList.Call("Add", new object[] { IDParameter });
+                    MethodInfo LoadPropertiesMethod = typeof(Session).GetMethod("LoadListProperties");
+                    LoadPropertiesMethod = LoadPropertiesMethod.MakeGenericMethod(new Type[] { BaseType, Field.DataType.GetGenericArguments()[0] });
+                    VariableBase ReturnVal = ((VariableBase)SessionField).Call(LoadPropertiesMethod, new object[] { Method.This, Property.Name, PropertyList.Call("ToArray") });
+                    Field.Assign(ReturnVal);
+                }
+                If2.EndIf();
+                Utilities.Reflection.Emit.Commands.If If3 = Method.If(Field, Comparison.Equal, null);
+                {
+                    Field.Assign(Method.NewObj(typeof(List<>).MakeGenericType(Property.Type).GetConstructor(Type.EmptyTypes)));
+                }
+                If3.EndIf();
+            }
+            If1.EndIf();
+            ReturnValue.Assign(Field);
         }
 
         /// <summary>

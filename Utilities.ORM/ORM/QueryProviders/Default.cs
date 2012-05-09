@@ -380,6 +380,52 @@ namespace Utilities.ORM.QueryProviders
 
         #endregion
 
+        #region LoadListProperties
+
+        /// <summary>
+        /// Loads a property
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="DataType">Property type</typeparam>
+        /// <param name="CurrentSession">Current Session</param>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Parameters">Extra parameters</param>
+        /// <returns>The appropriate property value</returns>
+        public virtual System.Collections.Generic.List<DataType> LoadListProperties<ObjectType, DataType>(Session CurrentSession, ObjectType Object, string PropertyName, params IParameter[] Parameters)
+            where ObjectType : class,new()
+            where DataType : class,new()
+        {
+            System.Collections.Generic.List<DataType> ReturnValue = new System.Collections.Generic.List<DataType>();
+            foreach (IDatabase Database in Mappings.Keys.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Type == typeof(DataType)
+                        && x.Name == PropertyName);
+                    if (Property != null)
+                    {
+                        using (MicroORM ORMObject = new MicroORM(Database.Name))
+                        {
+                            if (Property.CommandToLoad == null)
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), Parameters);
+                            else
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
+                        }
+                    }
+                }
+            }
+            foreach (DataType Item in ReturnValue)
+            {
+                if (Item is IORMObject)
+                    ((IORMObject)Item).Session0 = CurrentSession;
+            }
+            return ReturnValue;
+        }
+
+        #endregion
+
         #region LoadProperty
 
         /// <summary>

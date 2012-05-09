@@ -107,6 +107,14 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <returns>The many to one object</returns>
         IIEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new();
 
+        /// <summary>
+        /// IEnumerable many to one
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression pointint to the property</param>
+        /// <returns>The many to one object</returns>
+        IListManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, List<DataType>>> Expression) where DataType : class,new();
+
         #endregion
 
         #region ManyToMany
@@ -118,6 +126,14 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <param name="Expression">Expression pointing to the many to many property</param>
         /// <returns>The many to many object</returns>
         IManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new();
+
+        /// <summary>
+        /// Many to many mapping
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression pointing to the many to many property</param>
+        /// <returns>The many to many object</returns>
+        IListManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, List<DataType>>> Expression) where DataType : class,new();
 
         #endregion
 

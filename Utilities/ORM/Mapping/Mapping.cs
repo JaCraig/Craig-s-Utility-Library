@@ -68,7 +68,7 @@ namespace Utilities.ORM.Mapping
 
         public void AddToQueryProvider(IDatabase Database)
         {
-            Mapping<ClassType> Map = MicroORM.Map<ClassType>(TableName, IDProperty.Return(x=>x.FieldName), IDProperty.Return(x=>x.AutoIncrement), Database.Return(x=>x.ParameterStarter), Database.Return(x=>x.Name));
+            Mapping<ClassType> Map = MicroORM.Map<ClassType>(TableName, IDProperty.Return(x => x.FieldName), IDProperty.Return(x => x.AutoIncrement), Database.Return(x => x.ParameterStarter), Database.Return(x => x.Name));
             ((IProperty<ClassType>)IDProperty).Do(x => x.AddToQueryProvider(Database, Map));
             foreach (IProperty Property in Properties)
                 ((IProperty<ClassType>)Property).AddToQueryProvider(Database, Map);
@@ -181,6 +181,14 @@ namespace Utilities.ORM.Mapping
             return Return;
         }
 
+        public IListManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, List<DataType>>> Expression) where DataType : class,new()
+        {
+            Setup();
+            ListManyToOne<ClassType, DataType> Return = new ListManyToOne<ClassType, DataType>(Expression, this);
+            Properties.Add(Return);
+            return Return;
+        }
+
         #endregion
 
         #region ManyToMany
@@ -189,6 +197,14 @@ namespace Utilities.ORM.Mapping
         {
             Setup();
             ManyToMany<ClassType, DataType> Return = new ManyToMany<ClassType, DataType>(Expression, this);
+            Properties.Add(Return);
+            return Return;
+        }
+
+        public IListManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, List<DataType>>> Expression) where DataType : class,new()
+        {
+            Setup();
+            ListManyToMany<ClassType, DataType> Return = new ListManyToMany<ClassType, DataType>(Expression, this);
             Properties.Add(Return);
             return Return;
         }
