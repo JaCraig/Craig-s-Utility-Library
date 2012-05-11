@@ -426,17 +426,27 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region ToUnix
+        #region RelativeTime
 
         /// <summary>
-        /// Returns the date in Unix format
+        /// Converts the DateTime object to string describing, relatively how long ago or how far in the future
+        /// the input is based off of another DateTime object specified.
+        /// ex: 
+        /// Input=March 21, 2013
+        /// Epoch=March 22, 2013
+        /// returns "1 day ago"
+        /// Input=March 22, 2013
+        /// Epoch=March 21, 2013
+        /// returns "1 day from now"
         /// </summary>
-        /// <param name="Date">Date to convert</param>
-        /// <returns>The date in Unix format</returns>
-        public static int ToUnix(this DateTime Date)
+        /// <param name="Input">Input</param>
+        /// <param name="Epoch">DateTime object that the input is comparred to</param>
+        /// <returns>The difference between the input and epoch expressed as a string</returns>
+        public static string RelativeTime(this DateTime Input, DateTime Epoch)
         {
-            Date.ThrowIfNull("Date");
-            return (int)((Date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / TimeSpan.TicksPerSecond);
+            if (Epoch == Input)
+                return "now";
+            return Epoch > Input ? (Epoch - Input).ToStringFull() + " ago" : (Input - Epoch).ToStringFull() + " from now";
         }
 
         #endregion
@@ -465,6 +475,21 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static DateTime SetTime(this DateTime Date, TimeSpan Time)
         {
             return Date.Date.Add(Time);
+        }
+
+        #endregion
+
+        #region ToUnix
+
+        /// <summary>
+        /// Returns the date in Unix format
+        /// </summary>
+        /// <param name="Date">Date to convert</param>
+        /// <returns>The date in Unix format</returns>
+        public static int ToUnix(this DateTime Date)
+        {
+            Date.ThrowIfNull("Date");
+            return (int)((Date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / TimeSpan.TicksPerSecond);
         }
 
         #endregion

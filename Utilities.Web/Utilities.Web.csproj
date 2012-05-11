@@ -106,6 +106,9 @@
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\Minification.cs" />
     <Compile Include="Web\ExtensionMethods\RequestExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\HTTPRequestExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">

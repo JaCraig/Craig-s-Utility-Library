@@ -37,7 +37,7 @@ using System.IO.Compression;
 namespace Utilities.Web.ExtensionMethods
 {
     /// <summary>
-    /// Set of HTML related extensions
+    /// Set of HTML related extensions (and HTTP related)
     /// </summary>
     public static class HTMLExtensions
     {
@@ -46,7 +46,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <summary>
         /// Returns the absolute root
         /// </summary>
-        public static Uri AbsoluteRoot(this HttpContext Context)
+        public static Uri AbsoluteRoot(this HttpContextBase Context)
         {
             Context.ThrowIfNull("Context");
             if (Context.Items["absoluteurl"] == null)
@@ -106,7 +106,7 @@ namespace Utilities.Web.ExtensionMethods
         /// Adds HTTP compression to the current context
         /// </summary>
         /// <param name="Context">Current context</param>
-        public static void HTTPCompress(this HttpContext Context)
+        public static void HTTPCompress(this HttpContextBase Context)
         {
             Context.ThrowIfNull("Context");
             if (Context.Request.UserAgent != null && Context.Request.UserAgent.Contains("MSIE 6"))
@@ -132,7 +132,7 @@ namespace Utilities.Web.ExtensionMethods
         /// Checks the request headers to see if the specified
         /// encoding is accepted by the client.
         /// </summary>
-        public static bool IsEncodingAccepted(this HttpContext Context, string Encoding)
+        public static bool IsEncodingAccepted(this HttpContextBase Context, string Encoding)
         {
             if (Context == null)
                 return false;
@@ -148,7 +148,7 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         /// <param name="Context">Current context</param>
         /// <returns>The relative root of the web site</returns>
-        public static string RelativeRoot(this HttpContext Context)
+        public static string RelativeRoot(this HttpContextBase Context)
         {
             return VirtualPathUtility.ToAbsolute("~/");
         }
@@ -192,7 +192,7 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         /// <param name="Encoding">Encoding to set</param>
         /// <param name="Context">Context to set the encoding on</param>
-        public static void SetEncoding(this HttpContext Context, string Encoding)
+        public static void SetEncoding(this HttpContextBase Context, string Encoding)
         {
             Context.ThrowIfNull("Context");
             Context.Response.AppendHeader("Content-encoding", Encoding);

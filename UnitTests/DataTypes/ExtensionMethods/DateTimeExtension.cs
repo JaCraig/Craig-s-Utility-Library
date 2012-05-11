@@ -196,5 +196,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(new DateTime(2009, 3, 31), new DateTime(2009, 1, 15, 2, 3, 4).LastDayOfQuarter());
             Assert.Equal(new DateTime(2009, 6, 30), new DateTime(2009, 4, 1, 2, 3, 4).LastDayOfQuarter());
         }
+
+        [Test]
+        public void RelativeTime()
+        {
+            Assert.Equal("34 years, 11 months from now", new DateTime(2011, 12, 1).RelativeTime(new DateTime(1977, 1, 1)));
+            Assert.Equal("34 years, 11 months ago", new DateTime(1977, 1, 1).RelativeTime(new DateTime(2011, 12, 1)));
+        }
     }
 }

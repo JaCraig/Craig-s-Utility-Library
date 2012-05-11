@@ -409,6 +409,9 @@
     <Compile Include="Web\Akismet\Akismet.cs" />
     <Compile Include="Web\Akismet\Comment.cs" />
     <Compile Include="Web\Bing\Bing.cs" />
+    <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\HTTPRequestExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\RequestExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />

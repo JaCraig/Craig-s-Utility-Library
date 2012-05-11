@@ -228,9 +228,11 @@
     <Compile Include="Validation\Rules\Required.cs" />
     <Compile Include="Validation\Rules\RequiredString.cs" />
     <Compile Include="Validation\ValidationManager.cs" />
+    <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\MinificationExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
     <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
   </ItemGroup>
   <ItemGroup>

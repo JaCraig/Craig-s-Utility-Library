@@ -19,42 +19,47 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+#region Usings
+using System.Net;
+using System.Collections.Specialized;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
-using Utilities.DataTypes.Formatters;
+#endregion
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace Utilities.Web.ExtensionMethods
 {
-    public class TimeSpanExtensions
+    /// <summary>
+    /// Extensions for NameValueCollection
+    /// </summary>
+    public static class NameValueCollectionExtensions
     {
-        [Test]
-        public void DaysRemainder()
+        #region Functions
+
+        #region ToQueryString
+
+        /// <summary>
+        /// Converts the NameValueCollection to a query string
+        /// </summary>
+        /// <param name="Input">Input</param>
+        /// <returns>The NameValueCollection expressed as a string</returns>
+        public static string ToQueryString(this NameValueCollection Input)
         {
-            Assert.Equal(0, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).DaysRemainder());
+            Input.ThrowIfNull("Input");
+            if (Input.Count <= 0)
+                return "";
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("?");
+            string Splitter = "";
+            foreach(string Key in Input.Keys)
+            {
+                Builder.Append(Splitter).AppendFormat("{0}={1}", Key.URLEncode(), Input[Key].URLEncode());
+                Splitter = "&";
+            }
+            return Builder.ToString();
         }
 
-        [Test]
-        public void Years()
-        {
-            Assert.Equal(34, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Years());
-        }
+        #endregion
 
-        [Test]
-        public void Months()
-        {
-            Assert.Equal(11, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Months());
-        }
-
-        [Test]
-        public void ToStringFull()
-        {
-            Assert.Equal("34 years, 11 months", (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).ToStringFull());
-        }
+        #endregion
     }
 }

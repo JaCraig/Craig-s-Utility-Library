@@ -23,38 +23,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
 using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
-using Utilities.DataTypes.Formatters;
+using MoonUnit;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Linq.Expressions;
+using Utilities.Web.ExtensionMethods;
+using System.Net;
+using System.Collections.Specialized;
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace UnitTests.Web.ExtensionMethods
 {
-    public class TimeSpanExtensions
+    public class NameValueCollectionExtensions
     {
         [Test]
-        public void DaysRemainder()
+        public void ToQueryString()
         {
-            Assert.Equal(0, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).DaysRemainder());
-        }
-
-        [Test]
-        public void Years()
-        {
-            Assert.Equal(34, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Years());
-        }
-
-        [Test]
-        public void Months()
-        {
-            Assert.Equal(11, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Months());
-        }
-
-        [Test]
-        public void ToStringFull()
-        {
-            Assert.Equal("34 years, 11 months", (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).ToStringFull());
+            NameValueCollection Collection = new NameValueCollection();
+            Collection.Add("A", "1");
+            Collection.Add("B", "2");
+            Assert.Equal("?A=1&B=2", Collection.ToQueryString());
         }
     }
 }

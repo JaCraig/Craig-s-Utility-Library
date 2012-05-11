@@ -105,6 +105,12 @@ namespace UnitTests.Reflection.ExtensionMethods
         }
 
         [Test]
+        public void HasDefaultConstructor()
+        {
+            Assert.True(typeof(TestClass).HasDefaultConstructor());
+        }
+
+        [Test]
         public void GetObjectsTest()
         {
             Assert.Equal(2, new DirectoryInfo(@".\").GetObjects<TestInterface>()

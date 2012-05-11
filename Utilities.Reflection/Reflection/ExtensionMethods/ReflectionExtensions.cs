@@ -581,6 +581,22 @@ namespace Utilities.Reflection.ExtensionMethods
 
         #endregion
 
+        #region HasDefaultConstructor
+
+        /// <summary>
+        /// Determines if the type has a default constructor
+        /// </summary>
+        /// <param name="Type">Type to check</param>
+        /// <returns>True if it does, false otherwise</returns>
+        public static bool HasDefaultConstructor(this Type Type)
+        {
+            Type.ThrowIfNull("Type");
+            return Type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
+                        .Any(x => x.GetParameters().Length == 0);
+        }
+
+        #endregion
+
         #region IsIEnumerable
 
         /// <summary>
