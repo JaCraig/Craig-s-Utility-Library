@@ -38,5 +38,12 @@ namespace UnitTests.Encryption.ExtensionMethods
             string Data = "This is my test.";
             Assert.Equal("This is my test.", Data.Encrypt("Babysfirstpassword", false).Decrypt("Babysfirstpassword", false));
         }
+
+        [Test]
+        public void XOrTest()
+        {
+            string Data = "This is my test.";
+            Assert.Equal("This is my test.", Data.XOr("Babysfirstpassword").XOr("Babysfirstpassword"));
+        }
     }
 }

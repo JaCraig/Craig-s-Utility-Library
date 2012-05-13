@@ -63,7 +63,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <param name="OneTimePad">Is this a one time pad?</param>
         /// <param name="EncodingUsing">Encoding that the Data uses (defaults to UTF8)</param>
         /// <returns>The encrypted data</returns>
-        public static string Encrypt(this string Data, string Key, bool OneTimePad,Encoding EncodingUsing=null)
+        public static string Encrypt(this string Data, string Key, bool OneTimePad, Encoding EncodingUsing = null)
         {
             if (Data.IsNull())
                 return "";
@@ -127,6 +127,34 @@ namespace Utilities.Encryption.ExtensionMethods
                     Position = 0;
             }
             return OutputArray;
+        }
+
+        #endregion
+
+        #region XOr
+
+        /// <summary>
+        /// XOrs two strings together, returning the result
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Key">Key to use</param>
+        /// <param name="EncodingUsing">Encoding that the data uses (defaults to UTF8)</param>
+        /// <returns>The XOred string</returns>
+        public static string XOr(this string Input, string Key, Encoding EncodingUsing = null)
+        {
+            if (Input.IsNullOrEmpty())
+                return "";
+            if (Key.IsNullOrEmpty())
+                return Input;
+            byte[] InputArray = Input.ToByteArray(EncodingUsing);
+            byte[] KeyArray = Key.ToByteArray(EncodingUsing);
+            byte[] OutputArray = new byte[InputArray.Length];
+            for (int x = 0; x < InputArray.Length; ++x)
+            {
+                byte KeyByte = x < KeyArray.Length ? KeyArray[x] : (byte)0;
+                OutputArray[x] = (byte)(InputArray[x] ^ KeyByte);
+            }
+            return OutputArray.ToEncodedString(EncodingUsing);
         }
 
         #endregion
