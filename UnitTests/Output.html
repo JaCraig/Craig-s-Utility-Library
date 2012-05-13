@@ -1436,25 +1436,6 @@
       </tr>
       <tr>
         <td>Serialization</td>
-        <td>ToXML2</td>
-        <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.IO.IOException: The directory is not empty.
-
-   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.Directory.DeleteHelper(String fullPath, String userPath, Boolean recursive)
-   at System.IO.Directory.Delete(String fullPath, String userPath, Boolean recursive)
-   at System.IO.DirectoryInfo.Delete(Boolean recursive)
-   at Utilities.IO.ExtensionMethods.DirectoryInfoExtensions.DeleteAll(DirectoryInfo Info) in C:\dev\com\Mine\Libraries\Utilities\Utilities\IO\ExtensionMethods\DirectoryInfoExtensions.cs:line 107
-   at UnitTests.IO.ExtensionMethods.Serialization.Dispose() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\IO\ExtensionMethods\Serialization.cs:line 129
-   at MoonUnit.Manager.TestClass(Type Type, Output TempOutput)<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
-      </tr>
-      <tr>
-        <td>Serialization</td>
         <td>ToXML3</td>
         <td>
                                     Passed

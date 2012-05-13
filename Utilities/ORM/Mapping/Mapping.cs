@@ -30,6 +30,7 @@ using Utilities.ORM.Mapping.PropertyTypes;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Validation;
 #endregion
 
 namespace Utilities.ORM.Mapping
@@ -58,6 +59,7 @@ namespace Utilities.ORM.Mapping
             this.Suffix = Suffix;
             this.Prefix = Prefix;
             Setup();
+            SetupValidation(ValidationManager.GetValidator<ClassType>());
         }
 
         #endregion
@@ -128,6 +130,17 @@ namespace Utilities.ORM.Mapping
             IDProperty = Return;
             return Return;
         }
+
+        #endregion
+
+        #region Initialize
+
+        /// <summary>
+        /// Should be overwritten to initialize values in the 
+        /// database. This is run after the initial setup but prior to
+        /// returning to the user.
+        /// </summary>
+        public virtual void Initialize() { }
 
         #endregion
 
@@ -208,6 +221,16 @@ namespace Utilities.ORM.Mapping
             Properties.Add(Return);
             return Return;
         }
+
+        #endregion
+
+        #region SetupValidation
+
+        /// <summary>
+        /// Used to set up validation, using the class used internally by the system
+        /// </summary>
+        /// <param name="Validator">Validator</param>
+        public virtual void SetupValidation(Validator<ClassType> Validator) { }
 
         #endregion
 

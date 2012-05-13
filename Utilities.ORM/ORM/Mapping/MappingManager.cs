@@ -84,6 +84,20 @@ namespace Utilities.ORM.Mapping
             }
         }
 
+        /// <summary>
+        /// Initializes the mappings
+        /// </summary>
+        public void Initialize()
+        {
+            foreach (Type Key in Mappings.Keys)
+            {
+                foreach (IMapping Mapping in Mappings[Key])
+                {
+                    Mapping.Initialize();
+                }
+            }
+        }
+
         #endregion
 
         #region Properties

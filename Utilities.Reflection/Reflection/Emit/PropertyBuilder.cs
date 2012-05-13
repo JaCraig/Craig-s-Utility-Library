@@ -96,6 +96,10 @@ namespace Utilities.Reflection.Emit
 
         #region Load
 
+        /// <summary>
+        /// Loads a property
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Load(ILGenerator Generator)
         {
             Generator.EmitCall(GetMethod.Builder.IsVirtual ? OpCodes.Callvirt : OpCodes.Call, GetMethod.Builder, null);
@@ -105,6 +109,10 @@ namespace Utilities.Reflection.Emit
 
         #region Save
 
+        /// <summary>
+        /// Saves the property
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Save(ILGenerator Generator)
         {
             Generator.EmitCall(SetMethod.Builder.IsVirtual ? OpCodes.Callvirt : OpCodes.Call, SetMethod.Builder, null);
@@ -114,6 +122,10 @@ namespace Utilities.Reflection.Emit
 
         #region GetDefinition
 
+        /// <summary>
+        /// Gets the definition
+        /// </summary>
+        /// <returns>String version of what this object generates</returns>
         public override string GetDefinition()
         {
             StringBuilder Output = new StringBuilder();
@@ -169,12 +181,39 @@ namespace Utilities.Reflection.Emit
 
         #region Properties
 
+        /// <summary>
+        /// Parameter list
+        /// </summary>
         public virtual List<ParameterBuilder> Parameters { get; protected set; }
+
+        /// <summary>
+        /// Builder object
+        /// </summary>
         public virtual System.Reflection.Emit.PropertyBuilder Builder { get; protected set; }
+
+        /// <summary>
+        /// Attribute object
+        /// </summary>
         public virtual System.Reflection.PropertyAttributes Attributes { get; protected set; }
+
+        /// <summary>
+        /// Get method attributes
+        /// </summary>
         public virtual System.Reflection.MethodAttributes GetMethodAttributes { get; protected set; }
+
+        /// <summary>
+        /// Set method attributes
+        /// </summary>
         public virtual System.Reflection.MethodAttributes SetMethodAttributes { get; protected set; }
+
+        /// <summary>
+        /// Get method
+        /// </summary>
         public virtual MethodBuilder GetMethod { get; protected set; }
+
+        /// <summary>
+        /// Set method
+        /// </summary>
         public virtual MethodBuilder SetMethod { get; protected set; }
 
         /// <summary>
@@ -186,6 +225,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Returns the property name
+        /// </summary>
+        /// <returns>The property name</returns>
         public override string ToString()
         {
             return Name;
@@ -197,6 +240,11 @@ namespace Utilities.Reflection.Emit
 
         #region ++
 
+        /// <summary>
+        /// Adds one to the property
+        /// </summary>
+        /// <param name="Left">Property object</param>
+        /// <returns>The property builder</returns>
         public static PropertyBuilder operator ++(PropertyBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
@@ -209,6 +257,11 @@ namespace Utilities.Reflection.Emit
 
         #region --
 
+        /// <summary>
+        /// Subtracts one from the property builder
+        /// </summary>
+        /// <param name="Left">Property builder</param>
+        /// <returns>The property builder</returns>
         public static PropertyBuilder operator --(PropertyBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)

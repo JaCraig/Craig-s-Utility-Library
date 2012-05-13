@@ -90,7 +90,8 @@ namespace Utilities.ORM
         }
 
         /// <summary>
-        /// Can be used to setup various bits of data that are normally created on the fly as the system is used
+        /// Can be used to setup various bits of data that are normally created on the fly as the system is used.
+        /// Also calls initialization code found in mappings.
         /// </summary>
         public void Setup()
         {
@@ -98,6 +99,7 @@ namespace Utilities.ORM
             foreach (Type Key in MappingManager.Mappings.Keys)
                 foreach (IMapping Mapping in MappingManager.Mappings[Key])
                     Manager.Setup(Mapping.ObjectType);
+            MappingManager.Initialize();
         }
 
         /// <summary>

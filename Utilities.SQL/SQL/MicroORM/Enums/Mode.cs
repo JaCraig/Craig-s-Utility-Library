@@ -28,6 +28,9 @@ using System.Text;
 
 namespace Utilities.SQL.MicroORM.Enums
 {
+    /// <summary>
+    /// Determines the mode that the database is in
+    /// </summary>
     [Flags]
     public enum Mode
     {

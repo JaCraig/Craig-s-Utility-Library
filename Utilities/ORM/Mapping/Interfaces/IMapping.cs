@@ -27,6 +27,7 @@ using System.Text;
 using System.Linq.Expressions;
 using Utilities.ORM.QueryProviders.Interfaces;
 using System.Data;
+using Utilities.Validation;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces
@@ -159,6 +160,16 @@ namespace Utilities.ORM.Mapping.Interfaces
 
         #endregion
 
+        #region SetupValidation
+
+        /// <summary>
+        /// Used to set up validation, using the class used internally by the system
+        /// </summary>
+        /// <param name="Validator">Validator</param>
+        void SetupValidation(Validator<ClassType> Validator);
+
+        #endregion
+
         #endregion
     }
 
@@ -175,6 +186,13 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// </summary>
         /// <param name="Database">Database object</param>
         void AddToQueryProvider(IDatabase Database);
+
+        /// <summary>
+        /// Should be overwritten to initialize values in the 
+        /// database. This is run after the initial setup but prior to
+        /// returning to the user.
+        /// </summary>
+        void Initialize();
 
         #endregion
 
