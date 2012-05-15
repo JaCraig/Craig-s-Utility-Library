@@ -233,6 +233,7 @@
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\MinificationExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\Streams\UglyStream.cs" />
     <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
   </ItemGroup>
   <ItemGroup>

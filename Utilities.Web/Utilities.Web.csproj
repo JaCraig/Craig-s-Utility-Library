@@ -109,8 +109,13 @@
     <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\HTTPRequestExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\Streams\UglyStream.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Utilities.Compression\Utilities.Compression.csproj">
+      <Project>{D56F5AB6-2843-43D9-9236-5CF136781CEB}</Project>
+      <Name>Utilities.Compression</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
       <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
       <Name>Utilities.DataTypes</Name>

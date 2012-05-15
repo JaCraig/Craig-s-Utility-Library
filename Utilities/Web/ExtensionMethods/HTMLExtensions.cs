@@ -32,6 +32,8 @@ using System.Web;
 using System.Globalization;
 using Utilities.DataTypes.ExtensionMethods;
 using System.IO.Compression;
+using Utilities.Web.ExtensionMethods.Streams;
+using Utilities.Compression.ExtensionMethods.Enums;
 #endregion
 
 namespace Utilities.Web.ExtensionMethods
@@ -106,21 +108,32 @@ namespace Utilities.Web.ExtensionMethods
         /// Adds HTTP compression to the current context
         /// </summary>
         /// <param name="Context">Current context</param>
-        public static void HTTPCompress(this HttpContextBase Context)
+        /// <param name="RemovePrettyPrinting">Sets the response filter to a special stream that
+        /// removes pretty printing from ASP.Net pages.</param>
+        public static void HTTPCompress(this HttpContextBase Context,bool RemovePrettyPrinting=false)
         {
             Context.ThrowIfNull("Context");
             if (Context.Request.UserAgent != null && Context.Request.UserAgent.Contains("MSIE 6"))
                 return;
-
-            if (Context.IsEncodingAccepted(GZIP))
+            if (RemovePrettyPrinting)
             {
-                Context.Response.Filter = new GZipStream(Context.Response.Filter, CompressionMode.Compress);
-                Context.SetEncoding(GZIP);
+                if (Context.IsEncodingAccepted(GZIP))
+                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.GZip);
+                else if (Context.IsEncodingAccepted(DEFLATE))
+                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.Deflate);
             }
-            else if (Context.IsEncodingAccepted(DEFLATE))
+            else
             {
-                Context.Response.Filter = new DeflateStream(Context.Response.Filter, CompressionMode.Compress);
-                Context.SetEncoding(DEFLATE);
+                if (Context.IsEncodingAccepted(GZIP))
+                {
+                    Context.Response.Filter = new GZipStream(Context.Response.Filter, CompressionMode.Compress);
+                    Context.SetEncoding(GZIP);
+                }
+                else if (Context.IsEncodingAccepted(DEFLATE))
+                {
+                    Context.Response.Filter = new DeflateStream(Context.Response.Filter, CompressionMode.Compress);
+                    Context.SetEncoding(DEFLATE);
+                }
             }
         }
 

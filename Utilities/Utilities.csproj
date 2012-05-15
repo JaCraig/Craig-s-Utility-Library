@@ -416,6 +416,7 @@
     <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\Minification.cs" />
+    <Compile Include="Web\ExtensionMethods\Streams\UglyStream.cs" />
     <Compile Include="Web\Gravatar\Gravatar.cs" />
     <Compile Include="Web\OAuth\OAuth.cs" />
     <Compile Include="Web\Craigslist\Craigslist.cs" />
