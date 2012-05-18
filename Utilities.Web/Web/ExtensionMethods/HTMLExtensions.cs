@@ -118,9 +118,15 @@ namespace Utilities.Web.ExtensionMethods
             if (RemovePrettyPrinting)
             {
                 if (Context.IsEncodingAccepted(GZIP))
+                {
                     Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.GZip);
+                    Context.SetEncoding(GZIP);
+                }
                 else if (Context.IsEncodingAccepted(DEFLATE))
+                {
                     Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.Deflate);
+                    Context.SetEncoding(DEFLATE);
+                }
             }
             else
             {
