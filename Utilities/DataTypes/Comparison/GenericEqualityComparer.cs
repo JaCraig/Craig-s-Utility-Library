@@ -38,6 +38,12 @@ namespace Utilities.DataTypes.Comparison
     {
         #region Functions
 
+        /// <summary>
+        /// Determines if the two items are equal
+        /// </summary>
+        /// <param name="x">Object 1</param>
+        /// <param name="y">Object 2</param>
+        /// <returns>True if they are, false otherwise</returns>
         public bool Equals(T x, T y)
         {
             if (!typeof(T).IsValueType
@@ -75,9 +81,14 @@ namespace Utilities.DataTypes.Comparison
             return x.Equals(y);
         }
 
+        /// <summary>
+        /// Get hash code
+        /// </summary>
+        /// <param name="obj">Object to get the hash code of</param>
+        /// <returns>The object's hash code</returns>
         public int GetHashCode(T obj)
         {
-            throw new NotImplementedException();
+            return obj.GetHashCode();
         }
 
         #endregion

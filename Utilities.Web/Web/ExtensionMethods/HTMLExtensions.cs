@@ -109,8 +109,10 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         /// <param name="Context">Current context</param>
         /// <param name="RemovePrettyPrinting">Sets the response filter to a special stream that
-        /// removes pretty printing from ASP.Net pages.</param>
-        public static void HTTPCompress(this HttpContextBase Context,bool RemovePrettyPrinting=false)
+        /// removes pretty printing from content</param>
+        /// <param name="Type">The minification type to use (defaults to HTML if RemovePrettyPrinting 
+        /// is set to true, but can also deal with CSS and Javascript)</param>
+        public static void HTTPCompress(this HttpContextBase Context, bool RemovePrettyPrinting = false, MinificationType Type = MinificationType.HTML)
         {
             Context.ThrowIfNull("Context");
             if (Context.Request.UserAgent != null && Context.Request.UserAgent.Contains("MSIE 6"))
@@ -119,12 +121,12 @@ namespace Utilities.Web.ExtensionMethods
             {
                 if (Context.IsEncodingAccepted(GZIP))
                 {
-                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.GZip);
+                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.GZip, Type);
                     Context.SetEncoding(GZIP);
                 }
                 else if (Context.IsEncodingAccepted(DEFLATE))
                 {
-                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.Deflate);
+                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.Deflate, Type);
                     Context.SetEncoding(DEFLATE);
                 }
             }

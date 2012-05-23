@@ -36,6 +36,9 @@ namespace Utilities.IoC.Mappings.BaseClasses
     {
         #region Functions
 
+        /// <summary>
+        /// Sets up the module
+        /// </summary>
         public abstract void Setup();
 
         /// <summary>

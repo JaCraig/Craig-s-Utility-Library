@@ -32,7 +32,13 @@ namespace Utilities.Events.EventArgs
     /// </summary>
     public class BaseEventArgs : System.EventArgs
     {
+        /// <summary>
+        /// Should the event be stopped?
+        /// </summary>
         public bool Stop { get; set; }
+        /// <summary>
+        /// Content of the event
+        /// </summary>
         public object Content { get; set; }
     }
 

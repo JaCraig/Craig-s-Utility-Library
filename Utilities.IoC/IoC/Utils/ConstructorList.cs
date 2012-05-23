@@ -30,8 +30,17 @@ using Utilities.IoC.Mappings;
 
 namespace Utilities.IoC.Utils
 {
+    /// <summary>
+    /// Utility functions that deal with constructors for an object
+    /// </summary>
     public static class ConstructorList
     {
+        /// <summary>
+        /// Chooses a constructor
+        /// </summary>
+        /// <param name="ImplementationType">Type of the class</param>
+        /// <param name="MappingManager">Mapping manager</param>
+        /// <returns>The most appropriate constructor</returns>
         public static ConstructorInfo ChooseConstructor(Type ImplementationType, MappingManager MappingManager)
         {
             ConstructorInfo[] Constructors = ImplementationType.GetConstructors();
@@ -49,6 +58,12 @@ namespace Utilities.IoC.Utils
             return CurrentConstructor;
         }
 
+        /// <summary>
+        /// Gets the number of parameters that the system recognizes
+        /// </summary>
+        /// <param name="Constructor">Constructor to check</param>
+        /// <param name="MappingManager">Mapping manager</param>
+        /// <returns>The number of parameters that it has knoweledge of</returns>
         private static int GetParameterCount(ConstructorInfo Constructor, MappingManager MappingManager)
         {
             int Count = 0;

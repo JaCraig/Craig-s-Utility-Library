@@ -32,12 +32,33 @@ namespace Utilities.Cisco
     {
         #region Enum Values
 
+        /// <summary>
+        /// ASCII
+        /// </summary>
         ASCII,
+        /// <summary>
+        /// Telephone number
+        /// </summary>
         TelephoneNumber,
+        /// <summary>
+        /// Numeric
+        /// </summary>
         Numeric,
+        /// <summary>
+        /// Equation
+        /// </summary>
         Equation,
+        /// <summary>
+        /// Uppercase
+        /// </summary>
         Uppercase,
+        /// <summary>
+        /// Lowercase
+        /// </summary>
         Lowercase,
+        /// <summary>
+        /// Password
+        /// </summary>
         Password
 
         #endregion

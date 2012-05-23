@@ -35,6 +35,9 @@ namespace Utilities.CodeGen.Interfaces
     {
         #region Properties
 
+        /// <summary>
+        /// Code held be the template
+        /// </summary>
         string Code { get; set; }
 
         #endregion

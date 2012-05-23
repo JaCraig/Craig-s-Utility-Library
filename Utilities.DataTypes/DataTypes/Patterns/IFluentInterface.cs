@@ -37,15 +37,32 @@ namespace Utilities.DataTypes.Patterns
     {
         #region Functions
 
+        /// <summary>
+        /// Hides equals
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         bool Equals(object obj);
 
+        /// <summary>
+        /// Hides GetHashCode
+        /// </summary>
+        /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         int GetHashCode();
 
+        /// <summary>
+        /// Hides ToString
+        /// </summary>
+        /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         string ToString();
 
+        /// <summary>
+        /// Hides GetType
+        /// </summary>
+        /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         Type GetType();
 

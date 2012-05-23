@@ -36,6 +36,9 @@ namespace Utilities.FileFormats.BlogML
     {
         #region Constructor
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Comments()
         {
             CommentList = new List<Comment>();

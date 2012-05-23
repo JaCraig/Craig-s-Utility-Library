@@ -30,7 +30,13 @@ namespace Utilities.Reflection.Emit.Enums
     /// </summary>
     public enum AssemblyType
     {
+        /// <summary>
+        /// DLL assembly
+        /// </summary>
         DLL,
+        /// <summary>
+        /// EXE assembly
+        /// </summary>
         EXE
     }
 }

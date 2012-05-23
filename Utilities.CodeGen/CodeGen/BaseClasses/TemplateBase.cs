@@ -34,6 +34,9 @@ namespace Utilities.CodeGen.BaseClasses
     /// </summary>
     public class TemplateBase:ITemplate
     {
+        /// <summary>
+        /// Code held be the template
+        /// </summary>
         public virtual string Code { get; set; }
     }
 }

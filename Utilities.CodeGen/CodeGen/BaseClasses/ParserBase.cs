@@ -34,6 +34,12 @@ namespace Utilities.CodeGen.BaseClasses
     /// </summary>
     public abstract class ParserBase:IParser
     {
+        /// <summary>
+        /// Transforms the class into string output
+        /// </summary>
+        /// <param name="Template">Template class</param>
+        /// <param name="Input">Input value class</param>
+        /// <returns>String equivalent of class</returns>
         public abstract string Transform(ITemplate Template, IInput Input);
     }
 }

@@ -37,6 +37,9 @@ namespace Utilities.Profiler
     {
         #region Constuctors
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         protected ProfilerManager()
         {
             Profilers = new List<ProfilerInfo>();

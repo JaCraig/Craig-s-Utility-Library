@@ -35,12 +35,19 @@ namespace Utilities.Math
     {
         #region Constructors
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Set()
             : base()
         {
 
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="InitialSize">Initial size</param>
         public Set(int InitialSize)
             : base(InitialSize)
         {

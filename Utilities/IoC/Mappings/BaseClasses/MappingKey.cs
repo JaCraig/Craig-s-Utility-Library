@@ -37,6 +37,13 @@ namespace Utilities.IoC.Mappings.BaseClasses
     {
         #region Constructor
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ServiceType">Service type</param>
+        /// <param name="AttributeType">Attribute type</param>
+        /// <param name="ProviderManager">Provider manager</param>
+        /// <param name="MappingManager">Mapping manager</param>
         public MappingKey(Type ServiceType, Type AttributeType, ProviderManager ProviderManager, MappingManager MappingManager)
             : base(ServiceType, AttributeType, ProviderManager, MappingManager)
         {

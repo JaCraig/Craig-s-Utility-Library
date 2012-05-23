@@ -33,10 +33,25 @@ namespace Utilities.CodeGen.Templates.Enums
     /// </summary>
     public enum Modifiers
     {
+        /// <summary>
+        /// Virtual
+        /// </summary>
         Virtual,
+        /// <summary>
+        /// Abstract
+        /// </summary>
         Abstract,
+        /// <summary>
+        /// Override
+        /// </summary>
         Override,
+        /// <summary>
+        /// Partial
+        /// </summary>
         Partial,
+        /// <summary>
+        /// No modifiers
+        /// </summary>
         None
     }
 }

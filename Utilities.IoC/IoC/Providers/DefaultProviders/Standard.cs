@@ -37,22 +37,41 @@ namespace Utilities.IoC.Providers.DefaultProviders
     /// </summary>
     public class Standard : IProvider
     {
+        /// <summary>
+        /// Creates an implementation based off of a type
+        /// </summary>
+        /// <param name="ImplementationType">Implementation type</param>
+        /// <param name="MappingManager">Mapping manager</param>
+        /// <returns>an implementation class</returns>
         public IImplementation CreateImplementation(Type ImplementationType, MappingManager MappingManager)
         {
             return new Implementations.Standard(ImplementationType, MappingManager);
         }
 
-
+        /// <summary>
+        /// Provider scope
+        /// </summary>
         public BaseScope ProviderScope
         {
             get { return new StandardScope(); }
         }
 
+        /// <summary>
+        /// Creates an implementation based off an existing implementation
+        /// </summary>
+        /// <param name="Implementation">Implementation class</param>
+        /// <param name="MappingManager">Mapping manager</param>
+        /// <returns>Potentially a new implementation class (if appropriate)</returns>
         public IImplementation CreateImplementation(IImplementation Implementation, MappingManager MappingManager)
         {
             return CreateImplementation(Implementation.ReturnType, MappingManager);
         }
 
+        /// <summary>
+        /// Creates an implementation that uses a specified function
+        /// </summary>
+        /// <param name="Implementation">Implementation delegate</param>
+        /// <returns>An implementation class</returns>
         public IImplementation CreateImplementation<ImplementationType>(Func<ImplementationType> Implementation)
         {
             return new Delegate<ImplementationType>(Implementation);

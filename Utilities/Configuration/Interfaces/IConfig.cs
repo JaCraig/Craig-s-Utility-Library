@@ -35,6 +35,9 @@ namespace Utilities.Configuration.Interfaces
     {
         #region Properties
 
+        /// <summary>
+        /// Name of the config file
+        /// </summary>
         string Name { get; }
 
         #endregion

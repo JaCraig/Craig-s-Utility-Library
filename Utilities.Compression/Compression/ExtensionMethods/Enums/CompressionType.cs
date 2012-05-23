@@ -32,7 +32,13 @@ namespace Utilities.Compression.ExtensionMethods.Enums
     /// </summary>
     public enum CompressionType
     {
+        /// <summary>
+        /// Deflate
+        /// </summary>
         Deflate=0,
+        /// <summary>
+        /// GZip
+        /// </summary>
         GZip=1
     }
 }

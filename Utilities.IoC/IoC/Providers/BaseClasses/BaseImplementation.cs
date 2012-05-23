@@ -29,16 +29,26 @@ using Utilities.IoC.Providers.Interfaces;
 
 namespace Utilities.IoC.Providers.BaseClasses
 {
+    /// <summary>
+    /// Base implementation class
+    /// </summary>
     public abstract class BaseImplementation : IImplementation
     {
         #region Properties
 
+        /// <summary>
+        /// Return type of the implementation
+        /// </summary>
         public virtual Type ReturnType { get; set; }
 
         #endregion
 
         #region Functions
 
+        /// <summary>
+        /// Creates an object
+        /// </summary>
+        /// <returns>An object</returns>
         public abstract object Create();
 
         #endregion

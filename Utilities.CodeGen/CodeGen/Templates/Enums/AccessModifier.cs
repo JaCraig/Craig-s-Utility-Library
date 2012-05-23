@@ -28,11 +28,26 @@ using System.Text;
 
 namespace Utilities.CodeGen.Templates.Enums
 {
+    /// <summary>
+    /// Access modifier
+    /// </summary>
     public enum AccessModifier
     {
+        /// <summary>
+        /// public access
+        /// </summary>
         Public,
+        /// <summary>
+        /// private access
+        /// </summary>
         Private,
+        /// <summary>
+        /// protected access
+        /// </summary>
         Protected,
+        /// <summary>
+        /// internal access
+        /// </summary>
         Internal
     }
 }

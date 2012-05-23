@@ -37,6 +37,12 @@ namespace Utilities.DataTypes.Comparison
     {
         #region Functions
 
+        /// <summary>
+        /// Compares the two objects
+        /// </summary>
+        /// <param name="x">Object 1</param>
+        /// <param name="y">Object 2</param>
+        /// <returns>0 if they're equal, any other value they are not</returns>
         public int Compare(T x, T y)
         {
             if (!typeof(T).IsValueType

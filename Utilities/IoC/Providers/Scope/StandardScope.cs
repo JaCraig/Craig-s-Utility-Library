@@ -35,6 +35,9 @@ namespace Utilities.IoC.Providers.Scope
     {
         #region Constructor
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public StandardScope()
             : base()
         {

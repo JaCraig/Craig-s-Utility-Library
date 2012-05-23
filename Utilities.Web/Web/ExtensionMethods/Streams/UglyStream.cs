@@ -43,10 +43,13 @@ namespace Utilities.Web.ExtensionMethods.Streams
         /// </summary>
         /// <param name="StreamUsing">The stream for the page</param>
         /// <param name="Compression">The compression we're using (gzip or deflate)</param>
-        public UglyStream(Stream StreamUsing, CompressionType Compression)
+        /// <param name="Type">Minification type to use (defaults to HTML)</param>
+        public UglyStream(Stream StreamUsing, CompressionType Compression, MinificationType Type = MinificationType.HTML)
+            : base()
         {
             this.Compression = Compression;
             this.StreamUsing = StreamUsing;
+            this.Type = Type;
         }
 
         #endregion
@@ -67,6 +70,8 @@ namespace Utilities.Web.ExtensionMethods.Streams
         /// Final output string
         /// </summary>
         private string FinalString;
+
+        private MinificationType Type;
 
         #endregion
 
@@ -152,9 +157,7 @@ namespace Utilities.Web.ExtensionMethods.Streams
         {
             if (FinalString.IsNullOrEmpty())
                 return;
-            FinalString = Regex.Replace(FinalString, "/// <.+>", "");
-            FinalString = Regex.Replace(FinalString, @">[\s\S]*?<", new MatchEvaluator(Evaluate));
-            byte[] Data = Encoding.ASCII.GetBytes(FinalString);
+            byte[] Data = FinalString.Minify(Type).ToByteArray();
             Data = Data.Compress(Compression);
             StreamUsing.Write(Data, 0, Data.Length);
             FinalString = "";
