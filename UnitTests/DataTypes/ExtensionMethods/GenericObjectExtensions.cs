@@ -117,6 +117,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.DoesNotThrow<Exception>(() => "ASDF".ThrowIfFalse(x => !string.IsNullOrEmpty(x), new Exception()));
         }
 
+        [Test]
+        public void Async()
+        {
+            Assert.DoesNotThrow<Exception>(() => new Action(() => string.IsNullOrEmpty("")).Async());
+        }
+
         public void Test()
         {
             throw new Exception();

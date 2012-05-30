@@ -243,5 +243,16 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("mouse", "mice".Singularize());
             Assert.Equal("test", "tests".Singularize());
         }
+
+        [Test]
+        public void LevenshteinDistance()
+        {
+            Assert.Equal(0, "".LevenshteinDistance(""));
+            Assert.Equal(5, "".LevenshteinDistance("Tests"));
+            Assert.Equal(5, "Tests".LevenshteinDistance(""));
+            Assert.Equal(1, "Test".LevenshteinDistance("Tests"));
+            Assert.Equal(3, "Test".LevenshteinDistance("Testing"));
+            Assert.Equal(1, "Rest".LevenshteinDistance("Test"));
+        }
     }
 }

@@ -253,6 +253,38 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region LevenshteinDistance
+
+        /// <summary>
+        /// Calculates the Levenshtein distance
+        /// </summary>
+        /// <param name="Value1">Value 1</param>
+        /// <param name="Value2">Value 2</param>
+        /// <returns>The Levenshtein distance</returns>
+        public static int LevenshteinDistance(this string Value1, string Value2)
+        {
+            int[,] Matrix = new int[Value1.Length + 1, Value2.Length + 1];
+            for (int x = 0; x <= Value1.Length; ++x)
+                Matrix[x, 0] = x;
+            for (int x = 0; x <= Value2.Length; ++x)
+                Matrix[0, x] = x;
+
+            for (int x = 1; x <= Value1.Length; ++x)
+            {
+                for (int y = 1; y <= Value2.Length; ++y)
+                {
+                    int Cost = Value1[x - 1] == Value2[y - 1] ? 0 : 1;
+                    Matrix[x, y] = new int[] { Matrix[x - 1, y] + 1, Matrix[x, y - 1] + 1, Matrix[x - 1, y - 1] + Cost }.Min();
+                    if (x > 1 && y > 1 && Value1[x - 1] == Value2[y - 2] && Value1[x - 2] == Value2[y - 1])
+                        Matrix[x, y] = new int[] { Matrix[x, y], Matrix[x - 2, y - 2] + Cost }.Min();
+                }
+            }
+
+            return Matrix[Value1.Length, Value2.Length];
+        }        
+
+        #endregion
+
         #region MaskLeft
 
         /// <summary>

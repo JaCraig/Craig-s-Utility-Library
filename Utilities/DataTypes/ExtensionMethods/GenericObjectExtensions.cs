@@ -126,6 +126,19 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region Async
+
+        /// <summary>
+        /// Runs an action async
+        /// </summary>
+        /// <param name="Action">Action to run</param>
+        public static void Async(this Action Action)
+        {
+            new Thread(Action.Invoke).Start();
+        }
+
+        #endregion
+
         #region Do
 
         /// <summary>
