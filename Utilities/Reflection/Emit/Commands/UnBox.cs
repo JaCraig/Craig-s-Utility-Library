@@ -67,6 +67,9 @@ namespace Utilities.Reflection.Emit.Commands
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the unbox statement
+        /// </summary>
         public override void Setup()
         {
             if (!ValueType.IsValueType)
@@ -80,6 +83,10 @@ namespace Utilities.Reflection.Emit.Commands
             Result.Save(Generator);
         }
 
+        /// <summary>
+        /// Unbox statement as a string
+        /// </summary>
+        /// <returns>The unbox statement as a string</returns>
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();

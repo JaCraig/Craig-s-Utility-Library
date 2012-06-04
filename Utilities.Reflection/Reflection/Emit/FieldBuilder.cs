@@ -62,16 +62,28 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
+        /// <summary>
+        /// Loads the field
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Load(System.Reflection.Emit.ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Ldfld, Builder);
         }
 
+        /// <summary>
+        /// Saves the field
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Save(System.Reflection.Emit.ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Stfld, Builder);
         }
 
+        /// <summary>
+        /// Gets the definition of the field
+        /// </summary>
+        /// <returns>The field's definition</returns>
         public override string GetDefinition()
         {
             StringBuilder Output = new StringBuilder();
@@ -112,6 +124,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// The field as a string
+        /// </summary>
+        /// <returns>The field as a string</returns>
         public override string ToString()
         {
             return Name;
@@ -121,6 +137,11 @@ namespace Utilities.Reflection.Emit
 
         #region Operator Functions
 
+        /// <summary>
+        /// Increments the field by one
+        /// </summary>
+        /// <param name="Left">Field to increment</param>
+        /// <returns>The field</returns>
         public static FieldBuilder operator ++(FieldBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
@@ -129,6 +150,11 @@ namespace Utilities.Reflection.Emit
             return Left;
         }
 
+        /// <summary>
+        /// Decrements the field by one
+        /// </summary>
+        /// <param name="Left">Field to decrement</param>
+        /// <returns>The field</returns>
         public static FieldBuilder operator --(FieldBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)

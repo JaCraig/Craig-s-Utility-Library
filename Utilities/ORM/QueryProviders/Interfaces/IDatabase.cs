@@ -52,6 +52,11 @@ namespace Utilities.ORM.QueryProviders.Interfaces
         string ParameterStarter { get; }
 
         /// <summary>
+        /// Determines if audit tables are generated
+        /// </summary>
+        bool Audit { get; }
+
+        /// <summary>
         /// Should the structure of the database be updated?
         /// </summary>
         bool Update { get; }

@@ -57,6 +57,9 @@ namespace Utilities.Reflection.Emit.Commands
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the throw statement
+        /// </summary>
         public override void Setup()
         {
             if (Exception is FieldBuilder || Exception is IPropertyBuilder)
@@ -65,6 +68,10 @@ namespace Utilities.Reflection.Emit.Commands
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.Emit(OpCodes.Throw);
         }
 
+        /// <summary>
+        /// The throw statement as a string
+        /// </summary>
+        /// <returns>The throw statement as a string</returns>
         public override string ToString()
         {
             return "throw " + Exception.ToString() + ";\n";

@@ -101,6 +101,10 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
+        /// <summary>
+        /// Loads the property
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Load(ILGenerator Generator)
         {
             if (GetMethod.Builder.IsVirtual)
@@ -109,6 +113,10 @@ namespace Utilities.Reflection.Emit
                 Generator.EmitCall(OpCodes.Call, GetMethod.Builder, null);
         }
 
+        /// <summary>
+        /// Saves the property
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Save(ILGenerator Generator)
         {
             if (SetMethod.Builder.IsVirtual)
@@ -117,6 +125,10 @@ namespace Utilities.Reflection.Emit
                 Generator.EmitCall(OpCodes.Call, SetMethod.Builder, null);
         }
 
+        /// <summary>
+        /// Gets the definition of the property
+        /// </summary>
+        /// <returns>The definition of the property</returns>
         public override string GetDefinition()
         {
             StringBuilder Output = new StringBuilder();
@@ -214,6 +226,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// property as a string
+        /// </summary>
+        /// <returns>Property as a string</returns>
         public override string ToString()
         {
             return Name;
@@ -223,6 +239,11 @@ namespace Utilities.Reflection.Emit
 
         #region Operator Functions
 
+        /// <summary>
+        /// Increments the property by one
+        /// </summary>
+        /// <param name="Left">The property to increment</param>
+        /// <returns>The property</returns>
         public static DefaultPropertyBuilder operator ++(DefaultPropertyBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
@@ -231,6 +252,11 @@ namespace Utilities.Reflection.Emit
             return Left;
         }
 
+        /// <summary>
+        /// Decrements the property by one
+        /// </summary>
+        /// <param name="Left">The property to decrement</param>
+        /// <returns>The property</returns>
         public static DefaultPropertyBuilder operator --(DefaultPropertyBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)

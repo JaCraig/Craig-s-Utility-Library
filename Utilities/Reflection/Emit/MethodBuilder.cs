@@ -94,6 +94,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Outputs the method to a string
+        /// </summary>
+        /// <returns>The string representation of the method</returns>
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();

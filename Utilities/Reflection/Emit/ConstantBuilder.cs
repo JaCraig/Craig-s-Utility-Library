@@ -54,10 +54,18 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
+        /// <summary>
+        /// Saves the constant
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Save(ILGenerator Generator)
         {
         }
 
+        /// <summary>
+        /// Loads the constant
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Load(ILGenerator Generator)
         {
             if (this.Value == null)
@@ -97,6 +105,10 @@ namespace Utilities.Reflection.Emit
             }
         }
 
+        /// <summary>
+        /// Get the definition of the constant
+        /// </summary>
+        /// <returns>The definition of the constant</returns>
         public override string GetDefinition()
         {
             return Value.ToString();
@@ -115,6 +127,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// The definition of the constant as a string
+        /// </summary>
+        /// <returns>The constant as a string</returns>
         public override string ToString()
         {
             if (this.DataType == typeof(string))

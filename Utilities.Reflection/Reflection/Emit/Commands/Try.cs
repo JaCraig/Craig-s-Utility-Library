@@ -63,11 +63,18 @@ namespace Utilities.Reflection.Emit.Commands
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.EndTry();
         }
 
+        /// <summary>
+        /// Sets up the try statement
+        /// </summary>
         public override void Setup()
         {
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.BeginExceptionBlock();
         }
 
+        /// <summary>
+        /// The try statement as a string
+        /// </summary>
+        /// <returns>The try statement as a string</returns>
         public override string ToString()
         {
             return "try\n{\n";

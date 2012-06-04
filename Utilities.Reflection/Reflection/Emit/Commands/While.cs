@@ -100,6 +100,9 @@ namespace Utilities.Reflection.Emit.Commands
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.EndWhile(this);
         }
 
+        /// <summary>
+        /// Sets up the while statement
+        /// </summary>
         public override void Setup()
         {
             ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
@@ -118,6 +121,10 @@ namespace Utilities.Reflection.Emit.Commands
             Generator.Emit(ComparisonOpCodes[ComparisonType], EndWhileLabel);
         }
 
+        /// <summary>
+        /// The while statement as a string
+        /// </summary>
+        /// <returns>The string representation of the while statement</returns>
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();

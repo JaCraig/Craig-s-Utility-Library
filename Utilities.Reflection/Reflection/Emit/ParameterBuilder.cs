@@ -74,11 +74,19 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
+        /// <summary>
+        /// Loads from the parameter
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Load(ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Ldarg, Number);
         }
 
+        /// <summary>
+        /// Saves to the parameter
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Save(ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Starg, Number);
@@ -88,6 +96,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Function
 
+        /// <summary>
+        /// Outputs the parameter as a string
+        /// </summary>
+        /// <returns>The parameter</returns>
         public override string ToString()
         {
             return Name;
@@ -97,6 +109,11 @@ namespace Utilities.Reflection.Emit
 
         #region Operator Functions
 
+        /// <summary>
+        /// Increments by one
+        /// </summary>
+        /// <param name="Left">Parameter to increment</param>
+        /// <returns>The parameter</returns>
         public static ParameterBuilder operator ++(ParameterBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
@@ -105,6 +122,11 @@ namespace Utilities.Reflection.Emit
             return Left;
         }
 
+        /// <summary>
+        /// Decrements by one
+        /// </summary>
+        /// <param name="Left">Parameter to decrement</param>
+        /// <returns>The parameter</returns>
         public static ParameterBuilder operator --(ParameterBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)

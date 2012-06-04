@@ -23,6 +23,11 @@ namespace UnitTests.ORM.ListTest.Config
             get { return "@"; }
         }
 
+        public bool Audit
+        {
+            get { return true; }
+        }
+
         public bool Update
         {
             get { return true; }

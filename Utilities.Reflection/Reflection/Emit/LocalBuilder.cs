@@ -58,11 +58,19 @@ namespace Utilities.Reflection.Emit
 
         #region Functions
 
+        /// <summary>
+        /// Loads the local object
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Load(ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Ldloc, Builder);
         }
 
+        /// <summary>
+        /// Saves the local object
+        /// </summary>
+        /// <param name="Generator">IL Generator</param>
         public override void Save(ILGenerator Generator)
         {
             Generator.Emit(OpCodes.Stloc, Builder);
@@ -86,6 +94,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// The local item as a string
+        /// </summary>
+        /// <returns>The local item as a string</returns>
         public override string ToString()
         {
             return Name;
@@ -95,6 +107,11 @@ namespace Utilities.Reflection.Emit
 
         #region Operator Functions
 
+        /// <summary>
+        /// Increments the local object by one
+        /// </summary>
+        /// <param name="Left">Local object to increment</param>
+        /// <returns>The local object</returns>
         public static LocalBuilder operator ++(LocalBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
@@ -103,6 +120,11 @@ namespace Utilities.Reflection.Emit
             return Left;
         }
 
+        /// <summary>
+        /// Decrements the local object by one
+        /// </summary>
+        /// <param name="Left">Local object to decrement</param>
+        /// <returns>The local object</returns>
         public static LocalBuilder operator --(LocalBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)

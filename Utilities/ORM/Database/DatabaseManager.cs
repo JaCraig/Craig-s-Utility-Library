@@ -99,6 +99,8 @@ namespace Utilities.ORM.Database
 
         private void SetupAuditTables(IDatabase Key, SQL.DataClasses.Database TempDatabase)
         {
+            if (!Key.Audit)
+                return;
             System.Collections.Generic.List<Utilities.SQL.DataClasses.Table> TempTables = new System.Collections.Generic.List<Utilities.SQL.DataClasses.Table>();
             foreach (Utilities.SQL.DataClasses.Table Table in TempDatabase.Tables)
             {

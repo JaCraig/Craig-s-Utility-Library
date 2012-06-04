@@ -77,6 +77,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// The constructor definition as a string
+        /// </summary>
+        /// <returns>The constructor as a string</returns>
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
