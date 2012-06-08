@@ -417,6 +417,15 @@
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\Minification.cs" />
     <Compile Include="Web\ExtensionMethods\Streams\UglyStream.cs" />
+    <Compile Include="Web\Google\BaseClasses\APIBase.cs" />
+    <Compile Include="Web\Google\Enums\ImageFormat.cs" />
+    <Compile Include="Web\Google\Enums\MapType.cs" />
+    <Compile Include="Web\Google\Enums\MarkerSize.cs" />
+    <Compile Include="Web\Google\HelperClasses\Address.cs" />
+    <Compile Include="Web\Google\HelperClasses\LongLat.cs" />
+    <Compile Include="Web\Google\HelperClasses\Markers.cs" />
+    <Compile Include="Web\Google\Interfaces\ILocation.cs" />
+    <Compile Include="Web\Google\StaticMaps\Map.cs" />
     <Compile Include="Web\Gravatar\Gravatar.cs" />
     <Compile Include="Web\OAuth\OAuth.cs" />
     <Compile Include="Web\Craigslist\Craigslist.cs" />
