@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.Text;
 #endregion
 
 namespace Utilities.LDAP
@@ -185,6 +186,7 @@ namespace Utilities.LDAP
         #endregion
 
         #region Public Functions
+
         /// <summary>
         /// Saves any changes that have been made
         /// </summary>
@@ -241,6 +243,20 @@ namespace Utilities.LDAP
             PropertyValueCollection Collection = DirectoryEntry.Properties[Property];
             if (Collection != null)
                 Collection[Index] = Value;
+        }
+
+        /// <summary>
+        /// Exports the entry as a string
+        /// </summary>
+        /// <returns>The entry as a string</returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            foreach (PropertyValueCollection Property in DirectoryEntry.Properties)
+            {
+                Builder.Append(Property.PropertyName).Append(" = ").AppendLine(Property.Value.ToString());
+            }
+            return Builder.ToString();
         }
 
         #endregion
