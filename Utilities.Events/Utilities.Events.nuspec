@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Events</id>
-		<version>3.1.0086</version>
+		<version>3.1.0093</version>
 		<title>Craig's Utility Library Events Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

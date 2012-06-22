@@ -76,6 +76,7 @@
     <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
+    <Compile Include="DataTypes\RingBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.Events\Utilities.Events.csproj">

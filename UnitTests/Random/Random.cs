@@ -26,6 +26,7 @@ using System.Text;
 using MoonUnit.Attributes;
 using MoonUnit;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace UnitTests.Random
 {
@@ -43,6 +44,14 @@ namespace UnitTests.Random
         {
             Utilities.Random.Random Rand = new Utilities.Random.Random();
             Assert.Equal(10, Rand.NextString(10).Length);
+        }
+
+        [Test]
+        public void NextStringTest2()
+        {
+            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            Assert.True(Regex.IsMatch(Rand.NextString("(###)###-####"), @"\(\d{3}\)\d{3}-\d{4}"));
+            Assert.True(Regex.IsMatch(Rand.NextString("(@@@)###-####"), @"\([a-zA-Z]{3}\)\d{3}-\d{4}"));
         }
 
         [Test]

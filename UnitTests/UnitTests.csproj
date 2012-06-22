@@ -88,6 +88,7 @@
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
     <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />
+    <Compile Include="DataTypes\RingBuffer.cs" />
     <Compile Include="DataTypes\Vector.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />

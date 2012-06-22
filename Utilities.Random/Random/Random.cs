@@ -96,7 +96,7 @@ namespace Utilities.Random
                 return "";
             StringBuilder TempBuilder = new StringBuilder();
             Regex Comparer = new Regex(AllowedCharacters);
-            Regex AlphaNumbericComparer = new Regex("[0-9a-zA-z]");
+            Regex AlphaNumbericComparer = new Regex("[0-9a-zA-Z]");
             int Counter = 0;
             while (TempBuilder.Length < Length)
             {
@@ -112,6 +112,38 @@ namespace Utilities.Random
                     {
                         TempBuilder.Append(TempValue);
                     }
+                }
+            }
+            return TempBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Returns a randomly generated string based on the pattern entered
+        /// </summary>
+        /// <param name="Pattern">
+        /// Pattern to use:
+        /// # = Number
+        /// @ = Alpha character
+        /// </param>
+        /// <returns>A randomly generated string using the specified pattern</returns>
+        public virtual string NextString(string Pattern)
+        {
+            if (Pattern.IsNullOrEmpty())
+                return "";
+            StringBuilder TempBuilder = new StringBuilder();
+            for (int x = 0; x < Pattern.Length; ++x)
+            {
+                if (Pattern[x] == '#')
+                {
+                    TempBuilder.Append(NextString(1, "[0-9]", 0));
+                }
+                else if (Pattern[x] == '@')
+                {
+                    TempBuilder.Append(NextString(1, "[a-zA-Z]", 0));
+                }
+                else
+                {
+                    TempBuilder.Append(Pattern[x]);
                 }
             }
             return TempBuilder.ToString();
