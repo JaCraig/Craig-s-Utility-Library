@@ -39,6 +39,13 @@ namespace Utilities.CodeGen.Templates
     {
         #region Constructor
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="AccessModifier">Access modifier</param>
+        /// <param name="Modifier">Modifier</param>
+        /// <param name="ClassName">Class name</param>
+        /// <param name="Namespace">Namespace</param>
         public Class(AccessModifier AccessModifier, Modifiers Modifier, string ClassName,
             string Namespace)
             : base()
@@ -57,6 +64,9 @@ namespace Utilities.CodeGen.Templates
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the template
+        /// </summary>
         protected override void SetupTemplate()
         {
             Template = new DefaultTemplate(@"/* Code generated using Craig's Utility Library
@@ -91,6 +101,9 @@ namespace @Namespace
 }");
         }
 
+        /// <summary>
+        /// Sets up the input
+        /// </summary>
         protected override void SetupInput()
         {
             string TempString = "";
@@ -205,13 +218,44 @@ namespace @Namespace
 
         #region Properties
 
+        /// <summary>
+        /// Properties associated with the class
+        /// </summary>
         protected virtual List<IProperty> Properties { get; set; }
+
+        /// <summary>
+        /// Using associated with the class
+        /// </summary>
         protected virtual List<Using> Usings { get; set; }
+
+        /// <summary>
+        /// Constructors associated with the class
+        /// </summary>
         protected virtual List<IFunction> Constructors { get; set; }
+
+        /// <summary>
+        /// Functions associated with the class
+        /// </summary>
         protected virtual List<IFunction> Functions { get; set; }
+
+        /// <summary>
+        /// Class name
+        /// </summary>
         protected virtual string ClassName { get; set; }
+
+        /// <summary>
+        /// Access modifier for the class
+        /// </summary>
         protected virtual AccessModifier AccessModifier { get; set; }
+
+        /// <summary>
+        /// Modifier for the class
+        /// </summary>
         protected virtual Modifiers Modifier { get; set; }
+
+        /// <summary>
+        /// Namespace that the class should be in
+        /// </summary>
         protected virtual string Namespace { get; set; }
 
         #endregion

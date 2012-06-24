@@ -26,6 +26,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Globalization;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -37,61 +38,15 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
-        #region If
+        #region Async
 
         /// <summary>
-        /// Determines if the object fullfills the predicate and if it does, returns itself. Otherwise the default value.
+        /// Runs an action async
         /// </summary>
-        /// <typeparam name="T">The object type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="Predicate">Predicate to run on the object</param>
-        /// <param name="DefaultValue">Default value to return if it does not succeed the predicate test</param>
-        /// <returns>The original value if predicate is true, the default value otherwise</returns>
-        public static T If<T>(this T Object, Predicate<T> Predicate,T DefaultValue=default(T))
+        /// <param name="Action">Action to run</param>
+        public static void Async(this Action Action)
         {
-            if (Object.IsNull())
-                return DefaultValue;
-            return Predicate(Object) ? Object : DefaultValue;
-        }
-
-        #endregion
-
-        #region NotIf
-
-        /// <summary>
-        /// Determines if the object fails the predicate and if it does, returns itself. Otherwise the default value.
-        /// </summary>
-        /// <typeparam name="T">The object type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="Predicate">Predicate to run on the object</param>
-        /// <param name="DefaultValue">Default value to return if it succeeds the predicate test</param>
-        /// <returns>The original value if predicate is false, the default value otherwise</returns>
-        public static T NotIf<T>(this T Object, Predicate<T> Predicate, T DefaultValue = default(T))
-        {
-            if (Object.IsNull())
-                return DefaultValue;
-            return Predicate(Object) ? DefaultValue : Object;
-        }
-
-        #endregion
-
-        #region Return
-
-        /// <summary>
-        /// Used to determine if an object, or it's properties are null (Although can be used for other things)
-        /// </summary>
-        /// <typeparam name="T">Input type</typeparam>
-        /// <typeparam name="R">Output type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="Function">Property, function, etc. to run</param>
-        /// <param name="DefaultValue">Default value to return if Object is null</param>
-        /// <returns>The value returned by the function or the default value if the object is null or the function returns a null value</returns>
-        public static R Return<T, R>(this T Object, Func<T, R> Function, R DefaultValue = default(R))
-        {
-            if (Object.IsNull())
-                return DefaultValue;
-            R ReturnValue = Function(Object);
-            return ReturnValue.IsNull() ? DefaultValue : ReturnValue;
+            new Thread(Action.Invoke).Start();
         }
 
         #endregion
@@ -122,19 +77,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static R Chain<T, R>(this T Object, Func<T, R> Function)
         {
             return Function(Object);
-        }
-
-        #endregion
-
-        #region Async
-
-        /// <summary>
-        /// Runs an action async
-        /// </summary>
-        /// <param name="Action">Action to run</param>
-        public static void Async(this Action Action)
-        {
-            new Thread(Action.Invoke).Start();
         }
 
         #endregion
@@ -235,6 +177,65 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region If
+
+        /// <summary>
+        /// Determines if the object fullfills the predicate and if it does, returns itself. Otherwise the default value.
+        /// </summary>
+        /// <typeparam name="T">The object type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="Predicate">Predicate to run on the object</param>
+        /// <param name="DefaultValue">Default value to return if it does not succeed the predicate test</param>
+        /// <returns>The original value if predicate is true, the default value otherwise</returns>
+        public static T If<T>(this T Object, Predicate<T> Predicate,T DefaultValue=default(T))
+        {
+            if (Object.IsNull())
+                return DefaultValue;
+            return Predicate(Object) ? Object : DefaultValue;
+        }
+
+        #endregion
+
+        #region NotIf
+
+        /// <summary>
+        /// Determines if the object fails the predicate and if it does, returns itself. Otherwise the default value.
+        /// </summary>
+        /// <typeparam name="T">The object type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="Predicate">Predicate to run on the object</param>
+        /// <param name="DefaultValue">Default value to return if it succeeds the predicate test</param>
+        /// <returns>The original value if predicate is false, the default value otherwise</returns>
+        public static T NotIf<T>(this T Object, Predicate<T> Predicate, T DefaultValue = default(T))
+        {
+            if (Object.IsNull())
+                return DefaultValue;
+            return Predicate(Object) ? DefaultValue : Object;
+        }
+
+        #endregion
+
+        #region Return
+
+        /// <summary>
+        /// Used to determine if an object, or it's properties are null (Although can be used for other things)
+        /// </summary>
+        /// <typeparam name="T">Input type</typeparam>
+        /// <typeparam name="R">Output type</typeparam>
+        /// <param name="Object">Object to check</param>
+        /// <param name="Function">Property, function, etc. to run</param>
+        /// <param name="DefaultValue">Default value to return if Object is null</param>
+        /// <returns>The value returned by the function or the default value if the object is null or the function returns a null value</returns>
+        public static R Return<T, R>(this T Object, Func<T, R> Function, R DefaultValue = default(R))
+        {
+            if (Object.IsNull())
+                return DefaultValue;
+            R ReturnValue = Function(Object);
+            return ReturnValue.IsNull() ? DefaultValue : ReturnValue;
+        }
+
+        #endregion
+
         #region ThrowIfTrue
 
         /// <summary>
@@ -271,6 +272,36 @@ namespace Utilities.DataTypes.ExtensionMethods
             Predicate.ThrowIfNull("Predicate");
             Exception.ThrowIfNull("Exception");
             return Item.ThrowIfTrue(x => !Predicate(x), Exception);
+        }
+
+        #endregion
+
+        #region Times
+
+        /// <summary>
+        /// Runs a function based on the number of times specified and returns the results
+        /// </summary>
+        /// <typeparam name="T">Type that gets returned</typeparam>
+        /// <param name="Count">Number of times the function should run</param>
+        /// <param name="Function">The function that should run</param>
+        /// <returns>The results from the function</returns>
+        public static IEnumerable<T> Times<T>(this int Count, Func<int, T> Function)
+        {
+            System.Collections.Generic.List<T> ReturnValue = new System.Collections.Generic.List<T>();
+            for (int x = 0; x < Count; ++x)
+                ReturnValue.Add(Function(x));
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Runs an action based on the number of times specified
+        /// </summary>
+        /// <param name="Count">Number of times to run the action</param>
+        /// <param name="Action">Action to run</param>
+        public static void Times(this int Count, Action<int> Action)
+        {
+            for (int x = 0; x < Count; ++x)
+                Action(x);
         }
 
         #endregion

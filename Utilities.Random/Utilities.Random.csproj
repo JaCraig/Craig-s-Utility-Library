@@ -51,11 +51,39 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Random\Random.cs" />
+    <Compile Include="Random\DefaultClasses\BoolGenerator.cs" />
+    <Compile Include="Random\ExtensionMethods\RandomExtensions.cs" />
+    <Compile Include="Random\Interfaces\IGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\DecimalGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\DateTimeGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\IntegerGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\TimeSpanGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\ColorGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\EnumGenerator.cs" />
+    <Compile Include="Random\Interfaces\IStringGenerator.cs" />
+    <Compile Include="Random\StringGenerators\LoremIpsumGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\StringGenerator.cs" />
+    <Compile Include="Random\StringGenerators\RegexStringGenerator.cs" />
+    <Compile Include="Random\StringGenerators\PatternGenerator.cs" />
+    <Compile Include="Random\NameGenerators\FemaleFirstNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\FemaleNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\FemaleNamePrefixGenerator.cs" />
+    <Compile Include="Random\NameGenerators\LastNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\MaleNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\NameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\MaleFirstNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\MaleNamePrefixGenerator.cs" />
+    <Compile Include="Random\NameGenerators\NameSuffixGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\PhoneNumberGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
       <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
       <Name>Utilities.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Math\Utilities.Math.csproj">
+      <Project>{BE654F42-8EA1-48B0-B901-9823E17062CA}</Project>
+      <Name>Utilities.Math</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

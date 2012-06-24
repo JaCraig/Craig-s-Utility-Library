@@ -71,12 +71,19 @@ namespace Utilities.Cisco
         /// </summary>
         public virtual string URL { get; set; }
 
+        /// <summary>
+        /// Soft keys
+        /// </summary>
         public virtual List<SoftKeyItem> SoftKeys { get; set; }
 
         #endregion
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the status to a formatted string
+        /// </summary>
+        /// <returns>The formatted string</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

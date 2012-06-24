@@ -35,11 +35,19 @@ namespace Utilities.CodeGen.Templates
     /// <summary>
     /// Constructor class
     /// </summary>
-    public class Constructor:ObjectBase,IFunction
+    public class Constructor : ObjectBase, IFunction
     {
         #region Constructor
 
-        public Constructor(AccessModifier AccessModifier, string ClassName,IParameter[] ParameterList,string Body, IParser Parser)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="AccessModifier">Access modifier</param>
+        /// <param name="ClassName">Class name</param>
+        /// <param name="ParameterList">Parameter list</param>
+        /// <param name="Body">Body of the constructor</param>
+        /// <param name="Parser">Parser to use</param>
+        public Constructor(AccessModifier AccessModifier, string ClassName, IParameter[] ParameterList, string Body, IParser Parser)
             : base(Parser)
         {
             this.AccessModifier = AccessModifier;
@@ -52,6 +60,9 @@ namespace Utilities.CodeGen.Templates
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the template
+        /// </summary>
         protected override void SetupTemplate()
         {
             Template = new DefaultTemplate(@"@AccessModifier @ClassName(@ParameterList)
@@ -60,13 +71,16 @@ namespace Utilities.CodeGen.Templates
 }");
         }
 
+        /// <summary>
+        /// Sets up the input
+        /// </summary>
         protected override void SetupInput()
         {
             Input.Values.Add("AccessModifier", AccessModifier.ToString());
             Input.Values.Add("ClassName", ClassName);
             Input.Values.Add("Body", Body);
             string TempString = "";
-            string Splitter="";
+            string Splitter = "";
             foreach (IParameter Parameter in Parameters)
             {
                 TempString += Splitter + Parameter.Transform();
@@ -79,9 +93,24 @@ namespace Utilities.CodeGen.Templates
 
         #region Properties
 
+        /// <summary>
+        /// Access modifier associated with the constructor
+        /// </summary>
         protected virtual AccessModifier AccessModifier { get; set; }
+
+        /// <summary>
+        /// Class name
+        /// </summary>
         protected virtual string ClassName { get; set; }
-        protected virtual List<IParameter> Parameters{get;set;}
+
+        /// <summary>
+        /// Parameters to use in the constructor
+        /// </summary>
+        protected virtual List<IParameter> Parameters { get; set; }
+
+        /// <summary>
+        /// Body of the constructor
+        /// </summary>
         protected virtual string Body { get; set; }
 
         #endregion

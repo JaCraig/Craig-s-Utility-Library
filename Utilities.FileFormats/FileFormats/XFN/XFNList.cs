@@ -77,23 +77,77 @@ namespace Utilities.FileFormats.XFN
     /// </summary>
     public enum Relationship
     {
+        /// <summary>
+        /// Friend
+        /// </summary>
         Friend,
+        /// <summary>
+        /// Acquaintance
+        /// </summary>
         Acquaintance,
+        /// <summary>
+        /// Contact
+        /// </summary>
         Contact,
+        /// <summary>
+        /// Met
+        /// </summary>
         Met,
+        /// <summary>
+        /// Coworker
+        /// </summary>
         CoWorker,
+        /// <summary>
+        /// Colleague
+        /// </summary>
         Colleague,
+        /// <summary>
+        /// Coresident
+        /// </summary>
         CoResident,
+        /// <summary>
+        /// Neighbor
+        /// </summary>
         Neighbor,
+        /// <summary>
+        /// Child
+        /// </summary>
         Child,
+        /// <summary>
+        /// Parent
+        /// </summary>
         Parent,
+        /// <summary>
+        /// Sibling
+        /// </summary>
         Sibling,
+        /// <summary>
+        /// Spouse
+        /// </summary>
         Spouse,
+        /// <summary>
+        /// Kin
+        /// </summary>
         Kin,
+        /// <summary>
+        /// Muse
+        /// </summary>
         Muse,
+        /// <summary>
+        /// Crush
+        /// </summary>
         Crush,
+        /// <summary>
+        /// Date
+        /// </summary>
         Date,
+        /// <summary>
+        /// Sweetheart
+        /// </summary>
         Sweetheart,
+        /// <summary>
+        /// Me
+        /// </summary>
         Me
     }
     #endregion

@@ -57,6 +57,9 @@ namespace Utilities.Cisco
         /// </summary>
         public virtual string Prompt { get; set; }
 
+        /// <summary>
+        /// Soft keys
+        /// </summary>
         public virtual List<SoftKeyItem> SoftKeys { get; set; }
 
         /// <summary>
@@ -68,6 +71,10 @@ namespace Utilities.Cisco
 
         #region Overridden Functions
 
+        /// <summary>
+        /// The formatted string version of the directory
+        /// </summary>
+        /// <returns>The formatted string output</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

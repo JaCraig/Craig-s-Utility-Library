@@ -57,6 +57,10 @@ namespace Utilities.Cisco
 
         #region Overridden Function
 
+        /// <summary>
+        /// Exports the execute item as a properly formatted string
+        /// </summary>
+        /// <returns>The properly formatted string</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

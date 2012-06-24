@@ -52,7 +52,14 @@ namespace Utilities.Caching
 
         #region Properties
 
+        /// <summary>
+        /// Value stored in the cache item
+        /// </summary>
         public virtual object Value { get; set; }
+
+        /// <summary>
+        /// Key associated with the cache item
+        /// </summary>
         public virtual KeyType Key { get; set; }
 
         #endregion

@@ -123,6 +123,15 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.DoesNotThrow<Exception>(() => new Action(() => string.IsNullOrEmpty("")).Async());
         }
 
+        [Test]
+        public void Times()
+        {
+            Assert.Equal(new int[] { 0, 1, 2, 3, 4 }.ToList(), 5.Times(x => x));
+            StringBuilder Builder = new StringBuilder();
+            5.Times(x => { Builder.Append(x); });
+            Assert.Equal("01234", Builder.ToString());
+        }
+
         public void Test()
         {
             throw new Exception();

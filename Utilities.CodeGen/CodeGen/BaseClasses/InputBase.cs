@@ -32,7 +32,7 @@ namespace Utilities.CodeGen.BaseClasses
     /// <summary>
     /// Input base class
     /// </summary>
-    public class InputBase:IInput
+    public class InputBase : IInput
     {
         #region Constructor
 
@@ -48,6 +48,9 @@ namespace Utilities.CodeGen.BaseClasses
 
         #region Properties
 
+        /// <summary>
+        /// Values associated with the input
+        /// </summary>
         public virtual Dictionary<string, string> Values { get; set; }
 
         #endregion

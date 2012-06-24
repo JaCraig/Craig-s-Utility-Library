@@ -127,6 +127,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             object TempObject = null;
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull("TempName"));
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull(new ArgumentNullException("TempName")));
         }
 
         [Test]
@@ -134,12 +135,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             string TempObject = "";
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrEmpty("TempName"));
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrEmpty(new ArgumentNullException("TempName")));
         }
 
         [Test]
         public void ThrowIfDefault()
         {
             Assert.Throws<ArgumentNullException>(() => default(DateTime).ThrowIfDefault("TempName"));
+            Assert.Throws<ArgumentNullException>(() => default(DateTime).ThrowIfDefault(new ArgumentNullException("TempName")));
         }
 
         [Test]
@@ -148,6 +151,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Throws<ArgumentNullException>(() => DBNull.Value.ThrowIfNullOrDBNull("TempName"));
             object TempObject = null;
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrDBNull("TempName"));
+            Assert.Throws<ArgumentNullException>(() => DBNull.Value.ThrowIfNullOrDBNull(new ArgumentNullException("TempName")));
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrDBNull(new ArgumentNullException("TempName")));
         }
 
         [Test]

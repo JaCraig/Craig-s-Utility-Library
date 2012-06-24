@@ -29,6 +29,8 @@ using Utilities.DataTypes;
 using System.Data;
 using Utilities.Events.EventArgs;
 using Utilities.Random;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.StringGenerators;
 
 namespace UnitTests.DataTypes
 {
@@ -41,7 +43,7 @@ namespace UnitTests.DataTypes
             Utilities.Random.Random Rand = new Utilities.Random.Random();
             for (int x = 0; x < 10; ++x)
             {
-                string Name = Rand.NextString(10);
+                string Name = Rand.Next<string>(new RegexStringGenerator(10));
                 for (int y = 0; y < 5; ++y)
                 {
                     int Value=Rand.Next();

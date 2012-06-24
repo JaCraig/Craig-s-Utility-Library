@@ -33,6 +33,8 @@ using System.Linq.Expressions;
 using System.Data;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.ParameterTypes;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.StringGenerators;
 
 namespace UnitTests.SQL.MicroORM
 {
@@ -281,8 +283,8 @@ namespace UnitTests.SQL.MicroORM
                 for (int x = 0; x < 100; ++x)
                 {
                     TempObject = new ObjectClass1();
-                    TempObject.StringValue = Rand.NextString(10);
-                    TempObject.BoolValue = Rand.NextBool();
+                    TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
+                    TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue =Rand.Next();
                     ORM.Map<ObjectClass1>().Save<int>(TempObject);
@@ -310,8 +312,8 @@ namespace UnitTests.SQL.MicroORM
                 for (int x = 0; x < 115; ++x)
                 {
                     TempObject = new ObjectClass1();
-                    TempObject.StringValue = Rand.NextString(10);
-                    TempObject.BoolValue = Rand.NextBool();
+                    TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
+                    TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next();
                     ORM.Map<ObjectClass1>().Save<int>(TempObject);
@@ -348,8 +350,8 @@ namespace UnitTests.SQL.MicroORM
                 for (int x = 0; x < 100; ++x)
                 {
                     TempObject = new ObjectClass1();
-                    TempObject.StringValue = Rand.NextString(10);
-                    TempObject.BoolValue = Rand.NextBool();
+                    TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
+                    TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next();
                     ORM.Map<ObjectClass1>().Save<int>(TempObject);

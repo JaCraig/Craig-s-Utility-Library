@@ -25,6 +25,8 @@ using System.Linq;
 using System.Text;
 using MoonUnit.Attributes;
 using MoonUnit;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.StringGenerators;
 
 namespace UnitTests.FileFormats.Cisco
 {
@@ -52,8 +54,8 @@ namespace UnitTests.FileFormats.Cisco
         [Test]
         public void RandomTitleAndPrompt()
         {
-            DirectoryObject.Title = Generator.NextString(30);
-            DirectoryObject.Prompt = Generator.NextString(30);
+            DirectoryObject.Title = Generator.Next<string>(new RegexStringGenerator(30));
+            DirectoryObject.Prompt = Generator.Next<string>(new RegexStringGenerator(30));
             Assert.Contains(DirectoryObject.Title, DirectoryObject.ToString());
             Assert.Contains(DirectoryObject.Prompt, DirectoryObject.ToString());
         }

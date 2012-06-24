@@ -26,6 +26,8 @@ using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
 using Utilities.DataTypes;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.StringGenerators;
 
 namespace UnitTests.DataTypes
 {
@@ -38,7 +40,7 @@ namespace UnitTests.DataTypes
             Utilities.Random.Random Rand = new Utilities.Random.Random();
             for (int x = 0; x < 10; ++x)
             {
-                string Value = Rand.NextString(10);
+                string Value = Rand.Next<string>(new RegexStringGenerator(10));
                 int Count = Rand.Next(1, 10);
                 for(int y=0;y<Count;++y)
                     BagObject.Add(Value);

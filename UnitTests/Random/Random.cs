@@ -33,63 +33,6 @@ namespace UnitTests.Random
     public class Random
     {
         [Test]
-        public void NextDateTest()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.Between(Rand.NextDate(new DateTime(1999, 1, 1), new DateTime(2000, 1, 1)), new DateTime(1999, 1, 1), new DateTime(2000, 1, 1));
-        }
-
-        [Test]
-        public void NextStringTest()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.Equal(10, Rand.NextString(10).Length);
-        }
-
-        [Test]
-        public void NextStringTest2()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.True(Regex.IsMatch(Rand.NextString("(###)###-####"), @"\(\d{3}\)\d{3}-\d{4}"));
-            Assert.True(Regex.IsMatch(Rand.NextString("(@@@)###-####"), @"\([a-zA-Z]{3}\)\d{3}-\d{4}"));
-        }
-
-        [Test]
-        public void NextLoremIpsumTest()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.NotNull(Rand.NextLoremIpsum(1, 4));
-        }
-
-        [Test]
-        public void NextBoolTest()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.DoesNotThrow<Exception>(() => Rand.NextBool());
-        }
-
-        [Test]
-        public void NextEnumTest()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.DoesNotThrow<Exception>(() => Rand.NextEnum<TestEnum>());
-        }
-
-        [Test]
-        public void NextTimeSpanTest()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.Between(Rand.NextTimeSpan(new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0)), new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0));
-        }
-
-        [Test]
-        public void NextColorTest()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.DoesNotThrow<Exception>(() => Rand.NextColor());
-        }
-
-        [Test]
         public void ThreadSafeNext()
         {
             Parallel.For(0, 100, x =>
@@ -97,12 +40,5 @@ namespace UnitTests.Random
                 Assert.DoesNotThrow<Exception>(() => Utilities.Random.Random.ThreadSafeNext(-20, 20));
             });
         }
-    }
-
-    public enum TestEnum
-    {
-        Number1,
-        Number2,
-        Number3
     }
 }

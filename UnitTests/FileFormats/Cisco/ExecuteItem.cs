@@ -25,6 +25,8 @@ using System.Linq;
 using System.Text;
 using MoonUnit.Attributes;
 using MoonUnit;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.StringGenerators;
 
 namespace UnitTests.FileFormats.Cisco
 {
@@ -51,7 +53,7 @@ namespace UnitTests.FileFormats.Cisco
         public void RandomTest()
         {
             Entry.Priority = Random.Next(int.MinValue,int.MaxValue);
-            Entry.URL = Random.NextString(30);
+            Entry.URL = Random.Next<string>(new RegexStringGenerator(30));
             Assert.Contains(Entry.Priority.ToString(), Entry.ToString());
             Assert.Contains(Entry.URL, Entry.ToString());
         }

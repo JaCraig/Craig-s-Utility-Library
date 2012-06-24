@@ -53,6 +53,9 @@ namespace Utilities.Caching
         /// </summary>
         protected virtual Dictionary<KeyType, ICacheItem> InternalCache { get; set; }
 
+        /// <summary>
+        /// Collection of keys
+        /// </summary>
         public virtual ICollection<KeyType> Keys
         {
             get
@@ -63,9 +66,17 @@ namespace Utilities.Caching
                 }
             }
         }
-
+        
+        /// <summary>
+        /// The number of items in the cache
+        /// </summary>
         public virtual int Count { get { return InternalCache.Count; } }
 
+        /// <summary>
+        /// Gets the item associated with the key
+        /// </summary>
+        /// <param name="Key">Key</param>
+        /// <returns>The item associated with the key</returns>
         public virtual object this[KeyType Key]
         {
             get
@@ -82,6 +93,10 @@ namespace Utilities.Caching
 
         #region Functions
 
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
         public IEnumerator<object> GetEnumerator()
         {
             lock (InternalCache)
@@ -91,6 +106,10 @@ namespace Utilities.Caching
             }
         }
 
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             lock (InternalCache)
@@ -100,6 +119,9 @@ namespace Utilities.Caching
             }
         }
 
+        /// <summary>
+        /// Clears the cache
+        /// </summary>
         public virtual void Clear()
         {
             lock (InternalCache)
@@ -108,6 +130,10 @@ namespace Utilities.Caching
             }
         }
 
+        /// <summary>
+        /// Removes an item from the cache
+        /// </summary>
+        /// <param name="Key">Key associated with the item to remove</param>
         public virtual void Remove(KeyType Key)
         {
             if (Exists(Key))
@@ -122,11 +148,21 @@ namespace Utilities.Caching
             }
         }
 
+        /// <summary>
+        /// Determines if the item exists
+        /// </summary>
+        /// <param name="Key">The key associated with the item</param>
+        /// <returns>True if it does, false otherwise</returns>
         public virtual bool Exists(KeyType Key)
         {
             return InternalCache.ContainsKey(Key);
         }
 
+        /// <summary>
+        /// Adds an item to the cache
+        /// </summary>
+        /// <param name="Key">Key</param>
+        /// <param name="Value">Value</param>
         public virtual void Add(KeyType Key, object Value)
         {
             lock (InternalCache)
@@ -142,6 +178,12 @@ namespace Utilities.Caching
             }
         }
 
+        /// <summary>
+        /// Gets an item from the cache
+        /// </summary>
+        /// <typeparam name="ValueType">Item type</typeparam>
+        /// <param name="Key">Key to search for</param>
+        /// <returns>The item associated with the key</returns>
         public virtual ValueType Get<ValueType>(KeyType Key)
         {
             lock (InternalCache)

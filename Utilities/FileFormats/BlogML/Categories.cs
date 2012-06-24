@@ -86,6 +86,10 @@ namespace Utilities.FileFormats.BlogML
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the categories to a formatted string
+        /// </summary>
+        /// <returns>The formatted string</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

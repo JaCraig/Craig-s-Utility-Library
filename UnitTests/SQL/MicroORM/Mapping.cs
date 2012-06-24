@@ -33,6 +33,8 @@ using System.Linq.Expressions;
 using System.Data;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.ParameterTypes;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.StringGenerators;
 
 namespace UnitTests.SQL.MicroORM
 {
@@ -107,7 +109,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue=true;
                 TempObject.FloatValue=1234.5f;
                 TempObject.LongValue=12345;
-                TempObject.StringMaxValue = Rand.NextString(6000);
+                TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 TempObject.ID = TestObject.Insert<int>(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
@@ -146,14 +148,14 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = false;
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
-                TempObject.StringMaxValue = Rand.NextString(6000);
+                TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 TempObject.ID = TestObject.Insert<int>(TempObject);
                 Rand = new Utilities.Random.Random(12345);
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
-                TempObject.StringMaxValue = Rand.NextString(6000);
+                TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 TestObject.Update(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
@@ -192,14 +194,14 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = false;
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
-                TempObject.StringMaxValue = Rand.NextString(6000);
+                TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 TestObject.Save<int>(TempObject);
                 Rand = new Utilities.Random.Random(12345);
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
-                TempObject.StringMaxValue = Rand.NextString(6000);
+                TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 TestObject.Save<int>(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
@@ -238,7 +240,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
-                TempObject.StringMaxValue = Rand.NextString(6000);
+                TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 string StringMaxValue = TempObject.StringMaxValue;
                 TestObject.Save<int>(TempObject);
                 TempObject = TestObject.Any();
@@ -268,7 +270,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
-                TempObject.StringMaxValue = Rand.NextString(6000);
+                TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 TestObject.Save<int>(TempObject);
                 IEnumerable<ObjectClass1> Objects = TestObject.All();
                 Assert.Equal(1, Objects.Count());
@@ -286,11 +288,11 @@ namespace UnitTests.SQL.MicroORM
                 for (int x = 0; x < 10; ++x)
                 {
                     TempObject = new ObjectClass1();
-                    TempObject.StringValue = Rand.NextString(10);
-                    TempObject.BoolValue = Rand.NextBool();
+                    TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
+                    TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next(0, 100);
-                    TempObject.StringMaxValue = Rand.NextString(6000);
+                    TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                     Objects2.Add(TempObject);
                 }
                 TestObject.Save<int>(Objects2);
@@ -315,11 +317,11 @@ namespace UnitTests.SQL.MicroORM
                 for (int x = 0; x < 115; ++x)
                 {
                     ObjectClass1 TempObject = new ObjectClass1();
-                    TempObject.StringValue = Rand.NextString(10);
-                    TempObject.BoolValue = Rand.NextBool();
+                    TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
+                    TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next(0, 100);
-                    TempObject.StringMaxValue = Rand.NextString(6000);
+                    TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                     Objects2.Add(TempObject);
                 }
                 TestObject.Save<int>(Objects2);
@@ -353,11 +355,11 @@ namespace UnitTests.SQL.MicroORM
                 for (int x = 0; x < 115; ++x)
                 {
                     ObjectClass1 TempObject = new ObjectClass1();
-                    TempObject.StringValue = Rand.NextString(10);
-                    TempObject.BoolValue = Rand.NextBool();
+                    TempObject.StringValue = Rand.Next<string>(new RegexStringGenerator(10));
+                    TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next(0, 100);
-                    TempObject.StringMaxValue = Rand.NextString(6000);
+                    TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                     Objects2.Add(TempObject);
                 }
                 TestObject.Save<int>(Objects2);
@@ -400,7 +402,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = false;
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
-                TempObject.StringMaxValue = Rand.NextString(6000);
+                TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 TestObject.Save<int>(TempObject);
                 Assert.Equal(1, TestObject.Delete(TempObject));
                 

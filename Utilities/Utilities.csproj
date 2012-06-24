@@ -146,6 +146,30 @@
     <Compile Include="ORM\Mapping\PropertyTypes\ListManyToMany.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\ListManyToOne.cs" />
     <Compile Include="ORM\ObjectBaseClass.cs" />
+    <Compile Include="Random\ContactInfoGenerators\PhoneNumberGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\BoolGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\ColorGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\DateTimeGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\DecimalGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\EnumGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\IntegerGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\StringGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\TimeSpanGenerator.cs" />
+    <Compile Include="Random\ExtensionMethods\RandomExtensions.cs" />
+    <Compile Include="Random\Interfaces\IGenerator.cs" />
+    <Compile Include="Random\Interfaces\IStringGenerator.cs" />
+    <Compile Include="Random\NameGenerators\FemaleFirstNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\FemaleNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\FemaleNamePrefixGenerator.cs" />
+    <Compile Include="Random\NameGenerators\LastNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\MaleNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\NameGenerator.cs" />
+    <Compile Include="Random\StringGenerators\LoremIpsumGenerator.cs" />
+    <Compile Include="Random\NameGenerators\MaleFirstNameGenerator.cs" />
+    <Compile Include="Random\NameGenerators\MaleNamePrefixGenerator.cs" />
+    <Compile Include="Random\NameGenerators\NameSuffixGenerator.cs" />
+    <Compile Include="Random\StringGenerators\PatternGenerator.cs" />
+    <Compile Include="Random\StringGenerators\RegexStringGenerator.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />
@@ -536,9 +560,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Random\ExtensionMethods\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)UtilitiesSplitter\bin\Debug\UtilitiesSplitter.exe</PostBuildEvent>

@@ -61,6 +61,10 @@ namespace Utilities.CodeGen.Templates.BaseClasses
 
         #region Functions
 
+        /// <summary>
+        /// Transforms the template
+        /// </summary>
+        /// <returns>The transformed template</returns>
         public virtual string Transform()
         {
             if(Template==null)
@@ -83,8 +87,19 @@ namespace Utilities.CodeGen.Templates.BaseClasses
 
         #region Properties
 
+        /// <summary>
+        /// Input
+        /// </summary>
         public virtual IInput Input { get; set; }
+
+        /// <summary>
+        /// Template being used
+        /// </summary>
         public virtual ITemplate Template { get; set; }
+
+        /// <summary>
+        /// Template parser
+        /// </summary>
         public virtual IParser Parser { get; set; }
 
         #endregion

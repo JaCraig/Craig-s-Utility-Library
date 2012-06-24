@@ -177,6 +177,20 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Item;
         }
 
+        /// <summary>
+        /// Determines if the object is equal to default value and throws the exception that is passed in if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
+        {
+            if (Item.IsDefault(EqualityComparer))
+                throw Exception;
+            return Item;
+        }
+
         #endregion
 
         #region ThrowIfNull
@@ -191,6 +205,19 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (Item.IsNull())
                 throw new ArgumentNullException(Name);
+            return Item;
+        }
+
+        /// <summary>
+        /// Determines if the object is null and throws the exception passed in if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNull<T>(this T Item, Exception Exception)
+        {
+            if (Item.IsNull())
+                throw Exception;
             return Item;
         }
 
@@ -212,6 +239,20 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Item;
         }
 
+        /// <summary>
+        /// Determines if the IEnumerable is null or empty and throws the exception passed in if it is
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
+        {
+            if (Item.IsNullOrEmpty())
+                throw Exception;
+            return Item;
+        }
+
         #endregion
 
         #region ThrowIfNullOrDBNull
@@ -226,6 +267,19 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (Item.IsNullOrDBNull())
                 throw new ArgumentNullException(Name);
+            return Item;
+        }
+
+        /// <summary>
+        /// Determines if the object is null or DbNull and throws the exception passed in if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNullOrDBNull<T>(this T Item, Exception Exception)
+        {
+            if (Item.IsNullOrDBNull())
+                throw Exception;
             return Item;
         }
 
