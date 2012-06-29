@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Random.BaseClasses;
 #endregion
 
 namespace Utilities.Random.StringGenerators
@@ -33,7 +34,7 @@ namespace Utilities.Random.StringGenerators
     /// <summary>
     /// Lorem Ipsum Generator
     /// </summary>
-    public class LoremIpsumGenerator : IGenerator<string>
+    public class LoremIpsumGenerator : GeneratorAttributeBase, IGenerator<string>
     {
         #region Constructor
 

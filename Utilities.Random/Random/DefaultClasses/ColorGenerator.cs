@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Random.Interfaces;
 using System.Drawing;
 using Utilities.Math.ExtensionMethods;
+using Utilities.Random.BaseClasses;
 #endregion
 
 namespace Utilities.Random.DefaultClasses

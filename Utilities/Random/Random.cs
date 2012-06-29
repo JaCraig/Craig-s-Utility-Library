@@ -61,54 +61,11 @@ namespace Utilities.Random
 
         #endregion
 
-        #region Public Functions
-
-        //NextAddress,NextCity,NextState,NextZipCode
-        //NextEmailAddress
-
-        #endregion
-
         #region Private Variables
 
         private static Random GlobalSeed = new Random();
         [ThreadStatic]
         private static Random Local;
-
-        private string[] CityPrefix = { "North", "South", "East", "West", "New", "Lake", "Old", "Port", "Fort","Mount" };
-
-        private string[] CitySuffix = { "Cove", "Manor", "City", "Park", "Springs", "Canyon", "Fork", "Center", "Mill",
-                                          "Beach","Glen", "Valley","Heights", "Harbor","Grove","Haven","Island", "Pass",
-                                          "Hills", "Creek", "Crest", "Dale", "Falls","Flats","Gardens","Landing","Meadows",
-                                          "Pines" };
-
-        private string[] CityEndings = { "deen", "town", "ville", "berg", "view", "bury", "ton", "land", "mouth", "haven",
-                                           "shire", "don", "creek", "worth", "son", "mont", "wood", "dale","cliff","bridge" };
-
-        private string[] StatesAndDistricts = { "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
-                                                  "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
-                                                  "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
-                                                  "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
-                                                  "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
-                                                  "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
-                                                  "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
-                                                  "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia",
-                                                  "Wisconsin", "Wyoming", "District of Columbia" };
-
-        private string[] StateAndDistrictAbbreviations = { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI",
-                                                             "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI",
-                                                             "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC",
-                                                             "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT",
-                                                             "VT", "VA", "WA", "WV", "WI", "WY", "DC" };
-
-        private string[] ZipCodeFormats = { "#####", "#####-####" };
-
-        private string[] AddressFormats = { "#####", "####", "###" };
-
-        private string[] SecondLineAddressFormat = { "Apt. #", "Apt. ##", "Apt. ###", "Apt. @", "Apt. @#", "Suite ###" };
-
-        private string[] StreetSuffix = { "Avenue", "Bypass", "Center", "Circle", "Corner", "Court", "Cove", "Creek", "Crossing",
-                                            "Drive", "Estates", "Expressway", "Freeway", "Highway", "Junction", "Lane", "Loop",
-                                            "Park", "Parkway", "Pass", "Plaza", "Road", "Route", "Street", "Turnpike" };
         
         #endregion
 

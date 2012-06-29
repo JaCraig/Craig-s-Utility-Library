@@ -29,6 +29,7 @@ using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.StringGenerators;
 using Utilities.Random.ExtensionMethods;
+using Utilities.Random.BaseClasses;
 #endregion
 
 namespace Utilities.Random.ContactInfoGenerators

@@ -146,7 +146,16 @@
     <Compile Include="ORM\Mapping\PropertyTypes\ListManyToMany.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\ListManyToOne.cs" />
     <Compile Include="ORM\ObjectBaseClass.cs" />
+    <Compile Include="Random\BaseClasses\GeneratorAttributeBase.cs" />
+    <Compile Include="Random\ContactInfoGenerators\AddressGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\CityGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\DomainNameGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\EmailAddressGenerator.cs" />
     <Compile Include="Random\ContactInfoGenerators\PhoneNumberGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\StateAbbreviationGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\StateGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\StreetAddressGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\ZipCodeGenerator.cs" />
     <Compile Include="Random\DefaultClasses\BoolGenerator.cs" />
     <Compile Include="Random\DefaultClasses\ColorGenerator.cs" />
     <Compile Include="Random\DefaultClasses\DateTimeGenerator.cs" />
@@ -158,6 +167,7 @@
     <Compile Include="Random\ExtensionMethods\RandomExtensions.cs" />
     <Compile Include="Random\Interfaces\IGenerator.cs" />
     <Compile Include="Random\Interfaces\IStringGenerator.cs" />
+    <Compile Include="Random\NameGenerators\CompanyGenerator.cs" />
     <Compile Include="Random\NameGenerators\FemaleFirstNameGenerator.cs" />
     <Compile Include="Random\NameGenerators\FemaleNameGenerator.cs" />
     <Compile Include="Random\NameGenerators\FemaleNamePrefixGenerator.cs" />

@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.ExtensionMethods;
+using Utilities.Random.BaseClasses;
 #endregion
 
 namespace Utilities.Random.NameGenerators
@@ -34,7 +35,7 @@ namespace Utilities.Random.NameGenerators
     /// <summary>
     /// Male name prefix generator
     /// </summary>
-    public class MaleNamePrefixGenerator : IGenerator<string>
+    public class MaleNamePrefixGenerator : GeneratorAttributeBase, IGenerator<string>
     {
         #region Functions
 

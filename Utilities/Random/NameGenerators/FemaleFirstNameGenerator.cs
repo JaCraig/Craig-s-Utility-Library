@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.ExtensionMethods;
+using Utilities.Random.BaseClasses;
 #endregion
 
 namespace Utilities.Random.NameGenerators
@@ -34,7 +35,7 @@ namespace Utilities.Random.NameGenerators
     /// <summary>
     /// Female first name generator
     /// </summary>
-    public class FemaleFirstNameGenerator : IGenerator<string>
+    public class FemaleFirstNameGenerator : GeneratorAttributeBase, IGenerator<string>
     {
         #region Functions
 
@@ -69,7 +70,7 @@ namespace Utilities.Random.NameGenerators
                                                 "Ella", "Addison", "Natalie", "Lily", "Grace", "Samantha"
                                                 , "Avery", "Sofia", "Aubrey", "Brooklyn", "Lillian",
                                                 "Victoria", "Evelyn", "Hannah", "Alexis", "Charlotte",
-                                                "Zoey", "Leah", "Amelia", "Zoe0.32", "Hailey", "Layla", 
+                                                "Zoey", "Leah", "Amelia", "Zoe", "Hailey", "Layla", 
                                                 "Gabriella", "Nevaeh", "Kaylee", "Alyssa", "Anna", "Sarah",
                                                 "Allison", "Savannah", "Ashley", "Audrey", "Taylor", 
                                                 "Brianna", "Aaliyah", "Riley", "Camila", "Khloe", "Claire",

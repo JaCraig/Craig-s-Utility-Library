@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.ExtensionMethods;
+using Utilities.Random.BaseClasses;
 #endregion
 
 namespace Utilities.Random.NameGenerators
@@ -34,7 +35,7 @@ namespace Utilities.Random.NameGenerators
     /// <summary>
     /// Female name generator
     /// </summary>
-    public class FemaleNameGenerator : IGenerator<string>
+    public class FemaleNameGenerator : GeneratorAttributeBase, IGenerator<string>
     {
         #region Constructor
 

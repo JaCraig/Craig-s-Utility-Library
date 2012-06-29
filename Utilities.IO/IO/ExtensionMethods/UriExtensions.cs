@@ -61,14 +61,16 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="URL">Uri to read the content of</param>
         /// <param name="UserName">User name used in network credentials</param>
         /// <param name="Password">Password used in network credentials</param>
+        /// <param name="Domain">Domain to use in network credentials</param>
+        /// <param name="AuthenticationType">Authentication type to use in network credentials</param>
         /// <returns>String representation of the content of the URL</returns>
-        public static string Read(this Uri URL, string UserName = "", string Password = "")
+        public static string Read(this Uri URL, string UserName = "", string Password = "", string Domain = "", string AuthenticationType = "")
         {
             if (URL == null)
                 throw new ArgumentNullException("URL");
             using (WebClient Client = new WebClient())
             {
-                using (StreamReader Reader = new StreamReader(URL.Read(Client, UserName, Password)))
+                using (StreamReader Reader = new StreamReader(URL.Read(Client, UserName, Password,Domain,AuthenticationType)))
                 {
                     string Contents = Reader.ReadToEnd();
                     Reader.Close();
@@ -84,11 +86,26 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="Client">WebClient used to load the data</param>
         /// <param name="UserName">User name used in network credentials</param>
         /// <param name="Password">Password used in network credentials</param>
+        /// <param name="Domain">Domain to use in network credentials</param>
+        /// <param name="AuthenticationType">Authentication type to use in network credentials</param>
         /// <returns>Stream containing the content of the URL</returns>
-        public static Stream Read(this Uri URL, WebClient Client, string UserName = "", string Password = "")
+        public static Stream Read(this Uri URL, WebClient Client, string UserName = "", string Password = "", string Domain = "",string AuthenticationType="")
         {
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-                Client.Credentials = new NetworkCredential(UserName, Password);
+            {
+
+                NetworkCredential Credentials=!string.IsNullOrEmpty(Domain)?new NetworkCredential(UserName, Password, Domain):new NetworkCredential(UserName, Password);
+                CredentialCache Cache = new CredentialCache();
+                if (!string.IsNullOrEmpty(AuthenticationType))
+                {
+                    Cache.Add(URL, AuthenticationType, Credentials);
+                    Client.Credentials = Cache;
+                }
+                else
+                {
+                    Client.Credentials = Credentials;
+                }
+            }
             return Client.OpenRead(URL);
         }
 
@@ -102,14 +119,16 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="URL">Uri to read the content of</param>
         /// <param name="UserName">User name used in network credentials</param>
         /// <param name="Password">Password used in network credentials</param>
+        /// <param name="Domain">Domain to use in network credentials</param>
+        /// <param name="AuthenticationType">Authentication type to use in network credentials</param>
         /// <returns>Byte array representation of the content of the URL</returns>
-        public static byte[] ReadBinary(this Uri URL, string UserName = "", string Password = "")
+        public static byte[] ReadBinary(this Uri URL, string UserName = "", string Password = "", string Domain = "",string AuthenticationType="")
         {
             if (URL == null)
                 throw new ArgumentNullException("URL");
             using (WebClient Client = new WebClient())
             {
-                using (Stream Reader = URL.Read(Client, UserName, Password))
+                using (Stream Reader = URL.Read(Client, UserName, Password, Domain, AuthenticationType))
                 {
                     using (MemoryStream FinalStream = new MemoryStream())
                     {

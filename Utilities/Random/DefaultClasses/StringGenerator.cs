@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Text.RegularExpressions;
+using Utilities.Random.BaseClasses;
 #endregion
 
 namespace Utilities.Random.DefaultClasses

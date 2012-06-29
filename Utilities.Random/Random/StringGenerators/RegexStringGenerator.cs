@@ -27,6 +27,7 @@ using System.Text;
 using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Text.RegularExpressions;
+using Utilities.Random.BaseClasses;
 #endregion
 
 namespace Utilities.Random.StringGenerators
@@ -34,7 +35,7 @@ namespace Utilities.Random.StringGenerators
     /// <summary>
     /// Randomly generates strings based on a Regex
     /// </summary>
-    public class RegexStringGenerator : IGenerator<string>
+    public class RegexStringGenerator : GeneratorAttributeBase, IGenerator<string>
     {
         #region Constructor
 

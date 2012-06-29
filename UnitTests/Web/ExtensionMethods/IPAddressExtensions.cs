@@ -40,9 +40,9 @@ namespace UnitTests.Web.ExtensionMethods
         [Test]
         public void GetHostName()
         {
-            IPAddress Address = IPAddress.Parse("72.14.204.147");
-            Assert.Equal("iad04s01-in-f147.1e100.net", Address.GetHostName());
-            Assert.Equal("iad04s01-in-f147.1e100.net", "72.14.204.147".GetHostName());
+            IPAddress Address = IPAddress.Parse("72.125.228.65");
+            Assert.Equal("65.qarestr.sub-72-125-228.myvzw.com", Address.GetHostName());
+            Assert.Equal("65.qarestr.sub-72-125-228.myvzw.com", "72.125.228.65".GetHostName());
         }
     }
 }

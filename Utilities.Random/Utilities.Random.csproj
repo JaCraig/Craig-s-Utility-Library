@@ -75,6 +75,16 @@
     <Compile Include="Random\NameGenerators\MaleNamePrefixGenerator.cs" />
     <Compile Include="Random\NameGenerators\NameSuffixGenerator.cs" />
     <Compile Include="Random\ContactInfoGenerators\PhoneNumberGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\AddressGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\CityGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\DomainNameGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\EmailAddressGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\StateAbbreviationGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\StateGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\StreetAddressGenerator.cs" />
+    <Compile Include="Random\ContactInfoGenerators\ZipCodeGenerator.cs" />
+    <Compile Include="Random\NameGenerators\CompanyGenerator.cs" />
+    <Compile Include="Random\BaseClasses\GeneratorAttributeBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
