@@ -640,7 +640,7 @@ namespace Utilities.Reflection.ExtensionMethods
                 return false;
             if (Type == null)
                 throw new ArgumentNullException("Type");
-            if (Type == ObjectType || ObjectType.GetInterface(Type.Name, true) != null)
+            if (Type == ObjectType || ObjectType.GetInterfaces().Any(x => x == Type))
                 return true;
             if (ObjectType.BaseType == null)
                 return false;
