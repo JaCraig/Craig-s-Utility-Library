@@ -40,7 +40,7 @@ namespace Utilities.ORM.Mapping
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DatabaseType">Database type</typeparam>
-    public class Mapping<ClassType, DatabaseType> : IMapping<ClassType>, IMapping
+    public abstract class Mapping<ClassType, DatabaseType> : IMapping<ClassType>, IMapping
         where DatabaseType : IDatabase
         where ClassType : class,new()
     {
