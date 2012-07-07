@@ -48,6 +48,10 @@ namespace Utilities.DataTypes
 
         #region ICollection<T> Members
 
+        /// <summary>
+        /// Adds an item to the bag
+        /// </summary>
+        /// <param name="item">Item to add</param>
         public virtual void Add(T item)
         {
             if (Items.ContainsKey(item))
@@ -56,36 +60,55 @@ namespace Utilities.DataTypes
                 Items.Add(item, 1);
         }
 
+        /// <summary>
+        /// Clears the bag
+        /// </summary>
         public virtual void Clear()
         {
             Items.Clear();
         }
 
+        /// <summary>
+        /// Determines if the bag contains an item
+        /// </summary>
+        /// <param name="item">Item to check</param>
+        /// <returns>True if it does, false otherwise</returns>
         public virtual bool Contains(T item)
         {
             return Items.ContainsKey(item);
         }
 
         /// <summary>
-        /// Not implemented
+        /// Copies the bag to an array
         /// </summary>
-        /// <param name="array">Not used</param>
-        /// <param name="arrayIndex">Not used</param>
+        /// <param name="array">Array to copy to</param>
+        /// <param name="arrayIndex">Index to start at</param>
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
             Array.Copy(this.Items.ToList().ToArray(x => x.Key), 0, array, arrayIndex, this.Count);
         }
 
+        /// <summary>
+        /// Number of items in the bag
+        /// </summary>
         public virtual int Count
         {
             get { return Items.Count; }
         }
 
+        /// <summary>
+        /// Is this read only?
+        /// </summary>
         public virtual bool IsReadOnly
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Removes an item from the bag
+        /// </summary>
+        /// <param name="item">Item to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
         public virtual bool Remove(T item)
         {
             return Items.Remove(item);
@@ -95,6 +118,10 @@ namespace Utilities.DataTypes
 
         #region IEnumerable<T> Members
 
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
         public virtual IEnumerator<T> GetEnumerator()
         {
             foreach (T Key in this.Items.Keys)
@@ -105,6 +132,10 @@ namespace Utilities.DataTypes
 
         #region IEnumerable Members
 
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             foreach (T Key in this.Items.Keys)
@@ -115,6 +146,11 @@ namespace Utilities.DataTypes
 
         #region Properties
 
+        /// <summary>
+        /// Gets a specified item
+        /// </summary>
+        /// <param name="index">Item to get</param>
+        /// <returns>The number of this item in the bag</returns>
         public virtual int this[T index]
         {
             get { return Items[index]; }

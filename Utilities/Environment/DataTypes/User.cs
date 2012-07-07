@@ -54,12 +54,21 @@ namespace Utilities.Environment.DataTypes
 
         #region Properties
 
+        /// <summary>
+        /// User names
+        /// </summary>
         public virtual List<string> UserNames { get; set; }
 
         #endregion
 
         #region Functions
 
+        /// <summary>
+        /// Gets the current user
+        /// </summary>
+        /// <param name="Name">Computer name</param>
+        /// <param name="UserName">User name</param>
+        /// <param name="Password">Password</param>
         protected virtual void GetCurrentUser(string Name, string UserName, string Password)
         {
             if (string.IsNullOrEmpty(Name))

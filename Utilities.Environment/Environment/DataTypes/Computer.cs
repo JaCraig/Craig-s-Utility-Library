@@ -20,10 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-
+using System;
 #endregion
 
-using System;
 namespace Utilities.Environment.DataTypes
 {
     /// <summary>
@@ -81,6 +80,9 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
+        /// <summary>
+        /// BIOS info
+        /// </summary>
         protected BIOS _BIOS = null;
 
         /// <summary>
@@ -98,6 +100,9 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
+        /// <summary>
+        /// Applications
+        /// </summary>
         protected Applications _Applications = null;
 
         /// <summary>
@@ -115,6 +120,9 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
+        /// <summary>
+        /// Network info
+        /// </summary>
         protected Network _Network = null;
 
         /// <summary>
@@ -132,6 +140,9 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
+        /// <summary>
+        /// Operating system info
+        /// </summary>
         protected OperatingSystem _OperatingSystem = null;
 
         /// <summary>
@@ -149,6 +160,9 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
+        /// <summary>
+        /// User info
+        /// </summary>
         protected User _User = null;
 
 

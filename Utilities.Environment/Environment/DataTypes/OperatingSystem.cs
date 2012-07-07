@@ -53,12 +53,21 @@ namespace Utilities.Environment.DataTypes
 
         #region Properties
 
+        /// <summary>
+        /// Last bootup time
+        /// </summary>
         public virtual DateTime LastBootUpTime { get; set; }
 
         #endregion
 
         #region Functions
 
+        /// <summary>
+        /// Gets operating system info
+        /// </summary>
+        /// <param name="Name">Computer name</param>
+        /// <param name="UserName">User name</param>
+        /// <param name="Password">Password</param>
         protected virtual void GetOperatingSystemInfo(string Name, string UserName, string Password)
         {
             if (string.IsNullOrEmpty(Name))

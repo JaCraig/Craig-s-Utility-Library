@@ -88,6 +88,12 @@ namespace Utilities.Environment.DataTypes
             }
         }
 
+        /// <summary>
+        /// Gets the network adapter info
+        /// </summary>
+        /// <param name="Name">Computer name</param>
+        /// <param name="UserName">User name</param>
+        /// <param name="Password">Password</param>
         protected virtual void GetNetworkAdapterInfo(string Name, string UserName, string Password)
         {
             if (string.IsNullOrEmpty(Name))

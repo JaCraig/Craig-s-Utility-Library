@@ -63,6 +63,10 @@ namespace Utilities.Environment
 
         #region Functions
 
+        /// <summary>
+        /// Converts the options into a string
+        /// </summary>
+        /// <returns>The string representation of the option</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

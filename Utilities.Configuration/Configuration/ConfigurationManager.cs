@@ -131,6 +131,10 @@ namespace Utilities.Configuration
 
         #region ToString
 
+        /// <summary>
+        /// Outputs all of the configuration items as an HTML list
+        /// </summary>
+        /// <returns>All configs as a string list</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

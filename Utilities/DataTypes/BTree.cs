@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Utilities.DataTypes.ExtensionMethods;
 
 #endregion
 
@@ -108,6 +109,10 @@ namespace Utilities.DataTypes
 
         #region IEnumerable<T> Members
 
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
         public virtual IEnumerator<T> GetEnumerator()
         {
             foreach (TreeNode<T> TempNode in Traversal(Root))
@@ -120,6 +125,10 @@ namespace Utilities.DataTypes
 
         #region IEnumerable Members
 
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             foreach (TreeNode<T> TempNode in Traversal(Root))
@@ -132,6 +141,10 @@ namespace Utilities.DataTypes
 
         #region ICollection<T> Members
 
+        /// <summary>
+        /// Adds an item to a binary tree
+        /// </summary>
+        /// <param name="item">Item to add</param>
         public virtual void Add(T item)
         {
             if (Root == null)
@@ -145,12 +158,20 @@ namespace Utilities.DataTypes
             }
         }
 
+        /// <summary>
+        /// Clears all items from the tree
+        /// </summary>
         public virtual void Clear()
         {
             Root = null;
             NumberOfNodes = 0;
         }
 
+        /// <summary>
+        /// Determines if the tree contains an item
+        /// </summary>
+        /// <param name="item">Item to check</param>
+        /// <returns>True if it is, false otherwise</returns>
         public virtual bool Contains(T item)
         {
             if (IsEmpty)
@@ -170,6 +191,11 @@ namespace Utilities.DataTypes
             return false;
         }
 
+        /// <summary>
+        /// Copies the tree to an array
+        /// </summary>
+        /// <param name="array">Array to copy to</param>
+        /// <param name="arrayIndex">Index to start at</param>
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
             T[] TempArray = new T[NumberOfNodes];
@@ -182,16 +208,27 @@ namespace Utilities.DataTypes
             Array.Copy(TempArray, 0, array, arrayIndex, this.NumberOfNodes);
         }
 
+        /// <summary>
+        /// Number of items in the tree
+        /// </summary>
         public virtual int Count
         {
             get { return NumberOfNodes; }
         }
 
+        /// <summary>
+        /// Is this read only?
+        /// </summary>
         public virtual bool IsReadOnly
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Removes an item from the tree
+        /// </summary>
+        /// <param name="item">Item to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
         public virtual bool Remove(T item)
         {
             TreeNode<T> Item = Find(item);
@@ -308,12 +345,13 @@ namespace Utilities.DataTypes
 
         #region Functions
 
+        /// <summary>
+        /// Outputs the tree as a string
+        /// </summary>
+        /// <returns>The string representation of the tree</returns>
         public override string ToString()
         {
-            StringBuilder Builder=new StringBuilder();
-            foreach (T Value in this)
-                Builder.Append(Value.ToString() + " ");
-            return Builder.ToString();
+            return this.ToString(x => x.ToString(), " ");
         }
 
         #endregion
@@ -376,12 +414,19 @@ namespace Utilities.DataTypes
         /// </summary>
         public virtual bool IsLeaf { get { return Left == null && Right == null; } }
 
+        /// <summary>
+        /// Visited?
+        /// </summary>
         internal bool Visited { get; set; }
 
         #endregion
 
         #region Public Overridden Functions
 
+        /// <summary>
+        /// Returns the node as a string
+        /// </summary>
+        /// <returns>String representation of the node</returns>
         public override string ToString()
         {
             return Value.ToString();

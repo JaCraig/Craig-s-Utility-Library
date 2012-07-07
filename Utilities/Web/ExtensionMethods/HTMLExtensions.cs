@@ -56,6 +56,17 @@ namespace Utilities.Web.ExtensionMethods
             return Context.Items["absoluteurl"] as Uri;
         }
 
+        /// <summary>
+        /// Returns the absolute root
+        /// </summary>
+        public static Uri AbsoluteRoot(this HttpContext Context)
+        {
+            Context.ThrowIfNull("Context");
+            if (Context.Items["absoluteurl"] == null)
+                Context.Items["absoluteurl"] = new Uri(Context.Request.Url.GetLeftPart(UriPartial.Authority) + Context.RelativeRoot());
+            return Context.Items["absoluteurl"] as Uri;
+        }
+
 
         #endregion
 
@@ -145,6 +156,47 @@ namespace Utilities.Web.ExtensionMethods
             }
         }
 
+        /// <summary>
+        /// Adds HTTP compression to the current context
+        /// </summary>
+        /// <param name="Context">Current context</param>
+        /// <param name="RemovePrettyPrinting">Sets the response filter to a special stream that
+        /// removes pretty printing from content</param>
+        /// <param name="Type">The minification type to use (defaults to HTML if RemovePrettyPrinting 
+        /// is set to true, but can also deal with CSS and Javascript)</param>
+        public static void HTTPCompress(this HttpContext Context, bool RemovePrettyPrinting = false, MinificationType Type = MinificationType.HTML)
+        {
+            Context.ThrowIfNull("Context");
+            if (Context.Request.UserAgent != null && Context.Request.UserAgent.Contains("MSIE 6"))
+                return;
+            if (RemovePrettyPrinting)
+            {
+                if (Context.IsEncodingAccepted(GZIP))
+                {
+                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.GZip, Type);
+                    Context.SetEncoding(GZIP);
+                }
+                else if (Context.IsEncodingAccepted(DEFLATE))
+                {
+                    Context.Response.Filter = new UglyStream(Context.Response.Filter, CompressionType.Deflate, Type);
+                    Context.SetEncoding(DEFLATE);
+                }
+            }
+            else
+            {
+                if (Context.IsEncodingAccepted(GZIP))
+                {
+                    Context.Response.Filter = new GZipStream(Context.Response.Filter, CompressionMode.Compress);
+                    Context.SetEncoding(GZIP);
+                }
+                else if (Context.IsEncodingAccepted(DEFLATE))
+                {
+                    Context.Response.Filter = new DeflateStream(Context.Response.Filter, CompressionMode.Compress);
+                    Context.SetEncoding(DEFLATE);
+                }
+            }
+        }
+
         #endregion
 
         #region IsEncodingAccepted
@@ -154,6 +206,17 @@ namespace Utilities.Web.ExtensionMethods
         /// encoding is accepted by the client.
         /// </summary>
         public static bool IsEncodingAccepted(this HttpContextBase Context, string Encoding)
+        {
+            if (Context == null)
+                return false;
+            return Context.Request.Headers["Accept-encoding"] != null && Context.Request.Headers["Accept-encoding"].Contains(Encoding);
+        }
+
+        /// <summary>
+        /// Checks the request headers to see if the specified
+        /// encoding is accepted by the client.
+        /// </summary>
+        public static bool IsEncodingAccepted(this HttpContext Context, string Encoding)
         {
             if (Context == null)
                 return false;
@@ -170,6 +233,16 @@ namespace Utilities.Web.ExtensionMethods
         /// <param name="Context">Current context</param>
         /// <returns>The relative root of the web site</returns>
         public static string RelativeRoot(this HttpContextBase Context)
+        {
+            return VirtualPathUtility.ToAbsolute("~/");
+        }
+
+        /// <summary>
+        /// Gets the relative root of the web site
+        /// </summary>
+        /// <param name="Context">Current context</param>
+        /// <returns>The relative root of the web site</returns>
+        public static string RelativeRoot(this HttpContext Context)
         {
             return VirtualPathUtility.ToAbsolute("~/");
         }
@@ -214,6 +287,17 @@ namespace Utilities.Web.ExtensionMethods
         /// <param name="Encoding">Encoding to set</param>
         /// <param name="Context">Context to set the encoding on</param>
         public static void SetEncoding(this HttpContextBase Context, string Encoding)
+        {
+            Context.ThrowIfNull("Context");
+            Context.Response.AppendHeader("Content-encoding", Encoding);
+        }
+
+        /// <summary>
+        /// Adds the specified encoding to the response headers.
+        /// </summary>
+        /// <param name="Encoding">Encoding to set</param>
+        /// <param name="Context">Context to set the encoding on</param>
+        public static void SetEncoding(this HttpContext Context, string Encoding)
         {
             Context.ThrowIfNull("Context");
             Context.Response.AppendHeader("Content-encoding", Encoding);

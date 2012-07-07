@@ -54,6 +54,20 @@ namespace Utilities.Web.ExtensionMethods
             return Address;
         }
 
+        /// <summary>
+        /// Gets the user's IP address if it exists, null is returned otherwise
+        /// </summary>
+        /// <param name="Request">Request</param>
+        /// <returns>The IPAddress object if it exists, null otherwise</returns>
+        public static IPAddress UserIPAddress(this HttpRequest Request)
+        {
+            Request.ThrowIfNull("Request");
+            IPAddress Address = null;
+            if (!IPAddress.TryParse(Request.UserHostAddress, out Address))
+                Address = null;
+            return Address;
+        }
+
         #endregion
 
         #region IfModifiedSince
@@ -64,6 +78,18 @@ namespace Utilities.Web.ExtensionMethods
         /// <param name="Request">Request</param>
         /// <returns>The If-Modified-Since header value expressed as a DateTime object</returns>
         public static DateTime IfModifiedSince(this HttpRequestBase Request)
+        {
+            DateTime Result = DateTime.MinValue;
+            DateTime.TryParse(Request.Headers["If-Modified-Since"], out Result);
+            return Result;
+        }
+
+        /// <summary>
+        /// Converts the If-Modified-Since header value to a DateTime object
+        /// </summary>
+        /// <param name="Request">Request</param>
+        /// <returns>The If-Modified-Since header value expressed as a DateTime object</returns>
+        public static DateTime IfModifiedSince(this HttpRequest Request)
         {
             DateTime Result = DateTime.MinValue;
             DateTime.TryParse(Request.Headers["If-Modified-Since"], out Result);

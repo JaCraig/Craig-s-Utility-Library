@@ -35,11 +35,17 @@ namespace Utilities.CodeGen.Templates
     /// <summary>
     /// Parameter class
     /// </summary>
-    public class Parameter:ObjectBase,IParameter
+    public class Parameter : ObjectBase, IParameter
     {
         #region Constructor
 
-        public Parameter(string Type, string Name,Class Object)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Type">Parameter type</param>
+        /// <param name="Name">Parameter name</param>
+        /// <param name="Object">Class object</param>
+        public Parameter(string Type, string Name, Class Object)
             : base(Object.Parser)
         {
             this.Type = Type;
@@ -50,11 +56,17 @@ namespace Utilities.CodeGen.Templates
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the template
+        /// </summary>
         protected override void SetupTemplate()
         {
             Template = new DefaultTemplate(@"@ParameterType @ParameterName");
         }
 
+        /// <summary>
+        /// Sets up the input
+        /// </summary>
         protected override void SetupInput()
         {
             Input.Values.Add("ParameterType", Type);
@@ -65,7 +77,14 @@ namespace Utilities.CodeGen.Templates
 
         #region Properties
 
+        /// <summary>
+        /// Parameter type
+        /// </summary>
         protected virtual string Type { get; set; }
+
+        /// <summary>
+        /// Parameter name
+        /// </summary>
         protected virtual string Name { get; set; }
 
         #endregion

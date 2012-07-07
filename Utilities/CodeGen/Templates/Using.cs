@@ -39,6 +39,11 @@ namespace Utilities.CodeGen.Templates
     {
         #region Constructor
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Namespace">Namespace</param>
+        /// <param name="Parser">Parser</param>
         public Using(string Namespace, IParser Parser)
             : base(Parser)
         {
@@ -49,17 +54,26 @@ namespace Utilities.CodeGen.Templates
 
         #region Properties
 
+        /// <summary>
+        /// Namespace
+        /// </summary>
         protected string Namespace { get; set; }
 
         #endregion
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the template
+        /// </summary>
         protected override void SetupTemplate()
         {
             Template = new DefaultTemplate("using @Namespace;");
         }
 
+        /// <summary>
+        /// Sets up the input
+        /// </summary>
         protected override void SetupInput()
         {
             Input.Values.Add("Namespace", Namespace);

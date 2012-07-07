@@ -39,8 +39,18 @@ namespace Utilities.CodeGen.Templates
     {
         #region Constructor
 
-        public Function(AccessModifier AccessModifier,Modifiers Modifier,string Type,
-            string FunctionName,IParameter[] ParameterList,string Body, IParser Parser)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="AccessModifier">Access modifier</param>
+        /// <param name="Modifier">Modifier</param>
+        /// <param name="Type">Type</param>
+        /// <param name="FunctionName">Function name</param>
+        /// <param name="ParameterList">Parameter list</param>
+        /// <param name="Body">Body of the function</param>
+        /// <param name="Parser">Parser to use</param>
+        public Function(AccessModifier AccessModifier, Modifiers Modifier, string Type,
+            string FunctionName, IParameter[] ParameterList, string Body, IParser Parser)
             : base(Parser)
         {
             this.AccessModifier = AccessModifier;
@@ -55,6 +65,9 @@ namespace Utilities.CodeGen.Templates
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the template
+        /// </summary>
         protected override void SetupTemplate()
         {
             Template = new DefaultTemplate(@"@AccessModifier @Modifier @Type @FunctionName(@ParameterList)
@@ -63,10 +76,13 @@ namespace Utilities.CodeGen.Templates
 }");
         }
 
+        /// <summary>
+        /// Sets up the input
+        /// </summary>
         protected override void SetupInput()
         {
             Input.Values.Add("AccessModifier", AccessModifier.ToString().ToLower());
-            if(Modifier!=Modifiers.None)
+            if (Modifier != Modifiers.None)
                 Input.Values.Add("Modifier", Modifier.ToString().ToLower());
             else
                 Input.Values.Add("Modifier", "");
@@ -74,7 +90,7 @@ namespace Utilities.CodeGen.Templates
             Input.Values.Add("FunctionName", Name);
             Input.Values.Add("Body", Body);
             string TempString = "";
-            string Splitter="";
+            string Splitter = "";
             foreach (IParameter Parameter in Parameters)
             {
                 TempString += Splitter + Parameter.Transform();
@@ -87,11 +103,34 @@ namespace Utilities.CodeGen.Templates
 
         #region Properties
 
+        /// <summary>
+        /// Access modifier
+        /// </summary>
         protected virtual AccessModifier AccessModifier { get; set; }
+
+        /// <summary>
+        /// Modifier
+        /// </summary>
         protected virtual Modifiers Modifier { get; set; }
+
+        /// <summary>
+        /// Function name
+        /// </summary>
         protected virtual string Name { get; set; }
+
+        /// <summary>
+        /// Function return type
+        /// </summary>
         protected virtual string Type { get; set; }
-        protected virtual List<IParameter> Parameters{get;set;}
+
+        /// <summary>
+        /// Parameters for the function
+        /// </summary>
+        protected virtual List<IParameter> Parameters { get; set; }
+
+        /// <summary>
+        /// Body of the function
+        /// </summary>
         protected virtual string Body { get; set; }
 
         #endregion

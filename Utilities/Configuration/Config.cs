@@ -90,6 +90,9 @@ namespace Utilities.Configuration
 
         #region IConfig Members
 
+        /// <summary>
+        /// Loads the config
+        /// </summary>
         public void Load()
         {
             if (ConfigFileLocation.IsNullOrEmpty())
@@ -104,6 +107,9 @@ namespace Utilities.Configuration
             Decrypt();
         }
 
+        /// <summary>
+        /// Saves the config
+        /// </summary>
         public void Save()
         {
             if (ConfigFileLocation.IsNullOrEmpty())

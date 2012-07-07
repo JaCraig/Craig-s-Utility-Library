@@ -141,10 +141,29 @@ namespace Utilities.Profiler
         /// </summary>
         public class ProfilerInfo
         {
+            /// <summary>
+            /// Function name
+            /// </summary>
             public string FunctionName = "";
+
+            /// <summary>
+            /// Total time
+            /// </summary>
             public int TotalTime = 0;
+
+            /// <summary>
+            /// Times called
+            /// </summary>
             public int TimesCalled = 0;
+
+            /// <summary>
+            /// Max time
+            /// </summary>
             public int MaxTime = int.MinValue;
+
+            /// <summary>
+            /// Min time
+            /// </summary>
             public int MinTime = int.MaxValue;
         }
 

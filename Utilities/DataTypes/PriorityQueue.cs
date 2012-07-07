@@ -57,6 +57,11 @@ namespace Utilities.DataTypes
             return default(T);
         }
 
+        /// <summary>
+        /// Adds an item to the queue
+        /// </summary>
+        /// <param name="Priority">Priority</param>
+        /// <param name="Value">Items to add</param>
         public override void Add(int Priority, List<T> Value)
         {
             if (Priority > HighestKey)
@@ -64,6 +69,10 @@ namespace Utilities.DataTypes
             base.Add(Priority, Value);
         }
 
+        /// <summary>
+        /// Adds an item to the queue
+        /// </summary>
+        /// <param name="item">Item to add</param>
         public override void Add(System.Collections.Generic.KeyValuePair<int, List<T>> item)
         {
             if (item.Key > HighestKey)
@@ -71,6 +80,11 @@ namespace Utilities.DataTypes
             base.Add(item);
         }
 
+        /// <summary>
+        /// Adds an item to the queue
+        /// </summary>
+        /// <param name="Priority">Priority</param>
+        /// <param name="Value">Item to add</param>
         public override void Add(int Priority, T Value)
         {
             if (Priority > HighestKey)

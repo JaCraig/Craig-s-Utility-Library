@@ -52,6 +52,9 @@ namespace Utilities.Environment.DataTypes
 
         #region Properties
 
+        /// <summary>
+        /// Application list
+        /// </summary>
         public virtual List<Application> ApplicationList { get; set; }
 
         #endregion
@@ -113,6 +116,10 @@ namespace Utilities.Environment.DataTypes
 
         #region IEnumerable
 
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
         public virtual IEnumerator GetEnumerator()
         {
             if (ApplicationList == null)

@@ -51,11 +51,17 @@ namespace Utilities.CodeGen.Templates
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the template
+        /// </summary>
         protected override void SetupTemplate()
         {
             Template = new DefaultTemplate(@"@AccessModifier @ExtraModifiers @PropertyType @PropertyName{ get{@GetMethod} set{@SetMethod} }");
         }
 
+        /// <summary>
+        /// Sets up the input
+        /// </summary>
         protected override void SetupInput()
         {
             Input.Values.Add("AccessModifier", AccessModifier.ToString().ToLower());
@@ -73,11 +79,34 @@ namespace Utilities.CodeGen.Templates
 
         #region Properties
 
+        /// <summary>
+        /// Access modifier
+        /// </summary>
         public virtual AccessModifier AccessModifier { get; set; }
+        
+        /// <summary>
+        /// Modifier
+        /// </summary>
         public virtual Modifiers Modifier { get; set; }
+
+        /// <summary>
+        /// Property type
+        /// </summary>
         public virtual string PropertyType { get; set; }
+
+        /// <summary>
+        /// Property name
+        /// </summary>
         public virtual string Name { get; set; }
+
+        /// <summary>
+        /// Get function
+        /// </summary>
         public virtual string GetFunction { get; set; }
+
+        /// <summary>
+        /// Set function
+        /// </summary>
         public virtual string SetFunction { get; set; }
 
         #endregion

@@ -130,6 +130,12 @@ namespace Utilities.DataTypes
 
         #region Operators
 
+        /// <summary>
+        /// Addition operator
+        /// </summary>
+        /// <param name="Span1">Span 1</param>
+        /// <param name="Span2">Span 2</param>
+        /// <returns>The combined date span</returns>
         public static DateSpan operator +(DateSpan Span1, DateSpan Span2)
         {
             if (Span1.IsNull() && Span2.IsNull())
@@ -143,6 +149,12 @@ namespace Utilities.DataTypes
             return new DateSpan(Start, End);
         }
 
+        /// <summary>
+        /// Determines if two DateSpans are equal
+        /// </summary>
+        /// <param name="Span1">Span 1</param>
+        /// <param name="Span2">Span 2</param>
+        /// <returns>True if they are, false otherwise</returns>
         public static bool operator ==(DateSpan Span1, DateSpan Span2)
         {
             if ((object)Span1 == null && (object)Span2 == null)
@@ -152,6 +164,12 @@ namespace Utilities.DataTypes
             return Span1.Start == Span2.Start && Span1.End == Span2.End;
         }
 
+        /// <summary>
+        /// Determines if two DateSpans are not equal
+        /// </summary>
+        /// <param name="Span1">Span 1</param>
+        /// <param name="Span2">Span 2</param>
+        /// <returns>True if they are not equal, false otherwise</returns>
         public static bool operator !=(DateSpan Span1, DateSpan Span2)
         {
             return !(Span1 == Span2);
@@ -161,11 +179,20 @@ namespace Utilities.DataTypes
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the DateSpan to a string
+        /// </summary>
+        /// <returns>The DateSpan as a string</returns>
         public override string ToString()
         {
             return "Start: " + Start.ToString() + " End: " + End.ToString();
         }
 
+        /// <summary>
+        /// Determines if two objects are equal
+        /// </summary>
+        /// <param name="obj">Object to check</param>
+        /// <returns>True if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
             if (!(obj is DateSpan))
@@ -173,6 +200,10 @@ namespace Utilities.DataTypes
             return (DateSpan)obj == this;
         }
 
+        /// <summary>
+        /// Gets the hash code for the date span
+        /// </summary>
+        /// <returns>The hash code</returns>
         public override int GetHashCode()
         {
             return End.GetHashCode() & Start.GetHashCode();

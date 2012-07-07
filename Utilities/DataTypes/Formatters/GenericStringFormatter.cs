@@ -50,6 +50,11 @@ namespace Utilities.DataTypes.Formatters
 
         #region IFormatProvider Functions
 
+        /// <summary>
+        /// Gets the format associated with the type
+        /// </summary>
+        /// <param name="formatType">Format type</param>
+        /// <returns>The appropriate formatter based on the type</returns>
         public object GetFormat(Type formatType)
         {
             return formatType == typeof(ICustomFormatter) ? this : null;
@@ -59,6 +64,13 @@ namespace Utilities.DataTypes.Formatters
 
         #region ICustomFormatter Functions
 
+        /// <summary>
+        /// Formats the string
+        /// </summary>
+        /// <param name="format">Format to use</param>
+        /// <param name="arg">Argument object to use</param>
+        /// <param name="formatProvider">Format provider to use</param>
+        /// <returns>The formatted string</returns>
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
             return Format(arg.ToString(), format);
