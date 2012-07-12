@@ -58,7 +58,7 @@ namespace Utilities.ORM
         #endregion
 
         #region Static Functions
-        
+
         #region Any
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace Utilities.ORM
         /// <param name="Params">Parameters used to specify what to load</param>
         /// <param name="Command">Command to run</param>
         /// <returns>All items that fit the specified query</returns>
-        public static IEnumerable<ObjectType> PagedCommand(string Command,string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
+        public static IEnumerable<ObjectType> PagedCommand(string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
         {
             return PagedCommand(ORM.CreateSession(), Command, OrderBy, PageSize, CurrentPage, Params);
         }
@@ -269,7 +269,7 @@ namespace Utilities.ORM
         /// <param name="Session">ORM session variable</param>
         /// <param name="Command">Command to run</param>
         /// <returns>All items that fit the specified query</returns>
-        public static IEnumerable<ObjectType> PagedCommand(Session Session,string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
+        public static IEnumerable<ObjectType> PagedCommand(Session Session, string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
         {
             IEnumerable<ObjectType> instance = new List<ObjectType>();
             LoadingEventArgs E = new LoadingEventArgs();
@@ -319,7 +319,7 @@ namespace Utilities.ORM
         /// <param name="Params">Parameters used to specify what to load</param>
         /// <param name="Command">Command to run</param>
         /// <returns>All items that fit the specified query</returns>
-        public static int PageCount(string Command,int PageSize = 25, params IParameter[] Params)
+        public static int PageCount(string Command, int PageSize = 25, params IParameter[] Params)
         {
             return PageCount(ORM.CreateSession(), Command, PageSize, Params);
         }
@@ -332,7 +332,7 @@ namespace Utilities.ORM
         /// <param name="Session">ORM session variable</param>
         /// <param name="Command">Command to run</param>
         /// <returns>All items that fit the specified query</returns>
-        public static int PageCount(Session Session,string Command, int PageSize = 25, params IParameter[] Params)
+        public static int PageCount(Session Session, string Command, int PageSize = 25, params IParameter[] Params)
         {
             return Session.PageCount<ObjectType>(Command, PageSize, Params);
         }
@@ -363,6 +363,65 @@ namespace Utilities.ORM
                 Validation.ValidationManager.Validate(Object);
                 Object.Save(Session);
             }
+        }
+
+        #endregion
+
+        #region Scalar
+
+        /// <summary>
+        /// Runs a supplied scalar function and returns the result
+        /// </summary>
+        /// <param name="CommandType">Command type</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Command">Command to get the page count of</param>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <returns>The scalar value returned by the command</returns>
+        public static DataType Scalar<DataType>(string Command, CommandType CommandType, params IParameter[] Parameters)
+        {
+            return Scalar<DataType>(ORM.CreateSession(), Command, CommandType, Parameters);
+        }
+
+        /// <summary>
+        /// Runs a scalar command using the specified aggregate function
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="AggregateFunction">Aggregate function</param>
+        /// <param name="Parameters">Parameters</param>
+        /// <returns>The scalar value returned by the command</returns>
+        public static DataType Scalar<DataType>(string AggregateFunction, params IParameter[] Parameters)
+        {
+            return Scalar<DataType>(ORM.CreateSession(), AggregateFunction, Parameters);
+        }
+
+        /// <summary>
+        /// Runs a supplied scalar function and returns the result
+        /// </summary>
+        /// <param name="CommandType">Command type</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Command">Command to get the page count of</param>
+        /// <param name="Session">ORM session variable</param>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <returns>The scalar value returned by the command</returns>
+        public static DataType Scalar<DataType>(Session Session, string Command, CommandType CommandType, params IParameter[] Parameters)
+        {
+            return Session.Scalar<ObjectType, DataType>(Command, CommandType, Parameters);
+        }
+
+        /// <summary>
+        /// Runs a scalar command using the specified aggregate function
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="AggregateFunction">Aggregate function</param>
+        /// <param name="Parameters">Parameters</param>
+        /// <returns>The scalar value returned by the command</returns>
+        public static DataType Scalar<DataType>(Session Session, string AggregateFunction, params IParameter[] Parameters)
+        {
+            return Session.Scalar<ObjectType, DataType>(AggregateFunction, Parameters);
         }
 
         #endregion

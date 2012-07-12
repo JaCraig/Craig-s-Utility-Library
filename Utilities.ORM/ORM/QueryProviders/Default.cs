@@ -646,6 +646,63 @@ namespace Utilities.ORM.QueryProviders
 
         #endregion
 
+        #region Scalar
+
+        /// <summary>
+        /// Runs a supplied scalar function and returns the result
+        /// </summary>
+        /// <param name="CommandType">Command type</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Command">Command to get the page count of</param>
+        /// <param name="CurrentSession">Current session</param>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <returns>The scalar value returned by the command</returns>
+        public virtual DataType Scalar<ObjectType,DataType>(Session CurrentSession, string Command, CommandType CommandType, params IParameter[] Parameters) 
+            where ObjectType : class,new()
+        {
+            foreach (IDatabase Database in Mappings.Keys.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    {
+                        return ORMObject.Map<ObjectType>().Scalar<DataType>(Command, CommandType, Parameters);
+                    }
+                }
+            }
+            return default(DataType);
+        }
+
+        /// <summary>
+        /// Runs a scalar command using the specified aggregate function
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="CurrentSession">Current session</param>
+        /// <param name="AggregateFunction">Aggregate function</param>
+        /// <param name="Parameters">Parameters</param>
+        /// <returns>The scalar value returned by the command</returns>
+        public virtual DataType Scalar<ObjectType, DataType>(Session CurrentSession, string AggregateFunction, params IParameter[] Parameters)
+            where ObjectType : class,new()
+        {
+            foreach (IDatabase Database in Mappings.Keys.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
+                if (Mapping != null)
+                {
+                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    {
+                        return ORMObject.Map<ObjectType>().Scalar<DataType>(AggregateFunction, Parameters);
+                    }
+                }
+            }
+            return default(DataType);
+        }
+
+        #endregion
+
         #endregion
 
         #region Properties

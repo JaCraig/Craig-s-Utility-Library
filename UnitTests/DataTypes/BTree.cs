@@ -26,6 +26,7 @@ using System.Text;
 using MoonUnit;
 using MoonUnit.Attributes;
 using Utilities.DataTypes;
+using Utilities.DataTypes.ExtensionMethods;
 
 namespace UnitTests.DataTypes
 {
@@ -60,9 +61,7 @@ namespace UnitTests.DataTypes
                 Assert.Contains(Values[x], Tree);
             }
             Values.Sort();
-            StringBuilder Builder = new StringBuilder();
-            Values.ForEach((x) => Builder.Append(x.ToString() + " "));
-            Assert.Equal(Builder.ToString(), Tree.ToString());
+            Assert.Equal(Values.ToString(x => x.ToString(), " "), Tree.ToString());
         }
     }
 }

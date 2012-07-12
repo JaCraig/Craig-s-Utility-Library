@@ -221,6 +221,21 @@ namespace UnitTests.ORM.Test2
         }
 
         [Test]
+        public void Scalar()
+        {
+            List<Task> Tasks = new List<Task>();
+            for (int x = 0; x < 100; ++x)
+            {
+                Task SubTask = new Task();
+                SubTask.Description = "This is a test";
+                SubTask.DueDate = new DateTime(1900, 1, 1);
+                SubTask.Name = "Sub task 1";
+                SubTask.Save();
+            }
+            Assert.Equal(100, Task.Scalar<int>("COUNT(*)"));
+        }
+
+        [Test]
         public void All()
         {
             Task TempTask = new Task();

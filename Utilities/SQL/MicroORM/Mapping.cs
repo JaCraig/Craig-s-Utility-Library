@@ -555,6 +555,39 @@ namespace Utilities.SQL.MicroORM
 
         #endregion
 
+        #region Scalar
+
+        /// <summary>
+        /// Runs a supplied scalar function and returns the result
+        /// </summary>
+        /// <param name="CommandType">Command type</param>
+        /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Command">Command to get the page count of</param>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <returns>The scalar value returned by the command</returns>
+        public virtual DataType Scalar<DataType>(string Command, CommandType CommandType, params IParameter[] Parameters)
+        {
+            Helper.ThrowIfNull("Helper");
+            SetupCommand(Command, CommandType, Parameters);
+            return Helper.ExecuteScalar<DataType>();
+        }
+
+        /// <summary>
+        /// Runs a scalar command using the specified aggregate function
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="AggregateFunction">Aggregate function</param>
+        /// <param name="Parameters">Parameters</param>
+        /// <returns>The scalar value returned by the command</returns>
+        public virtual DataType Scalar<DataType>(string AggregateFunction, params IParameter[] Parameters)
+        {
+            Helper.ThrowIfNull("Helper");
+            SetupCommand(SetupScalarCommand(AggregateFunction, Parameters), CommandType.Text, Parameters);
+            return Helper.ExecuteScalar<DataType>();
+        }
+
+        #endregion
+
         #region Update
 
         /// <summary>
@@ -608,6 +641,32 @@ namespace Utilities.SQL.MicroORM
             Helper.CommandType = CommandType;
             if (Parameters.IsNotNull())
                 Helper.AddParameter(Parameters);
+        }
+
+        #endregion
+
+        #region SetupScalarCommand
+
+        /// <summary>
+        /// Sets up the scalar command
+        /// </summary>
+        /// <param name="Command">Command to create with</param>
+        /// <param name="Parameters">Parameter list</param>
+        /// <returns>The string command</returns>
+        protected virtual string SetupScalarCommand(string Command, IParameter[] Parameters)
+        {
+            string WhereCommand = "";
+            if (!Parameters.IsNullOrEmpty())
+            {
+                WhereCommand += " WHERE ";
+                string Splitter = "";
+                foreach (IParameter Parameter in Parameters)
+                {
+                    WhereCommand += Splitter + Parameter;
+                    Splitter = " AND ";
+                }
+            }
+            return string.Format("SELECT {0} FROM {1} {2}", Command, TableName, WhereCommand);
         }
 
         #endregion

@@ -254,6 +254,36 @@ namespace UnitTests.SQL.MicroORM
         }
 
         [Test]
+        public void Scalar()
+        {
+            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            {
+                TestObject.Map(x => x.ID, "ID_")
+                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.FloatValue, "FloatValue_")
+                    .Map(x => x.BoolValue, "BoolValue_")
+                    .Map(x => x.LongValue, "LongValue_")
+                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                Utilities.Random.Random Rand = new Utilities.Random.Random(12345);
+                for (int x = 0; x < 100; ++x)
+                {
+                    ObjectClass1 TempObject = new ObjectClass1();
+                    TempObject.StringValue = "Test String";
+                    TempObject.BoolValue = true;
+                    TempObject.FloatValue = 1234.5f;
+                    TempObject.LongValue = 12345;
+                    TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
+                    string StringMaxValue = TempObject.StringMaxValue;
+                    TestObject.Save<int>(TempObject);
+                }
+                int ASD = TestObject.Scalar<int>("SELECT COUNT(*) FROM TestTable", CommandType.Text);
+                Assert.Equal(100, ASD);
+                ASD = TestObject.Scalar<int>("COUNT(*)");
+                Assert.Equal(100, ASD);
+            }
+        }
+
+        [Test]
         public void All()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
