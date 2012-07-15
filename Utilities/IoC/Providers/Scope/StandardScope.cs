@@ -47,6 +47,9 @@ namespace Utilities.IoC.Providers.Scope
 
         #region Properties
 
+        /// <summary>
+        /// The name of the scope
+        /// </summary>
         public override string Name { get { return "Standard"; } }
 
         #endregion

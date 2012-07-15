@@ -33,7 +33,7 @@ namespace Utilities.Random.DefaultClasses
     /// <summary>
     /// Randomly generates TimeSpans
     /// </summary>
-    public class TimeSpanGenerator : IGenerator<TimeSpan>
+    public class TimeSpanGenerator : GeneratorAttributeBase, IGenerator<TimeSpan>
     {
         /// <summary>
         /// Generates a random value of the specified type
@@ -57,6 +57,16 @@ namespace Utilities.Random.DefaultClasses
             if (Min > Max)
                 throw new ArgumentException("The minimum value must be less than the maximum value");
             return Min + new TimeSpan((long)(new TimeSpan(Max.Ticks - Min.Ticks).Ticks * Rand.NextDouble()));
+        }
+
+        /// <summary>
+        /// Generates next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
         }
     }
 }

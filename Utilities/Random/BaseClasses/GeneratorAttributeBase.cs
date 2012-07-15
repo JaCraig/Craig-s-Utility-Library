@@ -40,5 +40,11 @@ namespace Utilities.Random.BaseClasses
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public abstract class GeneratorAttributeBase : System.Attribute
     {
+        /// <summary>
+        /// Generates next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public abstract object NextObj(System.Random Rand);
     }
 }

@@ -100,6 +100,9 @@ namespace Utilities.IO.Logging
                 Logs.Add(Name, Log);
         }
 
+        /// <summary>
+        /// Destroys the logging manager
+        /// </summary>
         public static void Destroy()
         {
             foreach (string Key in Logs.Keys)

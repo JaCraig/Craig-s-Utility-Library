@@ -105,6 +105,9 @@ namespace Utilities.FileFormats.Delimited
             get { return Cells.Count; }
         }
 
+        /// <summary>
+        /// Delimiter used
+        /// </summary>
         protected virtual string Delimiter { get; set; }
 
         #endregion

@@ -59,6 +59,10 @@ namespace Utilities.IoC.Providers.Implementations
 
         #region Create
 
+        /// <summary>
+        /// Creates an object
+        /// </summary>
+        /// <returns>The object</returns>
         public override object Create()
         {
             ConstructorInfo Constructor = Utils.ConstructorList.ChooseConstructor(ReturnType, MappingManager);

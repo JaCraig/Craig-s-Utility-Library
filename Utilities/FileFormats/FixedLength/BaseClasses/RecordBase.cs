@@ -48,16 +48,31 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #region IRecord Members
 
+        /// <summary>
+        /// Parses the record
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <param name="Length">Length of the record</param>
         public abstract void Parse(string Value, int Length = -1);
 
+        /// <summary>
+        /// Length
+        /// </summary>
         public virtual int Length { get; set; }
 
+        /// <summary>
+        /// The list of fields
+        /// </summary>
         public virtual List<IField<T>> Fields { get; set; }
 
         #endregion
 
         #region Public Overridden Functions
 
+        /// <summary>
+        /// Converts the record to a string
+        /// </summary>
+        /// <returns>The record as a string</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

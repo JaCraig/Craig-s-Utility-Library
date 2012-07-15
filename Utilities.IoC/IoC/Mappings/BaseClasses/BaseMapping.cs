@@ -59,29 +59,55 @@ namespace Utilities.IoC.Mappings.BaseClasses
 
         #region Functions
 
+        /// <summary>
+        /// Maps an item to an implementation type
+        /// </summary>
+        /// <typeparam name="ImplementationType">Implementation type</typeparam>
+        /// <returns>The mapping object</returns>
         public virtual IMapping To<ImplementationType>()
         {
             return To(typeof(ImplementationType));
         }
 
+        /// <summary>
+        /// Maps an item to an implementation type
+        /// </summary>
+        /// <param name="ImplementationType">Implementation type</param>
+        /// <returns>The mapping object</returns>
         public virtual IMapping To(Type ImplementationType)
         {
             Implementation = ProviderManager.GetProvider(Scope).CreateImplementation(ImplementationType, MappingManager);
             return this;
         }
 
+        /// <summary>
+        /// Maps an item to an implementation function
+        /// </summary>
+        /// <typeparam name="ImplementationType">Implementation type</typeparam>
+        /// <param name="Implementation">Implementation function</param>
+        /// <returns>The mapping object</returns>
         public virtual IMapping To<ImplementationType>(Func<ImplementationType> Implementation)
         {
             this.Implementation = ProviderManager.GetProvider(Scope).CreateImplementation(Implementation);
             return this;
         }
 
+        /// <summary>
+        /// Maps an item to an implementation class
+        /// </summary>
+        /// <param name="Implementation">Implementation class</param>
+        /// <returns>The mapping object</returns>
         public virtual IMapping To(Providers.Interfaces.IImplementation Implementation)
         {
             this.Implementation = Implementation;
             return this;
         }
 
+        /// <summary>
+        /// Sets the scope for the mapping
+        /// </summary>
+        /// <param name="Scope">The scope to use</param>
+        /// <returns>Mapping object</returns>
         public virtual IMapping SetScope(BaseScope Scope)
         {
             this.Scope = Scope;
@@ -93,11 +119,34 @@ namespace Utilities.IoC.Mappings.BaseClasses
 
         #region Properties
 
+        /// <summary>
+        /// Service type
+        /// </summary>
         public virtual Type ServiceType { get; protected set; }
+
+        /// <summary>
+        /// Attribute type
+        /// </summary>
         public virtual Type AttributeType { get; protected set; }
+
+        /// <summary>
+        /// Scope
+        /// </summary>
         public virtual BaseScope Scope { get; protected set; }
+
+        /// <summary>
+        /// Implementation
+        /// </summary>
         public virtual IImplementation Implementation { get; protected set; }
+
+        /// <summary>
+        /// Provider manager
+        /// </summary>
         protected virtual ProviderManager ProviderManager { get; set; }
+
+        /// <summary>
+        /// Mapping manager
+        /// </summary>
         protected virtual MappingManager MappingManager { get; set; }
 
         #endregion

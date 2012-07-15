@@ -33,7 +33,7 @@ namespace Utilities.Random.DefaultClasses
     /// <summary>
     /// Randomly generates bools
     /// </summary>
-    public class BoolGenerator : IGenerator<bool>
+    public class BoolGenerator : GeneratorAttributeBase, IGenerator<bool>
     {
         /// <summary>
         /// Generates a random value of the specified type
@@ -55,6 +55,16 @@ namespace Utilities.Random.DefaultClasses
         public bool Next(System.Random Rand, bool Min, bool Max)
         {
             return Rand.Next(0, 2) == 1;
+        }
+
+        /// <summary>
+        /// Generates next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
         }
     }
 }

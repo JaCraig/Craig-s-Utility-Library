@@ -263,6 +263,9 @@ namespace Utilities.LDAP
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Disposes of the entry object
+        /// </summary>
         public void Dispose()
         {
             if (DirectoryEntry != null)

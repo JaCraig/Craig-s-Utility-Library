@@ -50,6 +50,12 @@ namespace Utilities.FileFormats.FixedLength
 
         #region Public Overridden Functions
 
+        /// <summary>
+        /// Parses the string field
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <param name="Length">Max length allowed</param>
+        /// <param name="FillerCharacter">Filler character</param>
         public override void Parse(string Value, int Length = -1, string FillerCharacter = " ")
         {
             this.Value = Value;

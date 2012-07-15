@@ -35,7 +35,7 @@ namespace Utilities.Random.DefaultClasses
     /// <summary>
     /// Randomly generates Colors
     /// </summary>
-    public class ColorGenerator : IGenerator<Color>
+    public class ColorGenerator : GeneratorAttributeBase, IGenerator<Color>
     {
         /// <summary>
         /// Generates a random value of the specified type
@@ -60,6 +60,16 @@ namespace Utilities.Random.DefaultClasses
                 Rand.Next(Min.R.Min((byte)(Max.R + 1)), Min.R.Max((byte)(Max.R + 1))),
                 Rand.Next(Min.G.Min((byte)(Max.G + 1)), Min.G.Max((byte)(Max.G + 1))),
                 Rand.Next(Min.B.Min((byte)(Max.B + 1)), Min.B.Max((byte)(Max.B + 1))));
+        }
+
+        /// <summary>
+        /// Generates next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
         }
     }
 }

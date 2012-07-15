@@ -85,6 +85,7 @@
     <Compile Include="Random\ContactInfoGenerators\ZipCodeGenerator.cs" />
     <Compile Include="Random\NameGenerators\CompanyGenerator.cs" />
     <Compile Include="Random\BaseClasses\GeneratorAttributeBase.cs" />
+    <Compile Include="Random\DefaultClasses\ClassGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
@@ -94,6 +95,10 @@
     <ProjectReference Include="..\Utilities.Math\Utilities.Math.csproj">
       <Project>{BE654F42-8EA1-48B0-B901-9823E17062CA}</Project>
       <Name>Utilities.Math</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Reflection\Utilities.Reflection.csproj">
+      <Project>{CB6FE6D5-5D42-4E95-A365-41304BA931C7}</Project>
+      <Name>Utilities.Reflection</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

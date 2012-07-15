@@ -146,6 +146,16 @@ namespace Utilities.Random.StringGenerators
             return Builder.ToString();
         }
 
+        /// <summary>
+        /// Generates next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
+        }
+
         #endregion
 
         #region Private Variables

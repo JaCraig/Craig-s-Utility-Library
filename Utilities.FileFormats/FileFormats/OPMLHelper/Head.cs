@@ -123,6 +123,10 @@ namespace Utilities.FileFormats.OPMLHelper
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the head to a string
+        /// </summary>
+        /// <returns>The head as a string</returns>
         public override string ToString()
         {
             StringBuilder HeadString = new StringBuilder();

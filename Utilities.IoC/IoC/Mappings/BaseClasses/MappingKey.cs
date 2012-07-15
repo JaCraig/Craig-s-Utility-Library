@@ -53,6 +53,11 @@ namespace Utilities.IoC.Mappings.BaseClasses
 
         #region Functions
 
+        /// <summary>
+        /// Determines if the mapping keys are equal
+        /// </summary>
+        /// <param name="obj">The object to check against</param>
+        /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
             if (!(obj is IMapping))
@@ -62,6 +67,10 @@ namespace Utilities.IoC.Mappings.BaseClasses
                 && ObjectMapping.ServiceType == ServiceType;
         }
 
+        /// <summary>
+        /// Gets the hash code for this object
+        /// </summary>
+        /// <returns>The hash code for this object</returns>
         public override int GetHashCode()
         {
             int AttributeHash = AttributeType == null ? 1 : AttributeType.GetHashCode();

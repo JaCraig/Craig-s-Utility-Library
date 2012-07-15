@@ -51,8 +51,14 @@ namespace Utilities.FileFormats.GenericDelimited
 
         #region Properties
 
+        /// <summary>
+        /// Delimiter
+        /// </summary>
         protected override string Delimiter { get { return Delimiter_; } }
 
+        /// <summary>
+        /// Delimiter using
+        /// </summary>
         protected string Delimiter_ = "";
 
         #endregion

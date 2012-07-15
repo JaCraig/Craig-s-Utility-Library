@@ -280,6 +280,10 @@ namespace Utilities.FileFormats.RSSHelper
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the channel to a string
+        /// </summary>
+        /// <returns>The channel as a string</returns>
         public override string ToString()
         {
             StringBuilder ChannelString = new StringBuilder();

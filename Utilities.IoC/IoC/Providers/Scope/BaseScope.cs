@@ -53,16 +53,29 @@ namespace Utilities.IoC.Providers.Scope
 
         #region Functions
 
+        /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="obj">Object to check against</param>
+        /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
             return (obj is BaseScope) && ((BaseScope)obj).Name == Name;
         }
 
+        /// <summary>
+        /// Gets the hash code for the object
+        /// </summary>
+        /// <returns>The hash code for the object</returns>
         public override int GetHashCode()
         {
             return Name.GetHashCode();
         }
 
+        /// <summary>
+        /// Converts the scope to a string
+        /// </summary>
+        /// <returns>The scope as a string</returns>
         public override string ToString()
         {
             return Name;

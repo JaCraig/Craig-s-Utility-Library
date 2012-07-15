@@ -403,6 +403,9 @@ namespace Utilities.LDAP
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Disposes of the directory object
+        /// </summary>
         public void Dispose()
         {
             if (Entry != null)

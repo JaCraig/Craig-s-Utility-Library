@@ -166,6 +166,9 @@ namespace Utilities.FileFormats.Zip
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Disposes of the zip file
+        /// </summary>
         public void Dispose()
         {
             if (ZipFileStream != null)

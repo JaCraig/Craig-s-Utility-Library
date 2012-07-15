@@ -67,19 +67,38 @@ namespace Utilities.IO.Logging.BaseClasses
         /// </summary>
         protected Dictionary<MessageType, Action<string>> Log = new Dictionary<MessageType, Action<string>>();
 
+        /// <summary>
+        /// Delegate used to format the message
+        /// </summary>
+        /// <param name="Message">Message to format</param>
+        /// <param name="Type">Type of message</param>
+        /// <param name="args">Args to insert into the message</param>
+        /// <returns>The formatted message</returns>
         public delegate string Format(string Message, MessageType Type, params object[] args);
 
+        /// <summary>
+        /// Format message function
+        /// </summary>
         protected Format FormatMessage { get; set; }
 
         #endregion
 
         #region Interface Functions
 
+        /// <summary>
+        /// Disposes of the log file
+        /// </summary>
         public virtual void Dispose()
         {
             End((LogType)this);
         }
 
+        /// <summary>
+        /// Logs a message
+        /// </summary>
+        /// <param name="Message">Message to log</param>
+        /// <param name="Type">Type of message</param>
+        /// <param name="args">args to format/insert into the message</param>
         public virtual void LogMessage(string Message, MessageType Type, params object[] args)
         {
             Message = FormatMessage(Message, Type, args);

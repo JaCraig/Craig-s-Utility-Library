@@ -99,6 +99,10 @@ namespace Utilities.FileFormats.BlogML
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the author to a string
+        /// </summary>
+        /// <returns>The author as a string</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

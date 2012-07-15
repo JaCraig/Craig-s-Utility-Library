@@ -77,6 +77,9 @@ namespace Utilities.IoC.Providers
 
         #region Properties
 
+        /// <summary>
+        /// List of providers
+        /// </summary>
         protected virtual List<IProvider> Providers { get; set; }
 
         #endregion

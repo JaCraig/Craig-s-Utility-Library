@@ -139,7 +139,14 @@ namespace Utilities.IoC
 
         #region Properties
 
+        /// <summary>
+        /// Provider manager
+        /// </summary>
         protected static ProviderManager ProviderManager { get; set; }
+
+        /// <summary>
+        /// Mapping manager
+        /// </summary>
         protected static MappingManager MappingManager { get; set; }
 
         #endregion

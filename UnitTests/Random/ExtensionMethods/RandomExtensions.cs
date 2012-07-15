@@ -33,6 +33,7 @@ using Utilities.Random.StringGenerators;
 using Utilities.Random.NameGenerators;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.ContactInfoGenerators;
+using Utilities.Random.DefaultClasses;
 
 namespace UnitTests.Random.ExtensionMethods
 {
@@ -129,5 +130,27 @@ namespace UnitTests.Random.ExtensionMethods
             Assert.DoesNotThrow<Exception>(() => Rand.RegisterGenerator<string>(new NameGenerator()));
             Assert.True(100.Times(x => Rand.Next<string>()).TrueForAll(x => x.Split(' ').Length == 2));
         }
+
+        [Test]
+        public void ClassGenerator()
+        {
+            System.Random Rand = new System.Random(1231415);
+            RandomTestClass Item = Rand.NextClass<RandomTestClass>();
+            Assert.Equal(202970450, Item.A);
+            Assert.Equal("Lorem ipsum dolor sit amet. ", Item.B);
+            Assert.Equal(System.Math.Round(0.9043f, 4), System.Math.Round(Item.C, 4));
+        }
+    }
+
+    public class RandomTestClass
+    {
+        [IntGenerator]
+        public int A { get; set; }
+
+        [LoremIpsumGenerator]
+        public string B { get; set; }
+
+        [FloatGenerator]
+        public float C { get; set; }
     }
 }

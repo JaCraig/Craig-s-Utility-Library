@@ -44,6 +44,9 @@ namespace Utilities.IoC.Mappings.Interfaces
 
         #region Properties
 
+        /// <summary>
+        /// Mapping manager
+        /// </summary>
         MappingManager Manager { get; set; }
 
         #endregion

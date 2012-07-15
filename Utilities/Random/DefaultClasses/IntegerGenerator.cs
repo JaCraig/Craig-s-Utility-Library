@@ -59,4 +59,107 @@ namespace Utilities.Random.DefaultClasses
             return Rand.Next(Min.TryTo(0), Max.TryTo(0)).TryTo(default(T));
         }
     }
+
+    #region Integer generators
+
+    /// <summary>
+    /// Byte generator
+    /// </summary>
+    public class ByteGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<byte>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// Char generator
+    /// </summary>
+    public class CharGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<char>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// Int generator
+    /// </summary>
+    public class IntGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<int>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// Long generator
+    /// </summary>
+    public class LongGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<long>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// sbyte generator
+    /// </summary>
+    public class SByteGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<sbyte>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// Short generator
+    /// </summary>
+    public class ShortGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<short>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// uint generator
+    /// </summary>
+    public class UIntGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<uint>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// ulong generator
+    /// </summary>
+    public class ULongGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<ulong>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// ushort generator
+    /// </summary>
+    public class UShortGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new IntegerGenerator<ushort>().Next(Rand);
+        }
+    }
+
+    #endregion
 }

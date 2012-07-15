@@ -49,6 +49,9 @@ namespace Utilities.FileFormats.PipeDelimited
 
         #region Properties
 
+        /// <summary>
+        /// Delimiter used
+        /// </summary>
         protected override string Delimiter { get { return "|"; } }
 
         #endregion

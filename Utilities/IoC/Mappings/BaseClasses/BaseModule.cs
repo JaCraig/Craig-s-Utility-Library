@@ -77,6 +77,9 @@ namespace Utilities.IoC.Mappings.BaseClasses
 
         #region Properties
 
+        /// <summary>
+        /// Mapping manager
+        /// </summary>
         public virtual MappingManager Manager { get; set; }
 
         #endregion

@@ -67,6 +67,25 @@ namespace Utilities.Random.ExtensionMethods
         /// </summary>
         /// <typeparam name="T">Type to generate</typeparam>
         /// <param name="Random">Random object</param>
+        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
+        /// <returns>The randomly generated value</returns>
+        public static T NextClass<T>(this System.Random Random, IGenerator<T> Generator = null)
+            where T : class,new()
+        {
+            Random.ThrowIfNull("Random");
+            SetupGenerators();
+            if (Generator == null)
+            {
+                Generator = new ClassGenerator<T>();
+            }
+            return Generator.Next(Random);
+        }
+
+        /// <summary>
+        /// Randomly generates a value of the specified type
+        /// </summary>
+        /// <typeparam name="T">Type to generate</typeparam>
+        /// <param name="Random">Random object</param>
         /// <param name="Max">Maximum value (inclusive)</param>
         /// <param name="Min">Minimum value (inclusive)</param>
         /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
@@ -99,6 +118,26 @@ namespace Utilities.Random.ExtensionMethods
             {
                 Generators.ThrowIfFalse(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
                 Generator = (IGenerator<T>)Generators[typeof(T)];
+            }
+            return Amount.Times(x => Generator.Next(Random));
+        }
+
+        /// <summary>
+        /// Randomly generates a list of values of the specified type
+        /// </summary>
+        /// <typeparam name="T">Type to the be generated</typeparam>
+        /// <param name="Random">Random object</param>
+        /// <param name="Amount">Number of items to generate</param>
+        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
+        /// <returns>The randomly generated value</returns>
+        public static IEnumerable<T> NextClass<T>(this System.Random Random, int Amount, IGenerator<T> Generator = null)
+            where T : class,new()
+        {
+            Random.ThrowIfNull("Random");
+            SetupGenerators();
+            if (Generator == null)
+            {
+                Generator = new ClassGenerator<T>();
             }
             return Amount.Times(x => Generator.Next(Random));
         }

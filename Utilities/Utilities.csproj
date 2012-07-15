@@ -164,6 +164,7 @@
     <Compile Include="Random\DefaultClasses\IntegerGenerator.cs" />
     <Compile Include="Random\DefaultClasses\StringGenerator.cs" />
     <Compile Include="Random\DefaultClasses\TimeSpanGenerator.cs" />
+    <Compile Include="Random\DefaultClasses\ClassGenerator.cs" />
     <Compile Include="Random\ExtensionMethods\RandomExtensions.cs" />
     <Compile Include="Random\Interfaces\IGenerator.cs" />
     <Compile Include="Random\Interfaces\IStringGenerator.cs" />

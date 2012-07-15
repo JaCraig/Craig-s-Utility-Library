@@ -152,6 +152,10 @@ namespace Utilities.FileFormats.OPMLHelper
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the outline to a string
+        /// </summary>
+        /// <returns>The outline as a string</returns>
         public override string ToString()
         {
             StringBuilder OutlineString = new StringBuilder();

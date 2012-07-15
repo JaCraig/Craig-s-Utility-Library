@@ -45,16 +45,32 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #region IField Members
 
+        /// <summary>
+        /// Parses the field
+        /// </summary>
+        /// <param name="Value">Value to place in the field</param>
+        /// <param name="Length">Length of the field</param>
+        /// <param name="FillerCharacter">Filler character to use</param>
         public abstract void Parse(string Value, int Length = -1, string FillerCharacter = " ");
 
+        /// <summary>
+        /// Length of the field
+        /// </summary>
         public virtual int Length { get; set; }
 
+        /// <summary>
+        /// Value of the field
+        /// </summary>
         public virtual T Value { get; set; }
 
         #endregion
 
         #region Public Overridden Functions
 
+        /// <summary>
+        /// Converts the field to a string
+        /// </summary>
+        /// <returns>The field as a string</returns>
         public override string ToString()
         {
             return Value.ToString();

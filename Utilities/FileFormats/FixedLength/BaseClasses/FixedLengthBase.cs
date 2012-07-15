@@ -59,12 +59,19 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #region Protected Variables
 
+        /// <summary>
+        /// List of records
+        /// </summary>
         protected virtual List<IRecord<T>> Records { get; set; }
 
         #endregion
 
         #region Public Overridden Functions
 
+        /// <summary>
+        /// Converts the file to a string
+        /// </summary>
+        /// <returns>The file as a string</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

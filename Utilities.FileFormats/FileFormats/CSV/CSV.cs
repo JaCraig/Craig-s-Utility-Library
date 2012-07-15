@@ -49,6 +49,9 @@ namespace Utilities.FileFormats.CSV
 
         #region Properties
 
+        /// <summary>
+        /// Delimiter used in the CSV
+        /// </summary>
         protected override string Delimiter { get { return ","; } }
 
         #endregion

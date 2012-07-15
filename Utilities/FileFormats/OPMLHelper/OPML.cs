@@ -113,6 +113,11 @@ namespace Utilities.FileFormats.OPMLHelper
         #endregion
 
         #region Overridden Functions
+
+        /// <summary>
+        /// Converts the file to a string
+        /// </summary>
+        /// <returns>The file as a string</returns>
         public override string ToString()
         {
             StringBuilder OPMLString = new StringBuilder();

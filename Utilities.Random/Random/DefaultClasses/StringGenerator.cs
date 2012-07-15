@@ -35,7 +35,7 @@ namespace Utilities.Random.DefaultClasses
     /// <summary>
     /// Randomly generates strings
     /// </summary>
-    public class StringGenerator : IGenerator<string>
+    public class StringGenerator : GeneratorAttributeBase, IGenerator<string>
     {
         /// <summary>
         /// Generates a random value of the specified type
@@ -57,6 +57,16 @@ namespace Utilities.Random.DefaultClasses
         public string Next(System.Random Rand, string Min, string Max)
         {
             return NextString(Rand, 10);
+        }
+
+        /// <summary>
+        /// Generates next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
         }
 
         /// <summary>

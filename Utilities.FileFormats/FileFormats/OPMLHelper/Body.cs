@@ -79,6 +79,10 @@ namespace Utilities.FileFormats.OPMLHelper
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the body to a string
+        /// </summary>
+        /// <returns>The body as a string</returns>
         public override string ToString()
         {
             StringBuilder BodyString = new StringBuilder();

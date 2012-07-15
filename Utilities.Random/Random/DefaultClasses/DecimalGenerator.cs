@@ -59,4 +59,41 @@ namespace Utilities.Random.DefaultClasses
             return (Min.TryTo(default(double)) + ((Max.TryTo(default(double)) - Min.TryTo(default(double))) * Rand.NextDouble())).TryTo(default(T));
         }
     }
+
+    #region Decimal Generators
+
+    /// <summary>
+    /// Decimal generator
+    /// </summary>
+    public class DecimalGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new DecimalGenerator<decimal>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// Double generator
+    /// </summary>
+    public class DoubleGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new DecimalGenerator<double>().Next(Rand);
+        }
+    }
+
+    /// <summary>
+    /// Float generator
+    /// </summary>
+    public class FloatGenerator : GeneratorAttributeBase
+    {
+        public override object NextObj(System.Random Rand)
+        {
+            return new DecimalGenerator<float>().Next(Rand);
+        }
+    }
+
+    #endregion
 }
