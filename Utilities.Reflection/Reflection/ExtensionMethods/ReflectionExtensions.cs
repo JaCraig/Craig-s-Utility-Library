@@ -21,18 +21,14 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
-using System.Data;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
-using System.Linq;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using Utilities.IO.ExtensionMethods;
-using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.ExtensionMethods

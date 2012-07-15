@@ -20,14 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Random.ExtensionMethods;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.NameGenerators
@@ -37,6 +32,15 @@ namespace Utilities.Random.NameGenerators
     /// </summary>
     public class MaleNamePrefixGenerator : GeneratorAttributeBase, IGenerator<string>
     {
+        #region Constructors
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public MaleNamePrefixGenerator() : base("", "") { }
+
+        #endregion
+
         #region Functions
 
         /// <summary>

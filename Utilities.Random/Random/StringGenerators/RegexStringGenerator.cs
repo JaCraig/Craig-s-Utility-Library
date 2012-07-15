@@ -21,13 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Utilities.Random.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
 using System.Text.RegularExpressions;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.StringGenerators
@@ -46,6 +43,7 @@ namespace Utilities.Random.StringGenerators
         /// <param name="AllowedCharacters">Characters that are allowed</param>
         /// <param name="NumberOfNonAlphaNumericsAllowed">Number of non alphanumeric characters to allow</param>
         public RegexStringGenerator(int Length, string AllowedCharacters = ".", int NumberOfNonAlphaNumericsAllowed = int.MaxValue)
+            : base("", "")
         {
             this.Length = Length;
             this.AllowedCharacters = AllowedCharacters;

@@ -22,18 +22,16 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.DataMapper;
-using System.Linq.Expressions;
-using Utilities.SQL.MicroORM.Interfaces;
 using System.Data;
-using System.Reflection;
+using System.Linq;
+using System.Linq.Expressions;
+using Utilities.DataMapper;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.SQL.MicroORM.Enums;
 using Utilities.Reflection.ExtensionMethods;
 using Utilities.SQL.Interfaces;
+using Utilities.SQL.MicroORM.Enums;
+using Utilities.SQL.MicroORM.Interfaces;
 using Utilities.SQL.ParameterTypes;
 #endregion
 

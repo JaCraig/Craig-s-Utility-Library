@@ -22,11 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Math.ExtensionMethods;
 using Utilities.Media.Image.ExtensionMethods;
-using System;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.Media.Image

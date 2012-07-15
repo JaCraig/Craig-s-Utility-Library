@@ -21,13 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Utilities.IoC.Mappings.Interfaces;
 using Utilities.IoC.Providers;
-using Utilities.IoC.Providers.Scope;
 using Utilities.IoC.Providers.Interfaces;
+using Utilities.IoC.Providers.Scope;
 #endregion
 
 namespace Utilities.IoC.Mappings.BaseClasses

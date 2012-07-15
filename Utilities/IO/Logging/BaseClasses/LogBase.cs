@@ -21,11 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.IO;
-using System.Text.RegularExpressions;
-using Utilities.IO.Logging.Interfaces;
-using Utilities.IO.Logging.Enums;
 using System.Collections.Generic;
+using Utilities.IO.Logging.Enums;
+using Utilities.IO.Logging.Interfaces;
 #endregion
 
 namespace Utilities.IO.Logging.BaseClasses

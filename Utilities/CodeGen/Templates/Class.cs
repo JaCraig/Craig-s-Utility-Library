@@ -20,14 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.CodeGen.Interfaces;
+using Utilities.CodeGen.Templates.BaseClasses;
 using Utilities.CodeGen.Templates.Enums;
 using Utilities.CodeGen.Templates.Interfaces;
-using Utilities.CodeGen.Templates.BaseClasses;
 #endregion
 
 namespace Utilities.CodeGen.Templates

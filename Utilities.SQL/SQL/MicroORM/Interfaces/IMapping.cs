@@ -21,11 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.DataTypes.Patterns;
 using System.Linq.Expressions;
+using Utilities.DataTypes.Patterns;
 using Utilities.SQL.MicroORM.Enums;
 #endregion
 

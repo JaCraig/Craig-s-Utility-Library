@@ -22,15 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.ORM.Interfaces;
-using Utilities.Events.EventArgs;
-using Utilities.ORM.QueryProviders;
-using Utilities.ORM.QueryProviders.Interfaces;
 using System.Data;
+using Utilities.Events.EventArgs;
+using Utilities.ORM.Interfaces;
 using Utilities.SQL.Interfaces;
-using Utilities.SQL.ParameterTypes;
+
 #endregion
 
 namespace Utilities.ORM

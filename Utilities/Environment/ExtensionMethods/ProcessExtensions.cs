@@ -22,12 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Management;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Reflection.ExtensionMethods;
 #endregion

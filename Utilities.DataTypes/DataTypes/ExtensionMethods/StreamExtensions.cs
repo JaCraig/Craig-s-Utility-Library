@@ -20,18 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Text;
-using System.Data;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Utilities.DataTypes.Formatters;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
 using System.IO;
+using System.Text;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods

@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Threading;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 

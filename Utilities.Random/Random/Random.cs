@@ -21,15 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Drawing;
-using System.Text;
-using System.Text.RegularExpressions;
-using Utilities.DataTypes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Utilities.Random.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Random

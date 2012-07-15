@@ -20,20 +20,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Text;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using Utilities.IO.ExtensionMethods;
-using System.Linq;
-using System.Web;
 using System.Globalization;
-using Utilities.DataTypes.ExtensionMethods;
+using System.IO;
 using System.IO.Compression;
-using Utilities.Web.ExtensionMethods.Streams;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 using Utilities.Compression.ExtensionMethods.Enums;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.IO.ExtensionMethods;
+using Utilities.Web.ExtensionMethods.Streams;
 #endregion
 
 namespace Utilities.Web.ExtensionMethods

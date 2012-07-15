@@ -21,13 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Utilities.Random.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
 using System.Text.RegularExpressions;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.DefaultClasses
@@ -37,6 +34,15 @@ namespace Utilities.Random.DefaultClasses
     /// </summary>
     public class StringGenerator : GeneratorAttributeBase, IGenerator<string>
     {
+        #region Constructors
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public StringGenerator() : base("", "") { }
+
+        #endregion
+
         /// <summary>
         /// Generates a random value of the specified type
         /// </summary>

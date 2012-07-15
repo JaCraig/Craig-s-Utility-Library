@@ -21,15 +21,15 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Xml;
-using System.Data.Common;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.Patterns;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
-using Utilities.DataTypes.Patterns;
-using System.Collections.Generic;
 #endregion
 
 namespace Utilities.SQL

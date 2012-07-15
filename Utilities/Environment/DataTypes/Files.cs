@@ -20,9 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Management;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using System.Management;
 #endregion
 
 namespace Utilities.Environment.DataTypes

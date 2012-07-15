@@ -21,13 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Utilities.IO.ExtensionMethods.Enums;
 using System.Diagnostics;
+using System.IO;
 using System.Security;
+using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 

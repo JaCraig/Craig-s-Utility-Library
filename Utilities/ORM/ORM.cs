@@ -21,15 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
-using Utilities.ORM.QueryProviders;
-using Utilities.ORM.Mapping;
-using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.Aspect;
 using Utilities.ORM.Database;
+using Utilities.ORM.Mapping;
+using Utilities.ORM.Mapping.Interfaces;
+using Utilities.ORM.QueryProviders;
 #endregion
 
 namespace Utilities.ORM

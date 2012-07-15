@@ -21,12 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities.DataTypes.Comparison;
 #endregion
 

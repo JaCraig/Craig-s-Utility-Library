@@ -22,10 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Linq;
-using Utilities.DataTypes;
+
 #endregion
 
 namespace Utilities.Web.OAuth

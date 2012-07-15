@@ -165,6 +165,10 @@ namespace Utilities.Math
 
         #region Public Overridden Functions
 
+        /// <summary>
+        /// Returns the set as a string
+        /// </summary>
+        /// <returns>The set as a string</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

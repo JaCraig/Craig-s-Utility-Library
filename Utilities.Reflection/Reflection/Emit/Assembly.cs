@@ -28,7 +28,7 @@ using System.Text;
 using System.Threading;
 using Utilities.Reflection.Emit.Enums;
 using Utilities.Reflection.Emit.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Reflection.Emit

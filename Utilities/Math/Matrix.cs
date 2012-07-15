@@ -72,6 +72,7 @@ namespace Utilities.Math
             get { return _Height; }
             set { _Height = value; Values = new double[Width, Height]; }
         }
+
         /// <summary>
         /// Sets the values of the matrix
         /// </summary>
@@ -103,6 +104,7 @@ namespace Utilities.Math
         /// </summary>
         [XmlElement]
         public virtual double[,] Values { get; set; }
+
         #endregion
 
         #region Private Variables
@@ -112,6 +114,12 @@ namespace Utilities.Math
 
         #region Operators
 
+        /// <summary>
+        /// Determines if two matrices are equal
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="M2">Matrix 2</param>
+        /// <returns>True if they are equal, false otherwise</returns>
         public static bool operator ==(Matrix M1, Matrix M2)
         {
             if ((object)M1 == null && (object)M2 == null)
@@ -129,11 +137,23 @@ namespace Utilities.Math
             return true;
         }
 
+        /// <summary>
+        /// Determines if two matrices are unequal
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="M2">Matrix 2</param>
+        /// <returns>True if they are not equal, false otherwise</returns>
         public static bool operator !=(Matrix M1, Matrix M2)
         {
             return !(M1 == M2);
         }
 
+        /// <summary>
+        /// Adds two matrices
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="M2">Matrix 2</param>
+        /// <returns>The result</returns>
         public static Matrix operator +(Matrix M1, Matrix M2)
         {
             if (M1 == null)
@@ -149,6 +169,12 @@ namespace Utilities.Math
             return TempMatrix;
         }
 
+        /// <summary>
+        /// Subtracts two matrices
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="M2">Matrix 2</param>
+        /// <returns>The result</returns>
         public static Matrix operator -(Matrix M1, Matrix M2)
         {
             if (M1 == null)
@@ -164,6 +190,11 @@ namespace Utilities.Math
             return TempMatrix;
         }
 
+        /// <summary>
+        /// Negates a matrix
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <returns>The result</returns>
         public static Matrix operator -(Matrix M1)
         {
             if (M1 == null)
@@ -175,6 +206,12 @@ namespace Utilities.Math
             return TempMatrix;
         }
 
+        /// <summary>
+        /// Multiplies two matrices
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="M2">Matrix 2</param>
+        /// <returns>The result</returns>
         public static Matrix operator *(Matrix M1, Matrix M2)
         {
             if (M1 == null)
@@ -197,6 +234,12 @@ namespace Utilities.Math
             return TempMatrix;
         }
 
+        /// <summary>
+        /// Multiplies a matrix by a value
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="D">Value to multiply by</param>
+        /// <returns>The result</returns>
         public static Matrix operator *(Matrix M1, double D)
         {
             if (M1 == null)
@@ -208,6 +251,12 @@ namespace Utilities.Math
             return TempMatrix;
         }
 
+        /// <summary>
+        /// Multiplies a matrix by a value
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="D">Value to multiply by</param>
+        /// <returns>The result</returns>
         public static Matrix operator *(double D, Matrix M1)
         {
             if (M1 == null)
@@ -219,6 +268,12 @@ namespace Utilities.Math
             return TempMatrix;
         }
 
+        /// <summary>
+        /// Divides a matrix by a value
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="D">Value to divide by</param>
+        /// <returns>The result</returns>
         public static Matrix operator /(Matrix M1, double D)
         {
             if (M1 == null)
@@ -226,6 +281,12 @@ namespace Utilities.Math
             return M1 * (1 / D);
         }
 
+        /// <summary>
+        /// Divides a matrix by a value
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="D">Value to divide by</param>
+        /// <returns>The result</returns>
         public static Matrix operator /(double D, Matrix M1)
         {
             if (M1 == null)
@@ -237,6 +298,11 @@ namespace Utilities.Math
 
         #region Public Overridden Functions
 
+        /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="obj">Object to check</param>
+        /// <returns>True if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
             if (obj is Matrix)
@@ -244,6 +310,10 @@ namespace Utilities.Math
             return false;
         }
 
+        /// <summary>
+        /// Gets the hash code for the object
+        /// </summary>
+        /// <returns>The hash code for the object</returns>
         public override int GetHashCode()
         {
             double Hash = 0;
@@ -253,6 +323,10 @@ namespace Utilities.Math
             return (int)Hash;
         }
 
+        /// <summary>
+        /// Gets the string representation of the matrix
+        /// </summary>
+        /// <returns>The matrix as a string</returns>
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

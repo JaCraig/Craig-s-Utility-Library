@@ -22,10 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.IO.Logging.Interfaces;
 using Utilities.IO.Logging.BaseClasses;
+using Utilities.IO.Logging.Interfaces;
 #endregion
 
 namespace Utilities.IO.Logging

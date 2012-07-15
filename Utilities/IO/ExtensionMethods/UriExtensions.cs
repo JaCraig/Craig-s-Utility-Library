@@ -21,13 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Net;
-using System.Diagnostics;
-using System.Security;
+
 #endregion
 
 namespace Utilities.IO.ExtensionMethods

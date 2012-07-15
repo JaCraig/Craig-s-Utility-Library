@@ -22,8 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
+using Utilities.DataTypes.ExtensionMethods;
 
 #endregion
 

@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Text;
-using Utilities.DataTypes;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.FileFormats.FixedLength.BaseClasses;
 #endregion

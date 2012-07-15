@@ -22,12 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.DataMapper;
-using System.Linq.Expressions;
-using Utilities.SQL.MicroORM.Interfaces;
 using System.Data;
+using Utilities.SQL.MicroORM.Interfaces;
 #endregion
 
 namespace Utilities.SQL.MicroORM

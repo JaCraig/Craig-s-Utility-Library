@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
-using Utilities.SQL.DataClasses.Interfaces;
 using System.Data;
+using Utilities.SQL.DataClasses.Interfaces;
 #endregion
 
 namespace Utilities.SQL.DataClasses

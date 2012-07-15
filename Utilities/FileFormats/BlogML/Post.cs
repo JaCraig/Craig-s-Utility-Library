@@ -21,10 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Xml;
-using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
 using System.Text;
+using System.Xml;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.BlogML

@@ -22,14 +22,12 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.IoC.Mappings.Interfaces;
 using System.Reflection;
+using Utilities.IoC.Mappings.BaseClasses;
+using Utilities.IoC.Mappings.Interfaces;
+using Utilities.IoC.Mappings.Internal_Classes;
 using Utilities.IoC.Providers;
 using Utilities.Reflection.ExtensionMethods;
-using Utilities.IoC.Mappings.Internal_Classes;
-using Utilities.IoC.Mappings.BaseClasses;
 #endregion
 
 namespace Utilities.IoC.Mappings

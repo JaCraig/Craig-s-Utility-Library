@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using Utilities.DataTypes;
-using System.Collections.Generic;
-using Utilities.Math.ExtensionMethods;
 using System;
-using Utilities.DataTypes.ExtensionMethods;
+using System.Collections.Generic;
 using System.Linq;
+using Utilities.DataTypes;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Math.ExtensionMethods;
 #endregion
 
 namespace Utilities.AI

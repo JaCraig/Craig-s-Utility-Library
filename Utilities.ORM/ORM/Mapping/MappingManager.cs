@@ -22,13 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.ORM.Mapping.Interfaces;
-using System.Linq.Expressions;
-using Utilities.ORM.Mapping.PropertyTypes;
 using System.Reflection;
 using Utilities.DataTypes;
+using Utilities.ORM.Mapping.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
 #endregion
 

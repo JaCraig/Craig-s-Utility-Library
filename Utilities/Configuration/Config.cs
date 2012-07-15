@@ -21,18 +21,14 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Configuration.Interfaces;
-using Utilities.IO.ExtensionMethods;
-using Utilities.Encryption.ExtensionMethods;
-using Utilities.Reflection.ExtensionMethods;
-using System.Reflection;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using Utilities.Configuration.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Encryption.ExtensionMethods;
+using Utilities.IO.ExtensionMethods;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Configuration

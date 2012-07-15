@@ -22,14 +22,12 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.ORM.Mapping.Interfaces;
 using System.Linq.Expressions;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.Mapping.PropertyTypes;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Validation;
 #endregion
 

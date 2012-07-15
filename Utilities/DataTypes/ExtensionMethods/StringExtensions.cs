@@ -21,16 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
-using System.Data;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Utilities.DataTypes.Formatters;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using Utilities.DataTypes.Formatters;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods

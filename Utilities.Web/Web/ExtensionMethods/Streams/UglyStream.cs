@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.Compression.ExtensionMethods;
 using Utilities.Compression.ExtensionMethods.Enums;

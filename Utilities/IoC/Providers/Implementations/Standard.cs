@@ -23,13 +23,12 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Utilities.IoC.Mappings;
-using Utilities.IoC.Mappings.Interfaces;
 using System.Reflection;
-using Utilities.IoC.Mappings.Attributes;
-using Utilities.IoC.Providers.BaseClasses;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.IoC.Mappings;
+using Utilities.IoC.Mappings.Attributes;
+using Utilities.IoC.Mappings.Interfaces;
+using Utilities.IoC.Providers.BaseClasses;
 using Utilities.Reflection.ExtensionMethods;
 #endregion
 

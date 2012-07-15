@@ -20,14 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Random.ExtensionMethods;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.NameGenerators
@@ -46,7 +40,8 @@ namespace Utilities.Random.NameGenerators
         /// <param name="MiddleName">Should a middle name be generated</param>
         /// <param name="LastName">Should a last name be generated</param>
         /// <param name="Suffix">Should a suffix be generated</param>
-        public MaleNameGenerator(bool Prefix = false, bool MiddleName = false,bool LastName=true, bool Suffix = false)
+        public MaleNameGenerator(bool Prefix = false, bool MiddleName = false, bool LastName = true, bool Suffix = false)
+            : base("", "")
         {
             this.Prefix = Prefix;
             this.MiddleName = MiddleName;

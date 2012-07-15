@@ -24,10 +24,10 @@ using System;
 using System.Data;
 using System.Text;
 using System.Text.RegularExpressions;
-using Utilities.SQL.DataClasses;
-using Utilities.SQL.DataClasses.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.SQL.DataClasses;
 using Utilities.SQL.DataClasses.Enums;
+using Utilities.SQL.DataClasses.Interfaces;
 #endregion
 
 namespace Utilities.SQL.SQLServer

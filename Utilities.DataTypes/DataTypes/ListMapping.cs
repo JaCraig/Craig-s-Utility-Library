@@ -20,11 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
 using System;
-using System.Linq;
-using Utilities.Events.EventArgs;
+using System.Collections.Generic;
 using Utilities.Events;
+using Utilities.Events.EventArgs;
 
 #endregion
 

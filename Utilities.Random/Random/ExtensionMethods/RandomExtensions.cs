@@ -22,14 +22,12 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.DefaultClasses;
-using System.Drawing;
-using Utilities.Random.StringGenerators;
-using System.Text.RegularExpressions;
+using Utilities.Random.Interfaces;
+
 #endregion
 
 namespace Utilities.Random.ExtensionMethods

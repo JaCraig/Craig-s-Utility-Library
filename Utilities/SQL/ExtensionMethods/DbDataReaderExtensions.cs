@@ -20,13 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Xml;
 using System.Data.Common;
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.DataTypes.Comparison;
+
 #endregion
 
 namespace Utilities.SQL.ExtensionMethods

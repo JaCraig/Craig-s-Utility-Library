@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Utilities.IO.Logging.BaseClasses;
-using Utilities.IO.Logging.Enums;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
+using Utilities.IO.Logging.BaseClasses;
+using Utilities.IO.Logging.Enums;
 #endregion
 
 namespace Utilities.IO.Logging

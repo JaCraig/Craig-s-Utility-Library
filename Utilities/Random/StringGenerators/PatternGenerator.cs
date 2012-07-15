@@ -20,15 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Text.RegularExpressions;
-using Utilities.Random.ExtensionMethods;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.StringGenerators
@@ -49,6 +45,7 @@ namespace Utilities.Random.StringGenerators
         /// @ = Alpha character
         /// </param>
         public PatternGenerator(string Pattern)
+            : base("", "")
         {
             this.Pattern = Pattern;
         }

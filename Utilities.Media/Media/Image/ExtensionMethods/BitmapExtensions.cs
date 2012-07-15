@@ -20,17 +20,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
 using System;
 using System.Collections.Generic;
-using Utilities.Math.ExtensionMethods;
-using Utilities.DataTypes.ExtensionMethods;
+using System.Drawing;
 using System.Drawing.Drawing2D;
-using Utilities.Media.Image.Procedural;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Math.ExtensionMethods;
+using Utilities.Media.Image.Procedural;
 #endregion
 
 namespace Utilities.Media.Image.ExtensionMethods

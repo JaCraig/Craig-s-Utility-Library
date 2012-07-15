@@ -20,13 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.Specialized;
-using Utilities.Web.Google.BaseClasses;
-using Utilities.Web.ExtensionMethods;
 using Utilities.Web.Google.Interfaces;
 #endregion
 

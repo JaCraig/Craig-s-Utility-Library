@@ -21,11 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.DefaultClasses
@@ -35,6 +32,15 @@ namespace Utilities.Random.DefaultClasses
     /// </summary>
     public class TimeSpanGenerator : GeneratorAttributeBase, IGenerator<TimeSpan>
     {
+        #region Constructors
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public TimeSpanGenerator() : base(TimeSpan.MinValue, TimeSpan.MaxValue) { }
+
+        #endregion
+
         /// <summary>
         /// Generates a random value of the specified type
         /// </summary>
@@ -66,6 +72,8 @@ namespace Utilities.Random.DefaultClasses
         /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
+            if ((TimeSpan)Min != default(TimeSpan) || (TimeSpan)Max != default(TimeSpan))
+                return Next(Rand, (TimeSpan)Min, (TimeSpan)Max);
             return Next(Rand);
         }
     }

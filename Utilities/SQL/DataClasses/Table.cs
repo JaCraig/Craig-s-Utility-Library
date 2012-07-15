@@ -21,11 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
-using Utilities.SQL.DataClasses.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
 using System.Data;
+using System.Linq;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.DataClasses.Enums;
+using Utilities.SQL.DataClasses.Interfaces;
 #endregion
 
 namespace Utilities.SQL.DataClasses

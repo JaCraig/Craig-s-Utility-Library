@@ -22,9 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Text;
 #endregion
 
 namespace Utilities.FileFormats.BlogML

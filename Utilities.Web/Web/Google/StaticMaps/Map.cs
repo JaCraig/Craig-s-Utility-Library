@@ -20,16 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Web.Google.BaseClasses;
-using Utilities.Web.Google.Interfaces;
-using Utilities.Web.Google.Enums;
-using Utilities.Web.Google.HelperClasses;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Web.ExtensionMethods;
+using Utilities.Web.Google.BaseClasses;
+using Utilities.Web.Google.Enums;
+using Utilities.Web.Google.HelperClasses;
+using Utilities.Web.Google.Interfaces;
 #endregion
 
 namespace Utilities.Web.Google.StaticMaps

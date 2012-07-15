@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Web;
-using Utilities.DataTypes;
 using Utilities.Web.OpenID.Extensions.Enums;
 using Utilities.Web.OpenID.Extensions.Interfaces;
 #endregion

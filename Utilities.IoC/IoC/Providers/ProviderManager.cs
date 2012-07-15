@@ -20,16 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using Utilities.IoC.Providers.Interfaces;
 using Utilities.IoC.Providers.Scope;
-using Utilities.Reflection;
 using Utilities.Reflection.ExtensionMethods;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Reflection;
 #endregion
 
 namespace Utilities.IoC.Providers

@@ -20,10 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 #endregion
 
 namespace Utilities.Random.Interfaces
@@ -56,5 +53,11 @@ namespace Utilities.Random.Interfaces
     /// </summary>
     public interface IGenerator
     {
+        /// <summary>
+        /// Generates a random value and returns it as an object
+        /// </summary>
+        /// <param name="Rand">Random number generator that it can use</param>
+        /// <returns>A randomly generated object</returns>
+        object NextObj(System.Random Rand);
     }
 }

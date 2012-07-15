@@ -22,11 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data;
 using System.Linq.Expressions;
 using Utilities.ORM.QueryProviders.Interfaces;
-using System.Data;
 using Utilities.Validation;
 #endregion
 

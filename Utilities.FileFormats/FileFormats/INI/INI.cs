@@ -22,12 +22,12 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.IO.ExtensionMethods;
-using System.IO;
-using Utilities.DataTypes.ExtensionMethods;
+
 
 #endregion
 

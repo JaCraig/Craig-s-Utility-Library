@@ -21,11 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Validation.Interfaces;
 using System.Collections;
+using System.Collections.Generic;
+using Utilities.Validation.Interfaces;
 #endregion
 
 namespace Utilities.Validation

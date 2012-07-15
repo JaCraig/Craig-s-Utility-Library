@@ -21,20 +21,17 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Collections.Generic;
-using Utilities.Reflection.AOP.Interfaces;
-using Utilities.Reflection.Emit.Interfaces;
-using Utilities.Reflection.AOP.EventArgs;
-using Utilities.Reflection.Emit.BaseClasses;
-using Utilities.Reflection.Emit;
-using Utilities.Reflection.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Reflection.AOP.EventArgs;
+using Utilities.Reflection.AOP.Interfaces;
+using Utilities.Reflection.Emit;
+using Utilities.Reflection.Emit.BaseClasses;
+using Utilities.Reflection.Emit.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.AOP

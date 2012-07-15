@@ -21,15 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Utilities.Random.StringGenerators;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Utilities.Random.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Random.StringGenerators;
-using Utilities.Random.ExtensionMethods;
-using Utilities.Random.NameGenerators;
+
 #endregion
 
 namespace Utilities.Random.BaseClasses
@@ -38,8 +31,30 @@ namespace Utilities.Random.BaseClasses
     /// Attribute base class for generators
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public abstract class GeneratorAttributeBase : System.Attribute
+    public abstract class GeneratorAttributeBase : System.Attribute,IGenerator
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Minimum value</param>
+        /// <param name="Max">Maximum value</param>
+        public GeneratorAttributeBase(object Min,object Max)
+            : base()
+        {
+            this.Min = Min;
+            this.Max = Max;
+        }
+
+        /// <summary>
+        /// Minimum allowed
+        /// </summary>
+        protected virtual object Min { get; set; }
+
+        /// <summary>
+        /// Maximum allowed
+        /// </summary>
+        protected virtual object Max { get; set; }
+
         /// <summary>
         /// Generates next object
         /// </summary>

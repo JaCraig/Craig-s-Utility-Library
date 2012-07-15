@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Utilities.DataTypes;
 using Utilities.Web.OpenID.Extensions;
 using Utilities.Web.OpenID.Extensions.Enums;
 

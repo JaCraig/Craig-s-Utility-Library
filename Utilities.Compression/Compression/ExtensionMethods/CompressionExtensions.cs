@@ -22,10 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System.IO;
 using System.IO.Compression;
-using System;
+using System.Text;
 using Utilities.Compression.ExtensionMethods.Enums;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Text;
 #endregion
 
 namespace Utilities.Compression.ExtensionMethods

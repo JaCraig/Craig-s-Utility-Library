@@ -139,6 +139,7 @@ namespace UnitTests.Random.ExtensionMethods
             Assert.Equal(202970450, Item.A);
             Assert.Equal("Lorem ipsum dolor sit amet. ", Item.B);
             Assert.Equal(System.Math.Round(0.9043f, 4), System.Math.Round(Item.C, 4));
+            Assert.Between(Item.D, 1, 100);
         }
     }
 
@@ -152,5 +153,8 @@ namespace UnitTests.Random.ExtensionMethods
 
         [FloatGenerator]
         public float C { get; set; }
+
+        [IntGenerator(1, 100)]
+        public int D { get; set; }
     }
 }

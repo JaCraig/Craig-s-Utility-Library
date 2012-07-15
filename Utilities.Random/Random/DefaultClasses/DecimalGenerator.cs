@@ -21,12 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.DefaultClasses
@@ -58,6 +55,16 @@ namespace Utilities.Random.DefaultClasses
         {
             return (Min.TryTo(default(double)) + ((Max.TryTo(default(double)) - Min.TryTo(default(double))) * Rand.NextDouble())).TryTo(default(T));
         }
+
+        /// <summary>
+        /// Randomly generates an object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>A randomly generated object</returns>
+        public object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
+        }
     }
 
     #region Decimal Generators
@@ -67,9 +74,32 @@ namespace Utilities.Random.DefaultClasses
     /// </summary>
     public class DecimalGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public DecimalGenerator(decimal Min, decimal Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public DecimalGenerator()
+            : base(0m, 1m)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new DecimalGenerator<decimal>().Next(Rand);
+            return new DecimalGenerator<decimal>().Next(Rand, (decimal)Min, (decimal)Max);
         }
     }
 
@@ -78,9 +108,32 @@ namespace Utilities.Random.DefaultClasses
     /// </summary>
     public class DoubleGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public DoubleGenerator(double Min, double Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public DoubleGenerator()
+            : base(0d, 1d)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new DecimalGenerator<double>().Next(Rand);
+            return new DecimalGenerator<double>().Next(Rand, (double)Min, (double)Max);
         }
     }
 
@@ -89,9 +142,32 @@ namespace Utilities.Random.DefaultClasses
     /// </summary>
     public class FloatGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public FloatGenerator(float Min, float Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public FloatGenerator()
+            : base(0f, 1f)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new DecimalGenerator<float>().Next(Rand);
+            return new DecimalGenerator<float>().Next(Rand, (float)Min, (float)Max);
         }
     }
 

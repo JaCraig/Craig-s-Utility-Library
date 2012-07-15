@@ -21,8 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion

@@ -20,13 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.StringGenerators
@@ -48,6 +45,7 @@ namespace Utilities.Random.StringGenerators
         /// <param name="HTMLFormatting">Determines if this should use HTML formatting or not</param>
         public LoremIpsumGenerator(int NumberOfParagraphs = 1, int NumberOfSentences = 1,
             int MinSentenceLength = 4, int MaxSentenceLength = 10, bool HTMLFormatting = false)
+            : base("", "")
         {
             this.NumberOfParagraphs = NumberOfParagraphs;
             this.NumberOfSentences = NumberOfSentences;

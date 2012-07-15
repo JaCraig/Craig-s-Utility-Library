@@ -21,14 +21,13 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Reflection;
-using System.ComponentModel;
-using System.Collections.Generic;
-using Utilities.DataTypes.Comparison;
 using System.Linq;
+using System.Reflection;
+using Utilities.DataTypes.Comparison;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods

@@ -21,13 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO.Packaging;
 using System.IO;
-using Utilities.IO.ExtensionMethods;
+using System.IO.Packaging;
+using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.Zip

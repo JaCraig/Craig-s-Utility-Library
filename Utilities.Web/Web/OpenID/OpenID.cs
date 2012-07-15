@@ -21,12 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Linq;
-using Utilities.DataTypes;
 using Utilities.Web.OpenID.Extensions;
 using Utilities.Web.OpenID.Extensions.Interfaces;
 #endregion

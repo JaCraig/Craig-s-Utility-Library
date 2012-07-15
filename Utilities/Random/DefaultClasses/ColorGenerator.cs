@@ -20,14 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
 using System.Drawing;
 using Utilities.Math.ExtensionMethods;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.DefaultClasses
@@ -37,6 +33,11 @@ namespace Utilities.Random.DefaultClasses
     /// </summary>
     public class ColorGenerator : GeneratorAttributeBase, IGenerator<Color>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ColorGenerator() : base(Color.Black, Color.White) { }
+
         /// <summary>
         /// Generates a random value of the specified type
         /// </summary>
@@ -69,6 +70,8 @@ namespace Utilities.Random.DefaultClasses
         /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
+            if ((Color)Min != default(Color) || (Color)Max != default(Color))
+                return Next(Rand, (Color)Min, (Color)Max);
             return Next(Rand);
         }
     }

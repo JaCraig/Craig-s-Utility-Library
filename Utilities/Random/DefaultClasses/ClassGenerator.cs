@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-using System.Reflection;
 using Utilities.Reflection.ExtensionMethods;
 
 namespace Utilities.Random.DefaultClasses
@@ -29,6 +26,11 @@ namespace Utilities.Random.DefaultClasses
         }
 
         public T Next(System.Random Rand, T Min, T Max)
+        {
+            return new T();
+        }
+
+        public object NextObj(System.Random Rand)
         {
             return new T();
         }

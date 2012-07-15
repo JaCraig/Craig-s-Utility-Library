@@ -22,16 +22,15 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Interfaces;
-using Utilities.Validation.Rules;
-using Utilities.Validation.Exceptions;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using Utilities.Reflection.ExtensionMethods;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Validation.BaseClasses;
+using Utilities.Validation.Exceptions;
+using Utilities.Validation.Interfaces;
+using Utilities.Validation.Rules;
+
 #endregion
 
 namespace Utilities.Validation

@@ -21,12 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.DefaultClasses
@@ -58,108 +55,361 @@ namespace Utilities.Random.DefaultClasses
         {
             return Rand.Next(Min.TryTo(0), Max.TryTo(0)).TryTo(default(T));
         }
+
+        /// <summary>
+        /// Randomly generates an object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>A randomly generated object</returns>
+        public object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
+        }
     }
 
     #region Integer generators
+
+    #region ByteGenerator
 
     /// <summary>
     /// Byte generator
     /// </summary>
     public class ByteGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public ByteGenerator(byte Min, byte Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ByteGenerator()
+            : base(0, byte.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<byte>().Next(Rand);
+            return new IntegerGenerator<byte>().Next(Rand, (byte)Min, (byte)Max);
         }
     }
+
+    #endregion
+
+    #region CharGenerator
 
     /// <summary>
     /// Char generator
     /// </summary>
     public class CharGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public CharGenerator(char Min, char Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public CharGenerator()
+            : base(0, char.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<char>().Next(Rand);
+            return new IntegerGenerator<char>().Next(Rand, (char)Min, (char)Max);
         }
     }
+
+    #endregion
+
+    #region IntGenerator
 
     /// <summary>
     /// Int generator
     /// </summary>
     public class IntGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public IntGenerator(int Min, int Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public IntGenerator()
+            : base(0, int.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<int>().Next(Rand);
+            return new IntegerGenerator<int>().Next(Rand, (int)Min, (int)Max);
         }
     }
+
+    #endregion
+
+    #region LongGenerator
 
     /// <summary>
     /// Long generator
     /// </summary>
     public class LongGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public LongGenerator(long Min, long Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public LongGenerator()
+            : base(0, long.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<long>().Next(Rand);
+            return new IntegerGenerator<long>().Next(Rand, (long)Min, (long)Max);
         }
     }
+
+    #endregion
+
+    #region SByteGenerator
 
     /// <summary>
     /// sbyte generator
     /// </summary>
     public class SByteGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public SByteGenerator(sbyte Min, sbyte Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public SByteGenerator()
+            : base(0, sbyte.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<sbyte>().Next(Rand);
+            return new IntegerGenerator<sbyte>().Next(Rand, (sbyte)Min, (sbyte)Max);
         }
     }
+
+    #endregion
+
+    #region ShortGenerator
 
     /// <summary>
     /// Short generator
     /// </summary>
     public class ShortGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public ShortGenerator(short Min, short Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ShortGenerator()
+            : base(0, short.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<short>().Next(Rand);
+            return new IntegerGenerator<short>().Next(Rand, (short)Min, (short)Max);
         }
     }
+
+    #endregion
+
+    #region UIntGenerator
 
     /// <summary>
     /// uint generator
     /// </summary>
     public class UIntGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public UIntGenerator(uint Min, uint Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public UIntGenerator()
+            : base(0, uint.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<uint>().Next(Rand);
+            return new IntegerGenerator<uint>().Next(Rand, (uint)Min, (uint)Max);
         }
     }
+
+    #endregion
+
+    #region ULongGenerator
 
     /// <summary>
     /// ulong generator
     /// </summary>
     public class ULongGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public ULongGenerator(ulong Min, ulong Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ULongGenerator()
+            : base(0, ulong.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<ulong>().Next(Rand);
+            return new IntegerGenerator<ulong>().Next(Rand, (ulong)Min, (ulong)Max);
         }
     }
+
+    #endregion
+
+    #region UShortGenerator
 
     /// <summary>
     /// ushort generator
     /// </summary>
     public class UShortGenerator : GeneratorAttributeBase
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Min">Min value</param>
+        /// <param name="Max">Max value</param>
+        public UShortGenerator(ushort Min, ushort Max)
+            : base(Min, Max)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public UShortGenerator()
+            : base(0, ushort.MaxValue)
+        {
+        }
+
+        /// <summary>
+        /// Creates the next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
         public override object NextObj(System.Random Rand)
         {
-            return new IntegerGenerator<ushort>().Next(Rand);
+            return new IntegerGenerator<ushort>().Next(Rand, (ushort)Min, (ushort)Max);
         }
     }
+
+    #endregion
 
     #endregion
 }

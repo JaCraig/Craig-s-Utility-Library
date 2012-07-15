@@ -21,16 +21,14 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Xml.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Runtime.Serialization.Formatters.Soap;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml;
+using System.Runtime.Serialization.Formatters.Soap;
+using System.Runtime.Serialization.Json;
 using System.Security;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods

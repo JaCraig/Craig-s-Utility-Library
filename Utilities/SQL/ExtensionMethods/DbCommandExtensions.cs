@@ -22,11 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Data;
-using System.Data.SqlClient;
-using System.Xml;
 using System.Data.Common;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL.ExtensionMethods

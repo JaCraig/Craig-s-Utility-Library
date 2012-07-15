@@ -21,13 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
-using System.Data;
-using System.Data.SqlClient;
-using System.Threading;
 using System.Globalization;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
+
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods

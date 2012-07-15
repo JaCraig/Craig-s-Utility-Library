@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
-using System;
 using Utilities.Media.Image.ExtensionMethods;
 #endregion
 

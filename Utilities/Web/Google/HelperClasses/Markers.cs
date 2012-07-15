@@ -22,14 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.Specialized;
-using Utilities.Web.Google.BaseClasses;
-using Utilities.Web.ExtensionMethods;
-using Utilities.Web.Google.Interfaces;
-using Utilities.Web.Google.Enums;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Web.Google.Enums;
+using Utilities.Web.Google.Interfaces;
 #endregion
 
 namespace Utilities.Web.Google.HelperClasses

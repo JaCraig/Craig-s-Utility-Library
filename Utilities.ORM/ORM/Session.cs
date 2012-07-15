@@ -20,14 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.ORM.QueryProviders;
-using Utilities.ORM.QueryProviders.Interfaces;
 using System.Data;
-using System.Linq.Expressions;
+using Utilities.ORM.QueryProviders;
 using Utilities.SQL.Interfaces;
 #endregion
 

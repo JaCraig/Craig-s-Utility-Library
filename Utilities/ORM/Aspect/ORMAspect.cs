@@ -23,19 +23,16 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Utilities.Reflection.AOP.Interfaces;
-using Utilities.ORM.Mapping.Interfaces;
-using Utilities.Reflection.Emit.Interfaces;
-using Utilities.ORM.Aspect.Interfaces;
 using System.Reflection;
+using System.Reflection.Emit;
+using Utilities.ORM.Aspect.Interfaces;
+using Utilities.ORM.Mapping.Interfaces;
+using Utilities.Reflection.AOP.Interfaces;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Enums;
-using System.Reflection.Emit;
-using Utilities.ORM.QueryProviders;
-using Utilities.ORM.QueryProviders.Interfaces;
-using Utilities.SQL.ParameterTypes;
+using Utilities.Reflection.Emit.Interfaces;
 using Utilities.SQL.Interfaces;
+using Utilities.SQL.ParameterTypes;
 #endregion
 
 namespace Utilities.ORM.Aspect

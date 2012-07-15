@@ -23,10 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using Utilities.Media.Image.Procedural;
-using Utilities.Media.Image.ExtensionMethods;
-using Utilities.DataTypes.ExtensionMethods;
 using System.Threading.Tasks;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Media.Image.ExtensionMethods;
+using Utilities.Media.Image.Procedural;
 #endregion
 
 namespace Utilities.Media.Image

@@ -21,13 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataTypes

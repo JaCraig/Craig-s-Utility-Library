@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Management;
 using System;
+using System.Management;
 #endregion
 
 namespace Utilities.Environment.DataTypes

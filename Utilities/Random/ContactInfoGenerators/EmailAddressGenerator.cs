@@ -20,17 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Utilities.Random.StringGenerators;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Random.StringGenerators;
-using Utilities.Random.ExtensionMethods;
-using Utilities.Random.NameGenerators;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.Interfaces;
+using Utilities.Random.NameGenerators;
 #endregion
 
 namespace Utilities.Random.ContactInfoGenerators
@@ -47,6 +40,7 @@ namespace Utilities.Random.ContactInfoGenerators
         /// </summary>
         /// <param name="CommonEndings">Common endings to domain names should be used (.com,.org,.net,etc.)</param>
         public EmailAddressGenerator(bool CommonEndings = true)
+            : base("", "")
         {
             this.CommonEndings = CommonEndings;
         }

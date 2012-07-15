@@ -21,13 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Utilities.Random.Interfaces;
-using Utilities.Random.ExtensionMethods;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Random.BaseClasses;
+
 #endregion
 
 namespace Utilities.Random.DefaultClasses
@@ -59,6 +54,16 @@ namespace Utilities.Random.DefaultClasses
             Array Values = Enum.GetValues(typeof(T));
             int Index = Rand.Next(0, Values.Length);
             return (T)Values.GetValue(Index);
+        }
+
+        /// <summary>
+        /// Randomly generates an object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>A randomly generated object</returns>
+        public object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
         }
     }
 }

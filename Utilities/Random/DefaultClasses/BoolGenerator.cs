@@ -20,12 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.Random.Interfaces;
 using Utilities.Random.BaseClasses;
+using Utilities.Random.Interfaces;
 #endregion
 
 namespace Utilities.Random.DefaultClasses
@@ -35,6 +31,11 @@ namespace Utilities.Random.DefaultClasses
     /// </summary>
     public class BoolGenerator : GeneratorAttributeBase, IGenerator<bool>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public BoolGenerator() : base(false, true) { }
+
         /// <summary>
         /// Generates a random value of the specified type
         /// </summary>
@@ -54,7 +55,7 @@ namespace Utilities.Random.DefaultClasses
         /// <returns>A randomly generated object of the specified type</returns>
         public bool Next(System.Random Rand, bool Min, bool Max)
         {
-            return Rand.Next(0, 2) == 1;
+            return Next(Rand);
         }
 
         /// <summary>

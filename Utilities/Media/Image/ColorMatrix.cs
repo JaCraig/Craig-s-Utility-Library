@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System.Drawing;
 using System.Drawing.Imaging;
-using System;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
