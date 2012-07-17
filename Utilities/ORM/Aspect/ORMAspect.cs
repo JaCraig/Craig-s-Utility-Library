@@ -207,6 +207,20 @@ namespace Utilities.ORM.Aspect
                     Field.Assign(ReturnVal);
                 }
                 If2.EndIf();
+                PropertyInfo CountProperty=Field.DataType.GetProperty("Count");
+                Utilities.Reflection.Emit.Commands.If If4 = Method.If(Field.Call(CountProperty.GetGetMethod()), Comparison.Equal, Method.CreateConstant(0));
+                {
+                    //Load data
+                    VariableBase IDValue = Method.This.Call(BaseType.GetProperty(Mapping.IDProperty.Name).GetGetMethod());
+                    VariableBase IDParameter = Method.NewObj(typeof(EqualParameter<>).MakeGenericType(Mapping.IDProperty.Type), new object[] { IDValue, "ID", "@" });
+                    VariableBase PropertyList = Method.NewObj(typeof(List<IParameter>));
+                    PropertyList.Call("Add", new object[] { IDParameter });
+                    MethodInfo LoadPropertiesMethod = typeof(Session).GetMethod("LoadProperties");
+                    LoadPropertiesMethod = LoadPropertiesMethod.MakeGenericMethod(new Type[] { BaseType, Field.DataType.GetGenericArguments()[0] });
+                    VariableBase ReturnVal = ((VariableBase)SessionField).Call(LoadPropertiesMethod, new object[] { Method.This, Property.Name, PropertyList.Call("ToArray") });
+                    Field.Assign(ReturnVal);
+                }
+                If4.EndIf();
                 Utilities.Reflection.Emit.Commands.If If3 = Method.If(Field, Comparison.Equal, null);
                 {
                     Field.Assign(Method.NewObj(typeof(List<>).MakeGenericType(Property.Type).GetConstructor(Type.EmptyTypes)));

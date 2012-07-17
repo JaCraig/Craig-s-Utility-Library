@@ -34,6 +34,7 @@ namespace UnitTests.ORM.ListTest.Models
         public Project2()
             : base()
         {
+            Tasks = new List<Task2>();
         }
 
         #endregion
