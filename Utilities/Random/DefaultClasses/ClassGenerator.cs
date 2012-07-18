@@ -20,7 +20,8 @@ namespace Utilities.Random.DefaultClasses
             foreach (PropertyInfo Property in ObjectType.GetProperties())
             {
                 GeneratorAttributeBase Attribute = Property.GetAttribute<GeneratorAttributeBase>();
-                ReturnItem.SetProperty(Property, Attribute.NextObj(Rand));
+                if(Attribute!=null)
+                    ReturnItem.SetProperty(Property, Attribute.NextObj(Rand));
             }
             return ReturnItem;
         }

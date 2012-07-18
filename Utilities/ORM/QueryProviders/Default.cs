@@ -627,7 +627,12 @@ namespace Utilities.ORM.QueryProviders
                         ORMObject.Map<ObjectType>().Save<PrimaryKeyType>(Object, Params.ToArray());
                         foreach (IProperty Property in Mapping.Properties)
                         {
-                            if (!Property.Cascade && (Property is IManyToMany || Property is IManyToOne || Property is IIEnumerableManyToOne))
+                            if (!Property.Cascade && 
+                                (Property is IManyToMany 
+                                    || Property is IManyToOne 
+                                    || Property is IIEnumerableManyToOne 
+                                    || Property is IListManyToMany 
+                                    || Property is IListManyToOne))
                             {
                                 ((IProperty<ObjectType>)Property).JoinsDelete(Object, ORMObject);
                                 ((IProperty<ObjectType>)Property).JoinsSave(Object, ORMObject);
