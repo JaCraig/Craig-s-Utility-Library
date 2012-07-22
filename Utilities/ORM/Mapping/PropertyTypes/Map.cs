@@ -30,6 +30,9 @@ using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
+using Utilities.SQL;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes
@@ -85,40 +88,70 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             }
         }
 
-        public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM)
         {
+            return new List<Command>();
         }
 
-        public override void JoinsSave(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM)
         {
+            return new List<Command>();
         }
 
-        public override void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
-                return;
+                return new List<Command>();
             DataType Item = CompiledExpression(Object);
             if (Item == null)
-                return;
+                return new List<Command>();
+            List<Command> Commands = new List<Command>();
             foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
             {
+                if (!Property.Cascade &&
+                        (Property is IManyToMany
+                            || Property is IManyToOne
+                            || Property is IIEnumerableManyToOne
+                            || Property is IListManyToMany
+                            || Property is IListManyToOne))
+                {
+                    Commands.AddIfUnique(((IProperty<DataType>)Property).JoinsDelete(Item, MicroORM));
+                }
                 if (Property.Cascade)
-                    ((IProperty<DataType>)Property).CascadeJoinsDelete(Item, MicroORM);
+                {
+                    Commands.AddIfUnique(((IProperty<DataType>)Property).CascadeJoinsDelete(Item, MicroORM));
+                }
             }
+            Commands.AddIfUnique(JoinsDelete(Object, MicroORM));
+            return Commands;
         }
 
-        public override void CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
-                return;
+                return new List<Command>();
             DataType Item = CompiledExpression(Object);
             if (Item == null)
-                return;
+                return new List<Command>();
+            List<Command> Commands = new List<Command>();
             foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
             {
+                if (!Property.Cascade &&
+                        (Property is IManyToMany
+                            || Property is IManyToOne
+                            || Property is IIEnumerableManyToOne
+                            || Property is IListManyToMany
+                            || Property is IListManyToOne))
+                {
+                    Commands.AddIfUnique(((IProperty<DataType>)Property).JoinsSave(Item, MicroORM));
+                }
                 if (Property.Cascade)
-                    ((IProperty<DataType>)Property).CascadeJoinsSave(Item, MicroORM);
+                {
+                    Commands.AddIfUnique(((IProperty<DataType>)Property).CascadeJoinsSave(Item, MicroORM));
+                }
             }
+            Commands.AddIfUnique(JoinsDelete(Object, MicroORM));
+            return Commands;
         }
 
         public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
@@ -161,6 +194,16 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             IParameter Parameter = ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsParameter(Item);
             Parameter.ID = FieldName;
             return Parameter;
+        }
+
+        public override object GetAsObject(ClassType Object)
+        {
+            if (Object == null)
+                return null;
+            DataType Item = CompiledExpression(Object);
+            if (Item == null)
+                return null;
+            return ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsObject(Item);
         }
 
         public override IMap<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)

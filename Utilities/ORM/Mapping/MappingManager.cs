@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 using Utilities.DataTypes;
 using Utilities.ORM.Mapping.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
@@ -87,7 +88,7 @@ namespace Utilities.ORM.Mapping
         {
             foreach (Type Key in Mappings.Keys)
             {
-                foreach (IMapping Mapping in Mappings[Key])
+                foreach (IMapping Mapping in Mappings[Key].OrderBy(x => x.Order))
                 {
                     Mapping.Initialize();
                 }

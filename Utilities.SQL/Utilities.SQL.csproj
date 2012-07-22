@@ -77,6 +77,7 @@
     <Compile Include="SQL\ParameterTypes\StringEqualParameter.cs" />
     <Compile Include="SQL\ParameterTypes\Interfaces\IParameter.cs" />
     <Compile Include="SQL\ParameterTypes\BetweenParameter.cs" />
+    <Compile Include="SQL\Command.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataMapper\Utilities.DataMapper.csproj">

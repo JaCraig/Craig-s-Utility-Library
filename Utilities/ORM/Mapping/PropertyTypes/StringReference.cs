@@ -28,6 +28,9 @@ using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Enums;
+using Utilities.SQL;
+using System.Collections;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes
@@ -64,20 +67,24 @@ namespace Utilities.ORM.Mapping.PropertyTypes
 
         }
 
-        public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM)
         {
+            return new List<Command>();
         }
 
-        public override void JoinsSave(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM)
         {
+            return new List<Command>();
         }
 
-        public override void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
         {
+            return new List<Command>();
         }
 
-        public override void CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
         {
+            return new List<Command>();
         }
 
         public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
@@ -90,6 +97,11 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         }
 
         public override IParameter GetAsParameter(ClassType Object)
+        {
+            return null;
+        }
+
+        public override object GetAsObject(ClassType Object)
         {
             return null;
         }

@@ -32,6 +32,8 @@ using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
+using Utilities.SQL;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM.QueryProviders
@@ -137,7 +139,7 @@ namespace Utilities.ORM.QueryProviders
                         if (Mapping.AnyCommand == null)
                             ReturnValue = ORMObject.Map<ObjectType>().Any("*", ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                         else
-                            ReturnValue = ORMObject.Map<ObjectType>().Any(Mapping.AnyCommand.CommandToRun, Mapping.AnyCommand.CommandType, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
+                            ReturnValue = ORMObject.Map<ObjectType>().Any(Mapping.AnyCommand.SQLCommand, Mapping.AnyCommand.CommandType, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                     }
                 }
             }
@@ -287,7 +289,7 @@ namespace Utilities.ORM.QueryProviders
                         }
                         else
                         {
-                            ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Mapping.AllCommand.CommandToRun, Mapping.AllCommand.CommandType, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
+                            ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Mapping.AllCommand.SQLCommand, Mapping.AllCommand.CommandType, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                         }
                     }
                 }
@@ -364,7 +366,7 @@ namespace Utilities.ORM.QueryProviders
                             if (Property.CommandToLoad == null)
                                 ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), Parameters);
                             else
-                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All(Property.CommandToLoad.SQLCommand, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
                         }
                     }
                 }
@@ -410,7 +412,7 @@ namespace Utilities.ORM.QueryProviders
                             if (Property.CommandToLoad == null)
                                 ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), Parameters);
                             else
-                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
+                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All(Property.CommandToLoad.SQLCommand, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
                         }
                     }
                 }
@@ -455,7 +457,7 @@ namespace Utilities.ORM.QueryProviders
                             if (Property.CommandToLoad == null)
                                 ReturnValue = ORMObject.Map<DataType>().Any("*", ReturnValue, () => Manager.Create<DataType>(), Parameters);
                             else
-                                ReturnValue = ORMObject.Map<DataType>().Any(Property.CommandToLoad.CommandToRun, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
+                                ReturnValue = ORMObject.Map<DataType>().Any(Property.CommandToLoad.SQLCommand, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), Parameters);
                         }
                     }
                 }
@@ -574,7 +576,7 @@ namespace Utilities.ORM.QueryProviders
         /// <param name="Parameters">Parameters to search by</param>
         /// <param name="Command">Command to get the page count of</param>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
-        public virtual int PageCount<ObjectType>(Session CurrentSession,string Command, int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
+        public virtual int PageCount<ObjectType>(Session CurrentSession, string Command, int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
         {
             foreach (IDatabase Database in Mappings.Keys.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -625,23 +627,49 @@ namespace Utilities.ORM.QueryProviders
                                 Params.Add(Parameter);
                         }
                         ORMObject.Map<ObjectType>().Save<PrimaryKeyType>(Object, Params.ToArray());
+                        System.Collections.Generic.List<Command> JoinCommands = new System.Collections.Generic.List<Command>();
                         foreach (IProperty Property in Mapping.Properties)
                         {
-                            if (!Property.Cascade && 
-                                (Property is IManyToMany 
-                                    || Property is IManyToOne 
-                                    || Property is IIEnumerableManyToOne 
-                                    || Property is IListManyToMany 
+                            if (!Property.Cascade &&
+                                (Property is IManyToMany
+                                    || Property is IManyToOne
+                                    || Property is IIEnumerableManyToOne
+                                    || Property is IListManyToMany
                                     || Property is IListManyToOne))
                             {
-                                ((IProperty<ObjectType>)Property).JoinsDelete(Object, ORMObject);
-                                ((IProperty<ObjectType>)Property).JoinsSave(Object, ORMObject);
+                                JoinCommands.AddIfUnique(((IProperty<ObjectType>)Property).JoinsDelete(Object, ORMObject));
                             }
                             if (Property.Cascade)
                             {
-                                ((IProperty<ObjectType>)Property).CascadeJoinsDelete(Object, ORMObject);
-                                ((IProperty<ObjectType>)Property).CascadeJoinsSave(Object, ORMObject);
+                                JoinCommands.AddIfUnique(((IProperty<ObjectType>)Property).CascadeJoinsDelete(Object, ORMObject));
                             }
+                        }
+                        foreach (Command JoinCommand in JoinCommands)
+                        {
+                            ORMObject.ChangeCommand(JoinCommand);
+                            ORMObject.ExecuteNonQuery();
+                        }
+                        JoinCommands = new System.Collections.Generic.List<Command>();
+                        foreach (IProperty Property in Mapping.Properties)
+                        {
+                            if (!Property.Cascade &&
+                                (Property is IManyToMany
+                                    || Property is IManyToOne
+                                    || Property is IIEnumerableManyToOne
+                                    || Property is IListManyToMany
+                                    || Property is IListManyToOne))
+                            {
+                                JoinCommands.AddIfUnique(((IProperty<ObjectType>)Property).JoinsSave(Object, ORMObject));
+                            }
+                            if (Property.Cascade)
+                            {
+                                JoinCommands.AddIfUnique(((IProperty<ObjectType>)Property).CascadeJoinsSave(Object, ORMObject));
+                            }
+                        }
+                        foreach (Command JoinCommand in JoinCommands)
+                        {
+                            ORMObject.ChangeCommand(JoinCommand);
+                            ORMObject.ExecuteNonQuery();
                         }
                     }
                 }
@@ -662,7 +690,7 @@ namespace Utilities.ORM.QueryProviders
         /// <typeparam name="DataType">Data type</typeparam>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <returns>The scalar value returned by the command</returns>
-        public virtual DataType Scalar<ObjectType,DataType>(Session CurrentSession, string Command, CommandType CommandType, params IParameter[] Parameters) 
+        public virtual DataType Scalar<ObjectType, DataType>(Session CurrentSession, string Command, CommandType CommandType, params IParameter[] Parameters)
             where ObjectType : class,new()
         {
             foreach (IDatabase Database in Mappings.Keys.Where(x => x.Readable).OrderBy(x => x.Order))

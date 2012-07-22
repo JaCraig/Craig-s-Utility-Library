@@ -63,6 +63,66 @@ namespace UnitTests.SQL
         }
 
         [Test]
+        public void CommandInsert()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.SQL.Command TempCommand = new Utilities.SQL.Command("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text, "Test String", "Test String", 12345L, true, 1234.5678m, 12345.6534f, new DateTime(1999, 12, 31), TempGuid);
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper(TempCommand, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.ExecuteNonQuery();
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader();
+                if (Helper.Read())
+                {
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue1", ""));
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue2", ""));
+                    Assert.Equal(12345, Helper.GetParameter<long>("BigIntValue", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BitValue", false));
+                    Assert.Equal(1234.5678m, Helper.GetParameter<decimal>("DecimalValue", 0));
+                    Assert.Equal(12345.6534f, Helper.GetParameter<float>("FloatValue", 0));
+                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", Guid.Empty));
+                    Assert.Equal(new DateTime(1999, 12, 31), Helper.GetParameter<DateTime>("DateTimeValue", DateTime.Now));
+                }
+                else
+                {
+                    Assert.Fail("Nothing was inserted");
+                }
+            }
+        }
+
+        [Test]
+        public void CommandInsertNullString()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.SQL.Command TempCommand = new Utilities.SQL.Command("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text, "Test String", null, 12345, true, 1234.5678m, 12345.6534f, new DateTime(1999, 12, 31), TempGuid);
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper(TempCommand, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
+            {
+                Helper.ExecuteNonQuery();
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader();
+                if (Helper.Read())
+                {
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue1", ""));
+                    Assert.Equal("This is a null string", Helper.GetParameter<string>("StringValue2", "This is a null string"));
+                    Assert.Equal(12345, Helper.GetParameter<long>("BigIntValue", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BitValue", false));
+                    Assert.Equal(1234.5678m, Helper.GetParameter<decimal>("DecimalValue", 0));
+                    Assert.Equal(12345.6534f, Helper.GetParameter<float>("FloatValue", 0));
+                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", Guid.Empty));
+                    Assert.Equal(new DateTime(1999, 12, 31), Helper.GetParameter<DateTime>("DateTimeValue", DateTime.Now));
+                }
+                else
+                {
+                    Assert.Fail("Nothing was inserted");
+                }
+            }
+        }
+
+        [Test]
         public void Insert()
         {
             Guid TempGuid = Guid.NewGuid();

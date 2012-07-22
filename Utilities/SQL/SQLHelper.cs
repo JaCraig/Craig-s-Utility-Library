@@ -45,7 +45,7 @@ namespace Utilities.SQL
         /// Constructor
         /// </summary>
         /// <param name="Command">Stored procedure/SQL Text to use</param>
-        /// <param name="ConnectionUsing">The connection string to user</param>
+        /// <param name="ConnectionUsing">The connection string to use</param>
         /// <param name="CommandType">The command type of the command sent in</param>
         /// <param name="DbType">Database type, based on ADO.Net provider name</param>
         public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DbType = "System.Data.SqlClient")
@@ -59,6 +59,26 @@ namespace Utilities.SQL
             ExecutableCommand.CommandText = _Command;
             ExecutableCommand.Connection = Connection;
             ExecutableCommand.CommandType = CommandType;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Command">Command to use</param>
+        /// <param name="ConnectionUsing">The connection string to use</param>
+        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
+        public SQLHelper(Command Command, string ConnectionUsing, string DbType = "System.Data.SqlClient")
+        {
+            Factory = DbProviderFactories.GetFactory(DbType);
+            Connection = Factory.CreateConnection();
+            Connection.ConnectionString = ConnectionUsing;
+            _Command = Command.SQLCommand;
+            _CommandType = Command.CommandType;
+            ExecutableCommand = Factory.CreateCommand();
+            ExecutableCommand.CommandText = _Command;
+            ExecutableCommand.Connection = Connection;
+            ExecutableCommand.CommandType = _CommandType;
+            AddParameter(Command.Parameters.ToArray());
         }
 
         #endregion
@@ -124,6 +144,23 @@ namespace Utilities.SQL
 
         #region Functions
 
+        #region ChangeCommand
+
+        /// <summary>
+        /// Changes the command using the Command class
+        /// </summary>
+        /// <param name="Command">Command to use</param>
+        /// <returns>This</returns>
+        public virtual SQLHelper ChangeCommand(Command Command)
+        {
+            this.Command = Command.SQLCommand;
+            this.CommandType = Command.CommandType;
+            AddParameter(Command.Parameters.ToArray());
+            return this;
+        }
+
+        #endregion
+
         #region AddParameter
 
         /// <summary>
@@ -133,6 +170,7 @@ namespace Utilities.SQL
         /// <param name="Value">Value to add</param>
         /// <param name="Length">Size of the string(either -1 or greater than 4000 should be used to indicate nvarchar(max))</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
+        /// <returns>This</returns>
         public virtual SQLHelper AddParameter(string ID, int Length, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
         {
             if (ExecutableCommand != null)
@@ -147,6 +185,7 @@ namespace Utilities.SQL
         /// <param name="Value">Value to add</param>
         /// <param name="Type">SQL type of the parameter</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
+        /// <returns>This</returns>
         public virtual SQLHelper AddParameter(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
             return AddParameter(ID, Type.ToDbType(), Value, Direction);
@@ -159,6 +198,7 @@ namespace Utilities.SQL
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
+        /// <returns>This</returns>
         public virtual SQLHelper AddParameter<DataType>(string ID, DataType Value = default(DataType), ParameterDirection Direction = ParameterDirection.Input)
         {
             return AddParameter(ID, Value.GetType().ToDbType(), Value, Direction);
@@ -171,6 +211,7 @@ namespace Utilities.SQL
         /// <param name="Value">Value to add</param>
         /// <param name="Type">SQL type of the parameter</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
+        /// <returns>This</returns>
         public virtual SQLHelper AddParameter(string ID, DbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
             if (ExecutableCommand != null)
@@ -182,10 +223,30 @@ namespace Utilities.SQL
         /// Adds parameters to the call
         /// </summary>
         /// <param name="Parameters">Parameters to add</param>
+        /// <returns>This</returns>
         public virtual SQLHelper AddParameter(params IParameter[] Parameters)
         {
             Parameters.ThrowIfNull("Parameters");
             Parameters.ForEach(x => x.AddParameter(this));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds parameters to the call
+        /// </summary>
+        /// <param name="Parameters">Parameters to add</param>
+        /// <returns>This</returns>
+        public virtual SQLHelper AddParameter(params object[] Parameters)
+        {
+            for (int x = 0; x < Parameters.Length; ++x)
+            {
+                if (Parameters[x] == null)
+                    AddParameter(this.ExecutableCommand.Parameters.Count.ToString(), default(DbType), null, ParameterDirection.Input);
+                else if (Parameters[x] is string)
+                    AddParameter(this.ExecutableCommand.Parameters.Count.ToString(), ((string)Parameters[x]).Length, (string)Parameters[x], ParameterDirection.Input);
+                else
+                    AddParameter(this.ExecutableCommand.Parameters.Count.ToString(), Parameters[x].GetType().ToDbType(), Parameters[x], ParameterDirection.Input);
+            }
             return this;
         }
 

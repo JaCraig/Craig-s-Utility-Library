@@ -40,7 +40,7 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         /// <param name="ConnectionUsing">Connection string or name of the database
         /// connection string (if already defined)</param>
-        public MicroORM(string ConnectionUsing="Default")
+        public MicroORM(string ConnectionUsing = "Default")
             : base("", "", CommandType.Text)
         {
             MappingsUsing = new List<IMapping>();
@@ -93,7 +93,7 @@ namespace Utilities.SQL.MicroORM
         {
             if (!Databases.ContainsKey(Database))
                 Databases.Add(Database, new Database("", Database));
-            if(!Databases[Database].Mappings.ContainsKey(typeof(ClassType)))
+            if (!Databases[Database].Mappings.ContainsKey(typeof(ClassType)))
                 Databases[Database].Mappings.Add(typeof(ClassType), new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement, ParameterStarter));
             return (Mapping<ClassType>)Databases[Database].Mappings[typeof(ClassType)];
         }
@@ -127,7 +127,7 @@ namespace Utilities.SQL.MicroORM
         /// Clears a database object of all mappings
         /// </summary>
         /// <param name="Database">Database object to clear</param>
-        public static void ClearMappings(string Database="Default")
+        public static void ClearMappings(string Database = "Default")
         {
             if (Databases.ContainsKey(Database))
             {

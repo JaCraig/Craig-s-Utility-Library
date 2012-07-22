@@ -193,6 +193,7 @@
     <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
     <Compile Include="Reflection\Emit\TypeBuilder.cs" />
     <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="SQL\Command.cs" />
     <Compile Include="SQL\DataClasses\Column.cs" />
     <Compile Include="SQL\DataClasses\Database.cs" />
     <Compile Include="SQL\DataClasses\Function.cs" />

@@ -519,6 +519,39 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region StripIllegalXML
+
+        /// <summary>
+        /// Strips illegal characters for XML content
+        /// </summary>
+        /// <param name="Content">Content</param>
+        /// <returns>The stripped string</returns>
+        public static string StripIllegalXML(this string Content)
+        {
+            if (Content.IsNullOrEmpty())
+                return "";
+            StringBuilder Builder = new StringBuilder();
+            foreach (char Char in Content)
+            {
+                if (Char == 0x9
+                    || Char == 0xA
+                    || Char == 0xD
+                    || (Char >= 0x20 && Char <= 0xD7FF)
+                    || (Char >= 0xE000 && Char <= 0xFFFD))
+                    Builder.Append(Char);
+            }
+            return Builder.ToString().Replace('\u2013', '-').Replace('\u2014', '-')
+                .Replace('\u2015', '-').Replace('\u2017', '_').Replace('\u2018', '\'')
+                .Replace('\u2019', '\'').Replace('\u201a', ',').Replace('\u201b', '\'')
+                .Replace('\u201c', '\"').Replace('\u201d', '\"').Replace('\u201e', '\"')
+                .Replace("\u2026", "...").Replace('\u2032', '\'').Replace('\u2033', '\"')
+                .Replace("`", "\'")
+                .Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;")
+                .Replace("\"", "&quot;").Replace("\'", "&apos;");
+        }
+
+        #endregion
+
         #region ToBase64
 
         /// <summary>

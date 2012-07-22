@@ -30,6 +30,8 @@ using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
+using Utilities.SQL;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes
@@ -89,99 +91,124 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             }
         }
 
-        public override void JoinsDelete(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
-                return;
+                return new List<Command>();
             IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
-                return;
-            foreach (DataType Item in List)
-            {
-                if (Item != null)
-                {
-                    IParameter CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsParameter(Object);
-                    CurrentIDParameter.ID = "ID";
-                    MicroORM.Command = "DELETE FROM " + TableName + " WHERE " + Mapping.TableName + Mapping.IDProperty.FieldName + "=@ID";
-                    MicroORM.CommandType = CommandType.Text;
-                    CurrentIDParameter.AddParameter(MicroORM);
-                    MicroORM.ExecuteNonQuery();
-                }
-            }
+                return new List<Command>();
+            List<Command> Commands = new List<Command>();
+            object CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsObject(Object);
+            Commands.AddIfUnique(new Command("DELETE FROM " + TableName + " WHERE " + Mapping.TableName + Mapping.IDProperty.FieldName + "=@0",
+                    CommandType.Text,
+                    CurrentIDParameter));
+            return Commands;
         }
 
-        public override void JoinsSave(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
-                return;
+                return new List<Command>();
             IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
-                return;
+                return new List<Command>();
+            List<Command> Commands = new List<Command>();
             foreach (DataType Item in List)
             {
                 if (Item != null)
                 {
-                    IParameter CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsParameter(Object);
+                    object CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsObject(Object);
                     IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
-                    IParameter ForeignIDParameter = ((IProperty<DataType>)ForeignMapping.IDProperty).GetAsParameter(Item);
-                    CurrentIDParameter.ID = "ID1";
-                    ForeignIDParameter.ID = "ID2";
-                    if (ForeignMapping == Mapping)
+                    object ForeignIDParameter = ((IProperty<DataType>)ForeignMapping.IDProperty).GetAsObject(Item);
+                    string Parameters = "";
+                    object[] Values = new object[2];
+                    if (Mapping.TableName.CompareTo(ForeignMapping.TableName) <= 0)
                     {
-                        MicroORM.Command = "INSERT INTO " + TableName + "(" + Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "2) VALUES (@ID1,@ID2)";
+                        Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                        Values[0] = CurrentIDParameter;
+                        Values[1] = ForeignIDParameter;
                     }
                     else
                     {
-                        MicroORM.Command = "INSERT INTO " + TableName + "(" + Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + ") VALUES (@ID1,@ID2)";
+                        Parameters = ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "," + Mapping.TableName + Mapping.IDProperty.FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                        Values[1] = CurrentIDParameter;
+                        Values[0] = ForeignIDParameter;
                     }
-                    MicroORM.CommandType = CommandType.Text;
-                    CurrentIDParameter.AddParameter(MicroORM);
-                    ForeignIDParameter.AddParameter(MicroORM);
-                    MicroORM.ExecuteNonQuery();
+                    Commands.AddIfUnique(new Command("INSERT INTO " + TableName + "(" + Parameters + ") VALUES (@0,@1)",
+                            CommandType.Text,
+                            Values));
                 }
             }
+            return Commands;
         }
 
-        public override void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
-                return;
+                return new List<Command>();
             IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
-                return;
+                return new List<Command>();
+            List<Command> Commands = new List<Command>();
             foreach (DataType Item in List)
             {
                 if (Item != null)
                 {
                     foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
                     {
+                        if (!Property.Cascade &&
+                                (Property is IManyToMany
+                                    || Property is IManyToOne
+                                    || Property is IIEnumerableManyToOne
+                                    || Property is IListManyToMany
+                                    || Property is IListManyToOne))
+                        {
+                            Commands.AddIfUnique(((IProperty<DataType>)Property).JoinsDelete(Item, MicroORM));
+                        }
                         if (Property.Cascade)
-                            ((IProperty<DataType>)Property).CascadeJoinsDelete(Item, MicroORM);
+                        {
+                            Commands.AddIfUnique(((IProperty<DataType>)Property).CascadeJoinsDelete(Item, MicroORM));
+                        }
                     }
                 }
             }
-            JoinsDelete(Object, MicroORM);
+            Commands.AddIfUnique(JoinsDelete(Object, MicroORM));
+            return Commands;
         }
 
-        public override void CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
-                return;
+                return new List<Command>();
             IEnumerable<DataType> List = CompiledExpression(Object);
             if (List == null)
-                return;
+                return new List<Command>();
+            List<Command> Commands = new List<Command>();
             foreach (DataType Item in List)
             {
                 if (Item != null)
                 {
                     foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
                     {
+                        if (!Property.Cascade &&
+                                (Property is IManyToMany
+                                    || Property is IManyToOne
+                                    || Property is IIEnumerableManyToOne
+                                    || Property is IListManyToMany
+                                    || Property is IListManyToOne))
+                        {
+                            Commands.AddIfUnique(((IProperty<DataType>)Property).JoinsSave(Item, MicroORM));
+                        }
                         if (Property.Cascade)
-                            ((IProperty<DataType>)Property).CascadeJoinsSave(Item, MicroORM);
+                        {
+                            Commands.AddIfUnique(((IProperty<DataType>)Property).CascadeJoinsSave(Item, MicroORM));
+                        }
                     }
                 }
             }
-            JoinsSave(Object, MicroORM);
+            Commands.AddIfUnique(JoinsSave(Object, MicroORM));
+            return Commands;
         }
 
         public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
@@ -233,6 +260,11 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         }
 
         public override IParameter GetAsParameter(ClassType Object)
+        {
+            return null;
+        }
+
+        public override object GetAsObject(ClassType Object)
         {
             return null;
         }

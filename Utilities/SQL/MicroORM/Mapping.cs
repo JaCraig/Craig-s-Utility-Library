@@ -380,7 +380,7 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Mode">This determines if the mapping should have read or write access</param>
         /// <param name="DefaultValue">Default value</param>
         /// <returns>This mapping</returns>
-        public virtual IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName="", int Length=64,string DefaultValue="", Mode Mode = Mode.Read|Mode.Write)
+        public virtual IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName = "", int Length = 64, string DefaultValue = "", Mode Mode = Mode.Read|Mode.Write)
         {
             Property.ThrowIfNull("Property");
             Mappings.ThrowIfNull("Mappings");
@@ -458,7 +458,7 @@ namespace Utilities.SQL.MicroORM
         /// <param name="ObjectCreator">Function used to create the individual objects (if set to null, it uses the default constructor)</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of objects that fit the specified criteria</returns>
-        public virtual IEnumerable<ClassType> Paged(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, IEnumerable<ClassType> Objects = null,Func<ClassType> ObjectCreator=null, params IParameter[] Parameters)
+        public virtual IEnumerable<ClassType> Paged(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, IEnumerable<ClassType> Objects = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
         {
             Columns.ThrowIfNullOrEmpty("Columns");
             return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, Parameters), CommandType.Text, Objects, ObjectCreator, Parameters);
@@ -787,7 +787,7 @@ namespace Utilities.SQL.MicroORM
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">Current page</param>
         /// <returns>The command string</returns>
-        protected virtual string SetupPagedCommand(string Query,string OrderBy,int PageSize,int CurrentPage)
+        protected virtual string SetupPagedCommand(string Query, string OrderBy, int PageSize, int CurrentPage)
         {
             if (OrderBy.IsNullOrEmpty())
                 OrderBy = PrimaryKey;

@@ -26,6 +26,7 @@ using System.Data;
 using System.Linq.Expressions;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.Validation;
+using Utilities.SQL;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces
@@ -245,6 +246,11 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// All command
         /// </summary>
         Command AllCommand { get; set; }
+
+        /// <summary>
+        /// Order that the mappings are initialized
+        /// </summary>
+        int Order { get; set; }
 
         #endregion
     }

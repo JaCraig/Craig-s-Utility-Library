@@ -116,7 +116,6 @@ namespace Utilities.SQL.ExtensionMethods
         {
             Command.ThrowIfNull("Command");
             ID.ThrowIfNullOrEmpty("ID");
-            Type.ThrowIfNull("Type");
             DbParameter Parameter = null;
             if (Command.Parameters.Contains(ID))
                 Parameter = Command.Parameters[ID];
@@ -128,7 +127,8 @@ namespace Utilities.SQL.ExtensionMethods
             Parameter.ParameterName = ID;
             Parameter.Value = (Value == null) ? System.DBNull.Value : Value;
             Parameter.IsNullable = (Value == null);
-            Parameter.DbType = Type;
+            if (Type != default(DbType))
+                Parameter.DbType = Type;
             Parameter.Direction = Direction;
         }
 

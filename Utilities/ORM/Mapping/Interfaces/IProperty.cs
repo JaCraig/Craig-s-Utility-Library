@@ -27,6 +27,8 @@ using Utilities.DataTypes.Patterns;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
+using Utilities.SQL;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces
@@ -134,8 +136,16 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <summary>
         /// Gets the property as a parameter
         /// </summary>
+        /// <param name="Object">Object to get the property from</param>
         /// <returns>The property as a parameter</returns>
         IParameter GetAsParameter(ClassType Object);
+
+        /// <summary>
+        /// Gets the property as an object
+        /// </summary>
+        /// <param name="Object">Object to get the property from</param>
+        /// <returns>The property as an object</returns>
+        object GetAsObject(ClassType Object);
 
         /// <summary>
         /// Cascades the save
@@ -156,28 +166,32 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM</param>
-        void CascadeJoinsDelete(ClassType Object, MicroORM MicroORM);
+        /// <returns>Returns the list of commands</returns>
+        IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM);
 
         /// <summary>
         /// Cascade the saving of joins
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">MicroORM</param>
-        void CascadeJoinsSave(ClassType Object, MicroORM MicroORM);
+        /// <returns>Returns the list of commands</returns>
+        IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM);
 
         /// <summary>
         /// Deletes the joins
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM</param>
-        void JoinsDelete(ClassType Object, MicroORM MicroORM);
+        /// <returns>Returns the list of commands</returns>
+        IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM);
 
         /// <summary>
         /// Saves the joins
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">MicroORM</param>
-        void JoinsSave(ClassType Object, MicroORM MicroORM);
+        /// <returns>Returns the list of commands</returns>
+        IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM);
 
         #endregion
     }

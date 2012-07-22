@@ -29,6 +29,7 @@ using Utilities.ORM.Mapping.PropertyTypes;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.Validation;
+using Utilities.SQL;
 #endregion
 
 namespace Utilities.ORM.Mapping
@@ -236,6 +237,9 @@ namespace Utilities.ORM.Mapping
 
         #region Properties
 
+        /// <summary>
+        /// Table name
+        /// </summary>
         public virtual string TableName
         {
             get
@@ -250,15 +254,56 @@ namespace Utilities.ORM.Mapping
         }
 
         private string _TableName = "";
+
+        /// <summary>
+        /// Suffix used
+        /// </summary>
         public virtual string Suffix { get; private set; }
+
+        /// <summary>
+        /// Prefix used
+        /// </summary>
         public virtual string Prefix { get; private set; }
+
+        /// <summary>
+        /// Database config type
+        /// </summary>
         public virtual Type DatabaseConfigType { get { return typeof(DatabaseType); } }
+
+        /// <summary>
+        /// List of properties
+        /// </summary>
         public virtual List<IProperty> Properties { get; private set; }
+
+        /// <summary>
+        /// ID property
+        /// </summary>
         public virtual IProperty IDProperty { get; set; }
+
+        /// <summary>
+        /// Mapping manager
+        /// </summary>
         public virtual IMappingManager Manager { get; set; }
+
+        /// <summary>
+        /// Object type
+        /// </summary>
         public virtual Type ObjectType { get { return typeof(ClassType); } }
+
+        /// <summary>
+        /// Default any command
+        /// </summary>
         public virtual Command AnyCommand { get; set; }
+
+        /// <summary>
+        /// Default all command
+        /// </summary>
         public virtual Command AllCommand { get; set; }
+
+        /// <summary>
+        /// The order in which the mappings are initialized
+        /// </summary>
+        public virtual int Order { get; set; }
 
         #endregion
     }
