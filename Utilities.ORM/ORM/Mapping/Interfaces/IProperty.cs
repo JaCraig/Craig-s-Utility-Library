@@ -45,6 +45,13 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// </summary>
         void SetupLoadCommands();
 
+        /// <summary>
+        /// Gets the property as an object
+        /// </summary>
+        /// <param name="Object">Object to get the property from</param>
+        /// <returns>The property as an object</returns>
+        object GetAsObject(object Object);
+
         #endregion
 
         #region Properties

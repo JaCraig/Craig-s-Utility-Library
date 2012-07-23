@@ -192,7 +192,10 @@ namespace Utilities.ORM.Database
                             false,
                             MapMapping.TableName,
                             MapMapping.IDProperty.FieldName,
-                            "");
+                            "",
+                            false,
+                            false,
+                            Mapping.Properties.Count(x => x.Type == Property.Type) == 1 && Mapping.ObjectType != Property.Type);
                     }
                     else if (Property is IManyToOne || Property is IManyToMany || Property is IIEnumerableManyToOne||Property is IListManyToMany||Property is IListManyToOne)
                     {
@@ -225,7 +228,10 @@ namespace Utilities.ORM.Database
                     false,
                     Mapping.TableName,
                     Mapping.IDProperty.FieldName,
-                    "");
+                    "",
+                    false,
+                    false,
+                    false);
                 TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName + "2",
                     MapMapping.IDProperty.Type.ToDbType(),
                     MapMapping.IDProperty.MaxLength,
@@ -236,7 +242,10 @@ namespace Utilities.ORM.Database
                     false,
                     MapMapping.TableName,
                     MapMapping.IDProperty.FieldName,
-                    "");
+                    "",
+                    false,
+                    false,
+                    false);
             }
             else
             {
@@ -252,7 +261,10 @@ namespace Utilities.ORM.Database
                     false,
                     Mapping.TableName,
                     Mapping.IDProperty.FieldName,
-                    "");
+                    "",
+                    true,
+                    false,
+                    false);
                 TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
                     MapMapping.IDProperty.Type.ToDbType(),
                     MapMapping.IDProperty.MaxLength,
@@ -263,7 +275,10 @@ namespace Utilities.ORM.Database
                     false,
                     MapMapping.TableName,
                     MapMapping.IDProperty.FieldName,
-                    "");
+                    "",
+                    true,
+                    false,
+                    false);
             }
         }
 

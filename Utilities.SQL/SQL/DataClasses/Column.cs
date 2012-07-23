@@ -63,7 +63,8 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ParentTable">Parent table</param>
         public Column(string Name, DbType ColumnType, int Length, bool Nullable,
             bool Identity, bool Index, bool PrimaryKey, bool Unique, string ForeignKeyTable,
-            string ForeignKeyColumn, T DefaultValue, ITable ParentTable)
+            string ForeignKeyColumn, T DefaultValue,bool OnDeleteCascade, bool OnUpdateCascade,
+            bool OnDeleteSetNull, ITable ParentTable)
         {
             this.Name = Name;
             this.ForeignKey = new List<IColumn>();
@@ -78,12 +79,30 @@ namespace Utilities.SQL.DataClasses
             this.PrimaryKey = PrimaryKey;
             this.Unique = Unique;
             this.Default = DefaultValue.IsDefault() ? "" : DefaultValue.ToString();
+            this.OnDeleteCascade = OnDeleteCascade;
+            this.OnUpdateCascade = OnUpdateCascade;
+            this.OnDeleteSetNull = OnDeleteSetNull;
             AddForeignKey(ForeignKeyTable, ForeignKeyColumn);
         }
 
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// On Delete Cascade
+        /// </summary>
+        public virtual bool OnDeleteCascade { get; set; }
+
+        /// <summary>
+        /// On Update Cascade
+        /// </summary>
+        public virtual bool OnUpdateCascade { get; set; }
+
+        /// <summary>
+        /// On Delete Set Null
+        /// </summary>
+        public virtual bool OnDeleteSetNull { get; set; }
 
         /// <summary>
         /// Name

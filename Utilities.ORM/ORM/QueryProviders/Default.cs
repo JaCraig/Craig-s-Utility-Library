@@ -320,6 +320,23 @@ namespace Utilities.ORM.QueryProviders
                 {
                     using (MicroORM ORMObject = new MicroORM(Database.Name))
                     {
+                        System.Collections.Generic.List<Command> JoinCommands = new System.Collections.Generic.List<Command>();
+                        foreach (IProperty Property in Mapping.Properties)
+                        {
+                            if (!Property.Cascade && Mapping.ObjectType == Property.Type)
+                            {
+                                JoinCommands.AddIfUnique(((IProperty<ObjectType>)Property).JoinsDelete(Object, ORMObject));
+                            }
+                            if (Property.Cascade)
+                            {
+                                JoinCommands.AddIfUnique(((IProperty<ObjectType>)Property).CascadeJoinsDelete(Object, ORMObject));
+                            }
+                        }
+                        foreach (Command JoinCommand in JoinCommands)
+                        {
+                            ORMObject.ChangeCommand(JoinCommand);
+                            ORMObject.ExecuteNonQuery();
+                        }
                         foreach (IProperty Property in Mapping.Properties)
                         {
                             if (Property.Cascade)

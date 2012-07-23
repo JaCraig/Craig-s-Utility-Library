@@ -157,8 +157,8 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                 {
                     foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
                     {
-                        if (!Property.Cascade &&
-                                (Property is IManyToMany
+                        if (!Property.Cascade
+                                && (Property is IManyToMany
                                     || Property is IManyToOne
                                     || Property is IIEnumerableManyToOne
                                     || Property is IListManyToMany

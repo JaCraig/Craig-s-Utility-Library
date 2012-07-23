@@ -99,12 +99,16 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ForeignKeyTable">Foreign key table</param>
         /// <param name="ForeignKeyColumn">Foreign key column</param>
         /// <param name="DefaultValue">Default value</param>
+        /// <param name="OnDeleteCascade">On Delete Cascade</param>
+        /// <param name="OnUpdateCascade">On Update Cascade</param>
+        /// <param name="OnDeleteSetNull">On Delete Set Null</param>
         /// <typeparam name="T">Column type</typeparam>
         public virtual IColumn AddColumn<T>(string ColumnName, DbType ColumnType, int Length = 0, bool Nullable = true,
             bool Identity = false, bool Index = false, bool PrimaryKey = false, bool Unique = false,
-            string ForeignKeyTable = "", string ForeignKeyColumn = "", T DefaultValue = default(T))
+            string ForeignKeyTable = "", string ForeignKeyColumn = "", T DefaultValue = default(T),
+            bool OnDeleteCascade = false, bool OnUpdateCascade = false, bool OnDeleteSetNull = false)
         {
-            return Columns.AddAndReturn(new Column<T>(ColumnName, ColumnType, Length, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue, this));
+            return Columns.AddAndReturn(new Column<T>(ColumnName, ColumnType, Length, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue, OnDeleteCascade, OnUpdateCascade, OnDeleteSetNull, this));
         }
 
         /// <summary>

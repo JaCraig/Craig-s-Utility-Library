@@ -35,6 +35,21 @@ namespace Utilities.SQL.DataClasses.Interfaces
         #region Public Properties
 
         /// <summary>
+        /// On Delete Cascade
+        /// </summary>
+        bool OnDeleteCascade { get; set; }
+
+        /// <summary>
+        /// On Update Cascade
+        /// </summary>
+        bool OnUpdateCascade { get; set; }
+
+        /// <summary>
+        /// On Delete Set Null
+        /// </summary>
+        bool OnDeleteSetNull { get; set; }
+
+        /// <summary>
         /// Name
         /// </summary>
         string Name { get; set; }

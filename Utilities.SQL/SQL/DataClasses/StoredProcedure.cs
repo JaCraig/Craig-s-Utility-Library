@@ -83,7 +83,7 @@ namespace Utilities.SQL.DataClasses
         /// <param name="Default">Default value</param>
         public virtual void AddColumn<T>(string Name, DbType Type, int Length, T Default)
         {
-            Columns.Add(new Column<T>(Name, Type, Length, false, false, false, false, false, "", "", Default, this));
+            Columns.Add(new Column<T>(Name, Type, Length, false, false, false, false, false, "", "", Default, false, false, false, this));
         }
 
         #endregion

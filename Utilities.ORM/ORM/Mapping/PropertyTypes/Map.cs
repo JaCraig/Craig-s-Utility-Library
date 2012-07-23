@@ -108,12 +108,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             List<Command> Commands = new List<Command>();
             foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
             {
-                if (!Property.Cascade &&
-                        (Property is IManyToMany
-                            || Property is IManyToOne
-                            || Property is IIEnumerableManyToOne
-                            || Property is IListManyToMany
-                            || Property is IListManyToOne))
+                if (!Property.Cascade
+                    && (Property is IManyToMany
+                        || Property is IManyToOne
+                        || Property is IIEnumerableManyToOne
+                        || Property is IListManyToMany
+                        || Property is IListManyToOne))
                 {
                     Commands.AddIfUnique(((IProperty<DataType>)Property).JoinsDelete(Item, MicroORM));
                 }
@@ -150,7 +150,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                     Commands.AddIfUnique(((IProperty<DataType>)Property).CascadeJoinsSave(Item, MicroORM));
                 }
             }
-            Commands.AddIfUnique(JoinsDelete(Object, MicroORM));
+            Commands.AddIfUnique(JoinsSave(Object, MicroORM));
             return Commands;
         }
 

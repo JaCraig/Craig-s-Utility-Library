@@ -81,7 +81,7 @@ namespace Utilities.SQL.DataClasses
         /// <param name="Nullable">Nullable?</param>
         public virtual void AddColumn<T>(string ColumnName, DbType ColumnType, int MaxLength, bool Nullable)
         {
-            Columns.Add(new Column<T>(ColumnName, ColumnType, MaxLength, Nullable, false, false, false, false, "", "", default(T), this));
+            Columns.Add(new Column<T>(ColumnName, ColumnType, MaxLength, Nullable, false, false, false, false, "", "", default(T), false, false, false, this));
         }
 
         #endregion

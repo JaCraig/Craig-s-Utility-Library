@@ -386,7 +386,14 @@ namespace Utilities.SQL.SQLServer
                     {
                         Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ").Append(DesiredTable.Name)
                             .Append(" ADD FOREIGN KEY (").Append(Column.Name).Append(") REFERENCES ")
-                            .Append(ForeignKey.ParentTable.Name).Append("(").Append(ForeignKey.Name).Append(")'\n");
+                            .Append(ForeignKey.ParentTable.Name).Append("(").Append(ForeignKey.Name).Append(")");
+                        if (Column.OnDeleteCascade)
+                            Builder.Append(" ON DELETE CASCADE");
+                        if (Column.OnUpdateCascade)
+                            Builder.Append(" ON UPDATE CASCADE");
+                        if (Column.OnDeleteSetNull)
+                            Builder.Append(" ON DELETE SET NULL");
+                        Builder.Append("'\n");
                     }
                 }
                 else if (CurrentColumn.DataType != Column.DataType
@@ -483,7 +490,14 @@ namespace Utilities.SQL.SQLServer
                         Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ");
                         Builder.Append(Column.ParentTable.Name).Append(" ADD FOREIGN KEY (");
                         Builder.Append(Column.Name).Append(") REFERENCES ").Append(ForeignKey.ParentTable.Name);
-                        Builder.Append("(").Append(ForeignKey.Name).Append(")'\n");
+                        Builder.Append("(").Append(ForeignKey.Name).Append(")");
+                        if (Column.OnDeleteCascade)
+                            Builder.Append(" ON DELETE CASCADE");
+                        if (Column.OnUpdateCascade)
+                            Builder.Append(" ON UPDATE CASCADE");
+                        if (Column.OnDeleteSetNull)
+                            Builder.Append(" ON DELETE SET NULL");
+                        Builder.Append("'\n");
                     }
                 }
             }

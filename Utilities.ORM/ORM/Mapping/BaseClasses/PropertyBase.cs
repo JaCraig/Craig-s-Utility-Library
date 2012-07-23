@@ -148,6 +148,16 @@ namespace Utilities.ORM.Mapping.BaseClasses
         public abstract object GetAsObject(ClassType Object);
 
         /// <summary>
+        /// Gets it as an object
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <returns>The property as an object</returns>
+        public object GetAsObject(object Object)
+        {
+            return GetAsObject((ClassType)Object);
+        }
+
+        /// <summary>
         /// Cascade save
         /// </summary>
         /// <param name="Object">Object</param>
