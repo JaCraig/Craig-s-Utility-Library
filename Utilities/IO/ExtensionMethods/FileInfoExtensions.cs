@@ -199,6 +199,32 @@ namespace Utilities.IO.ExtensionMethods
         /// Executes the file
         /// </summary>
         /// <param name="File">File to execute</param>
+        /// <param name="Arguments">Arguments sent to the executable</param>
+        /// <param name="Domain">Domain of the user</param>
+        /// <param name="Password">Password of the user</param>
+        /// <param name="User">User to run the file as</param>
+        /// <param name="WindowStyle">Window style</param>
+        /// <param name="WorkingDirectory">Working directory</param>
+        /// <returns>The process object created when the executable is started</returns>
+        public static System.Diagnostics.Process Execute(this string File, string Arguments = "", string Domain = "", string User = "", string Password = "", ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal, string WorkingDirectory = "")
+        {
+            File.ThrowIfNullOrEmpty("File");
+            ProcessStartInfo Info = new ProcessStartInfo();
+            Info.Arguments = Arguments;
+            Info.Domain = Domain;
+            Info.Password = new SecureString();
+            foreach (char Char in Password)
+                Info.Password.AppendChar(Char);
+            Info.UserName = User;
+            Info.WindowStyle = WindowStyle;
+            Info.UseShellExecute = false;
+            return File.Execute(Info);
+        }
+
+        /// <summary>
+        /// Executes the file
+        /// </summary>
+        /// <param name="File">File to execute</param>
         /// <param name="Info">Info used to execute the file</param>
         /// <returns>The process object created when the executable is started</returns>
         public static System.Diagnostics.Process Execute(this FileInfo File, ProcessStartInfo Info)
@@ -210,6 +236,21 @@ namespace Utilities.IO.ExtensionMethods
             if (Info == null)
                 throw new ArgumentNullException("Info");
             Info.FileName = File.FullName;
+            return System.Diagnostics.Process.Start(Info);
+        }
+
+        /// <summary>
+        /// Executes the file
+        /// </summary>
+        /// <param name="File">File to execute</param>
+        /// <param name="Info">Info used to execute the file</param>
+        /// <returns>The process object created when the executable is started</returns>
+        public static System.Diagnostics.Process Execute(this string File, ProcessStartInfo Info)
+        {
+            File.ThrowIfNullOrEmpty("File");
+            if (Info == null)
+                throw new ArgumentNullException("Info");
+            Info.FileName = File;
             return System.Diagnostics.Process.Start(Info);
         }
 
