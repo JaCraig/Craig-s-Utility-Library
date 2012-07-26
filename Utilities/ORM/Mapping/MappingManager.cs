@@ -86,12 +86,17 @@ namespace Utilities.ORM.Mapping
         /// </summary>
         public void Initialize()
         {
+            System.Collections.Generic.List<IMapping> TempMappings = new System.Collections.Generic.List<IMapping>();
             foreach (Type Key in Mappings.Keys)
             {
-                foreach (IMapping Mapping in Mappings[Key].OrderBy(x => x.Order))
+                foreach (IMapping Mapping in Mappings[Key])
                 {
-                    Mapping.Initialize();
+                    TempMappings.Add(Mapping);
                 }
+            }
+            foreach (IMapping Mapping in TempMappings.OrderBy(x => x.Order))
+            {
+                Mapping.Initialize();
             }
         }
 
