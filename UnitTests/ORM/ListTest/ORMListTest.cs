@@ -31,6 +31,7 @@ using MoonUnit.Attributes;
 using System.Data;
 using Utilities.SQL.ParameterTypes;
 using UnitTests.ORM.ListTest.Models;
+using Utilities.ORM.ExtensionMethods;
 
 namespace UnitTests.ORM.ListTest
 {
@@ -54,6 +55,34 @@ namespace UnitTests.ORM.ListTest
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task2_Audit"));
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task2_Task2Audit"));
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project2_Task2Audit"));
+        }
+
+        [Test]
+        public void SaveIEnumerableExtension()
+        {
+            List<Task2> Tasks = new List<Task2>();
+            for (int x = 0; x < 100; ++x)
+            {
+                Task2 TempTask = new Task2();
+                TempTask.Description = "This is a test";
+                TempTask.DueDate = new DateTime(1900, 1, 1);
+                TempTask.Name = "Test task";
+                Tasks.Add(TempTask);
+            }
+            Tasks.Save<Task2, long>();
+            
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader();
+                int Counter = 0;
+                while (Helper.Read())
+                {
+                    Assert.Equal("This is a test", Helper.GetParameter<string>("Description_", ""));
+                    Assert.Equal("Test task", Helper.GetParameter<string>("Name_", ""));
+                    ++Counter;
+                }
+                Assert.Equal(100, Counter);
+            }
         }
 
         [Test]

@@ -82,6 +82,7 @@
     <Compile Include="ORM\Mapping\Interfaces\IListManyToOne.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\ListManyToMany.cs" />
     <Compile Include="ORM\Mapping\PropertyTypes\ListManyToOne.cs" />
+    <Compile Include="ORM\ExtensionMethods\IEnumerableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

@@ -89,7 +89,7 @@ namespace Utilities.LDAP
         #region FindActiveGroupMembers
 
         /// <summary>
-        /// Returns a group's list of members
+        /// Returns a group's list of members who are active
         /// </summary>
         /// <param name="GroupName">The group's name</param>
         /// <returns>A list of the members</returns>
@@ -192,6 +192,28 @@ namespace Utilities.LDAP
             Filter = string.Format("(&(objectClass=computer)({0}))", Filter);
             Searcher.Filter = Filter;
             return FindAll();
+        }
+
+        #endregion
+
+        #region FindGroupMembers
+
+        /// <summary>
+        /// Returns a group's list of members
+        /// </summary>
+        /// <param name="GroupName">The group's name</param>
+        /// <returns>A list of the members</returns>
+        public virtual List<Entry> FindGroupMembers(string GroupName)
+        {
+            try
+            {
+                List<Entry> Entries = this.FindGroups("cn=" + GroupName);
+                return (Entries.Count < 1) ? new List<Entry>() : this.FindUsersAndGroups("memberOf=" + Entries[0].DistinguishedName);
+            }
+            catch
+            {
+                return new List<Entry>();
+            }
         }
 
         #endregion
