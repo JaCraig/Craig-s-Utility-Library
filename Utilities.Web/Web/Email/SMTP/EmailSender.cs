@@ -104,31 +104,35 @@ namespace Utilities.Web.Email.SMTP
                 }
                 message.Subject = Subject;
                 message.From = new System.Net.Mail.MailAddress((From));
-                AlternateView BodyView = AlternateView.CreateAlternateViewFromString(Body, null, MediaTypeNames.Text.Html);
-                foreach (LinkedResource Resource in EmbeddedResources)
+                using (AlternateView BodyView = AlternateView.CreateAlternateViewFromString(Body, null, MediaTypeNames.Text.Html))
                 {
-                    BodyView.LinkedResources.Add(Resource);
+                    foreach (LinkedResource Resource in EmbeddedResources)
+                    {
+                        BodyView.LinkedResources.Add(Resource);
+                    }
+                    message.AlternateViews.Add(BodyView);
+                    //message.Body = Body;
+                    message.Priority = Priority;
+                    message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                    message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                    message.IsBodyHtml = true;
+                    foreach (Attachment TempAttachment in Attachments)
+                    {
+                        message.Attachments.Add(TempAttachment);
+                    }
+                    using (System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Server, Port))
+                    {
+                        if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                        {
+                            smtp.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                        }
+                        if (UseSSL)
+                            smtp.EnableSsl = true;
+                        else
+                            smtp.EnableSsl = false;
+                        smtp.Send(message);
+                    }
                 }
-                message.AlternateViews.Add(BodyView);
-                //message.Body = Body;
-                message.Priority = Priority;
-                message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                message.IsBodyHtml = true;
-                foreach (Attachment TempAttachment in Attachments)
-                {
-                    message.Attachments.Add(TempAttachment);
-                }
-                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Server, Port);
-                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-                {
-                    smtp.Credentials = new System.Net.NetworkCredential(UserName, Password);
-                }
-                if (UseSSL)
-                    smtp.EnableSsl = true;
-                else
-                    smtp.EnableSsl = false;
-                smtp.Send(message);
             }
         }
 
