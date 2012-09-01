@@ -29,8 +29,8 @@ namespace Utilities.Validation.BaseClasses
     /// <summary>
     /// Base class for the attributes
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class BaseAttribute : Attribute 
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class BaseAttribute : Attribute
     {
         #region Constructor
 
@@ -44,7 +44,7 @@ namespace Utilities.Validation.BaseClasses
         }
 
         #endregion
-        
+
         #region Public Properties
 
         /// <summary>
