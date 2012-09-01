@@ -90,7 +90,7 @@ namespace Utilities.IO.ExtensionMethods
                 JSON=EncodingUsing.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
             }
             if (!string.IsNullOrEmpty(FileToSaveTo))
-                new FileInfo(FileToSaveTo).Save(JSON);
+                new FileInfo(FileToSaveTo).Save(JSON, EncodingUsing);
             return JSON;
         }
 
@@ -121,7 +121,7 @@ namespace Utilities.IO.ExtensionMethods
                 SOAP = EncodingUsing.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
             }
             if (!string.IsNullOrEmpty(FileToSaveTo))
-                new FileInfo(FileToSaveTo).Save(SOAP);
+                new FileInfo(FileToSaveTo).Save(SOAP, EncodingUsing);
             return SOAP;
         }
 
@@ -151,7 +151,7 @@ namespace Utilities.IO.ExtensionMethods
                 XML = EncodingUsing.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
             }
             if (!string.IsNullOrEmpty(FileToSaveTo))
-                new FileInfo(FileToSaveTo).Save(XML);
+                new FileInfo(FileToSaveTo).Save(XML, EncodingUsing);
             return XML;
         }
 
