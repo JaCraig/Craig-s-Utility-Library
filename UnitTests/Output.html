@@ -45,298 +45,78 @@
         <td>Mapping</td>
         <td>Creation</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Map</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Insert</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Update</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Save</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Any</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Scalar</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>All</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Paged</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Paged2</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Mapping</td>
         <td>Delete</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.Mapping..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\Mapping.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MidpointDisplacement</td>
@@ -496,8 +276,18 @@
         <td>BitmapExtensions</td>
         <td>Jitter</td>
         <td>
-                                    Passed
-                                </td>
+                                    Failed<br>
+                                    Expected: <br>
+                                    Result: System.Runtime.InteropServices.ExternalException (0x80004005): A generic error occurred in GDI+.
+   at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   at System.Drawing.Image.Save(String filename, ImageFormat format)
+   at Utilities.Media.Image.ExtensionMethods.BitmapExtensions.Jitter(Bitmap OriginalImage, Int32 MaxJitter, String FileName) in C:\dev\com\Mine\Libraries\Utilities\Utilities\Media\Image\ExtensionMethods\BitmapExtensions.cs:line 983
+   at UnitTests.Media.Image.ExtensionMethods.BitmapExtensions.&lt;&gt;c__DisplayClass5a.&lt;Jitter&gt;b__58() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\Media\Image\ExtensionMethods\BitmapExtensions.cs:line 311
+   at MoonUnit.Assert.Do[T](ReturnObjectDelegate'1 Delegate)
+   at UnitTests.Media.Image.ExtensionMethods.BitmapExtensions.Jitter() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\Media\Image\ExtensionMethods\BitmapExtensions.cs:line 311<br>
+                                    Error Message: Exception found<br>
+                                    Stack Trace: <br>
+                                    Error Type: Generic<br></td>
       </tr>
       <tr>
         <td>BitmapExtensions</td>
@@ -846,15 +636,35 @@
         <td>File</td>
         <td>SaveAsync</td>
         <td>
-                                    Passed
-                                </td>
+                                    Failed<br>
+                                    Expected: <br>
+                                    Result: System.UnauthorizedAccessException: Access to the path 'C:\dev\com\Mine\Libraries\Utilities\UnitTests\bin\Debug\Testing\Test.txt' is denied.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite)
+   at System.IO.FileInfo.CopyTo(String destFileName, Boolean overwrite)
+   at Utilities.IO.ExtensionMethods.DirectoryInfoExtensions.CopyTo(DirectoryInfo Source, String Destination, Boolean Recursive, CopyOptions Options) in C:\dev\com\Mine\Libraries\Utilities\Utilities\IO\ExtensionMethods\DirectoryInfoExtensions.cs:line 63
+   at UnitTests.IO.ExtensionMethods.File..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\IO\ExtensionMethods\File.cs:line 35
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipVisibilityChecks, Boolean skipCheckThis, Boolean fillCache)<br>
+                                    Error Message: Exception found<br>
+                                    Stack Trace: <br>
+                                    Error Type: Generic<br></td>
       </tr>
       <tr>
         <td>File</td>
         <td>Execute</td>
         <td>
-                                    Passed
-                                </td>
+                                    Failed<br>
+                                    Expected: <br>
+                                    Result: System.UnauthorizedAccessException: Access to the path 'C:\dev\com\Mine\Libraries\Utilities\UnitTests\bin\Debug\Testing\Test.txt' is denied.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite)
+   at System.IO.FileInfo.CopyTo(String destFileName, Boolean overwrite)
+   at Utilities.IO.ExtensionMethods.DirectoryInfoExtensions.CopyTo(DirectoryInfo Source, String Destination, Boolean Recursive, CopyOptions Options) in C:\dev\com\Mine\Libraries\Utilities\Utilities\IO\ExtensionMethods\DirectoryInfoExtensions.cs:line 63
+   at UnitTests.IO.ExtensionMethods.File..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\IO\ExtensionMethods\File.cs:line 35
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipVisibilityChecks, Boolean skipCheckThis, Boolean fillCache)<br>
+                                    Error Message: Exception found<br>
+                                    Stack Trace: <br>
+                                    Error Type: Generic<br></td>
       </tr>
       <tr>
         <td>GraphicMenuItem</td>
@@ -1084,325 +894,85 @@
         <td>SQLHelper</td>
         <td>Connect</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>CommandInsert</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>CommandInsertNullString</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>Insert</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>InsertEmptyString</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>ClearParameters</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>Update</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>Delete</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>Transaction</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>OutputParamter</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>BulkCopy</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLHelper</td>
         <td>BulkCopy2</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLHelper..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLHelper.cs:line 44<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Image</td>
@@ -1428,6 +998,13 @@
       <tr>
         <td>HashExtensions</td>
         <td>HashTest</td>
+        <td>
+                                    Passed
+                                </td>
+      </tr>
+      <tr>
+        <td>HashExtensions</td>
+        <td>SaltTest</td>
         <td>
                                     Passed
                                 </td>
@@ -1674,257 +1251,57 @@
         <td>ORMListTest</td>
         <td>DatabaseCreation</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.ListTest.ORMListTest..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\ListTest\ORMListTest.cs:line 42<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMListTest</td>
         <td>SaveIEnumerableExtension</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.ListTest.ORMListTest..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\ListTest\ORMListTest.cs:line 42<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMListTest</td>
         <td>Save</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.ListTest.ORMListTest..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\ListTest\ORMListTest.cs:line 42<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMListTest</td>
         <td>Update</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.ListTest.ORMListTest..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\ListTest\ORMListTest.cs:line 42<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMListTest</td>
         <td>Any</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.ListTest.ORMListTest..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\ListTest\ORMListTest.cs:line 42<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMListTest</td>
         <td>All</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.ListTest.ORMListTest..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\ListTest\ORMListTest.cs:line 42<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMListTest</td>
         <td>Paged</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.ListTest.ORMListTest..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\ListTest\ORMListTest.cs:line 42<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMListTest</td>
         <td>Paged2</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.ListTest.ORMListTest..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\ListTest\ORMListTest.cs:line 42<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>LoggingManager</td>
@@ -2518,298 +1895,78 @@
         <td>MicroORM</td>
         <td>Creation</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>Database</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>Map</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>Save</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>Insert</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>AnyDifferentParameterTypes</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>Update</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>Any</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>All</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>Paged</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>MicroORM</td>
         <td>Delete</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.MicroORM.MicroORM..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\MicroORM\MicroORM.cs:line 47<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>Column</td>
@@ -3305,33 +2462,8 @@
         <td>ORMTest1</td>
         <td>DatabaseCreation</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test1.ORMTest1..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test1\ORMTest1.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>InputItem</td>
@@ -4198,257 +3330,57 @@
         <td>ORMTest2</td>
         <td>DatabaseCreation</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test2.ORMTest2..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test2\ORMTest2.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMTest2</td>
         <td>Save</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test2.ORMTest2..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test2\ORMTest2.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMTest2</td>
         <td>Update</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test2.ORMTest2..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test2\ORMTest2.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMTest2</td>
         <td>Any</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test2.ORMTest2..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test2\ORMTest2.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMTest2</td>
         <td>Scalar</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test2.ORMTest2..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test2\ORMTest2.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMTest2</td>
         <td>All</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test2.ORMTest2..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test2\ORMTest2.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMTest2</td>
         <td>Paged</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test2.ORMTest2..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test2\ORMTest2.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>ORMTest2</td>
         <td>Paged2</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database Database, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 111
-   at Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database DesiredDatabase, Database CurrentDatabase, String ConnectionString) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLServer\SQLServer.cs:line 139
-   at Utilities.ORM.Database.DatabaseManager.Setup() in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\Database\DatabaseManager.cs:line 81
-   at Utilities.ORM.ORM.Setup(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 86
-   at Utilities.ORM.ORM..ctor(Assembly Assembly) in C:\dev\com\Mine\Libraries\Utilities\Utilities\ORM\ORM.cs:line 47
-   at UnitTests.ORM.Test2.ORMTest2..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\ORM\Test2\ORMTest2.cs:line 40<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>BumpMap</td>
@@ -4769,85 +3701,22 @@
         <td>SQLServer</td>
         <td>CreateDatabase</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLServer.SQLServer.Dispose() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLServer\SQLServer.cs:line 122
-   at MoonUnit.Manager.TestClass(Type Type, Output TempOutput)<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLServer</td>
         <td>UpdateDatabase</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLServer.SQLServer.Dispose() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLServer\SQLServer.cs:line 122
-   at MoonUnit.Manager.TestClass(Type Type, Output TempOutput)<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>SQLServer</td>
         <td>GetDatabaseStructure</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-   at System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
-   at System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
-   at System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
-   at System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
-   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup)
-   at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-   at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-   at System.Data.SqlClient.SqlConnection.Open()
-   at Utilities.SQL.ExtensionMethods.DbCommandExtensions.Open(DbCommand Command) in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\ExtensionMethods\DbCommandExtensions.cs:line 264
-   at Utilities.SQL.SQLHelper.Open() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 467
-   at Utilities.SQL.SQLHelper.ExecuteNonQuery() in C:\dev\com\Mine\Libraries\Utilities\Utilities\SQL\SQLHelper.cs:line 364
-   at UnitTests.SQL.SQLServer.SQLServer.Dispose() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\SQL\SQLServer\SQLServer.cs:line 122
-   at MoonUnit.Manager.TestClass(Type Type, Output TempOutput)<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>OrParameter</td>

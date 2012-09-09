@@ -27,6 +27,7 @@ using MoonUnit.Attributes;
 using MoonUnit;
 using Utilities.Encryption.ExtensionMethods;
 using System.Security.Cryptography;
+using Utilities.DataTypes.ExtensionMethods;
 
 namespace UnitTests.Encryption.ExtensionMethods
 {
@@ -38,6 +39,15 @@ namespace UnitTests.Encryption.ExtensionMethods
             string Data = "This is a test";
             Assert.Equal("A54D88E06612D820BC3BE72877C74F257B561B19", Data.Hash());
             Assert.Equal("CE114E4501D2F4E2DCEA3E17B546F339", Data.Hash(new MD5CryptoServiceProvider()));
+        }
+
+        [Test]
+        public void SaltTest()
+        {
+            string Data = "This is a test";
+            Assert.Equal("This is a test", Data.Salt(100).Left(14));
+            byte[] Data2 = Data.ToByteArray();
+            Assert.Equal(114, Data2.Salt(100).Length);
         }
     }
 }
