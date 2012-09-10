@@ -36,6 +36,26 @@ namespace Utilities.Encryption.ExtensionMethods
     {
         #region Functions
 
+        #region GenerateSalt
+
+        /// <summary>
+        /// Generates salt
+        /// </summary>
+        /// <param name="Random">Randomization object</param>
+        /// <param name="Size">Size of the salt byte array</param>
+        /// <returns>A byte array as salt</returns>
+        public static byte[] GenerateSalt(this System.Random Random, int Size)
+        {
+            byte[] Salt = new byte[Size];
+            using (RNGCryptoServiceProvider CryptoProvider = new RNGCryptoServiceProvider())
+            {
+                CryptoProvider.GetNonZeroBytes(Salt);
+            }
+            return Salt;
+        }
+
+        #endregion
+
         #region Hash
 
         /// <summary>
@@ -78,32 +98,27 @@ namespace Utilities.Encryption.ExtensionMethods
         /// Creates a random string and salts the array that is passed in
         /// </summary>
         /// <param name="Data">Byte array to salt</param>
-        /// <param name="Size">Size of the salt array</param>
         /// <param name="Salt">Salt to use (if left null, one is randomly generated)</param>
         /// <returns>The salted data array</returns>
-        public static byte[] Salt(this byte[] Data, int Size, byte[] Salt = null)
+        public static byte[] Salt(this byte[] Data, byte[] Salt = null)
         {
             if (!Salt.IsNull())
             {
                 return Data.Combine(Salt);
             }
-            Salt = new byte[Size];
-            RNGCryptoServiceProvider CryptoProvider = new RNGCryptoServiceProvider();
-            CryptoProvider.GetNonZeroBytes(Salt);
-            return Data.Combine(Salt);
+            return Data.Combine(new System.Random().GenerateSalt(1000));
         }
 
         /// <summary>
         /// Creates a random string and salts the string that is passed in
         /// </summary>
         /// <param name="Data">String to salt</param>
-        /// <param name="Size">Size of the salt array</param>
         /// <param name="Salt">Salt to use (if left null, one is randomly generated)</param>
         /// <param name="EncodingUsing">Encoding that the string uses (defaults to UTF8)</param>
         /// <returns>The salted string array</returns>
-        public static string Salt(this string Data, int Size, string Salt = null, Encoding EncodingUsing = null)
+        public static string Salt(this string Data, string Salt = null, Encoding EncodingUsing = null)
         {
-            return Data.ToByteArray(EncodingUsing).Salt(Size, Salt.ToByteArray(EncodingUsing)).ToEncodedString(EncodingUsing);
+            return Data.ToByteArray(EncodingUsing).Salt(Salt.ToByteArray(EncodingUsing)).ToEncodedString(EncodingUsing);
         }
 
         #endregion

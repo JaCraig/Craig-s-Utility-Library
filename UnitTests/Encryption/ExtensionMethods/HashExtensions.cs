@@ -34,6 +34,12 @@ namespace UnitTests.Encryption.ExtensionMethods
     public class HashExtensions
     {
         [Test]
+        public void GenerateSalt()
+        {
+            Assert.Equal(100, new System.Random().GenerateSalt(100).Length);
+        }
+
+        [Test]
         public void HashTest()
         {
             string Data = "This is a test";
@@ -45,9 +51,9 @@ namespace UnitTests.Encryption.ExtensionMethods
         public void SaltTest()
         {
             string Data = "This is a test";
-            Assert.Equal("This is a test", Data.Salt(100).Left(14));
+            Assert.Equal("This is a test", Data.Salt().Left(14));
             byte[] Data2 = Data.ToByteArray();
-            Assert.Equal(114, Data2.Salt(100).Length);
+            Assert.Equal(1014, Data2.Salt().Length);
         }
     }
 }

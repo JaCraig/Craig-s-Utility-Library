@@ -276,18 +276,8 @@
         <td>BitmapExtensions</td>
         <td>Jitter</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.Runtime.InteropServices.ExternalException (0x80004005): A generic error occurred in GDI+.
-   at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
-   at System.Drawing.Image.Save(String filename, ImageFormat format)
-   at Utilities.Media.Image.ExtensionMethods.BitmapExtensions.Jitter(Bitmap OriginalImage, Int32 MaxJitter, String FileName) in C:\dev\com\Mine\Libraries\Utilities\Utilities\Media\Image\ExtensionMethods\BitmapExtensions.cs:line 983
-   at UnitTests.Media.Image.ExtensionMethods.BitmapExtensions.&lt;&gt;c__DisplayClass5a.&lt;Jitter&gt;b__58() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\Media\Image\ExtensionMethods\BitmapExtensions.cs:line 311
-   at MoonUnit.Assert.Do[T](ReturnObjectDelegate'1 Delegate)
-   at UnitTests.Media.Image.ExtensionMethods.BitmapExtensions.Jitter() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\Media\Image\ExtensionMethods\BitmapExtensions.cs:line 311<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>BitmapExtensions</td>
@@ -636,35 +626,15 @@
         <td>File</td>
         <td>SaveAsync</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.UnauthorizedAccessException: Access to the path 'C:\dev\com\Mine\Libraries\Utilities\UnitTests\bin\Debug\Testing\Test.txt' is denied.
-   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite)
-   at System.IO.FileInfo.CopyTo(String destFileName, Boolean overwrite)
-   at Utilities.IO.ExtensionMethods.DirectoryInfoExtensions.CopyTo(DirectoryInfo Source, String Destination, Boolean Recursive, CopyOptions Options) in C:\dev\com\Mine\Libraries\Utilities\Utilities\IO\ExtensionMethods\DirectoryInfoExtensions.cs:line 63
-   at UnitTests.IO.ExtensionMethods.File..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\IO\ExtensionMethods\File.cs:line 35
-   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipVisibilityChecks, Boolean skipCheckThis, Boolean fillCache)<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>File</td>
         <td>Execute</td>
         <td>
-                                    Failed<br>
-                                    Expected: <br>
-                                    Result: System.UnauthorizedAccessException: Access to the path 'C:\dev\com\Mine\Libraries\Utilities\UnitTests\bin\Debug\Testing\Test.txt' is denied.
-   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite)
-   at System.IO.FileInfo.CopyTo(String destFileName, Boolean overwrite)
-   at Utilities.IO.ExtensionMethods.DirectoryInfoExtensions.CopyTo(DirectoryInfo Source, String Destination, Boolean Recursive, CopyOptions Options) in C:\dev\com\Mine\Libraries\Utilities\Utilities\IO\ExtensionMethods\DirectoryInfoExtensions.cs:line 63
-   at UnitTests.IO.ExtensionMethods.File..ctor() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\IO\ExtensionMethods\File.cs:line 35
-   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipVisibilityChecks, Boolean skipCheckThis, Boolean fillCache)<br>
-                                    Error Message: Exception found<br>
-                                    Stack Trace: <br>
-                                    Error Type: Generic<br></td>
+                                    Passed
+                                </td>
       </tr>
       <tr>
         <td>GraphicMenuItem</td>
@@ -991,6 +961,13 @@
       <tr>
         <td>Image</td>
         <td>RandomTest</td>
+        <td>
+                                    Passed
+                                </td>
+      </tr>
+      <tr>
+        <td>HashExtensions</td>
+        <td>GenerateSalt</td>
         <td>
                                     Passed
                                 </td>
@@ -3491,8 +3468,14 @@
         <td>IEnumerableExtensions</td>
         <td>ForParallelTest</td>
         <td>
-                                    Passed
-                                </td>
+                                    Failed<br>
+                                    Expected: 5<br>
+                                    Result: 4<br>
+                                    Error Message: Assert.Equal() Failed<br>
+                                    Stack Trace:    at MoonUnit.Assert.Equal[T](T Expected, T Result, IEqualityComparer'1 Comparer, String UserFailedMessage)
+   at MoonUnit.Assert.Equal[T](T Expected, T Result, String UserFailedMessage)
+   at UnitTests.DataTypes.ExtensionMethods.IEnumerableExtensions.ForParallelTest() in C:\dev\com\Mine\Libraries\Utilities\UnitTests\DataTypes\ExtensionMethods\IEnumerableExtensions.cs:line 125<br>
+                                    Error Type: NotEqual<br></td>
       </tr>
       <tr>
         <td>IEnumerableExtensions</td>
