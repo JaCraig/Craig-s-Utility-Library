@@ -153,8 +153,10 @@
     <Compile Include="ORM\Test1\Config\Test1Config.cs" />
     <Compile Include="ORM\Test1\Models\Account.cs" />
     <Compile Include="ORM\Test1\Models\Group.cs" />
+    <Compile Include="ORM\Test1\Models\Item.cs" />
     <Compile Include="ORM\Test1\Models\Mappings\AccountMapping.cs" />
     <Compile Include="ORM\Test1\Models\Mappings\GroupMapping.cs" />
+    <Compile Include="ORM\Test1\Models\Mappings\ItemMapping.cs" />
     <Compile Include="ORM\Test1\Models\Mappings\RoleMapping.cs" />
     <Compile Include="ORM\Test1\Models\Mappings\UserMapping.cs" />
     <Compile Include="ORM\Test1\Models\Role.cs" />

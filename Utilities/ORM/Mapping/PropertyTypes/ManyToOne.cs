@@ -78,8 +78,8 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             {
                 LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + TableName + " ON " + TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperty.FieldName + @"
-                                WHERE " + TableName + "." + Mapping.TableName + Mapping.IDProperty.FieldName + "=@ID", CommandType.Text);
+                                INNER JOIN " + TableName + " ON " + TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperty.FieldName + @"
+                                WHERE " + TableName + "." + Mapping.TableName + Mapping.IDProperty.FieldName + "2=@ID", CommandType.Text);
             }
             else
             {
@@ -99,9 +99,19 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                 return new List<Command>();
             List<Command> Commands = new List<Command>();
             object CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsObject(Object);
-            Commands.AddIfUnique(new Command("DELETE FROM " + TableName + " WHERE " + Mapping.TableName + Mapping.IDProperty.FieldName + "=@0",
-                    CommandType.Text,
-                    CurrentIDParameter));
+            IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
+            if (ForeignMapping == Mapping)
+            {
+                Commands.AddIfUnique(new Command("DELETE FROM " + TableName + " WHERE " + Mapping.TableName + Mapping.IDProperty.FieldName + "2=@0",
+                        CommandType.Text,
+                        CurrentIDParameter));
+            }
+            else
+            {
+                Commands.AddIfUnique(new Command("DELETE FROM " + TableName + " WHERE " + Mapping.TableName + Mapping.IDProperty.FieldName + "=@0",
+                        CommandType.Text,
+                        CurrentIDParameter));
+            }
             return Commands;
         }
 
@@ -118,15 +128,21 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             object ForeignIDParameter = ((IProperty<DataType>)ForeignMapping.IDProperty).GetAsObject(Item);
             string Parameters = "";
             object[] Values = new object[2];
-            if (Mapping.TableName.CompareTo(ForeignMapping.TableName) <= 0)
+            if (ForeignMapping == Mapping)
             {
-                Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "2";
+                Values[1] = CurrentIDParameter;
+                Values[0] = ForeignIDParameter;
+            }
+            else if (Mapping.TableName.CompareTo(ForeignMapping.TableName) <= 0)
+            {
+                Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName;
                 Values[0] = CurrentIDParameter;
                 Values[1] = ForeignIDParameter;
             }
             else
             {
-                Parameters = ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "," + Mapping.TableName + Mapping.IDProperty.FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                Parameters = ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "," + Mapping.TableName + Mapping.IDProperty.FieldName;
                 Values[1] = CurrentIDParameter;
                 Values[0] = ForeignIDParameter;
             }

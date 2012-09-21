@@ -123,15 +123,21 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                     object ForeignIDParameter = ((IProperty<DataType>)ForeignMapping.IDProperty).GetAsObject(Item);
                     string Parameters = "";
                     object[] Values = new object[2];
-                    if (Mapping.TableName.CompareTo(ForeignMapping.TableName) <= 0)
+                    if (ForeignMapping == Mapping)
                     {
-                        Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                        Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "2";
+                        Values[0] = CurrentIDParameter;
+                        Values[1] = ForeignIDParameter;
+                    }
+                    else if (Mapping.TableName.CompareTo(ForeignMapping.TableName) <= 0)
+                    {
+                        Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName;
                         Values[0] = CurrentIDParameter;
                         Values[1] = ForeignIDParameter;
                     }
                     else
                     {
-                        Parameters = ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "," + Mapping.TableName + Mapping.IDProperty.FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                        Parameters = ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + "," + Mapping.TableName + Mapping.IDProperty.FieldName;
                         Values[1] = CurrentIDParameter;
                         Values[0] = ForeignIDParameter;
                     }

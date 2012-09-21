@@ -30,6 +30,7 @@ using Utilities.SQL.DataClasses;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 using UnitTests.ORM.Test1.Models;
+using Utilities.SQL.ParameterTypes;
 
 namespace UnitTests.ORM.Test1
 {
@@ -44,7 +45,7 @@ namespace UnitTests.ORM.Test1
         public void DatabaseCreation()
         {
             Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase;Integrated Security=SSPI;Pooling=false");
-            Assert.Equal(14, DatabaseObject.Tables.Count);
+            Assert.Equal(18, DatabaseObject.Tables.Count);
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Account_"));
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Group_"));
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Role_"));
@@ -59,6 +60,37 @@ namespace UnitTests.ORM.Test1
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Group_UserAudit"));
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Role_User"));
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Role_UserAudit"));
+        }
+
+        [Test]
+        public void ManyToOneTest()
+        {
+            Item Temp = new Item();
+            Temp.Name = "Parent";
+            for (int x = 0; x < 5; ++x)
+            {
+                Item Child = new Item();
+                Child.Name = "Child "+x.ToString();
+                Child.Parent=Temp;
+                Temp.Children.Add(Child);
+            }
+            Temp.Save();
+            Item Parent = Item.Any(new EqualParameter<long>(Temp.ID, "ID_"));
+            foreach (Item Child in Parent.Children)
+                Assert.Equal(Parent, Child.Parent);
+            Assert.Equal(5, Parent.Children.Count);
+            Assert.Equal(null, Parent.Parent);
+            Parent.Children = Parent.Children.Remove(x => x.Name == "Child 0").ToList();
+            Parent.Save();
+            Parent = Item.Any(new EqualParameter<long>(Temp.ID, "ID_"));
+            foreach (Item Child in Parent.Children)
+                Assert.Equal(Parent, Child.Parent);
+            Assert.Equal(4, Parent.Children.Count);
+            Assert.Equal(null, Parent.Parent);
+            Parent.Delete();
+            Parent = Item.Any(new EqualParameter<long>(Temp.ID, "ID_"));
+            Assert.Null(Parent);
+            Assert.Equal(1, Item.All().Count());
         }
 
         public void Dispose()
