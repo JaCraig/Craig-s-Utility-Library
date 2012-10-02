@@ -49,7 +49,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Start">Start index (inclusive)</param>
         /// <param name="End">End index (exclusive)</param>
         /// <returns>The items between the start and end index</returns>
-        public static IEnumerable<T> ElementsBetween<T>(this IEnumerable<T> List, int Start,int End)
+        public static IEnumerable<T> ElementsBetween<T>(this IEnumerable<T> List, int Start, int End)
         {
             if (List.IsNull())
                 return List;
@@ -61,30 +61,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             for (int x = Start; x < End; ++x)
                 ReturnList.Add(List.ElementAt(x));
             return ReturnList;
-        }
-
-        #endregion
-
-        #region Exists
-
-        /// <summary>
-        /// Used to determine if an item in the IEnumerable matches a predicate
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">List to search</param>
-        /// <param name="Match">The predicate used to check if something exists</param>
-        /// <returns>True if at least one item matches the predicate, false otherwise</returns>
-        public static bool Exists<T>(this IEnumerable<T> List,Predicate<T> Match)
-        {
-            Match.ThrowIfNull("Match");
-            if (List.IsNull())
-                return false;
-            foreach (T Item in List)
-            {
-                if (Match(Item))
-                    return true;
-            }
-            return false;
         }
 
         #endregion
@@ -143,16 +119,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static IEnumerable<T> First<T>(this IEnumerable<T> List, int Count)
         {
             List.ThrowIfNull("List");
-            if (Count > List.Count())
-                Count = List.Count();
-            if (Count < 0)
-                Count = 0;
-            System.Collections.Generic.List<T> ReturnValues = new System.Collections.Generic.List<T>();
-            for (int x = 0; x < Count; ++x)
-            {
-                ReturnValues.Add(List.ElementAt(x));
-            }
-            return ReturnValues;
+            return List.ElementsBetween(0, Count);
         }
 
         #endregion
@@ -172,15 +139,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             List.ThrowIfNull("List");
             Action.ThrowIfNull("Action");
-            int x = 0;
-            foreach (T Item in List)
-            {
-                if (x.Between(Start, End))
-                    Action(Item);
-                ++x;
-                if (x > End)
-                    break;
-            }
+            foreach (T Item in List.ElementsBetween(Start, End + 1))
+                Action(Item);
             return List;
         }
 
@@ -194,20 +154,13 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="End">Item to end with</param>
         /// <param name="Function">Function to do</param>
         /// <returns>The resulting list</returns>
-        public static IEnumerable<R> For<T,R>(this IEnumerable<T> List, int Start, int End, Func<T,R> Function)
+        public static IEnumerable<R> For<T, R>(this IEnumerable<T> List, int Start, int End, Func<T, R> Function)
         {
             List.ThrowIfNull("List");
             Function.ThrowIfNull("Function");
-            int x = 0;
             List<R> ReturnValues = new List<R>();
-            foreach (T Item in List)
-            {
-                if (x.Between(Start, End))
+            foreach (T Item in List.ElementsBetween(Start, End + 1))
                     ReturnValues.Add(Function(Item));
-                ++x;
-                if (x > End)
-                    break;
-            }
             return ReturnValues;
         }
 
@@ -325,21 +278,6 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region IsNullOrEmpty
-
-        /// <summary>
-        /// Determines if a list is null or empty
-        /// </summary>
-        /// <typeparam name="T">Data type</typeparam>
-        /// <param name="Value">List to check</param>
-        /// <returns>True if it is null or empty, false otherwise</returns>
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> Value)
-        {
-            return Value.IsNull() || Value.Count() == 0;
-        }
-
-        #endregion
-
         #region Last
 
         /// <summary>
@@ -352,16 +290,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static IEnumerable<T> Last<T>(this IEnumerable<T> List, int Count)
         {
             List.ThrowIfNull("List");
-            if (Count > List.Count())
-                Count = List.Count();
-            if (Count < 0)
-                Count = 0;
-            System.Collections.Generic.List<T> ReturnValues = new System.Collections.Generic.List<T>();
-            for (int x = List.Count() - Count; x < List.Count(); ++x)
-            {
-                ReturnValues.Add(List.ElementAt(x));
-            }
-            return ReturnValues;
+            return List.ElementsBetween(List.Count() - Count, List.Count());
         }
 
         #endregion
@@ -378,10 +307,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static IEnumerable<T> RemoveDefaults<T>(this IEnumerable<T> Value, IEqualityComparer<T> EqualityComparer = null)
         {
             if (Value.IsNull())
-                yield break;
-            EqualityComparer = EqualityComparer.NullCheck(new GenericEqualityComparer<T>());
-            foreach (T Item in Value.Where(x => !EqualityComparer.Equals(x, default(T))))
-                yield return Item;
+                return Value;
+            EqualityComparer=EqualityComparer.NullCheck(new GenericEqualityComparer<T>());
+            return Value.Where(x => !x.IsDefault(EqualityComparer));
         }
 
         #endregion
@@ -502,24 +430,15 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="List">List to convert</param>
         /// <param name="Columns">Column names (if empty, uses property names)</param>
         /// <returns>The list as a DataTable</returns>
-        public static DataTable ToDataTable<T>(this IEnumerable<T> List,params string[] Columns)
+        public static DataTable ToDataTable<T>(this IEnumerable<T> List, params string[] Columns)
         {
             DataTable ReturnValue = new DataTable();
             if (List.IsNullOrEmpty())
                 return ReturnValue;
             PropertyInfo[] Properties = typeof(T).GetProperties();
-            if (Columns.Length == 0)
-            {
-                Columns = new string[Properties.Length];
-                for (int x = 0; x < Columns.Length; ++x)
-                {
-                    Columns[x] = Properties[x].Name;
-                }
-            }
-            for (int x = 0; x < Columns.Length; ++x)
-            {
-                ReturnValue.Columns.Add(Columns[x], Properties.First(z => z.Name == Columns[x]).PropertyType);
-            }
+            if(Columns.Length==0)
+                Columns = Properties.ToArray(x => x.Name);
+            Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.First(z => z.Name == x).PropertyType));
             object[] Row = new object[Columns.Length];
             foreach (T Item in List)
             {

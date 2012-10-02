@@ -50,64 +50,45 @@ namespace Utilities.DataTypes.ExtensionMethods
         #region Chain
 
         /// <summary>
-        /// Allows actions to be chained together
+        /// Allows actions to be chained together with the caveat that if Object is null,
+        /// it is replaced with the DefaultObjectValue specified.
+        /// If the Action or Object (once replaced with the default object value) is null, it will return the object.
         /// </summary>
         /// <typeparam name="T">The type of the object</typeparam>
         /// <param name="Object">Object to run the action on</param>
         /// <param name="Action">Action to run</param>
+        /// <param name="DefaultObjectValue">Default object value</param>
         /// <returns>The original object</returns>
-        public static T Chain<T>(this T Object, Action<T> Action)
+        public static T Chain<T>(this T Object, Action<T> Action, T DefaultObjectValue = default(T))
         {
+            Object = Object.NullCheck(DefaultObjectValue);
+            if (Action.IsNull() || Object.IsNull())
+                return Object;
             Action(Object);
             return Object;
         }
 
         /// <summary>
-        /// Allows actions to be chained together
+        /// Allows actions to be chained together. It also has a couple of checks in there:
+        /// 1) If the function is null, it returns the default return value specified.
+        /// 2) If the object is null, it will replace it with the default object value specified.
+        /// 3) If the object, once replaced with the default object value specified, is null, it will return the default return value specified.
+        /// 4) If the return value from the function is null, it returns the default return value specified.
         /// </summary>
         /// <typeparam name="T">The type of the object</typeparam>
         /// <typeparam name="R">Return type</typeparam>
         /// <param name="Object">Object to run the action on</param>
         /// <param name="Function">Function to run</param>
+        /// <param name="DefaultObjectValue">Default object value</param>
+        /// <param name="DefaultReturnValue">Default return value</param>
         /// <returns>The result from the function</returns>
-        public static R Chain<T, R>(this T Object, Func<T, R> Function)
+        public static R Chain<T, R>(this T Object, Func<T, R> Function, R DefaultReturnValue = default(R), T DefaultObjectValue = default(T))
         {
-            return Function(Object);
-        }
-
-        #endregion
-
-        #region Do
-
-        /// <summary>
-        /// Similar to Chain, except checks if the Object or Action is null first and returns the default value if they are
-        /// </summary>
-        /// <typeparam name="T">The object type</typeparam>
-        /// <param name="Object">Object to run the action on</param>
-        /// <param name="Action">Action to run</param>
-        /// <param name="DefaultValue">Default value to return if the action or object is null</param>
-        /// <returns>The original object or the default value</returns>
-        public static T Do<T>(this T Object, Action<T> Action, T DefaultValue = default(T))
-        {
-            if (Object.IsNull() || Action.IsNull())
-                return DefaultValue;
-            return Object.Chain(Action);
-        }
-
-        /// <summary>
-        /// Similar to Chain, except checks if the Object or Function is null first and returns the default value if they are
-        /// </summary>
-        /// <typeparam name="T">The object type</typeparam>
-        /// <typeparam name="R">The return type</typeparam>
-        /// <param name="Object">Object to run the function on</param>
-        /// <param name="Function">Function to run</param>
-        /// <param name="DefaultValue">Default value to return if the action or object is null</param>
-        /// <returns>The result of the function or the default value</returns>
-        public static R Do<T, R>(this T Object, Func<T, R> Function, R DefaultValue = default(R))
-        {
-            if (Object.IsNull() || Function.IsNull())
-                return DefaultValue;
-            return Object.Chain(Function);
+            Object = Object.NullCheck(DefaultObjectValue);
+            if (Function.IsNull() || Object.IsNull())
+                return DefaultReturnValue;
+            R ReturnValue = Function(Object);
+            return ReturnValue.IsNull() ? DefaultReturnValue : ReturnValue;
         }
 
         #endregion
@@ -177,15 +158,16 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         /// <summary>
         /// Determines if the object fullfills the predicate and if it does, returns itself. Otherwise the default value.
+        /// If the predicate is null, it returns the default value.
         /// </summary>
         /// <typeparam name="T">The object type</typeparam>
         /// <param name="Object">Object to check</param>
         /// <param name="Predicate">Predicate to run on the object</param>
         /// <param name="DefaultValue">Default value to return if it does not succeed the predicate test</param>
         /// <returns>The original value if predicate is true, the default value otherwise</returns>
-        public static T If<T>(this T Object, Predicate<T> Predicate,T DefaultValue=default(T))
+        public static T If<T>(this T Object, Predicate<T> Predicate, T DefaultValue = default(T))
         {
-            if (Object.IsNull())
+            if (Predicate.IsNull())
                 return DefaultValue;
             return Predicate(Object) ? Object : DefaultValue;
         }
@@ -196,6 +178,7 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         /// <summary>
         /// Determines if the object fails the predicate and if it does, returns itself. Otherwise the default value.
+        /// If the predicate is null, it returns the default value.
         /// </summary>
         /// <typeparam name="T">The object type</typeparam>
         /// <param name="Object">Object to check</param>
@@ -204,30 +187,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original value if predicate is false, the default value otherwise</returns>
         public static T NotIf<T>(this T Object, Predicate<T> Predicate, T DefaultValue = default(T))
         {
-            if (Object.IsNull())
+            if (Predicate.IsNull())
                 return DefaultValue;
             return Predicate(Object) ? DefaultValue : Object;
-        }
-
-        #endregion
-
-        #region Return
-
-        /// <summary>
-        /// Used to determine if an object, or it's properties are null (Although can be used for other things)
-        /// </summary>
-        /// <typeparam name="T">Input type</typeparam>
-        /// <typeparam name="R">Output type</typeparam>
-        /// <param name="Object">Object to check</param>
-        /// <param name="Function">Property, function, etc. to run</param>
-        /// <param name="DefaultValue">Default value to return if Object is null</param>
-        /// <returns>The value returned by the function or the default value if the object is null or the function returns a null value</returns>
-        public static R Return<T, R>(this T Object, Func<T, R> Function, R DefaultValue = default(R))
-        {
-            if (Object.IsNull())
-                return DefaultValue;
-            R ReturnValue = Function(Object);
-            return ReturnValue.IsNull() ? DefaultValue : ReturnValue;
         }
 
         #endregion

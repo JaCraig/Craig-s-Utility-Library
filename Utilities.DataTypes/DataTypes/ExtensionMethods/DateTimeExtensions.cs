@@ -67,20 +67,6 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region BeginningOfDay
-
-        /// <summary>
-        /// Returns the beginning of the day
-        /// </summary>
-        /// <param name="Input">Input date</param>
-        /// <returns>The beginning of the day</returns>
-        public static DateTime BeginningOfDay(this DateTime Input)
-        {
-            return new DateTime(Input.Year, Input.Month, Input.Day, 0, 0, 0);
-        }
-
-        #endregion
-
         #region ConvertToTimeZone
 
         /// <summary>
@@ -303,7 +289,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is, false otherwise</returns>
         public static bool IsToday(this DateTime Date)
         {
-            return (Date.Date.BeginningOfDay() == DateTime.Today);
+            return (Date.Date == DateTime.Today);
         }
 
         #endregion

@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Text;
+using Utilities.DataTypes.Formatters.Interfaces;
 
 #endregion
 
@@ -30,7 +31,7 @@ namespace Utilities.DataTypes.Formatters
     /// <summary>
     /// Generic string formatter
     /// </summary>
-    public class GenericStringFormatter : IFormatProvider, ICustomFormatter
+    public class GenericStringFormatter : IFormatProvider, ICustomFormatter,IStringFormatter
     {
         #region Constructor
 

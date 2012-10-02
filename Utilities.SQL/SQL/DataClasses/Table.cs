@@ -129,7 +129,7 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ForeignKeyColumn">Foreign key column</param>
         public virtual void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn)
         {
-            this[ColumnName].Do(x => x.AddForeignKey(ForeignKeyTable, ForeignKeyColumn));
+            this[ColumnName].Chain(x => x.AddForeignKey(ForeignKeyTable, ForeignKeyColumn));
         }
 
         /// <summary>

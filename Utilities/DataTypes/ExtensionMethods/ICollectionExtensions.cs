@@ -34,26 +34,7 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
-        #region AddAndReturn
-
-        /// <summary>
-        /// Adds an item to a list and returns the item
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Collection">Collection to add to</param>
-        /// <param name="Item">Item to add to the collection</param>
-        /// <returns>The original item</returns>
-        public static T AddAndReturn<T>(this ICollection<T> Collection,T Item)
-        {
-            Collection.ThrowIfNull("Collection");
-            Item.ThrowIfNull("Item");
-            Collection.Add(Item);
-            return Item;
-        }
-
-        #endregion
-
-        #region AddRange
+        #region Add
 
         /// <summary>
         /// Adds a list of items to the collection
@@ -62,7 +43,23 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Collection">Collection</param>
         /// <param name="Items">Items to add</param>
         /// <returns>The collection with the added items</returns>
-        public static ICollection<T> AddRange<T>(this ICollection<T> Collection, IEnumerable<T> Items)
+        public static ICollection<T> Add<T>(this ICollection<T> Collection, IEnumerable<T> Items)
+        {
+            Collection.ThrowIfNull("Collection");
+            if (Items.IsNull())
+                return Collection;
+            Items.ForEach(x => Collection.Add(x));
+            return Collection;
+        }
+
+        /// <summary>
+        /// Adds a list of items to the collection
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the collection</typeparam>
+        /// <param name="Collection">Collection</param>
+        /// <param name="Items">Items to add</param>
+        /// <returns>The collection with the added items</returns>
+        public static ICollection<T> Add<T>(this ICollection<T> Collection, params T[] Items)
         {
             Collection.ThrowIfNull("Collection");
             if (Items.IsNull())
@@ -73,24 +70,49 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region AddAndReturn
+
+        /// <summary>
+        /// Adds an item to a list and returns the item
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Collection">Collection to add to</param>
+        /// <param name="Item">Item to add to the collection</param>
+        /// <returns>The original item</returns>
+        public static T AddAndReturn<T>(this ICollection<T> Collection, T Item)
+        {
+            Collection.ThrowIfNull("Collection");
+            Item.ThrowIfNull("Item");
+            Collection.Add(Item);
+            return Item;
+        }
+
+        #endregion
+
         #region AddIf
 
         /// <summary>
-        /// Adds an item to the collection if it isn't already in the collection
+        /// Adds items to the collection if it passes the predicate test
         /// </summary>
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="Collection">Collection to add to</param>
-        /// <param name="Item">Item to add to the collection</param>
+        /// <param name="Items">Items to add to the collection</param>
         /// <param name="Predicate">Predicate that an item needs to satisfy in order to be added</param>
-        /// <returns>True if it is added, false otherwise</returns>
-        public static bool AddIf<T>(this ICollection<T> Collection, T Item, Predicate<T> Predicate)
+        /// <returns>True if any are added, false otherwise</returns>
+        public static bool AddIf<T>(this ICollection<T> Collection, Predicate<T> Predicate, params T[] Items)
         {
             Collection.ThrowIfNull("Collection");
             Predicate.ThrowIfNull("Predicate");
-            if (!Predicate(Item))
-                return false;
-            Collection.Add(Item);
-            return true;
+            bool ReturnValue = false;
+            foreach (T Item in Items)
+            {
+                if (Predicate(Item))
+                {
+                    Collection.Add(Item);
+                    ReturnValue = true;
+                }
+            }
+            return ReturnValue;
         }
 
         /// <summary>
@@ -101,14 +123,11 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Items">Items to add to the collection</param>
         /// <param name="Predicate">Predicate that an item needs to satisfy in order to be added</param>
         /// <returns>True if it is added, false otherwise</returns>
-        public static bool AddIf<T>(this ICollection<T> Collection, IEnumerable<T> Items, Predicate<T> Predicate)
+        public static bool AddIf<T>(this ICollection<T> Collection, Predicate<T> Predicate, IEnumerable<T> Items)
         {
             Collection.ThrowIfNull("Collection");
             Predicate.ThrowIfNull("Predicate");
-            bool ReturnValue = false;
-            foreach (T Item in Items)
-                ReturnValue |= Collection.AddIf(Item, Predicate);
-            return ReturnValue;
+            return Collection.AddIf(Predicate, Items.ToArray());
         }
 
         #endregion
@@ -120,12 +139,12 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="Collection">Collection to add to</param>
-        /// <param name="Item">Item to add to the collection</param>
+        /// <param name="Items">Items to add to the collection</param>
         /// <returns>True if it is added, false otherwise</returns>
-        public static bool AddIfUnique<T>(this ICollection<T> Collection, T Item)
+        public static bool AddIfUnique<T>(this ICollection<T> Collection, params T[] Items)
         {
             Collection.ThrowIfNull("Collection");
-            return Collection.AddIf(Item, x => !Collection.Contains(x));
+            return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 
         /// <summary>
@@ -138,7 +157,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static bool AddIfUnique<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Collection.ThrowIfNull("Collection");
-            return Collection.AddIf(Items, x => !Collection.Contains(x));
+            return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 
         #endregion
@@ -157,10 +176,6 @@ namespace Utilities.DataTypes.ExtensionMethods
             return Collection.Where(x => !Predicate(x)).ToList();
         }
 
-        #endregion
-
-        #region RemoveRange
-
         /// <summary>
         /// Removes all items in the list from the collection
         /// </summary>
@@ -168,7 +183,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Collection">Collection</param>
         /// <param name="Items">Items to remove</param>
         /// <returns>The collection with the items removed</returns>
-        public static ICollection<T> RemoveRange<T>(this ICollection<T> Collection, IEnumerable<T> Items)
+        public static ICollection<T> Remove<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Collection.ThrowIfNull("Collection");
             if (Items.IsNull())

@@ -70,11 +70,14 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Array1">Array 1</param>
         /// <param name="Array2">Array 2</param>
         /// <returns>A new array containing both arrays' values</returns>
-        public static ArrayType[] Combine<ArrayType>(this ArrayType[] Array1, ArrayType[] Array2)
+        public static ArrayType[] Combine<ArrayType>(this ArrayType[] Array1, params ArrayType[][] Array2)
         {
             if (Array1.IsNull() && Array2.IsNull())
                 return null;
-            int ResultLength = (Array1.IsNull() ? 0 : Array1.Length) + (Array2.IsNull() ? 0 : Array2.Length);
+            int ResultLength = (Array1.IsNull() ? 0 : Array1.Length);
+            if (Array2.IsNotNull())
+                foreach (ArrayType[] Array in Array2)
+                    ResultLength += (Array.IsNull() ? 0 : Array.Length);
             ArrayType[] ReturnValue = new ArrayType[ResultLength];
             int StartPosition = 0;
             if (Array1.IsNotNull())
@@ -83,7 +86,13 @@ namespace Utilities.DataTypes.ExtensionMethods
                 StartPosition = Array1.Length;
             }
             if (Array2.IsNotNull())
-                Array.Copy(Array2, 0, ReturnValue, StartPosition, Array2.Length);
+            {
+                foreach (ArrayType[] TempArray in Array2)
+                {
+                    Array.Copy(TempArray, 0, ReturnValue, StartPosition, TempArray.Length);
+                    StartPosition += TempArray.Length;
+                }
+            }
             return ReturnValue;
         }
 

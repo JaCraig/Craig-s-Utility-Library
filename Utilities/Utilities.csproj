@@ -100,6 +100,7 @@
     <Compile Include="AI\Anagram.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
+    <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />
     <Compile Include="DataTypes\RingBuffer.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />

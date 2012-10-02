@@ -51,11 +51,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
-        public void Exists()
+        public void TrueForAny2()
         {
             IEnumerable<int> Temp = new int[] { 1, 2, 3 }.ToList();
-            Assert.True(Temp.Exists(x => x > 2));
-            Assert.False(Temp.Exists(x => x < 1));
+            Assert.True(Temp.TrueForAny(x => x > 2));
+            Assert.False(Temp.TrueForAny(x => x < 1));
         }
 
         [Test]

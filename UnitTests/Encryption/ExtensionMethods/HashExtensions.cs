@@ -51,9 +51,9 @@ namespace UnitTests.Encryption.ExtensionMethods
         public void SaltTest()
         {
             string Data = "This is a test";
-            Assert.Equal("This is a test", Data.Salt().Left(14));
+            Assert.Equal("This is a test", Data.ToByteArray().Combine(new System.Random().GenerateSalt(100)).ToString(x => ((char)x).ToString(), "").Left(14));
             byte[] Data2 = Data.ToByteArray();
-            Assert.Equal(1014, Data2.Salt().Length);
+            Assert.Equal(1014, Data2.Combine(new System.Random().GenerateSalt(1000)).Length);
         }
     }
 }

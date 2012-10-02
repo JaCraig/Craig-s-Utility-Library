@@ -46,30 +46,29 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Dictionary">Dictionary to sort</param>
         /// <param name="Comparer">Comparer used to sort (defaults to GenericComparer)</param>
         /// <returns>The sorted dictionary</returns>
-        public static IDictionary<T1, T2> Sort<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null) where T1 : IComparable
+        public static IDictionary<T1, T2> Sort<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null)
+            where T1 : IComparable
         {
             Dictionary.ThrowIfNull("Dictionary");
-            return new SortedDictionary<T1, T2>(Dictionary, Comparer.NullCheck(new GenericComparer<T1>()));
+            return Dictionary.Sort(x => x.Key, Comparer);
         }
 
-        #endregion
-
-        #region SortByValue
-
         /// <summary>
-        /// Sorts a dictionary by value
+        /// Sorts a dictionary
         /// </summary>
         /// <typeparam name="T1">Key type</typeparam>
         /// <typeparam name="T2">Value type</typeparam>
+        /// <typeparam name="T3">Order by type</typeparam>
         /// <param name="Dictionary">Dictionary to sort</param>
+        /// <param name="OrderBy">Function used to order the dictionary</param>
         /// <param name="Comparer">Comparer used to sort (defaults to GenericComparer)</param>
         /// <returns>The sorted dictionary</returns>
-        public static IDictionary<T1, T2> SortByValue<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null) where T1 : IComparable
+        public static IDictionary<T1, T2> Sort<T1, T2, T3>(this IDictionary<T1, T2> Dictionary, Func<KeyValuePair<T1, T2>, T3> OrderBy, IComparer<T3> Comparer = null)
+            where T3 : IComparable
         {
             Dictionary.ThrowIfNull("Dictionary");
-            return new SortedDictionary<T1, T2>(Dictionary, Comparer.NullCheck(new GenericComparer<T1>()))
-                            .OrderBy(x => x.Value)
-                            .ToDictionary(x => x.Key, x => x.Value);
+            OrderBy.ThrowIfNull("OrderBy");
+            return Dictionary.OrderBy(OrderBy, Comparer.NullCheck(new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
         }
 
         #endregion

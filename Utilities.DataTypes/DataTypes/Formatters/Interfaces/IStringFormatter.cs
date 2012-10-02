@@ -19,37 +19,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
 
-namespace UnitTests.DataTypes.ExtensionMethods
+#endregion
+
+namespace Utilities.DataTypes.Formatters.Interfaces
 {
-    public class ArrayExtensions
+    /// <summary>
+    /// String formatter
+    /// </summary>
+    public interface IStringFormatter
     {
-        [Test]
-        public void ClearTest()
-        {
-            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
-            TestObject=TestObject.Clear();
-            foreach (int Item in TestObject)
-                Assert.Equal(0, Item);
-        }
+        #region Functions
 
-        [Test]
-        public void CombineTest()
-        {
-            int[] TestObject1 = new int[] { 1, 2, 3 };
-            int[] TestObject2 = new int[] { 4, 5, 6 };
-            int[] TestObject3 = new int[] { 7, 8, 9 };
-            TestObject1 = TestObject1.Combine(TestObject2, TestObject3);
-            for (int x = 0; x < 8; ++x)
-                Assert.Equal(x + 1, TestObject1[x]);
-        }
+        /// <summary>
+        /// Formats the string based on the pattern
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="FormatPattern">Format pattern</param>
+        /// <returns>The formatted string</returns>
+        string Format(string Input, string FormatPattern);
+
+        #endregion
     }
 }

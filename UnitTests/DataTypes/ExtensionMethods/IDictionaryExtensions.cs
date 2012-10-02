@@ -55,7 +55,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Test.Add("Z", 2);
             Test.Add("C", 3);
             Test.Add("A", 1);
-            Test = Test.SortByValue();
+            Test = Test.Sort(x => x.Value);
             string Value = "";
             foreach (string Key in Test.Keys)
                 Value += Test[Key].ToString();

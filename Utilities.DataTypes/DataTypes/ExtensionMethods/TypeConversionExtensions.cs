@@ -67,7 +67,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>False if it is null, true otherwise</returns>
         public static bool IsNotDefault<T>(this T Object, IEqualityComparer<T> EqualityComparer = null)
         {
-            return !EqualityComparer.NullCheck(new GenericEqualityComparer<T>()).Equals(Object, default(T));
+            return !Object.IsDefault(EqualityComparer);
         }
 
         #endregion
@@ -97,7 +97,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>False if it is null, true otherwise</returns>
         public static bool IsNotNull(this object Object)
         {
-            return Object != null;
+            return !Object.IsNull();
         }
 
         #endregion
@@ -111,35 +111,22 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is null, false otherwise</returns>
         public static bool IsNull(this object Object)
         {
-            return Object == null;
-        }
-
-        #endregion
-
-        #region IsNotNullOrDBNull
-
-        /// <summary>
-        /// Determines if the object is not null or DBNull
-        /// </summary>
-        /// <param name="Object">The object to check</param>
-        /// <returns>False if it is null/DBNull, true otherwise</returns>
-        public static bool IsNotNullOrDBNull(this object Object)
-        {
-            return Object != null && !Convert.IsDBNull(Object);
-        }
-
-        #endregion
-
-        #region IsNullOrDBNull
-
-        /// <summary>
-        /// Determines if the object is null or DBNull
-        /// </summary>
-        /// <param name="Object">The object to check</param>
-        /// <returns>True if it is null/DBNull, false otherwise</returns>
-        public static bool IsNullOrDBNull(this object Object)
-        {
             return Object == null || Convert.IsDBNull(Object);
+        }
+
+        #endregion
+
+        #region IsNullOrEmpty
+
+        /// <summary>
+        /// Determines if a list is null or empty
+        /// </summary>
+        /// <typeparam name="T">Data type</typeparam>
+        /// <param name="Value">List to check</param>
+        /// <returns>True if it is null or empty, false otherwise</returns>
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> Value)
+        {
+            return Value.IsNull() || Value.Count() == 0;
         }
 
         #endregion
@@ -155,7 +142,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The default value if it is null, the object otherwise</returns>
         public static T NullCheck<T>(this T Object, T DefaultValue = default(T))
         {
-            return Object == null ? DefaultValue : Object;
+            return Object.IsNull() ? DefaultValue : Object;
         }
 
         #endregion
@@ -248,36 +235,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
         {
             if (Item.IsNullOrEmpty())
-                throw Exception;
-            return Item;
-        }
-
-        #endregion
-
-        #region ThrowIfNullOrDBNull
-
-        /// <summary>
-        /// Determines if the object is null or DbNull and throws an ArgumentNullException if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Name">Name of the argument</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNullOrDBNull<T>(this T Item, string Name)
-        {
-            if (Item.IsNullOrDBNull())
-                throw new ArgumentNullException(Name);
-            return Item;
-        }
-
-        /// <summary>
-        /// Determines if the object is null or DbNull and throws the exception passed in if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Exception">Exception to throw</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNullOrDBNull<T>(this T Item, Exception Exception)
-        {
-            if (Item.IsNullOrDBNull())
                 throw Exception;
             return Item;
         }
@@ -459,12 +416,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
         public static R TryTo<T, R>(this T Object, R DefaultValue = default(R))
         {
-            try
-            {
-                return (R)Object.TryTo(typeof(R), DefaultValue);
-            }
-            catch { }
-            return DefaultValue;
+            return (R)Object.TryTo(typeof(R), DefaultValue);
         }
 
         /// <summary>
@@ -479,7 +431,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             try
             {
-                if (Object.IsNullOrDBNull())
+                if (Object.IsNull())
                     return DefaultValue;
                 if ((Object as string).IsNotNull())
                 {

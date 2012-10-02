@@ -244,7 +244,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public static DataType GetOutputParameter<DataType>(this DbCommand Command, string ID, DataType Default)
         {
-            return Command.IsNotNull() && Command.Parameters[ID].IsNotNullOrDBNull() ?
+            return Command.IsNotNull() && Command.Parameters[ID].IsNotNull() ?
                 Command.Parameters[ID].Value.TryTo<object, DataType>() : Default;
         }
 

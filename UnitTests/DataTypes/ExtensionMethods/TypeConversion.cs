@@ -116,10 +116,10 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Test]
         public void IsNullOrDBNull()
         {
-            Assert.False(new DateTime(1999, 1, 1).IsNullOrDBNull());
+            Assert.False(new DateTime(1999, 1, 1).IsNull());
             object TestObject = null;
-            Assert.True(TestObject.IsNullOrDBNull());
-            Assert.True(DBNull.Value.IsNullOrDBNull());
+            Assert.True(TestObject.IsNull());
+            Assert.True(DBNull.Value.IsNull());
         }
 
         [Test]
@@ -148,11 +148,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Test]
         public void ThrowIfNullOrDBNull()
         {
-            Assert.Throws<ArgumentNullException>(() => DBNull.Value.ThrowIfNullOrDBNull("TempName"));
+            Assert.Throws<ArgumentNullException>(() => DBNull.Value.ThrowIfNull("TempName"));
             object TempObject = null;
-            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrDBNull("TempName"));
-            Assert.Throws<ArgumentNullException>(() => DBNull.Value.ThrowIfNullOrDBNull(new ArgumentNullException("TempName")));
-            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrDBNull(new ArgumentNullException("TempName")));
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull("TempName"));
+            Assert.Throws<ArgumentNullException>(() => DBNull.Value.ThrowIfNull(new ArgumentNullException("TempName")));
+            Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull(new ArgumentNullException("TempName")));
         }
 
         [Test]

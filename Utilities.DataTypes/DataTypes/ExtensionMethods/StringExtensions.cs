@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.Formatters;
+using Utilities.DataTypes.Formatters.Interfaces;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -162,10 +163,11 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <param name="Format">Format of the output string</param>
+        /// <param name="Provider">String formatter provider (defaults to GenericStringFormatter)</param>
         /// <returns>The formatted string</returns>
-        public static string FormatString(this string Input, string Format)
+        public static string FormatString(this string Input, string Format, IStringFormatter Provider = null)
         {
-            return new GenericStringFormatter().Format(Input, Format);
+            return Provider.NullCheck(new GenericStringFormatter()).Format(Input, Format);
         }
 
         #endregion

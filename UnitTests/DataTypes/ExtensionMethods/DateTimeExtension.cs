@@ -105,12 +105,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
-        public void BeginningOfDay()
-        {
-            Assert.Equal(new DateTime(1999, 1, 2), new DateTime(1999, 1, 2, 12, 1, 1).BeginningOfDay());
-        }
-
-        [Test]
         public void EndOfDay()
         {
             Assert.Equal(new DateTime(1999, 1, 2, 23, 59, 59), new DateTime(1999, 1, 2, 12, 1, 1).EndOfDay());

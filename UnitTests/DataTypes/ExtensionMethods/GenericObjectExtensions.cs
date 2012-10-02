@@ -78,29 +78,30 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Test]
-        public void Do()
+        public void Chain3()
         {
             DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp, Temp.Do<DateTime>(x => x.AddSeconds(1)));
-            Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Do<DateTime?>(x => x.Value.AddSeconds(1), DateTime.MaxValue));
+            Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
+            Assert.Equal(default(DateTime?), ((DateTime?)null).Chain<DateTime?>(x => x.Value.AddSeconds(1)));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ((DateTime?)null).Chain<DateTime?>(x => x.Value.AddSeconds(1), DateTime.MaxValue));
         }
 
         [Test]
-        public void Do2()
+        public void Chain4()
         {
             DateTime Temp = new DateTime(1999, 1, 1);
-            Assert.Equal(Temp.AddSeconds(1), Temp.Do(x => x.AddSeconds(1)));
-            Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Do(x => x.Value.AddSeconds(1), DateTime.MaxValue));
+            Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
+            Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Chain(x => x.Value.AddSeconds(1), DateTime.MaxValue));
         }
 
         [Test]
-        public void Return()
+        public void Chain5()
         {
-            Assert.Null(new MyTestClass().Return(x => x.A));
-            Assert.NotNull(new MyTestClass().Return(x => x.A, new MyTestClass()));
-            Assert.Equal(10, new MyTestClass().Return(x => x.A, new MyTestClass()).Return(x => x.B));
-            Assert.Equal(0, new MyTestClass().Return(x => x.A).Return(x => x.B));
-            Assert.Equal(0, ((MyTestClass)null).Return(x => x.A).Return(x => x.B));
+            Assert.Null(new MyTestClass().Chain(x => x.A));
+            Assert.NotNull(new MyTestClass().Chain(x => x.A, new MyTestClass()));
+            Assert.Equal(10, new MyTestClass().Chain(x => x.A, new MyTestClass()).Chain(x => x.B));
+            Assert.Equal(0, new MyTestClass().Chain(x => x.A).Chain(x => x.B));
+            Assert.Equal(0, ((MyTestClass)null).Chain(x => x.A).Chain(x => x.B));
         }
 
         [Test]

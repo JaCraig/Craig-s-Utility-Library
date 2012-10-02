@@ -92,37 +92,6 @@ namespace Utilities.Encryption.ExtensionMethods
 
         #endregion
 
-        #region Salt
-
-        /// <summary>
-        /// Creates a random string and salts the array that is passed in
-        /// </summary>
-        /// <param name="Data">Byte array to salt</param>
-        /// <param name="Salt">Salt to use (if left null, one is randomly generated)</param>
-        /// <returns>The salted data array</returns>
-        public static byte[] Salt(this byte[] Data, byte[] Salt = null)
-        {
-            if (!Salt.IsNull())
-            {
-                return Data.Combine(Salt);
-            }
-            return Data.Combine(new System.Random().GenerateSalt(1000));
-        }
-
-        /// <summary>
-        /// Creates a random string and salts the string that is passed in
-        /// </summary>
-        /// <param name="Data">String to salt</param>
-        /// <param name="Salt">Salt to use (if left null, one is randomly generated)</param>
-        /// <param name="EncodingUsing">Encoding that the string uses (defaults to UTF8)</param>
-        /// <returns>The salted string array</returns>
-        public static string Salt(this string Data, string Salt = null, Encoding EncodingUsing = null)
-        {
-            return Data.ToByteArray(EncodingUsing).Salt(Salt.ToByteArray(EncodingUsing)).ToEncodedString(EncodingUsing);
-        }
-
-        #endregion
-
         #endregion
     }
 }

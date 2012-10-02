@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Math</id>
-		<version>3.2.0031</version>
+		<version>3.2.0067</version>
 		<title>Craig's Utility Library Math Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

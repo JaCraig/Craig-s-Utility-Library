@@ -74,7 +74,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Input">Input stream</param>
         /// <param name="EncodingUsing">Encoding that the string should be in (defaults to UTF8)</param>
         /// <returns>A string containing the content of the stream</returns>
-        public static string ReadAll(this Stream Input,Encoding EncodingUsing=null)
+        public static string ReadAll(this Stream Input, Encoding EncodingUsing = null)
         {
             return Input.ReadAllBinary().ToEncodedString(EncodingUsing);
         }

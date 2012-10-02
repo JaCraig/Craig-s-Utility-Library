@@ -69,8 +69,8 @@ namespace Utilities.ORM.Mapping
 
         public void AddToQueryProvider(IDatabase Database)
         {
-            Mapping<ClassType> Map = MicroORM.Map<ClassType>(TableName, IDProperty.Return(x => x.FieldName), IDProperty.Return(x => x.AutoIncrement), Database.Return(x => x.ParameterStarter), Database.Return(x => x.Name));
-            ((IProperty<ClassType>)IDProperty).Do(x => x.AddToQueryProvider(Database, Map));
+            Mapping<ClassType> Map = MicroORM.Map<ClassType>(TableName, IDProperty.Chain(x => x.FieldName), IDProperty.Chain(x => x.AutoIncrement), Database.Chain(x => x.ParameterStarter), Database.Chain(x => x.Name));
+            ((IProperty<ClassType>)IDProperty).Chain(x => x.AddToQueryProvider(Database, Map));
             foreach (IProperty Property in Properties)
                 ((IProperty<ClassType>)Property).AddToQueryProvider(Database, Map);
         }
