@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -37,7 +37,7 @@ namespace UnitTests.Reflection.Emit
 {
     public class MethodBuilder
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -46,7 +46,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method);
         }
 
-        [Test]
+        [Fact]
         public void Add()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -57,7 +57,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.Add(Local1, Local2));
         }
 
-        [Test]
+        [Fact]
         public void Assign()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -65,10 +65,10 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Method.Assign(Local1, Local2));
+            Assert.DoesNotThrow(() => Method.Assign(Local1, Local2));
         }
 
-        [Test]
+        [Fact]
         public void Box()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -79,7 +79,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.Box(Local1));
         }
 
-        [Test]
+        [Fact]
         public void Call()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -88,10 +88,10 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method2 = TestType.CreateMethod("TestMethod2");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Method.This.Call(Method2, null));
+            Assert.DoesNotThrow(() => Method.This.Call(Method2, null));
         }
 
-        [Test]
+        [Fact]
         public void Cast()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -99,10 +99,10 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Method.Cast(Method.This, typeof(object)));
+            Assert.DoesNotThrow(() => Method.Cast(Method.This, typeof(object)));
         }
 
-        [Test]
+        [Fact]
         public void TryCatch()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -117,7 +117,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Catch);
         }
 
-        [Test]
+        [Fact]
         public void CreateConstant()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -128,7 +128,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.CreateConstant(12));
         }
 
-        [Test]
+        [Fact]
         public void CreateLocal()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -140,7 +140,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Local2);
         }
 
-        [Test]
+        [Fact]
         public void Divide()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -151,7 +151,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.Divide(Local1, Local2));
         }
 
-        [Test]
+        [Fact]
         public void If()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -164,7 +164,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(If);
         }
 
-        [Test]
+        [Fact]
         public void Modulo()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -175,7 +175,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.Modulo(Local1, Local2));
         }
 
-        [Test]
+        [Fact]
         public void Multiply()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -186,7 +186,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.Multiply(Local1, Local2));
         }
 
-        [Test]
+        [Fact]
         public void NewObj()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -197,7 +197,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.NewObj(typeof(DateTime), new object[] { Local1 }));
         }
 
-        [Test]
+        [Fact]
         public void Return()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -205,10 +205,10 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateMethod("TestMethod", ReturnType: typeof(int));
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Method.Return(Local1));
+            Assert.DoesNotThrow(() => Method.Return(Local1));
         }
 
-        [Test]
+        [Fact]
         public void Subtract()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -219,7 +219,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.Subtract(Local1, Local2));
         }
 
-        [Test]
+        [Fact]
         public void Throw()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -227,10 +227,10 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
             VariableBase Local2 = Method.CreateLocal("Local2", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Method.Throw(Method.NewObj(typeof(Exception))));
+            Assert.DoesNotThrow(() => Method.Throw(Method.NewObj(typeof(Exception))));
         }
 
-        [Test]
+        [Fact]
         public void UnBox()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -241,7 +241,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.UnBox(Method.Box(Local1), typeof(int)));
         }
 
-        [Test]
+        [Fact]
         public void While()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");

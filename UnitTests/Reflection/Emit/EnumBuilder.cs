@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -34,14 +34,14 @@ namespace UnitTests.Reflection.Emit
 {
     public class EnumBuilder
     {
-        [Test]
+        [Fact]
         public void AddLiteral()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.EnumBuilder Enum = Assembly.CreateEnum("TestEnum");
-            Assert.DoesNotThrow<Exception>(() => Enum.AddLiteral("TestLiteral1", 1));
-            Assert.DoesNotThrow<Exception>(() => Enum.AddLiteral("TestLiteral2", 2));
-            Assert.DoesNotThrow<Exception>(() => Assembly.Create());
+            Assert.DoesNotThrow(() => Enum.AddLiteral("TestLiteral1", 1));
+            Assert.DoesNotThrow(() => Enum.AddLiteral("TestLiteral2", 2));
+            Assert.DoesNotThrow(() => Assembly.Create());
             Assert.NotNull(Activator.CreateInstance(Enum.DefinedType));
         }
     }

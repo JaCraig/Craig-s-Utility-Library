@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes;
 using Utilities.DataTypes.ExtensionMethods;
 
@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes
 {
     public class BTree
     {
-        [Test]
+        [Fact]
         public void Creation()
         {
             BinaryTree<int> Tree = new BinaryTree<int>();
@@ -44,7 +44,7 @@ namespace UnitTests.DataTypes
             Assert.Equal(2, Tree.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void Random()
         {
             BinaryTree<int> Tree = new BinaryTree<int>();

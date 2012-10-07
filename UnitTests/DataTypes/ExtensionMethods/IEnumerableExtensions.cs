@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 
@@ -32,14 +32,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class IEnumerableExtensions
     {
-        [Test]
+        [Fact]
         public void ForEachTest3()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.DoesNotThrow<Exception>(() => Temp.ForEach<int, float>(x => x > 0 ? (float)x : 1.0f));
+            Assert.DoesNotThrow(() => Temp.ForEach<int, float>(x => x > 0 ? (float)x : 1.0f));
         }
 
-        [Test]
+        [Fact]
         public void IsNullOrEmptyTest()
         {
             List<int> Temp = new List<int>();
@@ -50,7 +50,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.False(Temp.IsNullOrEmpty());
         }
 
-        [Test]
+        [Fact]
         public void TrueForAny2()
         {
             IEnumerable<int> Temp = new int[] { 1, 2, 3 }.ToList();
@@ -58,7 +58,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.False(Temp.TrueForAny(x => x < 1));
         }
 
-        [Test]
+        [Fact]
         public void RemoveDefaultsTest()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
@@ -66,7 +66,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
                 Assert.NotEqual(0, Value);
         }
 
-        [Test]
+        [Fact]
         public void ForEachTest()
         {
             StringBuilder Builder = new StringBuilder();
@@ -75,7 +75,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("00123", Builder.ToString());
         }
 
-        [Test]
+        [Fact]
         public void ForEachTest2()
         {
             StringBuilder Builder = new StringBuilder();
@@ -84,7 +84,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("00123", Builder.ToString());
         }
 
-        [Test]
+        [Fact]
         public void ForEachParallelTest()
         {
             StringBuilder Builder = new StringBuilder(30);
@@ -95,7 +95,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("00123", OrderedString);
         }
 
-        [Test]
+        [Fact]
         public void ForEachParallelTest2()
         {
             StringBuilder Builder = new StringBuilder();
@@ -107,7 +107,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("00123", OrderedString);
         }
 
-        [Test]
+        [Fact]
         public void ForTest()
         {
             StringBuilder Builder = new StringBuilder();
@@ -116,7 +116,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("00123", Builder.ToString());
         }
 
-        [Test]
+        [Fact]
         public void ForParallelTest()
         {
             StringBuilder Builder = new StringBuilder(30);
@@ -127,7 +127,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("00123", OrderedString);
         }
 
-        [Test]
+        [Fact]
         public void ForParallelTest2()
         {
             StringBuilder Builder = new StringBuilder();
@@ -139,11 +139,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("00123", OrderedString);
         }
 
-        [Test]
+        [Fact]
         public void ToArray()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.DoesNotThrow<Exception>(() => Temp.ToArray<int, double>(x => (double)x));
+            Assert.DoesNotThrow(() => Temp.ToArray<int, double>(x => (double)x));
             double[] Temp2 = Temp.ToArray<int, double>(x => (double)x);
             Assert.Equal(0, Temp2[0]);
             Assert.Equal(0, Temp2[1]);
@@ -152,11 +152,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(3, Temp2[4]);
         }
 
-        [Test]
+        [Fact]
         public void ToDataTable()
         {
             List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
-            Assert.DoesNotThrow<Exception>(() => Temp.ToDataTable());
+            Assert.DoesNotThrow(() => Temp.ToDataTable());
             DataTable Temp2 = Temp.ToDataTable();
             Assert.Equal(1, Temp2.Rows[0].ItemArray[0]);
             Assert.Equal("A", Temp2.Rows[0].ItemArray[1]);
@@ -166,7 +166,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("C", Temp2.Rows[2].ItemArray[1]);
         }
 
-        [Test]
+        [Fact]
         public void ToStringTest()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
@@ -174,60 +174,60 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.NotEqual("0,0,1,2,3", Temp.ToString());
         }
 
-        [Test]
+        [Fact]
         public void TrueForEach()
         {
             IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.True(Temp.TrueForAll(x => x < 4));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfTrueForAll()
         {
             IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Throws<Exception>(() => Temp.ThrowIfTrueForAll(new Exception(), x => x < 4));
-            Assert.DoesNotThrow<Exception>(() => Temp.ThrowIfTrueForAll(new Exception(), x => x > 4));
+            Assert.DoesNotThrow(() => Temp.ThrowIfTrueForAll(new Exception(), x => x > 4));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfFalseForAll()
         {
             IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Throws<Exception>(() => Temp.ThrowIfFalseForAll(new Exception(), x => x > 4));
-            Assert.DoesNotThrow<Exception>(() => Temp.ThrowIfFalseForAll(new Exception(), x => x < 4));
+            Assert.DoesNotThrow(() => Temp.ThrowIfFalseForAll(new Exception(), x => x < 4));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfTrueForAny()
         {
             IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Throws<Exception>(() => Temp.ThrowIfTrueForAny(new Exception(), x => x < 1));
-            Assert.DoesNotThrow<Exception>(() => Temp.ThrowIfTrueForAny(new Exception(), x => x > 4));
+            Assert.DoesNotThrow(() => Temp.ThrowIfTrueForAny(new Exception(), x => x > 4));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfFalseForAny()
         {
             IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Throws<Exception>(() => Temp.ThrowIfFalseForAny(new Exception(), x => x > 2));
-            Assert.DoesNotThrow<Exception>(() => Temp.ThrowIfFalseForAny(new Exception(), x => x < 4));
+            Assert.DoesNotThrow(() => Temp.ThrowIfFalseForAny(new Exception(), x => x < 4));
         }
 
-        [Test]
+        [Fact]
         public void TrueForAny()
         {
             IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.True(Temp.TrueForAny(x => x < 4, x => x == 0));
         }
 
-        [Test]
+        [Fact]
         public void TrueForEach2()
         {
             IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.True(Temp.TrueForAll(x => x < 4, x => x >= 0));
         }
 
-        [Test]
+        [Fact]
         public void TryAll()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
@@ -249,7 +249,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(5, Results2[5]);
         }
 
-        [Test]
+        [Fact]
         public void TryAllParallel()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
@@ -264,21 +264,21 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(22, Results2.Sum());
         }
 
-        [Test]
+        [Fact]
         public void ElementsBetween()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.ElementsBetween(0, 3));
         }
 
-        [Test]
+        [Fact]
         public void First()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.First(3));
         }
 
-        [Test]
+        [Fact]
         public void Last()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();

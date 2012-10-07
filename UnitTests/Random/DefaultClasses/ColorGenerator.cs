@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Utilities.Random.ExtensionMethods;
@@ -35,12 +35,12 @@ namespace UnitTests.Random.DefaultClasses
 {
     public class ColorGenerator
     {
-        [Test]
+        [Fact]
         public void Next()
         {
             Utilities.Random.DefaultClasses.ColorGenerator Generator = new Utilities.Random.DefaultClasses.ColorGenerator();
-            Assert.DoesNotThrow<Exception>(() => Generator.Next(new System.Random()));
-            Assert.DoesNotThrow<Exception>(() => Generator.Next(new System.Random(), Color.Green, Color.Blue));
+            Assert.DoesNotThrow(() => Generator.Next(new System.Random()));
+            Assert.DoesNotThrow(() => Generator.Next(new System.Random(), Color.Green, Color.Blue));
         }
     }
 }

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Utilities.Random.ExtensionMethods;
@@ -34,12 +34,12 @@ namespace UnitTests.Random.DefaultClasses
 {
     public class TimeSpanGenerator
     {
-        [Test]
+        [Fact]
         public void Next()
         {
             Utilities.Random.DefaultClasses.TimeSpanGenerator Generator = new Utilities.Random.DefaultClasses.TimeSpanGenerator();
-            Assert.Between(Generator.Next(new System.Random()), TimeSpan.MinValue, TimeSpan.MaxValue);
-            Assert.Between(Generator.Next(new System.Random(), new TimeSpan(10, 1, 1), new TimeSpan(12, 2, 3)), new TimeSpan(10, 1, 1), new TimeSpan(12, 2, 3));
+            Assert.InRange(Generator.Next(new System.Random()), TimeSpan.MinValue, TimeSpan.MaxValue);
+            Assert.InRange(Generator.Next(new System.Random(), new TimeSpan(10, 1, 1), new TimeSpan(12, 2, 3)), new TimeSpan(10, 1, 1), new TimeSpan(12, 2, 3));
         }
     }
 }

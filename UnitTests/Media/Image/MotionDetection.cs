@@ -23,32 +23,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Windows.Forms;
 using Utilities.Media.Image.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using UnitTests.Fixtures;
 
 namespace UnitTests.Media.Image
 {
-    public class MotionDetection:IDisposable
+    public class MotionDetection : IUseFixture<TestingDirectoryFixture>
     {
-        public MotionDetection()
-        {
-            new DirectoryInfo(@".\Testing").Create();
-        }
-
-        [Test]
+        [Fact]
         public void Process()
         {
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
                 using (Bitmap TestObject2 = TestObject.Rotate(10.0f))
                 {
-                    using (Bitmap Value = Assert.Do<Bitmap>(() => Utilities.Media.Image.MotionDetection.Process(TestObject, TestObject2, 25, Color.Red)))
+                    using (Bitmap Value = Utilities.Media.Image.MotionDetection.Process(TestObject, TestObject2, 25, Color.Red))
                     {
                         Assert.NotNull(Value);
                         Value.Save(@".\Testing\MotionDetection.jpg", ImageFormat.Jpeg);
@@ -57,9 +53,9 @@ namespace UnitTests.Media.Image
             }
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+
         }
     }
 }

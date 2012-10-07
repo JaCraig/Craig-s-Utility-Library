@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 
@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class ArrayExtensions
     {
-        [Test]
+        [Fact]
         public void ClearTest()
         {
             int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
@@ -41,7 +41,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
                 Assert.Equal(0, Item);
         }
 
-        [Test]
+        [Fact]
         public void CombineTest()
         {
             int[] TestObject1 = new int[] { 1, 2, 3 };

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,13 +36,13 @@ namespace UnitTests.Validation.Rules
 {
     public class GreaterThanOrEqual
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.Rules.GreaterThanOrEqual<ClassA, int> TestObject = new GreaterThanOrEqual<ClassA, int>(x => x.ItemA, 3, "Error");
             ClassA Temp = new ClassA();
             Temp.ItemA = 3;
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
             Temp.ItemA = 2;
             Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
         }

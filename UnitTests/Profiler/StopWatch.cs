@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Profiler;
 using System.Threading;
 
@@ -32,14 +32,14 @@ namespace UnitTests.Profiler
 {
     public class StopWatch
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             Utilities.Profiler.StopWatch TestObject = new Utilities.Profiler.StopWatch();
             TestObject.Start();
             Thread.Sleep(100);
             TestObject.Stop();
-            Assert.Between(TestObject.ElapsedTime, 80, 120);
+            Assert.InRange(TestObject.ElapsedTime, 80, 120);
         }
     }
 }

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,7 +36,7 @@ namespace UnitTests.Validation.Rules
 {
     public class NotEqual
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.Rules.NotEqual<ClassA, int> TestObject = new NotEqual<ClassA, int>(x => x.ItemA, 3, "Error");
@@ -44,7 +44,7 @@ namespace UnitTests.Validation.Rules
             Temp.ItemA = 3;
             Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
             Temp.ItemA = 0;
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
         }
     }
 }

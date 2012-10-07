@@ -23,21 +23,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
+using UnitTests.Fixtures;
 
 namespace UnitTests.FileFormats.INI
 {
-    public class INI:IDisposable
+    public class INI : IUseFixture<TestingDirectoryFixture>
     {
         public INI()
         {
             new DirectoryInfo(@"..\..\Data\FileFormats").CopyTo(@".\Testing");
         }
 
-        [Test]
+        [Fact]
         public void Load()
         {
             Utilities.FileFormats.INI.INI TestObject = new Utilities.FileFormats.INI.INI(@".\Testing\TestFile.ini");
@@ -47,7 +48,7 @@ namespace UnitTests.FileFormats.INI
             Assert.Equal("Value4", TestObject.ReadFromINI("Section2", "Key2"));
         }
 
-        [Test]
+        [Fact]
         public void Write()
         {
             Utilities.FileFormats.INI.INI TestObject = new Utilities.FileFormats.INI.INI(@".\Testing\TestFile.ini");
@@ -61,7 +62,7 @@ namespace UnitTests.FileFormats.INI
             Assert.Equal("Value4", TestObject.ReadFromINI("Section2", "Key2"));
         }
 
-        [Test]
+        [Fact]
         public void Delete()
         {
             Utilities.FileFormats.INI.INI TestObject = new Utilities.FileFormats.INI.INI(@".\Testing\TestFile.ini");
@@ -73,9 +74,9 @@ namespace UnitTests.FileFormats.INI
             Assert.Equal("Value4", TestObject.ReadFromINI("Section2", "Key2"));
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            
         }
     }
 }

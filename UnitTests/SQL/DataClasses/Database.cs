@@ -23,14 +23,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 
 namespace UnitTests.SQL.DataClasses
 {
     public class Database
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
@@ -41,7 +41,7 @@ namespace UnitTests.SQL.DataClasses
             Assert.Equal(0, Database.Views.Count);
         }
 
-        [Test]
+        [Fact]
         public void AddFunction()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
@@ -52,7 +52,7 @@ namespace UnitTests.SQL.DataClasses
             Assert.Equal(Database, Database.Functions[0].ParentDatabase);
         }
 
-        [Test]
+        [Fact]
         public void AddStoredProcedures()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
@@ -63,7 +63,7 @@ namespace UnitTests.SQL.DataClasses
             Assert.Equal(Database, Database.StoredProcedures[0].ParentDatabase);
         }
 
-        [Test]
+        [Fact]
         public void AddTable()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
@@ -73,7 +73,7 @@ namespace UnitTests.SQL.DataClasses
             Assert.Equal(Database, Database.Tables[0].ParentDatabase);
         }
 
-        [Test]
+        [Fact]
         public void AddView()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");

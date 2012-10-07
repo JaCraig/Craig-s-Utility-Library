@@ -23,25 +23,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Windows.Forms;
 using Utilities.Media.Image.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using UnitTests.Fixtures;
 
 namespace UnitTests.Media.Image
 {
-    public class OilPainting: IDisposable
+    public class OilPainting : IUseFixture<TestingDirectoryFixture>
     {
-        public OilPainting()
-        {
-            new DirectoryInfo(@".\Testing").Create();
-        }
-
-        [Test]
+        [Fact]
         public void Generate()
         {
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
@@ -54,9 +50,9 @@ namespace UnitTests.Media.Image
             }
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            
         }
     }
 }

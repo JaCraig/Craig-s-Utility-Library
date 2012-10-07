@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -43,38 +43,38 @@ namespace UnitTests.Reflection.AOP
             new DirectoryInfo(@".\TestingDLL").Create();
         }
 
-        [Test]
+        [Fact]
         public void Create()
         {
             Assert.NotNull(Manager);
         }
 
-        [Test]
+        [Fact]
         public void AddAspect()
         {
-            Assert.DoesNotThrow<Exception>(() => Manager.AddAspect(new TestAspect()));
+            Assert.DoesNotThrow(() => Manager.AddAspect(new TestAspect()));
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
-            Assert.DoesNotThrow<Exception>(() => Manager.AddAspect(new TestAspect()));
-            Assert.DoesNotThrow<Exception>(() => Manager.Setup(typeof(TestClass)));
-            Assert.DoesNotThrow<Exception>(() => Manager.Save());
+            Assert.DoesNotThrow(() => Manager.AddAspect(new TestAspect()));
+            Assert.DoesNotThrow(() => Manager.Setup(typeof(TestClass)));
+            Assert.DoesNotThrow(() => Manager.Save());
             Assert.True(new FileInfo(@".\TestingDLL\Aspects.dll").Exists);
         }
 
-        [Test]
+        [Fact]
         public void Setup()
         {
-            Assert.DoesNotThrow<Exception>(() => Manager.AddAspect(new TestAspect()));
-            Assert.DoesNotThrow<Exception>(() => Manager.Setup(typeof(TestClass)));
+            Assert.DoesNotThrow(() => Manager.AddAspect(new TestAspect()));
+            Assert.DoesNotThrow(() => Manager.Setup(typeof(TestClass)));
         }
 
-        [Test]
+        [Fact]
         public void CreateTest()
         {
-            Assert.DoesNotThrow<Exception>(() => Manager.AddAspect(new TestAspect()));
+            Assert.DoesNotThrow(() => Manager.AddAspect(new TestAspect()));
             TestClass TestObject = Manager.Create<TestClass>();
             Assert.NotNull(TestObject);
             Assert.Equal("A", TestObject.TestMethod());

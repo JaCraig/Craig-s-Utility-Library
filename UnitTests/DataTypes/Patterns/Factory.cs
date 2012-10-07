@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.Patterns;
 
 namespace UnitTests.DataTypes.Patterns
 {
     public class Factory
     {
-        [Test]
+        [Fact]
         public void Register()
         {
             Factory<string, int> FactoryObject = new Factory<string, int>();
@@ -40,7 +40,7 @@ namespace UnitTests.DataTypes.Patterns
             Assert.Equal(1, FactoryObject.Create("A"));
         }
 
-        [Test]
+        [Fact]
         public void Register2()
         {
             Factory<string, int> FactoryObject = new Factory<string, int>();
@@ -49,7 +49,7 @@ namespace UnitTests.DataTypes.Patterns
             Assert.Equal(1, FactoryObject.Create("A"));
         }
 
-        [Test]
+        [Fact]
         public void Register3()
         {
             Factory<string, int> FactoryObject = new Factory<string, int>();

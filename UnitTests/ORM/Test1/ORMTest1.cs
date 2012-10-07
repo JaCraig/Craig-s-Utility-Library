@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL.SQLServer;
 using Utilities.SQL.DataClasses;
 using Utilities.DataTypes.ExtensionMethods;
@@ -41,7 +41,7 @@ namespace UnitTests.ORM.Test1
             new Utilities.ORM.ORM(typeof(Account).Assembly);
         }
 
-        [Test]
+        [Fact]
         public void DatabaseCreation()
         {
             Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase;Integrated Security=SSPI;Pooling=false");
@@ -62,7 +62,7 @@ namespace UnitTests.ORM.Test1
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Role_UserAudit"));
         }
 
-        [Test]
+        [Fact]
         public void ManyToOneTest()
         {
             Item Temp = new Item();

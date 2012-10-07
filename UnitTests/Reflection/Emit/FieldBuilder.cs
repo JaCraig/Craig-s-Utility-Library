@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -37,7 +37,7 @@ namespace UnitTests.Reflection.Emit
 {
     public class FieldBuilder
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -50,27 +50,27 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Field.Builder);
         }
 
-        [Test]
+        [Fact]
         public void Assign()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Field.Assign(12));
+            Assert.DoesNotThrow(() => Field.Assign(12));
         }
 
-        [Test]
+        [Fact]
         public void Call()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Field.Call("ToString"));
+            Assert.DoesNotThrow(() => Field.Call("ToString"));
         }
 
-        [Test]
+        [Fact]
         public void GetDefinition()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -79,24 +79,24 @@ namespace UnitTests.Reflection.Emit
             Assert.NotEmpty(Field.GetDefinition());
         }
 
-        [Test]
+        [Fact]
         public void Load()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            Assert.DoesNotThrow<Exception>(() => Field.Load(Method.Generator));
+            Assert.DoesNotThrow(() => Field.Load(Method.Generator));
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             Utilities.Reflection.Emit.FieldBuilder Field = TestType.CreateField("Field1", typeof(int));
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
-            Assert.DoesNotThrow<Exception>(() => Field.Save(Method.Generator));
+            Assert.DoesNotThrow(() => Field.Save(Method.Generator));
         }
     }
 }

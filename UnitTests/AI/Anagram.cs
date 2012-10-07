@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes;
 
 namespace UnitTests.AI
 {
     public class Anagram
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             Utilities.AI.Anagram TestObject = new Utilities.AI.Anagram(new string[] { "bat", "bored", "care" }.ToList());

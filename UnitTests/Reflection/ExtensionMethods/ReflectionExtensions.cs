@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Reflection.ExtensionMethods;
 using System.Collections;
 using System.IO;
@@ -35,14 +35,14 @@ namespace UnitTests.Reflection.ExtensionMethods
 {
     public class ReflectionExtensions
     {
-        [Test]
+        [Fact]
         public void CallMethodTest()
         {
             int Value = 10;
             Assert.Equal("10", Value.CallMethod<string>("ToString"));
         }
 
-        [Test]
+        [Fact]
         public void DumpPropertiesTest()
         {
             List<int> TestObject = new List<int>();
@@ -51,45 +51,45 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal("<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody><tr><td>Capacity</td><td>16</td></tr><tr><td>Count</td><td>10</td></tr><tr><td>Item</td><td></td></tr></tbody></table>", TestObject.DumpProperties());
         }
 
-        [Test]
+        [Fact]
         public void IsIEnumerableTest()
         {
             List<int> TestObject = new List<int>();
             Assert.True(TestObject.GetType().IsIEnumerable());
         }
 
-        [Test]
+        [Fact]
         public void IsOfTypeTest()
         {
             List<int> TestObject = new List<int>();
             Assert.True(TestObject.IsOfType(typeof(List<int>)));
         }
 
-        [Test]
+        [Fact]
         public void LoadAssembliesTest()
         {
-            Assert.Equal(11, new DirectoryInfo(@".\").LoadAssemblies().Count());
+            Assert.Equal(4, new DirectoryInfo(@".\").LoadAssemblies().Count());
         }
 
-        [Test]
+        [Fact]
         public void LoadTest()
         {
             Assert.NotNull(AssemblyName.GetAssemblyName(new FileInfo(@".\Utilities.dll").FullName).Load());
         }
 
-        [Test]
+        [Fact]
         public void GetTypesTest()
         {
             Assert.Equal(3, AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
                                         .Load()
                                         .GetTypes<TestInterface>()
                                         .Count());
-            Assert.Equal(3, new DirectoryInfo(@".\").LoadAssemblies()
+            Assert.Equal(6, new DirectoryInfo(@".\").LoadAssemblies()
                                                     .GetTypes<TestInterface>()
                                                     .Count());
         }
 
-        [Test]
+        [Fact]
         public void CreateInstanceTest()
         {
             Assert.NotNull(AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
@@ -97,27 +97,27 @@ namespace UnitTests.Reflection.ExtensionMethods
                                        .GetTypes<TestClass>()
                                        .First()
                                        .CreateInstance());
-            Assert.OfType<TestClass>(AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
+            Assert.IsType<TestClass>(AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
                                        .Load()
                                        .GetTypes<TestClass>()
                                        .First()
                                        .CreateInstance<TestInterface>());
         }
 
-        [Test]
+        [Fact]
         public void HasDefaultConstructor()
         {
             Assert.True(typeof(TestClass).HasDefaultConstructor());
         }
 
-        [Test]
+        [Fact]
         public void GetObjectsTest()
         {
-            Assert.Equal(2, new DirectoryInfo(@".\").GetObjects<TestInterface>()
+            Assert.Equal(4, new DirectoryInfo(@".\").GetObjects<TestInterface>()
                                                     .Count());
         }
 
-        [Test]
+        [Fact]
         public void MakeShallowCopyTest()
         {
             TestClass TestObject1=new TestClass();
@@ -129,7 +129,7 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal(TestObject1.Value3, TestObject2.Value3);
         }
 
-        [Test]
+        [Fact]
         public void MakeShallowCopyTest2()
         {
             TestClass TestObject1 = new TestClass();
@@ -139,7 +139,7 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal(TestObject1.Value2, TestObject2.Value2);
         }
 
-        [Test]
+        [Fact]
         public void SetPropertyTest()
         {
             TestClass TestObject1 = new TestClass();
@@ -147,7 +147,7 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal(3, TestObject1.Value);
         }
 
-        [Test]
+        [Fact]
         public void GetNameTest()
         {
             Assert.Equal("TestClass", typeof(TestClass).GetName());
@@ -155,21 +155,21 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal("TestClass3<Int32>", typeof(TestClass3<int>).GetName());
         }
 
-        [Test]
+        [Fact]
         public void GetPropertyTypeTest()
         {
             Assert.Equal(typeof(int), new TestClass().GetPropertyType("Value"));
             Assert.Equal(typeof(int), new TestClass().GetPropertyType("Value2"));
         }
 
-        [Test]
+        [Fact]
         public void GetPropertyTest()
         {
             Assert.Equal(1, new TestClass().GetProperty("Value"));
             Assert.Equal(2, new TestClass().GetProperty("Value2"));
         }
 
-        [Test]
+        [Fact]
         public void GetPropertyNameTest()
         {
             Expression<Func<TestClass, int>> TestObject = x => x.Value;
@@ -178,7 +178,7 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal("Value2", TestObject2.GetPropertyName());
         }
 
-        [Test]
+        [Fact]
         public void GetPropertySetterTest()
         {
             Expression<Func<TestClass, int>> TestObject = x => x.Value;
@@ -188,7 +188,7 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal(10, TestObject3.Value);
         }
 
-        [Test]
+        [Fact]
         public void GetPropertySetterTest2()
         {
             Expression<Func<TestClass4, int>> TestObject = x => x.Temp.Value;
@@ -198,7 +198,7 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal(10, TestObject3.Temp.Value);
         }
 
-        [Test]
+        [Fact]
         public void GetPropertyGetterTest()
         {
             Expression<Func<TestClass, int>> TestObject = typeof(TestClass).GetProperty("Value").GetPropertyGetter<TestClass, int>();
@@ -207,32 +207,32 @@ namespace UnitTests.Reflection.ExtensionMethods
             Assert.Equal(10, TestObject.Compile()(TestObject2));
         }
 
-        [Test]
+        [Fact]
         public void ToLongVersionString()
         {
             Assert.Equal("1.0.0.0", typeof(TestClass).Assembly.ToLongVersionString());
         }
 
-        [Test]
+        [Fact]
         public void ToShortVersionString()
         {
             Assert.Equal("1.0", typeof(TestClass).Assembly.ToShortVersionString());
         }
 
-        [Test]
+        [Fact]
         public void GetAttributes()
         {
             Assert.Equal(1, typeof(TestClass).GetAttributes<TestingAttribute>().Length);
         }
 
-        [Test]
+        [Fact]
         public void GetAttribute()
         {
             TestingAttribute TestObject = typeof(TestClass).GetAttribute<TestingAttribute>();
             Assert.NotNull(TestObject);
         }
 
-        [Test]
+        [Fact]
         public void MarkedWith()
         {
             Assert.Equal(1, AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)

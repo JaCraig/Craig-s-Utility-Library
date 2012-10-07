@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes;
 using System.Data;
 using Utilities.Events.EventArgs;
@@ -36,7 +36,7 @@ namespace UnitTests.DataTypes
 {
     public class ListMapping
     {
-        [Test]
+        [Fact]
         public void RandomTest()
         {
             ListMapping<string, int> TestObject = new ListMapping<string, int>();
@@ -55,7 +55,7 @@ namespace UnitTests.DataTypes
             Assert.Equal(10, TestObject.Count);
         }
 
-        [Test]
+        [Fact]
         public void RemoveTest()
         {
             ListMapping<string, int> TestObject = new ListMapping<string, int>();
@@ -66,7 +66,7 @@ namespace UnitTests.DataTypes
             Assert.Equal(1, TestObject["A"][0]);
         }
 
-        [Test]
+        [Fact]
         public void ContainsTest()
         {
             ListMapping<string, int> TestObject = new ListMapping<string, int>();

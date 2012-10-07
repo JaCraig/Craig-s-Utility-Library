@@ -24,24 +24,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.IO.Logging.Enums;
 using Utilities.IO.ExtensionMethods;
+using UnitTests.Fixtures;
 
 namespace UnitTests.IO.Logging
 {
-    public class LoggingManager:IDisposable
+    public class LoggingManager : IUseFixture<LoggingManagerFixture>
     {
         public LoggingManager() { }
 
-        [Test]
+        [Fact]
         public void GetLog()
         {
+            Utilities.IO.Logging.LoggingManager.Destroy();
             Assert.Throws<ArgumentException>(() => Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>());
         }
 
-        [Test]
+        [Fact]
         public void GetLog2()
         {
             Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>();
@@ -49,34 +51,34 @@ namespace UnitTests.IO.Logging
             Assert.NotNull(Log);
         }
 
-        [Test]
+        [Fact]
         public void AddLog()
         {
-            Assert.DoesNotThrow<Exception>(() => Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>());
+            Assert.DoesNotThrow(() => Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>());
             Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>();
             Assert.NotNull(Log);
         }
 
-        [Test]
+        [Fact]
         public void AddLog2()
         {
-            Assert.DoesNotThrow<Exception>(() => Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>("NotDefault"));
+            Assert.DoesNotThrow(() => Utilities.IO.Logging.LoggingManager.AddLog<Utilities.IO.Logging.ConsoleLog>("NotDefault"));
             Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>("NotDefault");
             Assert.NotNull(Log);
         }
 
-        [Test]
+        [Fact]
         public void AddLog3()
         {
             Utilities.IO.Logging.ConsoleLog TempConsoleLog = new Utilities.IO.Logging.ConsoleLog();
-            Assert.DoesNotThrow<Exception>(() => Utilities.IO.Logging.LoggingManager.AddLog(TempConsoleLog));
+            Assert.DoesNotThrow(() => Utilities.IO.Logging.LoggingManager.AddLog(TempConsoleLog));
             Utilities.IO.Logging.ConsoleLog Log = Utilities.IO.Logging.LoggingManager.GetLog<Utilities.IO.Logging.ConsoleLog>();
             Assert.Equal(TempConsoleLog, Log);
         }
 
-        public void Dispose()
+        public void SetFixture(LoggingManagerFixture data)
         {
-            Utilities.IO.Logging.LoggingManager.Destroy();
+
         }
     }
 }

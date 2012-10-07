@@ -23,25 +23,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using System.Data;
 using Utilities.Configuration;
 using Utilities.Configuration.Interfaces;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
+using UnitTests.Fixtures;
 
 namespace UnitTests.Configuration
 {
-    public class Config:IDisposable
+    public class Config:IUseFixture<TestingDirectoryFixture>
     {
         public Config()
         {
-            new DirectoryInfo(@".\Test").Create();
             Utilities.Configuration.ConfigurationManager.RegisterConfigFile(typeof(TestConfig).Assembly);
         }
 
-        [Test]
+        [Fact]
         public void Test()
         {
             TestConfig3 Config = Utilities.Configuration.ConfigurationManager.GetConfigFile<TestConfig3>("TestConfig3");
@@ -63,9 +63,9 @@ namespace UnitTests.Configuration
             Assert.Equal(3f, Config.Value3);
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Test").DeleteAll();
+            
         }
     }
 
@@ -87,7 +87,7 @@ namespace UnitTests.Configuration
         {
             get
             {
-                return @".\Test\Config.xml";
+                return @".\Testing\Config.xml";
             }
         }
 

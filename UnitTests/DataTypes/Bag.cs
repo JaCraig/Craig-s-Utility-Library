@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.StringGenerators;
@@ -33,7 +33,7 @@ namespace UnitTests.DataTypes
 {
     public class Bag
     {
-        [Test]
+        [Fact]
         public void RandomTest()
         {
             Bag<string> BagObject = new Bag<string>();

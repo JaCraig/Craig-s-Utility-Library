@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Utilities.Random.ExtensionMethods;
@@ -34,18 +34,18 @@ namespace UnitTests.Random.DefaultClasses
 {
     public class DecimalGenerator
     {
-        [Test]
+        [Fact]
         public void Next()
         {
             Utilities.Random.DefaultClasses.DecimalGenerator<decimal> Generator = new Utilities.Random.DefaultClasses.DecimalGenerator<decimal>();
-            Assert.Between(Generator.Next(new System.Random()), 0, 1);
-            Assert.Between(Generator.Next(new System.Random(), 1.05m, 1.1m), 1.05m, 1.1m);
+            Assert.InRange(Generator.Next(new System.Random()), 0, 1);
+            Assert.InRange(Generator.Next(new System.Random(), 1.05m, 1.1m), 1.05m, 1.1m);
             Utilities.Random.DefaultClasses.DecimalGenerator<float> Generator2 = new Utilities.Random.DefaultClasses.DecimalGenerator<float>();
-            Assert.Between(Generator2.Next(new System.Random()), 0, 1);
-            Assert.Between(Generator2.Next(new System.Random(), 1.05f, 1.1f), 1.05f, 1.1f);
+            Assert.InRange(Generator2.Next(new System.Random()), 0, 1);
+            Assert.InRange(Generator2.Next(new System.Random(), 1.05f, 1.1f), 1.05f, 1.1f);
             Utilities.Random.DefaultClasses.DecimalGenerator<double> Generator3 = new Utilities.Random.DefaultClasses.DecimalGenerator<double>();
-            Assert.Between(Generator3.Next(new System.Random()), 0, 1);
-            Assert.Between(Generator3.Next(new System.Random(), 1.05d, 1.1d), 1.05d, 1.1d);
+            Assert.InRange(Generator3.Next(new System.Random()), 0, 1);
+            Assert.InRange(Generator3.Next(new System.Random(), 1.05d, 1.1d), 1.05d, 1.1d);
         }
     }
 }

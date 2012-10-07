@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Utilities.Random.ExtensionMethods;
@@ -34,20 +34,20 @@ namespace UnitTests.Random.DefaultClasses
 {
     public class IntegerGenerator
     {
-        [Test]
+        [Fact]
         public void Next()
         {
             Utilities.Random.DefaultClasses.IntegerGenerator<int> Generator = new Utilities.Random.DefaultClasses.IntegerGenerator<int>();
-            Assert.Between(Generator.Next(new System.Random()), 0, int.MaxValue);
-            Assert.Between(Generator.Next(new System.Random(), 10, 300), 10, 300);
+            Assert.InRange(Generator.Next(new System.Random()), 0, int.MaxValue);
+            Assert.InRange(Generator.Next(new System.Random(), 10, 300), 10, 300);
 
             Utilities.Random.DefaultClasses.IntegerGenerator<long> Generator2 = new Utilities.Random.DefaultClasses.IntegerGenerator<long>();
-            Assert.Between(Generator2.Next(new System.Random()), 0, long.MaxValue);
-            Assert.Between(Generator2.Next(new System.Random(), 10, 300), 10, 300);
+            Assert.InRange(Generator2.Next(new System.Random()), 0, long.MaxValue);
+            Assert.InRange(Generator2.Next(new System.Random(), 10, 300), 10, 300);
 
             Utilities.Random.DefaultClasses.IntegerGenerator<ushort> Generator3 = new Utilities.Random.DefaultClasses.IntegerGenerator<ushort>();
-            Assert.Between(Generator3.Next(new System.Random()), 0, ushort.MaxValue);
-            Assert.Between(Generator3.Next(new System.Random(), 10, 300), 10, 300);
+            Assert.InRange(Generator3.Next(new System.Random()), 0, ushort.MaxValue);
+            Assert.InRange(Generator3.Next(new System.Random(), 10, 300), 10, 300);
         }
     }
 }

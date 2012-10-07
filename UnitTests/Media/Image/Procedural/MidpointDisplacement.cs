@@ -23,37 +23,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Windows.Forms;
 using Utilities.Media.Image.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using UnitTests.Fixtures;
 
 namespace UnitTests.Media.Image.Procedural
 {
-    public class MidpointDisplacement : IDisposable
+    public class MidpointDisplacement : IUseFixture<TestingDirectoryFixture>
     {
-        public MidpointDisplacement()
-        {
-            new DirectoryInfo(@".\Testing").Create();
-        }
-
-        [Test]
+        [Fact]
         public void Generate()
         {
-            using (Bitmap TempBitmap = Assert.Do<Bitmap>(() => Utilities.Media.Image.Procedural.MidpointDisplacement.Generate(100, 100, 10, 7, 6, 50, 7453457)))
+            using (Bitmap TempBitmap = Utilities.Media.Image.Procedural.MidpointDisplacement.Generate(100, 100, 10, 7, 6, 50, 7453457))
             {
                 TempBitmap.Save(@".\Testing\MidpointDisplacement.jpg", ImageFormat.Jpeg);
                 Assert.NotNull(TempBitmap);
             }
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
         }
     }
 }

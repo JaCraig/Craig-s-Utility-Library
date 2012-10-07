@@ -23,23 +23,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Math;
 
 namespace UnitTests.Math
 {
     public class Vector3
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             Utilities.Math.Vector3 TestObject = new Utilities.Math.Vector3(2.5, 4.1, 1.3);
-            Assert.Between(TestObject.Magnitude, 4.97, 4.98);
+            Assert.InRange(TestObject.Magnitude, 4.97, 4.98);
             TestObject.Normalize();
-            Assert.Between(TestObject.X, .5, .6);
-            Assert.Between(TestObject.Y, .82, .83);
-            Assert.Between(TestObject.Z, .26, .27);
+            Assert.InRange(TestObject.X, .5, .6);
+            Assert.InRange(TestObject.Y, .82, .83);
+            Assert.InRange(TestObject.Z, .26, .27);
         }
     }
 }

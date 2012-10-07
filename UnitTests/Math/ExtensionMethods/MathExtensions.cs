@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Math.ExtensionMethods;
 
 namespace UnitTests.Math.ExtensionMethods
 {
     public class MathExtensions
     {
-        [Test]
+        [Fact]
         public void BetweenTest()
         {
             int Value = 10;
@@ -39,7 +39,7 @@ namespace UnitTests.Math.ExtensionMethods
             Assert.False(Value.Between(11, 15));
         }
 
-        [Test]
+        [Fact]
         public void ClampTest()
         {
             int Value = 10;
@@ -48,14 +48,14 @@ namespace UnitTests.Math.ExtensionMethods
             Assert.Equal(10, Value.Clamp(11, 1));
         }
 
-        [Test]
+        [Fact]
         public void FactorialTest()
         {
             int Value = 8;
             Assert.Equal(40320, Value.Factorial());
         }
 
-        [Test]
+        [Fact]
         public void MaxTest()
         {
             int Value = 4;
@@ -63,13 +63,13 @@ namespace UnitTests.Math.ExtensionMethods
             Assert.Equal(4, Value.Max(1));
         }
 
-        [Test]
+        [Fact]
         public void MedianTest()
         {
             Assert.Equal(10, new int[] { 9, 11, 10 }.ToList().Median());
         }
 
-        [Test]
+        [Fact]
         public void MinTest()
         {
             int Value = 4;
@@ -77,32 +77,32 @@ namespace UnitTests.Math.ExtensionMethods
             Assert.Equal(1, Value.Min(1));
         }
 
-        [Test]
+        [Fact]
         public void ModeTest()
         {
             Assert.Equal(20, new int[] { 5, 2, 20, 5, 20, 8, 9, 20, 10 }.ToList().Mode());
         }
 
-        [Test]
+        [Fact]
         public void PowTest()
         {
             double Value = 4;
             Assert.Equal(256, Value.Pow(4));
         }
 
-        [Test]
+        [Fact]
         public void StandardDeviationTest()
         {
-            Assert.Between(new double[] { 5, 4, 2, 4, 7, 9, 1, 2, 0 }.ToList().StandardDeviation(), 2.73, 2.74);
+            Assert.InRange(new double[] { 5, 4, 2, 4, 7, 9, 1, 2, 0 }.ToList().StandardDeviation(), 2.73, 2.74);
         }
 
-        [Test]
+        [Fact]
         public void VarianceTest()
         {
-            Assert.Between(new double[] { 5, 4, 2, 4, 7, 9, 1, 2, 0 }.ToList().Variance(), 7.5, 7.6);
+            Assert.InRange(new double[] { 5, 4, 2, 4, 7, 9, 1, 2, 0 }.ToList().Variance(), 7.5, 7.6);
         }
 
-        [Test]
+        [Fact]
         public void SqrtTest()
         {
             double Value=4;

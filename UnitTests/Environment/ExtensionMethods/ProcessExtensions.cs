@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Environment.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Security.Cryptography;
@@ -34,7 +34,7 @@ namespace UnitTests.Environment.ExtensionMethods
 {
     public class ProcessExtensions
     {
-        [Test]
+        [Fact]
         public void GetInformation()
         {
             string Value=Process.GetProcesses().GetInformation();

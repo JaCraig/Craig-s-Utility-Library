@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes;
 using System.Data;
 using Utilities.Events.EventArgs;
@@ -33,7 +33,7 @@ namespace UnitTests.DataTypes
 {
     public class List
     {
-        [Test]
+        [Fact]
         public void ChangedTest()
         {
             Utilities.DataTypes.List<int> TestObject = new Utilities.DataTypes.List<int>();

@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.CodeGen;
 
 namespace UnitTests.CodeGen
 {
     public class DefaultInput
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.CodeGen.DefaultInput Value = new Utilities.CodeGen.DefaultInput();

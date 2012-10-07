@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.StringGenerators;
 
@@ -41,7 +41,7 @@ namespace UnitTests.FileFormats.Cisco
             Generator = new Utilities.Random.Random(System.Environment.TickCount); 
         }
 
-        [Test]
+        [Fact]
         public void NullTest()
         {
             DirectoryObject.DirectoryEntries = null;
@@ -51,7 +51,7 @@ namespace UnitTests.FileFormats.Cisco
             Assert.NotEmpty(DirectoryObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void RandomTitleAndPrompt()
         {
             DirectoryObject.Title = Generator.Next<string>(new RegexStringGenerator(30));
@@ -60,7 +60,7 @@ namespace UnitTests.FileFormats.Cisco
             Assert.Contains(DirectoryObject.Prompt, DirectoryObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void NullInLists()
         {
             DirectoryObject.DirectoryEntries.Add(null);

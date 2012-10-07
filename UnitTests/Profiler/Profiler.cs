@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Profiler;
 using System.Threading;
 
@@ -32,13 +32,13 @@ namespace UnitTests.Profiler
 {
     public class Profiler
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             Utilities.Profiler.Profiler TestObject = new Utilities.Profiler.Profiler("Func1");
             Thread.Sleep(600);
             TestObject.Stop();
-            Assert.Between(TestObject.TotalTime, 500, 700);
+            Assert.InRange(TestObject.TotalTime, 500, 700);
         }
     }
 }

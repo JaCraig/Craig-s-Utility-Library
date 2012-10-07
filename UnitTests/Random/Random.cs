@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
@@ -32,12 +32,12 @@ namespace UnitTests.Random
 {
     public class Random
     {
-        [Test]
+        [Fact]
         public void ThreadSafeNext()
         {
             Parallel.For(0, 100, x =>
             {
-                Assert.DoesNotThrow<Exception>(() => Utilities.Random.Random.ThreadSafeNext(-20, 20));
+                Assert.DoesNotThrow(() => Utilities.Random.Random.ThreadSafeNext(-20, 20));
             });
         }
     }

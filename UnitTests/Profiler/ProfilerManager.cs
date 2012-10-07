@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Profiler;
 using System.Threading;
 
@@ -32,7 +32,7 @@ namespace UnitTests.Profiler
 {
     public class ProfilerManager
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             Utilities.Profiler.ProfilerManager.Instance.Time(() => Thread.Sleep(50),"ASD");

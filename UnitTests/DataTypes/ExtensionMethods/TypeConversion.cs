@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 
@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class TypeConversion
     {
-        [Test]
+        [Fact]
         public void TypeToDbType()
         {
             Assert.Equal(DbType.Int32, typeof(int).ToDbType());
@@ -40,7 +40,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(DbType.Single, typeof(float).ToDbType());
         }
 
-        [Test]
+        [Fact]
         public void TypeToSqlDbType()
         {
             Assert.Equal(SqlDbType.Int, typeof(int).ToSQLDbType());
@@ -48,7 +48,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(SqlDbType.Real, typeof(float).ToSQLDbType());
         }
 
-        [Test]
+        [Fact]
         public void DbTypeToType()
         {
             Assert.Equal(typeof(int), DbType.Int32.ToType());
@@ -56,7 +56,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(typeof(float), DbType.Single.ToType());
         }
 
-        [Test]
+        [Fact]
         public void SqlDbTypeToType()
         {
             Assert.Equal(typeof(int), SqlDbType.Int.ToType());
@@ -64,7 +64,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(typeof(float), SqlDbType.Real.ToType());
         }
 
-        [Test]
+        [Fact]
         public void DbTypeToSqlDbType()
         {
             Assert.Equal(SqlDbType.Int, DbType.Int32.ToSqlDbType());
@@ -72,7 +72,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(SqlDbType.Real, DbType.Single.ToSqlDbType());
         }
 
-        [Test]
+        [Fact]
         public void SqlDbTypeToDbType()
         {
             Assert.Equal(DbType.Int32, SqlDbType.Int.ToDbType());
@@ -80,14 +80,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(DbType.Single, SqlDbType.Real.ToDbType());
         }
 
-        [Test]
+        [Fact]
         public void FormatToString()
         {
             object TestObject = new DateTime(1999, 1, 1);
             Assert.Equal("January 1, 1999", TestObject.FormatToString("MMMM d, yyyy"));
         }
 
-        [Test]
+        [Fact]
         public void NullCheck()
         {
             object TestObject = new DateTime(1999, 1, 1);
@@ -97,7 +97,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(new DateTime(1999, 1, 2), TestObject.NullCheck(new DateTime(1999, 1, 2)));
         }
 
-        [Test]
+        [Fact]
         public void IsNull()
         {
             Assert.False(new DateTime(1999, 1, 1).IsNull());
@@ -105,7 +105,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.True(TestObject.IsNull());
         }
 
-        [Test]
+        [Fact]
         public void IsDefault()
         {
             Assert.False(new DateTime(1999, 1, 1).IsDefault());
@@ -113,7 +113,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.True(TestObject.IsDefault());
         }
 
-        [Test]
+        [Fact]
         public void IsNullOrDBNull()
         {
             Assert.False(new DateTime(1999, 1, 1).IsNull());
@@ -122,7 +122,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.True(DBNull.Value.IsNull());
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfNull()
         {
             object TempObject = null;
@@ -130,7 +130,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull(new ArgumentNullException("TempName")));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfNullOrEmpty()
         {
             string TempObject = "";
@@ -138,14 +138,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNullOrEmpty(new ArgumentNullException("TempName")));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfDefault()
         {
             Assert.Throws<ArgumentNullException>(() => default(DateTime).ThrowIfDefault("TempName"));
             Assert.Throws<ArgumentNullException>(() => default(DateTime).ThrowIfDefault(new ArgumentNullException("TempName")));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfNullOrDBNull()
         {
             Assert.Throws<ArgumentNullException>(() => DBNull.Value.ThrowIfNull("TempName"));
@@ -155,7 +155,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Throws<ArgumentNullException>(() => TempObject.ThrowIfNull(new ArgumentNullException("TempName")));
         }
 
-        [Test]
+        [Fact]
         public void TryConvert()
         {
             Assert.Equal(1, (1.0f).TryTo(0));
@@ -164,7 +164,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.NotNull(((object)new MyTestClass()).TryTo<object, IMyTestClass>());
         }
 
-        [Test]
+        [Fact]
         public void ToList()
         {
             List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();

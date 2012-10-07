@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -38,7 +38,7 @@ namespace UnitTests.Web.ExtensionMethods
 {
     public class HTMLExtensions
     {
-        [Test]
+        [Fact]
         public void StripHTML()
         {
             string FileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").Read();
@@ -47,14 +47,14 @@ namespace UnitTests.Web.ExtensionMethods
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }
 
-        [Test]
+        [Fact]
         public void RemoveURLIllegalCharacters()
         {
             string Content = "This is a test title that I want to make into a URL".RemoveURLIllegalCharacters();
             Assert.Equal("This-is-a-test-title-that-I-want-to-make-into-a-URL", Content);
         }
 
-        [Test]
+        [Fact]
         public void ContainsHTML()
         {
             Assert.True(new FileInfo(@"..\..\Data\Web\HanselmanSite.html").ContainsHTML());

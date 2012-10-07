@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataMapper;
 
 namespace UnitTests.DataMapper
 {
     public class MappingManager
     {
-        [Test]
+        [Fact]
         public void Creation()
         {
             Utilities.DataMapper.MappingManager Manager = new Utilities.DataMapper.MappingManager();

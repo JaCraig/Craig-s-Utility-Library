@@ -23,31 +23,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Windows.Forms;
 using Utilities.Media.Image.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using UnitTests.Fixtures;
 
 namespace UnitTests.Media.Image
 {
-    public class NormalMap : IDisposable
+    public class NormalMap : IUseFixture<TestingDirectoryFixture>
     {
-        public NormalMap()
-        {
-            new DirectoryInfo(@".\Testing").Create();
-        }
-
-        [Test]
+        [Fact]
         public void Generate()
         {
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
                 Utilities.Media.Image.NormalMap NormalMap = new Utilities.Media.Image.NormalMap();
-                using (Bitmap Value = Assert.Do<Bitmap>(() => NormalMap.Create(TestObject)))
+                using (Bitmap Value = NormalMap.Create(TestObject))
                 {
                     Assert.NotNull(Value);
                     Value.Save(@".\Testing\NormalMap.jpg", ImageFormat.Jpeg);
@@ -55,9 +51,9 @@ namespace UnitTests.Media.Image
             }
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            
         }
     }
 }

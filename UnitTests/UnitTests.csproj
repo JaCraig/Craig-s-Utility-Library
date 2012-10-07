@@ -40,9 +40,6 @@
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MoonUnit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=947a4582277ddbe3, processorArchitecture=MSIL">
-      <HintPath>..\DLLs\MoonUnit.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -51,6 +48,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Anagram.cs" />
@@ -119,6 +119,8 @@
     <Compile Include="FileFormats\INI\INI.cs" />
     <Compile Include="FileFormats\PipeDelimited\PipeDelimited.cs" />
     <Compile Include="FileFormats\Zip\ZipFile.cs" />
+    <Compile Include="Fixtures\LoggingManagerFixture.cs" />
+    <Compile Include="Fixtures\TestingDirectoryFixture.cs" />
     <Compile Include="IoC\Manager.cs" />
     <Compile Include="IO\ExtensionMethods\Directory.cs" />
     <Compile Include="IO\ExtensionMethods\File.cs" />
@@ -267,6 +269,7 @@
     <None Include="Data\FileFormats\TestFile.ini" />
     <None Include="Data\Test.bat" />
     <None Include="Key.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CodeGen\Templates\" />

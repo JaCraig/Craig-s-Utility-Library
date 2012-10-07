@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL;
 using System.Collections;
 using System.IO;
@@ -37,7 +37,7 @@ namespace UnitTests.SQL
 {
     public class Command
     {
-        [Test]
+        [Fact]
         public void Creation()
         {
             Utilities.SQL.Command Object = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 0, 1, 2, 3);
@@ -49,7 +49,7 @@ namespace UnitTests.SQL
             Assert.Contains(3, Object.Parameters);
         }
 
-        [Test]
+        [Fact]
         public void Equality()
         {
             Utilities.SQL.Command Object1 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 0, 1, 2, 3);
@@ -69,7 +69,7 @@ namespace UnitTests.SQL
             Assert.NotEqual(Object1, Object8);
         }
 
-        [Test]
+        [Fact]
         public void Equality2()
         {
             Utilities.SQL.Command Object1 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 1, 1);

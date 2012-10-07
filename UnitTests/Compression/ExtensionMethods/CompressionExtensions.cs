@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Compression.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Compression.ExtensionMethods.Enums;
@@ -33,7 +33,7 @@ namespace UnitTests.Compression.ExtensionMethods
 {
     public class CompressionExtensions
     {
-        [Test]
+        [Fact]
         public void DeflateTest()
         {
             string Data="This is a bit of data that I want to compress";
@@ -42,7 +42,7 @@ namespace UnitTests.Compression.ExtensionMethods
             Assert.Equal("This is a bit of data that I want to compress", Data.Compress().Decompress());
         }
 
-        [Test]
+        [Fact]
         public void GZipTest()
         {
             string Data = "This is a bit of data that I want to compress";

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Utilities.Random.ExtensionMethods;
@@ -34,12 +34,12 @@ namespace UnitTests.Random.DefaultClasses
 {
     public class DateTimeGenerator
     {
-        [Test]
+        [Fact]
         public void Next()
         {
             Utilities.Random.DefaultClasses.DateTimeGenerator Generator = new Utilities.Random.DefaultClasses.DateTimeGenerator();
-            Assert.Between(Generator.Next(new System.Random()), DateTime.MinValue, DateTime.MaxValue);
-            Assert.Between(Generator.Next(new System.Random(), new DateTime(1900, 1, 1), new DateTime(2000, 1, 1)), new DateTime(1900, 1, 1), new DateTime(2000, 1, 1));
+            Assert.InRange(Generator.Next(new System.Random()), DateTime.MinValue, DateTime.MaxValue);
+            Assert.InRange(Generator.Next(new System.Random(), new DateTime(1900, 1, 1), new DateTime(2000, 1, 1)), new DateTime(1900, 1, 1), new DateTime(2000, 1, 1));
         }
     }
 }

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 
 namespace UnitTests.FileFormats.Cisco
 {
@@ -39,14 +39,14 @@ namespace UnitTests.FileFormats.Cisco
             Random = new Utilities.Random.Random();
         }
 
-        [Test]
+        [Fact]
         public void NullTest()
         {
             Entry.ExecuteItems=null;
             Assert.NotEmpty(Entry.ToString());
         }
 
-        [Test]
+        [Fact]
         public void NullItemTest()
         {
             Entry.ExecuteItems.Add(null);

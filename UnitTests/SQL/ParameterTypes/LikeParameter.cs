@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL;
 using System.Collections;
 using System.IO;
@@ -38,7 +38,7 @@ namespace UnitTests.SQL.ParameterTypes
 {
     public class LikeParameter
     {
-        [Test]
+        [Fact]
         public void Creation()
         {
             Utilities.SQL.ParameterTypes.LikeParameter TestObject = new Utilities.SQL.ParameterTypes.LikeParameter("ASDF", "ID", 100);
@@ -49,7 +49,7 @@ namespace UnitTests.SQL.ParameterTypes
             Assert.Equal(100, TestObject.Length);
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Assert.DoesNotThrow<Exception>(() => TestObject.AddParameter(Helper));
+                Assert.DoesNotThrow(() => TestObject.AddParameter(Helper));
             }
         }
     }

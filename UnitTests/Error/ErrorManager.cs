@@ -23,14 +23,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 
 namespace UnitTests.Error
 {
     public class ErrorManager
     {
-        [Test]
+        [Fact]
         public void GetAssemblyInformation()
         {
             string Value = Utilities.Error.ErrorManager.GetAssemblyInformation();
@@ -38,7 +38,7 @@ namespace UnitTests.Error
             Assert.NotEqual("<strong>Assembly Information</strong><br />", Value);
         }
 
-        [Test]
+        [Fact]
         public void GetSystemInformation()
         {
             string Value = Utilities.Error.ErrorManager.GetSystemInformation();
@@ -46,7 +46,7 @@ namespace UnitTests.Error
             Assert.NotEqual("<strong>System Information</strong><br />", Value);
         }
 
-        [Test]
+        [Fact]
         public void GetProcessInformation()
         {
             string Value = Utilities.Error.ErrorManager.GetSystemInformation();

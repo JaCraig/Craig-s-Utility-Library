@@ -23,27 +23,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.Patterns.BaseClasses;
 
 namespace UnitTests.DataTypes.Patterns.BaseClasses
 {
     public class Singleton
     {
-        [Test]
+        [Fact]
         public void Creation()
         {
-            Assert.DoesNotThrow<Exception>(() => TestClass.Instance.Function());
+            Assert.DoesNotThrow(() => TestClass.Instance.Function());
         }
 
-        [Test]
+        [Fact]
         public void Creation2()
         {
             Assert.Throws<Exception>(() => TestClass2.Instance.Function());
         }
 
-        [Test]
+        [Fact]
         public void EqualityTest()
         {
             TestClass Item = TestClass.Instance;

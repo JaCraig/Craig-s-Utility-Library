@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes;
 using System.Data;
 
@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes
 {
     public class DateSpan
     {
-        [Test]
+        [Fact]
         public void CompareTest()
         {
             Utilities.DataTypes.DateSpan Span1=new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2009, 1, 1));
@@ -43,7 +43,7 @@ namespace UnitTests.DataTypes
             Assert.False(Span1 == Span3);
         }
 
-        [Test]
+        [Fact]
         public void IntersectionTest()
         {
             Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
@@ -53,7 +53,7 @@ namespace UnitTests.DataTypes
             Assert.Equal(new DateTime(2003, 1, 1), Span3.End);
         }
 
-        [Test]
+        [Fact]
         public void OverlapTest()
         {
             Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
@@ -61,7 +61,7 @@ namespace UnitTests.DataTypes
             Assert.True(Span1.Overlap(Span2));
         }
 
-        [Test]
+        [Fact]
         public void UnionTest()
         {
             Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));
@@ -71,7 +71,7 @@ namespace UnitTests.DataTypes
             Assert.Equal(new DateTime(2009, 1, 1), Span3.End);
         }
 
-        [Test]
+        [Fact]
         public void DifferenceTest()
         {
             Utilities.DataTypes.DateSpan Span1 = new Utilities.DataTypes.DateSpan(new DateTime(1999, 1, 1), new DateTime(2003, 1, 1));

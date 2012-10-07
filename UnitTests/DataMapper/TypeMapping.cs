@@ -23,27 +23,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataMapper;
 
 namespace UnitTests.DataMapper
 {
     public class TypeMapping
     {
-        [Test]
+        [Fact]
         public void CreationTest()
         {
             Utilities.DataMapper.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow<Exception>(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
             Assert.NotNull(TestObject);
         }
 
-        [Test]
+        [Fact]
         public void AutoMapping()
         {
             Utilities.DataMapper.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow<Exception>(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
             Assert.NotNull(TestObject);
             TestObject.AutoMap();
             MappingA A = new MappingA();
@@ -57,11 +57,11 @@ namespace UnitTests.DataMapper
             Assert.Equal(B.Item2, "ASDF");
         }
 
-        [Test]
+        [Fact]
         public void Mapping()
         {
             Utilities.DataMapper.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow<Exception>(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
             Assert.NotNull(TestObject);
             TestObject.AddMapping(x => x.Item1, x => x.Item1);
             TestObject.AddMapping(x => x.Item2, x => x.Item2);

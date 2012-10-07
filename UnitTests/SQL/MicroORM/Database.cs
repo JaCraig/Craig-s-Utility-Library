@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL;
 using System.Collections;
 using System.IO;
@@ -37,11 +37,11 @@ namespace UnitTests.SQL.MicroORM
 {
     public class Database
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.SQL.MicroORM.Database TestObject = null;
-            Assert.DoesNotThrow<Exception>(() =>
+            Assert.DoesNotThrow(() =>
             {
                 TestObject = new Utilities.SQL.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "Database1");
             });

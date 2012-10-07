@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -40,7 +40,7 @@ namespace UnitTests.Web.Google.StaticMaps
 {
     public class Map
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.Web.Google.StaticMaps.Map TestMap = new Utilities.Web.Google.StaticMaps.Map();

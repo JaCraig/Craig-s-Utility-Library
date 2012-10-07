@@ -24,22 +24,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 
 namespace UnitTests.Events
 {
     public class EventHelper
     {
-        [Test]
+        [Fact]
         public void NullTest()
         {
-            Assert.DoesNotThrow<Exception>(()=>Utilities.Events.EventHelper.Raise("ASD", null));
-            Assert.DoesNotThrow<Exception>(() => Utilities.Events.EventHelper.Raise(new EventArgs(), null));
-            Assert.DoesNotThrow<Exception>(()=>Utilities.Events.EventHelper.Raise(null,this,new EventArgs()));
+            Assert.DoesNotThrow(()=>Utilities.Events.EventHelper.Raise("ASD", null));
+            Assert.DoesNotThrow(() => Utilities.Events.EventHelper.Raise(new EventArgs(), null));
+            Assert.DoesNotThrow(()=>Utilities.Events.EventHelper.Raise(null,this,new EventArgs()));
         }
 
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             Utilities.Events.EventHelper.Raise("ASD", (x) => Assert.Equal("ASD", x));

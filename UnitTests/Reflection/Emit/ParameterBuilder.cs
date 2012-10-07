@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -36,7 +36,7 @@ namespace UnitTests.Reflection.Emit
 {
     public class ParameterBuilder
     {
-        [Test]
+        [Fact]
         public void Load()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -45,10 +45,10 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.This);
             Assert.Null(Method.This.DataType);
             Assert.Equal("this", Method.This.Name);
-            Assert.DoesNotThrow<Exception>(() => Method.This.Load(Method.Generator));
+            Assert.DoesNotThrow(() => Method.This.Load(Method.Generator));
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -57,7 +57,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(Method.This);
             Assert.Null(Method.This.DataType);
             Assert.Equal("this", Method.This.Name);
-            Assert.DoesNotThrow<Exception>(() => Method.This.Save(Method.Generator));
+            Assert.DoesNotThrow(() => Method.This.Save(Method.Generator));
         }
     }
 }

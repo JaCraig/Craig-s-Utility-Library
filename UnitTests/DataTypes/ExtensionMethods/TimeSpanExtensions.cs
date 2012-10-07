@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 using Utilities.DataTypes.Formatters;
@@ -33,25 +33,25 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class TimeSpanExtensions
     {
-        [Test]
+        [Fact]
         public void DaysRemainder()
         {
             Assert.Equal(0, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).DaysRemainder());
         }
 
-        [Test]
+        [Fact]
         public void Years()
         {
             Assert.Equal(34, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Years());
         }
 
-        [Test]
+        [Fact]
         public void Months()
         {
             Assert.Equal(11, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Months());
         }
 
-        [Test]
+        [Fact]
         public void ToStringFull()
         {
             Assert.Equal("34 years, 11 months", (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).ToStringFull());

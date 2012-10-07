@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL;
 using System.Collections;
 using System.IO;
@@ -50,10 +50,10 @@ namespace UnitTests.SQL
             }
         }
 
-        [Test]
+        [Fact]
         public void Connect()
         {
-            Assert.DoesNotThrow<Exception>(() =>
+            Assert.DoesNotThrow(() =>
             {
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
@@ -62,7 +62,7 @@ namespace UnitTests.SQL
             });
         }
 
-        [Test]
+        [Fact]
         public void CommandInsert()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -87,12 +87,12 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void CommandInsertNullString()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -117,12 +117,12 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Insert()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -154,12 +154,12 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void InsertEmptyString()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -191,12 +191,12 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void ClearParameters()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -237,12 +237,12 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Update()
         {
 
@@ -287,12 +287,12 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Delete()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -318,12 +318,12 @@ namespace UnitTests.SQL
                 Helper.ExecuteReader();
                 if (Helper.Read())
                 {
-                    Assert.Fail("Nothing was deleted");
+                    Assert.False(true,"Nothing was deleted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Transaction()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -368,7 +368,7 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) as [ItemCount] FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
@@ -380,12 +380,12 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void OutputParamter()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -409,7 +409,7 @@ namespace UnitTests.SQL
             }
         }
 
-        [Test]
+        [Fact]
         public void BulkCopy()
         {
             Guid TempGuid=Guid.NewGuid();
@@ -450,7 +450,7 @@ namespace UnitTests.SQL
                 }
                 if(!Inserted)
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) as [ItemCount] FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
@@ -462,12 +462,12 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void BulkCopy2()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -508,7 +508,7 @@ namespace UnitTests.SQL
                 }
                 if (!Inserted)
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) as [ItemCount] FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
@@ -520,7 +520,7 @@ namespace UnitTests.SQL
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }

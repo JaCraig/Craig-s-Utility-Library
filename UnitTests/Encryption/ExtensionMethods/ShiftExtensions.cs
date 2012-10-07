@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Encryption.ExtensionMethods;
 using System.Security.Cryptography;
 
@@ -32,14 +32,14 @@ namespace UnitTests.Encryption.ExtensionMethods
 {
     public class ShiftExtensions
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             string Data = "This is my test.";
             Assert.Equal("This is my test.", Data.Encrypt("Babysfirstpassword", false).Decrypt("Babysfirstpassword", false));
         }
 
-        [Test]
+        [Fact]
         public void XOrTest()
         {
             string Data = "This is my test.";

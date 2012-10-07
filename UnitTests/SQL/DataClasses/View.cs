@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Data;
 using Utilities.SQL.DataClasses.Interfaces;
 using Utilities.SQL.DataClasses.Enums;
@@ -33,7 +33,7 @@ namespace UnitTests.SQL.DataClasses
 {
     public class View
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
@@ -42,7 +42,7 @@ namespace UnitTests.SQL.DataClasses
             Assert.Equal("TestView", View.Name);
         }
 
-        [Test]
+        [Fact]
         public void AddColumn()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");

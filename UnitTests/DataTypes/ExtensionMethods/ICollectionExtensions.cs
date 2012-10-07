@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 using System.Collections;
@@ -33,7 +33,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class ICollectionExtensions
     {
-        [Test]
+        [Fact]
         public void AddAndReturnTest()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
@@ -41,7 +41,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(Item, TestObject.AddAndReturn(Item));
         }
 
-        [Test]
+        [Fact]
         public void AddIfTest()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
@@ -51,7 +51,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(8, TestObject.Count);
         }
 
-        [Test]
+        [Fact]
         public void AddIfUniqueTest()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
@@ -61,7 +61,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(8, TestObject.Count);
         }
 
-        [Test]
+        [Fact]
         public void RemoveTest()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
@@ -71,7 +71,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
                 Assert.False(Item % 2 == 0);
         }
 
-        [Test]
+        [Fact]
         public void RemoveTest2()
         {
             int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
@@ -81,7 +81,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
                 Assert.False(Item % 2 == 0);
         }
 
-        [Test]
+        [Fact]
         public void AddRange()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
@@ -90,14 +90,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(14, TestObject.Count);
         }
 
-        [Test]
+        [Fact]
         public void RemoveRange()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
             Assert.Equal(0, TestObject.Remove(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).Count);
         }
 
-        [Test]
+        [Fact]
         public void RemoveRange2()
         {
             int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };

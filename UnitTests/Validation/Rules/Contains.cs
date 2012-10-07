@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,7 +36,7 @@ namespace UnitTests.Validation.Rules
 {
     public class Contains
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.Rules.Contains<ClassC, string> TestObject = new Contains<ClassC, string>(x => x.ItemA, "A", "Error");
@@ -44,7 +44,7 @@ namespace UnitTests.Validation.Rules
             Temp.ItemA = new List<string>();
             Temp.ItemA.Add("A");
             Temp.ItemA.Add("B");
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
             Temp.ItemA.Clear();
             Temp.ItemA.Add("B");
             Assert.Throws<NotValid>(() => TestObject.Validate(Temp));

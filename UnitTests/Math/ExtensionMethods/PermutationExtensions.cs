@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Math.ExtensionMethods;
 using Utilities.DataTypes;
 
@@ -35,7 +35,7 @@ namespace UnitTests.Math.ExtensionMethods
     /// </summary>
     public class PermutationExtensions
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             System.Collections.Generic.List<string> TestObject = new System.Collections.Generic.List<string>();

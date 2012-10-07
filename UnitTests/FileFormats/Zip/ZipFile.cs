@@ -23,14 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
+using UnitTests.Fixtures;
 
 namespace UnitTests.FileFormats.Zip
 {
-    public class ZipFile:IDisposable
+    public class ZipFile : IUseFixture<TestingDirectoryFixture>,IDisposable
     {
         public ZipFile()
         {
@@ -39,7 +40,7 @@ namespace UnitTests.FileFormats.Zip
             new DirectoryInfo(@".\Testing3").Create();
         }
 
-        [Test]
+        [Fact]
         public void Create()
         {
             using (Utilities.FileFormats.Zip.ZipFile TestObject = new Utilities.FileFormats.Zip.ZipFile(@".\Testing3\Test.zip"))
@@ -54,7 +55,7 @@ namespace UnitTests.FileFormats.Zip
             Assert.True(new FileInfo(@".\Testing2\TestFile.ini").Exists);
         }
 
-        [Test]
+        [Fact]
         public void Create2()
         {
             using (Utilities.FileFormats.Zip.ZipFile TestObject = new Utilities.FileFormats.Zip.ZipFile(@".\Testing3\Test.zip"))
@@ -71,9 +72,13 @@ namespace UnitTests.FileFormats.Zip
 
         public void Dispose()
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
             new DirectoryInfo(@".\Testing2").DeleteAll();
             new DirectoryInfo(@".\Testing3").DeleteAll();
+        }
+
+        public void SetFixture(TestingDirectoryFixture data)
+        {
+            
         }
     }
 }

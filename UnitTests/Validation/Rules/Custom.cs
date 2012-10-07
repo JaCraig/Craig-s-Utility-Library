@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,13 +36,13 @@ namespace UnitTests.Validation.Rules
 {
     public class Custom
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.Rules.Custom<ClassA, int> TestObject = new Custom<ClassA, int>(x => x.ItemA, x => MyAction(x));
             ClassA Temp = new ClassA();
             Temp.ItemA = 1;
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
             Temp = null;
             Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
         }

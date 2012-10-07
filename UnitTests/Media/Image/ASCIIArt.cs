@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Windows.Forms;
 using Utilities.Media.Image.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
@@ -36,12 +36,12 @@ namespace UnitTests.Media.Image
 {
     public class ASCIIArt
     {
-        [Test]
+        [Fact]
         public void Generate()
         {
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                string Value = Assert.Do<string>(() => Utilities.Media.Image.ASCIIArt.ConvertToASCII(TestObject));
+                string Value = Utilities.Media.Image.ASCIIArt.ConvertToASCII(TestObject);
                 Assert.NotNull(Value);
                 Assert.NotEmpty(Value);
                 Assert.Equal(24420, Value.Length);

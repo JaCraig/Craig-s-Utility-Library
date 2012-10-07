@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -37,12 +37,12 @@ namespace UnitTests.Web.ExtensionMethods
 {
     public class IPAddressExtensions
     {
-        [Test]
+        [Fact]
         public void GetHostName()
         {
             IPAddress Address = IPAddress.Parse("72.125.228.65");
-            Assert.Equal("65.qarestr.sub-72-125-228.myvzw.com", Address.GetHostName());
-            Assert.Equal("65.qarestr.sub-72-125-228.myvzw.com", "72.125.228.65".GetHostName());
+            Assert.Equal("65.sub-72-125-228.myvzw.com", Address.GetHostName());
+            Assert.Equal("65.sub-72-125-228.myvzw.com", "72.125.228.65".GetHostName());
         }
     }
 }

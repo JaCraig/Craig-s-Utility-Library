@@ -24,23 +24,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
+
 using Utilities.IO.ExtensionMethods;
 using System.IO;
-using MoonUnit;
+using Xunit;
 using System.Reflection;
 using System.Xml;
+using UnitTests.Fixtures;
 #endregion
 
 namespace UnitTests.IO.ExtensionMethods
 {
-    public class Serialization : IDisposable
+    public class Serialization : IUseFixture<TestingDirectoryFixture>
     {
         public TestClass TestItem { get; set; }
 
-        public Serialization() { new DirectoryInfo(@".\Testing").Create(); TestItem = new TestClass(); TestItem.ID = 123; TestItem.Content = "This is test content"; }
+        public Serialization() { TestItem = new TestClass(); TestItem.ID = 123; TestItem.Content = "This is test content"; }
 
-        [Test]
+        [Fact]
         public void ToBinary()
         {
             byte[] Content= TestItem.ToBinary(@".\Testing\Test.dat");
@@ -51,7 +52,7 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        [Test]
+        [Fact]
         public void ToXML()
         {
             Assert.NotNull(TestItem.ToXML(@".\Testing\Test.xml"));
@@ -60,7 +61,7 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        [Test]
+        [Fact]
         public void ToXML2()
         {
             Assert.NotNull(TestItem.ToXML(@".\Testing\Test.xml"));
@@ -71,7 +72,7 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        [Test]
+        [Fact]
         public void ToXML3()
         {
             Assert.NotNull(TestItem.ToXML(@".\Testing\Test.xml"));
@@ -80,7 +81,7 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        [Test]
+        [Fact]
         public void ToJSON()
         {
             Assert.Equal(@"{""<Content>k__BackingField"":""This is test content"",""<ID>k__BackingField"":123}", TestItem.ToJSON(@".\Testing\Test.dat"));
@@ -89,7 +90,7 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        [Test]
+        [Fact]
         public void ToJSON2()
         {
             TestItem.ToJSON(@".\Testing\Test.dat");
@@ -98,7 +99,7 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        [Test]
+        [Fact]
         public void ToSOAP()
         {
             Assert.Equal(@"<SOAP-ENV:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/"" xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:clr=""http://schemas.microsoft.com/soap/encoding/clr/1.0"" SOAP-ENV:encodingStyle=""http://schemas.xmlsoap.org/soap/encoding/"">
@@ -115,7 +116,7 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        [Test]
+        [Fact]
         public void ToSOAP2()
         {
             TestItem.ToSOAP(@".\Testing\Test.xml");
@@ -124,9 +125,9 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal("This is test content", Temp.Content);
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            
         }
     }
 

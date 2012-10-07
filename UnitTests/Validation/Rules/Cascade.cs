@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,15 +36,15 @@ namespace UnitTests.Validation.Rules
 {
     public class Cascade
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.Rules.Cascade<ClassB, ClassA> TestObject = new Cascade<ClassB, ClassA>(x => x.ItemA, "Error");
             ClassB Temp = new ClassB();
             Temp.ItemA = new ClassA();
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
             Temp.ItemA = null;
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
         }
     }
 

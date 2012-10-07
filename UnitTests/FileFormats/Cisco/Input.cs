@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.StringGenerators;
 
@@ -41,7 +41,7 @@ namespace UnitTests.FileFormats.Cisco
             Random = new Utilities.Random.Random();
         }
 
-        [Test]
+        [Fact]
         public void NullTest()
         {
             Entry.InputItems = null;
@@ -52,7 +52,7 @@ namespace UnitTests.FileFormats.Cisco
             Assert.NotEmpty(Entry.ToString());
         }
 
-        [Test]
+        [Fact]
         public void NullItemTest()
         {
             Entry.InputItems.Add(null);
@@ -60,7 +60,7 @@ namespace UnitTests.FileFormats.Cisco
             Assert.NotEmpty(Entry.ToString());
         }
 
-        [Test]
+        [Fact]
         public void RandomTest()
         {
             Entry.Prompt = Random.Next<string>(new RegexStringGenerator(30));

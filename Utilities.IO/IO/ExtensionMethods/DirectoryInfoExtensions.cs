@@ -102,7 +102,7 @@ namespace Utilities.IO.ExtensionMethods
                 return;
             Info.DeleteFiles();
             Info.EnumerateDirectories().ForEach(x => x.DeleteAll());
-            Info.Delete(false);
+            Info.Delete(true);
         }
 
         #endregion

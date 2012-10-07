@@ -24,17 +24,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.IO.ExtensionMethods;
+using UnitTests.Fixtures;
 
 namespace UnitTests.IO.ExtensionMethods
 {
-    public class File : IDisposable
+    public class File : IUseFixture<TestingDirectoryFixture>
     {
         public File() { new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing"); }
 
-        [Test]
+        [Fact]
         public void Append()
         {
             new FileInfo(@".\Testing\Test.txt").Append("\r\nYay, this is appended text");
@@ -42,48 +43,48 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal(48, new FileInfo(@".\Testing\Test.txt").Length);
         }
 
-        [Test]
+        [Fact]
         public void CompareTo()
         {
             Assert.True(new FileInfo(@".\Testing\Test.txt").CompareTo(new FileInfo(@"..\..\Data\Testing\Test.txt")));
         }
 
-        [Test]
+        [Fact]
         public void Read()
         {
             Assert.Equal("This is a test file.", new FileInfo(@".\Testing\Test.txt").Read());
         }
 
-        [Test]
+        [Fact]
         public void ReadBinary()
         {
             byte[] Content = new FileInfo(@".\Testing\Test.txt").ReadBinary();
             Assert.Equal("This is a test file.", System.Text.Encoding.ASCII.GetString(Content, 0, Content.Length));
         }
 
-        [Test]
+        [Fact]
         public void DriveInfo()
         {
             Assert.NotNull(new FileInfo(@".\Testing\Test.txt").DriveInfo());
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
             new FileInfo(@".\Testing\Test2.txt").Save("This is yet another test");
             Assert.Equal("This is yet another test", new FileInfo(@".\Testing\Test2.txt").Read());
         }
 
-        [Test]
+        [Fact]
         public void SaveAsync()
         {
             new FileInfo(@".\Testing\Test2.txt").SaveAsync("This is yet another test", SaveAsyncCallback, null);
         }
 
-        [Test]
+        [Fact]
         public void Execute()
         {
-            Assert.DoesNotThrow<Exception>(() => new FileInfo(@"..\..\Data\Test.bat").Execute(WindowStyle: System.Diagnostics.ProcessWindowStyle.Hidden));
+            Assert.DoesNotThrow(() => new FileInfo(@"..\..\Data\Test.bat").Execute(WindowStyle: System.Diagnostics.ProcessWindowStyle.Hidden));
         }
 
         public void SaveAsyncCallback(IAsyncResult Result)
@@ -91,10 +92,9 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.True(Result.IsCompleted);
         }
 
-
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            
         }
     }
 }

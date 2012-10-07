@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -36,17 +36,17 @@ namespace UnitTests.Reflection.Emit
 {
     public class TypeBuilder
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             Assert.NotNull(TestType);
-            Assert.DoesNotThrow<Exception>(() => Assembly.Create());
+            Assert.DoesNotThrow(() => Assembly.Create());
             Assert.NotNull(Activator.CreateInstance(TestType.DefinedType));
         }
 
-        [Test]
+        [Fact]
         public void CreateMethod()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -61,7 +61,7 @@ namespace UnitTests.Reflection.Emit
             Assert.Equal(MethodAttributes.Public | MethodAttributes.Virtual, TestMethod.Attributes);
         }
 
-        [Test]
+        [Fact]
         public void CreateField()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -74,7 +74,7 @@ namespace UnitTests.Reflection.Emit
             Assert.Equal(FieldAttributes.Public, TestField.Attributes);
         }
 
-        [Test]
+        [Fact]
         public void CreateProperty()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -91,7 +91,7 @@ namespace UnitTests.Reflection.Emit
             Assert.Equal(MethodAttributes.Public | MethodAttributes.Virtual, TestProperty.SetMethodAttributes);
         }
 
-        [Test]
+        [Fact]
         public void CreateDefaultProperty()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -108,7 +108,7 @@ namespace UnitTests.Reflection.Emit
             Assert.Equal(MethodAttributes.Public | MethodAttributes.Virtual, TestProperty.SetMethodAttributes);
         }
 
-        [Test]
+        [Fact]
         public void CreateConstructor()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -123,7 +123,7 @@ namespace UnitTests.Reflection.Emit
             Assert.NotNull(TestConstructor.This);
         }
 
-        [Test]
+        [Fact]
         public void CreateDefaultConstructor()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL;
 using System.Collections;
 using System.IO;
@@ -42,7 +42,7 @@ namespace UnitTests.SQL.SQLServer
             
         }
 
-        [Test]
+        [Fact]
         public void CreateDatabase()
         {
             Database Database = new Database("TestDatabase");
@@ -60,7 +60,7 @@ namespace UnitTests.SQL.SQLServer
             }
         }
 
-        [Test]
+        [Fact]
         public void UpdateDatabase()
         {
             Database Database = new Database("TestDatabase");
@@ -95,7 +95,7 @@ namespace UnitTests.SQL.SQLServer
             Assert.Equal(8, Database3.Tables[0].Columns.First(x => x.Name == "Value2").Length);
         }
 
-        [Test]
+        [Fact]
         public void GetDatabaseStructure()
         {
             Database Database = new Database("TestDatabase");

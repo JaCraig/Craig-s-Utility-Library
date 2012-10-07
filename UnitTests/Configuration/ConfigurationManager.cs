@@ -23,46 +23,42 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using System.Data;
 using Utilities.Configuration;
 using Utilities.Configuration.Interfaces;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
+using UnitTests.Fixtures;
 
 namespace UnitTests.Configuration
 {
-    public class ConfigurationManager:IDisposable
+    public class ConfigurationManager : IUseFixture<TestingDirectoryFixture>
     {
-        public ConfigurationManager()
-        {
-            new DirectoryInfo(@".\Test").Create();
-        }
-
-        [Test]
+        [Fact]
         public void SingleTest()
         {
-            Assert.DoesNotThrow<Exception>(() => Utilities.Configuration.ConfigurationManager.RegisterConfigFile<TestConfig>());
+            Assert.DoesNotThrow(() => Utilities.Configuration.ConfigurationManager.RegisterConfigFile<TestConfig>());
             Assert.True(Utilities.Configuration.ConfigurationManager.ContainsConfigFile<TestConfig>("TestConfig"));
             IConfig Config = Utilities.Configuration.ConfigurationManager.GetConfigFile<TestConfig>("TestConfig");
             Assert.NotNull(Config);
             Assert.Equal("TestConfig", Config.Name);
         }
 
-        [Test]
+        [Fact]
         public void AssemblyTest()
         {
-            Assert.DoesNotThrow<Exception>(() => Utilities.Configuration.ConfigurationManager.RegisterConfigFile(typeof(TestConfig).Assembly));
+            Assert.DoesNotThrow(() => Utilities.Configuration.ConfigurationManager.RegisterConfigFile(typeof(TestConfig).Assembly));
             Assert.True(Utilities.Configuration.ConfigurationManager.ContainsConfigFile<TestConfig>("TestConfig"));
             IConfig Config = Utilities.Configuration.ConfigurationManager.GetConfigFile<TestConfig>("TestConfig");
             Assert.NotNull(Config);
             Assert.Equal("TestConfig", Config.Name);
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Test").DeleteAll();
+
         }
     }
 

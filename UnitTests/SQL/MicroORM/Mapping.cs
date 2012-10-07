@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL;
 using System.Collections;
 using System.IO;
@@ -53,10 +53,10 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Creation()
         {
-            Assert.DoesNotThrow<Exception>(() =>
+            Assert.DoesNotThrow(() =>
             {
                 using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
                 {
@@ -75,7 +75,7 @@ namespace UnitTests.SQL.MicroORM
             });
         }
 
-        [Test]
+        [Fact]
         public void Map()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -92,7 +92,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Insert()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -125,13 +125,13 @@ namespace UnitTests.SQL.MicroORM
                     }
                     else
                     {
-                        Assert.Fail("Nothing was inserted");
+                        Assert.False(true,"Nothing was inserted");
                     }
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Update()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -171,13 +171,13 @@ namespace UnitTests.SQL.MicroORM
                     }
                     else
                     {
-                        Assert.Fail("Nothing was inserted");
+                        Assert.False(true,"Nothing was inserted");
                     }
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -217,13 +217,13 @@ namespace UnitTests.SQL.MicroORM
                     }
                     else
                     {
-                        Assert.Fail("Nothing was inserted");
+                        Assert.False(true,"Nothing was inserted");
                     }
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Any()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -253,7 +253,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Scalar()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -283,7 +283,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void All()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -331,7 +331,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Paged()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -369,7 +369,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Paged2()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -415,7 +415,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Delete()
         {
             using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
@@ -445,7 +445,7 @@ namespace UnitTests.SQL.MicroORM
                     }
                     else
                     {
-                        Assert.Fail("Nothing was inserted");
+                        Assert.False(true,"Nothing was inserted");
                     }
                 }
             }

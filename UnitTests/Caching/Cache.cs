@@ -24,26 +24,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 
 namespace UnitTests.Caching
 {
     public class Cache
     {
-        [Test]
+        [Fact]
         public void CacheTest()
         {
             Utilities.Caching.Cache<string> TestObject = new Utilities.Caching.Cache<string>();
-            Assert.DoesNotThrow<Exception>(() => TestObject.Add("A", "Testing"));
-            Assert.DoesNotThrow<Exception>(() => TestObject.Add("B", "Testing2"));
-            Assert.DoesNotThrow<Exception>(() => TestObject.Add("C", "Testing3"));
+            Assert.DoesNotThrow(() => TestObject.Add("A", "Testing"));
+            Assert.DoesNotThrow(() => TestObject.Add("B", "Testing2"));
+            Assert.DoesNotThrow(() => TestObject.Add("C", "Testing3"));
             Assert.Equal(3, TestObject.Count);
             Assert.Equal("Testing", TestObject.Get<string>("A"));
-            Assert.DoesNotThrow<Exception>(() => TestObject.Remove("A"));
+            Assert.DoesNotThrow(() => TestObject.Remove("A"));
             Assert.Equal(null, TestObject.Get<string>("A"));
             Assert.Equal(2, TestObject.Count);
-            Assert.DoesNotThrow<Exception>(() => TestObject.Clear());
+            Assert.DoesNotThrow(() => TestObject.Clear());
             Assert.Equal(0, TestObject.Count);
         }
     }

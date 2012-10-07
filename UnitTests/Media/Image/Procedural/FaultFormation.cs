@@ -23,37 +23,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Windows.Forms;
 using Utilities.Media.Image.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using UnitTests.Fixtures;
 
 namespace UnitTests.Media.Image.Procedural
 {
-    public class FaultFormation : IDisposable
+    public class FaultFormation : IUseFixture<TestingDirectoryFixture>
     {
-        public FaultFormation()
-        {
-            new DirectoryInfo(@".\Testing").Create();
-        }
-
-        [Test]
+        [Fact]
         public void Generate()
         {
-            using (Bitmap TempBitmap = Assert.Do<Bitmap>(() => Utilities.Media.Image.Procedural.FaultFormation.Generate(100, 100, 10, 7453457)))
+            using (Bitmap TempBitmap = Utilities.Media.Image.Procedural.FaultFormation.Generate(100, 100, 10, 7453457))
             {
                 TempBitmap.Save(@".\Testing\FaultFormation.jpg", ImageFormat.Jpeg);
                 Assert.NotNull(TempBitmap);
             }
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
         }
     }
 }

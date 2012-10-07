@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL;
 using System.Collections;
 using System.IO;
@@ -53,25 +53,25 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Creation()
         {
-            Assert.DoesNotThrow<Exception>(() => { Utilities.SQL.MicroORM.MicroORM ORM = new Utilities.SQL.MicroORM.MicroORM("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"); });
+            Assert.DoesNotThrow(() => { Utilities.SQL.MicroORM.MicroORM ORM = new Utilities.SQL.MicroORM.MicroORM("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"); });
         }
 
-        [Test]
+        [Fact]
         public void Database()
         {
-            Assert.DoesNotThrow<Exception>(() => { Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "DatabaseTestName"); });
+            Assert.DoesNotThrow(() => { Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "DatabaseTestName"); });
         }
 
-        [Test]
+        [Fact]
         public void Map()
         {
-            Assert.DoesNotThrow<Exception>(() => { Utilities.SQL.MicroORM.MicroORM.Map<ObjectClass1>("TestTable", "ID_"); });
+            Assert.DoesNotThrow(() => { Utilities.SQL.MicroORM.MicroORM.Map<ObjectClass1>("TestTable", "ID_"); });
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
             Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
@@ -108,12 +108,12 @@ namespace UnitTests.SQL.MicroORM
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Insert()
         {
             Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
@@ -145,12 +145,12 @@ namespace UnitTests.SQL.MicroORM
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void AnyDifferentParameterTypes()
         {
             Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
@@ -196,7 +196,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Update()
         {
             Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
@@ -233,12 +233,12 @@ namespace UnitTests.SQL.MicroORM
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void Any()
         {
             Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
@@ -266,7 +266,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void All()
         {
             Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
@@ -295,7 +295,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Paged()
         {
             Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
@@ -333,7 +333,7 @@ namespace UnitTests.SQL.MicroORM
             }
         }
 
-        [Test]
+        [Fact]
         public void Delete()
         {
             Utilities.SQL.MicroORM.MicroORM.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");

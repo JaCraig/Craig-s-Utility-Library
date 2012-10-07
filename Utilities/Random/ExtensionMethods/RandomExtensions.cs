@@ -251,6 +251,22 @@ namespace Utilities.Random.ExtensionMethods
 
         #endregion
 
+        #region ResetGenerators
+
+        /// <summary>
+        /// Resets the generators to the defaults
+        /// </summary>
+        /// <param name="Random">Random object</param>
+        /// <returns>The random object sent in</returns>
+        public static System.Random ResetGenerators(this System.Random Random)
+        {
+            Generators = null;
+            SetupGenerators();
+            return Random;
+        }
+
+        #endregion
+
         #endregion
 
         #region Private Functions/Variables

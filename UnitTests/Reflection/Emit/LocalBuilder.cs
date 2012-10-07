@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -37,7 +37,7 @@ namespace UnitTests.Reflection.Emit
 {
     public class LocalBuilder
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -49,44 +49,44 @@ namespace UnitTests.Reflection.Emit
             Assert.Equal("Local1", Local1.Name);
         }
 
-        [Test]
+        [Fact]
         public void Assign()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Local1.Assign(12));
+            Assert.DoesNotThrow(() => Local1.Assign(12));
         }
 
-        [Test]
+        [Fact]
         public void Call()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Local1.Call("ToString"));
+            Assert.DoesNotThrow(() => Local1.Call("ToString"));
         }
 
-        [Test]
+        [Fact]
         public void Load()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Local1.Load(Method.Generator));
+            Assert.DoesNotThrow(() => Local1.Load(Method.Generator));
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateMethod("TestMethod");
             VariableBase Local1 = Method.CreateLocal("Local1", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => Local1.Save(Method.Generator));
+            Assert.DoesNotThrow(() => Local1.Save(Method.Generator));
         }
     }
 }

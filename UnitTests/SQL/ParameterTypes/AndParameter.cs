@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL;
 using System.Collections;
 using System.IO;
@@ -38,14 +38,14 @@ namespace UnitTests.SQL.ParameterTypes
 {
     public class AndParameter
     {
-        [Test]
+        [Fact]
         public void Creation()
         {
             Utilities.SQL.ParameterTypes.AndParameter TestObject = new Utilities.SQL.ParameterTypes.AndParameter(new EqualParameter<int>(1,"Left"),new EqualParameter<int>(2,"Right"));
             Assert.Equal("(Left=@Left AND Right=@Right)", TestObject.ToString());
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Assert.DoesNotThrow<Exception>(() => TestObject.AddParameter(Helper));
+                Assert.DoesNotThrow(() => TestObject.AddParameter(Helper));
             }
         }
     }

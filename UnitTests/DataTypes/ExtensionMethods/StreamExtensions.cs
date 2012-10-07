@@ -23,21 +23,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 using Utilities.DataTypes.Formatters;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
+using UnitTests.Fixtures;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class StreamExtensions: IDisposable
+    public class StreamExtensions: IUseFixture<TestingDirectoryFixture>
     {
         public StreamExtensions() { new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing"); }
 
-        [Test]
+        [Fact]
         public void ReadAll()
         {
             new FileInfo(@".\Testing\Test.txt").Save("This is a test");
@@ -48,7 +49,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             }
         }
 
-        [Test]
+        [Fact]
         public void ReadAllBinary()
         {
             new FileInfo(@".\Testing\Test.txt").Save("This is a test");
@@ -60,7 +61,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             }
         }
 
-        [Test]
+        [Fact]
         public void ReadAllBinary2()
         {
             using(MemoryStream Test=new MemoryStream())
@@ -71,9 +72,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
             }
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            
         }
     }
 }

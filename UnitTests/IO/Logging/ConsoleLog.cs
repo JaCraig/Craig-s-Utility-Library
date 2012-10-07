@@ -24,8 +24,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.IO.Logging.Enums;
 
 namespace UnitTests.IO.Logging
@@ -34,12 +34,12 @@ namespace UnitTests.IO.Logging
     {
         public ConsoleLog() { Log = new Utilities.IO.Logging.ConsoleLog(); }
 
-        [Test]
+        [Fact]
         public void LogMessage()
         {
             foreach (MessageType Type in Enum.GetValues(typeof(MessageType)))
-                Assert.DoesNotThrow<Exception>(() => Log.LogMessage("TestMessage", Type));
-            Assert.DoesNotThrow<Exception>(() => Log.LogMessage("TestMessage{0}", MessageType.Debug, "1"));
+                Assert.DoesNotThrow(()=> Log.LogMessage("TestMessage", Type));
+            Assert.DoesNotThrow(() => Log.LogMessage("TestMessage{0}", MessageType.Debug, "1"));
         }
 
 

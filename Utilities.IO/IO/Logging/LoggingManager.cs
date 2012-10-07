@@ -107,6 +107,7 @@ namespace Utilities.IO.Logging
             {
                 Logs[Key].Dispose();
             }
+            Logs.Clear();
         }
 
         #endregion

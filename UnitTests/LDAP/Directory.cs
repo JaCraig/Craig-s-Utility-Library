@@ -24,8 +24,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.IO.ExtensionMethods;
 
 namespace UnitTests.LDAP

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -36,7 +36,7 @@ namespace UnitTests.Reflection.Emit
 {
     public class PropertyBuilder
     {
-        [Test]
+        [Fact]
         public void Load()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -44,10 +44,10 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateConstructor();
             Utilities.Reflection.Emit.PropertyBuilder TestProperty = (Utilities.Reflection.Emit.PropertyBuilder)TestType.CreateProperty("TestProperty", typeof(int));
             Assert.Throws<NullReferenceException>(() => TestProperty.Load(null));
-            Assert.DoesNotThrow<Exception>(() => TestProperty.Load(Method.Generator));
+            Assert.DoesNotThrow(() => TestProperty.Load(Method.Generator));
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
@@ -55,27 +55,27 @@ namespace UnitTests.Reflection.Emit
             IMethodBuilder Method = TestType.CreateConstructor();
             Utilities.Reflection.Emit.PropertyBuilder TestProperty = (Utilities.Reflection.Emit.PropertyBuilder)TestType.CreateProperty("TestProperty", typeof(int));
             Assert.Throws<NullReferenceException>(() => TestProperty.Save(null));
-            Assert.DoesNotThrow<Exception>(() => TestProperty.Save(Method.Generator));
+            Assert.DoesNotThrow(() => TestProperty.Save(Method.Generator));
         }
 
-        [Test]
+        [Fact]
         public void PlusPlus()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateConstructor();
             Utilities.Reflection.Emit.PropertyBuilder TestProperty = (Utilities.Reflection.Emit.PropertyBuilder)TestType.CreateProperty("TestProperty", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => ++TestProperty);
+            Assert.DoesNotThrow(() => ++TestProperty);
         }
 
-        [Test]
+        [Fact]
         public void MinusMinus()
         {
             Utilities.Reflection.Emit.Assembly Assembly = new Utilities.Reflection.Emit.Assembly("TestAssembly");
             Utilities.Reflection.Emit.TypeBuilder TestType = Assembly.CreateType("TestType");
             IMethodBuilder Method = TestType.CreateConstructor();
             Utilities.Reflection.Emit.PropertyBuilder TestProperty = (Utilities.Reflection.Emit.PropertyBuilder)TestType.CreateProperty("TestProperty", typeof(int));
-            Assert.DoesNotThrow<Exception>(() => --TestProperty);
+            Assert.DoesNotThrow(() => --TestProperty);
         }
     }
 }

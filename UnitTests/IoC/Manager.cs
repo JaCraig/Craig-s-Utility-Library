@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.IoC.Mappings.BaseClasses;
 using Utilities.IoC.Providers.Interfaces;
 using Utilities.IoC.Providers.Scope;
@@ -33,14 +33,14 @@ namespace UnitTests.IoC
 {
     public class Manager
     {
-        [Test]
+        [Fact]
         public void SetupTest()
         {
             Utilities.IoC.Manager TestObject = new Utilities.IoC.Manager();
-            Assert.DoesNotThrow<Exception>(() => TestObject.Setup(typeof(Manager).Assembly));
+            Assert.DoesNotThrow(() => TestObject.Setup(typeof(Manager).Assembly));
         }
 
-        [Test]
+        [Fact]
         public void GetTest1()
         {
             Utilities.IoC.Manager TestObject = new Utilities.IoC.Manager();
@@ -49,7 +49,7 @@ namespace UnitTests.IoC
             Assert.NotNull(Object);
         }
 
-        [Test]
+        [Fact]
         public void GetTest2()
         {
             Utilities.IoC.Manager TestObject = new Utilities.IoC.Manager();

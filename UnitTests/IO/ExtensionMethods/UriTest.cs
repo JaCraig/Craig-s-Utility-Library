@@ -24,22 +24,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.IO.ExtensionMethods;
 
 namespace UnitTests.IO.ExtensionMethods
 {
     public class UriTest
     {
-        [Test]
+        [Fact]
         public void Read()
         {
             string Content=new Uri("http://www.google.com").Read();
             Assert.NotNull(Content);
         }
 
-        [Test]
+        [Fact]
         public void ReadBinary()
         {
             byte[] Content = new Uri("http://www.google.com").ReadBinary();

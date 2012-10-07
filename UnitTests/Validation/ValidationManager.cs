@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,7 +36,7 @@ namespace UnitTests.Validation
 {
     public class ValidationManager
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.ValidationManager.GetValidator<MyClass>()
@@ -45,7 +45,7 @@ namespace UnitTests.Validation
             MyClass Temp = new MyClass();
             Temp.Item1 = 1;
             Temp.Item2 = "ASDF";
-            Assert.DoesNotThrow<Exception>(() => Utilities.Validation.ValidationManager.Validate<MyClass>(Temp));
+            Assert.DoesNotThrow(() => Utilities.Validation.ValidationManager.Validate<MyClass>(Temp));
             Temp.Item2 = "ASDFGH";
             Assert.Throws<NotValid>(() => Utilities.Validation.ValidationManager.Validate<MyClass>(Temp));
         }

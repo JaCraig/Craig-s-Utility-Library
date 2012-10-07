@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Data;
 
 namespace UnitTests.FileFormats.GenericDelimited
 {
     public class GenericDelimited
     {
-        [Test]
+        [Fact]
         public void Load()
         {
             Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38","\t");
@@ -39,7 +39,7 @@ namespace UnitTests.FileFormats.GenericDelimited
             Assert.Equal("\"Year\"\t\"Make\"\t\"Model\"\t\"Length\"" + System.Environment.NewLine + "\"1997\"\t\"Ford\"\t\"E350\"\t\"2.34\"" + System.Environment.NewLine + "\"2000\"\t\"Mercury\"\t\"Cougar\"\t\"2.38\"" + System.Environment.NewLine, TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void Load2()
         {
             Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("\"Year\tMake\tModel\tLength\"\r\n\"1997\tFord\tE350\t2.34\"\r\n\"2000\tMercury\tCougar\t2.38\"","\t");
@@ -47,7 +47,7 @@ namespace UnitTests.FileFormats.GenericDelimited
             Assert.Equal("\"Year\tMake\tModel\tLength\"\r\n\"1997\tFord\tE350\t2.34\"\r\n\"2000\tMercury\tCougar\t2.38\"\r\n", TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void Load3()
         {
             Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"","\t");
@@ -55,7 +55,7 @@ namespace UnitTests.FileFormats.GenericDelimited
             Assert.Equal("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"\r\n", TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void Load4()
         {
             Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("\t");
@@ -64,7 +64,7 @@ namespace UnitTests.FileFormats.GenericDelimited
             Assert.Equal("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"\r\n", TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void ToDataTable()
         {
             DataTable TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38", "\t").ToDataTable();

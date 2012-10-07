@@ -23,14 +23,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 
 namespace UnitTests.AI
 {
     public class NaiveBayes
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             Utilities.AI.NaiveBayes<string> TestingObject = new Utilities.AI.NaiveBayes<string>();
@@ -38,8 +38,8 @@ namespace UnitTests.AI
             Assert.Equal(0.999, TestingObject.CalculateProbabilityOfTokens(new string[] { "this" }.ToList()));
             Assert.Equal(0.999, TestingObject.CalculateProbabilityOfTokens(new string[] { "is" }.ToList()));
             Assert.Equal(0.01, TestingObject.CalculateProbabilityOfTokens(new string[] { "not" }.ToList()));
-            Assert.Between(TestingObject.CalculateProbabilityOfTokens(new string[] { "a" }.ToList()), 0.42, 0.43);
-            Assert.Between(TestingObject.CalculateProbabilityOfTokens(new string[] { "test" }.ToList()),0.42,0.43);
+            Assert.InRange(TestingObject.CalculateProbabilityOfTokens(new string[] { "a" }.ToList()), 0.42, 0.43);
+            Assert.InRange(TestingObject.CalculateProbabilityOfTokens(new string[] { "test" }.ToList()),0.42,0.43);
         }
     }
 }

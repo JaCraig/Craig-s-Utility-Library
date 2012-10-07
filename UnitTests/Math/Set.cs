@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Math;
 
 namespace UnitTests.Math
 {
     public class Set
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             Set<int> TestObject = new Set<int>();

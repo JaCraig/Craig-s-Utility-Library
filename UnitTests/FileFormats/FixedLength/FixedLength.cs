@@ -23,14 +23,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 
 namespace UnitTests.FileFormats.FixedLength
 {
     public class FixedLength
     {
-        [Test]
+        [Fact]
         public void StringField()
         {
             Utilities.FileFormats.FixedLength.StringField Field = new Utilities.FileFormats.FixedLength.StringField("Testing this");
@@ -39,7 +39,7 @@ namespace UnitTests.FileFormats.FixedLength
             Assert.Equal("Testing this", Field.ToString());
         }
 
-        [Test]
+        [Fact]
         public void StringField2()
         {
             Utilities.FileFormats.FixedLength.StringField Field = new Utilities.FileFormats.FixedLength.StringField("Testing this", 4);

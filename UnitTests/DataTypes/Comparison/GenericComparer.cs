@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
+
 using Utilities.DataTypes.Comparison;
-using MoonUnit;
+using Xunit;
 
 namespace UnitTests.DataTypes.Comparison
 {
     public class GenericComparer
     {
-        [Test]
+        [Fact]
         public void Compare()
         {
             GenericComparer<string> Comparer = new GenericComparer<string>();

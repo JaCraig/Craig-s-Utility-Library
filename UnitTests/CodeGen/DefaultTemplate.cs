@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.CodeGen;
 
 namespace UnitTests.CodeGen
 {
     public class DefaultTemplate
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.CodeGen.DefaultTemplate Value = new Utilities.CodeGen.DefaultTemplate("public class MyClass\n{\n}");

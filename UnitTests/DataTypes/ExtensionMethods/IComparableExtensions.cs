@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 
@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class IComparableExtensions
     {
-        [Test]
+        [Fact]
         public void BetweenTest()
         {
             int Value = 1;

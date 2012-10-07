@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -38,7 +38,7 @@ namespace UnitTests.Web.ExtensionMethods
 {
     public class MinificationExtensions
     {
-        [Test]
+        [Fact]
         public void HTMLMinify()
         {
             string FileContent = new FileInfo(@"..\..\Data\Web\HanselmanSite.html").Read();
@@ -47,7 +47,7 @@ namespace UnitTests.Web.ExtensionMethods
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }
 
-        [Test]
+        [Fact]
         public void JavaScriptMinify()
         {
             string FileContent = new FileInfo(@"..\..\Data\Web\RandomJS.js").Read();
@@ -56,7 +56,7 @@ namespace UnitTests.Web.ExtensionMethods
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }
 
-        [Test]
+        [Fact]
         public void CSSMinify()
         {
             string FileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Read();

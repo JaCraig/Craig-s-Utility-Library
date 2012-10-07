@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -37,7 +37,7 @@ namespace UnitTests.Web.ExtensionMethods
 {
     public class NameValueCollectionExtensions
     {
-        [Test]
+        [Fact]
         public void ToQueryString()
         {
             NameValueCollection Collection = new NameValueCollection();

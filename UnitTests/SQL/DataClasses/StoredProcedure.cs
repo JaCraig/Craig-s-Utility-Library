@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Data;
 using Utilities.SQL.DataClasses.Interfaces;
 
@@ -32,7 +32,7 @@ namespace UnitTests.SQL.DataClasses
 {
     public class StoredProcedure
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
@@ -43,7 +43,7 @@ namespace UnitTests.SQL.DataClasses
             Assert.Equal(Database, Function.ParentDatabase);
         }
 
-        [Test]
+        [Fact]
         public void AddColumn()
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");

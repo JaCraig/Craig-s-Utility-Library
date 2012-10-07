@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,13 +36,13 @@ namespace UnitTests.Validation.Rules
 {
     public class IsEmailAddress
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.Rules.IsEmailAddress<ClassD> TestObject = new IsEmailAddress<ClassD>(x => x.ItemA, "Error");
             ClassD Temp = new ClassD();
             Temp.ItemA = "test@gmail.com";
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
             Temp.ItemA = "Not an email address";
             Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
         }

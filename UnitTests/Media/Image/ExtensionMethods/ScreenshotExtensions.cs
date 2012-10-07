@@ -23,23 +23,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Windows.Forms;
 using Utilities.Media.Image.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using System.IO;
+using UnitTests.Fixtures;
 
 namespace UnitTests.Media.Image.ExtensionMethods
 {
-    public class ScreenshotExtensions : IDisposable
+    public class ScreenshotExtensions : IUseFixture<TestingDirectoryFixture>
     {
-        public ScreenshotExtensions()
-        {
-            new DirectoryInfo(@".\Testing").Create();
-        }
-
-        [Test]
+        [Fact]
         public void TakeScreenShot()
         {
             Assert.NotNull(Screen.AllScreens.TakeScreenShot(@".\Testing\1.bmp"));
@@ -48,9 +44,8 @@ namespace UnitTests.Media.Image.ExtensionMethods
             Assert.True(new FileInfo(@".\Testing\2.bmp").Exists);
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
         }
     }
 }

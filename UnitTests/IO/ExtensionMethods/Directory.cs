@@ -24,27 +24,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.IO.ExtensionMethods;
+using UnitTests.Fixtures;
 
 namespace UnitTests.IO.ExtensionMethods
 {
-    public class Directory : IDisposable
+    public class Directory : IUseFixture<TestingDirectoryFixture>
     {
-        public Directory()
-        {
-            new DirectoryInfo(@".\Testing").Create();
-        }
-
-        [Test]
+        [Fact]
         public void DeleteAll()
         {
             new DirectoryInfo(@".\Testing").DeleteAll();
             Assert.False(new DirectoryInfo(@".\Testing").Exists);
         }
 
-        [Test]
+        [Fact]
         public void CopyTo()
         {
             new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
@@ -52,13 +48,13 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal(new DirectoryInfo(@".\Testing").Size(), new DirectoryInfo(@"..\..\Data\Testing").Size());
         }
 
-        [Test]
+        [Fact]
         public void Size()
         {
             Assert.Equal(20, new DirectoryInfo(@"..\..\Data\Testing").Size());
         }
 
-        [Test]
+        [Fact]
         public void DeleteFiles()
         {
             new DirectoryInfo(@"..\..\Data\Testing").CopyTo(@".\Testing");
@@ -66,15 +62,15 @@ namespace UnitTests.IO.ExtensionMethods
             Assert.Equal(0, new DirectoryInfo(@".\Testing").Size());
         }
 
-        [Test]
+        [Fact]
         public void DriveInfo()
         {
             Assert.NotNull(new DirectoryInfo(@".\Testing").DriveInfo());
         }
 
-        public void Dispose()
+        public void SetFixture(TestingDirectoryFixture data)
         {
-            new DirectoryInfo(@".\Testing").DeleteAll();
+            
         }
     }
 }

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,13 +36,13 @@ namespace UnitTests.Validation.Rules
 {
     public class NotRegex
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.Rules.NotRegex<ClassD> TestObject = new NotRegex<ClassD>(x => x.ItemA, "A(.*)", "Error");
             ClassD Temp = new ClassD();
             Temp.ItemA = "Test";
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
             Temp.ItemA = "A test";
             Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
         }

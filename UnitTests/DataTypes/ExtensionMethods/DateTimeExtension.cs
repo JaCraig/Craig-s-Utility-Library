@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 
@@ -32,145 +32,145 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class DateTimeExtension
     {
-        [Test]
+        [Fact]
         public void IsInFutureTest()
         {
             Assert.True(new DateTime(2100, 1, 1).IsInFuture());
         }
 
-        [Test]
+        [Fact]
         public void IsInPastTest()
         {
             Assert.True(new DateTime(1900, 1, 1).IsInPast());
         }
 
-        [Test]
+        [Fact]
         public void DaysLeftInMonthTest()
         {
             Assert.Equal(29, new DateTime(1999, 1, 2).DaysLeftInMonth());
         }
 
-        [Test]
+        [Fact]
         public void DaysLeftInYearTest()
         {
             Assert.Equal(363, new DateTime(1999, 1, 2).DaysLeftInYear());
         }
 
-        [Test]
+        [Fact]
         public void DaysLeftInWeekTest()
         {
             Assert.Equal(0, new DateTime(1999, 1, 2).DaysLeftInWeek());
         }
 
-        [Test]
+        [Fact]
         public void IsWeekDayTest()
         {
             Assert.False(new DateTime(1999, 1, 2).IsWeekDay());
         }
 
-        [Test]
+        [Fact]
         public void IsWeekEndTest()
         {
             Assert.True(new DateTime(1999, 1, 2).IsWeekEnd());
         }
 
-        [Test]
+        [Fact]
         public void FirstDayOfMonth()
         {
             Assert.Equal(new DateTime(1999, 1, 1), new DateTime(1999, 1, 2).FirstDayOfMonth());
         }
 
-        [Test]
+        [Fact]
         public void LastDayOfMonth()
         {
             Assert.Equal(new DateTime(1999, 1, 31), new DateTime(1999, 1, 2).LastDayOfMonth());
         }
 
-        [Test]
+        [Fact]
         public void DaysInMonth()
         {
             Assert.Equal(31, new DateTime(1999, 1, 2).DaysInMonth());
         }
 
-        [Test]
+        [Fact]
         public void FirstDayOfWeek()
         {
             Assert.Equal(new DateTime(1998, 12, 27), new DateTime(1999, 1, 2).FirstDayOfWeek());
         }
 
-        [Test]
+        [Fact]
         public void LastDayOfWeek()
         {
             Assert.Equal(new DateTime(1999, 1, 2), new DateTime(1999, 1, 2).LastDayOfWeek());
         }
 
-        [Test]
+        [Fact]
         public void EndOfDay()
         {
             Assert.Equal(new DateTime(1999, 1, 2, 23, 59, 59), new DateTime(1999, 1, 2, 12, 1, 1).EndOfDay());
         }
 
-        [Test]
+        [Fact]
         public void ToUnix()
         {
             Assert.Equal(915166800, new DateTime(1999, 1, 1).ToUnix());
         }
 
-        [Test]
+        [Fact]
         public void FromUnix()
         {
             Assert.Equal(new DateTime(2009, 2, 13, 23, 31, 30), 1234567890.FromUnixTime());
         }
 
-        [Test]
+        [Fact]
         public void UTCOffset()
         {
             Assert.Equal(-5, new DateTime(1999, 1, 2, 23, 1, 1, DateTimeKind.Local).UTCOffset());
         }
 
-        [Test]
+        [Fact]
         public void Age()
         {
             Assert.Equal(41, new DateTime(1940, 1, 1).Age(new DateTime(1981, 1, 1)));
         }
 
-        [Test]
+        [Fact]
         public void IsToday()
         {
             Assert.True(DateTime.Now.IsToday());
         }
 
-        [Test]
+        [Fact]
         public void SetTime()
         {
             Assert.Equal(new DateTime(2009, 1, 1, 14, 2, 12), new DateTime(2009, 1, 1, 2, 3, 4).SetTime(14, 2, 12));
         }
 
-        [Test]
+        [Fact]
         public void AddWeeks()
         {
             Assert.Equal(new DateTime(2009, 1, 15, 2, 3, 4), new DateTime(2009, 1, 1, 2, 3, 4).AddWeeks(2));
         }
 
-        [Test]
+        [Fact]
         public void ConvertToTimeZone()
         {
             Assert.Equal(new DateTime(2009, 1, 14, 23, 3, 4), new DateTime(2009, 1, 15, 2, 3, 4).ConvertToTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")));
         }
 
-        [Test]
+        [Fact]
         public void FirstDayOfYear()
         {
             Assert.Equal(new DateTime(2009, 1, 1, 0, 0, 0), new DateTime(2009, 1, 15, 2, 3, 4).FirstDayOfYear());
         }
 
-        [Test]
+        [Fact]
         public void LastDayOfYear()
         {
             Assert.Equal(new DateTime(2009, 12, 31, 0, 0, 0), new DateTime(2009, 1, 15, 2, 3, 4).LastDayOfYear());
         }
 
-        [Test]
+        [Fact]
         public void FirstDayOfQuarter()
         {
             Assert.Equal(new DateTime(2009, 1, 1), new DateTime(2009, 1, 15, 2, 3, 4).FirstDayOfQuarter());
@@ -184,14 +184,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(new DateTime(2009, 10, 1), new DateTime(2009, 12, 31, 2, 3, 4).FirstDayOfQuarter());
         }
 
-        [Test]
+        [Fact]
         public void LastDayOfQuarter()
         {
             Assert.Equal(new DateTime(2009, 3, 31), new DateTime(2009, 1, 15, 2, 3, 4).LastDayOfQuarter());
             Assert.Equal(new DateTime(2009, 6, 30), new DateTime(2009, 4, 1, 2, 3, 4).LastDayOfQuarter());
         }
 
-        [Test]
+        [Fact]
         public void RelativeTime()
         {
             Assert.Equal("34 years, 11 months from now", new DateTime(2011, 12, 1).RelativeTime(new DateTime(1977, 1, 1)));

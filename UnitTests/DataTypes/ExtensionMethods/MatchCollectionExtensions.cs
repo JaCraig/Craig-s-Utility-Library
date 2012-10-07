@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 using System.Collections;
@@ -34,7 +34,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class MatchCollectionExtensions
     {
-        [Test]
+        [Fact]
         public void Where()
         {
             Regex Regex = new System.Text.RegularExpressions.Regex(@"[^\s]");

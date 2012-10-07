@@ -24,10 +24,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
+
 using Utilities.IO.ExtensionMethods;
 using System.IO;
-using MoonUnit;
+using Xunit;
 using System.Reflection;
 using System.Xml;
 #endregion
@@ -36,13 +36,13 @@ namespace UnitTests.IO.ExtensionMethods
 {
     public class String
     {
-        [Test]
+        [Fact]
         public void RemoveIllegalDirectoryNameCharacters()
         {
             Assert.Equal(@"C:\TestDirectory_Stuff__Hope_ThisWorks", @"C:\TestDirectory""Stuff<>Hope|ThisWorks".RemoveIllegalDirectoryNameCharacters());
         }
 
-        [Test]
+        [Fact]
         public void RemoveIllegalFileNameCharacters()
         {
             Assert.Equal(@"TestDirectory_Stuff__Hope_ThisWorks.txt", @"TestDirectory""Stuff<>Hope|ThisWorks.txt".RemoveIllegalFileNameCharacters());

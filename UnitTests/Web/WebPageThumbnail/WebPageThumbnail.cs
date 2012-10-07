@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -43,7 +43,7 @@ namespace UnitTests.Web.WebPageThumbnail
             new DirectoryInfo(@".\Testing").Create();
         }
 
-        [Test]
+        [Fact]
         public void CreateThumbnail()
         {
             Utilities.Web.WebPageThumbnail.WebPageThumbnail TestObject = new Utilities.Web.WebPageThumbnail.WebPageThumbnail();

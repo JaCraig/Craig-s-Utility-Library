@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.FileFormats.ExtensionMethods;
 using System.Data;
 
@@ -32,21 +32,21 @@ namespace UnitTests.FileFormats.ExtensionMethods
 {
     public class ExtensionMethods
     {
-        [Test]
+        [Fact]
         public void ToCSV()
         {
             List<ExportClass> Temp = new ExportClass[] { new ExportClass { ID = 1, Value = "A" }, new ExportClass { ID = 2, Value = "B" }, new ExportClass { ID = 3, Value = "C" } }.ToList();
-            Assert.DoesNotThrow<Exception>(() => Temp.ToCSV());
+            Assert.DoesNotThrow(() => Temp.ToCSV());
             Utilities.FileFormats.CSV.CSV TestObject = Temp.ToCSV();
             Assert.Equal(4, TestObject.NumberOfRows);
             Assert.Equal("\"ID\",\"Value\"\r\n\"1\",\"A\"\r\n\"2\",\"B\"\r\n\"3\",\"C\"\r\n", TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void ToDelimitedFile()
         {
             List<ExportClass> Temp = new ExportClass[] { new ExportClass { ID = 1, Value = "A" }, new ExportClass { ID = 2, Value = "B" }, new ExportClass { ID = 3, Value = "C" } }.ToList();
-            Assert.DoesNotThrow<Exception>(() => Temp.ToDelimitedFile());
+            Assert.DoesNotThrow(() => Temp.ToDelimitedFile());
             Utilities.FileFormats.Delimited.Delimited TestObject = Temp.ToDelimitedFile();
             Assert.Equal(4, TestObject.NumberOfRows);
             Assert.Equal("\"ID\"\t\"Value\"\r\n\"1\"\t\"A\"\r\n\"2\"\t\"B\"\r\n\"3\"\t\"C\"\r\n", TestObject.ToString());

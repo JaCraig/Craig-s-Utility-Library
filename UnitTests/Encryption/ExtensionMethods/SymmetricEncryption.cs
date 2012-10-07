@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Encryption.ExtensionMethods;
 using System.Security.Cryptography;
 using Utilities.DataTypes.ExtensionMethods;
@@ -33,7 +33,7 @@ namespace UnitTests.Encryption.ExtensionMethods
 {
     public class SymmetricEncryption
     {
-        [Test]
+        [Fact]
         public void BasicTest()
         {
             string Data = "This is a test of the system.";
@@ -43,7 +43,7 @@ namespace UnitTests.Encryption.ExtensionMethods
             Assert.Equal("This is a test of the system.", Data.Encrypt("Babysfirstkey", AlgorithmUsing: new TripleDESCryptoServiceProvider(), KeySize: 192).Decrypt("Babysfirstkey", AlgorithmUsing: new TripleDESCryptoServiceProvider(), KeySize: 192));
         }
 
-        [Test]
+        [Fact]
         public void BasicTest2()
         {
             string Data = "This is a test of the system.";

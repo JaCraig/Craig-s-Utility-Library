@@ -23,15 +23,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Data;
 
 namespace UnitTests.FileFormats.CSV
 {
     public class CSV
     {
-        [Test]
+        [Fact]
         public void Load()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38");
@@ -39,7 +39,7 @@ namespace UnitTests.FileFormats.CSV
             Assert.Equal("\"Year\",\"Make\",\"Model\",\"Length\"" + System.Environment.NewLine + "\"1997\",\"Ford\",\"E350\",\"2.34\"" + System.Environment.NewLine + "\"2000\",\"Mercury\",\"Cougar\",\"2.38\"" + System.Environment.NewLine, TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void Load2()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("\"Year,Make,Model,Length\"\r\n\"1997,Ford,E350,2.34\"\r\n\"2000,Mercury,Cougar,2.38\"");
@@ -47,7 +47,7 @@ namespace UnitTests.FileFormats.CSV
             Assert.Equal("\"Year,Make,Model,Length\"\r\n\"1997,Ford,E350,2.34\"\r\n\"2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void Load3()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
@@ -55,7 +55,7 @@ namespace UnitTests.FileFormats.CSV
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void Load4()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV();
@@ -64,7 +64,7 @@ namespace UnitTests.FileFormats.CSV
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
         }
 
-        [Test]
+        [Fact]
         public void ToDataTable()
         {
             DataTable TestObject = new Utilities.FileFormats.CSV.CSV("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38").ToDataTable();

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Utilities.Random.ExtensionMethods;
@@ -41,11 +41,11 @@ namespace UnitTests.Random.DefaultClasses
             Item3
         }
 
-        [Test]
+        [Fact]
         public void Next()
         {
             Utilities.Random.DefaultClasses.EnumGenerator<MyTest> Generator = new Utilities.Random.DefaultClasses.EnumGenerator<MyTest>();
-            Assert.Between(Generator.Next(new System.Random()), MyTest.Item1, MyTest.Item3);
+            Assert.InRange(Generator.Next(new System.Random()), MyTest.Item1, MyTest.Item3);
         }
     }
 }

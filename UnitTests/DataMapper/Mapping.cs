@@ -23,23 +23,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataMapper;
 
 namespace UnitTests.DataMapper
 {
     public class Mapping
     {
-        [Test]
+        [Fact]
         public void CreationTest()
         {
             Utilities.DataMapper.Mapping<MappingA, MappingB> TempObject = null;
-            Assert.DoesNotThrow<Exception>(() => TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1));
+            Assert.DoesNotThrow(() => TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1));
             Assert.NotNull(TempObject);
         }
 
-        [Test]
+        [Fact]
         public void LeftToRight()
         {
             Utilities.DataMapper.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
@@ -54,7 +54,7 @@ namespace UnitTests.DataMapper
             Assert.NotEqual(B.Item2, "ASDF");
         }
 
-        [Test]
+        [Fact]
         public void RightToLeft()
         {
             Utilities.DataMapper.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);

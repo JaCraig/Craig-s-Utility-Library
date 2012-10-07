@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -34,29 +34,29 @@ namespace UnitTests.Reflection.Emit
 {
     public class Assembly
     {
-        [Test]
+        [Fact]
         public void Create()
         {
             Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
-            Assert.DoesNotThrow<Exception>(() => TestObject.Create());
+            Assert.DoesNotThrow(() => TestObject.Create());
         }
 
-        [Test]
+        [Fact]
         public void CreateType()
         {
             Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
             Utilities.Reflection.Emit.TypeBuilder TypeObject = TestObject.CreateType("TestClass");
             Assert.NotNull(TypeObject);
-            Assert.DoesNotThrow<Exception>(() => TestObject.Create());
+            Assert.DoesNotThrow(() => TestObject.Create());
         }
 
-        [Test]
+        [Fact]
         public void CreateEnum()
         {
             Utilities.Reflection.Emit.Assembly TestObject = new Utilities.Reflection.Emit.Assembly("TestingThis");
             Utilities.Reflection.Emit.EnumBuilder EnumObject = TestObject.CreateEnum("TestEnum");
             Assert.NotNull(EnumObject);
-            Assert.DoesNotThrow<Exception>(() => TestObject.Create());
+            Assert.DoesNotThrow(() => TestObject.Create());
         }
     }
 }

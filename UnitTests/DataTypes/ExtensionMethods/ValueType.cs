@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 
@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class ValueType
     {
-        [Test]
+        [Fact]
         public void BoolTest()
         {
             int Value=1;
@@ -40,7 +40,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(1, Value.ToBool().ToInt());
         }
 
-        [Test]
+        [Fact]
         public void UnicodeTest()
         {
             string Value = "\u25EF\u25EF\u25EF";

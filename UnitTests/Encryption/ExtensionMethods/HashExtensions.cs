@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Encryption.ExtensionMethods;
 using System.Security.Cryptography;
 using Utilities.DataTypes.ExtensionMethods;
@@ -33,13 +33,13 @@ namespace UnitTests.Encryption.ExtensionMethods
 {
     public class HashExtensions
     {
-        [Test]
+        [Fact]
         public void GenerateSalt()
         {
             Assert.Equal(100, new System.Random().GenerateSalt(100).Length);
         }
 
-        [Test]
+        [Fact]
         public void HashTest()
         {
             string Data = "This is a test";
@@ -47,7 +47,7 @@ namespace UnitTests.Encryption.ExtensionMethods
             Assert.Equal("CE114E4501D2F4E2DCEA3E17B546F339", Data.Hash(new MD5CryptoServiceProvider()));
         }
 
-        [Test]
+        [Fact]
         public void SaltTest()
         {
             string Data = "This is a test";

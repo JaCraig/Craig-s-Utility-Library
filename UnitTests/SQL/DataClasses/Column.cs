@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.SQL.DataClasses.Interfaces;
 using Utilities.SQL.DataClasses;
 using System.Data;
@@ -33,7 +33,7 @@ namespace UnitTests.SQL.DataClasses
 {
     public class Column
     {
-        [Test]
+        [Fact]
         public void Creation()
         {
             IColumn Column = new Column<int>("Column1", System.Data.DbType.Int32, 0, false, false, false, false, false, "", "", 0, false, false, false, null);

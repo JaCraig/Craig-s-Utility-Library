@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes;
 using System.Data;
 using Utilities.Events.EventArgs;
@@ -34,7 +34,7 @@ namespace UnitTests.DataTypes
 {
     public class Vector
     {
-        [Test]
+        [Fact]
         public void RandomTest()
         {
             Vector<int> TestObject = new Vector<int>();

@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit.Attributes;
-using MoonUnit;
+
+using Xunit;
 using Utilities.Validation.Rules;
 using System.Collections;
 using System.IO;
@@ -36,13 +36,13 @@ namespace UnitTests.Validation.Rules
 {
     public class MaxLength
     {
-        [Test]
+        [Fact]
         public void Test()
         {
             Utilities.Validation.Rules.MaxLength<ClassD, char> TestObject = new MaxLength<ClassD, char>(x => x.ItemA, 4, "Error");
             ClassD Temp = new ClassD();
             Temp.ItemA = "Test";
-            Assert.DoesNotThrow<Exception>(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
             Temp.ItemA = "Testing";
             Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
         }

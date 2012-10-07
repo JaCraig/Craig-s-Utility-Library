@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 
@@ -32,7 +32,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class IDictionaryExtensions
     {
-        [Test]
+        [Fact]
         public void SortTest()
         {
             IDictionary<string, int> Test = new Dictionary<string, int>();
@@ -47,7 +47,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("ACQZ", Value);
         }
 
-        [Test]
+        [Fact]
         public void SortByValueTest()
         {
             IDictionary<string, int> Test = new Dictionary<string, int>();

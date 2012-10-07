@@ -26,8 +26,8 @@ using System.Text;
 using UnitTests.ORM.Test2.Models;
 using Utilities.SQL.SQLServer;
 using Utilities.SQL.DataClasses;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using System.Data;
 using Utilities.SQL.ParameterTypes;
 using UnitTests.ORM.ListTest.Models;
@@ -42,7 +42,7 @@ namespace UnitTests.ORM.ListTest
             new Utilities.ORM.ORM(typeof(Task).Assembly);
         }
 
-        [Test]
+        [Fact]
         public void DatabaseCreation()
         {
             Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false");
@@ -57,7 +57,7 @@ namespace UnitTests.ORM.ListTest
             Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project2_Task2Audit"));
         }
 
-        [Test]
+        [Fact]
         public void SaveIEnumerableExtension()
         {
             List<Task2> Tasks = new List<Task2>();
@@ -85,7 +85,7 @@ namespace UnitTests.ORM.ListTest
             }
         }
 
-        [Test]
+        [Fact]
         public void Save()
         {
             Task2 TempTask = new Task2();
@@ -128,7 +128,7 @@ namespace UnitTests.ORM.ListTest
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false", CommandType.Text))
@@ -142,7 +142,7 @@ namespace UnitTests.ORM.ListTest
             }
         }
 
-        [Test]
+        [Fact]
         public void Update()
         {
             Task2 TempTask = new Task2();
@@ -187,7 +187,7 @@ namespace UnitTests.ORM.ListTest
                 }
                 else
                 {
-                    Assert.Fail("Nothing was inserted");
+                    Assert.False(true,"Nothing was inserted");
                 }
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false", CommandType.Text))
@@ -201,7 +201,7 @@ namespace UnitTests.ORM.ListTest
             }
         }
 
-        [Test]
+        [Fact]
         public void Any()
         {
             Task2 TempTask = new Task2();
@@ -250,7 +250,7 @@ namespace UnitTests.ORM.ListTest
             }
         }
 
-        [Test]
+        [Fact]
         public void All()
         {
             Task2 TempTask = new Task2();
@@ -293,7 +293,7 @@ namespace UnitTests.ORM.ListTest
             }
         }
 
-        [Test]
+        [Fact]
         public void Paged()
         {
             for (int x = 0; x < 100; ++x)
@@ -309,34 +309,34 @@ namespace UnitTests.ORM.ListTest
             Assert.Equal(25, TestObject.Count());
             foreach (Task2 TestTask in TestObject)
             {
-                Assert.Between(TestTask.ID, 1, 25);
+                Assert.InRange(TestTask.ID, 1, 25);
             }
 
             TestObject = Task2.Paged(CurrentPage: 1);
             Assert.Equal(25, TestObject.Count());
             foreach (Task2 TestTask in TestObject)
             {
-                Assert.Between(TestTask.ID, 26, 50);
+                Assert.InRange(TestTask.ID, 26, 50);
             }
 
             TestObject = Task2.Paged(CurrentPage: 2);
             Assert.Equal(25, TestObject.Count());
             foreach (Task2 TestTask in TestObject)
             {
-                Assert.Between(TestTask.ID, 51, 75);
+                Assert.InRange(TestTask.ID, 51, 75);
             }
 
             TestObject = Task2.Paged(CurrentPage: 3);
             Assert.Equal(25, TestObject.Count());
             foreach (Task2 TestTask in TestObject)
             {
-                Assert.Between(TestTask.ID, 76, 100);
+                Assert.InRange(TestTask.ID, 76, 100);
             }
 
             Assert.Equal(4, Task2.PageCount());
         }
 
-        [Test]
+        [Fact]
         public void Paged2()
         {
             for (int x = 0; x < 100; ++x)
@@ -352,14 +352,14 @@ namespace UnitTests.ORM.ListTest
             Assert.Equal(25, TestObject.Count());
             foreach (Task2 TestTask in TestObject)
             {
-                Assert.Between(TestTask.ID, 51, 75);
+                Assert.InRange(TestTask.ID, 51, 75);
             }
 
             TestObject = Task2.PagedCommand("SELECT * FROM Task2_ WHERE ID_>@ID", "", 25, 1, new EqualParameter<long>(50, "ID"));
             Assert.Equal(25, TestObject.Count());
             foreach (Task2 TestTask in TestObject)
             {
-                Assert.Between(TestTask.ID, 76, 100);
+                Assert.InRange(TestTask.ID, 76, 100);
             }
 
             TestObject = Task2.PagedCommand("SELECT * FROM Task2_ WHERE ID_>@ID", "", 25, 2, new EqualParameter<long>(50, "ID"));

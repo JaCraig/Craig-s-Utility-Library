@@ -23,8 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MoonUnit;
-using MoonUnit.Attributes;
+using Xunit;
+
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 using System.Collections;
@@ -33,7 +33,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class GenericObjectExtensions
     {
-        [Test]
+        [Fact]
         public void If()
         {
             MyTestClass Temp = new MyTestClass();
@@ -41,7 +41,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.NotSame(Temp, Temp.If(x => x.B == 1));
         }
 
-        [Test]
+        [Fact]
         public void NotIf()
         {
             MyTestClass Temp = new MyTestClass();
@@ -49,35 +49,35 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Same(Temp, Temp.NotIf(x => x.B == 1));
         }
 
-        [Test]
+        [Fact]
         public void Execute1()
         {
             Func<int> Temp = () => 1;
-            Assert.DoesNotThrow<Exception>(() => Temp.Execute());
+            Assert.DoesNotThrow(() => Temp.Execute());
         }
 
-        [Test]
+        [Fact]
         public void Execute2()
         {
             Action Temp = () => Test();
             Assert.Throws<Exception>(() => Temp.Execute());
         }
 
-        [Test]
+        [Fact]
         public void Chain()
         {
             DateTime Temp = new DateTime(1999, 1, 1);
             Assert.Equal(Temp, Temp.Chain<DateTime>(x => x.AddSeconds(1)));
         }
 
-        [Test]
+        [Fact]
         public void Chain2()
         {
             DateTime Temp = new DateTime(1999, 1, 1);
             Assert.Equal(Temp.AddSeconds(1), Temp.Chain(x => x.AddSeconds(1)));
         }
 
-        [Test]
+        [Fact]
         public void Chain3()
         {
             DateTime Temp = new DateTime(1999, 1, 1);
@@ -86,7 +86,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Throws<ArgumentOutOfRangeException>(() => ((DateTime?)null).Chain<DateTime?>(x => x.Value.AddSeconds(1), DateTime.MaxValue));
         }
 
-        [Test]
+        [Fact]
         public void Chain4()
         {
             DateTime Temp = new DateTime(1999, 1, 1);
@@ -94,7 +94,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(DateTime.MaxValue, ((DateTime?)null).Chain(x => x.Value.AddSeconds(1), DateTime.MaxValue));
         }
 
-        [Test]
+        [Fact]
         public void Chain5()
         {
             Assert.Null(new MyTestClass().Chain(x => x.A));
@@ -104,27 +104,27 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(0, ((MyTestClass)null).Chain(x => x.A).Chain(x => x.B));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfTrue()
         {
-            Assert.DoesNotThrow<Exception>(() => "ASDF".ThrowIfTrue(x => string.IsNullOrEmpty(x), new Exception()));
+            Assert.DoesNotThrow(() => "ASDF".ThrowIfTrue(x => string.IsNullOrEmpty(x), new Exception()));
             Assert.Throws<Exception>(() => "ASDF".ThrowIfTrue(x => !string.IsNullOrEmpty(x), new Exception()));
         }
 
-        [Test]
+        [Fact]
         public void ThrowIfFalse()
         {
             Assert.Throws<Exception>(() => "ASDF".ThrowIfFalse(x => string.IsNullOrEmpty(x), new Exception()));
-            Assert.DoesNotThrow<Exception>(() => "ASDF".ThrowIfFalse(x => !string.IsNullOrEmpty(x), new Exception()));
+            Assert.DoesNotThrow(() => "ASDF".ThrowIfFalse(x => !string.IsNullOrEmpty(x), new Exception()));
         }
 
-        [Test]
+        [Fact]
         public void Async()
         {
-            Assert.DoesNotThrow<Exception>(() => new Action(() => string.IsNullOrEmpty("")).Async());
+            Assert.DoesNotThrow(() => new Action(() => string.IsNullOrEmpty("")).Async());
         }
 
-        [Test]
+        [Fact]
         public void Times()
         {
             Assert.Equal(new int[] { 0, 1, 2, 3, 4 }.ToList(), 5.Times(x => x));
