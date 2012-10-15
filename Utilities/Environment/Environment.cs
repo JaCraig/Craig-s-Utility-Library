@@ -22,6 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Management;
+using System.Text;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Environment
@@ -80,7 +82,7 @@ namespace Utilities.Environment
         {
             get { return System.Environment.OSVersion.ServicePack; }
         }
-        
+
         /// <summary>
         /// Full name, includes service pack, version, etc.
         /// </summary>
@@ -119,7 +121,7 @@ namespace Utilities.Environment
         /// </summary>
         public static long TotalMemory
         {
-            get 
+            get
             {
                 long ReturnValue = 0;
                 ObjectQuery TempQuery = new ObjectQuery("SELECT * FROM Win32_LogicalMemoryConfiguration");
@@ -133,6 +135,28 @@ namespace Utilities.Environment
                 return ReturnValue;
             }
         }
+
+        #endregion
+
+        #region Functions
+
+        #region GetSystemInformation
+
+        /// <summary>
+        /// Gets information about the system.
+        /// </summary>
+        /// <param name="HTMLOutput">Should HTML output be used</param>
+        /// <returns>An HTML formatted string containing the state of the system.</returns>
+        public static string GetSystemInformation(bool HTMLOutput = false)
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append(HTMLOutput ? "<strong>System Information</strong><br />" : "System Information\r\n");
+            Builder.Append(typeof(Utilities.Environment.Environment).DumpProperties(HTMLOutput));
+            return Builder.ToString();
+        }
+
+        #endregion
+
         #endregion
     }
 }

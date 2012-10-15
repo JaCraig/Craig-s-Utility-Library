@@ -180,6 +180,36 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("(555) 555-1010", string.Format(new GenericStringFormatter(), "{0:(###) ###-####}", "5555551010"));
         }
 
+        public class StringFormatClass
+        {
+            public StringFormatClass()
+            {
+                A = "This is a test";
+                B = 10;
+                C = 1.5f;
+            }
+
+            public string A { get; set; }
+
+            public int B { get; set; }
+
+            public float C { get; set; }
+        }
+
+        [Fact]
+        public void FormatString2()
+        {
+            Assert.Equal("<A>This is a test</A><B>10</B><C>1.5</C>", "<A>{A}</A><B>{B}</B><C>{C}</C>".FormatString(new StringFormatClass()));
+        }
+
+        [Fact]
+        public void FormatString3()
+        {
+            Assert.Equal("<A>This is a test</A><B>10</B><C>1.5</C>", "<A>{A}</A><B>{B}</B><C>{C}</C>".FormatString(new KeyValuePair<string, string>("{A}", "This is a test"),
+                new KeyValuePair<string, string>("{B}", "10"),
+                new KeyValuePair<string, string>("{C}", "1.5")));
+        }
+
         [Fact]
         public void RegexFormat()
         {
@@ -253,6 +283,18 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(1, "Test".LevenshteinDistance("Tests"));
             Assert.Equal(3, "Test".LevenshteinDistance("Testing"));
             Assert.Equal(1, "Rest".LevenshteinDistance("Test"));
+        }
+
+        [Fact]
+        public void AppendLineFormat()
+        {
+            StringBuilder Builder=new StringBuilder();
+            Builder.AppendLineFormat("This is test {0}",1);
+            Assert.Equal("This is test 1" + System.Environment.NewLine, Builder.ToString());
+            Builder.Clear();
+            Builder.AppendLineFormat("Test {0}", 2)
+                .AppendLineFormat("And {0}", 3);
+            Assert.Equal("Test 2" + System.Environment.NewLine + "And 3" + System.Environment.NewLine, Builder.ToString());
         }
     }
 }

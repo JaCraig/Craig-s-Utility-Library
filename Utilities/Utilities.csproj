@@ -100,6 +100,7 @@
     <Compile Include="AI\Anagram.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
     <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />
     <Compile Include="DataTypes\RingBuffer.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
@@ -113,9 +114,11 @@
     <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
+    <Compile Include="DataTypes\StringTemplate.cs" />
+    <Compile Include="DataTypes\TagDictionary.cs" />
+    <Compile Include="DataTypes\Threading\TaskQueue.cs" />
     <Compile Include="Environment\DataTypes\User.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
-    <Compile Include="Error\ExtensionMethods\Extensions.cs" />
     <Compile Include="FileFormats\ExtensionMethods\ExtensionMethods.cs" />
     <Compile Include="FileFormats\GenericDelimited\GenericDelimited.cs" />
     <Compile Include="IoC\Manager.cs" />
@@ -227,29 +230,6 @@
     <Compile Include="FileFormats\Cisco\SoftKeyItem.cs" />
     <Compile Include="FileFormats\Cisco\Status.cs" />
     <Compile Include="FileFormats\Cisco\Text.cs" />
-    <Compile Include="CodeGen\BaseClasses\InputBase.cs" />
-    <Compile Include="CodeGen\BaseClasses\ParserBase.cs" />
-    <Compile Include="CodeGen\BaseClasses\TemplateBase.cs" />
-    <Compile Include="CodeGen\DefaultInput.cs" />
-    <Compile Include="CodeGen\DefaultParser.cs" />
-    <Compile Include="CodeGen\DefaultTemplate.cs" />
-    <Compile Include="CodeGen\Interfaces\IInput.cs" />
-    <Compile Include="CodeGen\Interfaces\IParser.cs" />
-    <Compile Include="CodeGen\Interfaces\ITemplate.cs" />
-    <Compile Include="CodeGen\Templates\BaseClasses\ObjectBase.cs" />
-    <Compile Include="CodeGen\Templates\Class.cs" />
-    <Compile Include="CodeGen\Templates\Constructor.cs" />
-    <Compile Include="CodeGen\Templates\DefaultProperty.cs" />
-    <Compile Include="CodeGen\Templates\Enums\AccessModifier.cs" />
-    <Compile Include="CodeGen\Templates\Enums\Modifiers.cs" />
-    <Compile Include="CodeGen\Templates\Function.cs" />
-    <Compile Include="CodeGen\Templates\Interfaces\IFunction.cs" />
-    <Compile Include="CodeGen\Templates\Interfaces\IObject.cs" />
-    <Compile Include="CodeGen\Templates\Interfaces\IParameter.cs" />
-    <Compile Include="CodeGen\Templates\Interfaces\IProperty.cs" />
-    <Compile Include="CodeGen\Templates\Parameter.cs" />
-    <Compile Include="CodeGen\Templates\Property.cs" />
-    <Compile Include="CodeGen\Templates\Using.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\Interfaces\IConfig.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
@@ -450,7 +430,7 @@
     <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\HTTPRequestExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
-    <Compile Include="Web\ExtensionMethods\RequestExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\HTTPContextExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\Minification.cs" />
@@ -492,7 +472,6 @@
     <Compile Include="Web\Email\Pop3\Pop3Exception.cs" />
     <Compile Include="Encryption\RSAEncryption.cs" />
     <Compile Include="Environment\Environment.cs" />
-    <Compile Include="Error\ErrorManager.cs" />
     <Compile Include="Exchange\Appointment.cs" />
     <Compile Include="Exchange\Exchange.cs" />
     <Compile Include="FileFormats\VCalendar.cs" />
@@ -573,7 +552,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Error\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)\UtilitiesSplitter\bin\Debug\UtilitiesSplitter.exe</PostBuildEvent>

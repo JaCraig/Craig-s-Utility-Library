@@ -29,6 +29,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics;
 #endregion
 
 namespace Utilities.Reflection.ExtensionMethods
@@ -164,6 +165,24 @@ namespace Utilities.Reflection.ExtensionMethods
             }
             TempValue.Append(HTMLOutput ? "</tbody></table>" : "");
             return TempValue.ToString();
+        }
+
+        #endregion
+
+        #region GetAssemblyInformation
+
+        /// <summary>
+        /// Gets assembly information for all currently loaded assemblies
+        /// </summary>
+        /// <param name="Assemblies">Assemblies to dump information from</param>
+        /// <param name="HTMLOutput">Should HTML output be used</param>
+        /// <returns>An HTML formatted string containing the assembly information</returns>
+        public static string GetAssemblyInformation(this IEnumerable<Assembly> Assemblies,bool HTMLOutput = false)
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append(HTMLOutput ? "<strong>Assembly Information</strong><br />" : "Assembly Information\r\n");
+            Assemblies.ForEach<Assembly>(x => Builder.Append(x.DumpProperties(HTMLOutput)));
+            return Builder.ToString();
         }
 
         #endregion

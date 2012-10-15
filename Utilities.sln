@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.AI", "Utilities.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Caching", "Utilities.Caching\Utilities.Caching.csproj", "{7B063E87-B117-4427-9974-4987189075A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.CodeGen", "Utilities.CodeGen\Utilities.CodeGen.csproj", "{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Compression", "Utilities.Compression\Utilities.Compression.csproj", "{D56F5AB6-2843-43D9-9236-5CF136781CEB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Configuration", "Utilities.Configuration\Utilities.Configuration.csproj", "{6F3ED825-3516-4419-8BB8-A02B35359CF7}"
@@ -25,8 +23,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Encryption", "Utilities.Encryption\Utilities.Encryption.csproj", "{44710730-9426-49E8-822A-4A5ACC6FF4EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Environment", "Utilities.Environment\Utilities.Environment.csproj", "{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Error", "Utilities.Error\Utilities.Error.csproj", "{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Events", "Utilities.Events\Utilities.Events.csproj", "{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}"
 EndProject
@@ -110,16 +106,6 @@ Global
 		{7B063E87-B117-4427-9974-4987189075A7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7B063E87-B117-4427-9974-4987189075A7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7B063E87-B117-4427-9974-4987189075A7}.Release|x86.ActiveCfg = Release|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{1146C9F6-32BB-42DC-914E-B53D2CF24B2A}.Release|x86.ActiveCfg = Release|Any CPU
 		{D56F5AB6-2843-43D9-9236-5CF136781CEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D56F5AB6-2843-43D9-9236-5CF136781CEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D56F5AB6-2843-43D9-9236-5CF136781CEB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -180,16 +166,6 @@ Global
 		{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}.Release|x86.ActiveCfg = Release|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AFEE445D-6B55-428B-A42D-4A4858C8CDCC}.Release|x86.ActiveCfg = Release|Any CPU
 		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

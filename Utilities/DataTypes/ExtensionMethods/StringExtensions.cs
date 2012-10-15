@@ -28,12 +28,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.Formatters;
 using Utilities.DataTypes.Formatters.Interfaces;
+using System.Reflection;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
 {
     /// <summary>
-    /// String extensions
+    /// String and StringBuilder extensions
     /// </summary>
     public static class StringExtensions
     {
@@ -63,6 +65,22 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string AlphaNumericOnly(this string Input)
         {
             return Input.KeepFilterText("[a-zA-Z0-9]");
+        }
+
+        #endregion
+
+        #region AppendLineFormat
+
+        /// <summary>
+        /// Does an AppendFormat and then an AppendLine on the StringBuilder
+        /// </summary>
+        /// <param name="Builder">Builder object</param>
+        /// <param name="Format">Format string</param>
+        /// <param name="Objects">Objects to format</param>
+        /// <returns>The StringBuilder passed in</returns>
+        public static StringBuilder AppendLineFormat(this StringBuilder Builder, string Format, params object[] Objects)
+        {
+            return Builder.AppendFormat(Format, Objects).AppendLine();
         }
 
         #endregion
@@ -156,7 +174,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         #region FormatString
 
         /// <summary>
-        /// Formats a string based on a format string passed in:
+        /// Formats a string based on a format string passed in.
+        /// The default formatter uses the following format:
         /// # = digits
         /// @ = alpha characters
         /// \ = escape char
@@ -168,6 +187,45 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string FormatString(this string Input, string Format, IStringFormatter Provider = null)
         {
             return Provider.NullCheck(new GenericStringFormatter()).Format(Input, Format);
+        }
+
+        /// <summary>
+        /// Formats a string based on the object's properties
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Object">Object to use to format the string</param>
+        /// <param name="StartSeperator">Seperator character/string to use to describe the start of the property name</param>
+        /// <param name="EndSeperator">Seperator character/string to use to describe the end of the property name</param>
+        /// <returns>The formatted string</returns>
+        public static string FormatString(this string Input, object Object, string StartSeperator = "{", string EndSeperator = "}")
+        {
+            if (Object.IsNull())
+                return Input;
+            Object.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.CanRead)
+                .ForEach(x =>
+                {
+                    var Value = x.GetValue(Object, null);
+                    Input = Input.Replace(StartSeperator + x.Name + EndSeperator, Value.IsNull() ? "" : Value.ToString());
+                });
+            return Input;
+        }
+
+        /// <summary>
+        /// Formats a string based on the key/value pairs that are sent in
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Pairs">Key/value pairs. Replaces the key with the corresponding value.</param>
+        /// <returns>The string after the changes have been made</returns>
+        public static string FormatString(this string Input, params KeyValuePair<string, string>[] Pairs)
+        {
+            if (Input.IsNullOrEmpty())
+                return Input;
+            foreach (KeyValuePair<string, string> Pair in Pairs)
+            {
+                Input = Input.Replace(Pair.Key, Pair.Value);
+            }
+            return Input;
         }
 
         #endregion

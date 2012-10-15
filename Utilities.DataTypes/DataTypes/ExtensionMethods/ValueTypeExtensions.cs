@@ -97,6 +97,188 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region IsControl
+
+        /// <summary>
+        /// Is the character a control character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsControl(this char Value)
+        {
+            return char.IsControl(Value);
+        }
+
+        #endregion
+
+        #region IsDigit
+
+        /// <summary>
+        /// Is the character a digit character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsDigit(this char Value)
+        {
+            return char.IsDigit(Value);
+        }
+
+        #endregion
+
+        #region IsHighSurrogate
+
+        /// <summary>
+        /// Is the character a high surrogate character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsHighSurrogate(this char Value)
+        {
+            return char.IsHighSurrogate(Value);
+        }
+
+        #endregion
+
+        #region IsLetter
+
+        /// <summary>
+        /// Is the character a letter character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsLetter(this char Value)
+        {
+            return char.IsLetter(Value);
+        }
+
+        #endregion
+
+        #region IsLetterOrDigit
+
+        /// <summary>
+        /// Is the character a letter or digit character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsLetterOrDigit(this char Value)
+        {
+            return char.IsLetterOrDigit(Value);
+        }
+
+        #endregion
+
+        #region IsLower
+
+        /// <summary>
+        /// Is the character a lower case character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsLower(this char Value)
+        {
+            return char.IsLower(Value);
+        }
+
+        #endregion
+
+        #region IsLowSurrogate
+
+        /// <summary>
+        /// Is the character a low surrogate character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsLowSurrogate(this char Value)
+        {
+            return char.IsLowSurrogate(Value);
+        }
+
+        #endregion
+
+        #region IsNumber
+
+        /// <summary>
+        /// Is the character a number character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsNumber(this char Value)
+        {
+            return char.IsNumber(Value);
+        }
+
+        #endregion
+
+        #region IsPunctuation
+
+        /// <summary>
+        /// Is the character a punctuation character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsPunctuation(this char Value)
+        {
+            return char.IsPunctuation(Value);
+        }
+
+        #endregion
+
+        #region IsSurrogate
+
+        /// <summary>
+        /// Is the character a surrogate character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsSurrogate(this char Value)
+        {
+            return char.IsSurrogate(Value);
+        }
+
+        #endregion
+
+        #region IsSymbol
+
+        /// <summary>
+        /// Is the character a symbol character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsSymbol(this char Value)
+        {
+            return char.IsSymbol(Value);
+        }
+
+        #endregion
+
+        #region IsUpper
+
+        /// <summary>
+        /// Is the character an upper case character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsUpper(this char Value)
+        {
+            return char.IsUpper(Value);
+        }
+
+        #endregion
+
+        #region IsWhiteSpace
+
+        /// <summary>
+        /// Is the character a whitespace character
+        /// </summary>
+        /// <param name="Value">Value to check</param>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsWhiteSpace(this char Value)
+        {
+            return char.IsWhiteSpace(Value);
+        }
+
+        #endregion
+
         #region IsUnicode
 
         /// <summary>

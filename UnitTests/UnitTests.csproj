@@ -56,9 +56,6 @@
     <Compile Include="AI\Anagram.cs" />
     <Compile Include="AI\NaiveBayes.cs" />
     <Compile Include="Caching\Cache.cs" />
-    <Compile Include="CodeGen\DefaultInput.cs" />
-    <Compile Include="CodeGen\DefaultParser.cs" />
-    <Compile Include="CodeGen\DefaultTemplate.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
@@ -72,6 +69,7 @@
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
@@ -89,6 +87,9 @@
     <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />
     <Compile Include="DataTypes\RingBuffer.cs" />
+    <Compile Include="DataTypes\StringTemplate.cs" />
+    <Compile Include="DataTypes\TagDictionary.cs" />
+    <Compile Include="DataTypes\Threading\TaskQueue.cs" />
     <Compile Include="DataTypes\Vector.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="Environment\ArgsParser.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="Environment\Option.cs" />
-    <Compile Include="Error\ErrorManager.cs" />
     <Compile Include="Events\EventHelper.cs" />
     <Compile Include="FileFormats\Cisco\Directory.cs" />
     <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
@@ -271,9 +271,7 @@
     <None Include="Key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CodeGen\Templates\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

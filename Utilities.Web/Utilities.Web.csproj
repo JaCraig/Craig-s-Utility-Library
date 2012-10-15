@@ -105,7 +105,6 @@
     <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\Minification.cs" />
-    <Compile Include="Web\ExtensionMethods\RequestExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\HTTPRequestExtensions.cs" />
@@ -119,6 +118,7 @@
     <Compile Include="Web\Google\HelperClasses\Markers.cs" />
     <Compile Include="Web\Google\Interfaces\ILocation.cs" />
     <Compile Include="Web\Google\StaticMaps\Map.cs" />
+    <Compile Include="Web\ExtensionMethods\HTTPContextExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.Compression\Utilities.Compression.csproj">

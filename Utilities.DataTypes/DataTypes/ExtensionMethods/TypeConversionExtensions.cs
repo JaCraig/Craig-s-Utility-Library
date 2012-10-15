@@ -116,6 +116,21 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region IsNotNullOrEmpty
+
+        /// <summary>
+        /// Determines if a list is not null or empty
+        /// </summary>
+        /// <typeparam name="T">Data type</typeparam>
+        /// <param name="Value">List to check</param>
+        /// <returns>True if it is not null or empty, false otherwise</returns>
+        public static bool IsNotNullOrEmpty<T>(this IEnumerable<T> Value)
+        {
+            return !Value.IsNullOrEmpty();
+        }
+
+        #endregion
+
         #region IsNullOrEmpty
 
         /// <summary>
