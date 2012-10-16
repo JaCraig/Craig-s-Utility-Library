@@ -268,7 +268,7 @@ namespace Utilities.Reflection.AOP
             VariableBase ExceptionArgs = Method.NewObj(typeof(Utilities.Reflection.AOP.EventArgs.Exception).GetConstructor(new Type[0]));
             ExceptionArgs.Call(typeof(Utilities.Reflection.AOP.EventArgs.Exception).GetProperty("InternalException").GetSetMethod(), new object[] { Catch.Exception });
             VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
-            Type EventHelperType = typeof(Utilities.Events.EventHelper);
+            Type EventHelperType = typeof(Utilities.DataTypes.ExtensionMethods.DelegateExtensions);
             MethodInfo[] Methods = EventHelperType.GetMethods()
                                                   .Where<MethodInfo>(x => x.GetParameters().Length == 3)
                                                   .ToArray();
@@ -295,7 +295,7 @@ namespace Utilities.Reflection.AOP
             }
 
             VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
-            Type EventHelperType = typeof(Utilities.Events.EventHelper);
+            Type EventHelperType = typeof(Utilities.DataTypes.ExtensionMethods.DelegateExtensions);
             MethodInfo[] Methods = EventHelperType.GetMethods()
                                                   .Where<MethodInfo>(x => x.GetParameters().Length == 3)
                                                   .ToArray();
@@ -331,7 +331,7 @@ namespace Utilities.Reflection.AOP
             }
 
             VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
-            Type EventHelperType = typeof(Utilities.Events.EventHelper);
+            Type EventHelperType = typeof(Utilities.DataTypes.ExtensionMethods.DelegateExtensions);
             MethodInfo[] Methods = EventHelperType.GetMethods()
                                                   .Where<MethodInfo>(x => x.GetParameters().Length == 3)
                                                   .ToArray();

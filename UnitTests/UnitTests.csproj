@@ -97,7 +97,6 @@
     <Compile Include="Environment\ArgsParser.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="Environment\Option.cs" />
-    <Compile Include="Events\EventHelper.cs" />
     <Compile Include="FileFormats\Cisco\Directory.cs" />
     <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
     <Compile Include="FileFormats\Cisco\Error.cs" />

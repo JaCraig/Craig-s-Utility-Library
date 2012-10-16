@@ -22,9 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using Utilities.Events;
-using Utilities.Events.EventArgs;
-
+using Utilities.DataTypes.EventArgs;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataTypes
@@ -137,7 +136,7 @@ namespace Utilities.DataTypes
         public virtual bool Remove(T1 key)
         {
             bool ReturnVal = Items.Remove(key);
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            Changed.Raise(this, new ChangedEventArgs());
             return ReturnVal;
         }
 
@@ -182,7 +181,7 @@ namespace Utilities.DataTypes
         public virtual void Clear()
         {
             Items.Clear();
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            Changed.Raise(this, new ChangedEventArgs());
         }
 
         #endregion
@@ -329,7 +328,7 @@ namespace Utilities.DataTypes
         public virtual List<T2> this[T1 key]
         {
             get { return Items[key]; }
-            set { Items[key] = value; EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs()); }
+            set { Items[key] = value; Changed.Raise(this, new ChangedEventArgs()); }
         }
 
         /// <summary>

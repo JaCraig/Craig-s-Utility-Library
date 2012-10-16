@@ -27,7 +27,8 @@ using Xunit;
 
 using Utilities.DataTypes;
 using System.Data;
-using Utilities.Events.EventArgs;
+
+using Utilities.DataTypes.EventArgs;
 
 namespace UnitTests.DataTypes
 {

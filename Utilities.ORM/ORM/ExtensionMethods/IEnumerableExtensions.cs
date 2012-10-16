@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Utilities.Events.EventArgs;
 using Utilities.ORM.Interfaces;
 using Utilities.SQL.Interfaces;
 

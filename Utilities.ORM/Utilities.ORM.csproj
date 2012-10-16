@@ -92,10 +92,6 @@
       <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
       <Name>Utilities.DataTypes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utilities.Events\Utilities.Events.csproj">
-      <Project>{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}</Project>
-      <Name>Utilities.Events</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utilities.Reflection\Utilities.Reflection.csproj">
       <Project>{CB6FE6D5-5D42-4E95-A365-41304BA931C7}</Project>
       <Name>Utilities.Reflection</Name>

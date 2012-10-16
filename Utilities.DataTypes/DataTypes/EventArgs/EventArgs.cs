@@ -23,12 +23,12 @@ THE SOFTWARE.*/
 
 #endregion
 
-namespace Utilities.Events.EventArgs
+namespace Utilities.DataTypes.EventArgs
 {
     #region Event Args
 
     /// <summary>
-    /// Base event args for the events used
+    /// Base event args for the events used in the system
     /// </summary>
     public class BaseEventArgs : System.EventArgs
     {

@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Utilities.Events;
-using Utilities.Events.EventArgs;
+using Utilities.DataTypes.EventArgs;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataTypes
@@ -53,7 +53,7 @@ namespace Utilities.DataTypes
             base.Add(value);
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Utilities.DataTypes
             base.AddRange(value);
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Utilities.DataTypes
             bool ReturnValue = base.Remove(obj);
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
             return ReturnValue;
         }
 
@@ -91,7 +91,7 @@ namespace Utilities.DataTypes
             base.RemoveAt(index);
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Utilities.DataTypes
             int ReturnValue = base.RemoveAll(match);
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
             return ReturnValue;
         }
 
@@ -118,7 +118,7 @@ namespace Utilities.DataTypes
             base.RemoveRange(index, count);
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Utilities.DataTypes
             base.Insert(index, value);
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Utilities.DataTypes
             base.InsertRange(index, collection);
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Utilities.DataTypes
             base.Clear();
             ChangedEventArgs TempArgs = new ChangedEventArgs();
             TempArgs.Content = PropertyName;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, TempArgs);
+            Changed.Raise(this, TempArgs);
         }
 
         #endregion
@@ -173,7 +173,7 @@ namespace Utilities.DataTypes
             set
             {
                 base[index] = value;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                Changed.Raise(this, new ChangedEventArgs());
             }
         }
 

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-ORM</id>
-		<version>3.2.0293</version>
+		<version>3.2.0308</version>
 		<title>Craig's Utility Library ORM Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -15,7 +15,6 @@
 		<tags>utility utilities</tags>
 		<dependencies>
 			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.2" />
-			<dependency id="CraigsUtilityLibrary-Events" version="3.2" />
 			<dependency id="CraigsUtilityLibrary-Reflection" version="3.2" />
 			<dependency id="CraigsUtilityLibrary-SQL" version="3.2" />
 			<dependency id="CraigsUtilityLibrary-Validation" version="3.2" />

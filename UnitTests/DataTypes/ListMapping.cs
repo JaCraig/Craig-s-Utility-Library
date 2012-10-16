@@ -27,7 +27,6 @@ using Xunit;
 
 using Utilities.DataTypes;
 using System.Data;
-using Utilities.Events.EventArgs;
 using Utilities.Random;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.StringGenerators;

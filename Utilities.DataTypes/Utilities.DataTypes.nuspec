@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-DataTypes</id>
-		<version>3.2.0293</version>
+		<version>3.2.0308</version>
 		<title>Craig's Utility Library DataTypes Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -13,9 +13,6 @@
 		<releaseNotes>This includes code from the nightly build once all unit tests are passed (as such it should contain the latest code)</releaseNotes>
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
-		<dependencies>
-			<dependency id="CraigsUtilityLibrary-Events" version="3.2" />
-		</dependencies>
 	</metadata>
 	<files>
 		<file src="bin\Release\*.dll" target="lib\net40" />

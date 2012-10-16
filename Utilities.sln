@@ -24,8 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Encryption", "Uti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Environment", "Utilities.Environment\Utilities.Environment.csproj", "{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Events", "Utilities.Events\Utilities.Events.csproj", "{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.Exchange", "Utilities.Exchange\Utilities.Exchange.csproj", "{30EDE6D0-39DE-4DB6-BE3B-DDED608BEBCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.FileFormats", "Utilities.FileFormats\Utilities.FileFormats.csproj", "{AC3DB1D8-25B5-4BFF-ABFA-25AD90611836}"
@@ -166,16 +164,6 @@ Global
 		{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}.Release|x86.ActiveCfg = Release|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{BB557444-9306-4FAB-BC4A-403FDEEE6CCA}.Release|x86.ActiveCfg = Release|Any CPU
 		{30EDE6D0-39DE-4DB6-BE3B-DDED608BEBCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{30EDE6D0-39DE-4DB6-BE3B-DDED608BEBCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30EDE6D0-39DE-4DB6-BE3B-DDED608BEBCC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

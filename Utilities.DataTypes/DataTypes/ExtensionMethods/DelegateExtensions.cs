@@ -21,57 +21,78 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Globalization;
+using System.Threading;
+using System.Text;
 
 #endregion
 
-namespace Utilities.Events
+namespace Utilities.DataTypes.ExtensionMethods
 {
     /// <summary>
-    /// Helps with events
+    /// Extensions for Func, Action, and EventHandler
     /// </summary>
-    public static class EventHelper
+    public static class DelegateExtensions
     {
-        #region Public Static Functions
+        #region Functions
+
+        #region Async
 
         /// <summary>
-        /// Raises an event
+        /// Runs an action async
+        /// </summary>
+        /// <param name="Action">Action to run</param>
+        public static void Async(this Action Action)
+        {
+            new Thread(Action.Invoke).Start();
+        }
+
+        #endregion
+
+        #region Raise
+
+        /// <summary>
+        /// Safely calls the specified action
         /// </summary>
         /// <typeparam name="T">The type of the event args</typeparam>
         /// <param name="Delegate">The delegate</param>
         /// <param name="EventArgs">The event args</param>
-        public static void Raise<T>(T EventArgs, Action<T> Delegate) where T : class
+        public static void Raise<T>(this Action<T> Delegate, T EventArgs)
         {
             if (Delegate != null)
                 Delegate(EventArgs);
         }
 
         /// <summary>
-        /// Raises an event
+        /// Safely raises the event
         /// </summary>
         /// <typeparam name="T">The type of the event args</typeparam>
         /// <param name="Delegate">The delegate</param>
         /// <param name="Sender">The sender</param>
         /// <param name="EventArg">The event args</param>
-        public static void Raise<T>(EventHandler<T> Delegate, object Sender, T EventArg) where T : System.EventArgs
+        public static void Raise<T>(this EventHandler<T> Delegate, object Sender, T EventArg)
+            where T : System.EventArgs
         {
             if (Delegate != null)
                 Delegate(Sender, EventArg);
         }
 
         /// <summary>
-        /// Raises an event
+        /// Safely calls the Func
         /// </summary>
         /// <typeparam name="T1">The event arg type</typeparam>
         /// <typeparam name="T2">The return type</typeparam>
         /// <param name="Delegate">The delegate</param>
         /// <param name="EventArgs">The event args</param>
         /// <returns>The value returned by the function</returns>
-        public static T2 Raise<T1, T2>(T1 EventArgs, Func<T1, T2> Delegate) where T1 : class
+        public static T2 Raise<T1, T2>(this Func<T1, T2> Delegate, T1 EventArgs)
         {
             if (Delegate != null)
                 return Delegate(EventArgs);
             return default(T2);
         }
+
+        #endregion
 
         #endregion
     }

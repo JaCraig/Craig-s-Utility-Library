@@ -23,10 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Utilities.Events.EventArgs;
 using Utilities.ORM.Interfaces;
 using Utilities.SQL.Interfaces;
-
+using Utilities.DataTypes.EventArgs;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM
@@ -563,7 +563,7 @@ namespace Utilities.ORM
         /// <param name="e">SavedEventArgs item</param>
         protected virtual void OnSaved(SavedEventArgs e)
         {
-            Utilities.Events.EventHelper.Raise<SavedEventArgs>(Saved, this, e);
+            Saved.Raise(this, e);
         }
 
         /// <summary>
@@ -577,7 +577,7 @@ namespace Utilities.ORM
         /// <param name="e">DeletedEventArgs item</param>
         protected virtual void OnDeleted(DeletedEventArgs e)
         {
-            Utilities.Events.EventHelper.Raise<DeletedEventArgs>(Deleted, this, e);
+            Deleted.Raise(this, e);
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace Utilities.ORM
         /// <param name="e">SavingEventArgs item</param>
         protected virtual void OnSaving(SavingEventArgs e)
         {
-            Utilities.Events.EventHelper.Raise<SavingEventArgs>(Saving, this, e);
+            Saving.Raise(this, e);
         }
 
         /// <summary>
@@ -605,7 +605,7 @@ namespace Utilities.ORM
         /// <param name="e">DeletingEventArgs item</param>
         protected virtual void OnDeleting(DeletingEventArgs e)
         {
-            Utilities.Events.EventHelper.Raise<DeletingEventArgs>(Deleting, this, e);
+            Deleting.Raise(this, e);
         }
 
         /// <summary>
@@ -619,7 +619,7 @@ namespace Utilities.ORM
         /// <param name="e">LoadingEventArgs item</param>
         protected virtual void OnLoading(LoadingEventArgs e)
         {
-            Utilities.Events.EventHelper.Raise<LoadingEventArgs>(Loading, this, e);
+            Loading.Raise(this, e);
         }
 
         /// <summary>
@@ -629,7 +629,7 @@ namespace Utilities.ORM
         /// <param name="sender">Sender item</param>
         protected static void OnLoading(object sender, LoadingEventArgs e)
         {
-            Utilities.Events.EventHelper.Raise<LoadingEventArgs>(Loading, sender, e);
+            Loading.Raise(sender, e);
         }
 
         /// <summary>
@@ -643,7 +643,7 @@ namespace Utilities.ORM
         /// <param name="e">LoadedEventArgs item</param>
         protected virtual void OnLoaded(LoadedEventArgs e)
         {
-            Utilities.Events.EventHelper.Raise<LoadedEventArgs>(Loaded, this, e);
+            Loaded.Raise(this, e);
         }
 
         /// <summary>
@@ -653,7 +653,7 @@ namespace Utilities.ORM
         /// <param name="sender">Sender item</param>
         protected static void OnLoaded(object sender, LoadedEventArgs e)
         {
-            Utilities.Events.EventHelper.Raise<LoadedEventArgs>(Loaded, sender, e);
+            Loaded.Raise(sender, e);
         }
 
         #endregion

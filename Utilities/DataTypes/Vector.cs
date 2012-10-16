@@ -22,8 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using Utilities.Events;
-using Utilities.Events.EventArgs;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.EventArgs;
 #endregion
 
 namespace Utilities.DataTypes
@@ -85,7 +85,7 @@ namespace Utilities.DataTypes
                 Array.Copy(this.Items, index, this.Items, index + 1, this.NumberItems - index);
             this.Items[index] = item;
             ++this.NumberItems;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            Changed.Raise(this, new ChangedEventArgs());
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Utilities.DataTypes
                 Array.Copy(this.Items, index + 1, this.Items, index, this.NumberItems - (index + 1));
             this.Items[this.NumberItems - 1] = default(T);
             --this.NumberItems;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            Changed.Raise(this, new ChangedEventArgs());
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Utilities.DataTypes
             {
                 if (index > this.NumberItems || index < 0) throw new ArgumentOutOfRangeException("index");
                 this.Items[index] = value;
-                EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+                Changed.Raise(this, new ChangedEventArgs());
             }
         }
 
@@ -143,7 +143,7 @@ namespace Utilities.DataTypes
         {
             Array.Clear(this.Items, 0, this.Items.Length);
             this.NumberItems = 0;
-            EventHelper.Raise<ChangedEventArgs>(Changed, this, new ChangedEventArgs());
+            Changed.Raise(this, new ChangedEventArgs());
         }
 
         /// <summary>

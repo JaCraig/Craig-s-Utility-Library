@@ -22,8 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using Utilities.Events;
-using Utilities.Events.EventArgs;
 using System.Collections.Concurrent;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;

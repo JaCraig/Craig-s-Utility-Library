@@ -100,6 +100,7 @@
     <Compile Include="AI\Anagram.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
     <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />
     <Compile Include="DataTypes\RingBuffer.cs" />
@@ -261,8 +262,7 @@
     <Compile Include="Environment\DataTypes\OperatingSystem.cs" />
     <Compile Include="Environment\Option.cs" />
     <Compile Include="Environment\WMI.cs" />
-    <Compile Include="Events\EventArgs.cs" />
-    <Compile Include="Events\EventHelper.cs" />
+    <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="FileFormats\BlogML\Author.cs" />
     <Compile Include="FileFormats\BlogML\Authors.cs" />
     <Compile Include="FileFormats\BlogML\BlogML.cs" />
@@ -553,7 +553,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Error\" />
+    <Folder Include="Events\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
