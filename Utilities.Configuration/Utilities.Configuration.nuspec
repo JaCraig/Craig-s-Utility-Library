@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Configuration</id>
-		<version>3.2.0308</version>
+		<version>3.2.0475</version>
 		<title>Craig's Utility Library Configuration Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -23,5 +23,6 @@
 	<files>
 		<file src="bin\Release\*.dll" target="lib\net40" />
 		<file src="bin\Release\*.pdb" target="lib\net40" />
+		<file src="bin\Release\*.xml" target="lib\net40" />
 	</files>
 </package>

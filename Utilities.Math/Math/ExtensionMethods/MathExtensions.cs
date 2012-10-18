@@ -37,6 +37,70 @@ namespace Utilities.Math.ExtensionMethods
     {
         #region Public Static Functions
 
+        #region Absolute
+        
+        /// <summary>
+        /// Returns the absolute value
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>The absolute value</returns>
+        public static decimal Absolute(this decimal Value)
+        {
+            return System.Math.Abs(Value);
+        }
+
+        /// <summary>
+        /// Returns the absolute value
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>The absolute value</returns>
+        public static double Absolute(this double Value)
+        {
+            return System.Math.Abs(Value);
+        }
+
+        /// <summary>
+        /// Returns the absolute value
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>The absolute value</returns>
+        public static float Absolute(this float Value)
+        {
+            return System.Math.Abs(Value);
+        }
+
+        /// <summary>
+        /// Returns the absolute value
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>The absolute value</returns>
+        public static int Absolute(this int Value)
+        {
+            return System.Math.Abs(Value);
+        }
+
+        /// <summary>
+        /// Returns the absolute value
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>The absolute value</returns>
+        public static long Absolute(this long Value)
+        {
+            return System.Math.Abs(Value);
+        }
+
+        /// <summary>
+        /// Returns the absolute value
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>The absolute value</returns>
+        public static short Absolute(this short Value)
+        {
+            return System.Math.Abs(Value);
+        }
+
+        #endregion
+
         #region Between
 
         /// <summary>
@@ -91,6 +155,52 @@ namespace Utilities.Math.ExtensionMethods
             for (int x = 2; x <= Input; ++x)
                 Value1 = Value1 * x;
             return Value1;
+        }
+
+        #endregion
+
+        #region GreatestCommonDenominator
+
+        /// <summary>
+        /// Returns the greatest common denominator between value1 and value2
+        /// </summary>
+        /// <param name="Value1">Value 1</param>
+        /// <param name="Value2">Value 2</param>
+        /// <returns>The greatest common denominator if one exists</returns>
+        public static int GreatestCommonDenominator(this int Value1, int Value2)
+        {
+            Value1 = Value1.Absolute();
+            Value2 = Value2.Absolute();
+            while (Value1 != 0 && Value2 != 0)
+            {
+                if (Value1 > Value2)
+                    Value1 %= Value2;
+                else
+                    Value2 %= Value1;
+            }
+            return Value1 == 0 ? Value2 : Value1;
+        }
+
+        /// <summary>
+        /// Returns the greatest common denominator between value1 and value2
+        /// </summary>
+        /// <param name="Value1">Value 1</param>
+        /// <param name="Value2">Value 2</param>
+        /// <returns>The greatest common denominator if one exists</returns>
+        public static int GreatestCommonDenominator(this int Value1, uint Value2)
+        {
+            return Value1.GreatestCommonDenominator((int)Value2);
+        }
+
+        /// <summary>
+        /// Returns the greatest common denominator between value1 and value2
+        /// </summary>
+        /// <param name="Value1">Value 1</param>
+        /// <param name="Value2">Value 2</param>
+        /// <returns>The greatest common denominator if one exists</returns>
+        public static int GreatestCommonDenominator(this uint Value1, uint Value2)
+        {
+            return ((int)Value1).GreatestCommonDenominator((int)Value2);
         }
 
         #endregion

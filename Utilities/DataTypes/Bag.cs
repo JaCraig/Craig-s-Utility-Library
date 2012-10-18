@@ -32,6 +32,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Used to count the number of times something is added to the list
     /// </summary>
+    /// <typeparam name="T">Type of data within the bag</typeparam>
     public class Bag<T> : ICollection<T>
     {
         #region Constructors

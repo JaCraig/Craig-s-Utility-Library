@@ -146,6 +146,13 @@ namespace UnitTests.Random.ExtensionMethods
             Assert.Equal(System.Math.Round(0.9043f, 4), System.Math.Round(Item.C, 4));
             Assert.InRange(Item.D, 1, 100);
         }
+
+        [Fact]
+        public void Shuffle()
+        {
+            System.Random Rand = new System.Random(1231415);
+            Assert.Equal(new int[] { 3, 1, 4, 5, 2 }, Rand.Shuffle(new int[] { 1, 2, 3, 4, 5 }));
+        }
     }
 
     public class RandomTestClass

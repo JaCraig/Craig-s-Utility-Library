@@ -42,6 +42,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -49,9 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Profiler\Profiler.cs" />
-    <Compile Include="Profiler\ProfilerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Profiler\StopWatch.cs" />
+    <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

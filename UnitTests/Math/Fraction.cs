@@ -25,24 +25,25 @@ using System.Linq;
 using System.Text;
 
 using Xunit;
-using Utilities.Profiler;
-using System.Threading;
 
-namespace UnitTests.Profiler
+namespace UnitTests.Math
 {
-    public class Profiler
+    public class Fraction
     {
         [Fact]
         public void BasicTest()
         {
-            Utilities.Profiler.Profiler TestObject = new Utilities.Profiler.Profiler("Func1");
-            Thread.Sleep(600);
-            Utilities.Profiler.Profiler A = new Utilities.Profiler.Profiler("A");
-            Thread.Sleep(600);
-            A.Stop();
-            TestObject.Stop();
-            Assert.InRange(A.Times.Sum(), 500, 700);
-            Assert.InRange(TestObject.Times.Sum(), 1100, 1300);
+            Utilities.Math.Fraction TestObject = new Utilities.Math.Fraction(9, 27);
+            Utilities.Math.Fraction TestObject2 = new Utilities.Math.Fraction(3, 4);
+            TestObject.Reduce();
+            Assert.Equal(3u, TestObject.Denominator);
+            Assert.Equal(1, TestObject.Numerator);
+            Assert.Equal(new Utilities.Math.Fraction(1, 4), TestObject * TestObject2);
+            Assert.Equal(new Utilities.Math.Fraction(13, 12), TestObject + TestObject2);
+            Assert.Equal(new Utilities.Math.Fraction(-5, 12), TestObject - TestObject2);
+            Assert.Equal(new Utilities.Math.Fraction(4, 9), TestObject / TestObject2);
+            Assert.Equal(new Utilities.Math.Fraction(-1, 3), -TestObject);
+            Assert.Equal(new Utilities.Math.Fraction(9, 27), TestObject);
         }
     }
 }

@@ -49,6 +49,7 @@ namespace Utilities.Profiler
         public virtual void Start()
         {
             StopTime = StartTime = 0;
+            Watch = new System.Diagnostics.Stopwatch();
             Watch.Start();
         }
 
@@ -58,7 +59,7 @@ namespace Utilities.Profiler
         public virtual void Stop()
         {
             StartTime = 0;
-            StopTime = (int)Watch.ElapsedMilliseconds;
+            StopTime = Watch.ElapsedMilliseconds;
             Watch.Stop();
         }
 
@@ -69,19 +70,22 @@ namespace Utilities.Profiler
         /// <summary>
         /// Start time in ticks
         /// </summary>
-        public virtual int StartTime { get; private set; }
+        public virtual long StartTime { get; private set; }
 
         /// <summary>
         /// Stop time in ticks
         /// </summary>
-        public virtual int StopTime { get; private set; }
+        public virtual long StopTime { get; private set; }
 
         /// <summary>
         /// Returns the elapsed time
         /// </summary>
-        public virtual int ElapsedTime { get { return (int)Watch.ElapsedMilliseconds; } }
+        public virtual long ElapsedTime { get { return Watch.ElapsedMilliseconds; } }
 
-        private System.Diagnostics.Stopwatch Watch = new System.Diagnostics.Stopwatch();
+        /// <summary>
+        /// Internal stop watch
+        /// </summary>
+        protected System.Diagnostics.Stopwatch Watch { get; set; }
 
         #endregion
     }

@@ -267,6 +267,24 @@ namespace Utilities.Random.ExtensionMethods
 
         #endregion
 
+        #region Shuffle
+
+        /// <summary>
+        /// Shuffles a list randomly
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Random">Random object</param>
+        /// <param name="List">List of objects to shuffle</param>
+        /// <returns>The shuffled list</returns>
+        public static IEnumerable<T> Shuffle<T>(this System.Random Random, IEnumerable<T> List)
+        {
+            if (List.IsNullOrEmpty())
+                return List;
+            return List.OrderBy(x => Random.Next());
+        }
+
+        #endregion
+
         #endregion
 
         #region Private Functions/Variables

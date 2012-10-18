@@ -27,18 +27,16 @@ using System.Text;
 using Xunit;
 using Utilities.Profiler;
 using System.Threading;
+using Utilities.Profiler.ExtensionMethods;
 
-namespace UnitTests.Profiler
+namespace UnitTests.Profiler.ExtensionMethods
 {
-    public class ProfilerManager
+    public class TimerExtensions
     {
         [Fact]
-        public void BasicTest()
+        public void TimeTest()
         {
-            Utilities.Profiler.ProfilerManager.Instance.Time(() => Thread.Sleep(50),"ASD");
-            Utilities.Profiler.ProfilerManager.Instance.Time(() => Thread.Sleep(50), "ASD2");
-            Utilities.Profiler.ProfilerManager.Instance.Time(() => Thread.Sleep(50), "ASD3");
-            Assert.Contains("ASD", Utilities.Profiler.ProfilerManager.Instance.ToString());
+            new Action(() => Thread.Sleep(100)).Time();
         }
     }
 }

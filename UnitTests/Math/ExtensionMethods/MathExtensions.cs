@@ -109,6 +109,13 @@ namespace UnitTests.Math.ExtensionMethods
             Assert.Equal(2, Value.Sqrt());
         }
 
+        [Fact]
+        public void GCD()
+        {
+            Assert.Equal(3, 9.GreatestCommonDenominator(12));
+        }
+
+        [Fact]
         public void Round()
         {
             double Value = 4.1234;

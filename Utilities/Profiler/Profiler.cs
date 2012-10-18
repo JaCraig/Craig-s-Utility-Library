@@ -21,17 +21,19 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-
+using System.Collections.Generic;
+using System.Web;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Text;
+using System.Linq;
 #endregion
 
 namespace Utilities.Profiler
 {
     /// <summary>
     /// Object class used to profile a function.
-    /// Create at the beginning of a function and it will automatically record the time.
+    /// Create at the beginning of a function in a using statement and it will automatically record the time.
     /// Note that this isn't exact and is based on when the object is destroyed
-    /// (if stop isn't called first that is) which leaves it up to garbage collection...
-    /// ie. call Stop...
     /// </summary>
     public class Profiler : IDisposable
     {
@@ -40,23 +42,151 @@ namespace Utilities.Profiler
         /// <summary>
         /// Constructor
         /// </summary>
-        public Profiler()
+        protected Profiler()
         {
-            Setup();
+            Setup("");
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="FunctionName">Takes in the function name/identifier</param>
+        /// <param name="FunctionName">Function/identifier</param>
         public Profiler(string FunctionName)
         {
             Setup(FunctionName);
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Profiles">Profiles to copy data from</param>
+        protected Profiler(IEnumerable<Profiler> Profiles)
+        {
+            Children = new List<Profiler>();
+            Times = new List<long>();
+            StopWatch = new StopWatch();
+            Running = false;
+            foreach (Profiler Profile in Profiles)
+            {
+                this.Level = Profile.Level;
+                this.Function = Profile.Function;
+                this.Times.Add(Profile.Times);
+                this.Children.Add(Profile.Children);
+            }
+        }
+
         #endregion
 
-        #region Public Functions
+        #region Properties
+
+        /// <summary>
+        /// Total time that the profiler has taken (in milliseconds)
+        /// </summary>
+        public virtual List<long> Times { get; protected set; }
+
+        /// <summary>
+        /// Children profiler items
+        /// </summary>
+        public virtual List<Profiler> Children { get; protected set; }
+
+        /// <summary>
+        /// Parent profiler item
+        /// </summary>
+        protected virtual Profiler Parent { get; set; }
+
+        /// <summary>
+        /// Function name
+        /// </summary>
+        public virtual string Function { get; protected set; }
+
+        /// <summary>
+        /// Determines if it is running
+        /// </summary>
+        protected virtual bool Running { get; set; }
+
+        /// <summary>
+        /// Level of the profiler
+        /// </summary>
+        protected virtual int Level { get; set; }
+
+        /// <summary>
+        /// Stop watch
+        /// </summary>
+        protected virtual StopWatch StopWatch { get; set; }
+
+        /// <summary>
+        /// Contains the root profiler
+        /// </summary>
+        public static Profiler Root
+        {
+            get
+            {
+                if (HttpContext.Current == null)
+                {
+                    if (Root_ == null)
+                        Root_ = new Profiler("Start");
+                    return Root_;
+                }
+                Profiler ReturnValue = HttpContext.Current.Items["Root_Profiler"] as Profiler;
+                if (ReturnValue == null)
+                    HttpContext.Current.Items["Root_Profiler"] = new Profiler("Start");
+                return HttpContext.Current.Items["Root_Profiler"] as Profiler;
+            }
+            protected set
+            {
+                if (HttpContext.Current == null)
+                {
+                    Root_ = value;
+                    return;
+                }
+                HttpContext.Current.Items["Root_Profiler"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Contains the current profiler
+        /// </summary>
+        public static Profiler Current
+        {
+            get
+            {
+                if (HttpContext.Current == null)
+                {
+                    if (Current_ == null)
+                        Current_ = Root;
+                    return Current_;
+                }
+                Profiler ReturnValue = HttpContext.Current.Items["Current_Profiler"] as Profiler;
+                if (ReturnValue == null)
+                    HttpContext.Current.Items["Current_Profiler"] = HttpContext.Current.Items["Root_Profiler"];
+                return HttpContext.Current.Items["Current_Profiler"] as Profiler;
+            }
+            protected set
+            {
+                if (HttpContext.Current == null)
+                {
+                    Current_ = value;
+                    return;
+                }
+                HttpContext.Current.Items["Current_Profiler"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Current_ profiler object
+        /// </summary>
+        private static Profiler Current_ = null;
+
+        /// <summary>
+        /// Root profiler object
+        /// </summary>
+        private static Profiler Root_ = null;
+
+        #endregion
+
+        #region Functions
+
+        #region Dispose
 
         /// <summary>
         /// Disposes of the object
@@ -65,6 +195,10 @@ namespace Utilities.Profiler
         {
             Stop();
         }
+
+        #endregion
+
+        #region Stop
 
         /// <summary>
         /// Stops the timer and registers the information
@@ -75,33 +209,154 @@ namespace Utilities.Profiler
             {
                 Running = false;
                 StopWatch.Stop();
-                ProfilerManager.Instance.AddItem(Function, StopWatch.StartTime, StopWatch.StopTime);
+                Times.Add(StopWatch.ElapsedTime);
+                Current = Parent;
             }
         }
 
         #endregion
 
-        #region Private Functions
+        #region Start
 
-        private void Setup(string Function = "")
+        /// <summary>
+        /// Starts the timer
+        /// </summary>
+        public virtual void Start()
         {
-            StopWatch = new StopWatch();
+            if (Running)
+                Stop();
+            Running = true;
             StopWatch.Start();
-            this.Function = Function;
+            Current = this;
         }
 
         #endregion
 
-        #region Variables
+        #region Setup
 
         /// <summary>
-        /// Total time that the profiler has taken
+        /// Sets up the profiler
         /// </summary>
-        public virtual long TotalTime { get { return StopWatch.ElapsedTime; } }
+        /// <param name="Function">Function/Identification name</param>
+        private void Setup(string Function = "")
+        {
+            this.Parent = Current;
+            if (Parent != null)
+                Parent.Children.Add(this);
+            this.Function = Function;
+            Children = new List<Profiler>();
+            Times = new List<long>();
+            StopWatch = new StopWatch();
+            this.Level = Parent == null ? 0 : Parent.Level + 1;
+            Running = false;
+            Start();
+        }
 
-        private StopWatch StopWatch { get; set; }
-        private bool Running = true;
-        private string Function { get; set; }
+        #endregion
+
+        #region StartProfiling
+
+        /// <summary>
+        /// Starts profiling
+        /// </summary>
+        /// <returns>The root profiler</returns>
+        public static Profiler StartProfiling()
+        {
+            return Root;
+        }
+
+        #endregion
+
+        #region StopProfiling
+
+        /// <summary>
+        /// Stops profiling
+        /// </summary>
+        /// <returns>The root profiler</returns>
+        public static Profiler StopProfiling()
+        {
+            return Root;
+        }
+
+        #endregion
+
+        #region CompileData
+
+        /// <summary>
+        /// Compiles data, combining instances where appropriate
+        /// </summary>
+        protected void CompileData()
+        {
+            bool Continue = true;
+            while (Continue)
+            {
+                Continue = false;
+                for (int x = 0; x < Children.Count; ++x)
+                {
+                    IEnumerable<Profiler> Combinables = Children.Where(y => y.Function == Children[x].Function).ToList();
+                    if (Combinables.Count() > 1)
+                    {
+                        Continue = true;
+                        Profiler Temp = new Profiler(Combinables);
+                        Combinables.ForEach(y => Children.Remove(y));
+                        Children.Add(Temp);
+                        break;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region ToString
+
+        /// <summary>
+        /// Outputs the information to a table
+        /// </summary>
+        /// <returns>an html string containing the information</returns>
+        public override string ToString()
+        {
+            CompileData();
+            StringBuilder Builder = new StringBuilder();
+            Level.Times(x => { Builder.Append("\t"); });
+            Builder.AppendLineFormat("{0} ({1} ms)", Function, Times.Sum());
+            foreach (Profiler Child in Children)
+            {
+                Builder.AppendLineFormat(Child.ToString());
+            }
+            return Builder.ToString();
+        }
+
+        #endregion
+
+        #region ToHTML
+
+        /// <summary>
+        /// Outputs the profiler information as an HTML table
+        /// </summary>
+        /// <returns>Table containing profiler information</returns>
+        public string ToHTML()
+        {
+            CompileData();
+            StringBuilder Builder = new StringBuilder();
+            if (Level == 0)
+                Builder.Append("<table><tr><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
+            Builder.Append("<tr><td>");
+            Level.Times(x => { Builder.Append("&nbsp;&nbsp;&nbsp;&nbsp;"); });
+            if (Level == 0)
+                Builder.AppendFormat("{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, 0, 0, 0, 0, Times.Count);
+            else
+                Builder.AppendFormat("{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, Times.Sum(), Times.Max(), Times.Min(), string.Format("{0:0.##}", Times.Average()), Times.Count);
+            foreach (Profiler Child in Children)
+            {
+                Builder.AppendLineFormat(Child.ToHTML());
+            }
+            if (Level == 0)
+                Builder.Append("</table>");
+            return Builder.ToString();
+        }
+
+        #endregion
 
         #endregion
     }
