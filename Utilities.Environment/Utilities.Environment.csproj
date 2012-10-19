@@ -65,6 +65,7 @@
     <Compile Include="Environment\DataTypes\OperatingSystem.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="Environment\DataTypes\User.cs" />
+    <Compile Include="Environment\ExtensionMethods\StackTraceExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">

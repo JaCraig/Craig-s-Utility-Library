@@ -48,8 +48,11 @@ namespace Utilities.SQL
         /// <param name="ConnectionUsing">The connection string to use</param>
         /// <param name="CommandType">The command type of the command sent in</param>
         /// <param name="DbType">Database type, based on ADO.Net provider name</param>
-        public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DbType = "System.Data.SqlClient")
+        /// <param name="Profile">Determines if the commands should be profiled</param>
+        public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DbType = "System.Data.SqlClient", bool Profile = false)
         {
+            Parameters = new List<object>();
+            this.Profile = Profile;
             Factory = DbProviderFactories.GetFactory(DbType);
             Connection = Factory.CreateConnection();
             Connection.ConnectionString = ConnectionUsing;
@@ -67,8 +70,11 @@ namespace Utilities.SQL
         /// <param name="Command">Command to use</param>
         /// <param name="ConnectionUsing">The connection string to use</param>
         /// <param name="DbType">Database type, based on ADO.Net provider name</param>
-        public SQLHelper(Command Command, string ConnectionUsing, string DbType = "System.Data.SqlClient")
+        /// <param name="Profile">Determines if the calls should be profiled</param>
+        public SQLHelper(Command Command, string ConnectionUsing, string DbType = "System.Data.SqlClient", bool Profile = false)
         {
+            Parameters = new List<object>();
+            this.Profile = Profile;
             Factory = DbProviderFactories.GetFactory(DbType);
             Connection = Factory.CreateConnection();
             Connection.ConnectionString = ConnectionUsing;
@@ -111,6 +117,11 @@ namespace Utilities.SQL
         protected DbTransaction Transaction { get; set; }
 
         /// <summary>
+        /// Determines if the calls should be profiled or not
+        /// </summary>
+        protected bool Profile { get; set; }
+
+        /// <summary>
         /// Stored procedure's name or SQL Text
         /// </summary>
         public virtual string Command
@@ -123,8 +134,15 @@ namespace Utilities.SQL
             }
         }
 
+        /// <summary>
+        /// Command text
+        /// </summary>
         private string _Command = null;
 
+        /// <summary>
+        /// Parameters that are being used in the command
+        /// </summary>
+        protected List<object> Parameters { get; set; }
 
         /// <summary>
         /// Command Type
@@ -173,6 +191,7 @@ namespace Utilities.SQL
         /// <returns>This</returns>
         public virtual SQLHelper AddParameter(string ID, int Length, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
         {
+            Parameters.Add(Value);
             if (ExecutableCommand != null)
                 ExecutableCommand.AddParameter(ID, Length, Value, Direction);
             return this;
@@ -188,6 +207,7 @@ namespace Utilities.SQL
         /// <returns>This</returns>
         public virtual SQLHelper AddParameter(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
+            Parameters.Add(Value);
             return AddParameter(ID, Type.ToDbType(), Value, Direction);
         }
 
@@ -201,6 +221,7 @@ namespace Utilities.SQL
         /// <returns>This</returns>
         public virtual SQLHelper AddParameter<DataType>(string ID, DataType Value = default(DataType), ParameterDirection Direction = ParameterDirection.Input)
         {
+            Parameters.Add(Value);
             return AddParameter(ID, Value.GetType().ToDbType(), Value, Direction);
         }
 
@@ -214,6 +235,7 @@ namespace Utilities.SQL
         /// <returns>This</returns>
         public virtual SQLHelper AddParameter(string ID, DbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
+            Parameters.Add(Value);
             if (ExecutableCommand != null)
                 ExecutableCommand.AddParameter(ID, Type, Value, Direction);
             return this;
@@ -238,6 +260,7 @@ namespace Utilities.SQL
         /// <returns>This</returns>
         public virtual SQLHelper AddParameter(params object[] Parameters)
         {
+            this.Parameters.Add(Parameters);
             for (int x = 0; x < Parameters.Length; ++x)
             {
                 if (Parameters[x] == null)
@@ -316,6 +339,14 @@ namespace Utilities.SQL
         /// <returns>Returns this SQLHelper object</returns>
         public virtual SQLHelper ExecuteBulkCopy<T>(IEnumerable<T> Data, string DestinationTable, SqlBulkCopyOptions Options = SqlBulkCopyOptions.Default)
         {
+            Open();
+            if (Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteBulkCopy", Command, Parameters.ToArray()))
+                {
+                    return ExecuteBulkCopy(Data.ToDataTable(), DestinationTable, Options);
+                }
+            }
             return ExecuteBulkCopy(Data.ToDataTable(), DestinationTable, Options);
         }
 
@@ -328,6 +359,21 @@ namespace Utilities.SQL
         /// <returns>Returns this SQLHelper object</returns>
         public virtual SQLHelper ExecuteBulkCopy(DataTable Data, string DestinationTable, SqlBulkCopyOptions Options = SqlBulkCopyOptions.Default)
         {
+            Open();
+            if (Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteBulkCopy", Command, Parameters.ToArray()))
+                {
+                    using (SqlBulkCopy Copier = new SqlBulkCopy(Connection.ConnectionString, Options))
+                    {
+                        foreach (DataColumn Column in Data.Columns)
+                            Copier.ColumnMappings.Add(Column.ColumnName, Column.ColumnName);
+                        Copier.DestinationTableName = DestinationTable;
+                        Copier.WriteToServer(Data);
+                    }
+                    return this;
+                }
+            }
             using (SqlBulkCopy Copier = new SqlBulkCopy(Connection.ConnectionString, Options))
             {
                 foreach (DataColumn Column in Data.Columns)
@@ -348,6 +394,14 @@ namespace Utilities.SQL
         /// <returns>A dataset filled with the results of the query</returns>
         public virtual DataSet ExecuteDataSet()
         {
+            Open();
+            if (Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteDataSet", Command, Parameters.ToArray()))
+                {
+                    return ExecutableCommand.ExecuteDataSet(Factory);
+                }
+            }
             return ExecutableCommand.ExecuteDataSet(Factory);
         }
 
@@ -362,6 +416,13 @@ namespace Utilities.SQL
         public virtual int ExecuteNonQuery()
         {
             Open();
+            if (Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteNonQuery", Command, Parameters.ToArray()))
+                {
+                    return (ExecutableCommand != null) ? ExecutableCommand.ExecuteNonQuery() : 0;
+                }
+            }
             return (ExecutableCommand != null) ? ExecutableCommand.ExecuteNonQuery() : 0;
         }
 
@@ -375,6 +436,15 @@ namespace Utilities.SQL
         public virtual SQLHelper ExecuteReader()
         {
             Open();
+            if (Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteReader", Command, Parameters.ToArray()))
+                {
+                    if (ExecutableCommand != null)
+                        Reader = ExecutableCommand.ExecuteReader();
+                    return this;
+                }
+            }
             if (ExecutableCommand != null)
                 Reader = ExecutableCommand.ExecuteReader();
             return this;
@@ -391,6 +461,14 @@ namespace Utilities.SQL
         /// <returns>The object of the first row and first column</returns>
         public virtual DataType ExecuteScalar<DataType>()
         {
+            Open();
+            if (Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteScalar", Command, Parameters.ToArray()))
+                {
+                    return ExecutableCommand.ExecuteScalar<DataType>();
+                }
+            }
             return ExecutableCommand.ExecuteScalar<DataType>();
         }
 
@@ -405,6 +483,15 @@ namespace Utilities.SQL
         public virtual XmlReader ExecuteXmlReader()
         {
             Open();
+            if (Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteXmlReader", Command, Parameters.ToArray()))
+                {
+                    if (ExecutableCommand != null && ExecutableCommand is SqlCommand)
+                        return ((SqlCommand)ExecutableCommand).ExecuteXmlReader();
+                    return null;
+                }
+            }
             if (ExecutableCommand != null && ExecutableCommand is SqlCommand)
                 return ((SqlCommand)ExecutableCommand).ExecuteXmlReader();
             return null;
@@ -504,6 +591,7 @@ namespace Utilities.SQL
             ExecutableCommand.CommandType = CommandType;
             if (Transaction != null)
                 ExecutableCommand.Transaction = Transaction;
+            Parameters = new List<object>();
         }
 
         #endregion

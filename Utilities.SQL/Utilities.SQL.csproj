@@ -88,6 +88,10 @@
       <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
       <Name>Utilities.DataTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utilities.Profiler\Utilities.Profiler.csproj">
+      <Project>{D0D2C43A-693F-47FB-8380-F7A7EE69642C}</Project>
+      <Name>Utilities.Profiler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities.Reflection\Utilities.Reflection.csproj">
       <Project>{CB6FE6D5-5D42-4E95-A365-41304BA931C7}</Project>
       <Name>Utilities.Reflection</Name>

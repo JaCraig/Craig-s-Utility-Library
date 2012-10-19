@@ -27,6 +27,7 @@ using Xunit;
 
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
+using System.Dynamic;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
@@ -170,6 +171,16 @@ namespace UnitTests.DataTypes.ExtensionMethods
             List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
             List<PreDataTable> Temp2 = Temp.ToDataTable().ToList<PreDataTable>();
             Assert.Equal(Temp, Temp2);
+        }
+
+        [Fact]
+        public void ToExpando()
+        {
+            MyTestClass TestObject = new MyTestClass();
+            ExpandoObject Object = TestObject.ToExpando();
+            Assert.Equal(10, ((IDictionary<string, object>)Object)["B"]);
+            ((IDictionary<string, object>)Object)["B"] = 20;
+            Assert.Equal(20, Object.TryTo(new MyTestClass()).B);
         }
     }
 

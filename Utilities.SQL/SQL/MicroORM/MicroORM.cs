@@ -40,8 +40,9 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         /// <param name="ConnectionUsing">Connection string or name of the database
         /// connection string (if already defined)</param>
-        public MicroORM(string ConnectionUsing = "Default")
-            : base("", "", CommandType.Text)
+        /// <param name="Profile">Determines if the commands will be profiled</param>
+        public MicroORM(string ConnectionUsing = "Default", bool Profile = false)
+            : base("", "", CommandType.Text, "System.Data.SqlClient", Profile)
         {
             MappingsUsing = new List<IMapping>();
             if (Databases.ContainsKey(ConnectionUsing))

@@ -35,6 +35,7 @@ namespace UnitTests.Caching
         public void CacheTest()
         {
             Utilities.Caching.Cache<string> TestObject = new Utilities.Caching.Cache<string>();
+            TestObject.Clear();
             Assert.DoesNotThrow(() => TestObject.Add("A", "Testing"));
             Assert.DoesNotThrow(() => TestObject.Add("B", "Testing2"));
             Assert.DoesNotThrow(() => TestObject.Add("C", "Testing3"));

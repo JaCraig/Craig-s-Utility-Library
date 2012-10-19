@@ -53,14 +53,23 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Profiler\StopWatch.cs" />
     <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
+    <Compile Include="Profiler\SQLProfiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Utilities.Caching\Utilities.Caching.csproj">
+      <Project>{7B063E87-B117-4427-9974-4987189075A7}</Project>
+      <Name>Utilities.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
       <Project>{5E5DA221-FBD5-415D-B521-0BEF59AD24A5}</Project>
       <Name>Utilities.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Environment\Utilities.Environment.csproj">
+      <Project>{028FBDBE-E25F-46BB-8C28-A32D7938CE2B}</Project>
+      <Name>Utilities.Environment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities.Math\Utilities.Math.csproj">
       <Project>{BE654F42-8EA1-48B0-B901-9823E17062CA}</Project>

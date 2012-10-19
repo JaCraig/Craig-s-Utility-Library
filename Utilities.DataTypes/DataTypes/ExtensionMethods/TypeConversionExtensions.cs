@@ -28,6 +28,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using Utilities.DataTypes.Comparison;
+using System.Dynamic;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -55,7 +56,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-
+        
         #region IsNotDefault
 
         /// <summary>
@@ -419,6 +420,27 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region ToExpando
+
+        /// <summary>
+        /// Converts the object to a dynamic object
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">The object to convert</param>
+        /// <returns>The object as an expando object</returns>
+        public static ExpandoObject ToExpando<T>(this T Object)
+        {
+            ExpandoObject ReturnValue = new ExpandoObject();
+            Type TempType = typeof(T);
+            foreach (PropertyInfo Property in TempType.GetProperties())
+            {
+                ((ICollection<KeyValuePair<String, Object>>)ReturnValue).Add(new KeyValuePair<string, object>(Property.Name, Property.GetValue(Object, null)));
+            }
+            return ReturnValue;
+        }
+
+        #endregion
+
         #region TryTo
 
         /// <summary>
@@ -432,6 +454,33 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static R TryTo<T, R>(this T Object, R DefaultValue = default(R))
         {
             return (R)Object.TryTo(typeof(R), DefaultValue);
+        }
+
+        /// <summary>
+        /// Converts an expando object to the specified type
+        /// </summary>
+        /// <typeparam name="R">Type to convert to</typeparam>
+        /// <param name="Object">Object to convert</param>
+        /// <param name="DefaultValue">Default value in case it can't convert the expando object</param>
+        /// <returns>The object as the specified type</returns>
+        public static R TryTo<R>(this ExpandoObject Object, R DefaultValue = default(R))
+            where R : class,new()
+        {
+            try
+            {
+                R ReturnValue = new R();
+                Type TempType = typeof(R);
+                foreach (PropertyInfo Property in TempType.GetProperties())
+                {
+                    if (((IDictionary<String, Object>)Object).ContainsKey(Property.Name))
+                    {
+                        Property.SetValue(ReturnValue, ((IDictionary<String, Object>)Object)[Property.Name], null);
+                    }
+                }
+                return ReturnValue;
+            }
+            catch { }
+            return DefaultValue;
         }
 
         /// <summary>

@@ -26,6 +26,10 @@ using System.Web;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Text;
 using System.Linq;
+using Utilities.Caching.ExtensionMethods;
+using System.Diagnostics;
+using Utilities.Environment.ExtensionMethods;
+using System.Reflection;
 #endregion
 
 namespace Utilities.Profiler
@@ -72,6 +76,7 @@ namespace Utilities.Profiler
                 this.Function = Profile.Function;
                 this.Times.Add(Profile.Times);
                 this.Children.Add(Profile.Children);
+                this.CalledFrom = Profile.CalledFrom;
             }
         }
 
@@ -110,6 +115,11 @@ namespace Utilities.Profiler
         protected virtual int Level { get; set; }
 
         /// <summary>
+        /// Where the profiler was started at
+        /// </summary>
+        protected virtual string CalledFrom { get; set; }
+
+        /// <summary>
         /// Stop watch
         /// </summary>
         protected virtual StopWatch StopWatch { get; set; }
@@ -121,25 +131,17 @@ namespace Utilities.Profiler
         {
             get
             {
-                if (HttpContext.Current == null)
-                {
-                    if (Root_ == null)
-                        Root_ = new Profiler("Start");
-                    return Root_;
-                }
-                Profiler ReturnValue = HttpContext.Current.Items["Root_Profiler"] as Profiler;
+                Profiler ReturnValue = "Root_Profiler".GetFromCache<Profiler>(CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
                 if (ReturnValue == null)
-                    HttpContext.Current.Items["Root_Profiler"] = new Profiler("Start");
-                return HttpContext.Current.Items["Root_Profiler"] as Profiler;
+                {
+                    ReturnValue = new Profiler("Start");
+                    Root = ReturnValue;
+                }
+                return ReturnValue;
             }
             protected set
             {
-                if (HttpContext.Current == null)
-                {
-                    Root_ = value;
-                    return;
-                }
-                HttpContext.Current.Items["Root_Profiler"] = value;
+                value.Cache("Root_Profiler", CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
             }
         }
 
@@ -150,37 +152,19 @@ namespace Utilities.Profiler
         {
             get
             {
-                if (HttpContext.Current == null)
-                {
-                    if (Current_ == null)
-                        Current_ = Root;
-                    return Current_;
-                }
-                Profiler ReturnValue = HttpContext.Current.Items["Current_Profiler"] as Profiler;
+                Profiler ReturnValue = "Current_Profiler".GetFromCache<Profiler>(CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
                 if (ReturnValue == null)
-                    HttpContext.Current.Items["Current_Profiler"] = HttpContext.Current.Items["Root_Profiler"];
-                return HttpContext.Current.Items["Current_Profiler"] as Profiler;
+                {
+                    ReturnValue = "Root_Profiler".GetFromCache<Profiler>(CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
+                    Current = ReturnValue;
+                }
+                return ReturnValue;
             }
             protected set
             {
-                if (HttpContext.Current == null)
-                {
-                    Current_ = value;
-                    return;
-                }
-                HttpContext.Current.Items["Current_Profiler"] = value;
+                value.Cache("Current_Profiler", CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
             }
         }
-
-        /// <summary>
-        /// Current_ profiler object
-        /// </summary>
-        private static Profiler Current_ = null;
-
-        /// <summary>
-        /// Root profiler object
-        /// </summary>
-        private static Profiler Root_ = null;
 
         #endregion
 
@@ -238,7 +222,7 @@ namespace Utilities.Profiler
         /// Sets up the profiler
         /// </summary>
         /// <param name="Function">Function/Identification name</param>
-        private void Setup(string Function = "")
+        protected virtual void Setup(string Function = "")
         {
             this.Parent = Current;
             if (Parent != null)
@@ -248,6 +232,7 @@ namespace Utilities.Profiler
             Times = new List<long>();
             StopWatch = new StopWatch();
             this.Level = Parent == null ? 0 : Parent.Level + 1;
+            this.CalledFrom = new StackTrace().GetMethods(this.GetType().Assembly).ToString<MethodBase>(x => x.DeclaringType.Name + " > " + x.Name, "<br />");
             Running = false;
             Start();
         }
@@ -285,7 +270,7 @@ namespace Utilities.Profiler
         /// <summary>
         /// Compiles data, combining instances where appropriate
         /// </summary>
-        protected void CompileData()
+        protected virtual void CompileData()
         {
             bool Continue = true;
             while (Continue)
@@ -293,7 +278,7 @@ namespace Utilities.Profiler
                 Continue = false;
                 for (int x = 0; x < Children.Count; ++x)
                 {
-                    IEnumerable<Profiler> Combinables = Children.Where(y => y.Function == Children[x].Function).ToList();
+                    IEnumerable<Profiler> Combinables = Children.Where(y => y == Children[x]).ToList();
                     if (Combinables.Count() > 1)
                     {
                         Continue = true;
@@ -329,20 +314,78 @@ namespace Utilities.Profiler
 
         #endregion
 
+        #region Equals
+
+        /// <summary>
+        /// Equals
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            Profiler Temp = obj as Profiler;
+            if (Temp == null)
+                return false;
+            return Temp == this;
+        }
+
+        /// <summary>
+        /// Compares the profilers and determines if they are equal
+        /// </summary>
+        /// <param name="First">First</param>
+        /// <param name="Second">Second</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public static bool operator ==(Profiler First, Profiler Second)
+        {
+            if ((object)First == null && (object)Second == null)
+                return true;
+            if ((object)First == null)
+                return false;
+            if ((object)Second == null)
+                return false;
+            return First.Function == Second.Function;
+        }
+
+
+        /// <summary>
+        /// Compares the profilers and determines if they are not equal
+        /// </summary>
+        /// <param name="First">First</param>
+        /// <param name="Second">Second</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public static bool operator !=(Profiler First, Profiler Second)
+        {
+            return !(First == Second);
+        }
+
+        #endregion
+
+        #region GetHashCode
+
+        /// <summary>
+        /// Gets the hash code for the profiler
+        /// </summary>
+        /// <returns>The hash code</returns>
+        public override int GetHashCode()
+        {
+            return Function.GetHashCode();
+        }
+
+        #endregion
+
         #region ToHTML
 
         /// <summary>
         /// Outputs the profiler information as an HTML table
         /// </summary>
         /// <returns>Table containing profiler information</returns>
-        public string ToHTML()
+        public virtual string ToHTML()
         {
             CompileData();
             StringBuilder Builder = new StringBuilder();
             if (Level == 0)
-                Builder.Append("<table><tr><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
-            Builder.Append("<tr><td>");
-            Level.Times(x => { Builder.Append("&nbsp;&nbsp;&nbsp;&nbsp;"); });
+                Builder.Append("<table><tr><th>Called From</th><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
+            Builder.AppendFormat("<tr><td>{0}</td><td>", CalledFrom);
             if (Level == 0)
                 Builder.AppendFormat("{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, 0, 0, 0, 0, Times.Count);
             else
