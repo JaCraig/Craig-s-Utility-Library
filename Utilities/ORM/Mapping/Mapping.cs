@@ -67,6 +67,10 @@ namespace Utilities.ORM.Mapping
 
         #region AddToQueryProvider
 
+        /// <summary>
+        /// Add to query provider
+        /// </summary>
+        /// <param name="Database">Database object</param>
         public void AddToQueryProvider(IDatabase Database)
         {
             Mapping<ClassType> Map = MicroORM.Map<ClassType>(TableName, IDProperty.Chain(x => x.FieldName), IDProperty.Chain(x => x.AutoIncrement), Database.Chain(x => x.ParameterStarter), Database.Chain(x => x.Name));
@@ -79,6 +83,11 @@ namespace Utilities.ORM.Mapping
 
         #region All
 
+        /// <summary>
+        /// Sets a command for default all function
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
         public virtual void All(string Command, System.Data.CommandType CommandType)
         {
             AllCommand = new Command(Command, CommandType);
@@ -88,6 +97,11 @@ namespace Utilities.ORM.Mapping
 
         #region Any
 
+        /// <summary>
+        /// Sets a command for default any function
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
         public virtual void Any(string Command, System.Data.CommandType CommandType)
         {
             AnyCommand = new Command(Command, CommandType);
@@ -110,6 +124,12 @@ namespace Utilities.ORM.Mapping
 
         #region ID
 
+        /// <summary>
+        /// Creates an ID object
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>ID object</returns>
         public IID<ClassType, DataType> ID<DataType>(Expression<Func<ClassType, DataType>> Expression)
         {
             if (IDProperty != null)
@@ -120,6 +140,11 @@ namespace Utilities.ORM.Mapping
             return Return;
         }
 
+        /// <summary>
+        /// Creates an ID object
+        /// </summary>
+        /// <param name="Expression">Expression</param>
+        /// <returns>ID object</returns>
         public IID<ClassType, string> ID(Expression<Func<ClassType, string>> Expression)
         {
             if (IDProperty != null)
@@ -145,6 +170,12 @@ namespace Utilities.ORM.Mapping
 
         #region Reference
 
+        /// <summary>
+        /// Creates a reference object
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>A reference object</returns>
         public IReference<ClassType, DataType> Reference<DataType>(Expression<Func<ClassType, DataType>> Expression)
         {
             Setup();
@@ -153,6 +184,11 @@ namespace Utilities.ORM.Mapping
             return Return;
         }
 
+        /// <summary>
+        /// Creates a reference object
+        /// </summary>
+        /// <param name="Expression">Expression</param>
+        /// <returns>A reference object</returns>
         public IReference<ClassType, string> Reference(Expression<Func<ClassType, string>> Expression)
         {
             Setup();
@@ -165,6 +201,12 @@ namespace Utilities.ORM.Mapping
 
         #region Map
 
+        /// <summary>
+        /// Creates a map object
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The map object</returns>
         public IMap<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression) where DataType : class,new()
         {
             Setup();
@@ -177,6 +219,12 @@ namespace Utilities.ORM.Mapping
 
         #region ManyToOne
 
+        /// <summary>
+        /// Creates a many to one
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to one object</returns>
         public IManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, DataType>> Expression) where DataType : class,new()
         {
             Setup();
@@ -185,6 +233,12 @@ namespace Utilities.ORM.Mapping
             return Return;
         }
 
+        /// <summary>
+        /// Creates a many to one
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to one object</returns>
         public IIEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new()
         {
             Setup();
@@ -193,6 +247,12 @@ namespace Utilities.ORM.Mapping
             return Return;
         }
 
+        /// <summary>
+        /// Creates a many to one
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to one object</returns>
         public IListManyToOne<ClassType, DataType> ManyToOne<DataType>(Expression<Func<ClassType, List<DataType>>> Expression) where DataType : class,new()
         {
             Setup();
@@ -205,6 +265,12 @@ namespace Utilities.ORM.Mapping
 
         #region ManyToMany
 
+        /// <summary>
+        /// Creates a many to many object
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to many object</returns>
         public IManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class,new()
         {
             Setup();
@@ -213,6 +279,12 @@ namespace Utilities.ORM.Mapping
             return Return;
         }
 
+        /// <summary>
+        /// Creates a many to many object
+        /// </summary>
+        /// <typeparam name="DataType">Data type</typeparam>
+        /// <param name="Expression">Expression</param>
+        /// <returns>The many to many object</returns>
         public IListManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, List<DataType>>> Expression) where DataType : class,new()
         {
             Setup();

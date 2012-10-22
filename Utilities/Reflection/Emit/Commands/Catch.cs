@@ -62,17 +62,27 @@ namespace Utilities.Reflection.Emit.Commands
 
         #region Functions
 
+        /// <summary>
+        /// Rethrows the error
+        /// </summary>
         public virtual void Rethrow()
         {
             Exception.Load(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator);
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.Emit(OpCodes.Rethrow);
         }
 
+        /// <summary>
+        /// Sets up the command
+        /// </summary>
         public override void Setup()
         {
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.BeginCatchBlock(ExceptionType);
         }
 
+        /// <summary>
+        /// Converts the command to a string
+        /// </summary>
+        /// <returns>The string version of the command</returns>
         public override string ToString()
         {
             return "}\ncatch\n{\n";

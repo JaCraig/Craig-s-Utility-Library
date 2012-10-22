@@ -61,6 +61,69 @@ namespace UnitTests.Media.Image.ExtensionMethods
         }
 
         [Fact]
+        public void BumpMap()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Value = TestObject.BumpMap())
+                {
+                    Assert.NotNull(Value);
+                }
+            }
+        }
+
+        [Fact]
+        public void MotionDetection()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap TestObject2 = TestObject.Rotate(10.0f))
+                {
+                    using (Bitmap Value = TestObject.MotionDetection(TestObject2, 25, Color.Red))
+                    {
+                        Assert.NotNull(Value);
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public void NormalMap()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap Value = TestObject.NormalMap())
+                {
+                    Assert.NotNull(Value);
+                }
+            }
+        }
+
+        [Fact]
+        public void OilPainting()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                using (Bitmap OilPainting = TestObject.OilPainting(613409124, 500))
+                {
+                    Assert.NotNull(OilPainting);
+                }
+            }
+        }
+
+        [Fact]
+        public void ASCIIArt()
+        {
+            using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
+            {
+                string Value = TestObject.ToASCIIArt();
+                Assert.NotNull(Value);
+                Assert.NotEmpty(Value);
+                Assert.Equal(24420, Value.Length);
+            }
+        }
+
+        [Fact]
         public void AdjustContrast()
         {
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))

@@ -101,47 +101,6 @@ namespace Utilities.Math.ExtensionMethods
 
         #endregion
 
-        #region Between
-
-        /// <summary>
-        /// Determines if a value is between two values
-        /// </summary>
-        /// <typeparam name="T">Data type</typeparam>
-        /// <param name="Value">Value to check</param>
-        /// <param name="Low">Low bound (inclusive)</param>
-        /// <param name="High">High bound (inclusive)</param>
-        /// <returns>True if it is between the low and high values</returns>
-        public static bool Between<T>(this T Value, T Low, T High) where T : IComparable
-        {
-            GenericComparer<T> Comparer = new GenericComparer<T>();
-            if (Comparer.Compare(High, Value) >= 0 && Comparer.Compare(Value, Low) >= 0)
-                return true;
-            return false;
-        }
-
-        #endregion
-
-        #region Clamp
-
-        /// <summary>
-        /// Clamps a value between two values
-        /// </summary>
-        /// <param name="Value">Value sent in</param>
-        /// <param name="Max">Max value it can be (inclusive)</param>
-        /// <param name="Min">Min value it can be (inclusive)</param>
-        /// <returns>The value set between Min and Max</returns>
-        public static T Clamp<T>(this T Value, T Max, T Min) where T : IComparable
-        {
-            GenericComparer<T> Comparer = new GenericComparer<T>();
-            if (Comparer.Compare(Max, Value) < 0)
-                return Max;
-            if (Comparer.Compare(Value, Min) < 0)
-                return Min;
-            return Value;
-        }
-
-        #endregion
-
         #region Factorial
 
         /// <summary>
@@ -205,24 +164,6 @@ namespace Utilities.Math.ExtensionMethods
 
         #endregion
 
-        #region Max
-
-        /// <summary>
-        /// Returns the maximum value between the two
-        /// </summary>
-        /// <param name="InputA">Input A</param>
-        /// <param name="InputB">Input B</param>
-        /// <returns>The maximum value</returns>
-        public static T Max<T>(this T InputA, T InputB) where T : IComparable
-        {
-            GenericComparer<T> Comparer = new GenericComparer<T>();
-            if (Comparer.Compare(InputA, InputB) < 0)
-                return InputB;
-            return InputA;
-        }
-
-        #endregion
-
         #region Median
 
         /// <summary>
@@ -231,32 +172,14 @@ namespace Utilities.Math.ExtensionMethods
         /// <typeparam name="T">The data type of the list</typeparam>
         /// <param name="Values">The list of values</param>
         /// <returns>The median value</returns>
-        public static T Median<T>(this System.Collections.Generic.List<T> Values)
+        public static T Median<T>(this IEnumerable<T> Values)
         {
             if (Values == null)
                 return default(T);
             if (Values.Count() == 0)
                 return default(T);
-            Values.Sort();
-            return Values[(Values.Count / 2)];
-        }
-
-        #endregion
-
-        #region Min
-
-        /// <summary>
-        /// Returns the minimum value between the two
-        /// </summary>
-        /// <param name="InputA">Input A</param>
-        /// <param name="InputB">Input B</param>
-        /// <returns>The minimum value</returns>
-        public static T Min<T>(this T InputA, T InputB) where T : IComparable
-        {
-            GenericComparer<T> Comparer = new GenericComparer<T>();
-            if (Comparer.Compare(InputA, InputB) > 0)
-                return InputB;
-            return InputA;
+            Values.OrderBy(x => x);
+            return Values.ElementAt((Values.Count() / 2));
         }
 
         #endregion
@@ -315,10 +238,11 @@ namespace Utilities.Math.ExtensionMethods
         /// </summary>
         /// <param name="Value">Value to round</param>
         /// <param name="Digits">Digits to round to</param>
+        /// <param name="Rounding">Rounding mode to use</param>
         /// <returns></returns>
-        public static double Round(this double Value, int Digits = 2)
+        public static double Round(this double Value, int Digits = 2, MidpointRounding Rounding = MidpointRounding.AwayFromZero)
         {
-            return System.Math.Round(Value, Digits);
+            return System.Math.Round(Value, Digits, Rounding);
         }
 
         #endregion

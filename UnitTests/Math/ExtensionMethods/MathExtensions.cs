@@ -31,23 +31,7 @@ namespace UnitTests.Math.ExtensionMethods
 {
     public class MathExtensions
     {
-        [Fact]
-        public void BetweenTest()
-        {
-            int Value = 10;
-            Assert.True(Value.Between(5, 15));
-            Assert.False(Value.Between(11, 15));
-        }
-
-        [Fact]
-        public void ClampTest()
-        {
-            int Value = 10;
-            Assert.Equal(9, Value.Clamp(9, 1));
-            Assert.Equal(11, Value.Clamp(15, 11));
-            Assert.Equal(10, Value.Clamp(11, 1));
-        }
-
+        
         [Fact]
         public void FactorialTest()
         {
@@ -56,25 +40,9 @@ namespace UnitTests.Math.ExtensionMethods
         }
 
         [Fact]
-        public void MaxTest()
-        {
-            int Value = 4;
-            Assert.Equal(5, Value.Max(5));
-            Assert.Equal(4, Value.Max(1));
-        }
-
-        [Fact]
         public void MedianTest()
         {
             Assert.Equal(10, new int[] { 9, 11, 10 }.ToList().Median());
-        }
-
-        [Fact]
-        public void MinTest()
-        {
-            int Value = 4;
-            Assert.Equal(4, Value.Min(5));
-            Assert.Equal(1, Value.Min(1));
         }
 
         [Fact]

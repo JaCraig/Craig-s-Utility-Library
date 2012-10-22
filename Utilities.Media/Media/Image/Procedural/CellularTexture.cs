@@ -24,6 +24,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.Math.ExtensionMethods;
 using Utilities.Media.Image.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Media.Image.Procedural

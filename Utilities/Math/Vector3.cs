@@ -152,68 +152,143 @@ namespace Utilities.Math
 
         #region Public Static Functions
 
+        /// <summary>
+        /// Addition
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static Vector3 operator +(Vector3 V1, Vector3 V2)
         {
             return new Vector3(V1.X + V2.X, V1.Y + V2.Y, V1.Z + V2.Z);
         }
 
+        /// <summary>
+        /// Subtraction
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static Vector3 operator -(Vector3 V1, Vector3 V2)
         {
             return new Vector3(V1.X - V2.X, V1.Y - V2.Y, V1.Z - V2.Z);
         }
 
+        /// <summary>
+        /// Negation
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <returns>The resulting vector</returns>
         public static Vector3 operator -(Vector3 V1)
         {
             return new Vector3(-V1.X, -V1.Y, -V1.Z);
         }
 
+        /// <summary>
+        /// Less than
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static bool operator <(Vector3 V1, Vector3 V2)
         {
             return V1.Magnitude < V2.Magnitude;
         }
 
+        /// <summary>
+        /// Less than or equal
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static bool operator <=(Vector3 V1, Vector3 V2)
         {
             return V1.Magnitude <= V2.Magnitude;
         }
 
+        /// <summary>
+        /// Greater than
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static bool operator >(Vector3 V1, Vector3 V2)
         {
             return V1.Magnitude > V2.Magnitude;
         }
 
+        /// <summary>
+        /// Greater than or equal
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static bool operator >=(Vector3 V1, Vector3 V2)
         {
             return V1.Magnitude >= V2.Magnitude;
         }
 
+        /// <summary>
+        /// Equals
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static bool operator ==(Vector3 V1, Vector3 V2)
         {
             return V1.X == V2.X && V1.Y == V2.Y && V1.Z == V2.Z;
         }
 
+        /// <summary>
+        /// Not equals
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static bool operator !=(Vector3 V1, Vector3 V2)
         {
             return !(V1 == V2);
         }
 
+        /// <summary>
+        /// Division
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="D">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static Vector3 operator /(Vector3 V1, double D)
         {
             return new Vector3(V1.X / D, V1.Y / D, V1.Z / D);
         }
 
+        /// <summary>
+        /// Multiplication
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="D">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static Vector3 operator *(Vector3 V1, double D)
         {
             return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
         }
 
+        /// <summary>
+        /// Multiplication
+        /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="D">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static Vector3 operator *(double D, Vector3 V1)
         {
             return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
         }
+
         /// <summary>
         /// Does a cross product
         /// </summary>
+        /// <param name="V1">Item 1</param>
+        /// <param name="V2">Item 2</param>
+        /// <returns>The resulting vector</returns>
         public static Vector3 operator *(Vector3 V1, Vector3 V2)
         {
             Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);

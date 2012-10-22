@@ -190,6 +190,10 @@ namespace Utilities.Reflection.Emit
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Converts the assembly to a string
+        /// </summary>
+        /// <returns>The string version of the assembly</returns>
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();

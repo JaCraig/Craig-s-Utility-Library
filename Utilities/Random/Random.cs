@@ -58,19 +58,25 @@ namespace Utilities.Random
         private static Random GlobalSeed = new Random();
         [ThreadStatic]
         private static Random Local;
-        
+
         #endregion
 
         #region Static Functions
 
         #region ThreadSafeNext
 
+        /// <summary>
+        /// A thread safe version of a random number generation
+        /// </summary>
+        /// <param name="Min">Minimum value</param>
+        /// <param name="Max">Maximum value</param>
+        /// <returns>A randomly generated value</returns>
         public static int ThreadSafeNext(int Min = int.MinValue, int Max = int.MaxValue)
         {
             if (Local == null)
             {
                 int Seed;
-                lock (GlobalSeed) 
+                lock (GlobalSeed)
                     Seed = GlobalSeed.Next();
                 Local = new Random(Seed);
             }

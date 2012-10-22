@@ -96,11 +96,11 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <param name="MethodName">Method name</param>
         /// <param name="Parameters">Parameters sent in</param>
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
-        public virtual VariableBase Call(string MethodName, object[] Parameters=null)
+        public virtual VariableBase Call(string MethodName, object[] Parameters = null)
         {
             if (string.IsNullOrEmpty(MethodName))
                 throw new ArgumentNullException("MethodName");
-            List<Type> ParameterTypes=new List<Type>();
+            List<Type> ParameterTypes = new List<Type>();
             if (Parameters != null)
             {
                 foreach (object Parameter in Parameters)
@@ -122,7 +122,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(MethodBuilder Method, object[] Parameters = null)
         {
-            if (Method==null)
+            if (Method == null)
                 throw new ArgumentNullException("Method");
             return Call(Method.Builder, Parameters);
         }
@@ -183,6 +183,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
 
         #region Operator Functions
 
+        /// <summary>
+        /// Addition operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator +(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -190,6 +196,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
+        /// <summary>
+        /// Subtraction operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator -(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -197,6 +209,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
+        /// <summary>
+        /// Multiplication operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator *(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -204,6 +222,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
+        /// <summary>
+        /// Division operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator /(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -211,6 +235,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
+        /// <summary>
+        /// Modulo operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator %(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -218,6 +248,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
+        /// <summary>
+        /// Addition operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator +(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -225,6 +261,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
+        /// <summary>
+        /// Subtraction operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator -(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -232,6 +274,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
+        /// <summary>
+        /// Multiplication operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator *(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -239,6 +287,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
+        /// <summary>
+        /// Division operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator /(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -246,6 +300,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
+        /// <summary>
+        /// Modulo operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator %(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -253,6 +313,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
+        /// <summary>
+        /// Addition operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator +(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -260,6 +326,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
+        /// <summary>
+        /// Subtraction operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator -(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -267,6 +339,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
+        /// <summary>
+        /// Multiplication operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator *(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -274,6 +352,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
+        /// <summary>
+        /// Division operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator /(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -281,6 +365,12 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
+        /// <summary>
+        /// Modulo operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <param name="Right">Right side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator %(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -288,6 +378,11 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
+        /// <summary>
+        /// Plus one operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator ++(VariableBase Left)
         {
             if (MethodBase.CurrentMethod == null)
@@ -296,6 +391,11 @@ namespace Utilities.Reflection.Emit.BaseClasses
             return Left;
         }
 
+        /// <summary>
+        /// Subtract one operator
+        /// </summary>
+        /// <param name="Left">Left side</param>
+        /// <returns>The resulting object</returns>
         public static VariableBase operator --(VariableBase Left)
         {
             if (MethodBase.CurrentMethod == null)

@@ -55,12 +55,19 @@ namespace Utilities.Reflection.Emit.Commands
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the command
+        /// </summary>
         public override void Setup()
         {
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.MarkLabel(IfCommand.EndIfLabel);
             Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator.MarkLabel(IfCommand.EndIfFinalLabel);
         }
 
+        /// <summary>
+        /// Converts the command to a string
+        /// </summary>
+        /// <returns>The string version of the command</returns>
         public override string ToString()
         {
             return "}\n";

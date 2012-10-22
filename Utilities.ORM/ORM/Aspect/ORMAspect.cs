@@ -58,6 +58,11 @@ namespace Utilities.ORM.Aspect
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the start method
+        /// </summary>
+        /// <param name="Method">Method builder to use</param>
+        /// <param name="BaseType">Base type</param>
         public void SetupStartMethod(Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType)
         {
             Method.SetCurrentMethod();
@@ -79,6 +84,12 @@ namespace Utilities.ORM.Aspect
             }
         }
 
+        /// <summary>
+        /// Sets up the code at the end of the method
+        /// </summary>
+        /// <param name="Method">Method builder to use</param>
+        /// <param name="BaseType">Base type</param>
+        /// <param name="ReturnValue">Return value (if there is one)</param>
         public void SetupEndMethod(Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue)
         {
             Method.SetCurrentMethod();
@@ -103,16 +114,29 @@ namespace Utilities.ORM.Aspect
             }
         }
 
+        /// <summary>
+        /// Sets up the exception method
+        /// </summary>
+        /// <param name="Method">Method builder</param>
+        /// <param name="BaseType">Base type</param>
         public void SetupExceptionMethod(Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType)
         {
 
         }
 
+        /// <summary>
+        /// Sets up an object
+        /// </summary>
+        /// <param name="Object">Object to set up</param>
         public void Setup(object Object)
         {
 
         }
 
+        /// <summary>
+        /// Set up interfaces
+        /// </summary>
+        /// <param name="TypeBuilder">Type builder to use</param>
         public void SetupInterfaces(Reflection.Emit.TypeBuilder TypeBuilder)
         {
             Fields = new List<Reflection.Emit.FieldBuilder>();
@@ -302,6 +326,9 @@ namespace Utilities.ORM.Aspect
 
         #region Properties
 
+        /// <summary>
+        /// Interfaces this aspect is using
+        /// </summary>
         public virtual List<Type> InterfacesUsing { get; set; }
 
         /// <summary>

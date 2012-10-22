@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Math.ExtensionMethods;
 using Utilities.Media.Image.Procedural;
+using System.Text;
 #endregion
 
 namespace Utilities.Media.Image.ExtensionMethods
@@ -42,7 +43,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         #region Functions
 
         #region AddNoise
-        
+
         /// <summary>
         /// adds noise to the image
         /// </summary>
@@ -337,6 +338,82 @@ namespace Utilities.Media.Image.ExtensionMethods
             if (!string.IsNullOrEmpty(FileName))
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
+        }
+
+        #endregion
+
+        #region BumpMap
+
+        /// <summary>
+        /// Creates the bump map
+        /// </summary>
+        /// <param name="Direction">Direction of the bump map</param>
+        /// <param name="Image">Image to create a bump map from</param>
+        /// <param name="Invert">Inverts the direction of the bump map</param>
+        /// <returns>The resulting bump map</returns>
+        public static Bitmap BumpMap(this Bitmap Image, Direction Direction = Direction.TopBottom, bool Invert = false)
+        {
+            Image.ThrowIfNull("Image");
+            Filter EdgeDetectionFilter = new Filter(3, 3);
+            if (Direction == Direction.TopBottom)
+            {
+                if (!Invert)
+                {
+                    EdgeDetectionFilter.MyFilter[0, 0] = 1;
+                    EdgeDetectionFilter.MyFilter[1, 0] = 2;
+                    EdgeDetectionFilter.MyFilter[2, 0] = 1;
+                    EdgeDetectionFilter.MyFilter[0, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[2, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[0, 2] = -1;
+                    EdgeDetectionFilter.MyFilter[1, 2] = -2;
+                    EdgeDetectionFilter.MyFilter[2, 2] = -1;
+                }
+                else
+                {
+                    EdgeDetectionFilter.MyFilter[0, 0] = -1;
+                    EdgeDetectionFilter.MyFilter[1, 0] = -2;
+                    EdgeDetectionFilter.MyFilter[2, 0] = -1;
+                    EdgeDetectionFilter.MyFilter[0, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[2, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[0, 2] = 1;
+                    EdgeDetectionFilter.MyFilter[1, 2] = 2;
+                    EdgeDetectionFilter.MyFilter[2, 2] = 1;
+                }
+            }
+            else
+            {
+                if (!Invert)
+                {
+                    EdgeDetectionFilter.MyFilter[0, 0] = -1;
+                    EdgeDetectionFilter.MyFilter[0, 1] = -2;
+                    EdgeDetectionFilter.MyFilter[0, 2] = -1;
+                    EdgeDetectionFilter.MyFilter[1, 0] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 2] = 0;
+                    EdgeDetectionFilter.MyFilter[2, 0] = 1;
+                    EdgeDetectionFilter.MyFilter[2, 1] = 2;
+                    EdgeDetectionFilter.MyFilter[2, 2] = 1;
+                }
+                else
+                {
+                    EdgeDetectionFilter.MyFilter[0, 0] = 1;
+                    EdgeDetectionFilter.MyFilter[0, 1] = 2;
+                    EdgeDetectionFilter.MyFilter[0, 2] = 1;
+                    EdgeDetectionFilter.MyFilter[1, 0] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 1] = 0;
+                    EdgeDetectionFilter.MyFilter[1, 2] = 0;
+                    EdgeDetectionFilter.MyFilter[2, 0] = -1;
+                    EdgeDetectionFilter.MyFilter[2, 1] = -2;
+                    EdgeDetectionFilter.MyFilter[2, 2] = -1;
+                }
+            }
+            EdgeDetectionFilter.Offset = 127;
+            using (Bitmap TempImage = EdgeDetectionFilter.ApplyFilter(Image))
+            {
+                return TempImage.BlackAndWhite();
+            }
         }
 
         #endregion
@@ -1229,6 +1306,90 @@ namespace Utilities.Media.Image.ExtensionMethods
 
         #endregion
 
+        #region MotionDetection
+
+        /// <summary>
+        /// Runs a simplistic motion detection algorithm
+        /// </summary>
+        /// <param name="NewImage">The "new" frame</param>
+        /// <param name="OldImage">The "old" frame</param>
+        /// <param name="Threshold">The threshold used to detect changes in the image</param>
+        /// <param name="DetectionColor">Color to display changes in the images as</param>
+        /// <returns>A bitmap indicating where changes between frames have occurred overlayed on top of the new image.</returns>
+        public static Bitmap MotionDetection(this Bitmap NewImage, Bitmap OldImage, int Threshold, Color DetectionColor)
+        {
+            NewImage.ThrowIfNull("NewImage");
+            OldImage.ThrowIfNull("OldImage");
+            DetectionColor.ThrowIfNull("DetectionColor");
+            using (Bitmap NewImage1 = NewImage.BlackAndWhite())
+            {
+                using (Bitmap OldImage1 = OldImage.BlackAndWhite())
+                {
+                    using (Bitmap NewImage2 = NewImage1.SNNBlur(5))
+                    {
+                        using (Bitmap OldImage2 = OldImage1.SNNBlur(5))
+                        {
+                            using (Bitmap OutputImage = new Bitmap(NewImage2, NewImage2.Width, NewImage2.Height))
+                            {
+                                using (Bitmap Overlay = new Bitmap(NewImage, NewImage.Width, NewImage.Height))
+                                {
+                                    BitmapData NewImage2Data = NewImage2.LockImage();
+                                    int NewImage2PixelSize = NewImage2Data.GetPixelSize();
+                                    BitmapData OldImage2Data = OldImage2.LockImage();
+                                    int OldImage2PixelSize = OldImage2Data.GetPixelSize();
+                                    BitmapData OverlayData = Overlay.LockImage();
+                                    int OverlayPixelSize = OverlayData.GetPixelSize();
+                                    int Width = OutputImage.Width;
+                                    int Height = OutputImage.Height;
+                                    Parallel.For(0, Width, x =>
+                                    {
+                                        for (int y = 0; y < Height; ++y)
+                                        {
+                                            Color NewPixel = NewImage2Data.GetPixel(x, y, NewImage2PixelSize);
+                                            Color OldPixel = OldImage2Data.GetPixel(x, y, OldImage2PixelSize);
+                                            if (System.Math.Pow((double)(NewPixel.R - OldPixel.R), 2.0) > Threshold)
+                                            {
+                                                OverlayData.SetPixel(x, y, Color.FromArgb(100, 0, 100), OverlayPixelSize);
+                                            }
+                                            else
+                                            {
+                                                OverlayData.SetPixel(x, y, Color.FromArgb(200, 0, 200), OverlayPixelSize);
+                                            }
+                                        }
+                                    });
+                                    Overlay.UnlockImage(OverlayData);
+                                    NewImage2.UnlockImage(NewImage2Data);
+                                    OldImage2.UnlockImage(OldImage2Data);
+                                    using (Bitmap Overlay2 = Overlay.EdgeDetection(25, DetectionColor))
+                                    {
+                                        BitmapData Overlay2Data = Overlay2.LockImage();
+                                        int Overlay2PixelSize = Overlay2Data.GetPixelSize();
+                                        Width = OutputImage.Width;
+                                        Height = OutputImage.Height;
+                                        Parallel.For(0, Width, x =>
+                                        {
+                                            for (int y = 0; y < Height; ++y)
+                                            {
+                                                Color Pixel1 = Overlay2Data.GetPixel(x, y, Overlay2PixelSize);
+                                                if (Pixel1.R != DetectionColor.R || Pixel1.G != DetectionColor.G || Pixel1.B != DetectionColor.B)
+                                                {
+                                                    Overlay2Data.SetPixel(x, y, Color.FromArgb(200, 0, 200), Overlay2PixelSize);
+                                                }
+                                            }
+                                        });
+                                        Overlay2.UnlockImage(Overlay2Data);
+                                        return OutputImage.Watermark(Overlay2, 1.0f, 0, 0, Color.FromArgb(200, 0, 200));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         #region Negative
 
         /// <summary>
@@ -1262,6 +1423,62 @@ namespace Utilities.Media.Image.ExtensionMethods
             if (!string.IsNullOrEmpty(FileName))
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
+        }
+
+        #endregion
+
+        #region NormalMap
+
+        /// <summary>
+        /// Creates the normal map
+        /// </summary>
+        /// <param name="ImageUsing">Image to create the normal map from</param>
+        /// <param name="InvertX">Invert the X direction</param>
+        /// <param name="InvertY">Invert the Y direction</param>
+        /// <returns>Returns the resulting normal map</returns>
+        public static Bitmap NormalMap(this Bitmap ImageUsing,bool InvertX=false,bool InvertY=false)
+        {
+            ImageUsing.ThrowIfNull("ImageUsing");
+            using (Bitmap TempImageX = ImageUsing.BumpMap(Direction.LeftRight,InvertX))
+            {
+                using (Bitmap TempImageY = ImageUsing.BumpMap(Direction.TopBottom, InvertY))
+                {
+                    Bitmap ReturnImage = new Bitmap(TempImageX.Width, TempImageX.Height);
+                    BitmapData TempImageXData = TempImageX.LockImage();
+                    BitmapData TempImageYData = TempImageY.LockImage();
+                    BitmapData ReturnImageData = ReturnImage.LockImage();
+                    int TempImageXPixelSize = TempImageXData.GetPixelSize();
+                    int TempImageYPixelSize = TempImageYData.GetPixelSize();
+                    int ReturnImagePixelSize = ReturnImageData.GetPixelSize();
+                    int Width = TempImageX.Width;
+                    int Height = TempImageX.Height;
+                    Parallel.For(0, Height, y =>
+                    {
+                        Math.Vector3 TempVector = new Utilities.Math.Vector3(0.0, 0.0, 0.0);
+                        for (int x = 0; x < Width; ++x)
+                        {
+                            Color TempPixelX = TempImageXData.GetPixel(x, y, TempImageXPixelSize);
+                            Color TempPixelY = TempImageYData.GetPixel(x, y, TempImageYPixelSize);
+                            TempVector.X = (double)(TempPixelX.R) / 255.0;
+                            TempVector.Y = (double)(TempPixelY.R) / 255.0;
+                            TempVector.Z = 1.0;
+                            TempVector.Normalize();
+                            TempVector.X = ((TempVector.X + 1.0) / 2.0) * 255.0;
+                            TempVector.Y = ((TempVector.Y + 1.0) / 2.0) * 255.0;
+                            TempVector.Z = ((TempVector.Z + 1.0) / 2.0) * 255.0;
+                            ReturnImageData.SetPixel(x, y,
+                                Color.FromArgb((int)TempVector.X,
+                                    (int)TempVector.Y,
+                                    (int)TempVector.Z),
+                                ReturnImagePixelSize);
+                        }
+                    });
+                    TempImageX.UnlockImage(TempImageXData);
+                    TempImageY.UnlockImage(TempImageYData);
+                    ReturnImage.UnlockImage(ReturnImageData);
+                    return ReturnImage;
+                }
+            }
         }
 
         #endregion
@@ -1308,6 +1525,67 @@ namespace Utilities.Media.Image.ExtensionMethods
             if (!string.IsNullOrEmpty(FileName))
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
+        }
+
+        #endregion
+
+        #region OilPainting
+
+        /// <summary>
+        /// Slow but interesting function that applies an oil painting effect
+        /// </summary>
+        /// <param name="Image">Image to create the oil painting effect from</param>
+        /// <param name="Seed">Randomization seed</param>
+        /// <param name="NumberOfPoints">Number of points for the painting</param>
+        /// <returns>The resulting bitmap</returns>
+        public static Bitmap OilPainting(this Bitmap Image, int Seed, int NumberOfPoints=100)
+        {
+            Image.ThrowIfNull("Image");
+            Bitmap _Image = new Bitmap(Image);
+            CellularMap Map = new CellularMap(Seed, Image.Width, Image.Height, NumberOfPoints);
+            BitmapData ImageData = _Image.LockImage();
+            int ImagePixelSize = ImageData.GetPixelSize();
+            int Width = _Image.Width;
+            int Height = _Image.Height;
+            Parallel.For(0, NumberOfPoints, i =>
+            {
+                int Red = 0;
+                int Green = 0;
+                int Blue = 0;
+                int Counter = 0;
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        if (Map.ClosestPoint[x, y] == i)
+                        {
+                            Color Pixel = ImageData.GetPixel(x, y, ImagePixelSize);
+                            Red += Pixel.R;
+                            Green += Pixel.G;
+                            Blue += Pixel.B;
+                            ++Counter;
+                        }
+                    }
+                }
+                int Counter2 = 0;
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        if (Map.ClosestPoint[x, y] == i)
+                        {
+                            ImageData.SetPixel(x, y, Color.FromArgb(Red / Counter, Green / Counter, Blue / Counter), ImagePixelSize);
+                            ++Counter2;
+                            if (Counter2 == Counter)
+                                break;
+                        }
+                    }
+                    if (Counter2 == Counter)
+                        break;
+                }
+            });
+            _Image.UnlockImage(ImageData);
+            return _Image;
         }
 
         #endregion
@@ -1567,7 +1845,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Image">Image to manipulate</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
-        public static Bitmap Sharpen(this Bitmap Image,string FileName="")
+        public static Bitmap Sharpen(this Bitmap Image, string FileName = "")
         {
             Image.ThrowIfNull("Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
@@ -1581,7 +1859,7 @@ namespace Utilities.Media.Image.ExtensionMethods
             TempFilter.MyFilter[2, 1] = -2;
             TempFilter.MyFilter[1, 2] = -2;
             TempFilter.MyFilter[1, 1] = 16;
-            Bitmap NewBitmap= TempFilter.ApplyFilter(Image);
+            Bitmap NewBitmap = TempFilter.ApplyFilter(Image);
             if (!string.IsNullOrEmpty(FileName))
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
@@ -1616,7 +1894,7 @@ namespace Utilities.Media.Image.ExtensionMethods
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
         }
-        
+
         #endregion
 
         #region SinWave
@@ -1777,7 +2055,7 @@ namespace Utilities.Media.Image.ExtensionMethods
             TempFilter.MyFilter[2, 1] = 0;
             TempFilter.MyFilter[2, 2] = 1;
             TempFilter.Offset = 127;
-            Bitmap NewBitmap= TempFilter.ApplyFilter(Image);
+            Bitmap NewBitmap = TempFilter.ApplyFilter(Image);
             if (!string.IsNullOrEmpty(FileName))
                 NewBitmap.Save(FileName, FormatUsing);
             return NewBitmap;
@@ -1916,7 +2194,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Threshold">Float defining the threshold at which to set the pixel to black vs white.</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object containing the new image</returns>
-        public static Bitmap Threshold(this Bitmap OriginalImage, float Threshold=0.5f,string FileName="")
+        public static Bitmap Threshold(this Bitmap OriginalImage, float Threshold = 0.5f, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
@@ -1947,6 +2225,51 @@ namespace Utilities.Media.Image.ExtensionMethods
 
         #endregion
 
+        #region ToASCIIArt
+
+        /// <summary>
+        /// Converts an image to ASCII art
+        /// </summary>
+        /// <param name="Input">The image you wish to convert</param>
+        /// <returns>A string containing the art</returns>
+        public static string ToASCIIArt(this Bitmap Input)
+        {
+            if (Input == null)
+                throw new ArgumentNullException("Input");
+            bool ShowLine = true;
+            using (Bitmap TempImage = Input.BlackAndWhite())
+            {
+                BitmapData OldData = TempImage.LockImage();
+                int OldPixelSize = OldData.GetPixelSize();
+                StringBuilder Builder = new StringBuilder();
+                for (int x = 0; x < TempImage.Height; ++x)
+                {
+                    for (int y = 0; y < TempImage.Width; ++y)
+                    {
+                        if (ShowLine)
+                        {
+                            Color CurrentPixel = OldData.GetPixel(y, x, OldPixelSize);
+                            Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length) / 255)]);
+                        }
+
+                    }
+                    if (ShowLine)
+                    {
+                        Builder.Append(System.Environment.NewLine);
+                        ShowLine = false;
+                    }
+                    else
+                    {
+                        ShowLine = true;
+                    }
+                }
+                TempImage.UnlockImage(OldData);
+                return Builder.ToString();
+            }
+        }
+
+        #endregion
+
         #region ToBase64
 
         /// <summary>
@@ -1955,7 +2278,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Image">Image to convert</param>
         /// <param name="DesiredFormat">Desired image format (defaults to Jpeg)</param>
         /// <returns>The image in base64 string format</returns>
-        public static string ToBase64(this Bitmap Image,ImageFormat DesiredFormat=null)
+        public static string ToBase64(this Bitmap Image, ImageFormat DesiredFormat = null)
         {
             DesiredFormat = DesiredFormat.NullCheck(ImageFormat.Jpeg);
             using (MemoryStream Stream = new MemoryStream())
@@ -2145,9 +2468,21 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// </summary>
         public enum Align
         {
+            /// <summary>
+            /// Top
+            /// </summary>
             Top,
+            /// <summary>
+            /// Bottom
+            /// </summary>
             Bottom,
+            /// <summary>
+            /// Left
+            /// </summary>
             Left,
+            /// <summary>
+            /// Right
+            /// </summary>
             Right
         }
 
@@ -2156,9 +2491,39 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// </summary>
         public enum Quality
         {
+            /// <summary>
+            /// High
+            /// </summary>
             High,
+            /// <summary>
+            /// Low
+            /// </summary>
             Low
         }
+
+        /// <summary>
+        /// Direction
+        /// </summary>
+        public enum Direction
+        {
+            /// <summary>
+            /// Top to bottom
+            /// </summary>
+            TopBottom = 0,
+            /// <summary>
+            /// Left to right
+            /// </summary>
+            LeftRight
+        };
+
+        #endregion
+
+        #region Variables
+
+        /// <summary>
+        /// Characters used for ASCII art
+        /// </summary>
+        private static string[] _ASCIICharacters = { "#", "#", "@", "%", "=", "+", "*", ":", "-", ".", " " };
 
         #endregion
     }

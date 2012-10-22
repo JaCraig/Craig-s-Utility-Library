@@ -104,6 +104,9 @@ namespace Utilities.ORM.Mapping
 
         #region Properties
 
+        /// <summary>
+        /// List of mappings
+        /// </summary>
         public virtual ListMapping<Type, IMapping> Mappings { get; set; }
 
         #endregion

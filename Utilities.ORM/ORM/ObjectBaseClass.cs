@@ -35,7 +35,9 @@ namespace Utilities.ORM
     /// Object base class helper. This is not required but automatically
     /// sets up basic functions and properties to simplify things a bit.
     /// </summary>
-    public class ObjectBaseClass<ObjectType, IDType> : IComparable, IComparable<ObjectType>, IObject<IDType>
+    /// <typeparam name="IDType">ID type</typeparam>
+    /// <typeparam name="ObjectType">Object type (must be the child object type)</typeparam>
+    public abstract class ObjectBaseClass<ObjectType, IDType> : IComparable, IComparable<ObjectType>, IObject<IDType>
         where ObjectType : ObjectBaseClass<ObjectType, IDType>, new()
         where IDType : IComparable
     {
@@ -124,7 +126,7 @@ namespace Utilities.ORM
         }
 
         #endregion
-
+        
         #region All
 
         /// <summary>
@@ -372,7 +374,6 @@ namespace Utilities.ORM
         /// <param name="Parameters">Parameters to search by</param>
         /// <param name="Command">Command to get the page count of</param>
         /// <typeparam name="DataType">Data type</typeparam>
-        /// <typeparam name="ObjectType">Object type</typeparam>
         /// <returns>The scalar value returned by the command</returns>
         public static DataType Scalar<DataType>(string Command, CommandType CommandType, params IParameter[] Parameters)
         {
@@ -383,7 +384,6 @@ namespace Utilities.ORM
         /// Runs a scalar command using the specified aggregate function
         /// </summary>
         /// <typeparam name="DataType">Data type</typeparam>
-        /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="AggregateFunction">Aggregate function</param>
         /// <param name="Parameters">Parameters</param>
         /// <returns>The scalar value returned by the command</returns>
@@ -400,7 +400,6 @@ namespace Utilities.ORM
         /// <param name="Command">Command to get the page count of</param>
         /// <param name="Session">ORM session variable</param>
         /// <typeparam name="DataType">Data type</typeparam>
-        /// <typeparam name="ObjectType">Object type</typeparam>
         /// <returns>The scalar value returned by the command</returns>
         public static DataType Scalar<DataType>(Session Session, string Command, CommandType CommandType, params IParameter[] Parameters)
         {
@@ -411,9 +410,9 @@ namespace Utilities.ORM
         /// Runs a scalar command using the specified aggregate function
         /// </summary>
         /// <typeparam name="DataType">Data type</typeparam>
-        /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="AggregateFunction">Aggregate function</param>
         /// <param name="Parameters">Parameters</param>
+        /// <param name="Session">Session object</param>
         /// <returns>The scalar value returned by the command</returns>
         public static DataType Scalar<DataType>(Session Session, string AggregateFunction, params IParameter[] Parameters)
         {
@@ -660,15 +659,35 @@ namespace Utilities.ORM
 
         #region IObject Members
 
+        /// <summary>
+        /// ID for the object
+        /// </summary>
         public virtual IDType ID { get; set; }
+
+        /// <summary>
+        /// Date last modified
+        /// </summary>
         public virtual DateTime DateModified { get; set; }
+
+        /// <summary>
+        /// Date object was created
+        /// </summary>
         public virtual DateTime DateCreated { get; set; }
+
+        /// <summary>
+        /// Is the object active?
+        /// </summary>
         public virtual bool Active { get; set; }
 
         #endregion
 
         #region IComparable Functions
 
+        /// <summary>
+        /// Compares the object to another object
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
         public int CompareTo(object obj)
         {
             if (obj is ObjectBaseClass<ObjectType, IDType>)
@@ -676,6 +695,11 @@ namespace Utilities.ORM
             return -1;
         }
 
+        /// <summary>
+        /// Compares the object to another object
+        /// </summary>
+        /// <param name="other">Object to compare to</param>
+        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
         public virtual int CompareTo(ObjectType other)
         {
             return other.ID.CompareTo(ID);

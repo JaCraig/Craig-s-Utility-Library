@@ -485,14 +485,9 @@
     <Compile Include="Web\Hulu\Hulu.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Vector3.cs" />
-    <Compile Include="Media\Image\ASCIIArt.cs" />
-    <Compile Include="Media\Image\BumpMap.cs" />
     <Compile Include="Media\Image\Filter.cs" />
     <Compile Include="LDAP\Directory.cs" />
     <Compile Include="LDAP\Entry.cs" />
-    <Compile Include="Media\Image\MotionDetection.cs" />
-    <Compile Include="Media\Image\NormalMap.cs" />
-    <Compile Include="Media\Image\OilPainting.cs" />
     <Compile Include="Media\Image\Procedural\CellularMap.cs" />
     <Compile Include="Media\Image\RGBHistogram.cs" />
     <Compile Include="FileFormats\OPMLHelper\Body.cs" />

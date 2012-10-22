@@ -70,6 +70,9 @@ namespace Utilities.ORM.Mapping.PropertyTypes
 
         #region Functions
 
+        /// <summary>
+        /// Sets loading command
+        /// </summary>
         public override void SetupLoadCommands()
         {
             if (this.CommandToLoad != null)
@@ -91,6 +94,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             }
         }
 
+        /// <summary>
+        /// Deletes the object from join tables
+        /// </summary>
+        /// <param name="Object">Object to remove</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
         public override IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
@@ -106,6 +115,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             return Commands;
         }
 
+        /// <summary>
+        /// Saves the object to various join tables
+        /// </summary>
+        /// <param name="Object">Object to add</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
         public override IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
@@ -149,6 +164,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             return Commands;
         }
 
+        /// <summary>
+        /// Deletes the object to from join tables on cascade
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
         public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
@@ -183,6 +204,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             return Commands;
         }
 
+        /// <summary>
+        /// Saves the object to various join tables on cascade
+        /// </summary>
+        /// <param name="Object">Object to add</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
         public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
@@ -217,6 +244,11 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             return Commands;
         }
 
+        /// <summary>
+        /// Deletes the object on cascade
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM object</param>
         public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
@@ -238,6 +270,11 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             }
         }
 
+        /// <summary>
+        /// Saves the object on cascade
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM object</param>
         public override void CascadeSave(ClassType Object, MicroORM MicroORM)
         {
             if (Object == null)
@@ -259,75 +296,135 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             }
         }
 
+        /// <summary>
+        /// Sets the loading command used
+        /// </summary>
+        /// <param name="Command">Command to use</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
         {
             this.CommandToLoad = new Command(Command, CommandType);
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
+        /// <summary>
+        /// Gets it as a parameter
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <returns>The value as a parameter</returns>
         public override IParameter GetAsParameter(ClassType Object)
         {
             return null;
         }
 
+        /// <summary>
+        /// Gets it as an object
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <returns>The value as an object</returns>
         public override object GetAsObject(ClassType Object)
         {
             return null;
         }
 
+        /// <summary>
+        /// Add to query provider
+        /// </summary>
+        /// <param name="Database">Database object</param>
+        /// <param name="Mapping">Mapping object</param>
         public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
         {
         }
 
+        /// <summary>
+        /// Set a default value
+        /// </summary>
+        /// <param name="DefaultValue">Default value</param>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> SetDefaultValue(Func<IEnumerable<DataType>> DefaultValue)
         {
             this.DefaultValue = DefaultValue;
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
+        /// <summary>
+        /// Does not allow null values
+        /// </summary>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> DoNotAllowNullValues()
         {
             this.NotNull = true;
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
+        /// <summary>
+        /// This should be unique
+        /// </summary>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> ThisShouldBeUnique()
         {
             this.Unique = true;
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
+        /// <summary>
+        /// Turn on indexing
+        /// </summary>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> TurnOnIndexing()
         {
             this.Index = true;
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
+        /// <summary>
+        /// Turn on auto increment
+        /// </summary>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> TurnOnAutoIncrement()
         {
             this.AutoIncrement = true;
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
+        /// <summary>
+        /// Set field name
+        /// </summary>
+        /// <param name="FieldName">Field name</param>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> SetFieldName(string FieldName)
         {
             this.FieldName = FieldName;
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
-
+        /// <summary>
+        /// Set the table name
+        /// </summary>
+        /// <param name="TableName">Table name</param>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> SetTableName(string TableName)
         {
             this.TableName = TableName;
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
+        /// <summary>
+        /// Turn on cascade
+        /// </summary>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> TurnOnCascade()
         {
             this.Cascade = true;
             return (IIEnumerableManyToOne<ClassType, DataType>)this;
         }
 
+        /// <summary>
+        /// Set max length
+        /// </summary>
+        /// <param name="MaxLength">Max length</param>
+        /// <returns>This</returns>
         public override IIEnumerableManyToOne<ClassType, DataType> SetMaxLength(int MaxLength)
         {
             this.MaxLength = MaxLength;

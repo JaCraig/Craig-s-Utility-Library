@@ -72,6 +72,9 @@ namespace Utilities.Reflection.Emit.Commands
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the command
+        /// </summary>
         public override void Setup()
         {
             ILGenerator Generator = MethodBuilder.CurrentMethod.Generator;
@@ -90,6 +93,10 @@ namespace Utilities.Reflection.Emit.Commands
             Result.Save(Generator);
         }
 
+        /// <summary>
+        /// Converts the command to a string
+        /// </summary>
+        /// <returns>The string version of the command</returns>
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();

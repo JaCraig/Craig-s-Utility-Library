@@ -61,6 +61,9 @@ namespace Utilities.SQL.DataClasses
         /// <param name="ForeignKeyColumn">Foreign key column</param>
         /// <param name="DefaultValue">Default value</param>
         /// <param name="ParentTable">Parent table</param>
+        /// <param name="OnDeleteCascade">Cascade on delete</param>
+        /// <param name="OnDeleteSetNull">Set null on delete</param>
+        /// <param name="OnUpdateCascade">Cascade on update</param>
         public Column(string Name, DbType ColumnType, int Length, bool Nullable,
             bool Identity, bool Index, bool PrimaryKey, bool Unique, string ForeignKeyTable,
             string ForeignKeyColumn, T DefaultValue,bool OnDeleteCascade, bool OnUpdateCascade,
