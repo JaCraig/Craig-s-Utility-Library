@@ -62,56 +62,114 @@ namespace Utilities.ORM.Mapping.PropertyTypes
 
         #region Functions
 
+        /// <summary>
+        /// Sets up the default load commands
+        /// </summary>
         public override void SetupLoadCommands()
         {
 
         }
 
+        /// <summary>
+        /// Deletes the object from join tables
+        /// </summary>
+        /// <param name="Object">Object to remove</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
         public override IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM)
         {
             return new List<Command>();
         }
 
+        /// <summary>
+        /// Saves the object to various join tables
+        /// </summary>
+        /// <param name="Object">Object to add</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
         public override IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM)
         {
             return new List<Command>();
         }
 
+        /// <summary>
+        /// Deletes the object to from join tables on cascade
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
         public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
         {
             return new List<Command>();
         }
 
+        /// <summary>
+        /// Saves the object to various join tables on cascade
+        /// </summary>
+        /// <param name="Object">Object to add</param>
+        /// <param name="MicroORM">Micro ORM object</param>
+        /// <returns>The list of commands needed to do this</returns>
         public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
         {
             return new List<Command>();
         }
 
+        /// <summary>
+        /// Deletes the object on cascade
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM object</param>
         public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
         {
 
         }
 
+        /// <summary>
+        /// Saves the object on cascade
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="MicroORM">Micro ORM object</param>
         public override void CascadeSave(ClassType Object, MicroORM MicroORM)
         {
         }
 
+        /// <summary>
+        /// Gets it as a parameter
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <returns>The value as a parameter</returns>
         public override IParameter GetAsParameter(ClassType Object)
         {
             return null;
         }
 
+        /// <summary>
+        /// Gets it as an object
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <returns>The value as an object</returns>
         public override object GetAsObject(ClassType Object)
         {
             return null;
         }
 
+        /// <summary>
+        /// Sets the loading command used
+        /// </summary>
+        /// <param name="Command">Command to use</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> LoadUsingCommand(string Command, System.Data.CommandType CommandType)
         {
             this.CommandToLoad = new Command(Command, CommandType);
             return (IReference<ClassType, string>)this;
         }
 
+        /// <summary>
+        /// Add to query provider
+        /// </summary>
+        /// <param name="Database">Database object</param>
+        /// <param name="Mapping">Mapping object</param>
         public override void AddToQueryProvider(IDatabase Database, Mapping<ClassType> Mapping)
         {
             Mode Mode = Mode.Neither;
@@ -122,12 +180,21 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             Mapping.Map(this.Expression, this.FieldName, this.MaxLength, DefaultValue(), Mode);
         }
 
+        /// <summary>
+        /// Set a default value
+        /// </summary>
+        /// <param name="DefaultValue">Default value</param>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> SetDefaultValue(Func<string> DefaultValue)
         {
             this.DefaultValue = DefaultValue;
             return (IReference<ClassType, string>)this;
         }
 
+        /// <summary>
+        /// Does not allow null values
+        /// </summary>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> DoNotAllowNullValues()
         {
             this.NotNull = true;
@@ -135,43 +202,73 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             return (IReference<ClassType, string>)this;
         }
 
+        /// <summary>
+        /// This should be unique
+        /// </summary>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> ThisShouldBeUnique()
         {
             this.Unique = true;
             return (IReference<ClassType, string>)this;
         }
 
+        /// <summary>
+        /// Turn on indexing
+        /// </summary>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> TurnOnIndexing()
         {
             this.Index = true;
             return (IReference<ClassType, string>)this;
         }
 
+        /// <summary>
+        /// Turn on auto increment
+        /// </summary>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> TurnOnAutoIncrement()
         {
             this.AutoIncrement = true;
             return (IReference<ClassType, string>)this;
         }
 
+        /// <summary>
+        /// Set field name
+        /// </summary>
+        /// <param name="FieldName">Field name</param>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> SetFieldName(string FieldName)
         {
             this.FieldName = FieldName;
             return (IReference<ClassType, string>)this;
         }
 
-
+        /// <summary>
+        /// Set the table name
+        /// </summary>
+        /// <param name="TableName">Table name</param>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> SetTableName(string TableName)
         {
             this.TableName = TableName;
             return (IReference<ClassType, string>)this;
         }
 
+        /// <summary>
+        /// Turn on cascade
+        /// </summary>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> TurnOnCascade()
         {
             this.Cascade = true;
             return (IReference<ClassType, string>)this;
         }
 
+        /// <summary>
+        /// Set max length
+        /// </summary>
+        /// <param name="MaxLength">Max length</param>
+        /// <returns>This</returns>
         public override IReference<ClassType, string> SetMaxLength(int MaxLength)
         {
             this.MaxLength = MaxLength;
