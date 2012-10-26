@@ -21,32 +21,32 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item is not equal to the value
+    /// Not equal attribute
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class NotEqual<ObjectType, DataType> : Rule<ObjectType, DataType>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class NotEqualAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="Value">value</param>
+        /// <param name="Value">Value to check for</param>
         /// <param name="ErrorMessage">Error message</param>
-        public NotEqual(Func<ObjectType, DataType> ItemToValidate, DataType Value, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
+        public NotEqualAttribute(object Value, string ErrorMessage = "")
+            : base(ErrorMessage)
         {
-            this.Value = Value;
+            this.CompareValue = (IComparable)Value;
         }
 
         #endregion
@@ -54,54 +54,25 @@ namespace Utilities.Validation.Rules
         #region Properties
 
         /// <summary>
-        /// value
+        /// Value to compare to
         /// </summary>
-        protected virtual DataType Value { get; set; }
+        public IComparable CompareValue { get; set; }
 
         #endregion
 
         #region Functions
 
         /// <summary>
-        /// Validates an object
+        /// Determines if the property is valid
         /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            GenericEqualityComparer<DataType> Comparer = new GenericEqualityComparer<DataType>();
-            if (Comparer.Equals(ItemToValidate(Object), Value))
-                throw new NotValid(ErrorMessage);
+            GenericEqualityComparer<IComparable> Comparer = new GenericEqualityComparer<IComparable>();
+            return Comparer.Equals(value as IComparable, CompareValue) ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
         }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// NotEqual attribute
-    /// </summary>
-    public class NotEqual : BaseAttribute
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ErrorMessage">Error message</param>
-        /// <param name="Value">Value to compare to</param>
-        public NotEqual(object Value, string ErrorMessage = "")
-            : base(ErrorMessage)
-        {
-            this.Value = (IComparable)Value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// value to compare to
-        /// </summary>
-        public IComparable Value { get; set; }
 
         #endregion
     }

@@ -22,79 +22,31 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// Determines that the IEnumerable does not contain a specific item
-    /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class DoesNotContain<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="Value">Value that the IEnumerable needs to not contain</param>
-        /// <param name="ErrorMessage">Error message</param>
-        public DoesNotContain(Func<ObjectType, IEnumerable<DataType>> ItemToValidate, DataType Value, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
-        {
-            this.Value = Value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Value to search for
-        /// </summary>
-        protected virtual DataType Value { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Validates an object
-        /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
-        {
-            GenericEqualityComparer<DataType> Comparer = new GenericEqualityComparer<DataType>();
-            foreach (DataType Item in ItemToValidate(Object))
-                if (Comparer.Equals(Item, Value))
-                    throw new NotValid(ErrorMessage);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
     /// Does not contain attribute
     /// </summary>
-    public class DoesNotContain : BaseAttribute
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class DoesNotContainAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="Value">Value to check for</param>
         /// <param name="ErrorMessage">Error message</param>
-        /// <param name="Value">Value to compare to</param>
-        public DoesNotContain(object Value, string ErrorMessage = "")
+        public DoesNotContainAttribute(object Value, string ErrorMessage = "")
             : base(ErrorMessage)
         {
-            this.Value = (IComparable)Value;
+            this.CompareValue = (IComparable)Value;
         }
 
         #endregion
@@ -104,7 +56,29 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Value to compare to
         /// </summary>
-        public IComparable Value { get; set; }
+        public IComparable CompareValue { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Determines if the property is valid
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            GenericEqualityComparer<IComparable> Comparer = new GenericEqualityComparer<IComparable>();
+            IEnumerable ValueList = value as IEnumerable;
+            foreach (IComparable Item in ValueList)
+            {
+                if (Comparer.Equals(Item, CompareValue))
+                    return new ValidationResult(ErrorMessage);
+            }
+            return ValidationResult.Success;
+        }
 
         #endregion
     }

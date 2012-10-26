@@ -21,31 +21,31 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
-
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.Comparison;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item is empty
+    /// Empty attribute
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class Empty<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class EmptyAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ErrorMessage">Error message</param>
-        public Empty(Func<ObjectType, IEnumerable<DataType>> ItemToValidate, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
+        public EmptyAttribute(string ErrorMessage = "")
+            : base(ErrorMessage)
         {
+            
         }
 
         #endregion
@@ -53,32 +53,19 @@ namespace Utilities.Validation.Rules
         #region Functions
 
         /// <summary>
-        /// Validates an object
+        /// Determines if the property is valid
         /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            foreach (object Item in ItemToValidate(Object))
-                throw new NotValid(ErrorMessage);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Empty attribute
-    /// </summary>
-    public class Empty : BaseAttribute
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ErrorMessage">Error message</param>
-        public Empty(string ErrorMessage = "")
-            : base(ErrorMessage)
-        {
+            IEnumerable ValueList = value as IEnumerable;
+            foreach (IComparable Item in ValueList)
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+            return ValidationResult.Success;
         }
 
         #endregion

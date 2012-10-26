@@ -21,28 +21,29 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
-
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.Comparison;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item is equal to the value
+    /// Not NaN attribute
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    public class NotNaN<ObjectType> : Rule<ObjectType, double>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class NotNaNAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ErrorMessage">Error message</param>
-        public NotNaN(Func<ObjectType, double> ItemToValidate, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
+        public NotNaNAttribute(string ErrorMessage = "")
+            : base(ErrorMessage)
         {
         }
 
@@ -51,32 +52,14 @@ namespace Utilities.Validation.Rules
         #region Functions
 
         /// <summary>
-        /// Validates an object
+        /// Determines if the property is valid
         /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (double.IsNaN(ItemToValidate(Object)))
-                throw new NotValid(ErrorMessage);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// NotNaN attribute
-    /// </summary>
-    public class NotNaN : BaseAttribute
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ErrorMessage">Error message</param>
-        public NotNaN(string ErrorMessage = "")
-            : base(ErrorMessage)
-        {
+            return double.IsNaN((double)value) ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
         }
 
         #endregion

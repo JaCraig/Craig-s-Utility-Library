@@ -21,30 +21,34 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Utilities.Validation.Interfaces;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.Comparison;
 #endregion
 
-namespace Utilities.Validation.BaseClasses
+namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// Rule base class
+    /// Not in range attribute
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public abstract class Rule<ObjectType, DataType> : IRule<ObjectType>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class NotInRangeAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
+        /// <param name="Max">Max value</param>
+        /// <param name="Min">Min value</param>
         /// <param name="ErrorMessage">Error message</param>
-        public Rule(Func<ObjectType, DataType> ItemToValidate, string ErrorMessage)
-            : base()
+        public NotInRangeAttribute(object Min, object Max, string ErrorMessage = "")
+            : base(ErrorMessage)
         {
-            this.ErrorMessage = ErrorMessage;
-            this.ItemToValidate = ItemToValidate;
+            this.MinCompareValue = (IComparable)Min;
+            this.MaxCompareValue = (IComparable)Max;
         }
 
         #endregion
@@ -52,24 +56,33 @@ namespace Utilities.Validation.BaseClasses
         #region Properties
 
         /// <summary>
-        /// Error message thrown if Validate is not valid
+        /// Min value to compare to
         /// </summary>
-        public virtual string ErrorMessage { get; set; }
+        public IComparable MinCompareValue { get; set; }
 
         /// <summary>
-        /// Item to validate
+        /// Max value to compare to
         /// </summary>
-        public virtual Func<ObjectType, DataType> ItemToValidate { get; set; }
+        public IComparable MaxCompareValue { get; set; }
 
         #endregion
 
         #region Functions
 
         /// <summary>
-        /// Validates an object
+        /// Determines if the property is valid
         /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public abstract void Validate(ObjectType Object);
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
+            return (Comparer.Compare(MaxCompareValue, value as IComparable) >= 0
+                    && Comparer.Compare(value as IComparable, MinCompareValue) >= 0) ?
+                new ValidationResult(ErrorMessage) :
+                ValidationResult.Success;
+        }
 
         #endregion
     }

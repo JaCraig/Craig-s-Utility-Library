@@ -22,34 +22,32 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
+using Utilities.DataTypes.Comparison;
+using System.Linq;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item's length is greater than the length specified
+    /// Min length attribute
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type that the rule applies to</typeparam>
-    public class MinLength<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class MinLengthAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="MinLength">Min length of the string</param>
+        /// <param name="Value">Value to check</param>
         /// <param name="ErrorMessage">Error message</param>
-        public MinLength(Func<ObjectType, IEnumerable<DataType>> ItemToValidate, int MinLength, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
+        public MinLengthAttribute(long Value, string ErrorMessage = "")
+            : base(ErrorMessage)
         {
-            this.MinLengthAllowed = MinLength;
+            this.CompareValue = Value;
         }
 
         #endregion
@@ -57,56 +55,32 @@ namespace Utilities.Validation.Rules
         #region Properties
 
         /// <summary>
-        /// Min length of the string
+        /// Value to compare to
         /// </summary>
-        protected virtual int MinLengthAllowed { get; set; }
+        public long CompareValue { get; set; }
 
         #endregion
 
         #region Functions
 
         /// <summary>
-        /// Validates an object
+        /// Determines if the property is valid
         /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            IEnumerable<DataType> Value = ItemToValidate(Object);
-            if (Value.IsNull())
-                return;
-            if (Value.Count() < MinLengthAllowed)
-                throw new NotValid(ErrorMessage);
+            IEnumerable ValueList = value as IEnumerable;
+            long Count = 0;
+            foreach (object Item in ValueList)
+            {
+                ++Count;
+                if (Count >= CompareValue)
+                    return ValidationResult.Success;
+            }
+            return new ValidationResult(ErrorMessage);
         }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Min length attribute
-    /// </summary>
-    public class MinLength : BaseAttribute
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ErrorMessage">Error message</param>
-        /// <param name="MinLength">Min length</param>
-        public MinLength(int MinLength, string ErrorMessage = "")
-            : base(ErrorMessage)
-        {
-            this.MinLengthAllowed = MinLength;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Min length value
-        /// </summary>
-        public int MinLengthAllowed { get; set; }
 
         #endregion
     }

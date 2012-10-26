@@ -18,64 +18,31 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
+
 #region Usings
 using System;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.Comparison;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// Is Domain
+    /// Is domain attribute
     /// </summary>
-    public class IsDomain<ObjectType> : Rule<ObjectType,string>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class IsDomainAttribute : RegularExpressionAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="ErrorMessage">Error message</param>
-        public IsDomain(Func<ObjectType, string> ItemToValidate, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
-        {
-        }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Validates an object
-        /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
-        {
-            string Value = this.ItemToValidate(Object);
-            if (string.IsNullOrEmpty(Value))
-                return;
-            if(!new System.Text.RegularExpressions.Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?").IsMatch(Value))
-                throw new NotValid(ErrorMessage);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// IsDomain attribute
-    /// </summary>
-    public class IsDomain : BaseAttribute
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ErrorMessage">Error message</param>
-        public IsDomain(string ErrorMessage = "")
-            : base(ErrorMessage)
+        public IsDomainAttribute()
+            : base(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?")
         {
         }
 

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>xunit</id>
-    <version>1.9.0599</version>
+    <version>1.9.0601</version>
     <title>xUnit.net</title>
     <authors>James Newkirk,  Brad Wilson</authors>
     <owners>James Newkirk,  Brad Wilson</owners>

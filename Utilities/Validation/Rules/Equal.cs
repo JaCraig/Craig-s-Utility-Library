@@ -21,32 +21,32 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item is equal to the value
+    /// Equal attribute
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class Equal<ObjectType, DataType> : Rule<ObjectType, DataType>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class EqualAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="Value">value</param>
+        /// <param name="Value">Value to check for</param>
         /// <param name="ErrorMessage">Error message</param>
-        public Equal(Func<ObjectType, DataType> ItemToValidate, DataType Value, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
+        public EqualAttribute(object Value, string ErrorMessage = "")
+            : base(ErrorMessage)
         {
-            this.Value = Value;
+            this.CompareValue = (IComparable)Value;
         }
 
         #endregion
@@ -54,54 +54,25 @@ namespace Utilities.Validation.Rules
         #region Properties
 
         /// <summary>
-        /// value
+        /// Value to compare to
         /// </summary>
-        protected virtual DataType Value { get; set; }
+        public IComparable CompareValue { get; set; }
 
         #endregion
 
         #region Functions
 
         /// <summary>
-        /// Validates an object
+        /// Determines if the property is valid
         /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            GenericEqualityComparer<DataType> Comparer = new GenericEqualityComparer<DataType>();
-            if (!Comparer.Equals(ItemToValidate(Object), Value))
-                throw new NotValid(ErrorMessage);
+            GenericEqualityComparer<IComparable> Comparer = new GenericEqualityComparer<IComparable>();
+            return Comparer.Equals(value as IComparable, CompareValue) ? ValidationResult.Success : new ValidationResult(ErrorMessage);
         }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Equal attribute
-    /// </summary>
-    public class Equal : BaseAttribute
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ErrorMessage">Error message</param>
-        /// <param name="Value">Value to compare to</param>
-        public Equal(object Value, string ErrorMessage = "")
-            : base(ErrorMessage)
-        {
-            this.Value = (IComparable)Value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// value to compare to
-        /// </summary>
-        public IComparable Value { get; set; }
 
         #endregion
     }

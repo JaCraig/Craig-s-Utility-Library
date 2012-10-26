@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-SQL</id>
-		<version>3.2.0666</version>
+		<version>3.2.0668</version>
 		<title>Craig's Utility Library SQL Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

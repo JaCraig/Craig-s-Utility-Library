@@ -21,24 +21,28 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.Comparison;
 #endregion
 
-namespace Utilities.Validation.Exceptions
+namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// Exception thrown when an item is not valid
+    /// Is domain attribute
     /// </summary>
-    public class NotValid : Exception
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class IsDomainAttribute : RegularExpressionAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ExceptionText">Exception string</param>
-        public NotValid(string ExceptionText)
-            : base(ExceptionText)
+        public IsDomainAttribute()
+            : base(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?")
         {
         }
 

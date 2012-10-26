@@ -258,6 +258,20 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region IsCreditCard
+
+        /// <summary>
+        /// Checks if a credit card number is valid
+        /// </summary>
+        /// <param name="CreditCardNumber">Number to check</param>
+        /// <returns>True if it is valid, false otherwise</returns>
+        public static bool IsCreditCard(this string CreditCardNumber)
+        {
+
+        }
+
+        #endregion
+
         #region IsUnicode
 
         /// <summary>
