@@ -21,87 +21,35 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
+using System.Web.Mvc;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item is between two values
-    /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class Between<ObjectType, DataType> : Rule<ObjectType, DataType> where DataType : IComparable
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="MinValue">Min value</param>
-        /// <param name="MaxValue">Max value</param>
-        /// <param name="ErrorMessage">Error message</param>
-        public Between(Func<ObjectType, DataType> ItemToValidate, DataType MinValue, DataType MaxValue, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
-        {
-            this.MaxValue = MaxValue;
-            this.MinValue = MinValue;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Min value
-        /// </summary>
-        protected virtual DataType MinValue { get; set; }
-
-        /// <summary>
-        /// Max value
-        /// </summary>
-        protected virtual DataType MaxValue { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Validates an object
-        /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
-        {
-            GenericComparer<DataType> Comparer = new GenericComparer<DataType>();
-            if (Comparer.Compare(MaxValue, ItemToValidate(Object)) < 0
-                || Comparer.Compare(ItemToValidate(Object), MinValue) < 0)
-                throw new NotValid(ErrorMessage);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
     /// Between attribute
     /// </summary>
-    public class Between : BaseAttribute
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class BetweenAttribute : ValidationAttribute, IClientValidatable
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="Max">Max value</param>
+        /// <param name="Min">Min value</param>
         /// <param name="ErrorMessage">Error message</param>
-        /// <param name="MinValue">Min value to compare to</param>
-        /// <param name="MaxValue">Max value to compare to</param>
-        public Between(object MinValue,object MaxValue, string ErrorMessage = "")
-            : base(ErrorMessage)
+        public BetweenAttribute(object Min, object Max, string ErrorMessage = "")
+            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is not between {1} and {2}" : ErrorMessage)
         {
-            this.MinValue = (IComparable)MinValue;
-            this.MaxValue = (IComparable)MaxValue;
+            this.MinCompareValue = Min;
+            this.MaxCompareValue = Max;
         }
 
         #endregion
@@ -111,12 +59,60 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Min value to compare to
         /// </summary>
-        public IComparable MinValue { get; set; }
+        public object MinCompareValue { get; set; }
 
         /// <summary>
         /// Max value to compare to
         /// </summary>
-        public IComparable MaxValue { get; set; }
+        public object MaxCompareValue { get; set; }
+
+        #endregion
+
+        #region Functions
+        
+        /// <summary>
+        /// Formats the error message
+        /// </summary>
+        /// <param name="name">Property name</param>
+        /// <returns>The formatted string</returns>
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(ErrorMessageString, name, MinCompareValue.ToString(), MaxCompareValue.ToString());
+        }
+
+        /// <summary>
+        /// Determines if the property is valid
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
+            IComparable MaxValue = (IComparable)MaxCompareValue.TryTo<object>(value.GetType());
+            IComparable MinValue = (IComparable)MinCompareValue.TryTo<object>(value.GetType());
+            IComparable TempValue = value as IComparable;
+            return (Comparer.Compare(MaxValue, TempValue) < 0
+                    || Comparer.Compare(TempValue, MinValue) < 0) ?
+                new ValidationResult(FormatErrorMessage(validationContext.DisplayName)) :
+                ValidationResult.Success;
+        }
+
+        /// <summary>
+        /// Gets the client side validation rules
+        /// </summary>
+        /// <param name="metadata">Model meta data</param>
+        /// <param name="context">Controller context</param>
+        /// <returns>The list of client side validation rules</returns>
+        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
+        {
+            ModelClientValidationRule Rule = new ModelClientValidationRule();
+            Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
+            Rule.ValidationParameters.Add("Min", MinCompareValue);
+            Rule.ValidationParameters.Add("Max", MaxCompareValue);
+            Rule.ValidationType = "between";
+            return new ModelClientValidationRule[] { Rule };
+        }
 
         #endregion
     }

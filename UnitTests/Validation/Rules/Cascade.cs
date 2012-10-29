@@ -30,7 +30,7 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Linq.Expressions;
-using Utilities.Validation.Exceptions;
+using Utilities.Validation.ExtensionMethods;
 
 namespace UnitTests.Validation.Rules
 {
@@ -39,17 +39,19 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            Utilities.Validation.Rules.Cascade<ClassB, ClassA> TestObject = new Cascade<ClassB, ClassA>(x => x.ItemA, "Error");
             ClassB Temp = new ClassB();
             Temp.ItemA = new ClassA();
-            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
+            Temp.ItemA.ItemA = 1;
+            Temp.ItemA.ItemB = DateTime.Now;
+            Assert.DoesNotThrow(() => Temp.Validate());
             Temp.ItemA = null;
-            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => Temp.Validate());
         }
     }
 
     public class ClassB
     {
+        [Cascade]
         public ClassA ItemA { get; set; }
     }
 }

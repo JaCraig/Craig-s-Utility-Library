@@ -30,7 +30,8 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Linq.Expressions;
-using Utilities.Validation.Exceptions;
+using Utilities.Validation.ExtensionMethods;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnitTests.Validation.Rules
 {
@@ -39,14 +40,19 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            Utilities.Validation.Rules.Empty<ClassC, string> TestObject = new Empty<ClassC, string>(x => x.ItemA, "Error");
-            ClassC Temp = new ClassC();
+            EmptyClass Temp = new EmptyClass();
             Temp.ItemA = new List<string>();
             Temp.ItemA.Add("A");
             Temp.ItemA.Add("B");
-            Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
+            Assert.Throws<ValidationException>(() => Temp.Validate());
             Temp.ItemA.Clear();
-            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => Temp.Validate());
         }
+    }
+
+    public class EmptyClass
+    {
+        [Empty]
+        public List<string> ItemA { get; set; }
     }
 }

@@ -296,5 +296,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
                 .AppendLineFormat("And {0}", 3);
             Assert.Equal("Test 2" + System.Environment.NewLine + "And 3" + System.Environment.NewLine, Builder.ToString());
         }
+
+        [Fact]
+        public void IsCreditCard()
+        {
+            Assert.True("4408041234567893".IsCreditCard());
+        }
     }
 }

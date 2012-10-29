@@ -25,6 +25,7 @@ using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Validation.ExtensionMethods;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -42,7 +43,7 @@ namespace Utilities.Validation.Rules
         /// </summary>
         /// <param name="ErrorMessage">Error message</param>
         public CascadeAttribute(string ErrorMessage = "")
-            : base(ErrorMessage)
+            : base(ErrorMessage.IsNullOrEmpty() ? "The following errors have occurred on property {0}:" + System.Environment.NewLine + "{1}" : ErrorMessage)
         {
         }
 
@@ -59,9 +60,9 @@ namespace Utilities.Validation.Rules
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             List<ValidationResult> Results = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(value, validationContext, Results))
+            if (!value.TryValidate(Results))
             {
-                return new ValidationResult(Results.ForEach(x => x.ErrorMessage).ToString(x => x, System.Environment.NewLine));
+                return new ValidationResult(string.Format(ErrorMessageString, validationContext.DisplayName, Results.ForEach(x => x.ErrorMessage).ToString(x => x, System.Environment.NewLine)));
             }
             return ValidationResult.Success;
         }

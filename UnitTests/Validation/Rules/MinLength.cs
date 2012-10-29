@@ -30,7 +30,8 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Linq.Expressions;
-using Utilities.Validation.Exceptions;
+using Utilities.Validation.ExtensionMethods;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnitTests.Validation.Rules
 {
@@ -39,12 +40,17 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            Utilities.Validation.Rules.MinLength<ClassD, char> TestObject = new MinLength<ClassD, char>(x => x.ItemA, 4, "Error");
-            ClassD Temp = new ClassD();
+            MinLengthClass Temp = new MinLengthClass();
             Temp.ItemA = "Test";
-            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
+            Assert.DoesNotThrow(() => Temp.Validate());
             Temp.ItemA = "Tes";
-            Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
+            Assert.Throws<ValidationException>(() => Temp.Validate());
         }
+    }
+
+    public class MinLengthClass
+    {
+        [MinLength(4)]
+        public string ItemA { get; set; }
     }
 }

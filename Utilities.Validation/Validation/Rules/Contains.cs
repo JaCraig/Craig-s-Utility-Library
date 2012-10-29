@@ -22,80 +22,32 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
+using System.Linq;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// Determines that the IEnumerable contains a specific item
-    /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class Contains<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="Value">Value that the IEnumerable needs to contain</param>
-        /// <param name="ErrorMessage">Error message</param>
-        public Contains(Func<ObjectType, IEnumerable<DataType>> ItemToValidate, DataType Value, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
-        {
-            this.Value = Value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Value to search for
-        /// </summary>
-        protected virtual DataType Value { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Validates an object
-        /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
-        {
-            GenericEqualityComparer<DataType> Comparer = new GenericEqualityComparer<DataType>();
-            foreach (DataType Item in ItemToValidate(Object))
-                if (Comparer.Equals(Item, Value))
-                    return;
-            throw new NotValid(ErrorMessage);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
     /// Contains attribute
     /// </summary>
-    public class Contains : BaseAttribute
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class ContainsAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="Value">Value to check for</param>
         /// <param name="ErrorMessage">Error message</param>
-        /// <param name="Value">Value to compare to</param>
-        public Contains(object Value, string ErrorMessage = "")
-            : base(ErrorMessage)
+        public ContainsAttribute(object Value, string ErrorMessage = "")
+            : base(ErrorMessage.IsNullOrEmpty() ? "{0} does not contain {1}" : ErrorMessage)
         {
-            this.Value = (IComparable)Value;
+            this.CompareValue = Value;
         }
 
         #endregion
@@ -105,7 +57,45 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Value to compare to
         /// </summary>
-        public IComparable Value { get; set; }
+        public object CompareValue { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Formats the error message
+        /// </summary>
+        /// <param name="name">Property name</param>
+        /// <returns>The formatted string</returns>
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(ErrorMessageString, name, CompareValue.ToString());
+        }
+
+        /// <summary>
+        /// Determines if the property is valid
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            GenericEqualityComparer<IComparable> Comparer = new GenericEqualityComparer<IComparable>();
+            IEnumerable ValueList = value as IEnumerable;
+            IComparable CompareValueTemp=0;
+            foreach (IComparable Item in ValueList)
+            {
+                CompareValueTemp = (IComparable)CompareValue.TryTo<object>(Item.GetType());
+                break;
+            }
+            foreach (IComparable Item in ValueList)
+            {
+                if (Comparer.Equals(Item, CompareValueTemp))
+                    return ValidationResult.Success;
+            }
+            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+        }
 
         #endregion
     }

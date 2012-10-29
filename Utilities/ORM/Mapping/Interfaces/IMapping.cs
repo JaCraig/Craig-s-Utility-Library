@@ -159,15 +159,15 @@ namespace Utilities.ORM.Mapping.Interfaces
 
         #endregion
 
-        #region SetupValidation
+        //#region SetupValidation
 
-        /// <summary>
-        /// Used to set up validation, using the class used internally by the system
-        /// </summary>
-        /// <param name="Validator">Validator</param>
-        void SetupValidation(Validator<ClassType> Validator);
+        ///// <summary>
+        ///// Used to set up validation, using the class used internally by the system
+        ///// </summary>
+        ///// <param name="Validator">Validator</param>
+        //void SetupValidation(Validator<ClassType> Validator);
 
-        #endregion
+        //#endregion
 
         #endregion
     }

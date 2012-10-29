@@ -178,7 +178,7 @@ namespace Utilities.Math.ExtensionMethods
                 return default(T);
             if (Values.Count() == 0)
                 return default(T);
-            Values.OrderBy(x => x);
+            Values = Values.OrderBy(x => x);
             return Values.ElementAt((Values.Count() / 2));
         }
 

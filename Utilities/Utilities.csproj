@@ -88,6 +88,7 @@
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -211,11 +212,16 @@
     <Compile Include="SQL\ParameterTypes\EqualParameter.cs" />
     <Compile Include="SQL\ParameterTypes\StringNotEqualParameter.cs" />
     <Compile Include="SQL\ParameterTypes\StringEqualParameter.cs" />
+    <Compile Include="Validation\ExtensionMethods\ObjectExtensions.cs" />
+    <Compile Include="Validation\Rules\Between.cs" />
+    <Compile Include="Validation\Rules\Compare.cs" />
     <Compile Include="Validation\Rules\Contains.cs" />
     <Compile Include="Validation\Rules\DoesNotContain.cs" />
     <Compile Include="Validation\Rules\Empty.cs" />
-    <Compile Include="Validation\Rules\IsCreditCard.cs" />
-    <Compile Include="Validation\Rules\IsDomain.cs" />
+    <Compile Include="Validation\Rules\CompareTo.cs" />
+    <Compile Include="Validation\Rules\Enums\ComparisonType.cs" />
+    <Compile Include="Validation\Rules\Enums\IsValidEnum.cs" />
+    <Compile Include="Validation\Rules\Is.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TypeConversionExtensions.cs" />
@@ -406,19 +412,10 @@
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
     <Compile Include="Validation\Rules\Cascade.cs" />
-    <Compile Include="Validation\Rules\Equal.cs" />
-    <Compile Include="Validation\Rules\GreaterThan.cs" />
-    <Compile Include="Validation\Rules\GreaterThanOrEqual.cs" />
-    <Compile Include="Validation\Rules\LessThan.cs" />
-    <Compile Include="Validation\Rules\LessThanOrEqual.cs" />
     <Compile Include="Validation\Rules\MaxLength.cs" />
     <Compile Include="Validation\Rules\MinLength.cs" />
     <Compile Include="Validation\Rules\NotInRange.cs" />
     <Compile Include="Validation\Rules\NotEmpty.cs" />
-    <Compile Include="Validation\Rules\NotEqual.cs" />
-    <Compile Include="Validation\Rules\NotNaN.cs" />
-    <Compile Include="Validation\ValidationManager.cs" />
-    <Compile Include="Validation\Validator.cs" />
     <Compile Include="Web\Akismet\Akismet.cs" />
     <Compile Include="Web\Akismet\Comment.cs" />
     <Compile Include="Web\Bing\Bing.cs" />

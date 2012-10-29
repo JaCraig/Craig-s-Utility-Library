@@ -43,7 +43,7 @@ namespace Utilities.Validation.Rules
         /// </summary>
         /// <param name="ErrorMessage">Error message</param>
         public NotEmptyAttribute(string ErrorMessage = "")
-            : base(ErrorMessage)
+            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is not empty" : ErrorMessage)
         {
 
         }
@@ -51,6 +51,16 @@ namespace Utilities.Validation.Rules
         #endregion
 
         #region Functions
+
+        /// <summary>
+        /// Formats the error message
+        /// </summary>
+        /// <param name="name">Property name</param>
+        /// <returns>The formatted string</returns>
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(ErrorMessageString, name);
+        }
 
         /// <summary>
         /// Determines if the property is valid
@@ -65,7 +75,7 @@ namespace Utilities.Validation.Rules
             {
                 return ValidationResult.Success;
             }
-            return new ValidationResult(ErrorMessage);
+            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
 
         #endregion

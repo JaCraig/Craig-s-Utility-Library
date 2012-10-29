@@ -42,8 +42,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -216,28 +218,16 @@
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
     <Compile Include="Validation\Rules\Between.cs" />
     <Compile Include="Validation\Rules\Cascade.cs" />
+    <Compile Include="Validation\Rules\Compare.cs" />
+    <Compile Include="Validation\Rules\CompareTo.cs" />
     <Compile Include="Validation\Rules\Contains.cs" />
-    <Compile Include="Validation\Rules\Custom.cs" />
     <Compile Include="Validation\Rules\DoesNotContain.cs" />
     <Compile Include="Validation\Rules\Empty.cs" />
-    <Compile Include="Validation\Rules\Equal.cs" />
-    <Compile Include="Validation\Rules\GreaterThan.cs" />
-    <Compile Include="Validation\Rules\GreaterThanOrEqual.cs" />
-    <Compile Include="Validation\Rules\IsDomain.cs" />
-    <Compile Include="Validation\Rules\IsEmailAddress.cs" />
-    <Compile Include="Validation\Rules\LessThan.cs" />
-    <Compile Include="Validation\Rules\LessThanOrEqual.cs" />
+    <Compile Include="Validation\Rules\Is.cs" />
     <Compile Include="Validation\Rules\MaxLength.cs" />
     <Compile Include="Validation\Rules\MinLength.cs" />
-    <Compile Include="Validation\Rules\NotBetween.cs" />
+    <Compile Include="Validation\Rules\NotInRange.cs" />
     <Compile Include="Validation\Rules\NotEmpty.cs" />
-    <Compile Include="Validation\Rules\NotEqual.cs" />
-    <Compile Include="Validation\Rules\NotNaN.cs" />
-    <Compile Include="Validation\Rules\NotRegex.cs" />
-    <Compile Include="Validation\Rules\Regex.cs" />
-    <Compile Include="Validation\Rules\Required.cs" />
-    <Compile Include="Validation\Rules\RequiredString.cs" />
-    <Compile Include="Validation\ValidationManager.cs" />
     <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />

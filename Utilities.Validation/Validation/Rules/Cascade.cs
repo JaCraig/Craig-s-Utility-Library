@@ -22,28 +22,28 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Validation.ExtensionMethods;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This is a cascade rule
+    /// Cascade attribute
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class Cascade<ObjectType, DataType> : Rule<ObjectType, DataType>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class CascadeAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ErrorMessage">Error message</param>
-        public Cascade(Func<ObjectType, DataType> ItemToValidate, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
+        public CascadeAttribute(string ErrorMessage = "")
+            : base(ErrorMessage.IsNullOrEmpty() ? "The following errors have occurred on property {0}:" + System.Environment.NewLine + "{1}" : ErrorMessage)
         {
         }
 
@@ -52,39 +52,19 @@ namespace Utilities.Validation.Rules
         #region Functions
 
         /// <summary>
-        /// Validates an object
+        /// Determines if the property is valid
         /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            try
+            List<ValidationResult> Results = new List<ValidationResult>();
+            if (!value.TryValidate(Results))
             {
-                object Item = ItemToValidate(Object);
-                if (Item is IEnumerable)
-                    ValidationManager.Validate((IEnumerable)Item);
-                else
-                    ValidationManager.Validate(Item);
+                return new ValidationResult(string.Format(ErrorMessageString, validationContext.DisplayName, Results.ForEach(x => x.ErrorMessage).ToString(x => x, System.Environment.NewLine)));
             }
-            catch (Exception e) { throw new NotValid(ErrorMessage + e.Message); }
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Cascade attribute
-    /// </summary>
-    public class Cascade : BaseAttribute
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ErrorMessage">Error message</param>
-        public Cascade(string ErrorMessage = "")
-            : base(ErrorMessage)
-        {
+            return ValidationResult.Success;
         }
 
         #endregion

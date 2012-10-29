@@ -45,7 +45,7 @@ namespace Utilities.Validation.Rules
         /// <param name="Value">Value to check</param>
         /// <param name="ErrorMessage">Error message</param>
         public MinLengthAttribute(long Value, string ErrorMessage = "")
-            : base(ErrorMessage)
+            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is shorter than {1}" : ErrorMessage)
         {
             this.CompareValue = Value;
         }
@@ -64,6 +64,16 @@ namespace Utilities.Validation.Rules
         #region Functions
 
         /// <summary>
+        /// Formats the error message
+        /// </summary>
+        /// <param name="name">Property name</param>
+        /// <returns>The formatted string</returns>
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(ErrorMessageString, name, CompareValue.ToString());
+        }
+
+        /// <summary>
         /// Determines if the property is valid
         /// </summary>
         /// <param name="value">Value to check</param>
@@ -79,7 +89,7 @@ namespace Utilities.Validation.Rules
                 if (Count >= CompareValue)
                     return ValidationResult.Success;
             }
-            return new ValidationResult(ErrorMessage);
+            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
 
         #endregion

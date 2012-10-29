@@ -215,7 +215,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IID<ClassType, DataType> DoNotAllowNullValues()
         {
             this.NotNull = true;
-            Validation.ValidationManager.GetValidator<ClassType>().Required(Expression);
             return (IID<ClassType, DataType>)this;
         }
 

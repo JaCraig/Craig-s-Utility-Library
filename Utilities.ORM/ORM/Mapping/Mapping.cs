@@ -58,7 +58,6 @@ namespace Utilities.ORM.Mapping
             this.Suffix = Suffix;
             this.Prefix = Prefix;
             Setup();
-            SetupValidation(ValidationManager.GetValidator<ClassType>());
         }
 
         #endregion
@@ -295,15 +294,15 @@ namespace Utilities.ORM.Mapping
 
         #endregion
 
-        #region SetupValidation
+        //#region SetupValidation
 
-        /// <summary>
-        /// Used to set up validation, using the class used internally by the system
-        /// </summary>
-        /// <param name="Validator">Validator</param>
-        public virtual void SetupValidation(Validator<ClassType> Validator) { }
+        ///// <summary>
+        ///// Used to set up validation, using the class used internally by the system
+        ///// </summary>
+        ///// <param name="Validator">Validator</param>
+        //public virtual void SetupValidation(Validator<ClassType> Validator) { }
 
-        #endregion
+        //#endregion
 
         #endregion
 

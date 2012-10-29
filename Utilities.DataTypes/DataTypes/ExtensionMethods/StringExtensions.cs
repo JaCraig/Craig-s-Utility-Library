@@ -258,6 +258,33 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region IsCreditCard
+
+        /// <summary>
+        /// Checks if a credit card number is valid
+        /// </summary>
+        /// <param name="CreditCardNumber">Number to check</param>
+        /// <returns>True if it is valid, false otherwise</returns>
+        public static bool IsCreditCard(this string CreditCardNumber)
+        {
+            long CheckSum = 0;
+            CreditCardNumber = CreditCardNumber.Replace("-", "").Reverse();
+            for (int x = 0; x < CreditCardNumber.Length; ++x)
+            {
+                if (!CreditCardNumber[x].IsDigit())
+                    return false;
+                int Value = (CreditCardNumber[x] - '0') * (x % 2 == 1 ? 2 : 1);
+                while (Value > 0)
+                {
+                    CheckSum += Value % 10;
+                    Value /= 10;
+                }
+            }
+            return (CheckSum % 10) == 0;
+        }
+
+        #endregion
+
         #region IsUnicode
 
         /// <summary>

@@ -22,130 +22,32 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
+using Utilities.DataTypes.Comparison;
+using System.Linq;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item's length is less than the length specified
-    /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type that the rule applies to</typeparam>
-    public class MaxLength<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="MaxLength">Max length of the string</param>
-        /// <param name="ErrorMessage">Error message</param>
-        public MaxLength(Func<ObjectType, IEnumerable<DataType>> ItemToValidate, int MaxLength, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
-        {
-            this.MaxLengthAllowed = MaxLength;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Max length of the string
-        /// </summary>
-        protected virtual int MaxLengthAllowed { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Validates an object
-        /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
-        {
-            IEnumerable<DataType> Value = ItemToValidate(Object);
-            if (Value.IsNull())
-                return;
-            if (Value.Count() > MaxLengthAllowed)
-                throw new NotValid(ErrorMessage);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// This item's length is less than the length specified
-    /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    public class MaxLength<ObjectType> : Rule<ObjectType, string>
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
-        /// <param name="MaxLength">Max length of the string</param>
-        /// <param name="ErrorMessage">Error message</param>
-        public MaxLength(Func<ObjectType, string> ItemToValidate, int MaxLength, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
-        {
-            this.MaxLengthAllowed = MaxLength;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Max length of the string
-        /// </summary>
-        protected virtual int MaxLengthAllowed { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Validates an object
-        /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
-        {
-            string Value = ItemToValidate(Object);
-            if (Value.IsNull())
-                return;
-            if (Value.Count() > MaxLengthAllowed)
-                throw new NotValid(ErrorMessage);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
     /// Max length attribute
     /// </summary>
-    public class MaxLength : BaseAttribute
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class MaxLengthAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="Value">Value to check</param>
         /// <param name="ErrorMessage">Error message</param>
-        /// <param name="MaxLength">Max length</param>
-        public MaxLength(int MaxLength, string ErrorMessage = "")
-            : base(ErrorMessage)
+        public MaxLengthAttribute(long Value, string ErrorMessage = "")
+            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is longer than {1}" : ErrorMessage)
         {
-            this.MaxLengthAllowed = MaxLength;
+            this.CompareValue = Value;
         }
 
         #endregion
@@ -153,9 +55,42 @@ namespace Utilities.Validation.Rules
         #region Properties
 
         /// <summary>
-        /// Max length value
+        /// Value to compare to
         /// </summary>
-        public int MaxLengthAllowed { get; set; }
+        public long CompareValue { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Formats the error message
+        /// </summary>
+        /// <param name="name">Property name</param>
+        /// <returns>The formatted string</returns>
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(ErrorMessageString, name, CompareValue.ToString());
+        }
+
+        /// <summary>
+        /// Determines if the property is valid
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            IEnumerable ValueList = value as IEnumerable;
+            long Count = 0;
+            foreach (object Item in ValueList)
+            {
+                ++Count;
+                if (Count > CompareValue)
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            }
+            return ValidationResult.Success;
+        }
 
         #endregion
     }

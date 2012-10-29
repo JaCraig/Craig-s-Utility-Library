@@ -21,31 +21,31 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using Utilities.Validation.BaseClasses;
-using Utilities.Validation.Exceptions;
-
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.Comparison;
 #endregion
 
 namespace Utilities.Validation.Rules
 {
     /// <summary>
-    /// This item is not empty
+    /// Not empty attribute
     /// </summary>
-    /// <typeparam name="ObjectType">Object type that the rule applies to</typeparam>
-    /// <typeparam name="DataType">Data type of the object validating</typeparam>
-    public class NotEmpty<ObjectType, DataType> : Rule<ObjectType, IEnumerable<DataType>>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public class NotEmptyAttribute : ValidationAttribute
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ItemToValidate">Item to validate</param>
         /// <param name="ErrorMessage">Error message</param>
-        public NotEmpty(Func<ObjectType, IEnumerable<DataType>> ItemToValidate, string ErrorMessage)
-            : base(ItemToValidate, ErrorMessage)
+        public NotEmptyAttribute(string ErrorMessage = "")
+            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is not empty" : ErrorMessage)
         {
+
         }
 
         #endregion
@@ -53,33 +53,29 @@ namespace Utilities.Validation.Rules
         #region Functions
 
         /// <summary>
-        /// Validates an object
+        /// Formats the error message
         /// </summary>
-        /// <param name="Object">Object to validate</param>
-        public override void Validate(ObjectType Object)
+        /// <param name="name">Property name</param>
+        /// <returns>The formatted string</returns>
+        public override string FormatErrorMessage(string name)
         {
-            foreach (object Item in ItemToValidate(Object))
-                return;
-            throw new NotValid(ErrorMessage);
+            return string.Format(ErrorMessageString, name);
         }
 
-        #endregion
-    }
-
-    /// <summary>
-    /// NotEmpty attribute
-    /// </summary>
-    public class NotEmpty : BaseAttribute
-    {
-        #region Constructor
-
         /// <summary>
-        /// Constructor
+        /// Determines if the property is valid
         /// </summary>
-        /// <param name="ErrorMessage">Error message</param>
-        public NotEmpty(string ErrorMessage = "")
-            : base(ErrorMessage)
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            IEnumerable ValueList = value as IEnumerable;
+            foreach (IComparable Item in ValueList)
+            {
+                return ValidationResult.Success;
+            }
+            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
 
         #endregion

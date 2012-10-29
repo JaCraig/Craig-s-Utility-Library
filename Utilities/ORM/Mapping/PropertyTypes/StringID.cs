@@ -197,7 +197,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IID<ClassType, string> DoNotAllowNullValues()
         {
             this.NotNull = true;
-            Validation.ValidationManager.GetValidator<ClassType>().Required(Expression);
+
             return (IID<ClassType, string>)this;
         }
 
@@ -271,8 +271,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IID<ClassType, string> SetMaxLength(int MaxLength)
         {
             this.MaxLength = MaxLength;
-            if (MaxLength >= 0 && MaxLength < 4000)
-                Validation.ValidationManager.GetValidator<ClassType>().MaxLength(Expression, MaxLength);
             return (IID<ClassType, string>)this;
         }
 

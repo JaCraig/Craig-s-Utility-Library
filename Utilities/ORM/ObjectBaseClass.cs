@@ -27,6 +27,7 @@ using Utilities.ORM.Interfaces;
 using Utilities.SQL.Interfaces;
 using Utilities.DataTypes.EventArgs;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Validation.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM
@@ -358,7 +359,7 @@ namespace Utilities.ORM
             foreach (ObjectType Object in Objects)
             {
                 Object.SetupObject();
-                Validation.ValidationManager.Validate(Object);
+                Object.Validate();
                 Object.Save(Session);
             }
         }
@@ -463,7 +464,7 @@ namespace Utilities.ORM
             if (!E.Stop)
             {
                 SetupObject();
-                Validation.ValidationManager.Validate((ObjectType)this);
+                this.Validate();
                 Session.Save<ObjectType, IDType>((ObjectType)this);
                 SavedEventArgs X = new SavedEventArgs();
                 OnSaved(X);

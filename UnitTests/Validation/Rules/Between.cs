@@ -30,7 +30,8 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Linq.Expressions;
-using Utilities.Validation.Exceptions;
+using Utilities.Validation.ExtensionMethods;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnitTests.Validation.Rules
 {
@@ -39,17 +40,22 @@ namespace UnitTests.Validation.Rules
         [Fact]
         public void Test()
         {
-            Utilities.Validation.Rules.Between<ClassA, int> TestObject = new Between<ClassA, int>(x => x.ItemA, 1, 5, "Error");
-            ClassA Temp=new ClassA();
-            Temp.ItemA=1;
-            Assert.DoesNotThrow(() => TestObject.Validate(Temp));
+            ClassA Temp = new ClassA();
+            Temp.ItemA = 1;
+            Temp.ItemB = DateTime.Now;
+            Assert.DoesNotThrow(() => Temp.Validate());
             Temp.ItemA = 0;
-            Assert.Throws<NotValid>(() => TestObject.Validate(Temp));
+            Temp.ItemB = new DateTime(1800, 1, 1);
+            Assert.Throws<ValidationException>(() => Temp.Validate());
         }
     }
 
     public class ClassA
     {
+        [Between(1, 5)]
         public int ItemA { get; set; }
+
+        [Between("1/1/1900", "1/1/2100")]
+        public DateTime ItemB { get; set; }
     }
 }

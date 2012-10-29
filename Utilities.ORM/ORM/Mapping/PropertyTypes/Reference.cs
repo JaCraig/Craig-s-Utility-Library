@@ -198,7 +198,6 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public override IReference<ClassType, DataType> DoNotAllowNullValues()
         {
             this.NotNull = true;
-            Validation.ValidationManager.GetValidator<ClassType>().Required(Expression);
             return (IReference<ClassType, DataType>)this;
         }
 
