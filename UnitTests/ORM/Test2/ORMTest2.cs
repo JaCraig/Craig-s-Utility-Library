@@ -37,7 +37,7 @@ namespace UnitTests.ORM.Test2
     {
         public ORMTest2()
         {
-            new Utilities.ORM.ORM(typeof(Task).Assembly);
+            new Utilities.ORM.ORM(false, typeof(Task).Assembly);
         }
 
         [Fact]

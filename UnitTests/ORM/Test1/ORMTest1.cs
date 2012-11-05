@@ -38,7 +38,7 @@ namespace UnitTests.ORM.Test1
     {
         public ORMTest1()
         {
-            new Utilities.ORM.ORM(typeof(Account).Assembly);
+            new Utilities.ORM.ORM(false, typeof(Account).Assembly);
         }
 
         [Fact]

@@ -40,6 +40,12 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Array">Array to clear</param>
         /// <returns>The final array</returns>
+        /// <example>
+        /// <code>
+        ///  int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+        ///  TestObject.Clear();
+        /// </code>
+        /// </example>
         public static Array Clear(this Array Array)
         {
             if (Array.IsNull())
@@ -54,6 +60,12 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Array">Array to clear</param>
         /// <typeparam name="ArrayType">Array type</typeparam>
         /// <returns>The final array</returns>
+        /// <example>
+        /// <code>
+        ///  int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+        ///  TestObject.Clear();
+        /// </code>
+        /// </example>
         public static ArrayType[] Clear<ArrayType>(this ArrayType[] Array)
         {
             return (ArrayType[])((Array)Array).Clear();
@@ -70,6 +82,14 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Array1">Array 1</param>
         /// <param name="Array2">Array 2</param>
         /// <returns>A new array containing both arrays' values</returns>
+        /// <example>
+        /// <code>
+        ///  int[] TestObject1 = new int[] { 1, 2, 3 };
+        ///  int[] TestObject2 = new int[] { 4, 5, 6 };
+        ///  int[] TestObject3 = new int[] { 7, 8, 9 };
+        ///  TestObject1 = TestObject1.Combine(TestObject2, TestObject3);
+        /// </code>
+        /// </example>
         public static ArrayType[] Combine<ArrayType>(this ArrayType[] Array1, params ArrayType[][] Array2)
         {
             if (Array1.IsNull() && Array2.IsNull())

@@ -110,7 +110,7 @@ namespace Utilities.Validation.Rules
             Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
             Rule.ValidationParameters.Add("Min", MinCompareValue);
             Rule.ValidationParameters.Add("Max", MaxCompareValue);
-            Rule.ValidationType = "between";
+            Rule.ValidationType = "Between";
             return new ModelClientValidationRule[] { Rule };
         }
 

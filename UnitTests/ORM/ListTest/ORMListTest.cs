@@ -39,7 +39,7 @@ namespace UnitTests.ORM.ListTest
     {
         public ORMListTest()
         {
-            new Utilities.ORM.ORM(typeof(Task).Assembly);
+            new Utilities.ORM.ORM(false, typeof(Task).Assembly);
         }
 
         [Fact]

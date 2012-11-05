@@ -33,6 +33,19 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class IDictionaryExtensions
     {
         [Fact]
+        public void GetValue()
+        {
+            IDictionary<string, int> Test = new Dictionary<string, int>();
+            Test.Add("Q", 4);
+            Test.Add("Z", 2);
+            Test.Add("C", 3);
+            Test.Add("A", 1);
+            Assert.Equal(4, Test.GetValue("Q"));
+            Assert.Equal(0, Test.GetValue("V"));
+            Assert.Equal(123, Test.GetValue("B", 123));
+        }
+
+        [Fact]
         public void SortTest()
         {
             IDictionary<string, int> Test = new Dictionary<string, int>();

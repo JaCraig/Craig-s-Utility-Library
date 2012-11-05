@@ -36,6 +36,27 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region GetValue
+
+        /// <summary>
+        /// Gets the value from a dictionary or the default value if it isn't found
+        /// </summary>
+        /// <typeparam name="TKey">Key type</typeparam>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="Dictionary">Dictionary to get the value from</param>
+        /// <param name="Key">Key to look for</param>
+        /// <param name="Default">Default value if the key is not found</param>
+        /// <returns>The value associated with the key or the default value if the key is not found</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
+        public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
+        {
+            Dictionary.ThrowIfNull("Dictionary");
+            TValue ReturnValue=Default;
+            return Dictionary.TryGetValue(Key, out ReturnValue) ? ReturnValue : Default;
+        }
+
+        #endregion
+
         #region Sort
 
         /// <summary>

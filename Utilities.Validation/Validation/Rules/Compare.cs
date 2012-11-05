@@ -28,6 +28,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
 using Utilities.Validation.Rules.Enums;
 using System.Reflection;
+using System.Web.Mvc;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -36,7 +37,7 @@ namespace Utilities.Validation.Rules
     /// Compare attribute
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class CompareAttribute : ValidationAttribute
+    public class CompareAttribute : ValidationAttribute, IClientValidatable
     {
         #region Constructor
 
@@ -119,6 +120,22 @@ namespace Utilities.Validation.Rules
                 return Comparer.Compare(TempValue, Value2) <= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else
                 return ValidationResult.Success;
+        }
+
+        /// <summary>
+        /// Gets the client side validation rules
+        /// </summary>
+        /// <param name="metadata">Model meta data</param>
+        /// <param name="context">Controller context</param>
+        /// <returns>The list of client side validation rules</returns>
+        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
+        {
+            ModelClientValidationRule Rule = new ModelClientValidationRule();
+            Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
+            Rule.ValidationParameters.Add("Type", Type);
+            Rule.ValidationParameters.Add("Value", Value);
+            Rule.ValidationType = "Compare";
+            return new ModelClientValidationRule[] { Rule };
         }
 
         #endregion

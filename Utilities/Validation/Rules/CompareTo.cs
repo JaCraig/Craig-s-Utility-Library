@@ -37,7 +37,7 @@ namespace Utilities.Validation.Rules
     /// CompareTo attribute
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class CompareToAttribute : ValidationAttribute,IClientValidatable
+    public class CompareToAttribute : ValidationAttribute, IClientValidatable
     {
         #region Constructor
 

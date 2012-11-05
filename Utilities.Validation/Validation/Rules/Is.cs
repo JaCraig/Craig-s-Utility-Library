@@ -28,6 +28,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Comparison;
 using Utilities.Validation.Rules.Enums;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -36,7 +37,7 @@ namespace Utilities.Validation.Rules
     /// Is attribute
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class IsAttribute : ValidationAttribute
+    public class IsAttribute : ValidationAttribute, IClientValidatable
     {
         #region Constructor
 
@@ -100,6 +101,21 @@ namespace Utilities.Validation.Rules
             else if (Type == Enums.IsValid.Integer)
                 return Regex.IsMatch(value as string, @"^\d+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             return ValidationResult.Success;
+        }
+
+        /// <summary>
+        /// Gets the client side validation rules
+        /// </summary>
+        /// <param name="metadata">Model meta data</param>
+        /// <param name="context">Controller context</param>
+        /// <returns>The list of client side validation rules</returns>
+        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
+        {
+            ModelClientValidationRule Rule = new ModelClientValidationRule();
+            Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
+            Rule.ValidationParameters.Add("Type", Type.ToString());
+            Rule.ValidationType = "Is";
+            return new ModelClientValidationRule[] { Rule };
         }
 
         #endregion

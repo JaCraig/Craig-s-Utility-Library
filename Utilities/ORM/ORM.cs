@@ -41,42 +41,21 @@ namespace Utilities.ORM
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Assembly">Assembly containing business object mappings</param>
-        public ORM(Assembly Assembly)
-        {
-            Setup(Assembly);
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <param name="Profile">Should calls be profiled?</param>
         /// <param name="Assemblies">Assemblies containing business object mappings</param>
-        public ORM(Assembly[] Assemblies)
+        public ORM(bool Profile, params Assembly[] Assemblies)
         {
-            Setup(Assemblies);
+            Setup(Profile, Assemblies);
         }
 
         #endregion
 
         #region Functions
 
-        private void Setup(Assembly[] Assemblies)
+        private void Setup(bool Profile, Assembly[] Assemblies)
         {
             MappingManager = new MappingManager(Assemblies);
-            QueryProvider = new Default(Assemblies);
-            foreach (Type Key in MappingManager.Mappings.Keys)
-                foreach (IMapping Mapping in MappingManager.Mappings[Key])
-                    QueryProvider.AddMapping(Mapping);
-            Utilities.Reflection.AOP.AOPManager Manager = new Reflection.AOP.AOPManager();
-            Manager.AddAspect(new ORMAspect(MappingManager.Mappings));
-            DatabaseManager = new DatabaseManager(QueryProvider.Mappings);
-            DatabaseManager.Setup();
-        }
-
-        private void Setup(Assembly Assembly)
-        {
-            MappingManager = new MappingManager(Assembly);
-            QueryProvider = new Default(Assembly);
+            QueryProvider = new Default(Profile, Assemblies);
             foreach (Type Key in MappingManager.Mappings.Keys)
                 foreach (IMapping Mapping in MappingManager.Mappings[Key])
                     QueryProvider.AddMapping(Mapping);

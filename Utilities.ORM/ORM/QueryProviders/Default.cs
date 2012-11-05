@@ -48,18 +48,11 @@ namespace Utilities.ORM.QueryProviders
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="AssemblyUsing">Assembly using</param>
-        public Default(Assembly AssemblyUsing)
-        {
-            Setup(AssemblyUsing);
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <param name="Profile">Should profiling be done</param>
         /// <param name="AssembliesUsing">Assemblies using</param>
-        public Default(Assembly[] AssembliesUsing)
+        public Default(bool Profile, params Assembly[] AssembliesUsing)
         {
+            this.Profile = Profile;
             foreach (Assembly Assembly in AssembliesUsing)
             {
                 Setup(Assembly);
@@ -134,7 +127,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         if (Mapping.AnyCommand == null)
                             ReturnValue = ORMObject.Map<ObjectType>().Any("*", ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
@@ -163,7 +156,7 @@ namespace Utilities.ORM.QueryProviders
             {
                 if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         ReturnValue = ORMObject.Map<ObjectType>().Any(Columns, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -190,7 +183,7 @@ namespace Utilities.ORM.QueryProviders
             {
                 if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         ReturnValue = ORMObject.Map<ObjectType>().Any(Command, CommandType, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -222,7 +215,7 @@ namespace Utilities.ORM.QueryProviders
             {
                 if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Columns, Limit, OrderBy, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -252,7 +245,7 @@ namespace Utilities.ORM.QueryProviders
             {
                 if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Command, CommandType, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -281,7 +274,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         if (Mapping.AllCommand == null)
                         {
@@ -318,7 +311,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         System.Collections.Generic.List<Command> JoinCommands = new System.Collections.Generic.List<Command>();
                         foreach (IProperty Property in Mapping.Properties)
@@ -378,7 +371,7 @@ namespace Utilities.ORM.QueryProviders
                         && x.Name == PropertyName);
                     if (Property != null)
                     {
-                        using (MicroORM ORMObject = new MicroORM(Database.Name))
+                        using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                         {
                             if (Property.CommandToLoad == null)
                                 ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), Parameters);
@@ -424,7 +417,7 @@ namespace Utilities.ORM.QueryProviders
                         && x.Name == PropertyName);
                     if (Property != null)
                     {
-                        using (MicroORM ORMObject = new MicroORM(Database.Name))
+                        using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                         {
                             if (Property.CommandToLoad == null)
                                 ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), Parameters);
@@ -469,7 +462,7 @@ namespace Utilities.ORM.QueryProviders
                     IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Type == typeof(DataType) && x.Name == PropertyName);
                     if (Property != null)
                     {
-                        using (MicroORM ORMObject = new MicroORM(Database.Name))
+                        using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                         {
                             if (Property.CommandToLoad == null)
                                 ReturnValue = ORMObject.Map<DataType>().Any("*", ReturnValue, () => Manager.Create<DataType>(), Parameters);
@@ -507,7 +500,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().Paged(Columns, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -544,7 +537,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().PagedCommand(Command, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -576,7 +569,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         return ORMObject.Map<ObjectType>().PageCount(PageSize, Parameters);
                     }
@@ -600,7 +593,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         return ORMObject.Map<ObjectType>().PageCount(Command, PageSize, Parameters);
                     }
@@ -627,7 +620,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         foreach (IProperty Property in Mapping.Properties)
                         {
@@ -715,7 +708,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         return ORMObject.Map<ObjectType>().Scalar<DataType>(Command, CommandType, Parameters);
                     }
@@ -741,7 +734,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (MicroORM ORMObject = new MicroORM(Database.Name))
+                    using (MicroORM ORMObject = new MicroORM(Database.Name, Profile))
                     {
                         return ORMObject.Map<ObjectType>().Scalar<DataType>(AggregateFunction, Parameters);
                     }
@@ -770,6 +763,11 @@ namespace Utilities.ORM.QueryProviders
         /// AOP manager (used to create objects)
         /// </summary>
         public virtual Reflection.AOP.AOPManager Manager { get; set; }
+
+        /// <summary>
+        /// Should the queries be profiled?
+        /// </summary>
+        public virtual bool Profile { get; set; }
 
         #endregion
     }

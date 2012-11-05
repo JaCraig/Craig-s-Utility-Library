@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.LDAP
@@ -92,13 +93,31 @@ namespace Utilities.LDAP
         /// Returns a group's list of members who are active
         /// </summary>
         /// <param name="GroupName">The group's name</param>
+        /// <param name="Recursive">Should sub groups' members be added instead of the sub group itself?</param>
         /// <returns>A list of the members</returns>
-        public virtual List<Entry> FindActiveGroupMembers(string GroupName)
+        public virtual List<Entry> FindActiveGroupMembers(string GroupName, bool Recursive = false)
         {
             try
             {
-                List<Entry> Entries = this.FindGroups("cn=" + GroupName);
-                return (Entries.Count < 1) ? new List<Entry>() : this.FindActiveUsersAndGroups("memberOf=" + Entries[0].DistinguishedName);
+                Entry Group = FindGroup(GroupName);
+                List<Entry> Entries = this.FindActiveUsersAndGroups("memberOf=" + Group.DistinguishedName);
+                if (Recursive)
+                {
+                    List<Entry> ReturnValue = new List<LDAP.Entry>();
+                    foreach (Entry Entry in Entries)
+                    {
+                        Entry TempEntry = FindGroup(Entry.CN);
+                        if (TempEntry == null)
+                            ReturnValue.Add(TempEntry);
+                        else
+                            ReturnValue.Add(FindActiveGroupMembers(TempEntry.CN, true));
+                    }
+                    return ReturnValue;
+                }
+                else
+                {
+                    return Entries;
+                }
             }
             catch
             {
@@ -202,18 +221,50 @@ namespace Utilities.LDAP
         /// Returns a group's list of members
         /// </summary>
         /// <param name="GroupName">The group's name</param>
+        /// <param name="Recursive">Should sub groups' members be added instead of the sub group itself?</param>
         /// <returns>A list of the members</returns>
-        public virtual List<Entry> FindGroupMembers(string GroupName)
+        public virtual List<Entry> FindGroupMembers(string GroupName, bool Recursive = false)
         {
             try
             {
-                List<Entry> Entries = this.FindGroups("cn=" + GroupName);
-                return (Entries.Count < 1) ? new List<Entry>() : this.FindUsersAndGroups("memberOf=" + Entries[0].DistinguishedName);
+                Entry Group = FindGroup(GroupName);
+                List<Entry> Entries = this.FindUsersAndGroups("memberOf=" + Group.DistinguishedName);
+                if (Recursive)
+                {
+                    List<Entry> ReturnValue = new List<LDAP.Entry>();
+                    foreach (Entry Entry in Entries)
+                    {
+                        Entry TempEntry = FindGroup(Entry.CN);
+                        if (TempEntry == null)
+                            ReturnValue.Add(TempEntry);
+                        else
+                            ReturnValue.Add(FindActiveGroupMembers(TempEntry.CN, true));
+                    }
+                    return ReturnValue;
+                }
+                else
+                {
+                    return Entries;
+                }
             }
             catch
             {
                 return new List<Entry>();
             }
+        }
+
+        #endregion
+
+        #region FindGroup
+
+        /// <summary>
+        /// Finds a specific group
+        /// </summary>
+        /// <param name="GroupName">Name of the group to find</param>
+        /// <returns>The group specified</returns>
+        public virtual Entry FindGroup(string GroupName)
+        {
+            return FindGroups("cn=" + GroupName).FirstOrDefault();
         }
 
         #endregion
