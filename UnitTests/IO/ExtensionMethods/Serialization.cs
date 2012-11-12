@@ -31,6 +31,7 @@ using Xunit;
 using System.Reflection;
 using System.Xml;
 using UnitTests.Fixtures;
+using Utilities.IO.Serializers;
 #endregion
 
 namespace UnitTests.IO.ExtensionMethods
@@ -44,10 +45,10 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void ToBinary()
         {
-            byte[] Content= TestItem.ToBinary(@".\Testing\Test.dat");
+            byte[] Content = TestItem.SerializeBinary(FileLocation: @".\Testing\Test.dat");
             Assert.NotNull(Content);
             Assert.NotEmpty(Content);
-            TestClass Temp = Content.ToObject<TestClass>();
+            TestClass Temp = Content.Deserialize<TestClass>();
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }
@@ -55,8 +56,8 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void ToXML()
         {
-            Assert.NotNull(TestItem.ToXML(@".\Testing\Test.xml"));
-            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Read().XMLToObject<TestClass>();
+            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
+            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Read().Deserialize<TestClass>(new XMLSerializer());
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }
@@ -64,10 +65,10 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void ToXML2()
         {
-            Assert.NotNull(TestItem.ToXML(@".\Testing\Test.xml"));
+            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
             XmlDocument Document = new XmlDocument();
             Document.LoadXml(new FileInfo(@".\Testing\Test.xml").Read());
-            TestClass Temp=Document.ToObject<TestClass>();
+            TestClass Temp = Document.Deserialize<TestClass>(new XMLSerializer());
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }
@@ -75,8 +76,8 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void ToXML3()
         {
-            Assert.NotNull(TestItem.ToXML(@".\Testing\Test.xml"));
-            TestClass Temp = new FileInfo(@".\Testing\Test.xml").XMLToObject<TestClass>();
+            Assert.NotNull(TestItem.Serialize(new XMLSerializer(), FileLocation: @".\Testing\Test.xml"));
+            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Deserialize<TestClass>(new XMLSerializer());
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }
@@ -84,8 +85,8 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void ToJSON()
         {
-            Assert.Equal(@"{""<Content>k__BackingField"":""This is test content"",""<ID>k__BackingField"":123}", TestItem.ToJSON(@".\Testing\Test.dat"));
-            TestClass Temp = new FileInfo(@".\Testing\Test.dat").Read().JSONToObject<TestClass>();
+            Assert.Equal(@"{""<Content>k__BackingField"":""This is test content"",""<ID>k__BackingField"":123}", TestItem.Serialize(FileLocation: @".\Testing\Test.dat"));
+            TestClass Temp = new FileInfo(@".\Testing\Test.dat").Read().Deserialize<TestClass>();
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }
@@ -93,8 +94,8 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void ToJSON2()
         {
-            TestItem.ToJSON(@".\Testing\Test.dat");
-            TestClass Temp = new FileInfo(@".\Testing\Test.dat").JSONToObject<TestClass>();
+            TestItem.Serialize(FileLocation: @".\Testing\Test.dat");
+            TestClass Temp = new FileInfo(@".\Testing\Test.dat").Deserialize<TestClass>();
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }
@@ -110,8 +111,8 @@ namespace UnitTests.IO.ExtensionMethods
 </a1:TestClass>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
-", TestItem.ToSOAP(@".\Testing\Test.xml"));
-            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Read().SOAPToObject<TestClass>();
+", TestItem.Serialize(new SOAPSerializer(), FileLocation: @".\Testing\Test.xml"));
+            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Read().Deserialize<TestClass>(new SOAPSerializer());
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }
@@ -119,8 +120,8 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void ToSOAP2()
         {
-            TestItem.ToSOAP(@".\Testing\Test.xml");
-            TestClass Temp = new FileInfo(@".\Testing\Test.xml").SOAPToObject<TestClass>();
+            TestItem.Serialize(new SOAPSerializer(), FileLocation: @".\Testing\Test.xml");
+            TestClass Temp = new FileInfo(@".\Testing\Test.xml").Deserialize<TestClass>(new SOAPSerializer());
             Assert.Equal(123, Temp.ID);
             Assert.Equal("This is test content", Temp.Content);
         }

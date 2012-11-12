@@ -38,7 +38,7 @@ namespace UnitTests.IO.ExtensionMethods
         [Fact]
         public void Append()
         {
-            new FileInfo(@".\Testing\Test.txt").Append("\r\nYay, this is appended text");
+            new FileInfo(@".\Testing\Test.txt").Save("\r\nYay, this is appended text", Mode: FileMode.Append);
             Assert.True(new FileInfo(@".\Testing\Test.txt").Exists);
             Assert.Equal(48, new FileInfo(@".\Testing\Test.txt").Length);
         }
@@ -53,6 +53,12 @@ namespace UnitTests.IO.ExtensionMethods
         public void Read()
         {
             Assert.Equal("This is a test file.", new FileInfo(@".\Testing\Test.txt").Read());
+        }
+
+        [Fact]
+        public void Read2()
+        {
+            Assert.Equal("This is a test file.", @"~\Testing\Test.txt".Read());
         }
 
         [Fact]
@@ -72,6 +78,13 @@ namespace UnitTests.IO.ExtensionMethods
         public void Save()
         {
             new FileInfo(@".\Testing\Test2.txt").Save("This is yet another test");
+            Assert.Equal("This is yet another test", new FileInfo(@".\Testing\Test2.txt").Read());
+        }
+
+        [Fact]
+        public void Save2()
+        {
+            @"~\Testing\Test2.txt".Save("This is yet another test");
             Assert.Equal("This is yet another test", new FileInfo(@".\Testing\Test2.txt").Read());
         }
 

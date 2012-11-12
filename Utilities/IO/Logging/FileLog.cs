@@ -42,13 +42,13 @@ namespace Utilities.IO.Logging
         public FileLog(string FileName)
             : base(x => new FileInfo(FileName).Save("Logging started at " + DateTime.Now + System.Environment.NewLine))
         {
-            End = x => new FileInfo(FileName).Append("Logging ended at " + DateTime.Now + System.Environment.NewLine);
-            Log.Add(MessageType.Debug, x => new FileInfo(FileName).Append(x));
-            Log.Add(MessageType.Error, x => new FileInfo(FileName).Append(x));
-            Log.Add(MessageType.General, x => new FileInfo(FileName).Append(x));
-            Log.Add(MessageType.Info, x => new FileInfo(FileName).Append(x));
-            Log.Add(MessageType.Trace, x => new FileInfo(FileName).Append(x));
-            Log.Add(MessageType.Warn, x => new FileInfo(FileName).Append(x));
+            End = x => new FileInfo(FileName).Save("Logging ended at " + DateTime.Now + System.Environment.NewLine, Mode: FileMode.Append);
+            Log.Add(MessageType.Debug, x => new FileInfo(FileName).Save(x, Mode: FileMode.Append));
+            Log.Add(MessageType.Error, x => new FileInfo(FileName).Save(x, Mode: FileMode.Append));
+            Log.Add(MessageType.General, x => new FileInfo(FileName).Save(x, Mode: FileMode.Append));
+            Log.Add(MessageType.Info, x => new FileInfo(FileName).Save(x, Mode: FileMode.Append));
+            Log.Add(MessageType.Trace, x => new FileInfo(FileName).Save(x, Mode: FileMode.Append));
+            Log.Add(MessageType.Warn, x => new FileInfo(FileName).Save(x, Mode: FileMode.Append));
             FormatMessage = (Message, Type, args) => Type.ToString()
                 + ": " + (args.Length > 0 ? string.Format(Message, args) : Message)
                 + System.Environment.NewLine;

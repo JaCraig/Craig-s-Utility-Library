@@ -145,6 +145,11 @@
     <Compile Include="IoC\Providers\Scope\StandardScope.cs" />
     <Compile Include="IoC\Utils\ConstructorList.cs" />
     <Compile Include="IO\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="IO\Serializers\BinarySerializer.cs" />
+    <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
+    <Compile Include="IO\Serializers\JSONSerializer.cs" />
+    <Compile Include="IO\Serializers\SOAPSerializer.cs" />
+    <Compile Include="IO\Serializers\XMLSerializer.cs" />
     <Compile Include="Math\Fraction.cs" />
     <Compile Include="Media\Image\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\Image\ExtensionMethods\ScreenExtensions.cs" />

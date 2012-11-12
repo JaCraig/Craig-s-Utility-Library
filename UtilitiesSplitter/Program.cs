@@ -4,6 +4,7 @@ using System.Xml;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace UtilitiesSplitter
 {

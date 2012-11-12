@@ -29,6 +29,9 @@ using System.Security;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Utilities.IO.Serializers.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.IO.Serializers;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -39,357 +42,178 @@ namespace Utilities.IO.ExtensionMethods
     public static class SerializationExtensions
     {
         #region Extension Methods
-
-        #region ToBinary
-
-        /// <summary>
-        /// Converts an object to Binary
-        /// </summary>
-        /// <param name="Object">Object to convert</param>
-        /// <param name="FileToSaveTo">File to save the XML to (optional)</param>
-        /// <returns>The object converted to a JSON string</returns>
-        public static byte[] ToBinary(this object Object, string FileToSaveTo = "")
-        {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            byte[] Output = new byte[0];
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                BinaryFormatter Formatter = new BinaryFormatter();
-                Formatter.Serialize(Stream, Object);
-                Output = Stream.ToArray();
-            }
-            if (!string.IsNullOrEmpty(FileToSaveTo))
-                new FileInfo(FileToSaveTo).Save(Output);
-            return Output;
-        }
-
-        #endregion
-
-        #region ToJSON
+        
+        #region Serialize
 
         /// <summary>
-        /// Converts an object to JSON
-        /// </summary>
-        /// <param name="Object">Object to convert</param>
-        /// <param name="FileToSaveTo">File to save the XML to (optional)</param>
-        /// <param name="EncodingUsing">Encoding that the XML should be saved/returned as (defaults to ASCII)</param>
-        /// <returns>The object converted to a JSON string</returns>
-        public static string ToJSON(this object Object,string FileToSaveTo="", Encoding EncodingUsing = null)
-        {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            string JSON = "";
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(Object.GetType());
-                Serializer.WriteObject(Stream, Object);
-                Stream.Flush();
-                JSON=EncodingUsing.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
-            }
-            if (!string.IsNullOrEmpty(FileToSaveTo))
-                new FileInfo(FileToSaveTo).Save(JSON, EncodingUsing);
-            return JSON;
-        }
-
-        #endregion
-
-        #region ToSOAP
-
-        /// <summary>
-        /// Converts an object to a SOAP string
+        /// Serializes the object using the specified serializer
         /// </summary>
         /// <param name="Object">Object to serialize</param>
-        /// <param name="FileToSaveTo">File to save the XML to (optional)</param>
-        /// <param name="EncodingUsing">Encoding that the XML should be saved/returned as (defaults to ASCII)</param>
-        /// <returns>The serialized string</returns>
-        [SecuritySafeCritical]
-        public static string ToSOAP(this object Object, string FileToSaveTo = "", Encoding EncodingUsing = null)
+        /// <param name="Serializer">Serializer to use (defaults to JSONSerializer)</param>
+        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
+        /// <param name="FileLocation">File location to save to</param>
+        /// <returns>The serialized object</returns>
+        public static string Serialize(this object Object, ISerializer<string> Serializer = null, Encoding EncodingUsing = null, string FileLocation = "")
         {
-            if (Object == null)
-                throw new ArgumentException("Object can not be null");
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            string SOAP = "";
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                SoapFormatter Serializer = new SoapFormatter();
-                Serializer.Serialize(Stream, Object);
-                Stream.Flush();
-                SOAP = EncodingUsing.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
-            }
-            if (!string.IsNullOrEmpty(FileToSaveTo))
-                new FileInfo(FileToSaveTo).Save(SOAP, EncodingUsing);
-            return SOAP;
+            Object.ThrowIfNull("Object");
+            string Data = Serializer.NullCheck(new JSONSerializer(EncodingUsing)).Serialize(Object);
+            if (!FileLocation.IsNullOrEmpty())
+                FileLocation.Save(Data);
+            return Data;
         }
 
         #endregion
 
-        #region ToXML
+        #region SerializeBinary
 
         /// <summary>
-        /// Converts an object to XML
+        /// Serializes the object using the specified serializer
         /// </summary>
-        /// <param name="Object">Object to convert</param>
-        /// <param name="FileToSaveTo">File to save the XML to (optional)</param>
-        /// <param name="EncodingUsing">Encoding that the XML should be saved/returned as (defaults to ASCII)</param>
-        /// <returns>string representation of the object in XML format</returns>
-        public static string ToXML(this object Object, string FileToSaveTo = "", Encoding EncodingUsing = null)
+        /// <param name="Object">Object to serialize</param>
+        /// <param name="Serializer">Serializer to use (defaults to BinarySerializer)</param>
+        /// <param name="FileLocation">File location to save to</param>
+        /// <returns>The serialized object</returns>
+        public static byte[] SerializeBinary(this object Object, ISerializer<byte[]> Serializer = null, string FileLocation = "")
         {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            string XML = "";
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                XmlSerializer Serializer = new XmlSerializer(Object.GetType());
-                Serializer.Serialize(Stream, Object);
-                Stream.Flush();
-                XML = EncodingUsing.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
-            }
-            if (!string.IsNullOrEmpty(FileToSaveTo))
-                new FileInfo(FileToSaveTo).Save(XML, EncodingUsing);
-            return XML;
+            Object.ThrowIfNull("Object");
+            byte[] Data = Serializer.NullCheck(new BinarySerializer()).Serialize(Object);
+            if (!FileLocation.IsNullOrEmpty())
+                FileLocation.Save(Data);
+            return Data;
         }
 
         #endregion
 
-        #region ToObject
+        #region Deserialize
 
         /// <summary>
-        /// Converts the serialized byte array into an object
+        /// Deserializes an object
         /// </summary>
-        /// <param name="Content">The byte array to convert</param>
-        /// <typeparam name="T">Object type to return</typeparam>
-        /// <returns>The byte array converted to the specified object type</returns>
-        public static T ToObject<T>(this byte[] Content)
+        /// <typeparam name="R">Object type</typeparam>
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="Serializer">Serializer to use (defaults to JSONSerializer)</param>
+        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)></param>
+        /// <returns>The deserialized object</returns>
+        public static R Deserialize<R>(this string Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Content == null) ? default(T) : (T)Content.ToObject(typeof(T));
+            return (Data.IsNullOrEmpty()) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer, EncodingUsing);
         }
 
         /// <summary>
-        /// Converts the serialized byte array into an object
+        /// Deserializes an object
         /// </summary>
-        /// <param name="Content">The byte array to convert</param>
-        /// <param name="ObjectType">Object type to return</param>
-        /// <returns>The byte array converted to the specified object type</returns>
-        public static object ToObject(this byte[] Content, Type ObjectType)
+        /// <typeparam name="R">Object type</typeparam>
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="Serializer">Serializer to use (defaults to XMLSerializer)</param>
+        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)></param>
+        /// <returns>The deserialized object</returns>
+        public static R Deserialize<R>(this XmlDocument Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            if (Content == null)
-                return null;
-            using (MemoryStream Stream = new MemoryStream(Content))
-            {
-                BinaryFormatter Formatter = new BinaryFormatter();
-                return Formatter.Deserialize(Stream);
-            }
+            return (Data == null) ? default(R) : (R)Data.InnerXml.Deserialize(typeof(R), Serializer.NullCheck(new XMLSerializer(EncodingUsing)), EncodingUsing);
         }
 
         /// <summary>
-        /// Converts the serialized XML document into an object
+        /// Deserializes an object
         /// </summary>
-        /// <param name="Content">The XML document to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <typeparam name="T">Object type to return</typeparam>
-        /// <returns>The XML document converted to the specified object type</returns>
-        public static T ToObject<T>(this XmlDocument Content, Encoding EncodingUsing = null)
+        /// <typeparam name="R">Object type</typeparam>
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="Serializer">Serializer to use (defaults to BinarySerializer)</param>
+        /// <returns>The deserialized object</returns>
+        public static R Deserialize<R>(this byte[] Data, ISerializer<byte[]> Serializer = null)
         {
-            return (Content == null) ? default(T) : (T)Content.InnerXml.XMLToObject(typeof(T), EncodingUsing);
+            return (Data.IsNull()) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer);
         }
 
         /// <summary>
-        /// Converts the serialized XML document into an object
+        /// Deserializes an object
         /// </summary>
-        /// <param name="Content">The XML document to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <param name="ObjectType">Object type to return</param>
-        /// <returns>The XML document converted to the specified object type</returns>
-        public static object ToObject(this XmlDocument Content,Type ObjectType, Encoding EncodingUsing = null)
+        /// <typeparam name="R">Object type</typeparam>
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="Serializer">Serializer to use (defaults to JSONSerializer)</param>
+        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)></param>
+        /// <returns>The deserialized object</returns>
+        public static R Deserialize<R>(this FileInfo Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Content == null) ? null : Content.InnerXml.XMLToObject(ObjectType, EncodingUsing);
-        }
-
-        #endregion
-
-        #region JSONToObject
-
-        /// <summary>
-        /// Converts a JSON string to an object of the specified type
-        /// </summary>
-        /// <typeparam name="T">Object type to return</typeparam>
-        /// <param name="Content">The string to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The string converted to the specified object type</returns>
-        public static T JSONToObject<T>(this string Content, Encoding EncodingUsing = null)
-        {
-            return string.IsNullOrEmpty(Content) ? default(T) : (T)Content.JSONToObject(typeof(T), EncodingUsing);
+            return (Data.IsNull() || !Data.Exists) ? default(R) : (R)Data.Read().Deserialize(typeof(R), Serializer, EncodingUsing);
         }
 
         /// <summary>
-        /// Converts a JSON file to an object of the specified type
+        /// Deserializes an object
         /// </summary>
-        /// <typeparam name="T">Object type to return</typeparam>
-        /// <param name="Content">The file to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The file converted to the specified object type</returns>
-        public static T JSONToObject<T>(this FileInfo Content, Encoding EncodingUsing = null)
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="Serializer">Serializer to use (defaults to JSONSerializer)</param>
+        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)></param>
+        /// <param name="ObjectType">Object type</param>
+        /// <returns>The deserialized object</returns>
+        public static object Deserialize(this FileInfo Data,Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Content == null || !Content.Exists) ? default(T) : (T)Content.Read().JSONToObject(typeof(T), EncodingUsing);
+            return (Data.IsNull() || !Data.Exists) ? null : Data.Read().Deserialize(ObjectType, Serializer, EncodingUsing);
         }
 
         /// <summary>
-        /// Converts a JSON string to an object of the specified type
+        /// Deserializes an object
         /// </summary>
-        /// <param name="ObjectType">Object type to return</param>
-        /// <param name="Content">The string to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The string converted to the specified object type</returns>
-        public static object JSONToObject(this string Content, Type ObjectType, Encoding EncodingUsing = null)
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Serializer">Serializer to use (defaults to JSONSerializer)</param>
+        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)></param>
+        /// <returns>The deserialized object</returns>
+        public static object Deserialize(this string Data,Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            if (string.IsNullOrEmpty(Content))
-                return null;
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            using (MemoryStream Stream = new MemoryStream(EncodingUsing.GetBytes(Content)))
-            {
-                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(ObjectType);
-                return Serializer.ReadObject(Stream);
-            }
+            return Serializer.NullCheck(new JSONSerializer(EncodingUsing)).Deserialize(Data, ObjectType);
         }
 
         /// <summary>
-        /// Converts a JSON file to an object of the specified type
+        /// Deserializes an object
         /// </summary>
-        /// <param name="ObjectType">Object type to return</param>
-        /// <param name="Content">The file to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The file converted to the specified object type</returns>
-        public static object JSONToObject(this FileInfo Content, Type ObjectType, Encoding EncodingUsing = null)
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Serializer">Serializer to use (defaults to BinarySerializer)</param>
+        /// <returns>The deserialized object</returns>
+        public static object Deserialize(this byte[] Data, Type ObjectType, ISerializer<byte[]> Serializer = null)
         {
-            return (Content == null || !Content.Exists) ? null : Content.Read().JSONToObject(ObjectType, EncodingUsing);
+            return Serializer.NullCheck(new BinarySerializer()).Deserialize(Data, ObjectType);
+        }
+
+        /// <summary>
+        /// Deserializes an object
+        /// </summary>
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Serializer">Serializer to use (defaults to XMLSerializer)</param>
+        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)></param>
+        /// <returns>The deserialized object</returns>
+        public static object Deserialize(this XmlDocument Data, Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
+        {
+            return (Data == null) ? null : Data.InnerXml.Deserialize(ObjectType, Serializer.NullCheck(new XMLSerializer(EncodingUsing)), EncodingUsing);
         }
 
         #endregion
 
-        #region SOAPToObject
+        #region DeserializeBinary
 
         /// <summary>
-        /// Converts a SOAP string to an object of the specified type
+        /// Deserializes an object
         /// </summary>
-        /// <typeparam name="T">Object type to return</typeparam>
-        /// <param name="Content">The string to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The string converted to the specified object type</returns>
-        public static T SOAPToObject<T>(this string Content, Encoding EncodingUsing = null)
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Serializer">Serializer to use (defaults to BinarySerializer)</param>
+        /// <returns>The deserialized object</returns>
+        public static object DeserializeBinary(this FileInfo Data, Type ObjectType, ISerializer<byte[]> Serializer = null)
         {
-            return string.IsNullOrEmpty(Content) ? default(T) : (T)Content.SOAPToObject(typeof(T), EncodingUsing);
+            return (Data.IsNull() || !Data.Exists) ? null : Data.ReadBinary().Deserialize(ObjectType, Serializer);
         }
 
         /// <summary>
-        /// Converts a SOAP file to an object of the specified type
+        /// Deserializes an object
         /// </summary>
-        /// <typeparam name="T">Object type to return</typeparam>
-        /// <param name="Content">The file to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The file converted to the specified object type</returns>
-        public static T SOAPToObject<T>(this FileInfo Content, Encoding EncodingUsing = null)
+        /// <typeparam name="R">Object type</typeparam>
+        /// <param name="Data">Data to deserialize</param>
+        /// <param name="Serializer">Serializer to use (defaults to BinarySerializer)</param>
+        /// <returns>The deserialized object</returns>
+        public static R DeserializeBinary<R>(this FileInfo Data, ISerializer<byte[]> Serializer = null)
         {
-            return (Content == null || !Content.Exists) ? default(T) : (T)Content.Read().SOAPToObject(typeof(T), EncodingUsing);
-        }
-
-        /// <summary>
-        /// Converts a SOAP string to an object of the specified type
-        /// </summary>
-        /// <param name="ObjectType">Object type to return</param>
-        /// <param name="Content">The string to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The string converted to the specified object type</returns>
-        [SecuritySafeCritical]
-        public static object SOAPToObject(this string Content,Type ObjectType, Encoding EncodingUsing = null)
-        {
-            if (string.IsNullOrEmpty(Content))
-                return null;
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            using (MemoryStream Stream = new MemoryStream(EncodingUsing.GetBytes(Content)))
-            {
-                SoapFormatter Formatter = new SoapFormatter();
-                return Formatter.Deserialize(Stream);
-            }
-        }
-
-        /// <summary>
-        /// Converts a SOAP file to an object of the specified type
-        /// </summary>
-        /// <param name="ObjectType">Object type to return</param>
-        /// <param name="Content">The file to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The file converted to the specified object type</returns>
-        public static object SOAPToObject(this FileInfo Content, Type ObjectType, Encoding EncodingUsing = null)
-        {
-            return (Content == null || !Content.Exists) ? null : Content.Read().SOAPToObject(ObjectType, EncodingUsing);
-        }
-
-        #endregion
-
-        #region XMLToObject
-
-        /// <summary>
-        /// Converts a string to an object of the specified type
-        /// </summary>
-        /// <typeparam name="T">Object type to return</typeparam>
-        /// <param name="Content">The string to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The string converted to the specified object type</returns>
-        public static T XMLToObject<T>(this string Content, Encoding EncodingUsing = null)
-        {
-            return string.IsNullOrEmpty(Content) ? default(T) : (T)Content.XMLToObject(typeof(T), EncodingUsing);
-        }
-
-        /// <summary>
-        /// Converts a FileInfo object to an object of the specified type
-        /// </summary>
-        /// <typeparam name="T">Object type to return</typeparam>
-        /// <param name="Content">The file to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The file converted to the specified object type</returns>
-        public static T XMLToObject<T>(this FileInfo Content, Encoding EncodingUsing = null)
-        {
-            return (Content == null || !Content.Exists) ? default(T) : (T)Content.Read().XMLToObject(typeof(T), EncodingUsing);
-        }
-
-        /// <summary>
-        /// Converts a string to an object of the specified type
-        /// </summary>
-        /// <param name="ObjectType">Object type to return</param>
-        /// <param name="Content">The string to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The string converted to the specified object type</returns>
-        public static object XMLToObject(this string Content,Type ObjectType, Encoding EncodingUsing = null)
-        {
-            if (string.IsNullOrEmpty(Content))
-                return null;
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            using (MemoryStream Stream = new MemoryStream(EncodingUsing.GetBytes(Content)))
-            {
-                XmlSerializer Serializer = new XmlSerializer(ObjectType);
-                return Serializer.Deserialize(Stream);
-            }
-        }
-
-        /// <summary>
-        /// Converts a FileInfo object to an object of the specified type
-        /// </summary>
-        /// <param name="ObjectType">Object type to return</param>
-        /// <param name="Content">The file to convert</param>
-        /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)</param>
-        /// <returns>The file converted to the specified object type</returns>
-        public static object XMLToObject(this FileInfo Content, Type ObjectType, Encoding EncodingUsing = null)
-        {
-            return (Content == null || !Content.Exists) ? null : Content.Read().XMLToObject(ObjectType, EncodingUsing);
+            return (Data.IsNull() || !Data.Exists) ? default(R) : (R)Data.ReadBinary().Deserialize(typeof(R), Serializer);
         }
 
         #endregion

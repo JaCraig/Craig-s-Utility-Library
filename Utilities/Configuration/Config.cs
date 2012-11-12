@@ -29,6 +29,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Encryption.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.IO.Serializers;
 #endregion
 
 namespace Utilities.Configuration
@@ -48,8 +49,8 @@ namespace Utilities.Configuration
         /// <param name="ObjectToString">Object to string</param>
         public Config(Func<string, ConfigClassType> StringToObject = null, Func<IConfig, string> ObjectToString = null)
         {
-            this.ObjectToString = ObjectToString.NullCheck((x) => x.ToXML(ConfigFileLocation));
-            this.StringToObject = StringToObject.NullCheck((x) => (ConfigClassType)x.XMLToObject(this.GetType()));
+            this.ObjectToString = ObjectToString.NullCheck((x) => x.Serialize(new XMLSerializer(), FileLocation: ConfigFileLocation));
+            this.StringToObject = StringToObject.NullCheck((x) => (ConfigClassType)x.Deserialize(this.GetType(), new XMLSerializer()));
         }
 
         #endregion

@@ -45,6 +45,8 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -64,6 +66,11 @@
     <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\UriExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="IO\Serializers\BinarySerializer.cs" />
+    <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
+    <Compile Include="IO\Serializers\JSONSerializer.cs" />
+    <Compile Include="IO\Serializers\SOAPSerializer.cs" />
+    <Compile Include="IO\Serializers\XMLSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">

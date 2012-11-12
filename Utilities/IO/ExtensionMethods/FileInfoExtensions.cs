@@ -26,6 +26,8 @@ using System.IO;
 using System.Security;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Web;
+using System.Windows.Forms;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -36,47 +38,6 @@ namespace Utilities.IO.ExtensionMethods
     public static class FileInfoExtensions
     {
         #region Extension Methods
-
-        #region Append
-
-        /// <summary>
-        /// Appends a string to a file
-        /// </summary>
-        /// <param name="File">File to append to</param>
-        /// <param name="Content">Content to save to the file</param>
-        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to ASCII)</param>
-        /// <returns>The FileInfo object</returns>
-        public static FileInfo Append(this FileInfo File, string Content, Encoding EncodingUsing = null)
-        {
-            if (File == null)
-                throw new ArgumentNullException("File");
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            byte[] ContentBytes = EncodingUsing.GetBytes(Content);
-            return File.Append(ContentBytes);
-        }
-
-        /// <summary>
-        /// Appends a byte array to a file
-        /// </summary>
-        /// <param name="File">File to append to</param>
-        /// <param name="Content">Content to append to the file</param>
-        /// <returns>The FileInfo object</returns>
-        public static FileInfo Append(this FileInfo File, byte[] Content)
-        {
-            if (File == null)
-                throw new ArgumentNullException("File");
-            if (!File.Exists)
-                return File.Save(Content);
-            using (FileStream Writer = File.Open(FileMode.Append, FileAccess.Write))
-            {
-                Writer.Write(Content, 0, Content.Length);
-                Writer.Close();
-            }
-            return File;
-        }
-
-        #endregion
 
         #region CompareTo
 
@@ -94,9 +55,7 @@ namespace Utilities.IO.ExtensionMethods
                 throw new ArgumentNullException("File2");
             if (File1.Length != File2.Length)
                 return false;
-            if (!File1.Read().Equals(File2.Read()))
-                return false;
-            return true;
+            return File1.Read().Equals(File2.Read());
         }
 
         #endregion
@@ -110,8 +69,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The drive info connected to the file</returns>
         public static DriveInfo DriveInfo(this FileInfo File)
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
+            File.ThrowIfNull("File");
             return File.Directory.DriveInfo();
         }
 
@@ -126,8 +84,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>A string containing the contents of the file</returns>
         public static string Read(this FileInfo File)
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
+            File.ThrowIfNull("File");
             if (!File.Exists)
                 return "";
             using (StreamReader Reader = File.OpenText())
@@ -136,6 +93,23 @@ namespace Utilities.IO.ExtensionMethods
                 Reader.Close();
                 return Contents;
             }
+        }
+
+        /// <summary>
+        /// Reads a file to the end as a string
+        /// </summary>
+        /// <param name="Location">File to read</param>
+        /// <returns>A string containing the contents of the file</returns>
+        public static string Read(this string Location)
+        {
+            if (Location.StartsWith("~"))
+            {
+                if (HttpContext.Current == null)
+                    Location = Location.Replace("~", Application.StartupPath);
+                else
+                    Location = HttpContext.Current.Server.MapPath(Location);
+            }
+            return new FileInfo(Location).Read();
         }
 
         #endregion
@@ -149,8 +123,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>A binary array containing the contents of the file</returns>
         public static byte[] ReadBinary(this FileInfo File)
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
+            File.ThrowIfNull("File");
             if (!File.Exists)
                 return new byte[0];
             using (FileStream Reader = File.OpenRead())
@@ -159,6 +132,23 @@ namespace Utilities.IO.ExtensionMethods
                 Reader.Close();
                 return Output;
             }
+        }
+
+        /// <summary>
+        /// Reads a file to the end and returns a binary array
+        /// </summary>
+        /// <param name="Location">File to open</param>
+        /// <returns>A binary array containing the contents of the file</returns>
+        public static byte[] ReadBinary(this string Location)
+        {
+            if (Location.StartsWith("~"))
+            {
+                if (HttpContext.Current == null)
+                    Location = Location.Replace("~", Application.StartupPath);
+                else
+                    Location = HttpContext.Current.Server.MapPath(Location);
+            }
+            return new FileInfo(Location).ReadBinary();
         }
 
         #endregion
@@ -176,10 +166,11 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="WindowStyle">Window style</param>
         /// <param name="WorkingDirectory">Working directory</param>
         /// <returns>The process object created when the executable is started</returns>
-        public static System.Diagnostics.Process Execute(this FileInfo File, string Arguments = "", string Domain = "", string User = "", string Password = "", ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal, string WorkingDirectory = "")
+        public static System.Diagnostics.Process Execute(this FileInfo File, string Arguments = "",
+            string Domain = "", string User = "", string Password = "",
+            ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal, string WorkingDirectory = "")
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
+            File.ThrowIfNull("File");
             if (!File.Exists)
                 throw new FileNotFoundException("File note found", File.FullName);
             ProcessStartInfo Info = new ProcessStartInfo();
@@ -206,7 +197,9 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="WindowStyle">Window style</param>
         /// <param name="WorkingDirectory">Working directory</param>
         /// <returns>The process object created when the executable is started</returns>
-        public static System.Diagnostics.Process Execute(this string File, string Arguments = "", string Domain = "", string User = "", string Password = "", ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal, string WorkingDirectory = "")
+        public static System.Diagnostics.Process Execute(this string File, string Arguments = "",
+            string Domain = "", string User = "", string Password = "",
+            ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal, string WorkingDirectory = "")
         {
             File.ThrowIfNullOrEmpty("File");
             ProcessStartInfo Info = new ProcessStartInfo();
@@ -229,12 +222,10 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The process object created when the executable is started</returns>
         public static System.Diagnostics.Process Execute(this FileInfo File, ProcessStartInfo Info)
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
+            File.ThrowIfNull("File");
             if (!File.Exists)
                 throw new FileNotFoundException("File note found", File.FullName);
-            if (Info == null)
-                throw new ArgumentNullException("Info");
+            Info.ThrowIfNull("Info");
             Info.FileName = File.FullName;
             return System.Diagnostics.Process.Start(Info);
         }
@@ -248,8 +239,7 @@ namespace Utilities.IO.ExtensionMethods
         public static System.Diagnostics.Process Execute(this string File, ProcessStartInfo Info)
         {
             File.ThrowIfNullOrEmpty("File");
-            if (Info == null)
-                throw new ArgumentNullException("Info");
+            Info.ThrowIfNull("Info");
             Info.FileName = File;
             return System.Diagnostics.Process.Start(Info);
         }
@@ -264,15 +254,12 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="File">File to save to</param>
         /// <param name="Content">Content to save to the file</param>
         /// <param name="EncodingUsing">Encoding that the content is using (defaults to ASCII)</param>
+        /// <param name="Mode">Mode for saving the file (defaults to Create)</param>
         /// <returns>The FileInfo object</returns>
-        public static FileInfo Save(this FileInfo File, string Content,Encoding EncodingUsing=null)
+        public static FileInfo Save(this FileInfo File, string Content, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            byte[] ContentBytes = EncodingUsing.GetBytes(Content);
-            return File.Save(ContentBytes);
+            File.ThrowIfNull("File");
+            return File.Save(EncodingUsing.NullCheck(new ASCIIEncoding()).GetBytes(Content), Mode);
         }
 
         /// <summary>
@@ -280,18 +267,57 @@ namespace Utilities.IO.ExtensionMethods
         /// </summary>
         /// <param name="File">File to save to</param>
         /// <param name="Content">Content to save to the file</param>
+        /// <param name="Mode">Mode for saving the file (defaults to Create)</param>
         /// <returns>The FileInfo object</returns>
-        public static FileInfo Save(this FileInfo File, byte[] Content)
+        public static FileInfo Save(this FileInfo File, byte[] Content, FileMode Mode = FileMode.Create)
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
+            File.ThrowIfNull("File");
             new DirectoryInfo(File.DirectoryName).Create();
-            using (FileStream Writer = File.Create())
+            using (FileStream Writer = File.Open(Mode, FileAccess.Write))
             {
                 Writer.Write(Content, 0, Content.Length);
                 Writer.Close();
             }
             return File;
+        }
+
+        /// <summary>
+        /// Saves the string to the specified file
+        /// </summary>
+        /// <param name="Location">Location to save the content to</param>
+        /// <param name="Content">Content to save the the file</param>
+        /// <param name="EncodingUsing">Encoding that the content is using (defaults to ASCII)</param>
+        /// <param name="Mode">Mode for saving the file (defaults to Create)</param>
+        /// <returns>The FileInfo object associated with the location</returns>
+        public static FileInfo Save(this string Location, string Content, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
+        {
+            if (Location.StartsWith("~"))
+            {
+                if (HttpContext.Current == null)
+                    Location = Location.Replace("~", Application.StartupPath);
+                else
+                    Location = HttpContext.Current.Server.MapPath(Location);
+            }
+            return new FileInfo(Location).Save(Content, Mode, EncodingUsing);
+        }
+
+        /// <summary>
+        /// Saves a byte array to a file
+        /// </summary>
+        /// <param name="Location">File to save to</param>
+        /// <param name="Content">Content to save to the file</param>
+        /// <param name="Mode">Mode for saving the file (defaults to Create)</param>
+        /// <returns>The FileInfo object associated with the location</returns>
+        public static FileInfo Save(this string Location, byte[] Content, FileMode Mode = FileMode.Create)
+        {
+            if (Location.StartsWith("~"))
+            {
+                if (HttpContext.Current == null)
+                    Location = Location.Replace("~", Application.StartupPath);
+                else
+                    Location = HttpContext.Current.Server.MapPath(Location);
+            }
+            return new FileInfo(Location).Save(Content, Mode);
         }
 
         #endregion
@@ -306,15 +332,13 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="CallBack">Call back function</param>
         /// <param name="StateObject">State object</param>
         /// <param name="EncodingUsing">Encoding that the content is using (defaults to ASCII)</param>
+        /// <param name="Mode">Mode for saving the file (defaults to Create)</param>
         /// <returns>The FileInfo object</returns>
-        public static FileInfo SaveAsync(this FileInfo File, string Content, AsyncCallback CallBack, object StateObject,Encoding EncodingUsing=null)
+        public static FileInfo SaveAsync(this FileInfo File, string Content, AsyncCallback CallBack,
+            object StateObject, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
-            if (EncodingUsing == null)
-                EncodingUsing = new ASCIIEncoding();
-            byte[] ContentBytes = EncodingUsing.GetBytes(Content);
-            return File.SaveAsync(ContentBytes, CallBack, StateObject);
+            File.ThrowIfNull("File");
+            return File.SaveAsync(EncodingUsing.NullCheck(new ASCIIEncoding()).GetBytes(Content), CallBack, StateObject);
         }
 
         /// <summary>
@@ -324,13 +348,14 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="Content">Content to save to the file</param>
         /// <param name="CallBack">Call back function</param>
         /// <param name="StateObject">State object</param>
+        /// <param name="Mode">Mode for saving the file (defaults to Create)</param>
         /// <returns>The FileInfo object</returns>
-        public static FileInfo SaveAsync(this FileInfo File, byte[] Content, AsyncCallback CallBack, object StateObject)
+        public static FileInfo SaveAsync(this FileInfo File, byte[] Content, AsyncCallback CallBack,
+            object StateObject, FileMode Mode = FileMode.Create)
         {
-            if (File == null)
-                throw new ArgumentNullException("File");
+            File.ThrowIfNull("File");
             new DirectoryInfo(File.DirectoryName).Create();
-            using (FileStream Writer = File.Create())
+            using (FileStream Writer = File.Open(Mode, FileAccess.Write))
             {
                 Writer.BeginWrite(Content, 0, Content.Length, CallBack, StateObject);
                 Writer.Close();
@@ -350,8 +375,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The file info</returns>
         public static FileInfo SetAttributes(this FileInfo File, System.IO.FileAttributes Attributes)
         {
-            if (File == null || !File.Exists)
-                throw new ArgumentNullException("File");
+            File.ThrowIfTrue(x => x == null || !File.Exists, new ArgumentNullException("File"));
             System.IO.File.SetAttributes(File.FullName, Attributes);
             return File;
         }

@@ -39,6 +39,7 @@ namespace UnitTests.Configuration
         public Config()
         {
             Utilities.Configuration.ConfigurationManager.RegisterConfigFile(typeof(TestConfig).Assembly);
+            new TestConfig3().Save();
         }
 
         [Fact]
