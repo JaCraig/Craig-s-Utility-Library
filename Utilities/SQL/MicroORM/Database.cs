@@ -39,7 +39,7 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         /// <param name="Connection">Connection string</param>
         /// <param name="Name">Database name</param>
-        public Database(string Connection,string Name)
+        public Database(string Connection, string Name)
         {
             this.Connection = Connection;
             this.Name = Name;

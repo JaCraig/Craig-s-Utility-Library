@@ -51,8 +51,32 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
         {
             Dictionary.ThrowIfNull("Dictionary");
-            TValue ReturnValue=Default;
+            TValue ReturnValue = Default;
             return Dictionary.TryGetValue(Key, out ReturnValue) ? ReturnValue : Default;
+        }
+
+        #endregion
+
+        #region SetValue
+
+        /// <summary>
+        /// Sets the value in a dictionary
+        /// </summary>
+        /// <typeparam name="TKey">Key type</typeparam>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="Dictionary">Dictionary to set the value in</param>
+        /// <param name="Key">Key to look for</param>
+        /// <param name="Value">Value to add</param>
+        /// <returns>The dictionary</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
+        public static IDictionary<TKey, TValue> SetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Value)
+        {
+            Dictionary.ThrowIfNull("Dictionary");
+            if (Dictionary.ContainsKey(Key))
+                Dictionary[Key] = Value;
+            else
+                Dictionary.Add(Key, Value);
+            return Dictionary;
         }
 
         #endregion

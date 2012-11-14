@@ -140,8 +140,11 @@ namespace Utilities.SQL.ExtensionMethods
         /// Begins a transaction
         /// </summary>
         /// <param name="Command">Command object</param>
+        /// <returns>A transaction object</returns>
         public static DbTransaction BeginTransaction(this DbCommand Command)
         {
+            if (Command.IsNull() && Command.Connection.IsNull())
+                return null;
             Command.Open();
             return Command.Connection.BeginTransaction();
         }
@@ -154,10 +157,12 @@ namespace Utilities.SQL.ExtensionMethods
         /// Clears the parameters
         /// </summary>
         /// <param name="Command">Command object</param>
-        public static void ClearParameters(this DbCommand Command)
+        /// <returns>The DBCommand object</returns>
+        public static DbCommand ClearParameters(this DbCommand Command)
         {
-            if (Command.IsNotNull())
+            if (Command.IsNotNull()&&Command.Parameters.IsNotNull())
                 Command.Parameters.Clear();
+            return Command;
         }
 
         #endregion
@@ -168,12 +173,14 @@ namespace Utilities.SQL.ExtensionMethods
         /// Closes the connection
         /// </summary>
         /// <param name="Command">Command object</param>
-        public static void Close(this DbCommand Command)
+        /// <returns>The DBCommand object</returns>
+        public static DbCommand Close(this DbCommand Command)
         {
             if (Command.IsNotNull()
                 && Command.Connection.IsNotNull()
                 && Command.Connection.State != ConnectionState.Closed)
                 Command.Connection.Close();
+            return Command;
         }
 
         #endregion
@@ -184,10 +191,12 @@ namespace Utilities.SQL.ExtensionMethods
         /// Commits a transaction
         /// </summary>
         /// <param name="Command">Command object</param>
-        public static void Commit(this DbCommand Command)
+        /// <returns>The DBCommand object</returns>
+        public static DbCommand Commit(this DbCommand Command)
         {
             if (Command.IsNotNull() && Command.Transaction.IsNotNull())
                 Command.Transaction.Commit();
+            return Command;
         }
 
         #endregion
@@ -222,12 +231,16 @@ namespace Utilities.SQL.ExtensionMethods
         /// Executes the stored procedure as a scalar query
         /// </summary>
         /// <param name="Command">Command object</param>
+        /// <param name="Default">Default value if there is an issue</param>
         /// <returns>The object of the first row and first column</returns>
-        public static DataType ExecuteScalar<DataType>(this DbCommand Command)
+        public static DataType ExecuteScalar<DataType>(this DbCommand Command, DataType Default = default(DataType))
         {
+            if (Command.IsNull())
+                return Default;
             Command.Open();
-            object Value = Command.IsNotNull() ? Command.ExecuteScalar() : default(DataType);
-            return Value.TryTo<object, DataType>();
+            return Command.IsNotNull() ?
+                Command.ExecuteScalar().TryTo<object, DataType>(Default) :
+                Default;
         }
 
         #endregion
@@ -242,10 +255,11 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="Command">Command object</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public static DataType GetOutputParameter<DataType>(this DbCommand Command, string ID, DataType Default)
+        public static DataType GetOutputParameter<DataType>(this DbCommand Command, string ID, DataType Default = default(DataType))
         {
             return Command.IsNotNull() && Command.Parameters[ID].IsNotNull() ?
-                Command.Parameters[ID].Value.TryTo<object, DataType>() : Default;
+                Command.Parameters[ID].Value.TryTo<object, DataType>(Default) :
+                Default;
         }
 
         #endregion
@@ -256,12 +270,14 @@ namespace Utilities.SQL.ExtensionMethods
         /// Opens the connection
         /// </summary>
         /// <param name="Command">Command object</param>
-        public static void Open(this DbCommand Command)
+        /// <returns>The DBCommand object</returns>
+        public static DbCommand Open(this DbCommand Command)
         {
             if (Command.IsNotNull()
                 && Command.Connection.IsNotNull()
                 && Command.Connection.State != ConnectionState.Open)
                 Command.Connection.Open();
+            return Command;
         }
 
         #endregion
@@ -272,10 +288,12 @@ namespace Utilities.SQL.ExtensionMethods
         /// Rolls back a transaction
         /// </summary>
         /// <param name="Command">Command object</param>
-        public static void Rollback(this DbCommand Command)
+        /// <returns>The DBCommand object</returns>
+        public static DbCommand Rollback(this DbCommand Command)
         {
             if (Command.IsNotNull() && Command.Transaction.IsNotNull())
                 Command.Transaction.Rollback();
+            return Command;
         }
 
         #endregion

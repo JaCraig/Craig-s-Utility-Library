@@ -46,6 +46,19 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void SetValue()
+        {
+            IDictionary<string, int> Test = new Dictionary<string, int>();
+            Test.Add("Q", 4);
+            Test.Add("Z", 2);
+            Test.Add("C", 3);
+            Test.Add("A", 1);
+            Assert.Equal(4, Test.GetValue("Q"));
+            Test.SetValue("Q", 40);
+            Assert.Equal(40, Test.GetValue("Q"));
+        }
+
+        [Fact]
         public void SortTest()
         {
             IDictionary<string, int> Test = new Dictionary<string, int>();
