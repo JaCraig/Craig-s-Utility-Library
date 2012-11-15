@@ -82,7 +82,7 @@ namespace Utilities.SQL.ParameterTypes
         /// <param name="Helper">SQLHelper to add the parameter to</param>
         public void AddParameter(SQLHelper Helper)
         {
-            Helper.AddParameter(ID, Length, Value);
+            Helper.AddParameter(ID, Value);
         }
 
         /// <summary>

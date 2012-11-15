@@ -255,7 +255,7 @@ namespace Utilities.SQL
                 if (Parameters[x] == null)
                     AddParameter(this.ExecutableCommand.Parameters.Count.ToString(), default(DbType), null, ParameterDirection.Input);
                 else if (Parameters[x] is string)
-                    AddParameter(this.ExecutableCommand.Parameters.Count.ToString(), ((string)Parameters[x]).Length, (string)Parameters[x], ParameterDirection.Input);
+                    AddParameter(this.ExecutableCommand.Parameters.Count.ToString(), (string)Parameters[x], ParameterDirection.Input);
                 else
                     AddParameter(this.ExecutableCommand.Parameters.Count.ToString(), Parameters[x].GetType().ToDbType(), Parameters[x], ParameterDirection.Input);
             }

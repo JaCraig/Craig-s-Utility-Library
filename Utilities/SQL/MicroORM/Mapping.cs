@@ -390,7 +390,7 @@ namespace Utilities.SQL.MicroORM
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
                 ((Mode & Mode.Read) == Mode.Read) ? new Func<SQLHelper, object>((x) => x.GetParameter(DatabasePropertyName, DefaultValue)) : null,
-                ((Mode & Mode.Write) == Mode.Write) ? new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, Length, (string)y)) : null);
+                ((Mode & Mode.Write) == Mode.Write) ? new Action<SQLHelper, object>((x, y) => x.AddParameter(DatabasePropertyName, (string)y)) : null);
             ParameterNames.Add(DatabasePropertyName);
             if (DatabasePropertyName == PrimaryKey)
             {
