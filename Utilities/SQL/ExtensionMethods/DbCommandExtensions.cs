@@ -45,10 +45,13 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
         /// <param name="Direction">Direction that the parameter goes (in or out)</param>
-        /// <param name="Length">Size of the string(either -1 or greater than 4000 should be used to indicate nvarchar(max))</param>
-        public static void AddParameter(this DbCommand Command, string ID, int Length, string Value = "",
+        /// <returns>The DbCommand object</returns>
+        public static DbCommand AddParameter(this DbCommand Command, string ID, string Value = "",
             ParameterDirection Direction = ParameterDirection.Input)
         {
+            int Length = Value.IsNullOrEmpty() ? 1 : Value.Length;
+            if (Direction == ParameterDirection.Output || Direction == ParameterDirection.InputOutput)
+                Length = -1;
             if (Length > 4000 || Length < -1)
                 Length = -1;
             Command.ThrowIfNull("Command");
@@ -67,6 +70,7 @@ namespace Utilities.SQL.ExtensionMethods
             Parameter.DbType = typeof(string).ToDbType();
             Parameter.Direction = Direction;
             Parameter.Size = Length;
+            return Command;
         }
 
         /// <summary>
@@ -77,12 +81,14 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="Direction">Direction that the parameter goes (in or out)</param>
         /// <param name="Command">Command object</param>
         /// <param name="Type">SQL type of the parameter</param>
-        public static void AddParameter(this DbCommand Command, string ID, SqlDbType Type,
+        /// <returns>The DbCommand object</returns>
+        public static DbCommand AddParameter(this DbCommand Command, string ID, SqlDbType Type,
             object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
             Command.ThrowIfNull("Command");
             ID.ThrowIfNullOrEmpty("ID");
             Command.AddParameter(ID, Type.ToDbType(), Value, Direction);
+            return Command;
         }
 
         /// <summary>
@@ -93,7 +99,8 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="Direction">Direction that the parameter goes (in or out)</param>
         /// <param name="Command">Command object</param>
         /// <param name="Value">Value to add</param>
-        public static void AddParameter<DataType>(this DbCommand Command, string ID, DataType Value = default(DataType),
+        /// <returns>The DbCommand object</returns>
+        public static DbCommand AddParameter<DataType>(this DbCommand Command, string ID, DataType Value = default(DataType),
             ParameterDirection Direction = ParameterDirection.Input)
         {
             Command.ThrowIfNull("Command");
@@ -101,6 +108,7 @@ namespace Utilities.SQL.ExtensionMethods
             Command.AddParameter(ID,
                 new GenericEqualityComparer<DataType>().Equals(Value, default(DataType)) ? typeof(DataType).ToDbType() : Value.GetType().ToDbType(),
                 Value, Direction);
+            return Command;
         }
 
         /// <summary>
@@ -111,7 +119,8 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="Command">Command object</param>
         /// <param name="Value">Value to add</param>
         /// <param name="Type">SQL type of the parameter</param>
-        public static void AddParameter(this DbCommand Command, string ID, DbType Type, object Value = null,
+        /// <returns>The DbCommand object</returns>
+        public static DbCommand AddParameter(this DbCommand Command, string ID, DbType Type, object Value = null,
             ParameterDirection Direction = ParameterDirection.Input)
         {
             Command.ThrowIfNull("Command");
@@ -130,6 +139,7 @@ namespace Utilities.SQL.ExtensionMethods
             if (Type != default(DbType))
                 Parameter.DbType = Type;
             Parameter.Direction = Direction;
+            return Command;
         }
 
         #endregion

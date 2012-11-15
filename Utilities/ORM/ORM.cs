@@ -92,7 +92,7 @@ namespace Utilities.ORM
         /// </summary>
         public static void Destroy()
         {
-            Utilities.SQL.MicroORM.MicroORM.ClearAllMappings();
+            Utilities.SQL.SQLHelper.ClearAllMappings();
             Reflection.AOP.AOPManager.Destroy();
             MappingManager = null;
             QueryProvider = null;

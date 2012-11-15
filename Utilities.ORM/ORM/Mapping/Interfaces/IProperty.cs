@@ -159,14 +159,14 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM</param>
-        void CascadeSave(ClassType Object, MicroORM MicroORM);
+        void CascadeSave(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Cascades the delete
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM</param>
-        void CascadeDelete(ClassType Object, MicroORM MicroORM);
+        void CascadeDelete(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Cascade the deleting of joins
@@ -174,7 +174,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM</param>
         /// <returns>Returns the list of commands</returns>
-        IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM);
+        IEnumerable<Command> CascadeJoinsDelete(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Cascade the saving of joins
@@ -182,7 +182,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">MicroORM</param>
         /// <returns>Returns the list of commands</returns>
-        IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM);
+        IEnumerable<Command> CascadeJoinsSave(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Deletes the joins
@@ -190,7 +190,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM</param>
         /// <returns>Returns the list of commands</returns>
-        IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM);
+        IEnumerable<Command> JoinsDelete(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Saves the joins
@@ -198,7 +198,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">MicroORM</param>
         /// <returns>Returns the list of commands</returns>
-        IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM);
+        IEnumerable<Command> JoinsSave(ClassType Object, SQLHelper MicroORM);
 
         #endregion
     }

@@ -68,6 +68,17 @@ namespace Utilities.SQL
             Setup(Command.SQLCommand, ConnectionUsing, Command.CommandType, DbType, Profile, Command.Parameters);
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Database">Database to use</param>
+        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
+        /// <param name="Profile">Determines if the calls should be profiled</param>
+        public SQLHelper(string Database="Default", string DbType = "System.Data.SqlClient", bool Profile = false)
+        {
+            Setup("", Database, System.Data.CommandType.Text, DbType, Profile, new List<object>());
+        }
+
         #endregion
 
         #region Properties
@@ -165,14 +176,13 @@ namespace Utilities.SQL
         /// </summary>
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
-        /// <param name="Length">Size of the string(either -1 or greater than 4000 should be used to indicate nvarchar(max))</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
         /// <returns>This</returns>
-        public virtual SQLHelper AddParameter(string ID, int Length, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
+        public virtual SQLHelper AddParameter(string ID, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
         {
             Parameters.Add(Value);
             if (ExecutableCommand != null)
-                ExecutableCommand.AddParameter(ID, Length, Value, Direction);
+                ExecutableCommand.AddParameter(ID, Value, Direction);
             return this;
         }
 
@@ -632,6 +642,7 @@ namespace Utilities.SQL
         /// <param name="CommandType">The command type of the command sent in</param>
         /// <param name="DbType">Database type, based on ADO.Net provider name</param>
         /// <param name="Profile">Determines if the commands should be profiled</param>
+        /// <param name="Parameters">Parameters used in setting up the application</param>
         private void Setup(string Command, string ConnectionUsing, CommandType CommandType, string DbType, bool Profile, List<object> Parameters)
         {
             this.Parameters = new List<object>();

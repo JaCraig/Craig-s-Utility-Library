@@ -162,14 +162,14 @@ namespace Utilities.ORM.Mapping.BaseClasses
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">ORM object</param>
-        public abstract void CascadeSave(ClassType Object, MicroORM MicroORM);
+        public abstract void CascadeSave(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Cascade delete
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">ORM object</param>
-        public abstract void CascadeDelete(ClassType Object, MicroORM MicroORM);
+        public abstract void CascadeDelete(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Cascade join delete
@@ -177,7 +177,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">ORM object</param>
         /// <returns>List of commands</returns>
-        public abstract IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM);
+        public abstract IEnumerable<Command> CascadeJoinsDelete(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Cascade join save
@@ -185,7 +185,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">ORM object</param>
         /// <returns>List of commands</returns>
-        public abstract IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM);
+        public abstract IEnumerable<Command> CascadeJoinsSave(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Join delete
@@ -193,7 +193,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">ORM object</param>
         /// <returns>List of commands</returns>
-        public abstract IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM);
+        public abstract IEnumerable<Command> JoinsDelete(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Join save
@@ -201,7 +201,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">ORM object</param>
         /// <returns>List of commands</returns>
-        public abstract IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM);
+        public abstract IEnumerable<Command> JoinsSave(ClassType Object, SQLHelper MicroORM);
 
         /// <summary>
         /// Setup load commands

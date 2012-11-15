@@ -30,6 +30,8 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Patterns;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
+using Utilities.SQL.MicroORM;
+using Utilities.SQL.MicroORM.Interfaces;
 #endregion
 
 namespace Utilities.SQL
@@ -51,17 +53,7 @@ namespace Utilities.SQL
         /// <param name="Profile">Determines if the commands should be profiled</param>
         public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DbType = "System.Data.SqlClient", bool Profile = false)
         {
-            Parameters = new List<object>();
-            this.Profile = Profile;
-            Factory = DbProviderFactories.GetFactory(DbType);
-            Connection = Factory.CreateConnection();
-            Connection.ConnectionString = ConnectionUsing;
-            _Command = Command;
-            _CommandType = CommandType;
-            ExecutableCommand = Factory.CreateCommand();
-            ExecutableCommand.CommandText = _Command;
-            ExecutableCommand.Connection = Connection;
-            ExecutableCommand.CommandType = CommandType;
+            Setup(Command, ConnectionUsing, CommandType, DbType, Profile, new List<object>());
         }
 
         /// <summary>
@@ -73,18 +65,18 @@ namespace Utilities.SQL
         /// <param name="Profile">Determines if the calls should be profiled</param>
         public SQLHelper(Command Command, string ConnectionUsing, string DbType = "System.Data.SqlClient", bool Profile = false)
         {
-            Parameters = new List<object>();
-            this.Profile = Profile;
-            Factory = DbProviderFactories.GetFactory(DbType);
-            Connection = Factory.CreateConnection();
-            Connection.ConnectionString = ConnectionUsing;
-            _Command = Command.SQLCommand;
-            _CommandType = Command.CommandType;
-            ExecutableCommand = Factory.CreateCommand();
-            ExecutableCommand.CommandText = _Command;
-            ExecutableCommand.Connection = Connection;
-            ExecutableCommand.CommandType = _CommandType;
-            AddParameter(Command.Parameters.ToArray());
+            Setup(Command.SQLCommand, ConnectionUsing, Command.CommandType, DbType, Profile, Command.Parameters);
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Database">Database to use</param>
+        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
+        /// <param name="Profile">Determines if the calls should be profiled</param>
+        public SQLHelper(string Database="Default", string DbType = "System.Data.SqlClient", bool Profile = false)
+        {
+            Setup("", Database, System.Data.CommandType.Text, DbType, Profile, new List<object>());
         }
 
         #endregion
@@ -104,22 +96,22 @@ namespace Utilities.SQL
         /// <summary>
         /// The executable command
         /// </summary>
-        protected DbCommand ExecutableCommand { get; set; }
+        protected virtual DbCommand ExecutableCommand { get; set; }
 
         /// <summary>
         /// The data reader for the query
         /// </summary>
-        protected DbDataReader Reader { get; set; }
+        protected virtual DbDataReader Reader { get; set; }
 
         /// <summary>
         /// The transaction associated with the query
         /// </summary>
-        protected DbTransaction Transaction { get; set; }
+        protected virtual DbTransaction Transaction { get; set; }
 
         /// <summary>
         /// Determines if the calls should be profiled or not
         /// </summary>
-        protected bool Profile { get; set; }
+        protected virtual bool Profile { get; set; }
 
         /// <summary>
         /// Stored procedure's name or SQL Text
@@ -142,7 +134,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Parameters that are being used in the command
         /// </summary>
-        protected List<object> Parameters { get; set; }
+        protected virtual List<object> Parameters { get; set; }
 
         /// <summary>
         /// Command Type
@@ -158,26 +150,24 @@ namespace Utilities.SQL
         }
         private CommandType _CommandType;
 
+        /// <summary>
+        /// List of database connections
+        /// </summary>
+        protected static Dictionary<string, Database> Databases = new Dictionary<string, Database>();
+
+        /// <summary>
+        /// Mappings using
+        /// </summary>
+        protected virtual List<IMapping> MappingsUsing { get; set; }
+
+        /// <summary>
+        /// Database using
+        /// </summary>
+        protected virtual string DatabaseUsing { get; set; }
+
         #endregion
 
         #region Functions
-
-        #region ChangeCommand
-
-        /// <summary>
-        /// Changes the command using the Command class
-        /// </summary>
-        /// <param name="Command">Command to use</param>
-        /// <returns>This</returns>
-        public virtual SQLHelper ChangeCommand(Command Command)
-        {
-            this.Command = Command.SQLCommand;
-            this.CommandType = Command.CommandType;
-            AddParameter(Command.Parameters.ToArray());
-            return this;
-        }
-
-        #endregion
 
         #region AddParameter
 
@@ -186,14 +176,13 @@ namespace Utilities.SQL
         /// </summary>
         /// <param name="ID">Name of the parameter</param>
         /// <param name="Value">Value to add</param>
-        /// <param name="Length">Size of the string(either -1 or greater than 4000 should be used to indicate nvarchar(max))</param>
         /// <param name="Direction">Parameter direction (defaults to input)</param>
         /// <returns>This</returns>
-        public virtual SQLHelper AddParameter(string ID, int Length, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
+        public virtual SQLHelper AddParameter(string ID, string Value = "", ParameterDirection Direction = ParameterDirection.Input)
         {
             Parameters.Add(Value);
             if (ExecutableCommand != null)
-                ExecutableCommand.AddParameter(ID, Length, Value, Direction);
+                ExecutableCommand.AddParameter(ID, Value, Direction);
             return this;
         }
 
@@ -284,6 +273,24 @@ namespace Utilities.SQL
         {
             Transaction = ExecutableCommand.BeginTransaction();
             Command = _Command;
+            return this;
+        }
+
+        #endregion
+
+        #region ChangeCommand
+
+        /// <summary>
+        /// Changes the command using the Command class
+        /// </summary>
+        /// <param name="Command">Command to use</param>
+        /// <returns>This</returns>
+        public virtual SQLHelper ChangeCommand(Command Command)
+        {
+            this.Command = Command.SQLCommand;
+            this.CommandType = Command.CommandType;
+            this.Parameters.Clear();
+            AddParameter(Command.Parameters.ToArray());
             return this;
         }
 
@@ -530,6 +537,22 @@ namespace Utilities.SQL
 
         #endregion
 
+        #region Map
+
+        /// <summary>
+        /// Returns a specific mapping
+        /// </summary>
+        /// <typeparam name="ClassType">Class type to get</typeparam>
+        /// <returns>The mapping specified</returns>
+        public Mapping<ClassType> Map<ClassType>() where ClassType : class,new()
+        {
+            if (!Databases[DatabaseUsing].Mappings.ContainsKey(typeof(ClassType)))
+                throw new ArgumentOutOfRangeException(typeof(ClassType).Name + " not found");
+            return new Mapping<ClassType>((Mapping<ClassType>)Databases[DatabaseUsing].Mappings[typeof(ClassType)], this);
+        }
+
+        #endregion
+
         #region NextResult
 
         /// <summary>
@@ -609,6 +632,121 @@ namespace Utilities.SQL
 
         #endregion
 
+        #region Setup
+
+        /// <summary>
+        /// Sets up the info
+        /// </summary>
+        /// <param name="Command">Stored procedure/SQL Text to use</param>
+        /// <param name="ConnectionUsing">The connection string to use</param>
+        /// <param name="CommandType">The command type of the command sent in</param>
+        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
+        /// <param name="Profile">Determines if the commands should be profiled</param>
+        /// <param name="Parameters">Parameters used in setting up the application</param>
+        private void Setup(string Command, string ConnectionUsing, CommandType CommandType, string DbType, bool Profile, List<object> Parameters)
+        {
+            this.Parameters = new List<object>();
+            this.MappingsUsing = new List<IMapping>();
+            if (Databases.ContainsKey(ConnectionUsing))
+            {
+                DatabaseUsing = ConnectionUsing;
+                ConnectionUsing = Databases[ConnectionUsing].Connection;
+            }
+            else
+            {
+                Database(ConnectionUsing);
+                DatabaseUsing = "Default";
+            }
+            this.Profile = Profile;
+            Factory = DbProviderFactories.GetFactory(DbType);
+            Connection = Factory.CreateConnection();
+            Connection.ConnectionString = ConnectionUsing;
+            _Command = Command;
+            _CommandType = CommandType;
+            ExecutableCommand = Factory.CreateCommand();
+            ExecutableCommand.CommandText = _Command;
+            ExecutableCommand.Connection = Connection;
+            ExecutableCommand.CommandType = CommandType;
+            AddParameter(Parameters.ToArray());
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Static Functions
+
+        #region ClearAllMappings
+
+        /// <summary>
+        /// Clears all database objects of all mappings
+        /// </summary>
+        public static void ClearAllMappings()
+        {
+            foreach (string Database in Databases.Keys)
+                ClearMappings(Database);
+        }
+
+        #endregion
+
+        #region ClearMappings
+
+        /// <summary>
+        /// Clears a database object of all mappings
+        /// </summary>
+        /// <param name="Database">Database object to clear</param>
+        public static void ClearMappings(string Database = "Default")
+        {
+            if (Databases.ContainsKey(Database))
+            {
+                foreach (Type Key in Databases[Database].Mappings.Keys)
+                    Databases[Database].Mappings[Key].Dispose();
+                Databases[Database].Mappings.Clear();
+            }
+        }
+
+        #endregion
+
+        #region Database
+
+        /// <summary>
+        /// Adds a database's info
+        /// </summary>
+        /// <param name="ConnectionString">Connection string to use for this database</param>
+        /// <param name="Name">Name to associate with the database</param>
+        public static void Database(string ConnectionString, string Name = "Default")
+        {
+            if (Databases.ContainsKey(Name))
+                Databases[Name].Connection = ConnectionString;
+            else
+                Databases.Add(Name, new Database(ConnectionString, Name));
+        }
+
+        #endregion
+
+        #region Map
+
+        /// <summary>
+        /// Creates a mapping
+        /// </summary>
+        /// <typeparam name="ClassType">Class type to map</typeparam>
+        /// <param name="TableName">Table name</param>
+        /// <param name="PrimaryKey">Primary key</param>
+        /// <param name="AutoIncrement">Auto incrementing primar key</param>
+        /// <param name="ParameterStarter">Parameter starter</param>
+        /// <param name="Database">Database to use</param>
+        /// <returns>The created mapping (or an already created one if it exists</returns>
+        public static Mapping<ClassType> Map<ClassType>(string TableName, string PrimaryKey, bool AutoIncrement = true, string ParameterStarter = "@", string Database = "Default") where ClassType : class,new()
+        {
+            if (!Databases.ContainsKey(Database))
+                Databases.Add(Database, new Database("", Database));
+            if (!Databases[Database].Mappings.ContainsKey(typeof(ClassType)))
+                Databases[Database].Mappings.Add(typeof(ClassType), new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement, ParameterStarter));
+            return (Mapping<ClassType>)Databases[Database].Mappings[typeof(ClassType)];
+        }
+
+        #endregion
+
         #endregion
 
         #region IDisposable Members
@@ -619,6 +757,10 @@ namespace Utilities.SQL
         public virtual void Dispose()
         {
             Close();
+            foreach (IMapping Mapping in MappingsUsing)
+            {
+                Mapping.Dispose();
+            }
             if (Connection != null)
             {
                 Connection.Dispose();

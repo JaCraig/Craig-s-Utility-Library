@@ -100,7 +100,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object to remove</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
-        public override IEnumerable<Command> JoinsDelete(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> JoinsDelete(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
                 return new List<Command>();
@@ -121,7 +121,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object to add</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
-        public override IEnumerable<Command> JoinsSave(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> JoinsSave(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
                 return new List<Command>();
@@ -164,7 +164,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
-        public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
                 return new List<Command>();
@@ -204,7 +204,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object to add</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
-        public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, MicroORM MicroORM)
+        public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
                 return new List<Command>();
@@ -243,7 +243,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM object</param>
-        public override void CascadeDelete(ClassType Object, MicroORM MicroORM)
+        public override void CascadeDelete(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
                 return;
@@ -269,7 +269,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM object</param>
-        public override void CascadeSave(ClassType Object, MicroORM MicroORM)
+        public override void CascadeSave(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
                 return;
