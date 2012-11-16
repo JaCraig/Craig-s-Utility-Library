@@ -56,7 +56,7 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Creation()
         {
-            Assert.DoesNotThrow(() => { Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"); });
+            Assert.DoesNotThrow(() => { Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text); });
         }
 
         [Fact]

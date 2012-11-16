@@ -32,6 +32,7 @@ using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Interfaces;
+using System.Collections.Concurrent;
 #endregion
 
 namespace Utilities.SQL
@@ -51,9 +52,11 @@ namespace Utilities.SQL
         /// <param name="CommandType">The command type of the command sent in</param>
         /// <param name="DbType">Database type, based on ADO.Net provider name</param>
         /// <param name="Profile">Determines if the commands should be profiled</param>
-        public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DbType = "System.Data.SqlClient", bool Profile = false)
+        /// <param name="DatabaseName">Database name (can be used later to pull connection information)</param>
+        public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DatabaseName = "Default",
+            string DbType = "System.Data.SqlClient", bool Profile = false)
         {
-            Setup(Command, ConnectionUsing, CommandType, DbType, Profile, new List<object>());
+            Setup(Command, ConnectionUsing, CommandType, DatabaseName, DbType, Profile, new List<object>());
         }
 
         /// <summary>
@@ -63,20 +66,41 @@ namespace Utilities.SQL
         /// <param name="ConnectionUsing">The connection string to use</param>
         /// <param name="DbType">Database type, based on ADO.Net provider name</param>
         /// <param name="Profile">Determines if the calls should be profiled</param>
-        public SQLHelper(Command Command, string ConnectionUsing, string DbType = "System.Data.SqlClient", bool Profile = false)
+        /// <param name="DatabaseName">Database name (can be used later to pull connection information)</param>
+        public SQLHelper(Command Command, string ConnectionUsing, string DatabaseName,
+            string DbType = "System.Data.SqlClient", bool Profile = false)
         {
-            Setup(Command.SQLCommand, ConnectionUsing, Command.CommandType, DbType, Profile, Command.Parameters);
+            Setup(Command.SQLCommand, ConnectionUsing, Command.CommandType, DatabaseName, DbType, Profile, Command.Parameters);
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="Command">Stored procedure/SQL Text to use</param>
+        /// <param name="CommandType">The command type of the command sent in</param>
         /// <param name="Database">Database to use</param>
-        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
-        /// <param name="Profile">Determines if the calls should be profiled</param>
-        public SQLHelper(string Database="Default", string DbType = "System.Data.SqlClient", bool Profile = false)
+        public SQLHelper(string Command, CommandType CommandType, string Database = "Default")
         {
-            Setup("", Database, System.Data.CommandType.Text, DbType, Profile, new List<object>());
+            Setup(Command, CommandType, Database, new List<object>());
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Command">Command to use</param>
+        /// <param name="Database">Database name (can be used later to pull connection information)</param>
+        public SQLHelper(Command Command, string Database = "Default")
+        {
+            Setup(Command.SQLCommand, Command.CommandType, Database, Command.Parameters);
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Database">Database name (can be used later to pull connection information)</param>
+        public SQLHelper(string Database = "Default")
+        {
+            Setup("", CommandType.Text, Database, new List<object>());
         }
 
         #endregion
@@ -107,11 +131,6 @@ namespace Utilities.SQL
         /// The transaction associated with the query
         /// </summary>
         protected virtual DbTransaction Transaction { get; set; }
-
-        /// <summary>
-        /// Determines if the calls should be profiled or not
-        /// </summary>
-        protected virtual bool Profile { get; set; }
 
         /// <summary>
         /// Stored procedure's name or SQL Text
@@ -153,7 +172,7 @@ namespace Utilities.SQL
         /// <summary>
         /// List of database connections
         /// </summary>
-        protected static Dictionary<string, Database> Databases = new Dictionary<string, Database>();
+        protected static ConcurrentDictionary<string, Database> Databases = new ConcurrentDictionary<string, Database>();
 
         /// <summary>
         /// Mappings using
@@ -347,7 +366,7 @@ namespace Utilities.SQL
         public virtual SQLHelper ExecuteBulkCopy<T>(IEnumerable<T> Data, string DestinationTable, SqlBulkCopyOptions Options = SqlBulkCopyOptions.Default)
         {
             Open();
-            if (Profile)
+            if (Databases[DatabaseUsing].Profile)
             {
                 using (new Profiler.SQLProfiler("ExecuteBulkCopy", Command, Parameters.ToArray()))
                 {
@@ -367,7 +386,7 @@ namespace Utilities.SQL
         public virtual SQLHelper ExecuteBulkCopy(DataTable Data, string DestinationTable, SqlBulkCopyOptions Options = SqlBulkCopyOptions.Default)
         {
             Open();
-            if (Profile)
+            if (Databases[DatabaseUsing].Profile)
             {
                 using (new Profiler.SQLProfiler("ExecuteBulkCopy", Command, Parameters.ToArray()))
                 {
@@ -402,7 +421,7 @@ namespace Utilities.SQL
         public virtual DataSet ExecuteDataSet()
         {
             Open();
-            if (Profile)
+            if (Databases[DatabaseUsing].Profile)
             {
                 using (new Profiler.SQLProfiler("ExecuteDataSet", Command, Parameters.ToArray()))
                 {
@@ -423,7 +442,7 @@ namespace Utilities.SQL
         public virtual int ExecuteNonQuery()
         {
             Open();
-            if (Profile)
+            if (Databases[DatabaseUsing].Profile)
             {
                 using (new Profiler.SQLProfiler("ExecuteNonQuery", Command, Parameters.ToArray()))
                 {
@@ -443,7 +462,7 @@ namespace Utilities.SQL
         public virtual SQLHelper ExecuteReader()
         {
             Open();
-            if (Profile)
+            if (Databases[DatabaseUsing].Profile)
             {
                 using (new Profiler.SQLProfiler("ExecuteReader", Command, Parameters.ToArray()))
                 {
@@ -469,7 +488,7 @@ namespace Utilities.SQL
         public virtual DataType ExecuteScalar<DataType>()
         {
             Open();
-            if (Profile)
+            if (Databases[DatabaseUsing].Profile)
             {
                 using (new Profiler.SQLProfiler("ExecuteScalar", Command, Parameters.ToArray()))
                 {
@@ -490,7 +509,7 @@ namespace Utilities.SQL
         public virtual XmlReader ExecuteXmlReader()
         {
             Open();
-            if (Profile)
+            if (Databases[DatabaseUsing].Profile)
             {
                 using (new Profiler.SQLProfiler("ExecuteXmlReader", Command, Parameters.ToArray()))
                 {
@@ -643,24 +662,29 @@ namespace Utilities.SQL
         /// <param name="DbType">Database type, based on ADO.Net provider name</param>
         /// <param name="Profile">Determines if the commands should be profiled</param>
         /// <param name="Parameters">Parameters used in setting up the application</param>
-        private void Setup(string Command, string ConnectionUsing, CommandType CommandType, string DbType, bool Profile, List<object> Parameters)
+        /// <param name="Database">Database name</param>
+        private void Setup(string Command, string ConnectionUsing, CommandType CommandType, string Database,
+            string DbType, bool Profile, List<object> Parameters)
+        {
+            Database DatabaseUsing = SQLHelper.Database(ConnectionUsing, Database, DbType, Profile);
+            Setup(Command, CommandType, DatabaseUsing.Name, Parameters);
+        }
+
+        /// <summary>
+        /// Sets up the info
+        /// </summary>
+        /// <param name="Command">Stored procedure/SQL Text to use</param>
+        /// <param name="CommandType">The command type of the command sent in</param>
+        /// <param name="Database">Database using</param>
+        /// <param name="Parameters">Parameters used in setting up the application</param>
+        private void Setup(string Command, CommandType CommandType, string Database, List<object> Parameters)
         {
             this.Parameters = new List<object>();
             this.MappingsUsing = new List<IMapping>();
-            if (Databases.ContainsKey(ConnectionUsing))
-            {
-                DatabaseUsing = ConnectionUsing;
-                ConnectionUsing = Databases[ConnectionUsing].Connection;
-            }
-            else
-            {
-                Database(ConnectionUsing);
-                DatabaseUsing = "Default";
-            }
-            this.Profile = Profile;
-            Factory = DbProviderFactories.GetFactory(DbType);
+            DatabaseUsing = Database;
+            Factory = DbProviderFactories.GetFactory(Databases[DatabaseUsing].DbType);
             Connection = Factory.CreateConnection();
-            Connection.ConnectionString = ConnectionUsing;
+            Connection.ConnectionString = Databases[DatabaseUsing].Connection;
             _Command = Command;
             _CommandType = CommandType;
             ExecutableCommand = Factory.CreateCommand();
@@ -714,12 +738,12 @@ namespace Utilities.SQL
         /// </summary>
         /// <param name="ConnectionString">Connection string to use for this database</param>
         /// <param name="Name">Name to associate with the database</param>
-        public static void Database(string ConnectionString, string Name = "Default")
+        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
+        /// <param name="Profile">Determines if the commands should be profiled</param>
+        /// <returns>The database object specified</returns>
+        public static Database Database(string ConnectionString, string Name = "Default", string DbType = "System.Data.SqlClient", bool Profile = false)
         {
-            if (Databases.ContainsKey(Name))
-                Databases[Name].Connection = ConnectionString;
-            else
-                Databases.Add(Name, new Database(ConnectionString, Name));
+            return Databases.AddOrUpdate(Name, new Database(ConnectionString, Name, DbType, Profile), (x, y) => new Database(ConnectionString, Name, DbType, Profile));
         }
 
         #endregion
@@ -727,7 +751,7 @@ namespace Utilities.SQL
         #region Map
 
         /// <summary>
-        /// Creates a mapping
+        /// Creates a mapping (or returns an already created one if it exists)
         /// </summary>
         /// <typeparam name="ClassType">Class type to map</typeparam>
         /// <param name="TableName">Table name</param>
@@ -735,14 +759,12 @@ namespace Utilities.SQL
         /// <param name="AutoIncrement">Auto incrementing primar key</param>
         /// <param name="ParameterStarter">Parameter starter</param>
         /// <param name="Database">Database to use</param>
-        /// <returns>The created mapping (or an already created one if it exists</returns>
+        /// <returns>The created mapping (or an already created one if it exists)</returns>
         public static Mapping<ClassType> Map<ClassType>(string TableName, string PrimaryKey, bool AutoIncrement = true, string ParameterStarter = "@", string Database = "Default") where ClassType : class,new()
         {
-            if (!Databases.ContainsKey(Database))
-                Databases.Add(Database, new Database("", Database));
-            if (!Databases[Database].Mappings.ContainsKey(typeof(ClassType)))
-                Databases[Database].Mappings.Add(typeof(ClassType), new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement, ParameterStarter));
-            return (Mapping<ClassType>)Databases[Database].Mappings[typeof(ClassType)];
+            return (Mapping<ClassType>)Databases.GetOrAdd(Database, new Database("", Database))
+                                                .Mappings
+                                                .GetOrAdd(typeof(ClassType), new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement, ParameterStarter));
         }
 
         #endregion

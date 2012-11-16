@@ -25,6 +25,7 @@ using System.Data;
 using System.Data.Common;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.SQL.ExtensionMethods
@@ -49,24 +50,17 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, string Value = "",
             ParameterDirection Direction = ParameterDirection.Input)
         {
-            int Length = Value.IsNullOrEmpty() ? 1 : Value.Length;
-            if (Direction == ParameterDirection.Output || Direction == ParameterDirection.InputOutput)
-                Length = -1;
-            if (Length > 4000 || Length < -1)
-                Length = -1;
             Command.ThrowIfNull("Command");
             ID.ThrowIfNullOrEmpty("ID");
-            DbParameter Parameter = null;
-            if (Command.Parameters.Contains(ID))
-                Parameter = Command.Parameters[ID];
-            else
-            {
-                Parameter = Command.CreateParameter();
-                Command.Parameters.Add(Parameter);
-            }
-            Parameter.ParameterName = ID;
-            Parameter.Value = (string.IsNullOrEmpty(Value)) ? System.DBNull.Value : (object)Value;
-            Parameter.IsNullable = (string.IsNullOrEmpty(Value));
+            int Length = Value.IsNullOrEmpty() ? 1 : Value.Length;
+            if (Direction == ParameterDirection.Output
+                || Direction == ParameterDirection.InputOutput
+                || Length > 4000
+                || Length < -1)
+                Length = -1;
+            DbParameter Parameter = Command.GetOrCreateParameter(ID);
+            Parameter.Value = Value.IsNullOrEmpty() ? System.DBNull.Value : (object)Value;
+            Parameter.IsNullable = Value.IsNullOrEmpty();
             Parameter.DbType = typeof(string).ToDbType();
             Parameter.Direction = Direction;
             Parameter.Size = Length;
@@ -87,8 +81,7 @@ namespace Utilities.SQL.ExtensionMethods
         {
             Command.ThrowIfNull("Command");
             ID.ThrowIfNullOrEmpty("ID");
-            Command.AddParameter(ID, Type.ToDbType(), Value, Direction);
-            return Command;
+            return Command.AddParameter(ID, Type.ToDbType(), Value, Direction);
         }
 
         /// <summary>
@@ -105,10 +98,9 @@ namespace Utilities.SQL.ExtensionMethods
         {
             Command.ThrowIfNull("Command");
             ID.ThrowIfNullOrEmpty("ID");
-            Command.AddParameter(ID,
+            return Command.AddParameter(ID,
                 new GenericEqualityComparer<DataType>().Equals(Value, default(DataType)) ? typeof(DataType).ToDbType() : Value.GetType().ToDbType(),
                 Value, Direction);
-            return Command;
         }
 
         /// <summary>
@@ -125,17 +117,9 @@ namespace Utilities.SQL.ExtensionMethods
         {
             Command.ThrowIfNull("Command");
             ID.ThrowIfNullOrEmpty("ID");
-            DbParameter Parameter = null;
-            if (Command.Parameters.Contains(ID))
-                Parameter = Command.Parameters[ID];
-            else
-            {
-                Parameter = Command.CreateParameter();
-                Command.Parameters.Add(Parameter);
-            }
-            Parameter.ParameterName = ID;
-            Parameter.Value = (Value == null) ? System.DBNull.Value : Value;
-            Parameter.IsNullable = (Value == null);
+            DbParameter Parameter = Command.GetOrCreateParameter(ID);
+            Parameter.Value = Value.IsNull() ? System.DBNull.Value : Value;
+            Parameter.IsNullable = Value.IsNull();
             if (Type != default(DbType))
                 Parameter.DbType = Type;
             Parameter.Direction = Direction;
@@ -170,7 +154,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand ClearParameters(this DbCommand Command)
         {
-            if (Command.IsNotNull()&&Command.Parameters.IsNotNull())
+            if (Command.IsNotNull() && Command.Parameters.IsNotNull())
                 Command.Parameters.Clear();
             return Command;
         }
@@ -248,9 +232,30 @@ namespace Utilities.SQL.ExtensionMethods
             if (Command.IsNull())
                 return Default;
             Command.Open();
-            return Command.IsNotNull() ?
-                Command.ExecuteScalar().TryTo<object, DataType>(Default) :
-                Default;
+            return Command.ExecuteScalar().TryTo<object, DataType>(Default);
+        }
+
+        #endregion
+
+        #region GetOrCreateParameter
+
+        /// <summary>
+        /// Gets a parameter or creates it, if it is not found
+        /// </summary>
+        /// <param name="ID">Name of the parameter</param>
+        /// <param name="Command">Command object</param>
+        /// <returns>The DbParameter associated with the ID</returns>
+        public static DbParameter GetOrCreateParameter(this DbCommand Command, string ID)
+        {
+            if (Command.Parameters.Contains(ID))
+                return Command.Parameters[ID];
+            else
+            {
+                DbParameter Parameter = Command.CreateParameter();
+                Parameter.ParameterName = ID;
+                Command.Parameters.Add(Parameter);
+                return Parameter;
+            }
         }
 
         #endregion

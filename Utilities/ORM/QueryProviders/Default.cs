@@ -127,7 +127,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name,Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         if (Mapping.AnyCommand == null)
                             ReturnValue = ORMObject.Map<ObjectType>().Any("*", ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
@@ -156,7 +156,7 @@ namespace Utilities.ORM.QueryProviders
             {
                 if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         ReturnValue = ORMObject.Map<ObjectType>().Any(Columns, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -183,7 +183,7 @@ namespace Utilities.ORM.QueryProviders
             {
                 if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         ReturnValue = ORMObject.Map<ObjectType>().Any(Command, CommandType, ReturnValue, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -215,7 +215,7 @@ namespace Utilities.ORM.QueryProviders
             {
                 if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Columns, Limit, OrderBy, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -245,7 +245,7 @@ namespace Utilities.ORM.QueryProviders
             {
                 if (Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType)) != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().All(Command, CommandType, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -274,7 +274,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         if (Mapping.AllCommand == null)
                         {
@@ -311,7 +311,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         System.Collections.Generic.List<Command> JoinCommands = new System.Collections.Generic.List<Command>();
                         foreach (IProperty Property in Mapping.Properties)
@@ -371,7 +371,7 @@ namespace Utilities.ORM.QueryProviders
                         && x.Name == PropertyName);
                     if (Property != null)
                     {
-                        using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                        using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                         {
                             if (Property.CommandToLoad == null)
                                 ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), Parameters);
@@ -417,7 +417,7 @@ namespace Utilities.ORM.QueryProviders
                         && x.Name == PropertyName);
                     if (Property != null)
                     {
-                        using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                        using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                         {
                             if (Property.CommandToLoad == null)
                                 ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.Map<DataType>().All("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), Parameters);
@@ -462,7 +462,7 @@ namespace Utilities.ORM.QueryProviders
                     IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Type == typeof(DataType) && x.Name == PropertyName);
                     if (Property != null)
                     {
-                        using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                        using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                         {
                             if (Property.CommandToLoad == null)
                                 ReturnValue = ORMObject.Map<DataType>().Any("*", ReturnValue, () => Manager.Create<DataType>(), Parameters);
@@ -500,7 +500,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name, Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().Paged(Columns, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -537,7 +537,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name,Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         ReturnValues = (System.Collections.Generic.List<ObjectType>)ORMObject.Map<ObjectType>().PagedCommand(Command, OrderBy, PageSize, CurrentPage, ReturnValues, () => Manager.Create<ObjectType>(), Parameters);
                     }
@@ -569,7 +569,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name,Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         return ORMObject.Map<ObjectType>().PageCount(PageSize, Parameters);
                     }
@@ -593,7 +593,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name,Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         return ORMObject.Map<ObjectType>().PageCount(Command, PageSize, Parameters);
                     }
@@ -620,7 +620,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name,Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         foreach (IProperty Property in Mapping.Properties)
                         {
@@ -708,7 +708,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name,Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         return ORMObject.Map<ObjectType>().Scalar<DataType>(Command, CommandType, Parameters);
                     }
@@ -734,7 +734,7 @@ namespace Utilities.ORM.QueryProviders
                 IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
                 if (Mapping != null)
                 {
-                    using (SQLHelper ORMObject = new SQLHelper(Database.Name,Profile: Profile))
+                    using (SQLHelper ORMObject = new SQLHelper(Database.Name))
                     {
                         return ORMObject.Map<ObjectType>().Scalar<DataType>(AggregateFunction, Parameters);
                     }

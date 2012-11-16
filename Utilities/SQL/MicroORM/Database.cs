@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using Utilities.SQL.MicroORM.Interfaces;
+using System.Collections.Concurrent;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -30,7 +31,7 @@ namespace Utilities.SQL.MicroORM
     /// <summary>
     /// Holds database information
     /// </summary>
-    public class Database
+    public class Database : IDisposable
     {
         #region Constructor
 
@@ -39,11 +40,15 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         /// <param name="Connection">Connection string</param>
         /// <param name="Name">Database name</param>
-        public Database(string Connection, string Name)
+        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
+        /// <param name="Profile">Determines if the calls should be profiled</param>
+        public Database(string Connection, string Name, string DbType = "System.Data.SqlClient", bool Profile = false)
         {
             this.Connection = Connection;
             this.Name = Name;
-            this.Mappings = new Dictionary<Type, IMapping>();
+            this.DbType = DbType;
+            this.Profile = Profile;
+            this.Mappings = new ConcurrentDictionary<Type, IMapping>();
         }
 
         #endregion
@@ -61,9 +66,34 @@ namespace Utilities.SQL.MicroORM
         public virtual string Name { get; set; }
 
         /// <summary>
+        /// Database type, based on ADO.Net provider name
+        /// </summary>
+        public virtual string DbType { get; set; }
+
+        /// <summary>
+        /// Should calls to this database be profiled?
+        /// </summary>
+        public virtual bool Profile { get; set; }
+
+        /// <summary>
         /// Contains the mappings associated with this database
         /// </summary>
-        public virtual Dictionary<Type, IMapping> Mappings { get; set; }
+        public virtual ConcurrentDictionary<Type, IMapping> Mappings { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Disposes of the object
+        /// </summary>
+        public void Dispose()
+        {
+            foreach (Type Key in Mappings.Keys)
+            {
+                Mappings[Key].Dispose();
+            }
+        }
 
         #endregion
     }

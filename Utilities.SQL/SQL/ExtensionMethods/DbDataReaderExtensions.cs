@@ -47,16 +47,12 @@ namespace Utilities.SQL.ExtensionMethods
         {
             if (Reader.IsNull())
                 return Default;
-            bool Found = false;
             for (int x = 0; x < Reader.FieldCount; ++x)
             {
                 if (Reader.GetName(x) == ID)
-                {
-                    Found = true;
-                    break;
-                }
+                    return Reader.GetParameter<DataType>(x, Default);
             }
-            return Found && Reader[ID].IsNotNull() ? Reader[ID].TryTo<object, DataType>(Default) : Default;
+            return Default;
         }
 
         /// <summary>
