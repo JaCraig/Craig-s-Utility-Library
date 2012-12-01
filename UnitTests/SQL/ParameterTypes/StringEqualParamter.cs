@@ -49,7 +49,7 @@ namespace UnitTests.SQL.ParameterTypes
             Assert.Equal(100, TestObject.Length);
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Assert.DoesNotThrow(() => TestObject.AddParameter(Helper));
+                Assert.DoesNotThrow(() => Helper.AddParameter(TestObject));
             }
         }
     }

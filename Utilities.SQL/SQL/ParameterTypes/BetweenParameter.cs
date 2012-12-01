@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using Utilities.SQL.Interfaces;
+using System.Data.Common;
+using Utilities.SQL.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL.ParameterTypes
@@ -29,7 +31,7 @@ namespace Utilities.SQL.ParameterTypes
     /// Parameter class that checks if a value is between two other values
     /// </summary>
     /// <typeparam name="DataType">Type of the parameter</typeparam>
-    public class BetweenParameter<DataType> : IParameter
+    public class BetweenParameter<DataType> : ParameterBase<DataType>
     {
         #region Constructor
 
@@ -42,6 +44,7 @@ namespace Utilities.SQL.ParameterTypes
         /// <param name="ParameterStarter">What the database expects as the
         /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
         public BetweenParameter(DataType Min,DataType Max, string ID, string ParameterStarter = "@")
+            : base(ID, Min, System.Data.ParameterDirection.Input, ParameterStarter)
         {
             this.Min = Min;
             this.Max = Max;
@@ -63,16 +66,6 @@ namespace Utilities.SQL.ParameterTypes
         /// </summary>
         public DataType Max { get; set; }
 
-        /// <summary>
-        /// Name of the parameter
-        /// </summary>
-        public string ID { get; set; }
-
-        /// <summary>
-        /// Starting string of the parameter
-        /// </summary>
-        public string ParameterStarter { get; set; }
-
         #endregion
 
         #region Functions
@@ -81,10 +74,20 @@ namespace Utilities.SQL.ParameterTypes
         /// Adds the parameter to the SQLHelper
         /// </summary>
         /// <param name="Helper">SQLHelper to add the parameter to</param>
-        public void AddParameter(SQLHelper Helper)
+        public override void AddParameter(DbCommand Helper)
         {
             Helper.AddParameter(ID + "Min", Min);
             Helper.AddParameter(ID + "Max", Max);
+        }
+
+        /// <summary>
+        /// Creates a copy of the parameter
+        /// </summary>
+        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
+        /// <returns>A copy of the parameter</returns>
+        public override IParameter CreateCopy(string Suffix)
+        {
+            return this;
         }
 
         /// <summary>

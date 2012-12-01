@@ -121,7 +121,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (Object == null)
                 return;
-            MicroORM.Map<ClassType>().Delete(Object);
+            MicroORM.Delete<ClassType>(Object);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                 if (Parameter != null)
                     Params.Add(Parameter);
             }
-            MicroORM.Map<ClassType>().Save<DataType>(Object, Params.ToArray());
+            MicroORM.Save<ClassType, DataType>(Object, Params.ToArray());
         }
 
         /// <summary>

@@ -24,6 +24,8 @@ using System;
 using System.Collections.Generic;
 using Utilities.SQL.MicroORM.Interfaces;
 using System.Collections.Concurrent;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Configuration;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -31,24 +33,49 @@ namespace Utilities.SQL.MicroORM
     /// <summary>
     /// Holds database information
     /// </summary>
-    public class Database : IDisposable
+    public class Database
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Connection">Connection string</param>
-        /// <param name="Name">Database name</param>
-        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
+        /// <param name="Connection">Connection string (if not specified, uses Name to get the connection string from the configuration manager)</param>
+        /// <param name="Name">Database name (if not specified, it uses the first connection string it finds in the configuration manager)</param>
+        /// <param name="DbType">Database type, based on ADO.Net provider name (will override if it pulls info from the configuration manager)</param>
+        /// <param name="ParameterPrefix">Parameter prefix to use (if empty, it will override with its best guess based on database type)</param>
         /// <param name="Profile">Determines if the calls should be profiled</param>
-        public Database(string Connection, string Name, string DbType = "System.Data.SqlClient", bool Profile = false)
+        /// <param name="Readable">Should this database be used to read data?</param>
+        /// <param name="Writable">Should this database be used to write data?</param>
+        public Database(string Connection, string Name, string DbType = "System.Data.SqlClient",
+                        string ParameterPrefix = "@", bool Profile = false, bool Writable = true,
+                        bool Readable = true)
         {
-            this.Connection = Connection;
-            this.Name = Name;
-            this.DbType = DbType;
+            this.Name = Name.IsNullOrEmpty() && ConfigurationManager.ConnectionStrings[0] != null ? ConfigurationManager.ConnectionStrings[0].Name : Name;
+            if (Connection.IsNullOrEmpty() && ConfigurationManager.ConnectionStrings[this.Name] != null)
+            {
+                this.Connection = ConfigurationManager.ConnectionStrings[this.Name].ConnectionString;
+                this.DbType = ConfigurationManager.ConnectionStrings[this.Name].ProviderName;
+            }
+            else
+            {
+                this.Connection = Connection;
+                this.DbType = DbType;
+            }
+            if (ParameterPrefix.IsNullOrEmpty())
+            {
+                this.ParameterPrefix = "@";
+                if (DbType.Contains("MySql"))
+                    this.ParameterPrefix = "?";
+                else if (DbType.Contains("Oracle"))
+                    this.ParameterPrefix = ":";
+            }
+            else
+                this.ParameterPrefix = ParameterPrefix;
             this.Profile = Profile;
             this.Mappings = new ConcurrentDictionary<Type, IMapping>();
+            this.Writable = Writable;
+            this.Readable = Readable;
         }
 
         #endregion
@@ -58,42 +85,42 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Connection string
         /// </summary>
-        public virtual string Connection { get; set; }
+        public virtual string Connection { get; protected set; }
 
         /// <summary>
         /// Name of the database
         /// </summary>
-        public virtual string Name { get; set; }
+        public virtual string Name { get; protected set; }
 
         /// <summary>
         /// Database type, based on ADO.Net provider name
         /// </summary>
-        public virtual string DbType { get; set; }
+        public virtual string DbType { get; protected set; }
+
+        /// <summary>
+        /// Parameter prefix that the database uses
+        /// </summary>
+        public virtual string ParameterPrefix { get; protected set; }
 
         /// <summary>
         /// Should calls to this database be profiled?
         /// </summary>
-        public virtual bool Profile { get; set; }
+        public virtual bool Profile { get; protected set; }
 
         /// <summary>
         /// Contains the mappings associated with this database
         /// </summary>
-        public virtual ConcurrentDictionary<Type, IMapping> Mappings { get; set; }
-
-        #endregion
-
-        #region Functions
+        public virtual ConcurrentDictionary<Type, IMapping> Mappings { get; protected set; }
 
         /// <summary>
-        /// Disposes of the object
+        /// Should this database be used to write data?
         /// </summary>
-        public void Dispose()
-        {
-            foreach (Type Key in Mappings.Keys)
-            {
-                Mappings[Key].Dispose();
-            }
-        }
+        public virtual bool Writable { get; protected set; }
+
+        /// <summary>
+        /// Should this database be used to read data?
+        /// </summary>
+        public virtual bool Readable { get; protected set; }
 
         #endregion
     }

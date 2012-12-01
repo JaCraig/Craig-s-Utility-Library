@@ -58,51 +58,41 @@ namespace UnitTests.SQL.MicroORM
         {
             Assert.DoesNotThrow(() =>
             {
-                using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+                Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("TestTable", "ID_");
+                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
-                    using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
-                    {
-                        using (Mapping<ObjectClass1> TestObject2 = new Mapping<ObjectClass1>(TestObject, Helper))
-                        {
-
-                        }
-                    }
+                    Mapping<ObjectClass1> TestObject2 = new Mapping<ObjectClass1>(TestObject);
                 }
-                using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("TestTable", "ID_"))
-                {
-
-                }
+                TestObject = new Mapping<ObjectClass1>("TestTable", "ID_");
             });
         }
 
         [Fact]
         public void Map()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
-            {
-                TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
-                    .Map(x => x.FloatValue, "FloatValue_")
-                    .Map(x => x.BoolValue, "BoolValue_")
-                    .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
-                Assert.Equal(6, TestObject.ParameterNames.Count());
-                Assert.NotNull(TestObject.Mappings);
-                Assert.NotNull(TestObject.Helper);
-            }
+            Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+            TestObject.Map(x => x.ID, "ID_")
+                .Map(x => x.StringValue, "StringValue_")
+                .Map(x => x.FloatValue, "FloatValue_")
+                .Map(x => x.BoolValue, "BoolValue_")
+                .Map(x => x.LongValue, "LongValue_")
+                .Map(x => x.StringMaxValue, "StringMaxValue_");
+            Assert.Equal(6, TestObject.ParameterNames.Count());
+            Assert.NotNull(TestObject.Mappings);
         }
 
         [Fact]
         public void Insert()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 Utilities.Random.Random Rand = new Utilities.Random.Random(12345);
                 ObjectClass1 TempObject=new ObjectClass1();
                 TempObject.StringValue="Test String";
@@ -110,7 +100,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.FloatValue=1234.5f;
                 TempObject.LongValue=12345;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
-                TempObject.ID = TestObject.Insert<int>(TempObject);
+                TempObject.ID = Helper2.Insert<ObjectClass1, int>(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
                     Helper.ExecuteReader();
@@ -134,14 +124,15 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Update()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 Utilities.Random.Random Rand = new Utilities.Random.Random(12346);
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test";
@@ -149,14 +140,14 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
-                TempObject.ID = TestObject.Insert<int>(TempObject);
+                TempObject.ID = Helper2.Insert<ObjectClass1, int>(TempObject);
                 Rand = new Utilities.Random.Random(12345);
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
-                TestObject.Update(TempObject);
+                Helper2.Update(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
                     Helper.ExecuteReader();
@@ -180,14 +171,15 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Save()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 Utilities.Random.Random Rand = new Utilities.Random.Random(12346);
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test";
@@ -195,14 +187,14 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
-                TestObject.Save<int>(TempObject);
+                Helper2.Save<ObjectClass1, int>(TempObject);
                 Rand = new Utilities.Random.Random(12345);
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
-                TestObject.Save<int>(TempObject);
+                Helper2.Save<ObjectClass1, int>(TempObject);
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
                     Helper.ExecuteReader();
@@ -226,14 +218,15 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Any()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 Utilities.Random.Random Rand = new Utilities.Random.Random(12345);
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test String";
@@ -242,8 +235,8 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.LongValue = 12345;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 string StringMaxValue = TempObject.StringMaxValue;
-                TestObject.Save<int>(TempObject);
-                TempObject = TestObject.Any();
+                Helper2.Save<ObjectClass1, int>(TempObject);
+                TempObject = Helper2.Any<ObjectClass1>();
                 Assert.Equal("Test String", TempObject.StringValue);
                 Assert.Equal(1234.5f, TempObject.FloatValue);
                 Assert.Equal(true, TempObject.BoolValue);
@@ -256,14 +249,15 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Scalar()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 Utilities.Random.Random Rand = new Utilities.Random.Random(12345);
                 for (int x = 0; x < 100; ++x)
                 {
@@ -274,11 +268,11 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.LongValue = 12345;
                     TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                     string StringMaxValue = TempObject.StringMaxValue;
-                    TestObject.Save<int>(TempObject);
+                    Helper2.Save<ObjectClass1, int>(TempObject);
                 }
-                int ASD = TestObject.Scalar<int>("SELECT COUNT(*) FROM TestTable", CommandType.Text);
+                int ASD = Helper2.Scalar<ObjectClass1, int>("SELECT COUNT(*) FROM TestTable", CommandType.Text);
                 Assert.Equal(100, ASD);
-                ASD = TestObject.Scalar<int>("COUNT(*)");
+                ASD = Helper2.Scalar<ObjectClass1, int>("COUNT(*)");
                 Assert.Equal(100, ASD);
             }
         }
@@ -286,14 +280,15 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void All()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 Utilities.Random.Random Rand = new Utilities.Random.Random(12345);
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test String";
@@ -301,8 +296,8 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
-                TestObject.Save<int>(TempObject);
-                IEnumerable<ObjectClass1> Objects = TestObject.All();
+                Helper2.Save<ObjectClass1, int>(TempObject);
+                IEnumerable<ObjectClass1> Objects = Helper2.All<ObjectClass1>();
                 Assert.Equal(1, Objects.Count());
                 foreach (ObjectClass1 Item in Objects)
                 {
@@ -325,8 +320,8 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                     Objects2.Add(TempObject);
                 }
-                TestObject.Save<int>(Objects2);
-                Objects = TestObject.All();
+                Helper2.Save<ObjectClass1, int>(Objects2);
+                Objects = Helper2.All<ObjectClass1>();
                 Assert.Equal(11, Objects.Count());
             }
         }
@@ -334,14 +329,15 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Paged()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 List<ObjectClass1> Objects2 = new List<ObjectClass1>();
                 Utilities.Random.Random Rand = new Utilities.Random.Random();
                 for (int x = 0; x < 115; ++x)
@@ -354,32 +350,33 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                     Objects2.Add(TempObject);
                 }
-                TestObject.Save<int>(Objects2);
-                IEnumerable<ObjectClass1> Objects = TestObject.Paged();
+                Helper2.Save<ObjectClass1, int>(Objects2);
+                IEnumerable<ObjectClass1> Objects = Helper2.Paged<ObjectClass1>();
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.Paged(CurrentPage:1);
+                Objects = Helper2.Paged<ObjectClass1>(CurrentPage: 1);
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.Paged(CurrentPage: 2);
+                Objects = Helper2.Paged<ObjectClass1>(CurrentPage: 2);
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.Paged(CurrentPage: 3);
+                Objects = Helper2.Paged<ObjectClass1>(CurrentPage: 3);
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.Paged(CurrentPage: 4);
+                Objects = Helper2.Paged<ObjectClass1>(CurrentPage: 4);
                 Assert.Equal(15, Objects.Count());
-                Assert.Equal(5, TestObject.PageCount());
+                Assert.Equal(5, Helper2.PageCount<ObjectClass1>());
             }
         }
 
         [Fact]
         public void Paged2()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 List<ObjectClass1> Objects2 = new List<ObjectClass1>();
                 Utilities.Random.Random Rand = new Utilities.Random.Random();
                 for (int x = 0; x < 115; ++x)
@@ -392,40 +389,41 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                     Objects2.Add(TempObject);
                 }
-                TestObject.Save<int>(Objects2);
-                IEnumerable<ObjectClass1> Objects = TestObject.PagedCommand("SELECT * FROM TestTable");
+                Helper2.Save<ObjectClass1, int>(Objects2);
+                IEnumerable<ObjectClass1> Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable");
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.PagedCommand("SELECT * FROM TestTable", CurrentPage: 1);
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable", CurrentPage: 1);
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.PagedCommand("SELECT * FROM TestTable", CurrentPage: 2);
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable", CurrentPage: 2);
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.PagedCommand("SELECT * FROM TestTable", CurrentPage: 3);
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable", CurrentPage: 3);
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.PagedCommand("SELECT * FROM TestTable", CurrentPage: 4);
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable", CurrentPage: 4);
                 Assert.Equal(15, Objects.Count());
-                Assert.Equal(5, TestObject.PageCount("SELECT * FROM TestTable"));
+                Assert.Equal(5, Helper2.PageCount<ObjectClass1>("SELECT * FROM TestTable"));
 
-                Objects = TestObject.PagedCommand("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 0, null, null, new EqualParameter<int>(50, "ID"));
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 0, null, null, new EqualParameter<int>(50, "ID"));
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.PagedCommand("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 1, null, null, new EqualParameter<int>(50, "ID"));
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 1, null, null, new EqualParameter<int>(50, "ID"));
                 Assert.Equal(25, Objects.Count());
-                Objects = TestObject.PagedCommand("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 2, null, null, new EqualParameter<int>(50, "ID"));
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 2, null, null, new EqualParameter<int>(50, "ID"));
                 Assert.Equal(15, Objects.Count());
-                Assert.Equal(3, TestObject.PageCount("SELECT * FROM TestTable WHERE ID_>@ID", 25, new EqualParameter<int>(50, "ID")));
+                Assert.Equal(3, Helper2.PageCount<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", 25, new EqualParameter<int>(50, "ID")));
             }
         }
 
         [Fact]
         public void Delete()
         {
-            using (Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "TestTable", "ID_"))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("","Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false",CommandType.Text))
             {
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
                 TestObject.Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_")
-                    .Map(x => x.StringMaxValue, "StringMaxValue_", -1);
+                    .Map(x => x.StringMaxValue, "StringMaxValue_");
                 Utilities.Random.Random Rand = new Utilities.Random.Random();
                 ObjectClass1 TempObject = new ObjectClass1();
                 TempObject.StringValue = "Test";
@@ -433,8 +431,8 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
-                TestObject.Save<int>(TempObject);
-                Assert.Equal(1, TestObject.Delete(TempObject));
+                Helper2.Save<ObjectClass1, int>(TempObject);
+                Assert.Equal(1, Helper2.Delete<ObjectClass1>(TempObject));
                 
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) AS ItemCount FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
                 {
@@ -453,12 +451,11 @@ namespace UnitTests.SQL.MicroORM
 
         public void Dispose()
         {
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.ExecuteNonQuery();
-                Helper.Command = "ALTER DATABASE TestDatabase SET ONLINE";
-                Helper.ExecuteNonQuery();
-                Helper.Command = "DROP DATABASE TestDatabase";
+                Helper.Batch().AddCommand("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE TestDatabase SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE TestDatabase", CommandType.Text);
                 Helper.ExecuteNonQuery();
             }
         }

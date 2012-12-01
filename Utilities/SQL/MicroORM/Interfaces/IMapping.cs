@@ -24,6 +24,7 @@ using System;
 using System.Linq.Expressions;
 using Utilities.DataTypes.Patterns;
 using Utilities.SQL.MicroORM.Enums;
+using Utilities.DataMapper;
 #endregion
 
 namespace Utilities.SQL.MicroORM.Interfaces
@@ -31,7 +32,7 @@ namespace Utilities.SQL.MicroORM.Interfaces
     /// <summary>
     /// Mapping interface
     /// </summary>
-    public interface IMapping : IDisposable
+    public interface IMapping
     {
     }
 
@@ -39,6 +40,7 @@ namespace Utilities.SQL.MicroORM.Interfaces
     /// Mapping interface
     /// </summary>
     public interface IMapping<ClassType> : IFluentInterface
+        where ClassType : class,new()
     {
         #region Functions
 
@@ -58,11 +60,10 @@ namespace Utilities.SQL.MicroORM.Interfaces
         /// </summary>
         /// <param name="Property">Property to add a mapping for</param>
         /// <param name="DatabasePropertyName">Property name</param>
-        /// <param name="Length">Max length of the string</param>
         /// <param name="Mode">This determines if the mapping should have read or write access</param>
         /// <param name="DefaultValue">Default value</param>
         /// <returns>This mapping</returns>
-        IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName = "", int Length = 64, string DefaultValue = "", Mode Mode = Mode.Read|Mode.Write);
+        IMapping<ClassType> Map(Expression<Func<ClassType, string>> Property, string DatabasePropertyName = "", string DefaultValue = "", Mode Mode = Mode.Read|Mode.Write);
 
         #endregion
     }

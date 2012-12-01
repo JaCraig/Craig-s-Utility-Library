@@ -27,6 +27,7 @@ using System.Linq.Expressions;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.Validation;
 using Utilities.SQL;
+using Utilities.SQL.MicroORM;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces

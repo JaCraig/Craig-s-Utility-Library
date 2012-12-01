@@ -177,7 +177,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                 Mode |= Mode.Read;
             if (Database.Writable)
                 Mode |= Mode.Write;
-            Mapping.Map(this.Expression, this.FieldName, this.MaxLength, DefaultValue(), Mode);
+            Mapping.Map(this.Expression, this.FieldName, DefaultValue(), Mode);
         }
 
         /// <summary>

@@ -117,12 +117,11 @@ namespace UnitTests.SQL.SQLServer
 
         public void Dispose()
         {
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.ExecuteNonQuery();
-                Helper.Command = "ALTER DATABASE TestDatabase SET ONLINE";
-                Helper.ExecuteNonQuery();
-                Helper.Command = "DROP DATABASE TestDatabase";
+                Helper.Batch().AddCommand("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE TestDatabase SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE TestDatabase", CommandType.Text);
                 Helper.ExecuteNonQuery();
             }
         }

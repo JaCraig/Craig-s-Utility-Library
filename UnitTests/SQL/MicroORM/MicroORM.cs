@@ -77,7 +77,7 @@ namespace UnitTests.SQL.MicroORM
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable","ID_")
                     .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
@@ -88,12 +88,12 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = false;
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
-                ORM.Map<ObjectClass1>().Save<int>(TempObject);
+                ORM.Save<ObjectClass1, int>(TempObject);
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
-                ORM.Map<ObjectClass1>().Save<int>(TempObject);
+                ORM.Save<ObjectClass1,int>(TempObject);
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
@@ -119,7 +119,7 @@ namespace UnitTests.SQL.MicroORM
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
                     .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
@@ -130,7 +130,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
-                TempObject.ID = ORM.Map<ObjectClass1>().Insert<int>(TempObject);
+                TempObject.ID = ORM.Insert<ObjectClass1, int>(TempObject);
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
@@ -156,7 +156,7 @@ namespace UnitTests.SQL.MicroORM
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
                     .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
@@ -169,29 +169,29 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.BoolValue = true;
                     TempObject.FloatValue = 1234.5f;
                     TempObject.LongValue = x;
-                    TempObject.ID = ORM.Map<ObjectClass1>().Insert<int>(TempObject);
+                    TempObject.ID = ORM.Insert<ObjectClass1, int>(TempObject);
                 }
             }
             using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
             {
-                ObjectClass1 TempObject = ORM.Map<ObjectClass1>().Any("*", null, null, new EqualParameter<long>(20, "LongValue_"));
+                ObjectClass1 TempObject = ORM.Any<ObjectClass1>("*", null, null, new EqualParameter<long>(20, "LongValue_"));
                 Assert.Equal(21, TempObject.ID);
                 Assert.Equal(20, TempObject.LongValue);
-                IEnumerable<ObjectClass1> TempObjects= ORM.Map<ObjectClass1>().All("*",0,"", null, null, new NotEqualParameter<long>(20, "LongValue_"));
+                IEnumerable<ObjectClass1> TempObjects= ORM.All<ObjectClass1>("*",0,"", null, null, new NotEqualParameter<long>(20, "LongValue_"));
                 Assert.Equal(29, TempObjects.Count());
-                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new BetweenParameter<long>(20, 25, "LongValue_"));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new BetweenParameter<long>(20, 25, "LongValue_"));
                 Assert.Equal(6, TempObjects.Count());
-                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new AndParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new NotEqualParameter<long>(20, "LongValue_")));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new AndParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new NotEqualParameter<long>(20, "LongValue_")));
                 Assert.Equal(5, TempObjects.Count());
-                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new OrParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new EqualParameter<long>(29, "LongValue_")));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new OrParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new EqualParameter<long>(29, "LongValue_")));
                 Assert.Equal(7, TempObjects.Count());
-                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new LikeParameter("Test%", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new LikeParameter("Test%", "StringValue_", 100));
                 Assert.Equal(30, TempObjects.Count());
-                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new LikeParameter("Test2%", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new LikeParameter("Test2%", "StringValue_", 100));
                 Assert.Equal(0, TempObjects.Count());
-                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new StringEqualParameter("Test String", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new StringEqualParameter("Test String", "StringValue_", 100));
                 Assert.Equal(30, TempObjects.Count());
-                TempObjects = ORM.Map<ObjectClass1>().All("*", 0, "", null, null, new StringNotEqualParameter("Test String", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new StringNotEqualParameter("Test String", "StringValue_", 100));
                 Assert.Equal(0, TempObjects.Count());
             }
         }
@@ -202,7 +202,7 @@ namespace UnitTests.SQL.MicroORM
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
                     .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
@@ -213,12 +213,12 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = false;
                 TempObject.FloatValue = 1.5f;
                 TempObject.LongValue = 12;
-                TempObject.ID = ORM.Map<ObjectClass1>().Insert<int>(TempObject);
+                TempObject.ID = ORM.Insert<ObjectClass1, int>(TempObject);
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
-                ORM.Map<ObjectClass1>().Update(TempObject);
+                ORM.Update<ObjectClass1>(TempObject);
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
@@ -244,7 +244,7 @@ namespace UnitTests.SQL.MicroORM
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
                     .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
@@ -255,9 +255,9 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.BoolValue = true;
                 TempObject.FloatValue = 1234.5f;
                 TempObject.LongValue = 12345;
-                ORM.Map<ObjectClass1>().Save<int>(TempObject);
+                ORM.Save<ObjectClass1,int>(TempObject);
                 TempObject = null;
-                TempObject = ORM.Map<ObjectClass1>().Any();
+                TempObject = ORM.Any<ObjectClass1>();
                 Assert.Equal("Test String", TempObject.StringValue);
                 Assert.Equal(1234.5f, TempObject.FloatValue);
                 Assert.Equal(true, TempObject.BoolValue);
@@ -272,7 +272,7 @@ namespace UnitTests.SQL.MicroORM
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
                     .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
@@ -287,10 +287,10 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue =Rand.Next();
-                    ORM.Map<ObjectClass1>().Save<int>(TempObject);
+                    ORM.Save<ObjectClass1, int>(TempObject);
                 }
                 TempObject = null;
-                IEnumerable<ObjectClass1> Objects = ORM.Map<ObjectClass1>().All();
+                IEnumerable<ObjectClass1> Objects = ORM.All<ObjectClass1>();
                 Assert.Equal(100, Objects.Count());
             }
         }
@@ -301,7 +301,7 @@ namespace UnitTests.SQL.MicroORM
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
                     .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
@@ -316,20 +316,20 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next();
-                    ORM.Map<ObjectClass1>().Save<int>(TempObject);
+                    ORM.Save<ObjectClass1, int>(TempObject);
                 }
                 TempObject = null;
-                IEnumerable<ObjectClass1> Objects = ORM.Map<ObjectClass1>().Paged();
+                IEnumerable<ObjectClass1> Objects = ORM.Paged<ObjectClass1>();
                 Assert.Equal(25, Objects.Count());
-                Objects = ORM.Map<ObjectClass1>().Paged(CurrentPage: 1);
+                Objects = ORM.Paged<ObjectClass1>(CurrentPage: 1);
                 Assert.Equal(25, Objects.Count());
-                Objects = ORM.Map<ObjectClass1>().Paged(CurrentPage: 2);
+                Objects = ORM.Paged<ObjectClass1>(CurrentPage: 2);
                 Assert.Equal(25, Objects.Count());
-                Objects = ORM.Map<ObjectClass1>().Paged(CurrentPage: 3);
+                Objects = ORM.Paged<ObjectClass1>(CurrentPage: 3);
                 Assert.Equal(25, Objects.Count());
-                Objects = ORM.Map<ObjectClass1>().Paged(CurrentPage: 4);
+                Objects = ORM.Paged<ObjectClass1>(CurrentPage: 4);
                 Assert.Equal(15, Objects.Count());
-                Assert.Equal(5, ORM.Map<ObjectClass1>().PageCount());
+                Assert.Equal(5, ORM.PageCount<ObjectClass1>());
             }
         }
 
@@ -339,7 +339,7 @@ namespace UnitTests.SQL.MicroORM
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
                     .Map(x => x.ID, "ID_")
-                    .Map(x => x.StringValue, "StringValue_", 100)
+                    .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
@@ -354,16 +354,16 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.BoolValue = Rand.Next<bool>();
                     TempObject.FloatValue = (float)Rand.NextDouble();
                     TempObject.LongValue = Rand.Next();
-                    ORM.Map<ObjectClass1>().Save<int>(TempObject);
+                    ORM.Save<ObjectClass1, int>(TempObject);
                 }
                 TempObject = null;
-                IEnumerable<ObjectClass1> Objects = ORM.Map<ObjectClass1>().All();
+                IEnumerable<ObjectClass1> Objects = ORM.All<ObjectClass1>();
                 Assert.Equal(100, Objects.Count());
                 foreach (ObjectClass1 Object in Objects)
                 {
-                    ORM.Map<ObjectClass1>().Delete(Object);
+                    ORM.Delete<ObjectClass1>(Object);
                 }
-                Objects = ORM.Map<ObjectClass1>().All();
+                Objects = ORM.All<ObjectClass1>();
                 Assert.Equal(0, Objects.Count());
             }
         }
@@ -371,12 +371,11 @@ namespace UnitTests.SQL.MicroORM
         public void Dispose()
         {
             Utilities.SQL.SQLHelper.ClearAllMappings();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.ExecuteNonQuery();
-                Helper.Command = "ALTER DATABASE TestDatabase SET ONLINE";
-                Helper.ExecuteNonQuery();
-                Helper.Command = "DROP DATABASE TestDatabase";
+                Helper.Batch().AddCommand("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE TestDatabase SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE TestDatabase", CommandType.Text);
                 Helper.ExecuteNonQuery();
             }
         }

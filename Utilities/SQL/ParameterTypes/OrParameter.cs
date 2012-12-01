@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using Utilities.SQL.Interfaces;
+using System.Data.Common;
+using Utilities.SQL.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL.ParameterTypes
@@ -28,7 +30,7 @@ namespace Utilities.SQL.ParameterTypes
     /// <summary>
     /// Parameter class that ORs two other parameters together
     /// </summary>
-    public class OrParameter : IParameter
+    public class OrParameter : ParameterBase<string>
     {
         #region Constructor
 
@@ -36,6 +38,7 @@ namespace Utilities.SQL.ParameterTypes
         /// Constructor
         /// </summary>
         public OrParameter(IParameter Left, IParameter Right)
+            : base("", "", System.Data.ParameterDirection.Input, "@")
         {
             this.Left = Left;
             this.Right = Right;
@@ -55,11 +58,6 @@ namespace Utilities.SQL.ParameterTypes
         /// </summary>
         public IParameter Right { get; set; }
 
-        /// <summary>
-        /// Not used
-        /// </summary>
-        public string ID { get { return ""; } set { } }
-
         #endregion
 
         #region Functions
@@ -68,10 +66,20 @@ namespace Utilities.SQL.ParameterTypes
         /// Adds the parameter to the SQLHelper
         /// </summary>
         /// <param name="Helper">SQLHelper to add the parameter to</param>
-        public void AddParameter(SQLHelper Helper)
+        public override void AddParameter(DbCommand Helper)
         {
             Left.AddParameter(Helper);
             Right.AddParameter(Helper);
+        }
+
+        /// <summary>
+        /// Creates a copy of the parameter
+        /// </summary>
+        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
+        /// <returns>A copy of the parameter</returns>
+        public override IParameter CreateCopy(string Suffix)
+        {
+            return this;
         }
 
         /// <summary>

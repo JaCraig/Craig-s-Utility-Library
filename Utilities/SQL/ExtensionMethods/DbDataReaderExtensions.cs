@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Data.Common;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Data;
 
 #endregion
 
@@ -30,7 +31,7 @@ namespace Utilities.SQL.ExtensionMethods
     /// <summary>
     /// Extension methods for DbDataReader objects
     /// </summary>
-    public static class DbDataReaderExtensions
+    public static class IDataReaderExtensions
     {
         #region Functions
         
@@ -43,7 +44,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="ID">Parameter name</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public static DataType GetParameter<DataType>(this DbDataReader Reader, string ID, DataType Default = default(DataType))
+        public static DataType GetParameter<DataType>(this IDataReader Reader, string ID, DataType Default = default(DataType))
         {
             if (Reader.IsNull())
                 return Default;
@@ -62,7 +63,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="Position">Position in the reader row</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public static DataType GetParameter<DataType>(this DbDataReader Reader, int Position, DataType Default = default(DataType))
+        public static DataType GetParameter<DataType>(this IDataReader Reader, int Position, DataType Default = default(DataType))
         {
             if (Reader.IsNull())
                 return Default;

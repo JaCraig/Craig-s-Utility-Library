@@ -140,7 +140,8 @@ namespace Utilities.SQL.ExtensionMethods
             if (Command.IsNull() && Command.Connection.IsNull())
                 return null;
             Command.Open();
-            return Command.Connection.BeginTransaction();
+            Command.Transaction=Command.Connection.BeginTransaction();
+            return Command.Transaction;
         }
 
         #endregion

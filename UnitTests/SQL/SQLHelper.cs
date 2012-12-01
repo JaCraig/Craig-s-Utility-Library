@@ -66,7 +66,7 @@ namespace UnitTests.SQL
         public void CommandInsert()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.SQL.Command TempCommand = new Utilities.SQL.Command("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text, "Test String", "Test String", 12345L, true, 1234.5678m, 12345.6534f, new DateTime(1999, 12, 31), TempGuid);
+            Utilities.SQL.MicroORM.Command TempCommand = new Utilities.SQL.MicroORM.Command("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text, "@", "Test String", "Test String", 12345L, true, 1234.5678m, 12345.6534f, new DateTime(1999, 12, 31), TempGuid);
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper(TempCommand, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false","Default"))
             {
                 Helper.ExecuteNonQuery();
@@ -96,7 +96,7 @@ namespace UnitTests.SQL
         public void CommandInsertNullString()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.SQL.Command TempCommand = new Utilities.SQL.Command("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text, "Test String", null, 12345, true, 1234.5678m, 12345.6534f, new DateTime(1999, 12, 31), TempGuid);
+            Utilities.SQL.MicroORM.Command TempCommand = new Utilities.SQL.MicroORM.Command("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text, "@", "Test String", null, 12345, true, 1234.5678m, 12345.6534f, new DateTime(1999, 12, 31), TempGuid);
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper(TempCommand, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "Default"))
             {
                 Helper.ExecuteNonQuery();
@@ -329,18 +329,6 @@ namespace UnitTests.SQL
             Guid TempGuid = Guid.NewGuid();
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@StringValue1,@StringValue2,@BigIntValue,@BitValue,@DecimalValue,@FloatValue,@DateTimeValue,@GUIDValue)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.BeginTransaction();
-                Helper.AddParameter<string>("@StringValue1", "Test");
-                Helper.AddParameter<string>("@StringValue2", "Test");
-                Helper.AddParameter<long>("@BigIntValue", 123);
-                Helper.AddParameter<bool>("@BitValue", false);
-                Helper.AddParameter<decimal>("@DecimalValue", 1234);
-                Helper.AddParameter<float>("@FloatValue", 12345);
-                Helper.AddParameter<Guid>("@GUIDValue", Guid.NewGuid());
-                Helper.AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 1, 1));
-                Helper.ExecuteNonQuery();
-                Helper.Rollback();
-                Helper.BeginTransaction();
                 Helper.AddParameter<string>("@StringValue1", "Test String");
                 Helper.AddParameter<string>("@StringValue2", "Test String");
                 Helper.AddParameter<long>("@BigIntValue", 12345);
@@ -350,7 +338,6 @@ namespace UnitTests.SQL
                 Helper.AddParameter<Guid>("@GUIDValue", TempGuid);
                 Helper.AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 12, 31));
                 Helper.ExecuteNonQuery();
-                Helper.Commit();
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
@@ -540,12 +527,11 @@ namespace UnitTests.SQL
 
         public void Dispose()
         {
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.ExecuteNonQuery();
-                Helper.Command = "ALTER DATABASE TestDatabase SET ONLINE";
-                Helper.ExecuteNonQuery();
-                Helper.Command = "DROP DATABASE TestDatabase";
+                Helper.Batch().AddCommand("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
+                    .AddCommand("ALTER DATABASE TestDatabase SET ONLINE", CommandType.Text)
+                    .AddCommand("DROP DATABASE TestDatabase", CommandType.Text);
                 Helper.ExecuteNonQuery();
             }
         }

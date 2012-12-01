@@ -111,6 +111,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             object CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsObject(Object);
             Commands.AddIfUnique(new Command("DELETE FROM " + TableName + " WHERE " + Mapping.TableName + Mapping.IDProperty.FieldName + "=@0",
                     CommandType.Text,
+                    "@",
                     CurrentIDParameter));
             return Commands;
         }
@@ -152,6 +153,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                     }
                     Commands.AddIfUnique(new Command("INSERT INTO " + TableName + "(" + Parameters + ") VALUES (@0,@1)",
                             CommandType.Text,
+                            "@",
                             Values));
                 }
             }

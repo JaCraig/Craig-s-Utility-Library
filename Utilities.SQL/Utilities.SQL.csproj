@@ -41,6 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -76,7 +77,13 @@
     <Compile Include="SQL\ParameterTypes\StringEqualParameter.cs" />
     <Compile Include="SQL\ParameterTypes\Interfaces\IParameter.cs" />
     <Compile Include="SQL\ParameterTypes\BetweenParameter.cs" />
-    <Compile Include="SQL\Command.cs" />
+    <Compile Include="SQL\MicroORM\BatchCommand.cs" />
+    <Compile Include="SQL\MicroORM\Command.cs" />
+    <Compile Include="SQL\MicroORM\Interfaces\IBatchCommand.cs" />
+    <Compile Include="SQL\MicroORM\Interfaces\ICommand.cs" />
+    <Compile Include="SQL\MicroORM\Parameter.cs" />
+    <Compile Include="SQL\MicroORM\StringParameter.cs" />
+    <Compile Include="SQL\ParameterTypes\BaseClasses\ParameterBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataMapper\Utilities.DataMapper.csproj">

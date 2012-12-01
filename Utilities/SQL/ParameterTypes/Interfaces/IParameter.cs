@@ -20,7 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-
+using System.Data;
+using System.Data.Common;
 #endregion
 
 namespace Utilities.SQL.Interfaces
@@ -30,22 +31,29 @@ namespace Utilities.SQL.Interfaces
     /// </summary>
     public interface IParameter
     {
-        #region Functions
-
-        /// <summary>
-        /// Adds this parameter to the SQLHelper
-        /// </summary>
-        /// <param name="Helper">SQLHelper</param>
-        void AddParameter(SQLHelper Helper);
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         /// The Name that the parameter goes by
         /// </summary>
         string ID { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Adds this parameter to the SQLHelper
+        /// </summary>
+        /// <param name="Helper">SQLHelper</param>
+        void AddParameter(DbCommand Helper);
+
+        /// <summary>
+        /// Creates a copy of the parameter
+        /// </summary>
+        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
+        /// <returns>A copy of the parameter</returns>
+        IParameter CreateCopy(string Suffix);
 
         #endregion
     }

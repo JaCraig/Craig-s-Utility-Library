@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using Utilities.SQL.Interfaces;
+using System.Data.Common;
+using Utilities.SQL.ExtensionMethods;
 #endregion
 
 namespace Utilities.SQL.ParameterTypes
@@ -29,7 +31,7 @@ namespace Utilities.SQL.ParameterTypes
     /// Parameter class that checks for inequality
     /// </summary>
     /// <typeparam name="DataType">Type of the parameter</typeparam>
-    public class NotEqualParameter<DataType> : IParameter
+    public class NotEqualParameter<DataType> : ParameterBase<DataType>
     {
         #region Constructor
 
@@ -41,30 +43,12 @@ namespace Utilities.SQL.ParameterTypes
         /// <param name="ParameterStarter">What the database expects as the
         /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
         public NotEqualParameter(DataType Value, string ID,string ParameterStarter = "@")
+            : base(ID, Value, System.Data.ParameterDirection.Input, ParameterStarter)
         {
             this.Value = Value;
             this.ID = ID;
             this.ParameterStarter = ParameterStarter;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Value of the parameter
-        /// </summary>
-        public DataType Value { get; set; }
-
-        /// <summary>
-        /// Name of the parameter
-        /// </summary>
-        public string ID { get; set; }
-
-        /// <summary>
-        /// Starting string of the parameter
-        /// </summary>
-        public string ParameterStarter { get; set; }
 
         #endregion
 
@@ -74,9 +58,19 @@ namespace Utilities.SQL.ParameterTypes
         /// Adds the parameter to the SQLHelper
         /// </summary>
         /// <param name="Helper">SQLHelper to add the parameter to</param>
-        public void AddParameter(SQLHelper Helper)
+        public override void AddParameter(DbCommand Helper)
         {
             Helper.AddParameter(ID, Value);
+        }
+
+        /// <summary>
+        /// Creates a copy of the parameter
+        /// </summary>
+        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
+        /// <returns>A copy of the parameter</returns>
+        public override IParameter CreateCopy(string Suffix)
+        {
+            return this;
         }
 
         /// <summary>

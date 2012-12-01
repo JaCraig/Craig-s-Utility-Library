@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System.Data;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.SQL.MicroORM;
 
 namespace UnitTests.SQL
 {
@@ -40,26 +41,27 @@ namespace UnitTests.SQL
         [Fact]
         public void Creation()
         {
-            Utilities.SQL.Command Object = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 0, 1, 2, 3);
+            Utilities.SQL.MicroORM.Command Object = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text, "@", 0, 1, 2, 3);
             Assert.Equal("SELECT * FROM Table", Object.SQLCommand);
             Assert.Equal(CommandType.Text, Object.CommandType);
-            Assert.Contains(0, Object.Parameters);
-            Assert.Contains(1, Object.Parameters);
-            Assert.Contains(2, Object.Parameters);
-            Assert.Contains(3, Object.Parameters);
+            Assert.Equal(4, Object.Parameters.Count);
+            Assert.Contains(new Parameter<object>("0", (object)0), Object.Parameters);
+            Assert.Contains(new Parameter<object>("1", 1), Object.Parameters);
+            Assert.Contains(new Parameter<object>("2", 2), Object.Parameters);
+            Assert.Contains(new Parameter<object>("3", 3), Object.Parameters);
         }
 
         [Fact]
         public void Equality()
         {
-            Utilities.SQL.Command Object1 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 0, 1, 2, 3);
-            Utilities.SQL.Command Object2 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 0, 1, 2, 3);
-            Utilities.SQL.Command Object3 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 0, 1, 2);
-            Utilities.SQL.Command Object4 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 0, 1);
-            Utilities.SQL.Command Object5 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 0);
-            Utilities.SQL.Command Object6 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text);
-            Utilities.SQL.Command Object7 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.StoredProcedure, 0, 1, 2, 3);
-            Utilities.SQL.Command Object8 = new Utilities.SQL.Command("SELECT * FROM Table2", CommandType.Text, 0, 1, 2, 3);
+            Utilities.SQL.MicroORM.Command Object1 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text, "@", 0, 1, 2, 3);
+            Utilities.SQL.MicroORM.Command Object2 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text, "@", 0, 1, 2, 3);
+            Utilities.SQL.MicroORM.Command Object3 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text, "@", 0, 1, 2);
+            Utilities.SQL.MicroORM.Command Object4 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text, "@", 0, 1);
+            Utilities.SQL.MicroORM.Command Object5 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text, "@", 0);
+            Utilities.SQL.MicroORM.Command Object6 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text);
+            Utilities.SQL.MicroORM.Command Object7 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.StoredProcedure, "@", 0, 1, 2, 3);
+            Utilities.SQL.MicroORM.Command Object8 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table2", CommandType.Text, "@", 0, 1, 2, 3);
             Assert.Equal(Object1, Object2);
             Assert.NotEqual(Object1, Object3);
             Assert.NotEqual(Object1, Object4);
@@ -72,8 +74,8 @@ namespace UnitTests.SQL
         [Fact]
         public void Equality2()
         {
-            Utilities.SQL.Command Object1 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 1, 1);
-            Utilities.SQL.Command Object2 = new Utilities.SQL.Command("SELECT * FROM Table", CommandType.Text, 1, 2);
+            Utilities.SQL.MicroORM.Command Object1 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text, "@", 1, 1);
+            Utilities.SQL.MicroORM.Command Object2 = new Utilities.SQL.MicroORM.Command("SELECT * FROM Table", CommandType.Text, "@", 1, 2);
             Assert.NotEqual(Object1, Object2);
         }
     }
