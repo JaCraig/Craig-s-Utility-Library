@@ -140,6 +140,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void PositionOf()
+        {
+            Assert.Equal(0, new int[] { 1, 2, 3 }.PositionOf(1));
+            Assert.Equal(1, new int[] { 1, 2, 3 }.PositionOf(2));
+            Assert.Equal(2, new int[] { 1, 2, 3 }.PositionOf(3));
+        }
+
+        [Fact]
         public void ToArray()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();

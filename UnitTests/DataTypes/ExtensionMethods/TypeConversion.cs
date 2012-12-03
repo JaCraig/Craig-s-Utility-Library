@@ -39,6 +39,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(DbType.Int32, typeof(int).ToDbType());
             Assert.Equal(DbType.String, typeof(string).ToDbType());
             Assert.Equal(DbType.Single, typeof(float).ToDbType());
+            Assert.Equal(DbType.Int32, typeof(MyEnumTest).ToDbType());
         }
 
         [Fact]
@@ -47,6 +48,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(SqlDbType.Int, typeof(int).ToSQLDbType());
             Assert.Equal(SqlDbType.NVarChar, typeof(string).ToSQLDbType());
             Assert.Equal(SqlDbType.Real, typeof(float).ToSQLDbType());
+            Assert.Equal(SqlDbType.Int, typeof(MyEnumTest).ToSQLDbType());
         }
 
         [Fact]
@@ -182,6 +184,13 @@ namespace UnitTests.DataTypes.ExtensionMethods
             ((IDictionary<string, object>)Object)["B"] = 20;
             Assert.Equal(20, Object.TryTo(new MyTestClass()).B);
         }
+    }
+
+    public enum MyEnumTest
+    {
+        Item1,
+        Item2,
+        Item3
     }
 
     public class MyTestClass:IMyTestClass

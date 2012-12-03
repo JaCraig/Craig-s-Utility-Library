@@ -336,7 +336,10 @@ namespace Utilities.SQL.MicroORM
         /// <returns>The hash code for the object</returns>
         public override int GetHashCode()
         {
-            return (SQLCommand.GetHashCode() + CommandType.GetHashCode()) % Parameters.Sum(x => x.GetHashCode());
+            int ParameterTotal = Parameters.Sum(x => x.GetHashCode());
+            if (ParameterTotal > 0)
+                return (SQLCommand.GetHashCode() + CommandType.GetHashCode()) % ParameterTotal;
+            return SQLCommand.GetHashCode() + CommandType.GetHashCode();
         }
 
         #endregion

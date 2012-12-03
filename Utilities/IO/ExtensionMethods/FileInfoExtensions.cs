@@ -105,7 +105,7 @@ namespace Utilities.IO.ExtensionMethods
             if (Location.StartsWith("~"))
             {
                 if (HttpContext.Current == null)
-                    Location = Location.Replace("~", Application.StartupPath);
+                    Location = Location.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
                 else
                     Location = HttpContext.Current.Server.MapPath(Location);
             }
@@ -144,7 +144,7 @@ namespace Utilities.IO.ExtensionMethods
             if (Location.StartsWith("~"))
             {
                 if (HttpContext.Current == null)
-                    Location = Location.Replace("~", Application.StartupPath);
+                    Location = Location.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
                 else
                     Location = HttpContext.Current.Server.MapPath(Location);
             }
@@ -294,7 +294,7 @@ namespace Utilities.IO.ExtensionMethods
             if (Location.StartsWith("~"))
             {
                 if (HttpContext.Current == null)
-                    Location = Location.Replace("~", Application.StartupPath);
+                    Location = Location.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
                 else
                     Location = HttpContext.Current.Server.MapPath(Location);
             }
@@ -313,7 +313,7 @@ namespace Utilities.IO.ExtensionMethods
             if (Location.StartsWith("~"))
             {
                 if (HttpContext.Current == null)
-                    Location = Location.Replace("~", Application.StartupPath);
+                    Location = Location.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
                 else
                     Location = HttpContext.Current.Server.MapPath(Location);
             }

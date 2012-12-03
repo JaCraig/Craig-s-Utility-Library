@@ -84,6 +84,7 @@
     <Compile Include="DataTypes\StringTemplate.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
+    <Compile Include="DataTypes\Table.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

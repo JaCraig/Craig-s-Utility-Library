@@ -36,6 +36,7 @@ using Utilities.SQL.MicroORM.Interfaces;
 using System.Collections.Concurrent;
 using Utilities.DataTypes.Comparison;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.Caching;
 #endregion
 
 namespace Utilities.SQL
@@ -150,12 +151,17 @@ namespace Utilities.SQL
         /// <summary>
         /// The data reader for the query
         /// </summary>
-        protected virtual DbDataReader Reader { get; set; }
+        protected virtual IDataReader Reader { get; set; }
 
         /// <summary>
         /// List of database connections
         /// </summary>
         protected static ConcurrentDictionary<string, Database> Databases = new ConcurrentDictionary<string, Database>();
+
+        /// <summary>
+        /// Cache that is used internally
+        /// </summary>
+        protected static Cache<int> Cache = new Cache<int>();
 
         /// <summary>
         /// Database using
@@ -1120,8 +1126,9 @@ namespace Utilities.SQL
         /// Executes the query and returns a data set
         /// </summary>
         /// <param name="CreateTransaction">Create transaction</param>
+        /// <param name="Cache">Determines if the query should be cached for future queries</param>
         /// <returns>A dataset filled with the results of the query</returns>
-        public virtual DataSet ExecuteDataSet(bool CreateTransaction = false)
+        public virtual DataSet ExecuteDataSet(bool CreateTransaction = false,bool Cache=false)
         {
             try
             {
@@ -1131,13 +1138,27 @@ namespace Utilities.SQL
                 {
                     using (new Profiler.SQLProfiler("ExecuteDataSet", Command.SQLCommand, Command.Parameters.ToArray()))
                     {
-                        ReturnValue = ExecutableCommand.ExecuteDataSet(Factory);
-                        Commit();
+                        if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
+                            ReturnValue = SQLHelper.Cache.Get<DataSet>(Command.GetHashCode());
+                        else if (ExecutableCommand.IsNotNull())
+                        {
+                            ReturnValue = ExecutableCommand.ExecuteDataSet(Factory);
+                            if (Cache)
+                                SQLHelper.Cache.Add(Command.GetHashCode(), ReturnValue);
+                            Commit();
+                        }
                         return ReturnValue;
                     }
                 }
-                ReturnValue = ExecutableCommand.ExecuteDataSet(Factory);
-                Commit();
+                if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
+                    ReturnValue = SQLHelper.Cache.Get<DataSet>(Command.GetHashCode());
+                else if (ExecutableCommand.IsNotNull())
+                {
+                    ReturnValue = ExecutableCommand.ExecuteDataSet(Factory);
+                    if (Cache)
+                        SQLHelper.Cache.Add(Command.GetHashCode(), ReturnValue);
+                    Commit();
+                }
                 return ReturnValue;
             }
             catch { Rollback(); throw; }
@@ -1184,8 +1205,9 @@ namespace Utilities.SQL
         /// Executes the stored procedure and returns a reader object
         /// </summary>
         /// <param name="CreateTransaction">Create transaction</param>
+        /// <param name="Cache">Determines if the query should be cached for future queries</param>
         /// <returns>this</returns>
-        public virtual SQLHelper ExecuteReader(bool CreateTransaction = false)
+        public virtual SQLHelper ExecuteReader(bool CreateTransaction = false, bool Cache = false)
         {
             try
             {
@@ -1194,15 +1216,35 @@ namespace Utilities.SQL
                 {
                     using (new Profiler.SQLProfiler("ExecuteReader", Command.SQLCommand, Command.Parameters.ToArray()))
                     {
-                        if (ExecutableCommand.IsNotNull())
-                            Reader = ExecutableCommand.ExecuteReader();
-                        Commit();
+                        if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
+                            Reader = new CacheTables(SQLHelper.Cache.Get<IDataReader>(Command.GetHashCode()));
+                        else if (ExecutableCommand.IsNotNull())
+                        {
+                            using (IDataReader TempReader = ExecutableCommand.ExecuteReader())
+                            {
+                                Reader = new CacheTables(TempReader);
+                                TempReader.Close();
+                            }
+                            if (Cache)
+                                SQLHelper.Cache.Add(Command.GetHashCode(), new CacheTables(Reader));
+                            Commit();
+                        }
                         return this;
                     }
                 }
-                if (ExecutableCommand.IsNotNull())
-                    Reader = ExecutableCommand.ExecuteReader();
-                Commit();
+                if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
+                    Reader = new CacheTables(SQLHelper.Cache.Get<IDataReader>(Command.GetHashCode()));
+                else if (ExecutableCommand.IsNotNull())
+                {
+                    using (DbDataReader TempReader = ExecutableCommand.ExecuteReader())
+                    {
+                        Reader = new CacheTables(TempReader);
+                        TempReader.Close();
+                    }
+                    if (Cache)
+                        SQLHelper.Cache.Add(Command.GetHashCode(), new CacheTables(Reader));
+                    Commit();
+                }
                 return this;
             }
             catch { Rollback(); throw; }
@@ -1217,8 +1259,9 @@ namespace Utilities.SQL
         /// </summary>
         /// <typeparam name="DataType">Data type to return</typeparam>
         /// <param name="CreateTransaction">Create transaction</param>
+        /// <param name="Cache">Determines if the query should be cached for future queries</param>
         /// <returns>The object of the first row and first column</returns>
-        public virtual DataType ExecuteScalar<DataType>(bool CreateTransaction=false)
+        public virtual DataType ExecuteScalar<DataType>(bool CreateTransaction = false, bool Cache = false)
         {
             try
             {
@@ -1228,13 +1271,27 @@ namespace Utilities.SQL
                 {
                     using (new Profiler.SQLProfiler("ExecuteScalar", Command.SQLCommand, Command.Parameters.ToArray()))
                     {
-                        ReturnValue = ExecutableCommand.ExecuteScalar<DataType>();
-                        Commit();
+                        if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
+                            ReturnValue = SQLHelper.Cache.Get<DataType>(Command.GetHashCode());
+                        else if (ExecutableCommand.IsNotNull())
+                        {
+                            ReturnValue = ExecutableCommand.ExecuteScalar<DataType>();
+                            if (Cache)
+                                SQLHelper.Cache.Add(Command.GetHashCode(), ReturnValue);
+                            Commit();
+                        }
                         return ReturnValue;
                     }
                 }
-                ReturnValue = ExecutableCommand.ExecuteScalar<DataType>();
-                Commit();
+                if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
+                    ReturnValue = SQLHelper.Cache.Get<DataType>(Command.GetHashCode());
+                else if (ExecutableCommand.IsNotNull())
+                {
+                    ReturnValue = ExecutableCommand.ExecuteScalar<DataType>();
+                    if (Cache)
+                        SQLHelper.Cache.Add(Command.GetHashCode(), ReturnValue);
+                    Commit();
+                }
                 return ReturnValue;
             }
             catch { Rollback(); throw; }
@@ -1353,10 +1410,6 @@ namespace Utilities.SQL
 
         #endregion
 
-        #region Public Functions
-
-        #endregion
-
         #region Private Functions
 
         #region Setup
@@ -1408,6 +1461,18 @@ namespace Utilities.SQL
         {
             foreach (string Database in Databases.Keys)
                 ClearMappings(Database);
+        }
+
+        #endregion
+
+        #region ClearCache
+
+        /// <summary>
+        /// Clears the cache
+        /// </summary>
+        public static void ClearCache()
+        {
+            Cache.Clear();
         }
 
         #endregion

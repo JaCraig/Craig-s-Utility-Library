@@ -84,6 +84,7 @@
     <Compile Include="SQL\MicroORM\Parameter.cs" />
     <Compile Include="SQL\MicroORM\StringParameter.cs" />
     <Compile Include="SQL\ParameterTypes\BaseClasses\ParameterBase.cs" />
+    <Compile Include="SQL\MicroORM\CacheTables.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataMapper\Utilities.DataMapper.csproj">

@@ -123,6 +123,63 @@ namespace UnitTests.SQL
         }
 
         [Fact]
+        public void CachedQuery()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@StringValue1,@StringValue2,@BigIntValue,@BitValue,@DecimalValue,@FloatValue,@DateTimeValue,@GUIDValue)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+                {
+                    Helper.AddParameter<string>("@StringValue1", "Test String")
+                        .AddParameter<string>("@StringValue2", "Test String")
+                        .AddParameter<long>("@BigIntValue", 12345)
+                        .AddParameter<bool>("@BitValue", true)
+                        .AddParameter<decimal>("@DecimalValue", 1234.5678m)
+                        .AddParameter<float>("@FloatValue", 12345.6534f)
+                        .AddParameter<Guid>("@GUIDValue", TempGuid)
+                        .AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 12, 31))
+                        .ExecuteNonQuery();
+                }
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader(Cache: true);
+                int Count=0;
+                while (Helper.Read())
+                {
+                    ++Count;
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue1", ""));
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue2", ""));
+                    Assert.Equal(12345, Helper.GetParameter<long>("BigIntValue", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BitValue", false));
+                    Assert.Equal(1234.5678m, Helper.GetParameter<decimal>("DecimalValue", 0));
+                    Assert.Equal(12345.6534f, Helper.GetParameter<float>("FloatValue", 0));
+                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", Guid.Empty));
+                    Assert.Equal(new DateTime(1999, 12, 31), Helper.GetParameter<DateTime>("DateTimeValue", DateTime.Now));
+                }
+                Assert.Equal(100, Count);
+            }
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            {
+                Helper.ExecuteReader(Cache: true);
+                int Count = 0;
+                while (Helper.Read())
+                {
+                    ++Count;
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue1", ""));
+                    Assert.Equal("Test String", Helper.GetParameter<string>("StringValue2", ""));
+                    Assert.Equal(12345, Helper.GetParameter<long>("BigIntValue", 0));
+                    Assert.Equal(true, Helper.GetParameter<bool>("BitValue", false));
+                    Assert.Equal(1234.5678m, Helper.GetParameter<decimal>("DecimalValue", 0));
+                    Assert.Equal(12345.6534f, Helper.GetParameter<float>("FloatValue", 0));
+                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", Guid.Empty));
+                    Assert.Equal(new DateTime(1999, 12, 31), Helper.GetParameter<DateTime>("DateTimeValue", DateTime.Now));
+                }
+                Assert.Equal(100, Count);
+            }
+        }
+
+        [Fact]
         public void Insert()
         {
             Guid TempGuid = Guid.NewGuid();
@@ -337,7 +394,7 @@ namespace UnitTests.SQL
                 Helper.AddParameter<float>("@FloatValue", 12345.6534f);
                 Helper.AddParameter<Guid>("@GUIDValue", TempGuid);
                 Helper.AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 12, 31));
-                Helper.ExecuteNonQuery();
+                Helper.ExecuteNonQuery(true);
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {

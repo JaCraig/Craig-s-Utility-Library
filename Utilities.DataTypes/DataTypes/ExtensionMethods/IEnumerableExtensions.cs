@@ -295,6 +295,32 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region PositionOf
+
+        /// <summary>
+        /// Determines the position of an object if it is present, otherwise it returns -1
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">List of objects to search</param>
+        /// <param name="Object">Object to find the position of</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is present</param>
+        /// <returns>The position of the object if it is present, otherwise -1</returns>
+        public static int PositionOf<T>(this IEnumerable<T> List, T Object, IEqualityComparer<T> EqualityComparer = null)
+        {
+            List.ThrowIfNull("List");
+            EqualityComparer = EqualityComparer.NullCheck(new GenericEqualityComparer<T>());
+            int Count = 0;
+            foreach (T Item in List)
+            {
+                if (EqualityComparer.Equals(Object, Item))
+                    return Count;
+                ++Count;
+            }
+            return -1;
+        }
+
+        #endregion
+
         #region RemoveDefaults
 
         /// <summary>

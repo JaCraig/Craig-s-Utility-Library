@@ -292,7 +292,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The corresponding DbType</returns>
         public static DbType ToDbType(this Type Type)
         {
-            if (Type == typeof(byte)) return DbType.Byte;
+            if (Type.IsEnum) return Enum.GetUnderlyingType(Type).ToDbType();
+            else if (Type == typeof(byte)) return DbType.Byte;
             else if (Type == typeof(sbyte)) return DbType.SByte;
             else if (Type == typeof(short)) return DbType.Int16;
             else if (Type == typeof(ushort)) return DbType.UInt16;

@@ -119,6 +119,7 @@
     <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
     <Compile Include="DataTypes\StringTemplate.cs" />
+    <Compile Include="DataTypes\Table.cs" />
     <Compile Include="DataTypes\TagDictionary.cs" />
     <Compile Include="DataTypes\Threading\TaskQueue.cs" />
     <Compile Include="Environment\DataTypes\User.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
     <Compile Include="SQL\MicroORM\BatchCommand.cs" />
+    <Compile Include="SQL\MicroORM\CacheTables.cs" />
     <Compile Include="SQL\MicroORM\Command.cs" />
     <Compile Include="SQL\DataClasses\Interfaces\IColumn.cs" />
     <Compile Include="SQL\ExtensionMethods\DbCommandExtensions.cs" />

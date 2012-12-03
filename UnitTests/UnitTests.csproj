@@ -91,6 +91,7 @@
     <Compile Include="DataTypes\PriorityQueue.cs" />
     <Compile Include="DataTypes\RingBuffer.cs" />
     <Compile Include="DataTypes\StringTemplate.cs" />
+    <Compile Include="DataTypes\Table.cs" />
     <Compile Include="DataTypes\TagDictionary.cs" />
     <Compile Include="DataTypes\Threading\TaskQueue.cs" />
     <Compile Include="DataTypes\Vector.cs" />

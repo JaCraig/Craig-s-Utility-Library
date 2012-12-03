@@ -45,7 +45,7 @@ namespace Utilities.Caching
         public Cache()
         {
             if (InternalCache == null)
-                InternalCache = new ConcurrentDictionary<KeyType, ICacheItem>();
+                InternalCache = new ConcurrentDictionary<KeyType, object>();
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace Utilities.Caching
         /// <summary>
         /// Internal cache
         /// </summary>
-        protected static ConcurrentDictionary<KeyType, ICacheItem> InternalCache { get; set; }
+        protected static ConcurrentDictionary<KeyType, object> InternalCache { get; set; }
 
         /// <summary>
         /// Collection of keys
@@ -101,7 +101,7 @@ namespace Utilities.Caching
         public IEnumerator<object> GetEnumerator()
         {
             foreach (KeyType Key in InternalCache.Keys)
-                yield return (object)InternalCache[Key].Value;
+                yield return (object)InternalCache[Key];
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Utilities.Caching
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             foreach (KeyType Key in InternalCache.Keys)
-                yield return InternalCache[Key].Value;
+                yield return InternalCache[Key];
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Utilities.Caching
         {
             if (Exists(Key))
             {
-                ICacheItem TempItem = null;
+                object TempItem = null;
                 InternalCache.TryRemove(Key, out TempItem);
             }
         }
@@ -152,7 +152,7 @@ namespace Utilities.Caching
         /// <param name="Value">Value</param>
         public virtual void Add(KeyType Key, object Value)
         {
-            InternalCache.AddOrUpdate(Key, new CacheItem<KeyType>(Key, Value), (x, y) => { y.Value = Value; return y; });
+            InternalCache.AddOrUpdate(Key, Value, (x, y) => Value);
         }
 
         /// <summary>
@@ -163,8 +163,8 @@ namespace Utilities.Caching
         /// <returns>The item associated with the key</returns>
         public virtual ValueType Get<ValueType>(KeyType Key)
         {
-            ICacheItem TempItem = null;
-            return InternalCache.TryGetValue(Key, out TempItem) ? TempItem.Value.TryTo(default(ValueType)) : default(ValueType);
+            object TempItem = null;
+            return InternalCache.TryGetValue(Key, out TempItem) ? TempItem.TryTo(default(ValueType)) : default(ValueType);
         }
 
         #endregion
