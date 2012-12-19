@@ -402,13 +402,13 @@ namespace UnitTests.SQL.MicroORM
                 Assert.Equal(15, Objects.Count());
                 Assert.Equal(5, Helper2.PageCount<ObjectClass1>("SELECT * FROM TestTable"));
 
-                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 0, null, null, new EqualParameter<int>(50, "ID"));
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 0, null, null, false, new EqualParameter<int>(50, "ID"));
                 Assert.Equal(25, Objects.Count());
-                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 1, null, null, new EqualParameter<int>(50, "ID"));
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 1, null, null, false, new EqualParameter<int>(50, "ID"));
                 Assert.Equal(25, Objects.Count());
-                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 2, null, null, new EqualParameter<int>(50, "ID"));
+                Objects = Helper2.PagedCommand<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", "", 25, 2, null, null, false, new EqualParameter<int>(50, "ID"));
                 Assert.Equal(15, Objects.Count());
-                Assert.Equal(3, Helper2.PageCount<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", 25, new EqualParameter<int>(50, "ID")));
+                Assert.Equal(3, Helper2.PageCount<ObjectClass1>("SELECT * FROM TestTable WHERE ID_>@ID", 25, false, new EqualParameter<int>(50, "ID")));
             }
         }
 

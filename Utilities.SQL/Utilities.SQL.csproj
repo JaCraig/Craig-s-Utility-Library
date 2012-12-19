@@ -85,8 +85,13 @@
     <Compile Include="SQL\MicroORM\StringParameter.cs" />
     <Compile Include="SQL\ParameterTypes\BaseClasses\ParameterBase.cs" />
     <Compile Include="SQL\MicroORM\CacheTables.cs" />
+    <Compile Include="SQL\SQLCommand.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Utilities.Caching\Utilities.Caching.csproj">
+      <Project>{7B063E87-B117-4427-9974-4987189075A7}</Project>
+      <Name>Utilities.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities.DataMapper\Utilities.DataMapper.csproj">
       <Project>{1EE64921-D2B8-4A7D-85E5-7F80EAF19882}</Project>
       <Name>Utilities.DataMapper</Name>

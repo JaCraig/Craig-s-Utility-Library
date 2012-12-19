@@ -237,8 +237,8 @@ namespace Utilities.SQL.MicroORM
         {
             int ParameterTotal = Parameters.Sum(x => x.GetHashCode());
             if (ParameterTotal > 0)
-                return (SQLCommand.GetHashCode() + CommandType.GetHashCode()) % ParameterTotal;
-            return SQLCommand.GetHashCode() + CommandType.GetHashCode();
+                return (SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode()) * 23 + ParameterTotal;
+            return SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode();
         }
 
         #endregion

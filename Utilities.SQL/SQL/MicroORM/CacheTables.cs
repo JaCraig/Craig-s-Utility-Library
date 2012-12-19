@@ -26,6 +26,7 @@ namespace Utilities.SQL.MicroORM
                 CacheTables Temp = Reader as CacheTables;
                 this.Tables = Temp.Tables;
                 CurrentTable = Tables[0];
+                CurrentRow = CurrentTable[0];
                 CurrentTablePosition = 0;
                 RowPosition = -1;
                 return;
@@ -37,6 +38,7 @@ namespace Utilities.SQL.MicroORM
                 Tables.Add(new Table(Reader));
             }
             CurrentTable = Tables[0];
+            CurrentRow = CurrentTable[0];
             CurrentTablePosition = 0;
             RowPosition = -1;
         }
@@ -49,6 +51,11 @@ namespace Utilities.SQL.MicroORM
         /// List of tables being held
         /// </summary>
         public System.Collections.Generic.List<Table> Tables { get; protected set; }
+
+        /// <summary>
+        /// Current row
+        /// </summary>
+        protected Row CurrentRow { get; set; }
 
         /// <summary>
         /// Current table to get info from
@@ -88,6 +95,7 @@ namespace Utilities.SQL.MicroORM
             if (Tables.Count <= CurrentTablePosition)
                 return false;
             CurrentTable = Tables[CurrentTablePosition];
+            CurrentRow = CurrentTable[0];
             return true;
         }
 
@@ -98,6 +106,7 @@ namespace Utilities.SQL.MicroORM
         public bool Read()
         {
             ++RowPosition;
+            CurrentRow = CurrentTable[RowPosition];
             return CurrentTable.Rows.Count > RowPosition;
         }
 
@@ -108,7 +117,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns>Name of the column</returns>
         public string GetName(int i)
         {
-            return CurrentTable[RowPosition].ColumnNames[i];
+            return CurrentRow.ColumnNames[i];
         }
 
         /// <summary>
@@ -118,7 +127,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns>The value at the position specified</returns>
         public object GetValue(int i)
         {
-            return CurrentTable[RowPosition][i];
+            return CurrentRow[i];
         }
 
         /// <summary>
@@ -128,7 +137,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns>The value specified</returns>
         public object this[string name]
         {
-            get { return CurrentTable[RowPosition][name]; }
+            get { return CurrentRow[name]; }
         }
 
         /// <summary>
@@ -138,7 +147,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns>The value specified</returns>
         public object this[int i]
         {
-            get { return CurrentTable[RowPosition][i]; }
+            get { return CurrentRow[i]; }
         }
 
         #endregion
@@ -201,7 +210,7 @@ namespace Utilities.SQL.MicroORM
         /// <returns></returns>
         public bool GetBoolean(int i)
         {
-            return false;
+            return false;//return CurrentTable[RowPosition]
         }
 
         /// <summary>

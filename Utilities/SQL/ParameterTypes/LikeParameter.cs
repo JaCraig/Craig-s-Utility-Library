@@ -80,7 +80,7 @@ namespace Utilities.SQL.ParameterTypes
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return this;
+            return new LikeParameter(Value, ID + Suffix, Length, ParameterStarter);
         }
 
         /// <summary>

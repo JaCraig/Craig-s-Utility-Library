@@ -215,6 +215,7 @@
     <Compile Include="SQL\ParameterTypes\OrParameter.cs" />
     <Compile Include="SQL\ParameterTypes\StringEqualParamter.cs" />
     <Compile Include="SQL\ParameterTypes\StringNotEqualParameter.cs" />
+    <Compile Include="SQL\SQLCommand.cs" />
     <Compile Include="SQL\SQLHelper.cs" />
     <Compile Include="SQL\SQLServer\SQLServer.cs" />
     <Compile Include="Validation\Rules\Between.cs" />

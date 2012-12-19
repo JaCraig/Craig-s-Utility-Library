@@ -70,7 +70,7 @@ namespace Utilities.SQL.ParameterTypes
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return this;
+            return new NotEqualParameter<DataType>(Value, ID + Suffix, ParameterStarter);
         }
 
         /// <summary>

@@ -266,6 +266,12 @@ namespace Utilities.SQL.MicroORM
             this._Parameters = new List<IParameter>();
             this._SQLCommand = "";
             int Count = 0;
+            if (Commands.Count == 1)
+            {
+                this._SQLCommand = Commands[0].SQLCommand;
+                this._Parameters = Commands[0].Parameters;
+                return;
+            }
             foreach (ICommand Command in Commands)
             {
                 if (Command.CommandType == System.Data.CommandType.Text)
@@ -338,8 +344,8 @@ namespace Utilities.SQL.MicroORM
         {
             int ParameterTotal = Parameters.Sum(x => x.GetHashCode());
             if (ParameterTotal > 0)
-                return (SQLCommand.GetHashCode() + CommandType.GetHashCode()) % ParameterTotal;
-            return SQLCommand.GetHashCode() + CommandType.GetHashCode();
+                return (SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode()) * 23 + ParameterTotal;
+            return SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode();
         }
 
         #endregion

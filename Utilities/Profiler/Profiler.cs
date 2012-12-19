@@ -189,11 +189,11 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Stop()
         {
-            if (Running)
+            if (Current.Running)
             {
-                Running = false;
-                StopWatch.Stop();
-                Times.Add(StopWatch.ElapsedTime);
+                Current.Running = false;
+                Current.StopWatch.Stop();
+                Current.Times.Add(StopWatch.ElapsedTime);
                 Current = Parent;
             }
         }
@@ -207,11 +207,14 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Start()
         {
-            if (Running)
-                Stop();
-            Running = true;
-            StopWatch.Start();
-            Current = this;
+            if (Current.Running)
+            {
+                Current.Running = false;
+                Current.StopWatch.Stop();
+                Current.Times.Add(Current.StopWatch.ElapsedTime);
+            }
+            Current.Running = true;
+            Current.StopWatch.Start();
         }
 
         #endregion
@@ -225,15 +228,26 @@ namespace Utilities.Profiler
         protected virtual void Setup(string Function = "")
         {
             this.Parent = Current;
+            Profiler Child = null;
             if (Parent != null)
-                Parent.Children.Add(this);
-            this.Function = Function;
-            Children = new List<Profiler>();
-            Times = new List<long>();
-            StopWatch = new StopWatch();
-            this.Level = Parent == null ? 0 : Parent.Level + 1;
-            this.CalledFrom = new StackTrace().GetMethods(this.GetType().Assembly).ToString<MethodBase>(x => x.DeclaringType.Name + " > " + x.Name, "<br />");
-            Running = false;
+                Child = Parent.Children.FirstOrDefault(x => x == this);
+            if (Child == null)
+            {
+                if (Parent != null)
+                    Parent.Children.Add(this);
+                this.Function = Function;
+                Children = new List<Profiler>();
+                Times = new List<long>();
+                StopWatch = new StopWatch();
+                this.Level = Parent == null ? 0 : Parent.Level + 1;
+                this.CalledFrom = new StackTrace().GetMethods(this.GetType().Assembly).ToString<MethodBase>(x => x.DeclaringType.Name + " > " + x.Name, "<br />");
+                Running = false;
+                Current = this;
+            }
+            else
+            {
+                Current = Child;
+            }
             Start();
         }
 
@@ -260,6 +274,7 @@ namespace Utilities.Profiler
         /// <returns>The root profiler</returns>
         public static Profiler StopProfiling()
         {
+            Root.Stop();
             return Root;
         }
 

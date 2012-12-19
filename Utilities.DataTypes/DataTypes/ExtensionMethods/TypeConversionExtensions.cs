@@ -498,23 +498,21 @@ namespace Utilities.DataTypes.ExtensionMethods
             {
                 if (Object.IsNull())
                     return DefaultValue;
-                if ((Object as string).IsNotNull())
-                {
-                    string ObjectValue = Object as string;
-                    if (ResultType.IsEnum)
-                        return System.Enum.Parse(ResultType, ObjectValue, true);
-                    if (ObjectValue.IsNullOrEmpty())
-                        return DefaultValue;
-                }
+                string ObjectValue = Object as string;
+                if (ObjectValue.IsNotNull() && ObjectValue.Length == 0)
+                    return DefaultValue;
+                Type ObjectType = Object.GetType();
+                if (ResultType.IsAssignableFrom(ObjectType))
+                    return Object;
+                if(ResultType.IsEnum)
+                    return System.Enum.Parse(ResultType, ObjectValue, true);
                 if ((Object as IConvertible).IsNotNull())
                     return Convert.ChangeType(Object, ResultType);
-                if (ResultType.IsAssignableFrom(Object.GetType()))
-                    return Object;
-                TypeConverter Converter = TypeDescriptor.GetConverter(Object.GetType());
+                TypeConverter Converter = TypeDescriptor.GetConverter(ObjectType);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Object, ResultType);
-                if ((Object as string).IsNotNull())
-                    return Object.ToString().TryTo<string>(ResultType, DefaultValue);
+                if (ObjectValue.IsNotNull())
+                    return ObjectValue.TryTo<string>(ResultType, DefaultValue);
             }
             catch { }
             return DefaultValue;

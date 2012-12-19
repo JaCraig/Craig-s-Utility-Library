@@ -37,6 +37,8 @@ namespace Utilities.Profiler
         /// </summary>
         public StopWatch()
         {
+            Watch = new System.Diagnostics.Stopwatch();
+            Reset();
         }
 
         #endregion
@@ -48,9 +50,16 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Start()
         {
-            StopTime = StartTime = 0;
-            Watch = new System.Diagnostics.Stopwatch();
+            Reset();
             Watch.Start();
+        }
+
+        /// <summary>
+        /// Resets the watch
+        /// </summary>
+        public virtual void Reset()
+        {
+            Watch.Reset();
         }
 
         /// <summary>
@@ -58,25 +67,13 @@ namespace Utilities.Profiler
         /// </summary>
         public virtual void Stop()
         {
-            StartTime = 0;
-            StopTime = Watch.ElapsedMilliseconds;
             Watch.Stop();
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Start time in ticks
-        /// </summary>
-        public virtual long StartTime { get; private set; }
-
-        /// <summary>
-        /// Stop time in ticks
-        /// </summary>
-        public virtual long StopTime { get; private set; }
-
+        
         /// <summary>
         /// Returns the elapsed time
         /// </summary>

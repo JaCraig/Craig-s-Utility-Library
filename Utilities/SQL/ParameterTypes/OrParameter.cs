@@ -79,7 +79,7 @@ namespace Utilities.SQL.ParameterTypes
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return this;
+            return new OrParameter(Left.CreateCopy(Suffix), Right.CreateCopy(Suffix));
         }
 
         /// <summary>

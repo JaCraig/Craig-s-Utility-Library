@@ -67,7 +67,7 @@ namespace Utilities.SQL.ExtensionMethods
         {
             if (Reader.IsNull())
                 return Default;
-            return Reader[Position].IsNotNull() ? Reader[Position].TryTo<object, DataType>(Default) : Default;
+            return Reader[Position].IsNull() ? Default : Reader[Position].TryTo<object, DataType>(Default);
         }
 
         #endregion

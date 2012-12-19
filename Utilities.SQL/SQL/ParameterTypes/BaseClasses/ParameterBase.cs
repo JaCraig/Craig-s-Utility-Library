@@ -50,7 +50,10 @@ namespace Utilities.SQL.Interfaces
             this.ID = ID;
             this.Value = Value;
             this.Direction = Direction;
-            this.DatabaseType = Value.GetType().ToDbType();
+            if (Value == null)
+                this.DatabaseType = typeof(DataType).ToDbType();
+            else
+                this.DatabaseType = Value.GetType().ToDbType();
             this.BatchID = ID;
             this.ParameterStarter = ParameterStarter;
         }
@@ -165,7 +168,7 @@ namespace Utilities.SQL.Interfaces
         /// <returns>The hash code</returns>
         public override int GetHashCode()
         {
-            return ID.GetHashCode() % Value.GetHashCode();
+            return (ID.GetHashCode() * 23 + Value.GetHashCode()) * 23 + DatabaseType.GetHashCode();
         }
 
         /// <summary>

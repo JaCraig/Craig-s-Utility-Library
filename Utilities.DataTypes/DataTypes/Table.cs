@@ -47,6 +47,12 @@ namespace Utilities.DataTypes
         {
             this.ColumnNames = (string[])ColumnNames.Clone();
             this.Rows = new List<Row>();
+            this.ColumnNameHash = new Hashtable();
+            int x = 0;
+            foreach (string ColumnName in ColumnNames)
+            {
+                this.ColumnNameHash.Add(ColumnName, x++);
+            }
         }
 
         /// <summary>
@@ -60,6 +66,12 @@ namespace Utilities.DataTypes
             {
                 this.ColumnNames[x] = Reader.GetName(x);
             }
+            this.ColumnNameHash = new Hashtable();
+            int y = 0;
+            foreach (string ColumnName in ColumnNames)
+            {
+                this.ColumnNameHash.Add(ColumnName, y++);
+            }
             this.Rows = new List<Row>();
             while (Reader.Read())
             {
@@ -68,7 +80,7 @@ namespace Utilities.DataTypes
                 {
                     Values[x] = Reader[x];
                 }
-                this.Rows.Add(new Row(this.ColumnNames, Values));
+                this.Rows.Add(new Row(this.ColumnNameHash, this.ColumnNames, Values));
             }
         }
 
@@ -80,6 +92,11 @@ namespace Utilities.DataTypes
         /// Column names for the table
         /// </summary>
         public virtual string[] ColumnNames { get; protected set; }
+
+        /// <summary>
+        /// Column Name hash table
+        /// </summary>
+        public virtual Hashtable ColumnNameHash { get; protected set; }
 
         /// <summary>
         /// Rows within the table
@@ -95,7 +112,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                return Rows[RowNumber];
+                return Rows.Count > RowNumber ? Rows[RowNumber] : null;
             }
         }
 
@@ -110,7 +127,7 @@ namespace Utilities.DataTypes
         /// <returns>This</returns>
         public virtual Table AddRow(params object[] Objects)
         {
-            this.Rows.Add(new Row(ColumnNames, Objects));
+            this.Rows.Add(new Row(ColumnNameHash, ColumnNames, Objects));
             return this;
         }
 
@@ -129,8 +146,10 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="ColumnNames">Column names</param>
         /// <param name="ColumnValues">Column values</param>
-        public Row(string[] ColumnNames, params object[] ColumnValues)
+        /// <param name="ColumnNameHash">Column name hash</param>
+        public Row(Hashtable ColumnNameHash, string[] ColumnNames, params object[] ColumnValues)
         {
+            this.ColumnNameHash = ColumnNameHash;
             this.ColumnNames = ColumnNames;
             this.ColumnValues = (object[])ColumnValues.Clone();
         }
@@ -138,6 +157,11 @@ namespace Utilities.DataTypes
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Column names
+        /// </summary>
+        public virtual Hashtable ColumnNameHash { get; protected set; }
 
         /// <summary>
         /// Column names
@@ -158,7 +182,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                int Column = ColumnNames.PositionOf(ColumnName);
+                int Column = (int)ColumnNameHash[ColumnName];//.PositionOf(ColumnName);
                 if (Column == -1)
                     throw new ArgumentOutOfRangeException(ColumnName + " is not present in the row");
                 return this[Column];

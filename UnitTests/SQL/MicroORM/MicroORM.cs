@@ -174,24 +174,24 @@ namespace UnitTests.SQL.MicroORM
             }
             using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
             {
-                ObjectClass1 TempObject = ORM.Any<ObjectClass1>("*", null, null, new EqualParameter<long>(20, "LongValue_"));
+                ObjectClass1 TempObject = ORM.Any<ObjectClass1>("*", null, null, false, new EqualParameter<long>(20, "LongValue_"));
                 Assert.Equal(21, TempObject.ID);
                 Assert.Equal(20, TempObject.LongValue);
-                IEnumerable<ObjectClass1> TempObjects= ORM.All<ObjectClass1>("*",0,"", null, null, new NotEqualParameter<long>(20, "LongValue_"));
+                IEnumerable<ObjectClass1> TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new NotEqualParameter<long>(20, "LongValue_"));
                 Assert.Equal(29, TempObjects.Count());
-                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new BetweenParameter<long>(20, 25, "LongValue_"));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new BetweenParameter<long>(20, 25, "LongValue_"));
                 Assert.Equal(6, TempObjects.Count());
-                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new AndParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new NotEqualParameter<long>(20, "LongValue_")));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new AndParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new NotEqualParameter<long>(20, "LongValue_")));
                 Assert.Equal(5, TempObjects.Count());
-                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new OrParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new EqualParameter<long>(29, "LongValue_")));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new OrParameter(new BetweenParameter<long>(20, 25, "LongValue_"), new EqualParameter<long>(29, "LongValue_")));
                 Assert.Equal(7, TempObjects.Count());
-                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new LikeParameter("Test%", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new LikeParameter("Test%", "StringValue_", 100));
                 Assert.Equal(30, TempObjects.Count());
-                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new LikeParameter("Test2%", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new LikeParameter("Test2%", "StringValue_", 100));
                 Assert.Equal(0, TempObjects.Count());
-                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new StringEqualParameter("Test String", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, false, new StringEqualParameter("Test String", "StringValue_", 100));
                 Assert.Equal(30, TempObjects.Count());
-                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null, new StringNotEqualParameter("Test String", "StringValue_", 100));
+                TempObjects = ORM.All<ObjectClass1>("*", 0, "", null, null,false, new StringNotEqualParameter("Test String", "StringValue_", 100));
                 Assert.Equal(0, TempObjects.Count());
             }
         }

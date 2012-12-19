@@ -225,6 +225,7 @@
     <Compile Include="SQL\ParameterTypes\EqualParameter.cs" />
     <Compile Include="SQL\ParameterTypes\StringNotEqualParameter.cs" />
     <Compile Include="SQL\ParameterTypes\StringEqualParameter.cs" />
+    <Compile Include="SQL\SQLCommand.cs" />
     <Compile Include="Validation\ExtensionMethods\ObjectExtensions.cs" />
     <Compile Include="Validation\Rules\Between.cs" />
     <Compile Include="Validation\Rules\Compare.cs" />

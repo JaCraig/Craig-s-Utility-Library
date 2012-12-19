@@ -596,9 +596,10 @@ namespace Utilities.SQL
         /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
         /// <param name="ObjectCreator">Function used to create the indvidual objects</param>
         /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <returns>A list of all objects that meet the specified criteria</returns>
         public virtual IEnumerable<ClassType> All<ClassType>(string Command, CommandType CommandType, IEnumerable<ClassType> Objects = null,
-                                                            Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
+                                                            Func<ClassType> ObjectCreator = null,bool Cache=false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Command.ThrowIfNullOrEmpty("Command");
@@ -607,7 +608,7 @@ namespace Utilities.SQL
             ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             this.Command = new Command(Command, CommandType, Parameters);
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
-            ExecuteReader();
+            ExecuteReader(false, Cache);
             while (Read())
             {
                 bool Add = false;
@@ -634,14 +635,15 @@ namespace Utilities.SQL
         /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
         /// <param name="ObjectCreator">Function used to create the individual objects</param>
         /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <returns>A list of all objects that meet the specified criteria</returns>
         public virtual IEnumerable<ClassType> All<ClassType>(string Columns = "*", int Limit = 0, string OrderBy = "", IEnumerable<ClassType> Objects = null,
-                                                            Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
+                                                            Func<ClassType> ObjectCreator = null, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Columns.ThrowIfNullOrEmpty("Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
-            return All(SetupSelectCommand(Columns, Limit, OrderBy, MappingUsing, Parameters), CommandType.Text, Objects, ObjectCreator, Parameters);
+            return All(SetupSelectCommand(Columns, Limit, OrderBy, MappingUsing, Parameters), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
 
         #endregion
@@ -657,13 +659,14 @@ namespace Utilities.SQL
         /// <param name="ObjectCreator">Function used to create the object if the ObjectToReturn is set to null
         /// (if set to null, it just creates a new object using the default constructor)</param>
         /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <returns>An object fitting the criteria specified or null if none are found</returns>
-        public virtual ClassType Any<ClassType>(string Columns = "*", ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null, params IParameter[] Parameters)
+        public virtual ClassType Any<ClassType>(string Columns = "*", ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Columns.ThrowIfNullOrEmpty("Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
-            return Any(SetupSelectCommand(Columns, 1, "", MappingUsing, Parameters), CommandType.Text, ObjectToReturn, ObjectCreator, Parameters);
+            return Any(SetupSelectCommand(Columns, 1, "", MappingUsing, Parameters), CommandType.Text, ObjectToReturn, ObjectCreator, Cache, Parameters);
         }
 
         /// <summary>
@@ -676,17 +679,19 @@ namespace Utilities.SQL
         /// <param name="ObjectCreator">Function used to create the object if the ObjectToReturn is set to null
         /// (if set to null, it just creates a new object using the default constructor)</param>
         /// <param name="Parameters">Parameters used to search by</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <returns>An object fitting the criteria specified or null if none are found</returns>
         public virtual ClassType Any<ClassType>(string Command, CommandType CommandType, ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null,
-                                                params IParameter[] Parameters)
+                                                bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             DatabaseUsing.Mappings.ThrowIfNull("Mappings");
             Command.ThrowIfNullOrEmpty("Command");
             ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             this.Command = new Command(Command, CommandType, Parameters);
-            Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
-            ExecuteReader();
+            Mapping<ClassType> MappingUsing = null;
+            MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
+            ExecuteReader(false, Cache);
             if (Read())
             {
                 ClassType Return = (ObjectToReturn == null) ? ObjectCreator() : ObjectToReturn;
@@ -715,7 +720,7 @@ namespace Utilities.SQL
             this.Command = new Command(Command, CommandType, DatabaseUsing.ParameterPrefix);
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             MappingUsing.Mappings.Copy(Object, this);
-            return ExecuteNonQuery();
+            return ExecuteNonQuery(true);
         }
 
         /// <summary>
@@ -744,7 +749,7 @@ namespace Utilities.SQL
             {
                 Commands.AddCommand(SetupDeleteCommand(MappingUsing), CommandType.Text, DatabaseUsing.ParameterPrefix, MappingUsing.GetPrimaryKey(Object));
             }
-            return ExecuteNonQuery();
+            return ExecuteNonQuery(true);
         }
 
         #endregion
@@ -769,7 +774,7 @@ namespace Utilities.SQL
             this.Command = new Command(Command, CommandType, Parameters);
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             MappingUsing.Mappings.Copy(Object, this);
-            return ExecuteScalar<DataType>();
+            return ExecuteScalar<DataType>(true);
         }
 
         /// <summary>
@@ -796,13 +801,14 @@ namespace Utilities.SQL
         /// </summary>
         /// <param name="PageSize">Page size</param>
         /// <param name="Parameters">Parameters to search by</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
-        public virtual int PageCount<ClassType>(int PageSize = 25, params IParameter[] Parameters)
+        public virtual int PageCount<ClassType>(int PageSize = 25, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             Command = new Command(SetupPageCountCommand(MappingUsing, PageSize, Parameters), CommandType.Text, Parameters);
-            ExecuteReader();
+            ExecuteReader(false, Cache);
             if (Read())
             {
                 int Total = GetParameter("Total", 0);
@@ -817,13 +823,14 @@ namespace Utilities.SQL
         /// <param name="PageSize">Page size</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <param name="Command">Command to get the page count of</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
-        public virtual int PageCount<ClassType>(string Command, int PageSize = 25, params IParameter[] Parameters)
+        public virtual int PageCount<ClassType>(string Command, int PageSize = 25, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             this.Command = new Command(SetupPageCountCommand(Command), CommandType.Text, Parameters);
-            ExecuteReader();
+            ExecuteReader(false, Cache);
             if (Read())
             {
                 int Total = GetParameter("Total", 0);
@@ -845,16 +852,17 @@ namespace Utilities.SQL
         /// <param name="CurrentPage">The current page (starting at 0)</param>
         /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
         /// <param name="ObjectCreator">Function used to create the individual objects (if set to null, it uses the default constructor)</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of objects that fit the specified criteria</returns>
         public virtual IEnumerable<ClassType> Paged<ClassType>(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0,
                                                                IEnumerable<ClassType> Objects = null, Func<ClassType> ObjectCreator = null,
-                                                               params IParameter[] Parameters)
+                                                               bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Columns.ThrowIfNullOrEmpty("Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
-            return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, MappingUsing, Parameters), CommandType.Text, Objects, ObjectCreator, Parameters);
+            return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, MappingUsing, Parameters), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
 
         #endregion
@@ -869,17 +877,18 @@ namespace Utilities.SQL
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">The current page (starting at 0)</param>
         /// <param name="Objects">Objects to modify/addon to (uses primary key to determine)</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <param name="ObjectCreator">Function used to create the individual objects (if set to null, it uses the default constructor)</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <returns>A list of objects that fit the specified criteria</returns>
         public virtual IEnumerable<ClassType> PagedCommand<ClassType>(string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0,
                                                                       IEnumerable<ClassType> Objects = null, Func<ClassType> ObjectCreator = null,
-                                                                      params IParameter[] Parameters)
+                                                                      bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Command.ThrowIfNullOrEmpty("Command");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
-            return All(SetupPagedCommand(Command, OrderBy, PageSize, CurrentPage, MappingUsing), CommandType.Text, Objects, ObjectCreator, Parameters);
+            return All(SetupPagedCommand(Command, OrderBy, PageSize, CurrentPage, MappingUsing), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
 
         #endregion
@@ -904,6 +913,8 @@ namespace Utilities.SQL
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             PrimaryKeyType PrimaryKeyVal = MappingUsing.GetPrimaryKey(Object).TryTo(default(PrimaryKeyType));
             GenericEqualityComparer<PrimaryKeyType> Comparer = new GenericEqualityComparer<PrimaryKeyType>();
+            IParameter Param1 = null;
+            ClassType TempVal = default(ClassType);
             if (Comparer.Equals(PrimaryKeyVal, default(PrimaryKeyType)))
             {
                 PrimaryKeyVal = Insert<ClassType, PrimaryKeyType>(Object, Parameters);
@@ -915,12 +926,11 @@ namespace Utilities.SQL
                 Update<ClassType>(Object, Parameters);
                 return;
             }
-            IParameter Param1 = null;
             if (typeof(PrimaryKeyType).IsOfType(typeof(string)))
                 Param1 = new StringParameter(MappingUsing.PrimaryKey, PrimaryKeyVal.ToString(), ParameterDirection.Input, DatabaseUsing.ParameterPrefix);
             else
                 Param1 = new Parameter<PrimaryKeyType>(MappingUsing.PrimaryKey, PrimaryKeyVal, ParameterDirection.Input, DatabaseUsing.ParameterPrefix);
-            ClassType TempVal = Any<ClassType>(MappingUsing.PrimaryKey, null, null, Param1);
+            TempVal = Any<ClassType>(MappingUsing.PrimaryKey, null, null, false, Param1);
             if (TempVal == null)
             {
                 PrimaryKeyVal = Insert<ClassType, PrimaryKeyType>(Object, Parameters);
@@ -961,15 +971,16 @@ namespace Utilities.SQL
         /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters to search by</param>
         /// <param name="Command">Command to get the page count of</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <typeparam name="DataType">Data type</typeparam>
         /// <typeparam name="ClassType">Class type</typeparam>
         /// <returns>The scalar value returned by the command</returns>
-        public virtual DataType Scalar<ClassType, DataType>(string Command, CommandType CommandType, params IParameter[] Parameters)
+        public virtual DataType Scalar<ClassType, DataType>(string Command, CommandType CommandType, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             this.Command = new Command(Command, CommandType.Text, Parameters);
-            return ExecuteScalar<DataType>();
+            return ExecuteScalar<DataType>(false, Cache);
         }
 
         /// <summary>
@@ -979,13 +990,14 @@ namespace Utilities.SQL
         /// <typeparam name="ClassType">Class type</typeparam>
         /// <param name="AggregateFunction">Aggregate function</param>
         /// <param name="Parameters">Parameters</param>
+        /// <param name="Cache">Should the item be cached</param>
         /// <returns>The scalar value returned by the command</returns>
-        public virtual DataType Scalar<ClassType, DataType>(string AggregateFunction, params IParameter[] Parameters)
+        public virtual DataType Scalar<ClassType, DataType>(string AggregateFunction, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             this.Command = new Command(SetupScalarCommand(AggregateFunction, MappingUsing, Parameters), CommandType.Text, Parameters);
-            return ExecuteScalar<DataType>();
+            return ExecuteScalar<DataType>(false, Cache);
         }
 
         #endregion
@@ -1007,7 +1019,7 @@ namespace Utilities.SQL
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             this.Command = new Command(Command, CommandType.Text, Parameters);
             MappingUsing.Mappings.Copy(Object, this);
-            return ExecuteNonQuery();
+            return ExecuteNonQuery(true);
         }
 
         /// <summary>
@@ -1128,28 +1140,30 @@ namespace Utilities.SQL
         /// <param name="CreateTransaction">Create transaction</param>
         /// <param name="Cache">Determines if the query should be cached for future queries</param>
         /// <returns>A dataset filled with the results of the query</returns>
-        public virtual DataSet ExecuteDataSet(bool CreateTransaction = false,bool Cache=false)
+        public virtual DataSet ExecuteDataSet(bool CreateTransaction = false, bool Cache = false)
+        {
+            Setup(CreateTransaction);
+            if (DatabaseUsing.Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteDataSet", Command.SQLCommand, Command.Parameters.ToArray()))
+                {
+                    return ExecuteDataSet(CreateTransaction, Cache, null);
+                }
+            }
+            return ExecuteDataSet(CreateTransaction, Cache, null);
+        }
+
+        /// <summary>
+        /// Executes the query and returns a data set
+        /// </summary>
+        /// <param name="CreateTransaction">Create transaction</param>
+        /// <param name="Cache">Determines if the query should be cached for future queries</param>
+        /// <param name="ReturnValue">DataSet</param>
+        /// <returns>A dataset filled with the results of the query</returns>
+        protected virtual DataSet ExecuteDataSet(bool CreateTransaction, bool Cache, DataSet ReturnValue)
         {
             try
             {
-                Setup(CreateTransaction);
-                DataSet ReturnValue = null;
-                if (DatabaseUsing.Profile)
-                {
-                    using (new Profiler.SQLProfiler("ExecuteDataSet", Command.SQLCommand, Command.Parameters.ToArray()))
-                    {
-                        if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
-                            ReturnValue = SQLHelper.Cache.Get<DataSet>(Command.GetHashCode());
-                        else if (ExecutableCommand.IsNotNull())
-                        {
-                            ReturnValue = ExecutableCommand.ExecuteDataSet(Factory);
-                            if (Cache)
-                                SQLHelper.Cache.Add(Command.GetHashCode(), ReturnValue);
-                            Commit();
-                        }
-                        return ReturnValue;
-                    }
-                }
                 if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
                     ReturnValue = SQLHelper.Cache.Get<DataSet>(Command.GetHashCode());
                 else if (ExecutableCommand.IsNotNull())
@@ -1173,23 +1187,31 @@ namespace Utilities.SQL
         /// </summary>
         /// <param name="CreateTransaction">Creates a transaction for this command</param>
         /// <returns>Number of rows effected</returns>
-        public virtual int ExecuteNonQuery(bool CreateTransaction=false)
+        public virtual int ExecuteNonQuery(bool CreateTransaction = false)
+        {
+            Setup(CreateTransaction);
+            if (ExecutableCommand.IsNull())
+                return 0;
+            if (DatabaseUsing.Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteNonQuery", Command.SQLCommand, Command.Parameters.ToArray()))
+                {
+                    return ExecuteNonQuery(CreateTransaction, 0);
+                }
+            }
+            return ExecuteNonQuery(CreateTransaction, 0);
+        }
+
+        /// <summary>
+        /// Executes the stored procedure as a non query
+        /// </summary>
+        /// <param name="CreateTransaction">Creates a transaction for this command</param>
+        /// <param name="ReturnValue">Not used</param>
+        /// <returns>Number of rows effected</returns>
+        protected virtual int ExecuteNonQuery(bool CreateTransaction, int ReturnValue)
         {
             try
             {
-                Setup(CreateTransaction);
-                if (ExecutableCommand.IsNull())
-                    return 0;
-                int ReturnValue = 0;
-                if (DatabaseUsing.Profile)
-                {
-                    using (new Profiler.SQLProfiler("ExecuteNonQuery", Command.SQLCommand, Command.Parameters.ToArray()))
-                    {
-                        ReturnValue = ExecutableCommand.ExecuteNonQuery();
-                        Commit();
-                        return ReturnValue;
-                    }
-                }
                 ReturnValue = ExecutableCommand.ExecuteNonQuery();
                 Commit();
                 return ReturnValue;
@@ -1209,29 +1231,28 @@ namespace Utilities.SQL
         /// <returns>this</returns>
         public virtual SQLHelper ExecuteReader(bool CreateTransaction = false, bool Cache = false)
         {
+            Setup(CreateTransaction);
+            if (DatabaseUsing.Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteReader", Command.SQLCommand, Command.Parameters.ToArray()))
+                {
+                    return ExecuteReader(CreateTransaction, Cache, false);
+                }
+            }
+            return ExecuteReader(CreateTransaction, Cache, false);
+        }
+
+        /// <summary>
+        /// Executes the stored procedure/sql command and returns a reader object
+        /// </summary>
+        /// <param name="CreateTransaction">Create transaction</param>
+        /// <param name="Cache">Determines if the query should be cached for future queries</param>
+        /// <param name="NotUsed">Not used</param>
+        /// <returns>this</returns>
+        protected virtual SQLHelper ExecuteReader(bool CreateTransaction, bool Cache,bool NotUsed)
+        {
             try
             {
-                Setup(CreateTransaction);
-                if (DatabaseUsing.Profile)
-                {
-                    using (new Profiler.SQLProfiler("ExecuteReader", Command.SQLCommand, Command.Parameters.ToArray()))
-                    {
-                        if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
-                            Reader = new CacheTables(SQLHelper.Cache.Get<IDataReader>(Command.GetHashCode()));
-                        else if (ExecutableCommand.IsNotNull())
-                        {
-                            using (IDataReader TempReader = ExecutableCommand.ExecuteReader())
-                            {
-                                Reader = new CacheTables(TempReader);
-                                TempReader.Close();
-                            }
-                            if (Cache)
-                                SQLHelper.Cache.Add(Command.GetHashCode(), new CacheTables(Reader));
-                            Commit();
-                        }
-                        return this;
-                    }
-                }
                 if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
                     Reader = new CacheTables(SQLHelper.Cache.Get<IDataReader>(Command.GetHashCode()));
                 else if (ExecutableCommand.IsNotNull())
@@ -1263,26 +1284,30 @@ namespace Utilities.SQL
         /// <returns>The object of the first row and first column</returns>
         public virtual DataType ExecuteScalar<DataType>(bool CreateTransaction = false, bool Cache = false)
         {
+            Setup(CreateTransaction);
+            if (DatabaseUsing.Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteScalar", Command.SQLCommand, Command.Parameters.ToArray()))
+                {
+                    return ExecuteScalar<DataType>(CreateTransaction, Cache, false);
+                }
+            }
+            return ExecuteScalar<DataType>(CreateTransaction, Cache, false);
+        }
+
+        /// <summary>
+        /// Executes the stored procedure as a scalar query
+        /// </summary>
+        /// <typeparam name="DataType">Data type to return</typeparam>
+        /// <param name="CreateTransaction">Create transaction</param>
+        /// <param name="Cache">Determines if the query should be cached for future queries</param>
+        /// <param name="NotUsed">Not used</param>
+        /// <returns>The object of the first row and first column</returns>
+        protected virtual DataType ExecuteScalar<DataType>(bool CreateTransaction, bool Cache,bool NotUsed)
+        {
             try
             {
-                Setup(CreateTransaction);
                 DataType ReturnValue = default(DataType);
-                if (DatabaseUsing.Profile)
-                {
-                    using (new Profiler.SQLProfiler("ExecuteScalar", Command.SQLCommand, Command.Parameters.ToArray()))
-                    {
-                        if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
-                            ReturnValue = SQLHelper.Cache.Get<DataType>(Command.GetHashCode());
-                        else if (ExecutableCommand.IsNotNull())
-                        {
-                            ReturnValue = ExecutableCommand.ExecuteScalar<DataType>();
-                            if (Cache)
-                                SQLHelper.Cache.Add(Command.GetHashCode(), ReturnValue);
-                            Commit();
-                        }
-                        return ReturnValue;
-                    }
-                }
                 if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
                     ReturnValue = SQLHelper.Cache.Get<DataType>(Command.GetHashCode());
                 else if (ExecutableCommand.IsNotNull())
@@ -1308,20 +1333,28 @@ namespace Utilities.SQL
         /// <returns>The XmlReader filled with the data from the query</returns>
         public virtual XmlReader ExecuteXmlReader(bool CreateTransaction = false)
         {
+            Setup(CreateTransaction);
+            if (DatabaseUsing.Profile)
+            {
+                using (new Profiler.SQLProfiler("ExecuteXmlReader", Command.SQLCommand, Command.Parameters.ToArray()))
+                {
+                    return ExecuteXmlReader(CreateTransaction, false);
+                }
+            }
+            return ExecuteXmlReader(CreateTransaction, false);
+        }
+
+        /// <summary>
+        /// Executes the query and returns an XmlReader
+        /// </summary>
+        /// <param name="CreateTransaction">Create transaction</param>
+        /// <param name="NotUsed">Not used</param>
+        /// <returns>The XmlReader filled with the data from the query</returns>
+        protected virtual XmlReader ExecuteXmlReader(bool CreateTransaction, bool NotUsed)
+        {
             try
             {
-                Setup(CreateTransaction);
                 XmlReader ReturnValue = null;
-                if (DatabaseUsing.Profile)
-                {
-                    using (new Profiler.SQLProfiler("ExecuteXmlReader", Command.SQLCommand, Command.Parameters.ToArray()))
-                    {
-                        if (ExecutableCommand.IsNotNull() && ExecutableCommand is SqlCommand)
-                            ReturnValue = ((SqlCommand)ExecutableCommand).ExecuteXmlReader();
-                        Commit();
-                        return ReturnValue;
-                    }
-                }
                 if (ExecutableCommand.IsNotNull() && ExecutableCommand is SqlCommand)
                     ReturnValue = ((SqlCommand)ExecutableCommand).ExecuteXmlReader();
                 Commit();
@@ -1362,25 +1395,7 @@ namespace Utilities.SQL
         }
 
         #endregion
-
-        #region Map
-
-        /// <summary>
-        /// Returns a specific mapping
-        /// </summary>
-        /// <typeparam name="ClassType">Class type to get</typeparam>
-        /// <returns>The mapping specified</returns>
-        public Mapping<ClassType> Map<ClassType>()
-            where ClassType : class,new()
-        {
-            return null;
-            //if (!Databases[DatabaseUsing].Mappings.ContainsKey(typeof(ClassType)))
-            //    throw new ArgumentOutOfRangeException(typeof(ClassType).Name + " not found");
-            //return new Mapping<ClassType>((Mapping<ClassType>)Databases[DatabaseUsing].Mappings[typeof(ClassType)], this);
-        }
-
-        #endregion
-
+        
         #region NextResult
 
         /// <summary>
@@ -1433,10 +1448,12 @@ namespace Utilities.SQL
                     ExecutableCommand.Transaction.Dispose();
                     ExecutableCommand.Transaction = null;
                 }
-                ExecutableCommand.Dispose();
-                ExecutableCommand = null;
+                ExecutableCommand.Parameters.Clear();
             }
-            ExecutableCommand = Factory.CreateCommand();
+            else
+            {
+                ExecutableCommand = Factory.CreateCommand();
+            }
             ExecutableCommand.CommandText = Command.SQLCommand;
             ExecutableCommand.Connection = Connection;
             ExecutableCommand.CommandType = Command.CommandType;
