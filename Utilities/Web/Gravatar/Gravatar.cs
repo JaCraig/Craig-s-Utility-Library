@@ -39,7 +39,7 @@ namespace Utilities.Web.Gravatar
         /// <param name="Email">Email identifier</param>
         /// <param name="AppendJPG">Should jpg be appended to the link?</param>
         /// <returns>The full path to the Gravatar image link</returns>
-        public static string GetImageLink(string Email,bool AppendJPG=false)
+        public static string GetImageLink(string Email, bool AppendJPG = false)
         {
             string Ending = AppendJPG ? ".jpg" : "";
             return "http://www.gravatar.com/avatar/" + Email.Trim().ToLower().Hash(new MD5CryptoServiceProvider()).ToLower() + Ending;

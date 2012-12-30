@@ -143,8 +143,8 @@ namespace Utilities.AI
         {
             SetATokens.ThrowIfNull("SetATokens");
             SetBTokens.ThrowIfNull("SetBTokens");
-            SetA = SetA.NullCheck(new Bag<T>());
-            SetB = SetB.NullCheck(new Bag<T>());
+            SetA = SetA.NullCheck(()=>new Bag<T>());
+            SetB = SetB.NullCheck(()=>new Bag<T>());
             SetA.Add(SetATokens);
             SetB.Add(SetBTokens);
             TotalA = SetA.Sum(x => SetA[x]);

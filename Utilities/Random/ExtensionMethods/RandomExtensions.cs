@@ -54,7 +54,7 @@ namespace Utilities.Random.ExtensionMethods
             SetupGenerators();
             if (Generator == null)
             {
-                Generators.ThrowIfFalse(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
+                Generators.ThrowIfNot(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
                 Generator = (IGenerator<T>)Generators[typeof(T)];
             }
             return Generator.Next(Random);
@@ -94,7 +94,7 @@ namespace Utilities.Random.ExtensionMethods
             SetupGenerators();
             if (Generator == null)
             {
-                Generators.ThrowIfFalse(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
+                Generators.ThrowIfNot(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
                 Generator = (IGenerator<T>)Generators[typeof(T)];
             }
             return Generator.Next(Random, Min, Max);
@@ -114,7 +114,7 @@ namespace Utilities.Random.ExtensionMethods
             SetupGenerators();
             if (Generator == null)
             {
-                Generators.ThrowIfFalse(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
+                Generators.ThrowIfNot(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
                 Generator = (IGenerator<T>)Generators[typeof(T)];
             }
             return Amount.Times(x => Generator.Next(Random));
@@ -156,7 +156,7 @@ namespace Utilities.Random.ExtensionMethods
             SetupGenerators();
             if (Generator == null)
             {
-                Generators.ThrowIfFalse(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
+                Generators.ThrowIfNot(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
                 Generator = (IGenerator<T>)Generators[typeof(T)];
             }
             return Amount.Times(x => Generator.Next(Random, Min, Max));

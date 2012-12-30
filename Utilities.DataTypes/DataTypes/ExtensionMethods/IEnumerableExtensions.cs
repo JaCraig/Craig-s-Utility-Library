@@ -308,7 +308,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static int PositionOf<T>(this IEnumerable<T> List, T Object, IEqualityComparer<T> EqualityComparer = null)
         {
             List.ThrowIfNull("List");
-            EqualityComparer = EqualityComparer.NullCheck(new GenericEqualityComparer<T>());
+            EqualityComparer = EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>());
             int Count = 0;
             foreach (T Item in List)
             {
@@ -334,7 +334,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (Value.IsNull())
                 return Value;
-            EqualityComparer=EqualityComparer.NullCheck(new GenericEqualityComparer<T>());
+            EqualityComparer=EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>());
             return Value.Where(x => !x.IsDefault(EqualityComparer));
         }
 

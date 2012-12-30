@@ -151,7 +151,12 @@
     <Compile Include="IO\Serializers\JSONSerializer.cs" />
     <Compile Include="IO\Serializers\SOAPSerializer.cs" />
     <Compile Include="IO\Serializers\XMLSerializer.cs" />
+    <Compile Include="Math\ExtensionMethods\PredicateExtensions.cs" />
     <Compile Include="Math\Fraction.cs" />
+    <Compile Include="Math\Geometry\BaseClasses\Shape.cs" />
+    <Compile Include="Math\Geometry\Circle.cs" />
+    <Compile Include="Math\Geometry\Point.cs" />
+    <Compile Include="Math\Geometry\Rectangle.cs" />
     <Compile Include="Media\Image\ExtensionMethods\BitmapExtensions.cs" />
     <Compile Include="Media\Image\ExtensionMethods\ScreenExtensions.cs" />
     <Compile Include="ORM\Database\DatabaseManager.cs" />
@@ -431,7 +436,7 @@
     <Compile Include="Validation\Rules\NotEmpty.cs" />
     <Compile Include="Web\Akismet\Akismet.cs" />
     <Compile Include="Web\Akismet\Comment.cs" />
-    <Compile Include="Web\Bing\Bing.cs" />
+    <Compile Include="Web\Email\SMTP\AppointmentSender.cs" />
     <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\HTTPRequestExtensions.cs" />
     <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
@@ -450,10 +455,7 @@
     <Compile Include="Web\Google\Interfaces\ILocation.cs" />
     <Compile Include="Web\Google\StaticMaps\Map.cs" />
     <Compile Include="Web\Gravatar\Gravatar.cs" />
-    <Compile Include="Web\OAuth\OAuth.cs" />
-    <Compile Include="Web\Craigslist\Craigslist.cs" />
     <Compile Include="FileFormats\CSV\CSV.cs" />
-    <Compile Include="Web\Ebay\Ebay.cs" />
     <Compile Include="Web\Email\SMTP\EmailSender.cs" />
     <Compile Include="Web\Email\Message.cs" />
     <Compile Include="Web\Email\MIME\Attribute.cs" />
@@ -477,12 +479,9 @@
     <Compile Include="Web\Email\Pop3\Pop3Exception.cs" />
     <Compile Include="Encryption\RSAEncryption.cs" />
     <Compile Include="Environment\Environment.cs" />
-    <Compile Include="Exchange\Appointment.cs" />
-    <Compile Include="Exchange\Exchange.cs" />
     <Compile Include="FileFormats\VCalendar.cs" />
     <Compile Include="FileFormats\VCard.cs" />
     <Compile Include="FileFormats\INI\INI.cs" />
-    <Compile Include="Web\Hulu\Hulu.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Media\Image\Filter.cs" />
@@ -494,19 +493,6 @@
     <Compile Include="FileFormats\OPMLHelper\Head.cs" />
     <Compile Include="FileFormats\OPMLHelper\OPML.cs" />
     <Compile Include="FileFormats\OPMLHelper\Outline.cs" />
-    <Compile Include="Web\Netflix\BoxArt.cs" />
-    <Compile Include="Web\Netflix\Netflix.cs" />
-    <Compile Include="Web\Netflix\People.cs" />
-    <Compile Include="Web\Netflix\Person.cs" />
-    <Compile Include="Web\Netflix\Title.cs" />
-    <Compile Include="Web\Netflix\TitleInformation.cs" />
-    <Compile Include="Web\Netflix\Titles.cs" />
-    <Compile Include="Web\OpenID\Extensions\AttributeExchange.cs" />
-    <Compile Include="Web\OpenID\Extensions\Enums\Attributes.cs" />
-    <Compile Include="Web\OpenID\Extensions\Interfaces\IExtension.cs" />
-    <Compile Include="Web\OpenID\GenericProvider.cs" />
-    <Compile Include="Web\OpenID\OpenID.cs" />
-    <Compile Include="Web\OpenSearch\OpenSearch.cs" />
     <Compile Include="Web\PingBack\Manager.cs" />
     <Compile Include="Web\PingBack\PingBack.cs" />
     <Compile Include="Web\PingBack\TrackBack.cs" />
@@ -523,7 +509,6 @@
     <Compile Include="FileFormats\RSSHelper\RSS.cs" />
     <Compile Include="Web\Ping\Ping.cs" />
     <Compile Include="Web\REST\REST.cs" />
-    <Compile Include="Web\Twitter\Twitter.cs" />
     <Compile Include="Web\WebBrowserHelper\WebBrowserHelper.cs" />
     <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
     <Compile Include="FileFormats\XFN\People.cs" />
@@ -551,7 +536,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Math\Geometry\ExtensionMethods\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)\UtilitiesSplitter\bin\Debug\UtilitiesSplitter.exe</PostBuildEvent>

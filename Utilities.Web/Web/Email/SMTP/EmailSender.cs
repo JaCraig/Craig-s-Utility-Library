@@ -24,7 +24,8 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading;
-
+using Utilities.DataTypes.ExtensionMethods;
+using System;
 #endregion
 
 namespace Utilities.Web.Email.SMTP
@@ -32,7 +33,7 @@ namespace Utilities.Web.Email.SMTP
     /// <summary>
     /// Utility for sending an email
     /// </summary>
-    public class EmailSender : Message
+    public class EmailSender : Message, IDisposable
     {
         #region Constructors
 
@@ -53,35 +54,18 @@ namespace Utilities.Web.Email.SMTP
         /// <summary>
         /// Sends an email
         /// </summary>
-        /// <param name="Message">The body of the message</param>
-        public void SendMail(string Message)
+        /// <param name="MessageBody">The body of the message</param>
+        public virtual void SendMail(string MessageBody = "")
         {
-            Body = Message;
-            SendMail();
-        }
-
-        /// <summary>
-        /// Sends a piece of mail asynchronous
-        /// </summary>
-        /// <param name="Message">Message to be sent</param>
-        public void SendMailAsync(string Message)
-        {
-            Body = Message;
-            ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
-        }
-
-        /// <summary>
-        /// Sends an email
-        /// </summary>
-        public void SendMail()
-        {
+            if (MessageBody.IsNotNullOrEmpty())
+                Body = MessageBody;
             using (System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage())
             {
                 char[] Splitter = { ',', ';' };
                 string[] AddressCollection = To.Split(Splitter);
                 for (int x = 0; x < AddressCollection.Length; ++x)
                 {
-                    if(!string.IsNullOrEmpty(AddressCollection[x].Trim()))
+                    if (!string.IsNullOrEmpty(AddressCollection[x].Trim()))
                         message.To.Add(AddressCollection[x]);
                 }
                 if (!string.IsNullOrEmpty(CC))
@@ -139,9 +123,21 @@ namespace Utilities.Web.Email.SMTP
         /// <summary>
         /// Sends a piece of mail asynchronous
         /// </summary>
-        public void SendMailAsync()
+        /// <param name="MessageBody">The body of the message</param>
+        public virtual void SendMailAsync(string MessageBody = "")
         {
+            if (MessageBody.IsNotNullOrEmpty())
+                Body = MessageBody;
             ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
+        }
+
+        /// <summary>
+        /// Disposes of the objects (attachments, embedded resources, etc) associated with the email
+        /// </summary>
+        public void Dispose()
+        {
+            Attachments.ForEach(x => x.Dispose());
+            EmbeddedResources.ForEach(x => x.Dispose());
         }
 
         #endregion

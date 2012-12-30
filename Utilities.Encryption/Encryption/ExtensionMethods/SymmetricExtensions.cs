@@ -125,7 +125,7 @@ namespace Utilities.Encryption.ExtensionMethods
         {
             if (Data.IsNull())
                 return null;
-            AlgorithmUsing = AlgorithmUsing.NullCheck(new RijndaelManaged());
+            AlgorithmUsing = AlgorithmUsing.NullCheck(()=>new RijndaelManaged());
             InitialVector.ThrowIfNullOrEmpty("InitialVector");
             using (DeriveBytes DerivedPassword = Key)
             {
@@ -225,7 +225,7 @@ namespace Utilities.Encryption.ExtensionMethods
         {
             if (Data.IsNull())
                 return null;
-            AlgorithmUsing = AlgorithmUsing.NullCheck(new RijndaelManaged());
+            AlgorithmUsing = AlgorithmUsing.NullCheck(()=>new RijndaelManaged());
             InitialVector.ThrowIfNullOrEmpty("InitialVector");
             using (DeriveBytes DerivedPassword = Key)
             {

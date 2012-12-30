@@ -23,6 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mail;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats
@@ -39,15 +43,19 @@ namespace Utilities.FileFormats
         /// </summary>
         public VCalendar()
         {
+            AttendeeList = new MailAddressCollection();
+            Status = "BUSY";
+            CurrentTimeZone = TimeZone.CurrentTimeZone;
         }
 
         #endregion
 
         #region Properties
+
         /// <summary>
-        /// The time zone adjustment for the calendar event
+        /// The time zone for the calendar event
         /// </summary>
-        public virtual int TimeZoneAdjustment { get; set; }
+        public virtual TimeZone CurrentTimeZone { get; set; }
 
         /// <summary>
         /// The start time
@@ -73,6 +81,26 @@ namespace Utilities.FileFormats
         /// The description of the event
         /// </summary>
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// List of attendees
+        /// </summary>
+        public virtual MailAddressCollection AttendeeList { get; set; }
+
+        /// <summary>
+        /// Organizer
+        /// </summary>
+        public virtual MailAddress Organizer { get; set; }
+
+        /// <summary>
+        /// Sets the status for the appointment (FREE, BUSY, etc.)
+        /// </summary>
+        public virtual string Status { get; set; }
+
+        /// <summary>
+        /// Determines if the calendar item is being canceled
+        /// </summary>
+        public virtual bool Cancel { get; set; }
 
         private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
@@ -108,25 +136,19 @@ namespace Utilities.FileFormats
         /// <returns>a string output of the VCalendar item</returns>
         public virtual string GetVCalendar()
         {
-            StringBuilder FileOutput = new StringBuilder();
-            FileOutput.AppendLine("BEGIN:VCALENDAR");
-            FileOutput.AppendLine("VERSION:1.0");
-            FileOutput.AppendLine("BEGIN:VEVENT");
-            StartTime = StartTime.AddHours(-TimeZoneAdjustment);
-            EndTime = EndTime.AddHours(-TimeZoneAdjustment);
-
-            string Start = StartTime.ToString("yyyyMMdd") + "T" + StartTime.ToString("HHmmss");
-            string End = EndTime.ToString("yyyyMMdd") + "T" + EndTime.ToString("HHmmss");
-            FileOutput.Append("DTStart:").AppendLine(Start);
-            FileOutput.Append("DTEnd:").AppendLine(End);
-            FileOutput.Append("Location;ENCODING=QUOTED-PRINTABLE:").AppendLine(Location);
-            FileOutput.Append("SUMMARY;ENCODING=QUOTED-PRINTABLE:").AppendLine(Subject);
-            FileOutput.Append("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:").AppendLine(Description);
-            FileOutput.Append("UID:").Append(Start).Append(End).AppendLine(Subject);
-            FileOutput.AppendLine("PRIORITY:3");
-            FileOutput.AppendLine("End:VEVENT");
-            FileOutput.AppendLine("End:VCALENDAR");
-            return FileOutput.ToString();
+            return new StringBuilder().AppendLine("BEGIN:VCALENDAR")
+                      .AppendLine("VERSION:1.0")
+                      .AppendLine("BEGIN:VEVENT")
+                      .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss"))
+                      .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss"))
+                      .AppendLineFormat("Location;ENCODING=QUOTED-PRINTABLE:{0}", Location)
+                      .AppendLineFormat("SUMMARY;ENCODING=QUOTED-PRINTABLE:{0}", Subject)
+                      .AppendLineFormat("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:{0}", Description)
+                      .AppendLineFormat("UID:{0}{1}{2}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss"), CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss"), Subject)
+                      .AppendLine("PRIORITY:3")
+                      .AppendLine("End:VEVENT")
+                      .AppendLine("End:VCALENDAR")
+                      .ToString();
         }
 
         /// <summary>
@@ -136,39 +158,54 @@ namespace Utilities.FileFormats
         public virtual string GetICalendar()
         {
             StringBuilder FileOutput = new StringBuilder();
-            FileOutput.AppendLine("BEGIN:VCALENDAR");
-            FileOutput.AppendLine("PRODID:-//Craigs Utility Library//EN");
-            FileOutput.AppendLine("VERSION:2.0");
-            FileOutput.AppendLine("METHOD:PUBLISH");
-            StartTime = StartTime.AddHours(-TimeZoneAdjustment);
-            EndTime = EndTime.AddHours(-TimeZoneAdjustment);
-            string Start = StartTime.ToString("yyyyMMdd") + "T" + StartTime.ToString("HHmmss");
-            string End = EndTime.ToString("yyyyMMdd") + "T" + EndTime.ToString("HHmmss");
-            FileOutput.AppendLine("BEGIN:VEVENT");
-            FileOutput.AppendLine("CLASS:PUBLIC");
-            FileOutput.Append("CREATED:").AppendLine(DateTime.Now.ToString("yyyyMMddTHHmmssZ"));
-            FileOutput.AppendLine(StripHTML(Description.Replace("<br />", "\\n")));
-            FileOutput.Append("DTEND:").AppendLine(Start);
-            FileOutput.Append("DTSTART:").AppendLine(End);
-            FileOutput.Append("LOCATION:").AppendLine(Location);
-            FileOutput.Append("SUMMARY;LANGUAGE=en-us:").AppendLine(Subject);
-            FileOutput.Append("UID:").Append(Start).Append(End).AppendLine(Subject);
+            FileOutput.AppendLine("BEGIN:VCALENDAR")
+                      .AppendLineFormat("METHOD:{0}", Cancel ? "CANCEL" : "REQUEST")
+                      .AppendLine("PRODID:-//Craigs Utility Library//EN")
+                      .AppendLine("VERSION:2.0")
+                      .AppendLine("BEGIN:VEVENT")
+                      .AppendLine("CLASS:PUBLIC")
+                      .AppendLineFormat("DTSTAMP:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
+                      .AppendLineFormat("CREATED:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
+                      .AppendLine(StripHTML(Description.Replace("<br />", "\\n")))
+                      .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmssZ"))
+                      .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmssZ"))
+                      .AppendLineFormat("LOCATION:{0}", Location)
+                      .AppendLineFormat("SUMMARY;LANGUAGE=en-us:{0}", Subject)
+                      .AppendLineFormat("UID:{0}{1}{2}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmssZ"), CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmssZ"), Subject);
+            if (AttendeeList.Count > 0)
+                FileOutput.AppendLineFormat("ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=\"{0}\":MAILTO:{0}", AttendeeList.ToString());
+            if (Organizer != null)
+                FileOutput.AppendLineFormat("ACTION;RSVP=TRUE;CN=\"{0}\":MAILTO:{0}\r\nORGANIZER;CN=\"{1}\":mailto:{0}", Organizer.Address, Organizer.DisplayName);
             if (ContainsHTML(Description))
             {
-                FileOutput.Append("X-ALT-DESC;FMTTYPE=text/html:").AppendLine(Description.Replace("\n", ""));
+                FileOutput.AppendLineFormat("X-ALT-DESC;FMTTYPE=text/html:{0}", Description.Replace("\n", ""));
             }
             else
             {
-                FileOutput.Append("DESCRIPTION:").AppendLine(Description);
+                FileOutput.AppendLineFormat("DESCRIPTION:{0}", Description);
             }
-            FileOutput.AppendLine("BEGIN:VALARM");
-            FileOutput.AppendLine("TRIGGER:-PT15M");
-            FileOutput.AppendLine("ACTION:DISPLAY");
-            FileOutput.AppendLine("DESCRIPTION:Reminder");
-            FileOutput.AppendLine("END:VALARM");
-            FileOutput.AppendLine("END:VEVENT");
-            FileOutput.AppendLine("END:VCALENDAR");
-            return FileOutput.ToString();
+            return FileOutput.AppendLine("SEQUENCE:1")
+                             .AppendLine("PRIORITY:5")
+                             .AppendLine("CLASS:")
+                             .AppendLineFormat("LAST-MODIFIED:{0}",DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
+                             .AppendLine("STATUS:CONFIRMED")
+                             .AppendLine("TRANSP:OPAQUE")
+                             .AppendLineFormat("X-MICROSOFT-CDO-BUSYSTATUS:{0}",Status)
+                             .AppendLine("X-MICROSOFT-CDO-INSTTYPE:0")
+                             .AppendLine("X-MICROSOFT-CDO-INTENDEDSTATUS:BUSY")
+                             .AppendLine("X-MICROSOFT-CDO-ALLDAYEVENT:FALSE")
+                             .AppendLine("X-MICROSOFT-CDO-IMPORTANCE:1")
+                             .AppendLine("X-MICROSOFT-CDO-OWNERAPPTID:-1")
+                             .AppendLineFormat("X-MICROSOFT-CDO-ATTENDEE-CRITICAL-CHANGE:{0}",DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
+                             .AppendLineFormat("X-MICROSOFT-CDO-OWNER-CRITICAL-CHANGE:{0}",DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
+                             .AppendLine("BEGIN:VALARM")
+                             .AppendLine("TRIGGER;RELATED=START:-PT00H15M00S")
+                             .AppendLine("ACTION:DISPLAY")
+                             .AppendLine("DESCRIPTION:Reminder")
+                             .AppendLine("END:VALARM")
+                             .AppendLine("END:VEVENT")
+                             .AppendLine("END:VCALENDAR")
+                             .ToString();
         }
 
         /// <summary>
@@ -179,12 +216,12 @@ namespace Utilities.FileFormats
         {
             StringBuilder Output = new StringBuilder();
             Output.Append("<div class=\"vevent\">")
-                .Append("<div class=\"summary\">").Append(Subject).Append("</div>")
-                .Append("<div>Date: <abbr class=\"dtstart\" title=\"")
-                .Append(StartTime.ToString("MM-dd-yyyy hh:mm tt")).Append("\">")
-                .Append(StartTime.ToString("MMMM dd, yyyy hh:mm tt")).Append("</abbr> to ")
-                .Append("<abbr class=\"dtend\" title=\"").Append(EndTime.ToString("MM-dd-yyyy hh:mm tt"))
-                .Append("\">");
+                  .Append("<div class=\"summary\">").Append(Subject).Append("</div>")
+                  .Append("<div>Date: <abbr class=\"dtstart\" title=\"")
+                  .Append(StartTime.ToString("MM-dd-yyyy hh:mm tt")).Append("\">")
+                  .Append(StartTime.ToString("MMMM dd, yyyy hh:mm tt")).Append("</abbr> to ")
+                  .Append("<abbr class=\"dtend\" title=\"").Append(EndTime.ToString("MM-dd-yyyy hh:mm tt"))
+                  .Append("\">");
             if (EndTime.Year != StartTime.Year)
             {
                 Output.Append(EndTime.ToString("MMMM dd, yyyy hh:mm tt"));
@@ -201,11 +238,27 @@ namespace Utilities.FileFormats
             {
                 Output.Append(EndTime.ToString("hh:mm tt"));
             }
-            Output.Append("</abbr></div>");
-            Output.Append("<div>Location: <span class=\"location\">").Append(Location).Append("</span></div>");
-            Output.Append("<div class=\"description\">").Append(Description).Append("</div>");
-            Output.Append("</div>");
-            return Output.ToString();
+            return Output.Append("</abbr></div>")
+                         .Append("<div>Location: <span class=\"location\">").Append(Location).Append("</span></div>")
+                         .Append("<div class=\"description\">").Append(Description).Append("</div>")
+                         .Append("</div>")
+                         .ToString();
+        }
+
+        /// <summary>
+        /// Returns the text version of the appointment
+        /// </summary>
+        /// <returns>A text version of the appointement</returns>
+        public override string ToString()
+        {
+            return "Type:Single Meeting\r\n" +
+                "Organizer:" + Organizer.DisplayName + "\r\n" +
+                "Start Time:" + StartTime.ToLongDateString() + " " + StartTime.ToLongTimeString() + "\r\n" +
+                "End Time:" + EndTime.ToLongDateString() + " " + EndTime.ToLongTimeString() + "\r\n" +
+                "Time Zone:" + System.TimeZone.CurrentTimeZone.StandardName + "\r\n" +
+                "Location: " + Location + "\r\n\r\n" +
+                "*~*~*~*~*~*~*~*~*~*\r\n\r\n" +
+                Description;
         }
 
         #endregion

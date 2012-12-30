@@ -33,6 +33,7 @@ using System.Linq.Expressions;
 using System.Data;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.ParameterTypes;
+using Utilities.SQL.MicroORM;
 
 namespace UnitTests.SQL
 {
@@ -42,8 +43,8 @@ namespace UnitTests.SQL
         public void SelectTest()
         {
             Utilities.SQL.MicroORM.Command BuiltCommand = Utilities.SQL.SQLCommand.Select("Test").Distinct().Where("Value1=@0", "@", "Test").Build();
-            Assert.Equal("SELECT DISTINCT * FROM Test WHERE Value1=@0", BuiltCommand.SQLCommand);
-            Assert.Contains(new StringEqualParameter("Test", "@0", 4), BuiltCommand.Parameters);
+            Assert.Equal("SELECT DISTINCT * FROM Test  WHERE Value1=@0", BuiltCommand.SQLCommand);
+            Assert.Contains(new StringParameter("0", "Test"), BuiltCommand.Parameters);
         }
     }
 }

@@ -56,6 +56,11 @@
     <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
     <Compile Include="Math\Fraction.cs" />
+    <Compile Include="Math\ExtensionMethods\PredicateExtensions.cs" />
+    <Compile Include="Math\Geometry\BaseClasses\Shape.cs" />
+    <Compile Include="Math\Geometry\Circle.cs" />
+    <Compile Include="Math\Geometry\Point.cs" />
+    <Compile Include="Math\Geometry\Rectangle.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">

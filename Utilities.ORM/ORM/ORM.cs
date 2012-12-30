@@ -75,6 +75,7 @@ namespace Utilities.ORM
             foreach (Type Key in MappingManager.Mappings.Keys)
                 foreach (IMapping Mapping in MappingManager.Mappings[Key])
                     Manager.Setup(Mapping.ObjectType);
+            Manager.Save();
             MappingManager.Initialize();
         }
 

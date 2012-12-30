@@ -114,6 +114,7 @@ namespace Utilities.Reflection.AOP
             {
                 AssemblyBuilder.Create();
             }
+            AssemblyBuilder = null;
         }
 
         /// <summary>

@@ -150,28 +150,29 @@ namespace Utilities.SQL
         /// <returns>The resulting command</returns>
         public Command Build()
         {
-            string Command = (TopNumber > 0 ? "SELECT TOP " + TopNumber : "SELECT") + (IsDistinct ? " DISTINCT" : "") + " {0} FROM {1} {2}";
+            string Command = (TopNumber > 0 ? "SELECT TOP " + TopNumber : "SELECT") + (IsDistinct ? " DISTINCT" : "") + " {0} FROM {1} {2} {3} {4}";
+            string Where = "";
+            string OrderBy = "";
             if (WhereClause.IsNotNullOrEmpty())
-                Command += WhereClause.Trim().ToLower().StartsWith("where", StringComparison.CurrentCulture) ? " " + WhereClause : " WHERE " + WhereClause;
-            if (Parameters.IsNotNullOrEmpty())
+                Where += WhereClause.Trim().ToLower().StartsWith("where", StringComparison.CurrentCulture) ? WhereClause.Trim() : "WHERE " + WhereClause.Trim();
+            else if (Parameters.IsNotNullOrEmpty())
             {
-                if (WhereClause.IsNullOrEmpty())
-                    Command += " WHERE ";
-                Command += Parameters[0];
+                Where += "WHERE ";
+                Where += Parameters[0];
                 for (int x = 1; x < Parameters.Count; ++x)
                 {
-                    Command += " AND " + Parameters[x];
+                    Where += " AND " + Parameters[x];
                 }
             }
             if (OrderByColumns.IsNotNullOrEmpty())
             {
-                Command += " ORDER BY " + OrderByColumns[0];
+                OrderBy += " ORDER BY " + OrderByColumns[0];
                 for (int x = 1; x < OrderByColumns.Count; ++x)
                 {
-                    Command += "," + OrderByColumns[1];
+                    OrderBy += "," + OrderByColumns[1];
                 }
             }
-            return new Command(string.Format(Command, Columns.ToString(x => x), Table, Joins.ToString(x => x.ToString(), " ")), System.Data.CommandType.Text, Parameters.ToArray());
+            return new Command(string.Format(Command, Columns.ToString(x => x), Table, Joins.ToString(x => x.ToString(), " "), Where, OrderBy).Trim(), System.Data.CommandType.Text, Parameters.ToArray());
         }
 
         #endregion
@@ -240,6 +241,18 @@ namespace Utilities.SQL
         #region Where
 
         /// <summary>
+        /// Generates the where clause based on the parameters passed in
+        /// </summary>
+        /// <param name="Parameters">Parameters to use</param>
+        /// <returns>this</returns>
+        public SQLCommand Where(params IParameter[] Parameters)
+        {
+            this.WhereClause = "";
+            this.Parameters.Add(Parameters);
+            return this;
+        }
+
+        /// <summary>
         /// Sets the where clause
         /// </summary>
         /// <param name="WhereClause">Where clause</param>
@@ -275,220 +288,6 @@ namespace Utilities.SQL
         }
 
         #endregion
-
-        #endregion
-
-        #region Static Functions
-
-        //#region SetupDeleteCommand
-
-        ///// <summary>
-        ///// Sets up the delete command
-        ///// </summary>
-        ///// <param name="Mapping">Mapping information</param>
-        ///// <returns>The command string</returns>
-        //protected virtual string SetupDeleteCommand<ClassType>(Mapping<ClassType> Mapping)
-        //    where ClassType : class,new()
-        //{
-        //    return string.Format("DELETE FROM {0} WHERE {1}", Mapping.TableName, Mapping.PrimaryKey + "=" + DatabaseUsing.ParameterPrefix + Mapping.PrimaryKey);
-        //}
-
-        //#endregion
-
-        //#region SetupInsertCommand
-
-        ///// <summary>
-        ///// Sets up the insert command
-        ///// </summary>
-        ///// <param name="Parameters">Parameters</param>
-        ///// <param name="Mapping">Mapping information</param>
-        ///// <returns>The command string</returns>
-        //protected virtual string SetupInsertCommand<ClassType>(Mapping<ClassType> Mapping, params IParameter[] Parameters)
-        //    where ClassType : class,new()
-        //{
-        //    string ParameterList = "";
-        //    string ValueList = "";
-        //    string Splitter = "";
-        //    foreach (string Name in Mapping.ParameterNames)
-        //    {
-        //        if (!Mapping.AutoIncrement || Name != Mapping.PrimaryKey)
-        //        {
-        //            ParameterList += Splitter + Name;
-        //            ValueList += Splitter + DatabaseUsing.ParameterPrefix + Name;
-        //            Splitter = ",";
-        //        }
-        //    }
-        //    foreach (IParameter Parameter in Parameters)
-        //    {
-        //        ParameterList += Splitter + Parameter.ID;
-        //        ValueList += Splitter + DatabaseUsing.ParameterPrefix + Parameter.ID;
-        //        Splitter = ",";
-        //    }
-        //    return string.Format("INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [ID]", Mapping.TableName, ParameterList, ValueList);
-        //}
-
-        //#endregion
-
-        //#region SetupPageCountCommand
-
-        ///// <summary>
-        ///// Sets up the page count command
-        ///// </summary>
-        ///// <param name="PageSize">Page size</param>
-        ///// <param name="Parameters">Parameter list</param>
-        ///// <param name="Mapping">Mapping information</param>
-        ///// <returns>The string command</returns>
-        //protected virtual string SetupPageCountCommand<ClassType>(Mapping<ClassType> Mapping, int PageSize, params IParameter[] Parameters)
-        //    where ClassType : class,new()
-        //{
-        //    string WhereCommand = "";
-        //    if (!Parameters.IsNullOrEmpty() && Parameters.Length > 0)
-        //    {
-        //        WhereCommand += " WHERE ";
-        //        string Splitter = "";
-        //        foreach (IParameter Parameter in Parameters)
-        //        {
-        //            WhereCommand += Splitter + Parameter;
-        //            Splitter = " AND ";
-        //        }
-        //    }
-        //    return string.Format("SELECT COUNT(*) as Total FROM (SELECT {0} FROM {1} {2}) as Query", Mapping.PrimaryKey, Mapping.TableName, WhereCommand);
-        //}
-
-        ///// <summary>
-        ///// Sets up the page count command
-        ///// </summary>
-        ///// <param name="Command">Command</param>
-        ///// <returns>The string command</returns>
-        //protected virtual string SetupPageCountCommand(string Command)
-        //{
-        //    return string.Format("SELECT COUNT(*) as Total FROM ({0}) as Query", Command);
-        //}
-
-        //#endregion
-
-        //#region SetupPagedCommand
-
-        ///// <summary>
-        ///// Sets up the paged select command
-        ///// </summary>
-        ///// <param name="Columns">Columns to return</param>
-        ///// <param name="OrderBy">Order by clause</param>
-        ///// <param name="PageSize">Page size</param>
-        ///// <param name="CurrentPage">Current page</param>
-        ///// <param name="Parameters">Parameter list</param>
-        ///// <param name="Mapping">Mapping information</param>
-        ///// <returns>The command string</returns>
-        //protected virtual string SetupPagedCommand<ClassType>(string Columns, string OrderBy, int PageSize, int CurrentPage,
-        //                                                      Mapping<ClassType> Mapping, params IParameter[] Parameters)
-        //    where ClassType : class,new()
-        //{
-        //    if (OrderBy.IsNullOrEmpty())
-        //        OrderBy = Mapping.PrimaryKey;
-
-        //    string WhereCommand = "";
-        //    if (!Parameters.IsNullOrEmpty() && Parameters.Length > 0)
-        //    {
-        //        WhereCommand += " WHERE ";
-        //        string Splitter = "";
-        //        foreach (IParameter Parameter in Parameters)
-        //        {
-        //            WhereCommand += Splitter + Parameter;
-        //            Splitter = " AND ";
-        //        }
-        //    }
-        //    return SetupPagedCommand(string.Format("SELECT {0} FROM {1} {2}", Columns, Mapping.TableName, WhereCommand), OrderBy, PageSize, CurrentPage, Mapping);
-        //}
-
-        ///// <summary>
-        ///// Sets up the paged select command
-        ///// </summary>
-        ///// <param name="Query">Query used in getting the paged data</param>
-        ///// <param name="OrderBy">Order by clause</param>
-        ///// <param name="PageSize">Page size</param>
-        ///// <param name="CurrentPage">Current page</param>
-        ///// <param name="Mapping">Mapping information</param>
-        ///// <returns>The command string</returns>
-        //protected virtual string SetupPagedCommand<ClassType>(string Query, string OrderBy, int PageSize,
-        //                                                      int CurrentPage, Mapping<ClassType> Mapping)
-        //    where ClassType : class,new()
-        //{
-        //    if (OrderBy.IsNullOrEmpty())
-        //        OrderBy = Mapping.PrimaryKey;
-        //    int PageStart = CurrentPage * PageSize;
-        //    return string.Format("SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {1}) AS Row, Query.* FROM ({0}) as Query) AS Paged WHERE Row>{2} AND Row<={3}",
-        //                            Query,
-        //                            OrderBy,
-        //                            PageStart,
-        //                            PageStart + PageSize);
-        //}
-
-        //#endregion
-
-        //#region SetupSelectCommand
-
-        ///// <summary>
-        ///// Sets up the select command
-        ///// </summary>
-        ///// <param name="Columns">Columns to return</param>
-        ///// <param name="Limit">limit on the number of items to return</param>
-        ///// <param name="OrderBy">Order by clause</param>
-        ///// <param name="Parameters">Parameter list</param>
-        ///// <param name="Mapping">Mapping information</param>
-        ///// <returns>The string command</returns>
-        //protected virtual string SetupSelectCommand<ClassType>(string Columns, int Limit, string OrderBy, Mapping<ClassType> Mapping,
-        //                                                       params IParameter[] Parameters)
-        //    where ClassType : class,new()
-        //{
-        //    string Command = (Limit > 0 ? "SELECT TOP " + Limit : "SELECT") + " {0} FROM {1}";
-        //    if (!Parameters.IsNullOrEmpty() && Parameters.Length > 0)
-        //    {
-        //        Command += " WHERE ";
-        //        string Splitter = "";
-        //        foreach (IParameter Parameter in Parameters)
-        //        {
-        //            Command += Splitter + Parameter;
-        //            Splitter = " AND ";
-        //        }
-        //    }
-        //    if (!OrderBy.IsNullOrEmpty())
-        //        Command += OrderBy.Trim().ToLower().StartsWith("order by", StringComparison.CurrentCultureIgnoreCase) ? " " + OrderBy : " ORDER BY " + OrderBy;
-        //    return string.Format(Command, Columns, Mapping.TableName);
-        //}
-
-        //#endregion
-
-        //#region SetupUpdateCommand
-
-        ///// <summary>
-        ///// Sets up the update command
-        ///// </summary>
-        ///// <param name="Mapping">Mapping information</param>
-        ///// <param name="Parameters">Parameters</param>
-        ///// <returns>The command string</returns>
-        //protected virtual string SetupUpdateCommand<ClassType>(Mapping<ClassType> Mapping, params IParameter[] Parameters)
-        //    where ClassType : class,new()
-        //{
-        //    string ParameterList = "";
-        //    string WhereCommand = Mapping.PrimaryKey + "=" + DatabaseUsing.ParameterPrefix + Mapping.PrimaryKey;
-        //    string Splitter = "";
-        //    foreach (string Name in Mapping.ParameterNames)
-        //    {
-        //        if (Name != Mapping.PrimaryKey)
-        //        {
-        //            ParameterList += Splitter + Name + "=" + DatabaseUsing.ParameterPrefix + Name;
-        //            Splitter = ",";
-        //        }
-        //    }
-        //    foreach (IParameter Parameter in Parameters)
-        //    {
-        //        ParameterList += Splitter + Parameter.ToString();
-        //        Splitter = ",";
-        //    }
-        //    return string.Format("UPDATE {0} SET {1} WHERE {2}", Mapping.TableName, ParameterList, WhereCommand);
-        //}
-
-        //#endregion
 
         #endregion
 

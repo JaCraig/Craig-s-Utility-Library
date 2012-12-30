@@ -243,7 +243,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (string.IsNullOrEmpty(Input))
                 return "";
             byte[] TempArray = Convert.FromBase64String(Input);
-            return EncodingUsing.NullCheck(new UTF8Encoding()).GetString(TempArray);
+            return EncodingUsing.NullCheck(()=>new UTF8Encoding()).GetString(TempArray);
         }
 
         /// <summary>
@@ -281,6 +281,21 @@ namespace Utilities.DataTypes.ExtensionMethods
                 }
             }
             return (CheckSum % 10) == 0;
+        }
+
+        #endregion
+
+        #region IsAnagram
+
+        /// <summary>
+        /// Determines if the two strings are anagrams or not
+        /// </summary>
+        /// <param name="Input1">Input 1</param>
+        /// <param name="Input2">Input 2</param>
+        /// <returns>True if they are anagrams, false otherwise</returns>
+        public static bool IsAnagram(this string Input1, string Input2)
+        {
+            return new string(Input1.OrderBy(x => x).ToArray()) == new string(Input2.OrderBy(x => x).ToArray());
         }
 
         #endregion

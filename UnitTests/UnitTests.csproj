@@ -121,6 +121,7 @@
     <Compile Include="FileFormats\GenericDelimited\GenericDelimited.cs" />
     <Compile Include="FileFormats\INI\INI.cs" />
     <Compile Include="FileFormats\PipeDelimited\PipeDelimited.cs" />
+    <Compile Include="FileFormats\VCalendar.cs" />
     <Compile Include="FileFormats\Zip\ZipFile.cs" />
     <Compile Include="Fixtures\LoggingManagerFixture.cs" />
     <Compile Include="Fixtures\TestingDirectoryFixture.cs" />
@@ -136,7 +137,10 @@
     <Compile Include="LDAP\Directory.cs" />
     <Compile Include="Math\ExtensionMethods\MathExtensions.cs" />
     <Compile Include="Math\ExtensionMethods\PermutationExtensions.cs" />
+    <Compile Include="Math\ExtensionMethods\PredicateExtensions.cs" />
     <Compile Include="Math\Fraction.cs" />
+    <Compile Include="Math\Geometry\Circle.cs" />
+    <Compile Include="Math\Geometry\Rectangle.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\Set.cs" />
     <Compile Include="Math\Vector3.cs" />

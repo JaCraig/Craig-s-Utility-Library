@@ -375,7 +375,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The file info</returns>
         public static FileInfo SetAttributes(this FileInfo File, System.IO.FileAttributes Attributes)
         {
-            File.ThrowIfTrue(x => x == null || !File.Exists, new ArgumentNullException("File"));
+            File.ThrowIf(x => x == null || !File.Exists, new ArgumentNullException("File"));
             System.IO.File.SetAttributes(File.FullName, Attributes);
             return File;
         }

@@ -374,7 +374,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static DateTime LastDayOfWeek(this DateTime Date, CultureInfo CultureInfo = null)
         {
             Date.ThrowIfNull("Date");
-            return Date.FirstDayOfWeek(CultureInfo.NullCheck(CultureInfo.CurrentCulture)).AddDays(6);
+            return Date.FirstDayOfWeek(CultureInfo.NullCheck( CultureInfo.CurrentCulture)).AddDays(6);
         }
 
         #endregion

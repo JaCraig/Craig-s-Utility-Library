@@ -243,7 +243,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (string.IsNullOrEmpty(Input))
                 return "";
             byte[] TempArray = Convert.FromBase64String(Input);
-            return EncodingUsing.NullCheck(new UTF8Encoding()).GetString(TempArray);
+            return EncodingUsing.NullCheck(()=>new UTF8Encoding()).GetString(TempArray);
         }
 
         /// <summary>

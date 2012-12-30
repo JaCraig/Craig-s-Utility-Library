@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
+using System.Drawing;
 #endregion
 
 
@@ -101,6 +102,20 @@ namespace Utilities.Math.ExtensionMethods
 
         #endregion
 
+        #region Exp
+
+        /// <summary>
+        /// Returns E raised to the specified power
+        /// </summary>
+        /// <param name="Value">Power to raise E by</param>
+        /// <returns>E raised to the specified power</returns>
+        public static double Exp(this double Value)
+        {
+            return System.Math.Exp(Value);
+        }
+
+        #endregion
+
         #region Factorial
 
         /// <summary>
@@ -160,6 +175,45 @@ namespace Utilities.Math.ExtensionMethods
         public static int GreatestCommonDenominator(this uint Value1, uint Value2)
         {
             return ((int)Value1).GreatestCommonDenominator((int)Value2);
+        }
+
+        #endregion
+
+        #region Log
+
+        /// <summary>
+        /// Returns the natural (base e) logarithm of a specified number
+        /// </summary>
+        /// <param name="Value">Specified number</param>
+        /// <returns>The natural logarithm of the specified number</returns>
+        public static double Log(this double Value)
+        {
+            return System.Math.Log(Value);
+        }
+
+        /// <summary>
+        /// Returns the logarithm of a specified number in a specified base
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <param name="Base">Base</param>
+        /// <returns>The logarithm of a specified number in a specified base</returns>
+        public static double Log(this double Value, double Base)
+        {
+            return System.Math.Log(Value, Base);
+        }
+
+        #endregion
+
+        #region Log10
+
+        /// <summary>
+        /// Returns the base 10 logarithm of a specified number
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>The base 10 logarithm of the specified number</returns>
+        public static double Log10(this double Value)
+        {
+            return System.Math.Log10(Value);
         }
 
         #endregion
