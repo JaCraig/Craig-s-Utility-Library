@@ -20,14 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using Utilities.Caching.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Web;
 using System;
-using System.Linq;
+using System.Web;
 using System.Web.Caching;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Caching.ExtensionMethods

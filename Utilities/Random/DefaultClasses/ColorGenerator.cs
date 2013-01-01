@@ -21,10 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Drawing;
-using Utilities.Math.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Random.DefaultClasses

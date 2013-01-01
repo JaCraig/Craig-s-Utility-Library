@@ -20,11 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Validation.Rules.Enums

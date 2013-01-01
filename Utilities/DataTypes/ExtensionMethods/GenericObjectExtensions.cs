@@ -22,14 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Reflection;
+using System.Threading;
 using Utilities.DataTypes.Comparison;
-using System.Dynamic;
+
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods

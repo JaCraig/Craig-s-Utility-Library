@@ -22,9 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Text.RegularExpressions;
 #endregion
 
 namespace Utilities.Web.ExtensionMethods

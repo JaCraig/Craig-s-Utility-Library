@@ -21,14 +21,14 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 using Utilities.DataTypes.Patterns;
 using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
-using Utilities.SQL;
-using System.Collections.Generic;
 #endregion
 
 namespace Utilities.ORM.Mapping.Interfaces

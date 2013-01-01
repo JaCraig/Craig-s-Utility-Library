@@ -20,12 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
 using System.Net.Mail;
-using System.Net.Mime;
-using System.Threading;
-using Utilities.DataTypes.ExtensionMethods;
-using System;
 using Utilities.FileFormats;
 #endregion
 

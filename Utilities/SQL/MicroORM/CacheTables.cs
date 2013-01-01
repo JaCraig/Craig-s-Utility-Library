@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Common;
-using Utilities.DataTypes;
 using System.Data;
+using Utilities.DataTypes;
 
 namespace Utilities.SQL.MicroORM
 {

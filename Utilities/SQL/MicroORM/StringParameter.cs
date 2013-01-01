@@ -20,16 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Linq.Expressions;
-using Utilities.DataTypes.Patterns;
-using Utilities.SQL.MicroORM.Enums;
-using Utilities.SQL.MicroORM.Interfaces;
 using System.Data;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.SQL.Interfaces;
 using System.Data.Common;
 using Utilities.SQL.ExtensionMethods;
+using Utilities.SQL.Interfaces;
 #endregion
 
 namespace Utilities.SQL.MicroORM

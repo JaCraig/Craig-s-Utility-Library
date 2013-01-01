@@ -21,11 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using Utilities.SQL.MicroORM.Interfaces;
 using System.Collections.Concurrent;
-using Utilities.DataTypes.ExtensionMethods;
 using System.Configuration;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.SQL.MicroORM.Interfaces;
 #endregion
 
 namespace Utilities.SQL.MicroORM

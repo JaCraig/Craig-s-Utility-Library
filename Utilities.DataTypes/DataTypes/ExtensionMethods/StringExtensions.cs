@@ -21,15 +21,15 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.Formatters;
 using Utilities.DataTypes.Formatters.Interfaces;
-using System.Reflection;
-using System.Collections.Generic;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -281,6 +281,21 @@ namespace Utilities.DataTypes.ExtensionMethods
                 }
             }
             return (CheckSum % 10) == 0;
+        }
+
+        #endregion
+
+        #region IsAnagram
+
+        /// <summary>
+        /// Determines if the two strings are anagrams or not
+        /// </summary>
+        /// <param name="Input1">Input 1</param>
+        /// <param name="Input2">Input 2</param>
+        /// <returns>True if they are anagrams, false otherwise</returns>
+        public static bool IsAnagram(this string Input1, string Input2)
+        {
+            return new string(Input1.OrderBy(x => x).ToArray()) == new string(Input2.OrderBy(x => x).ToArray());
         }
 
         #endregion

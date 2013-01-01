@@ -26,11 +26,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Math.ExtensionMethods;
 using Utilities.Media.Image.Procedural;
-using System.Text;
 #endregion
 
 namespace Utilities.Media.Image.ExtensionMethods

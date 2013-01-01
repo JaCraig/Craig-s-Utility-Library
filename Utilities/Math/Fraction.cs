@@ -21,10 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
-using System.Xml.Serialization;
-using Utilities.Math.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Math.ExtensionMethods;
 #endregion
 
 namespace Utilities.Math

@@ -22,11 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.DataTypes.Comparison;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Utilities.DataTypes.Comparison;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Validation.Rules

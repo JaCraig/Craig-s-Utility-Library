@@ -20,16 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
-using System.Web;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Text;
 using System.Linq;
-using Utilities.Caching.ExtensionMethods;
-using System.Diagnostics;
-using Utilities.Environment.ExtensionMethods;
-using System.Reflection;
+using System.Text;
+using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Profiler

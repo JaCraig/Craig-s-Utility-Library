@@ -20,11 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
 using System.Data;
+using System.Data.Common;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
-using System;
-using System.Data.Common;
 #endregion
 
 namespace Utilities.SQL.Interfaces

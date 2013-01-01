@@ -20,11 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
+
 #endregion
 
 namespace Utilities.DataTypes

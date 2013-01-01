@@ -24,7 +24,7 @@ using System;
 using System.Linq.Expressions;
 using Utilities.DataTypes.Patterns;
 using Utilities.SQL.MicroORM.Enums;
-using Utilities.DataMapper;
+
 #endregion
 
 namespace Utilities.SQL.MicroORM.Interfaces

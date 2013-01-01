@@ -22,9 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Data;
-using Utilities.ORM.Interfaces;
-using Utilities.SQL.Interfaces;
+
 
 #endregion
 

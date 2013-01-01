@@ -24,7 +24,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Math.ExtensionMethods;
 using Utilities.Media.Image.ExtensionMethods;
 #endregion
 

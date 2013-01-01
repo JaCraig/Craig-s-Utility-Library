@@ -26,14 +26,14 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using Utilities.DataTypes;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.ORM.Aspect.Interfaces;
 using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.SQL;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
-using Utilities.SQL;
-using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.ORM.QueryProviders

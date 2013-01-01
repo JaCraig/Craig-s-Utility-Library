@@ -25,7 +25,7 @@ using System.Data;
 using System.Data.Common;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
+
 #endregion
 
 namespace Utilities.SQL.ExtensionMethods

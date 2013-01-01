@@ -28,8 +28,8 @@ using Utilities.Configuration.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Encryption.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
-using Utilities.Reflection.ExtensionMethods;
 using Utilities.IO.Serializers;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.Configuration

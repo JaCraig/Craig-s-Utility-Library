@@ -21,22 +21,22 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Xml;
 using System.Linq;
+using System.Xml;
+using Utilities.Caching;
+using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Patterns;
+using Utilities.Reflection.ExtensionMethods;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Interfaces;
-using System.Collections.Concurrent;
-using Utilities.DataTypes.Comparison;
-using Utilities.Reflection.ExtensionMethods;
-using Utilities.Caching;
 #endregion
 
 namespace Utilities.SQL
@@ -709,6 +709,7 @@ namespace Utilities.SQL
         /// Deletes an object from the database
         /// </summary>
         /// <param name="Command">Command to use</param>
+        /// <typeparam name="ClassType">Class type</typeparam>
         /// <param name="CommandType">Command type</param>
         /// <param name="Object">Object to delete</param>
         /// <returns>The number of rows deleted</returns>
@@ -726,6 +727,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Deletes an object from the database
         /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
         /// <param name="Object">Object to delete</param>
         /// <returns>The number of rows deleted</returns>
         public virtual int Delete<ClassType>(ClassType Object)
@@ -738,6 +740,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Deletes a list of objects from the database
         /// </summary>
+        /// <typeparam name="ClassType">Class type</typeparam>
         /// <param name="Objects">Objects to delete</param>
         /// <returns>The number of rows deleted</returns>
         public virtual int Delete<ClassType>(IEnumerable<ClassType> Objects)

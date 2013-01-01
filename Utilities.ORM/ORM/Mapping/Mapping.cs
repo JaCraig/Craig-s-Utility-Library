@@ -27,9 +27,8 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.Mapping.PropertyTypes;
 using Utilities.ORM.QueryProviders.Interfaces;
-using Utilities.SQL.MicroORM;
-using Utilities.Validation;
 using Utilities.SQL;
+using Utilities.SQL.MicroORM;
 #endregion
 
 namespace Utilities.ORM.Mapping

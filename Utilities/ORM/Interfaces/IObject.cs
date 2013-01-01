@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Utilities.Validation.Rules;
 using System.ComponentModel.DataAnnotations;
+using Utilities.Validation.Rules;
 #endregion
 
 namespace Utilities.ORM.Interfaces

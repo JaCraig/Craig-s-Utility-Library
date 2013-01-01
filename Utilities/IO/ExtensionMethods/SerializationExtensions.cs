@@ -22,16 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization.Formatters.Soap;
-using System.Runtime.Serialization.Json;
-using System.Security;
 using System.Text;
 using System.Xml;
-using System.Xml.Serialization;
-using Utilities.IO.Serializers.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.Serializers;
+using Utilities.IO.Serializers.Interfaces;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods

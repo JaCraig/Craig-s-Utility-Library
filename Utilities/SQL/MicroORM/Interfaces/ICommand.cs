@@ -20,12 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Linq.Expressions;
-using Utilities.DataTypes.Patterns;
-using Utilities.SQL.MicroORM.Enums;
-using System.Data;
 using System.Collections.Generic;
+using System.Data;
 using Utilities.SQL.Interfaces;
 #endregion
 

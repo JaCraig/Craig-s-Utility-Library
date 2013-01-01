@@ -21,12 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
 using System.Collections;
-using System.Data.Common;
 using System.Data;
 #endregion
 

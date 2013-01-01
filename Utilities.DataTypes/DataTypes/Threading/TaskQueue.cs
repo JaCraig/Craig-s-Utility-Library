@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;

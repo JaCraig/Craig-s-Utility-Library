@@ -21,15 +21,15 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Utilities.ORM.Mapping.BaseClasses;
 using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.QueryProviders.Interfaces;
+using Utilities.SQL;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Enums;
-using Utilities.SQL;
-using System.Collections.Generic;
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes

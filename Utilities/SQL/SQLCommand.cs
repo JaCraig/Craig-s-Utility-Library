@@ -23,20 +23,11 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.Xml;
-using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Patterns;
-using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
-using Utilities.SQL.MicroORM.Interfaces;
-using System.Collections.Concurrent;
-using Utilities.DataTypes.Comparison;
-using Utilities.Reflection.ExtensionMethods;
-using Utilities.Caching;
+
 #endregion
 
 namespace Utilities.SQL

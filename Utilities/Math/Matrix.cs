@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 using System;
 using System.Text;
 using System.Xml.Serialization;
-using Utilities.Math.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 

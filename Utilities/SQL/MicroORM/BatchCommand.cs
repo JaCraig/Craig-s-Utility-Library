@@ -20,19 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Xml;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.DataTypes.Patterns;
-using Utilities.SQL.ExtensionMethods;
-using Utilities.SQL.Interfaces;
-using Utilities.DataTypes.Comparison;
 using System.Text.RegularExpressions;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM.Interfaces;
 #endregion
 

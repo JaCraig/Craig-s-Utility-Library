@@ -21,9 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Validation.ExtensionMethods;
 #endregion

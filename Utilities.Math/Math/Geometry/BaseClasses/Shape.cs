@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using Utilities.Math.ExtensionMethods;
 using System;
+using Utilities.Math.ExtensionMethods;
 #endregion
 
 namespace Utilities.Math.Geometry.BaseClasses
