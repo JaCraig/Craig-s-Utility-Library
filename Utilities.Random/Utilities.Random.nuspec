@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Random</id>
-		<version>3.2.1360</version>
+		<version>3.3</version>
 		<title>Craig's Utility Library Random Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,9 +14,9 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.2" />
-			<dependency id="CraigsUtilityLibrary-Math" version="3.2" />
-			<dependency id="CraigsUtilityLibrary-Reflection" version="3.2" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.3" />
+			<dependency id="CraigsUtilityLibrary-Math" version="3.3" />
+			<dependency id="CraigsUtilityLibrary-Reflection" version="3.3" />
 		</dependencies>
 	</metadata>
 	<files>
