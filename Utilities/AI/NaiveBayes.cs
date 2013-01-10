@@ -73,62 +73,62 @@ namespace Utilities.AI
         /// <summary>
         /// Set A
         /// </summary>
-        public virtual Bag<T> SetA { get; set; }
+        public Bag<T> SetA { get;private set; }
 
         /// <summary>
         /// Set B
         /// </summary>
-        public virtual Bag<T> SetB { get; set; }
+        public Bag<T> SetB { get;private set; }
 
         /// <summary>
         /// Total number of tokens
         /// </summary>
-        protected virtual double Total { get; set; }
+        protected double Total { get; set; }
 
         /// <summary>
         /// Total number of tokens in set A
         /// </summary>
-        protected virtual double TotalA { get; set; }
+        protected double TotalA { get; set; }
 
         /// <summary>
         /// Total number of tokens in set B
         /// </summary>
-        protected virtual double TotalB { get; set; }
+        protected double TotalB { get; set; }
 
         /// <summary>
         /// Dictionary containing probabilities
         /// </summary>
-        protected virtual Dictionary<T, double> Probabilities { get; set; }
+        protected Dictionary<T, double> Probabilities { get;private set; }
 
         /// <summary>
         /// Weight to give to the probabilities in set A
         /// </summary>
-        public virtual int ATokenWeight { get; set; }
+        public int ATokenWeight { get; set; }
 
         /// <summary>
         /// Weight to give the probabilities in set B
         /// </summary>
-        public virtual int BTokenWeight { get; set; }
+        public int BTokenWeight { get; set; }
 
         /// <summary>
         /// Minimum count that an item needs to be found to be included in final probability
         /// </summary>
-        public virtual int MinCountForInclusion { get; set; }
+        public int MinCountForInclusion { get; set; }
 
         /// <summary>
         /// Minimum token probability (if less than this amount, it becomes this amount)
         /// </summary>
-        public virtual double MinTokenProbability { get; set; }
+        public double MinTokenProbability { get; set; }
 
         /// <summary>
         /// Maximum token probability (if greater than this amount, it becomes this amount)
         /// </summary>
-        public virtual double MaxTokenProbability { get; set; }
+        public double MaxTokenProbability { get; set; }
 
         /// <summary>
         /// After sorting, this is the maximum number of tokens that are picked to figure out the final probability
         /// </summary>
-        public virtual int MaxInterestingTokenCount { get; set; }
+        public int MaxInterestingTokenCount { get; set; }
 
         #endregion
 

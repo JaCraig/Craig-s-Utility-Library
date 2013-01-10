@@ -129,17 +129,17 @@ namespace Utilities.IoC.Mappings
         /// <summary>
         /// Modules listing
         /// </summary>
-        protected virtual List<IModule> Modules { get; set; }
+        protected List<IModule> Modules { get;private set; }
 
         /// <summary>
         /// Mapping listing
         /// </summary>
-        protected virtual List<IMapping> Mappings { get; set; }
+        protected List<IMapping> Mappings { get;private set; }
 
         /// <summary>
         /// Provider manager
         /// </summary>
-        protected virtual ProviderManager ProviderManager { get; set; }
+        protected ProviderManager ProviderManager { get; set; }
 
         #endregion
     }

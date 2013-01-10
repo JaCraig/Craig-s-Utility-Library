@@ -53,20 +53,20 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Name of the view
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// Parent database
         /// </summary>
-        public virtual Database ParentDatabase { get; set; }
+        public Database ParentDatabase { get; set; }
         /// <summary>
         /// Columns in the view
         /// </summary>
-        public virtual List<IColumn> Columns { get; set; }
+        public List<IColumn> Columns { get; private set; }
 
         /// <summary>
         /// Definition of the view
         /// </summary>
-        public virtual string Definition { get; set; }
+        public string Definition { get; set; }
 
         #endregion
 

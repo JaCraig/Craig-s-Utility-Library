@@ -76,7 +76,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         public static Bitmap TakeScreenShot(this IEnumerable<Screen> Screens, string FileName = "")
         {
             if (Screens == null)
-                throw new ArgumentNullException("Screen");
+                throw new ArgumentNullException("Screens");
             Rectangle TotalScreenRect = Rectangle.Empty;
             foreach (Screen CurrentScreen in Screen.AllScreens)
                 TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);

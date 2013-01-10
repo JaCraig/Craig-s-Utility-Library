@@ -46,7 +46,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// List of tables being held
         /// </summary>
-        public System.Collections.Generic.List<Table> Tables { get; protected set; }
+        public System.Collections.Generic.List<Table> Tables { get; private set; }
 
         /// <summary>
         /// Current row

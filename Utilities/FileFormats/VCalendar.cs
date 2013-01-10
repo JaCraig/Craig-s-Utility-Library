@@ -53,52 +53,52 @@ namespace Utilities.FileFormats
         /// <summary>
         /// The time zone for the calendar event
         /// </summary>
-        public virtual TimeZone CurrentTimeZone { get; set; }
+        public TimeZone CurrentTimeZone { get; set; }
 
         /// <summary>
         /// The start time
         /// </summary>
-        public virtual DateTime StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// The end time
         /// </summary>
-        public virtual DateTime EndTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         /// <summary>
         /// The location of the event
         /// </summary>
-        public virtual string Location { get; set; }
+        public string Location { get; set; }
 
         /// <summary>
         /// The subject of the item to send
         /// </summary>
-        public virtual string Subject { get; set; }
+        public string Subject { get; set; }
 
         /// <summary>
         /// The description of the event
         /// </summary>
-        public virtual string Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// List of attendees
         /// </summary>
-        public virtual MailAddressCollection AttendeeList { get; set; }
+        public MailAddressCollection AttendeeList { get; private set; }
 
         /// <summary>
         /// Organizer
         /// </summary>
-        public virtual MailAddress Organizer { get; set; }
+        public MailAddress Organizer { get; set; }
 
         /// <summary>
         /// Sets the status for the appointment (FREE, BUSY, etc.)
         /// </summary>
-        public virtual string Status { get; set; }
+        public string Status { get; set; }
 
         /// <summary>
         /// Determines if the calendar item is being canceled
         /// </summary>
-        public virtual bool Cancel { get; set; }
+        public bool Cancel { get; set; }
 
         private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 

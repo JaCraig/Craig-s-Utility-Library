@@ -73,7 +73,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// List of outlines
         /// </summary>
-        public virtual List<Outline> Outlines { get; set; }
+        public List<Outline> Outlines { get;private set; }
 
         #endregion
 

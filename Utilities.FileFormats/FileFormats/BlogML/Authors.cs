@@ -67,14 +67,14 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// List of authors
         /// </summary>
-        public virtual List<Author> AuthorList { get; set; }
+        public List<Author> AuthorList { get;private set; }
 
         /// <summary>
         /// Gets a specific author
         /// </summary>
         /// <param name="index">Index within the list</param>
         /// <returns>The author specified</returns>
-        public virtual Author this[int index]
+        public Author this[int index]
         {
             get { return AuthorList[index]; }
         }
@@ -84,7 +84,7 @@ namespace Utilities.FileFormats.BlogML
         /// </summary>
         /// <param name="index">Author's ID that you want</param>
         /// <returns>The author specified</returns>
-        public virtual Author this[string index]
+        public Author this[string index]
         {
             get
             {

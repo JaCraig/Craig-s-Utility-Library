@@ -32,12 +32,12 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class Menu
     {
-        protected Utilities.Cisco.Menu Entry = null;
+        protected Utilities.FileFormats.Cisco.Menu Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public Menu()
         {
-            Entry = new Utilities.Cisco.Menu();
+            Entry = new Utilities.FileFormats.Cisco.Menu();
             Random = new Utilities.Random.Random();
         }
 
@@ -45,11 +45,9 @@ namespace UnitTests.FileFormats.Cisco
         public void NullTest()
         {
             Entry.ImageURL = null;
-            Entry.MenuItems = null;
             Entry.X = 0;
             Entry.Y = 0;
             Entry.Prompt = null;
-            Entry.SoftKeys = null;
             Entry.Title = null;
             Assert.NotEmpty(Entry.ToString());
         }

@@ -74,17 +74,17 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Actual SQL command
         /// </summary>
-        public virtual string SQLCommand { get; protected set; }
+        public string SQLCommand { get; protected set; }
 
         /// <summary>
         /// Command type
         /// </summary>
-        public virtual CommandType CommandType { get; protected set; }
+        public CommandType CommandType { get; protected set; }
 
         /// <summary>
         /// Parameters associated with the command
         /// </summary>
-        public virtual List<IParameter> Parameters { get; protected set; }
+        public List<IParameter> Parameters { get; private set; }
 
         #endregion
 

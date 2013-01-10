@@ -86,42 +86,42 @@ namespace Utilities.Profiler
         /// <summary>
         /// Total time that the profiler has taken (in milliseconds)
         /// </summary>
-        public virtual List<long> Times { get; protected set; }
+        public List<long> Times { get; private set; }
 
         /// <summary>
         /// Children profiler items
         /// </summary>
-        public virtual List<Profiler> Children { get; protected set; }
+        public List<Profiler> Children { get; private set; }
 
         /// <summary>
         /// Parent profiler item
         /// </summary>
-        protected virtual Profiler Parent { get; set; }
+        protected Profiler Parent { get; set; }
 
         /// <summary>
         /// Function name
         /// </summary>
-        public virtual string Function { get; protected set; }
+        public string Function { get; protected set; }
 
         /// <summary>
         /// Determines if it is running
         /// </summary>
-        protected virtual bool Running { get; set; }
+        protected bool Running { get; set; }
 
         /// <summary>
         /// Level of the profiler
         /// </summary>
-        protected virtual int Level { get; set; }
+        protected int Level { get; set; }
 
         /// <summary>
         /// Where the profiler was started at
         /// </summary>
-        protected virtual string CalledFrom { get; set; }
+        protected string CalledFrom { get; set; }
 
         /// <summary>
         /// Stop watch
         /// </summary>
-        protected virtual StopWatch StopWatch { get; set; }
+        protected StopWatch StopWatch { get; set; }
 
         /// <summary>
         /// Contains the root profiler

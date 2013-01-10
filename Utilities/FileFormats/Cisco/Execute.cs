@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Text;
 #endregion
 
-namespace Utilities.Cisco
+namespace Utilities.FileFormats.Cisco
 {
     /// <summary>
     /// Execute class
@@ -48,7 +48,7 @@ namespace Utilities.Cisco
         /// <summary>
         /// Execute items
         /// </summary>
-        public virtual List<ExecuteItem> ExecuteItems { get; set; }
+        public List<ExecuteItem> ExecuteItems { get; private set; }
 
         #endregion
 

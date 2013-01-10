@@ -22,10 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using System.Text;
-using Utilities.Cisco.Interfaces;
+using Utilities.FileFormats.Cisco.Interfaces;
 #endregion
 
-namespace Utilities.Cisco
+namespace Utilities.FileFormats.Cisco
 {
     /// <summary>
     /// Status class
@@ -49,32 +49,32 @@ namespace Utilities.Cisco
         /// <summary>
         /// Text
         /// </summary>
-        public virtual string Text { get; set; }
+        public string Text { get; set; }
 
         /// <summary>
         /// Timer value in seconds
         /// </summary>
-        public virtual int Timer { get; set; }
+        public int Timer { get; set; }
 
         /// <summary>
         /// X location
         /// </summary>
-        public virtual int X { get; set; }
+        public int X { get; set; }
 
         /// <summary>
         /// Y location
         /// </summary>
-        public virtual int Y { get; set; }
+        public int Y { get; set; }
 
         /// <summary>
         /// Location of the image
         /// </summary>
-        public virtual string URL { get; set; }
+        public string URL { get; set; }
 
         /// <summary>
         /// Soft keys
         /// </summary>
-        public virtual List<SoftKeyItem> SoftKeys { get; set; }
+        public List<SoftKeyItem> SoftKeys { get; private set; }
 
         #endregion
 

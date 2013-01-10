@@ -55,7 +55,7 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// User names
         /// </summary>
-        public virtual List<string> UserNames { get; set; }
+        public List<string> UserNames { get; private set; }
 
         #endregion
 

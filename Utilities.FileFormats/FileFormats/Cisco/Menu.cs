@@ -22,10 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using System.Text;
-using Utilities.Cisco.Interfaces;
+using Utilities.FileFormats.Cisco.Interfaces;
 #endregion
 
-namespace Utilities.Cisco
+namespace Utilities.FileFormats.Cisco
 {
     /// <summary>
     /// Phone menu class
@@ -50,37 +50,37 @@ namespace Utilities.Cisco
         /// <summary>
         /// Title of the menu
         /// </summary>
-        public virtual string Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Prompt of the menu
         /// </summary>
-        public virtual string Prompt { get; set; }
+        public string Prompt { get; set; }
 
         /// <summary>
         /// Menu items for the menu
         /// </summary>
-        public virtual List<IMenuItem> MenuItems { get; set; }
+        public List<IMenuItem> MenuItems { get;private set; }
 
         /// <summary>
         /// X location of backgroun image (if present)
         /// </summary>
-        public virtual int X { get; set; }
+        public int X { get; set; }
 
         /// <summary>
         /// Y location of backgroun image (if present)
         /// </summary>
-        public virtual int Y { get; set; }
+        public int Y { get; set; }
 
         /// <summary>
         /// URL for background image (if needed)
         /// </summary>
-        public virtual string ImageURL { get; set; }
+        public string ImageURL { get; set; }
 
         /// <summary>
         /// Soft keys
         /// </summary>
-        public virtual List<SoftKeyItem> SoftKeys { get; set; }
+        public List<SoftKeyItem> SoftKeys { get;private set; }
 
         #endregion
 

@@ -33,11 +33,13 @@ namespace Utilities.Web.Email.MIME
     public class MIMEHeader
     {
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
         public MIMEHeader()
         {
+            this.Fields = new List<Field>();
         }
 
         /// <summary>
@@ -47,7 +49,8 @@ namespace Utilities.Web.Email.MIME
         public MIMEHeader(string HeaderText)
         {
             if(string.IsNullOrEmpty(HeaderText))
-                throw new ArgumentNullException("Header text can not be null");
+                throw new ArgumentNullException("HeaderText");
+            this.Fields = new List<Field>();
             StringReader Reader=new StringReader(HeaderText);
             try
             {
@@ -76,16 +79,12 @@ namespace Utilities.Web.Email.MIME
         #endregion
 
         #region Public Properties
-        private List<Field> _Fields=new List<Field>();
+
         /// <summary>
         /// The individual fields for the header
         /// </summary>
-        public List<Field>Fields
-        {
-            get{return _Fields;}
-            set{_Fields=value;}
-        }
-
+        public List<Field>Fields{get;private set;}
+        
         /// <summary>
         /// Can be used to get a specific field based on its name
         /// </summary>

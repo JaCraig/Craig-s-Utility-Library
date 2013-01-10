@@ -220,50 +220,50 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// The type defined by this TypeBuilder (filled once Create is called)
         /// </summary>
-        public virtual Type DefinedType { get; protected set; }
+        public Type DefinedType { get; protected set; }
 
         /// <summary>
         /// List of methods defined by this TypeBuilder 
         /// (does not include methods defined in base classes unless overridden)
         /// </summary>
-        public virtual List<IMethodBuilder> Methods { get; protected set; }
+        public List<IMethodBuilder> Methods { get; private set; }
 
         /// <summary>
         /// List of fields defined by the TypeBuilder
         /// (does not include fields defined in base classes)
         /// </summary>
-        public virtual List<FieldBuilder> Fields { get; protected set; }
+        public List<FieldBuilder> Fields { get; private set; }
 
         /// <summary>
         /// List of properties defined by the TypeBuilder
         /// (does not include properties defined in base classes)
         /// </summary>
-        public virtual List<IPropertyBuilder> Properties { get; protected set; }
+        public List<IPropertyBuilder> Properties { get; private set; }
 
         /// <summary>
         /// Constructors defined by the TypeBuilder
         /// </summary>
-        public virtual List<IMethodBuilder> Constructors { get; protected set; }
+        public List<IMethodBuilder> Constructors { get; private set; }
 
         /// <summary>
         /// List of interfaces used by this type
         /// </summary>
-        public virtual List<Type> Interfaces { get; protected set; }
+        public List<Type> Interfaces { get; private set; }
 
         /// <summary>
         /// Base class used by this type
         /// </summary>
-        public virtual Type BaseClass { get; protected set; }
+        public Type BaseClass { get; protected set; }
 
         /// <summary>
         /// Builder used by this type
         /// </summary>
-        public virtual System.Reflection.Emit.TypeBuilder Builder { get; protected set; }
+        public System.Reflection.Emit.TypeBuilder Builder { get; protected set; }
 
         /// <summary>
         /// TypeAttributes for this type
         /// </summary>
-        public virtual TypeAttributes Attributes { get; protected set; }
+        public TypeAttributes Attributes { get; protected set; }
 
         /// <summary>
         /// Name of this type
@@ -273,7 +273,7 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Assembly builder
         /// </summary>
-        protected virtual Assembly Assembly { get; set; }
+        protected Assembly Assembly { get; set; }
 
         #endregion
 

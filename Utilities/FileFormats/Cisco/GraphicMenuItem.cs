@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Text;
-using Utilities.Cisco.Interfaces;
+using Utilities.FileFormats.Cisco.Interfaces;
 #endregion
 
-namespace Utilities.Cisco
+namespace Utilities.FileFormats.Cisco
 {
     /// <summary>
     /// Graphic menu item

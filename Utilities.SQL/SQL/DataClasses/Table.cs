@@ -66,20 +66,20 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Name of the table
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// Columns in the table
         /// </summary>
-        public virtual List<IColumn> Columns { get; set; }
+        public List<IColumn> Columns { get;private set; }
         /// <summary>
         /// Parent database
         /// </summary>
-        public virtual Database ParentDatabase { get; set; }
+        public Database ParentDatabase { get; set; }
 
         /// <summary>
         /// List of triggers associated with the table
         /// </summary>
-        public virtual List<Trigger> Triggers { get; set; }
+        public List<Trigger> Triggers { get;private set; }
 
         #endregion
 

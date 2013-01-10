@@ -106,47 +106,47 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// Outline list
         /// </summary>
-        public virtual List<Outline> Outlines { get; set; }
+        public List<Outline> Outlines { get;private set; }
 
         /// <summary>
         /// Url of the XML file
         /// </summary>
-        public virtual string XMLUrl { get; set; }
+        public string XMLUrl { get; set; }
 
         /// <summary>
         /// Version number
         /// </summary>
-        public virtual string Version { get; set; }
+        public string Version { get; set; }
 
         /// <summary>
         /// Title of the item
         /// </summary>
-        public virtual string Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Language used
         /// </summary>
-        public virtual string Language { get; set; }
+        public string Language { get; set; }
 
         /// <summary>
         /// Type
         /// </summary>
-        public virtual string Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// HTML Url
         /// </summary>
-        public virtual string HTMLUrl { get; set; }
+        public string HTMLUrl { get; set; }
 
         /// <summary>
         /// Text
         /// </summary>
-        public virtual string Text { get; set; }
+        public string Text { get; set; }
 
         /// <summary>
         /// Description
         /// </summary>
-        public virtual string Description { get; set; }
+        public string Description { get; set; }
 
         #endregion
 

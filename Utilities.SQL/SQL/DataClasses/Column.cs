@@ -95,72 +95,72 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// On Delete Cascade
         /// </summary>
-        public virtual bool OnDeleteCascade { get; set; }
+        public bool OnDeleteCascade { get; set; }
 
         /// <summary>
         /// On Update Cascade
         /// </summary>
-        public virtual bool OnUpdateCascade { get; set; }
+        public bool OnUpdateCascade { get; set; }
 
         /// <summary>
         /// On Delete Set Null
         /// </summary>
-        public virtual bool OnDeleteSetNull { get; set; }
+        public bool OnDeleteSetNull { get; set; }
 
         /// <summary>
         /// Name
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Data type
         /// </summary>
-        public virtual DbType DataType { get; set; }
+        public DbType DataType { get; set; }
 
         /// <summary>
         /// Data length
         /// </summary>
-        public virtual int Length { get; set; }
+        public int Length { get; set; }
 
         /// <summary>
         /// Foreign keys
         /// </summary>
-        public virtual List<IColumn> ForeignKey { get; set; }
+        public List<IColumn> ForeignKey { get;private set; }
 
         /// <summary>
         /// Primary key?
         /// </summary>
-        public virtual bool PrimaryKey { get; set; }
+        public bool PrimaryKey { get; set; }
 
         /// <summary>
         /// Nullable?
         /// </summary>
-        public virtual bool Nullable { get; set; }
+        public bool Nullable { get; set; }
 
         /// <summary>
         /// Unique?
         /// </summary>
-        public virtual bool Unique { get; set; }
+        public bool Unique { get; set; }
 
         /// <summary>
         /// Index?
         /// </summary>
-        public virtual bool Index { get; set; }
+        public bool Index { get; set; }
 
         /// <summary>
         /// Auto increment?
         /// </summary>
-        public virtual bool AutoIncrement { get; set; }
+        public bool AutoIncrement { get; set; }
 
         /// <summary>
         /// Default value
         /// </summary>
-        public virtual string Default { get; set; }
+        public string Default { get; set; }
 
         /// <summary>
         /// Parent table
         /// </summary>
-        public virtual ITable ParentTable { get; set; }
+        public ITable ParentTable { get; set; }
 
         #endregion
 

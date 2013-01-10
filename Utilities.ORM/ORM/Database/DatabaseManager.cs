@@ -349,12 +349,12 @@ namespace Utilities.ORM.Database
         /// <summary>
         /// Mappings associated to databases
         /// </summary>
-        public virtual ListMapping<IDatabase, IMapping> Mappings { get; set; }
+        public ListMapping<IDatabase, IMapping> Mappings { get;private set; }
 
         /// <summary>
         /// List of database structures
         /// </summary>
-        public virtual System.Collections.Generic.List<Utilities.SQL.DataClasses.Database> DatabaseStructures { get; set; }
+        public System.Collections.Generic.List<Utilities.SQL.DataClasses.Database> DatabaseStructures { get;private set; }
 
         #endregion
     }

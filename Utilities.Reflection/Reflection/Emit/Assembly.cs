@@ -154,37 +154,37 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// ModuleBuilder object
         /// </summary>
-        public virtual ModuleBuilder Module { get; protected set; }
+        public ModuleBuilder Module { get; protected set; }
 
         /// <summary>
         /// Name of the assembly
         /// </summary>
-        public virtual string Name { get; protected set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Directory of the assembly
         /// </summary>
-        public virtual string Directory { get; protected set; }
+        public string Directory { get; protected set; }
 
         /// <summary>
         /// List of classes associated with this assembly
         /// </summary>
-        public virtual List<TypeBuilder> Classes { get; protected set; }
+        public List<TypeBuilder> Classes { get; private set; }
 
         /// <summary>
         /// List of enums associated with this assembly
         /// </summary>
-        public virtual List<EnumBuilder> Enums { get; protected set; }
+        public List<EnumBuilder> Enums { get; private set; }
 
         /// <summary>
         /// Assembly type (exe or dll)
         /// </summary>
-        public virtual AssemblyType Type { get; protected set; }
+        public AssemblyType Type { get; protected set; }
 
         /// <summary>
         /// Assembly builder
         /// </summary>
-        protected virtual AssemblyBuilder Builder { get; set; }
+        protected AssemblyBuilder Builder { get; set; }
 
         #endregion
 

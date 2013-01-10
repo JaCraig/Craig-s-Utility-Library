@@ -65,7 +65,7 @@ namespace Utilities.FileFormats.RSD
         /// <summary>
         /// List of APIs
         /// </summary>
-        public virtual List<API> APIList { get; set; }
+        public List<API> APIList { get;private set; }
 
         #endregion
 

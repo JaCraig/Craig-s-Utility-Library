@@ -23,7 +23,7 @@ THE SOFTWARE.*/
 
 #endregion
 
-namespace Utilities.Cisco
+namespace Utilities.FileFormats.Cisco
 {
     /// <summary>
     /// Input type flags

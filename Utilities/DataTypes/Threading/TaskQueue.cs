@@ -45,7 +45,7 @@ namespace Utilities.DataTypes.Threading
         /// <param name="ProcessItem">Action that is used to process each item</param>
         /// <param name="HandleError">Handles an exception if it occurs (defaults to eating the error)</param>
         public TaskQueue(int Capacity, Action<T> ProcessItem, Action<Exception> HandleError = null)
-            : base(new ConcurrentQueue<T>(), Capacity)
+            : base(new ConcurrentQueue<T>())
         {
             this.ProcessItem = ProcessItem;
             this.HandleError = HandleError.NullCheck(x => { });

@@ -23,7 +23,7 @@ THE SOFTWARE.*/
 
 #endregion
 
-namespace Utilities.Cisco.Interfaces
+namespace Utilities.FileFormats.Cisco.Interfaces
 {
     /// <summary>
     /// Menu item interface

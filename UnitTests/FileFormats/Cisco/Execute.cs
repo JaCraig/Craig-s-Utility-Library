@@ -30,19 +30,18 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class Execute
     {
-        protected Utilities.Cisco.Execute Entry = null;
+        protected Utilities.FileFormats.Cisco.Execute Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public Execute()
         {
-            Entry = new Utilities.Cisco.Execute();
+            Entry = new Utilities.FileFormats.Cisco.Execute();
             Random = new Utilities.Random.Random();
         }
 
         [Fact]
         public void NullTest()
         {
-            Entry.ExecuteItems=null;
             Assert.NotEmpty(Entry.ToString());
         }
 

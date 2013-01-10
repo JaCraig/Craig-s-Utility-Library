@@ -66,57 +66,57 @@ namespace Utilities.Web.Google.StaticMaps
         /// <summary>
         /// Center of the map
         /// </summary>
-        public virtual ILocation Center { get; set; }
+        public ILocation Center { get; set; }
 
         /// <summary>
         /// Zoom level (should be between 0 and 21
         /// </summary>
-        public virtual int Zoom { get; set; }
+        public int Zoom { get; set; }
 
         /// <summary>
         /// Width of the map
         /// </summary>
-        public virtual int Width { get; set; }
+        public int Width { get; set; }
 
         /// <summary>
         /// Height of the map
         /// </summary>
-        public virtual int Height { get; set; }
+        public int Height { get; set; }
 
         /// <summary>
         /// Scale of the map (values are 1, 2, and 4 for business customers)
         /// </summary>
-        public virtual int Scale { get; set; }
+        public int Scale { get; set; }
 
         /// <summary>
         /// Image format
         /// </summary>
-        public virtual ImageFormat Format { get; set; }
+        public ImageFormat Format { get; set; }
 
         /// <summary>
         /// Map type
         /// </summary>
-        public virtual MapType MapType { get; set; }
+        public MapType MapType { get; set; }
 
         /// <summary>
         /// Language for the map to use
         /// </summary>
-        public virtual string Language { get; set; }
+        public string Language { get; set; }
 
         /// <summary>
         /// Displays appropriate borders based on geo-political sensitivities (uses two-character ccTLD values)
         /// </summary>
-        public virtual string Region { get; set; }
+        public string Region { get; set; }
 
         /// <summary>
         /// A list of markers
         /// </summary>
-        public virtual List<Markers> Markers { get; set; }
+        public List<Markers> Markers { get;private set; }
 
         /// <summary>
         /// Determines if a sensor is used to determine the user's location
         /// </summary>
-        public virtual bool Sensor { get; set; }
+        public bool Sensor { get; set; }
 
         #endregion
 

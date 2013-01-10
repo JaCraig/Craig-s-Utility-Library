@@ -47,7 +47,7 @@ namespace Utilities.Web.Email.MIME
         public Field(string FieldText)
         {
             if (string.IsNullOrEmpty(FieldText))
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("FieldText");
 
             int Index = FieldText.IndexOf(':');
             if (Index != -1)

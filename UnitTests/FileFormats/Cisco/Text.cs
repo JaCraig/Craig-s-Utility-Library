@@ -32,19 +32,18 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class Text
     {
-        protected Utilities.Cisco.Text Entry = null;
+        protected Utilities.FileFormats.Cisco.Text Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public Text()
         {
-            Entry = new Utilities.Cisco.Text();
+            Entry = new Utilities.FileFormats.Cisco.Text();
             Random = new Utilities.Random.Random();
         }
 
         [Fact]
         public void NullTest()
         {
-            Entry.SoftKeys = null;
             Entry.Content=null;
             Entry.Prompt = null;
             Entry.Title = null;

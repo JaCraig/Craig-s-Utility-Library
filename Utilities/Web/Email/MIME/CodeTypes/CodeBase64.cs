@@ -50,7 +50,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         public override void Decode(string Input, out byte[] Output)
         {
             if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input can not be null");
+                throw new ArgumentNullException("Input");
             Output = System.Convert.FromBase64String(Input);
         }
 
@@ -62,7 +62,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         public override string Encode(byte[] Input)
         {
             if (Input==null)
-                throw new ArgumentNullException("Input can not be null");
+                throw new ArgumentNullException("Input");
             string TempString = System.Convert.ToBase64String(Input);
             int MAX = 76;
             int Index = 0;

@@ -61,7 +61,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// <summary>
         /// List of records
         /// </summary>
-        protected virtual List<IRecord<T>> Records { get; set; }
+        protected List<IRecord<T>> Records { get;private set; }
 
         #endregion
 

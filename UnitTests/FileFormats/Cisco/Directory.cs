@@ -32,20 +32,18 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class Directory
     {
-        protected Utilities.Cisco.Directory DirectoryObject = null;
+        protected Utilities.FileFormats.Cisco.Directory DirectoryObject = null;
         protected Utilities.Random.Random Generator = null;
 
         public Directory() 
         { 
-            DirectoryObject = new Utilities.Cisco.Directory(); 
+            DirectoryObject = new Utilities.FileFormats.Cisco.Directory(); 
             Generator = new Utilities.Random.Random(System.Environment.TickCount); 
         }
 
         [Fact]
         public void NullTest()
         {
-            DirectoryObject.DirectoryEntries = null;
-            DirectoryObject.SoftKeys = null;
             DirectoryObject.Prompt = null;
             DirectoryObject.Title = null;
             Assert.NotEmpty(DirectoryObject.ToString());

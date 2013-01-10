@@ -65,34 +65,34 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Name
         /// </summary>
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
         
         /// <summary>
         /// List of tables
         /// </summary>
-        public virtual List<Table> Tables { get; set; }
+        public List<Table> Tables { get;private set; }
 
         /// <summary>
         /// List of stored procedures
         /// </summary>
-        public virtual List<StoredProcedure> StoredProcedures { get; set; }
+        public List<StoredProcedure> StoredProcedures { get;private set; }
 
         /// <summary>
         /// List of views
         /// </summary>
-        public virtual List<View> Views { get; set; }
+        public List<View> Views { get;private set; }
 
         /// <summary>
         /// List of functions
         /// </summary>
-        public virtual List<Function> Functions { get; set; }
+        public List<Function> Functions { get;private set; }
 
         /// <summary>
         /// Returns a table with the given name
         /// </summary>
         /// <param name="Name">Table name</param>
         /// <returns>The table specified</returns>
-        public virtual Table this[string Name]
+        public Table this[string Name]
         {
             get
             {

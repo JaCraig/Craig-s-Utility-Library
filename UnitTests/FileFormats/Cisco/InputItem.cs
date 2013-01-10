@@ -32,12 +32,12 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class InputItem
     {
-        protected Utilities.Cisco.InputItem Entry = null;
+        protected Utilities.FileFormats.Cisco.InputItem Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public InputItem()
         {
-            Entry = new Utilities.Cisco.InputItem();
+            Entry = new Utilities.FileFormats.Cisco.InputItem();
             Random = new Utilities.Random.Random();
         }
 
@@ -46,7 +46,7 @@ namespace UnitTests.FileFormats.Cisco
         {
             Entry.DefaultValue = null;
             Entry.DisplayName = null;
-            Entry.InputFlags = default(Utilities.Cisco.InputFlag);
+            Entry.InputFlags = default(Utilities.FileFormats.Cisco.InputFlag);
             Entry.QueryStringParam = null;
             Assert.NotEmpty(Entry.ToString());
         }

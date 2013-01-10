@@ -32,12 +32,12 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class ExecuteItem
     {
-        protected Utilities.Cisco.ExecuteItem Entry = null;
+        protected Utilities.FileFormats.Cisco.ExecuteItem Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public ExecuteItem()
         {
-            Entry = new Utilities.Cisco.ExecuteItem();
+            Entry = new Utilities.FileFormats.Cisco.ExecuteItem();
             Random = new Utilities.Random.Random();
         }
 

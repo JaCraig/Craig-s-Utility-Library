@@ -32,12 +32,12 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class DirectoryEntry
     {
-        protected Utilities.Cisco.DirectoryEntry Entry = null;
+        protected Utilities.FileFormats.Cisco.DirectoryEntry Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public DirectoryEntry()
         {
-            Entry = new Utilities.Cisco.DirectoryEntry();
+            Entry = new Utilities.FileFormats.Cisco.DirectoryEntry();
             Random = new Utilities.Random.Random();
         }
 

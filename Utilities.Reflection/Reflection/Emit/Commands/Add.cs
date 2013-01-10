@@ -24,6 +24,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -44,15 +45,17 @@ namespace Utilities.Reflection.Emit.Commands
             : base()
         {
             Utilities.Reflection.Emit.BaseClasses.MethodBase Method = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod;
-            if (!(LeftHandSide is VariableBase))
+            VariableBase Left = LeftHandSide as VariableBase;
+            VariableBase Right = RightHandSide as VariableBase;
+            if (Left == null)
                 this.LeftHandSide = Method.CreateConstant(LeftHandSide);
             else
-                this.LeftHandSide = (VariableBase)LeftHandSide;
-            if (!(RightHandSide is VariableBase))
+                this.LeftHandSide = Left;
+            if (Right == null)
                 this.RightHandSide = Method.CreateConstant(RightHandSide);
             else
-                this.RightHandSide = (VariableBase)RightHandSide;
-            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("AddLocalResult" + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(),
+                this.RightHandSide = Right;
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("AddLocalResult" + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(CultureInfo.InvariantCulture),
                 this.LeftHandSide.DataType);
         }
 

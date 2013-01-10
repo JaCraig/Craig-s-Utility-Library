@@ -54,32 +54,32 @@ namespace Utilities.Web.Google.HelperClasses
         /// <summary>
         /// Marker list
         /// </summary>
-        public virtual List<ILocation> MarkerList { get; set; }
+        public List<ILocation> MarkerList { get;private set; }
 
         /// <summary>
         /// Marker size
         /// </summary>
-        public virtual MarkerSize Size { get; set; }
+        public MarkerSize Size { get; set; }
 
         /// <summary>
         /// Marker color (24 bit hex color values)
         /// </summary>
-        public virtual string Color { get; set; }
+        public string Color { get; set; }
 
         /// <summary>
         /// Single uppercase alphanumeric character
         /// </summary>
-        public virtual string Label { get; set; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Custom icon (may be PNG, JPEG, or GIF but PNG is recommended)
         /// </summary>
-        public virtual Uri CustomIcon { get; set; }
+        public Uri CustomIcon { get; set; }
 
         /// <summary>
         /// Should a shadow be generated from the custom icon?
         /// </summary>
-        public virtual bool CustomIconShadow { get; set; }
+        public bool CustomIconShadow { get; set; }
 
         #endregion
 

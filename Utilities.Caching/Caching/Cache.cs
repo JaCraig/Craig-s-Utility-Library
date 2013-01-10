@@ -52,7 +52,7 @@ namespace Utilities.Caching
         /// <summary>
         /// Internal cache
         /// </summary>
-        protected static ConcurrentDictionary<KeyType, object> InternalCache { get; set; }
+        protected static ConcurrentDictionary<KeyType, object> InternalCache { get;private set; }
 
         /// <summary>
         /// Collection of keys

@@ -85,12 +85,12 @@ namespace Utilities.Environment
         /// <summary>
         /// Command string
         /// </summary>
-        public virtual string Command { get; set; }
+        public string Command { get; set; }
 
         /// <summary>
         /// List of parameters found
         /// </summary>
-        public virtual List<string> Parameters { get; set; }
+        public List<string> Parameters { get;private set; }
 
         #endregion
     }

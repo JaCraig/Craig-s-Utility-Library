@@ -46,7 +46,7 @@ namespace Utilities.Web.PingBack
             if (string.IsNullOrEmpty(Message.Source) || string.IsNullOrEmpty(Message.Target))
                 return;
 
-            HttpWebRequest Request = (HttpWebRequest)HttpWebRequest.Create(Message.Target);
+            HttpWebRequest Request = (HttpWebRequest)HttpWebRequest.Create(new Uri(Message.Target));
             Request.Credentials = CredentialCache.DefaultNetworkCredentials;
             HttpWebResponse Response = (HttpWebResponse)Request.GetResponse();
             string PingURL = (!string.IsNullOrEmpty(Response.Headers["x-pingback"])) ? Response.Headers["x-pingback"] : Response.Headers["pingback"];

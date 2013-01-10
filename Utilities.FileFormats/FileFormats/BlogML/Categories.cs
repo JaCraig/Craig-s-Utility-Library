@@ -67,14 +67,14 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Categories list
         /// </summary>
-        public virtual List<Category> CategoryList { get; set; }
+        public List<Category> CategoryList { get;private set; }
 
         /// <summary>
         /// Gets a specified category
         /// </summary>
         /// <param name="index">The ID of the category</param>
         /// <returns>The category specified</returns>
-        public virtual Category this[string index]
+        public Category this[string index]
         {
             get
             {

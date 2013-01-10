@@ -32,21 +32,19 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class Input
     {
-        protected Utilities.Cisco.Input Entry = null;
+        protected Utilities.FileFormats.Cisco.Input Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public Input()
         {
-            Entry = new Utilities.Cisco.Input();
+            Entry = new Utilities.FileFormats.Cisco.Input();
             Random = new Utilities.Random.Random();
         }
 
         [Fact]
         public void NullTest()
         {
-            Entry.InputItems = null;
             Entry.Prompt = null;
-            Entry.SoftKeys = null;
             Entry.Title = null;
             Entry.URL = null;
             Assert.NotEmpty(Entry.ToString());

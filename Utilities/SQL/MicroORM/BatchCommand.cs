@@ -110,12 +110,12 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Commands to batch
         /// </summary>
-        protected virtual List<ICommand> Commands { get; set; }
+        protected List<ICommand> Commands { get;private set; }
 
         /// <summary>
         /// Has this been batched?
         /// </summary>
-        protected virtual bool Batched { get; set; }
+        protected bool Batched { get; set; }
 
         #endregion
 

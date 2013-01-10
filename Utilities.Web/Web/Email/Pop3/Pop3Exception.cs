@@ -23,11 +23,13 @@ THE SOFTWARE.*/
 
 #endregion
 
+using System;
 namespace Utilities.Web.Email.Pop3
 {
     /// <summary>
     /// Exception class used by the Pop3Client class
     /// </summary>
+    [Serializable]
     public class Pop3Exception:System.Exception
     {
         #region Constructors

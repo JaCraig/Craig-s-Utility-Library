@@ -88,7 +88,7 @@ namespace Utilities.FileFormats.Zip
             File.ThrowIfNullOrEmpty("File");
             FileInfo TempFileInfo = new FileInfo(File);
             if (!TempFileInfo.Exists)
-                throw new ArgumentException("File");
+                throw new ArgumentException("File does not exist");
             using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.OpenOrCreate))
             {
                 AddFile(TempFileInfo.Name, TempFileInfo, Package);
@@ -152,7 +152,7 @@ namespace Utilities.FileFormats.Zip
         {
             File.ThrowIfNullOrEmpty("File");
             if (!FileInfo.Exists)
-                throw new ArgumentException("FileInfo");
+                throw new ArgumentException("FileInfo does not exist");
             Uri UriPath = PackUriHelper.CreatePartUri(new Uri(File, UriKind.Relative));
             PackagePart PackagePart = Package.CreatePart(UriPath, System.Net.Mime.MediaTypeNames.Text.Xml, CompressionOption.Maximum);
             byte[] Data = FileInfo.ReadBinary();

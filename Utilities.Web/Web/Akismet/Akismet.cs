@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Web;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Akismet
@@ -43,13 +44,13 @@ namespace Utilities.Web.Akismet
         {
             this.Key = Key;
             this.Website = Site;
-            this.VerifyKeyData = string.Format("key={0}&blog={1}", Key, HttpUtility.UrlEncode(Website));
-            this.CommentCheckUrl = new Uri(string.Format("http://{0}.rest.akismet.com/1.1/comment-check", Key));
+            this.VerifyKeyData = string.Format(CultureInfo.InvariantCulture,"key={0}&blog={1}", Key, HttpUtility.UrlEncode(Website));
+            this.CommentCheckUrl = new Uri(string.Format(CultureInfo.InvariantCulture,"http://{0}.rest.akismet.com/1.1/comment-check", Key));
             this.CommentCheckData = "blog=" + HttpUtility.UrlEncode(Website) + "&user_ip={0}&user_agent={1}&referrer={2}" +
                 "&permalink={3}&comment_type={4}&comment_author={5}&comment_author_email={6}&" +
                 "comment_author_url={7}&comment_content={8}";
-            this.SubmitSpamUrl = new Uri(string.Format("http://{0}.rest.akismet.com/1.1/submit-spam", Key));
-            this.SubmitHamUrl = new Uri(string.Format("http://{0}.rest.akismet.com/1.1/submit-ham", Key));
+            this.SubmitSpamUrl = new Uri(string.Format(CultureInfo.InvariantCulture,"http://{0}.rest.akismet.com/1.1/submit-spam", Key));
+            this.SubmitHamUrl = new Uri(string.Format(CultureInfo.InvariantCulture,"http://{0}.rest.akismet.com/1.1/submit-ham", Key));
         }
 
         #endregion
@@ -142,7 +143,7 @@ namespace Utilities.Web.Akismet
 
         private string SetupData(Comment Comment)
         {
-            return string.Format(this.CommentCheckData,
+            return string.Format(CultureInfo.InvariantCulture,this.CommentCheckData,
                  HttpUtility.UrlEncode(Comment.UserIP),
                  HttpUtility.UrlEncode(Comment.UserAgent),
                  HttpUtility.UrlEncode(Comment.Referrer),

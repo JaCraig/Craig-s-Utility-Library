@@ -32,12 +32,12 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class GraphicMenuItem
     {
-        protected Utilities.Cisco.GraphicMenuItem Entry = null;
+        protected Utilities.FileFormats.Cisco.GraphicMenuItem Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public GraphicMenuItem()
         {
-            Entry = new Utilities.Cisco.GraphicMenuItem();
+            Entry = new Utilities.FileFormats.Cisco.GraphicMenuItem();
             Random = new Utilities.Random.Random();
         }
 

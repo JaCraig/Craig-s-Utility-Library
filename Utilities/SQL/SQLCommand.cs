@@ -73,12 +73,12 @@ namespace Utilities.SQL
         /// <summary>
         /// Columns
         /// </summary>
-        protected List<string> Columns { get; set; }
+        protected List<string> Columns { get; private set; }
 
         /// <summary>
         /// Joins
         /// </summary>
-        protected List<SQLJoin> Joins { get; set; }
+        protected List<SQLJoin> Joins { get; private set; }
 
         /// <summary>
         /// Base table name
@@ -88,7 +88,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Parameters
         /// </summary>
-        protected List<IParameter> Parameters { get; set; }
+        protected List<IParameter> Parameters { get; private set; }
 
         /// <summary>
         /// Where clause
@@ -98,7 +98,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Order by
         /// </summary>
-        protected List<string> OrderByColumns { get; set; }
+        protected List<string> OrderByColumns { get; private set; }
 
         /// <summary>
         /// Limits the results to the top X amount

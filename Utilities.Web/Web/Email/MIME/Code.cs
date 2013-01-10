@@ -62,7 +62,7 @@ namespace Utilities.Web.Email.MIME
         public virtual void Decode(string Input, out byte[] Output)
         {
             if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input can not be null");
+                throw new ArgumentNullException("Input");
 
             if (string.IsNullOrEmpty(CharacterSet))
             {
@@ -79,7 +79,7 @@ namespace Utilities.Web.Email.MIME
         public virtual void Decode(string Input, out string Output)
         {
             if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input can not be null");
+                throw new ArgumentNullException("Input");
             if (string.IsNullOrEmpty(CharacterSet))
             {
                 CharacterSet = Encoding.Default.BodyName;
@@ -97,7 +97,7 @@ namespace Utilities.Web.Email.MIME
         public virtual string Encode(byte[] Input)
         {
             if (Input==null)
-                throw new ArgumentNullException("Input can not be null");
+                throw new ArgumentNullException("Input");
 
             if (string.IsNullOrEmpty(CharacterSet))
             {
@@ -114,7 +114,7 @@ namespace Utilities.Web.Email.MIME
         public virtual string Encode(string Input)
         {
             if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input can not be null");
+                throw new ArgumentNullException("Input");
             if (string.IsNullOrEmpty(CharacterSet))
             {
                 CharacterSet = Encoding.Default.BodyName;

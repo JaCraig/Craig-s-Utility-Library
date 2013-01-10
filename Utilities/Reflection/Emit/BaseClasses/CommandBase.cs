@@ -94,22 +94,22 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Used to store conversion opcodes
         /// </summary>
-        protected static Dictionary<Type, OpCode> ConversionOpCodes { get; set; }
+        protected static Dictionary<Type, OpCode> ConversionOpCodes { get;private set; }
 
         /// <summary>
         /// Used to store comparison opcodes
         /// </summary>
-        protected static Dictionary<Comparison, OpCode> ComparisonOpCodes { get; set; }
+        protected static Dictionary<Comparison, OpCode> ComparisonOpCodes { get;private set; }
 
         /// <summary>
         /// Used to store text equivalent of comparison types
         /// </summary>
-        protected static Dictionary<Comparison, string> ComparisonTextEquivalent { get; set; }
+        protected static Dictionary<Comparison, string> ComparisonTextEquivalent { get;private set; }
 
         /// <summary>
         /// Return value (set to null if not used by the command)
         /// </summary>
-        public virtual VariableBase Result { get; set; }
+        public VariableBase Result { get; set; }
 
         #endregion
     }

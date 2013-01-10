@@ -38,6 +38,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         public MIMEBody()
         {
+            this.Boundries = new List<MIMEMessage>();
         }
 
         /// <summary>
@@ -48,9 +49,8 @@ namespace Utilities.Web.Email.MIME
         public MIMEBody(string Input,MIMEHeader Header)
         {
             if (string.IsNullOrEmpty(Input))
-            {
-                throw new ArgumentNullException("Input can not be null");
-            }
+                throw new ArgumentNullException("Input");
+            this.Boundries = new List<MIMEMessage>();
             MediaEnum ContentType;
             ContentType=GetMediaType(Header);
             if(MediaEnum.MEDIA_MULTIPART==ContentType)
@@ -99,7 +99,9 @@ namespace Utilities.Web.Email.MIME
             }
             Code CodeUsing = CodeManager.Instance[Encoding];
             CodeUsing.CharacterSet = Header[Constants.ContentType][Constants.Charset];
-            CodeUsing.Decode(Content, out _Content);
+            string TempContent = "";
+            CodeUsing.Decode(Content, out TempContent);
+            Content = TempContent;
         }
         #endregion
 
@@ -162,25 +164,17 @@ namespace Utilities.Web.Email.MIME
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Boundaries found within this item (files/messages)
         /// </summary>
-        public List<MIMEMessage> Boundries
-        {
-            get { return _Boundries; }
-            set { _Boundries = value; }
-        }
-        private List<MIMEMessage> _Boundries = new List<MIMEMessage>();
+        public List<MIMEMessage> Boundries{get;private set;}
 
         /// <summary>
         /// Content of this boundary/message
         /// </summary>
-        public string Content
-        {
-            get { return _Content; }
-            set { _Content = value; }
-        }
-        private string _Content = "";
+        public string Content{get;set;}
+
         #endregion
     }
 }

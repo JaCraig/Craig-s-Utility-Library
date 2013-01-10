@@ -24,7 +24,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace Utilities.Cisco.Interfaces
+namespace Utilities.FileFormats.Cisco.Interfaces
 {
     /// <summary>
     /// Displayable item interface
@@ -36,7 +36,7 @@ namespace Utilities.Cisco.Interfaces
         /// <summary>
         /// Softkey items
         /// </summary>
-        List<SoftKeyItem> SoftKeys { get; set; }
+        List<SoftKeyItem> SoftKeys { get; }
 
         #endregion
     }

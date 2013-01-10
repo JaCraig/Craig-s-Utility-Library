@@ -43,6 +43,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public MethodBase()
         {
             Commands = new List<ICommand>();
+            Parameters = new List<ParameterBuilder>();
             SetCurrentMethod();
         }
 
@@ -425,27 +426,27 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Name of the method
         /// </summary>
-        public virtual string Name { get; protected set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Return type
         /// </summary>
-        public virtual Type ReturnType { get; protected set; }
+        public Type ReturnType { get; protected set; }
 
         /// <summary>
         /// Parameters
         /// </summary>
-        public virtual List<ParameterBuilder> Parameters { get; protected set; }
+        public List<ParameterBuilder> Parameters { get; protected set; }
 
         /// <summary>
         /// Attributes for the method
         /// </summary>
-        public virtual System.Reflection.MethodAttributes Attributes { get; protected set; }
+        public System.Reflection.MethodAttributes Attributes { get; protected set; }
 
         /// <summary>
         /// IL Generator for the method
         /// </summary>
-        public virtual System.Reflection.Emit.ILGenerator Generator { get; protected set; }
+        public System.Reflection.Emit.ILGenerator Generator { get; protected set; }
 
         /// <summary>
         /// Current method
@@ -455,7 +456,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Commands used in the method
         /// </summary>
-        public virtual List<ICommand> Commands { get; protected set; }
+        public List<ICommand> Commands { get; private set; }
 
         /// <summary>
         /// Object counter
@@ -465,7 +466,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// The this object
         /// </summary>
-        public virtual VariableBase This
+        public VariableBase This
         {
             get
             {

@@ -52,7 +52,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         {
             if (string.IsNullOrEmpty(Input))
             {
-                throw new ArgumentNullException("Input can not be null");
+                throw new ArgumentNullException("Input");
             }
 
             string CurrentLine="";
@@ -86,7 +86,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         {
             if (Input == null)
             {
-                throw new ArgumentNullException("Input can not be null");
+                throw new ArgumentNullException("Input");
             }
             StringBuilder Output = new StringBuilder();
             foreach (byte Index in Input)
@@ -119,10 +119,10 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// <param name="CurrentLine">The current line</param>
         protected void DecodeOneLine(MemoryStream Stream,string CurrentLine)
         {
-            if (Stream == null || string.IsNullOrEmpty(CurrentLine))
-            {
-                throw new ArgumentNullException("Input variables can not be null");
-            }
+            if (Stream == null)
+                throw new ArgumentNullException("Stream");
+            if(string.IsNullOrEmpty(CurrentLine))
+                throw new ArgumentNullException("CurrentLine");
             for (int x = 0, y = 0; x < CurrentLine.Length; ++x, ++y)
             {
                 byte CurrentByte;

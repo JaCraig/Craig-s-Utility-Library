@@ -180,47 +180,47 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Parameter types
         /// </summary>
-        public virtual List<ParameterBuilder> Parameters { get; protected set; }
+        public List<ParameterBuilder> Parameters { get; private set; }
 
         /// <summary>
         /// Method builder
         /// </summary>
-        public virtual System.Reflection.Emit.PropertyBuilder Builder { get; protected set; }
+        public System.Reflection.Emit.PropertyBuilder Builder { get; protected set; }
 
         /// <summary>
         /// Attributes for the property
         /// </summary>
-        public virtual System.Reflection.PropertyAttributes Attributes { get; protected set; }
+        public System.Reflection.PropertyAttributes Attributes { get; protected set; }
 
         /// <summary>
         /// Attributes for the get method
         /// </summary>
-        public virtual System.Reflection.MethodAttributes GetMethodAttributes { get; protected set; }
+        public System.Reflection.MethodAttributes GetMethodAttributes { get; protected set; }
 
         /// <summary>
         /// Attributes for the set method
         /// </summary>
-        public virtual System.Reflection.MethodAttributes SetMethodAttributes { get; protected set; }
+        public System.Reflection.MethodAttributes SetMethodAttributes { get; protected set; }
 
         /// <summary>
         /// Method builder for the get method
         /// </summary>
-        public virtual MethodBuilder GetMethod { get; protected set; }
+        public MethodBuilder GetMethod { get; protected set; }
 
         /// <summary>
         /// Method builder for the set method
         /// </summary>
-        public virtual MethodBuilder SetMethod { get; protected set; }
+        public MethodBuilder SetMethod { get; protected set; }
 
         /// <summary>
         /// Field builder
         /// </summary>
-        public virtual FieldBuilder Field { get; protected set; }
+        public FieldBuilder Field { get; protected set; }
 
         /// <summary>
         /// Type builder
         /// </summary>
-        protected virtual TypeBuilder Type { get; set; }
+        protected TypeBuilder Type { get; set; }
 
         #endregion
 

@@ -132,8 +132,10 @@ namespace Utilities.Math
         /// <returns>The joined sets</returns>
         public static Set<T> operator +(Set<T> Set1, Set<T> Set2)
         {
-            if (Set1 == null || Set2 == null)
-                throw new ArgumentNullException();
+            if (Set1 == null)
+                throw new ArgumentNullException("Set1");
+            if(Set2 == null)
+                throw new ArgumentNullException("Set2");
 
             Set<T> ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.NumberItems; ++x)
@@ -151,8 +153,10 @@ namespace Utilities.Math
         /// <returns>The resulting set</returns>
         public static Set<T> operator -(Set<T> Set1, Set<T> Set2)
         {
-            if (Set1 == null || Set2 == null)
-                throw new ArgumentNullException();
+            if (Set1 == null)
+                throw new ArgumentNullException("Set1");
+            if (Set2 == null)
+                throw new ArgumentNullException("Set2");
 
             Set<T> ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.NumberItems; ++x)

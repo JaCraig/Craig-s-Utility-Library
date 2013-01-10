@@ -32,12 +32,12 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class SoftKeyItem
     {
-        protected Utilities.Cisco.SoftKeyItem Entry = null;
+        protected Utilities.FileFormats.Cisco.SoftKeyItem Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public SoftKeyItem()
         {
-            Entry = new Utilities.Cisco.SoftKeyItem();
+            Entry = new Utilities.FileFormats.Cisco.SoftKeyItem();
             Random = new Utilities.Random.Random();
         }
 

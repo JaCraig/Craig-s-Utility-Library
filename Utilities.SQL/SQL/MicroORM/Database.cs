@@ -84,42 +84,42 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Connection string
         /// </summary>
-        public virtual string Connection { get; protected set; }
+        public string Connection { get; protected set; }
 
         /// <summary>
         /// Name of the database
         /// </summary>
-        public virtual string Name { get; protected set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Database type, based on ADO.Net provider name
         /// </summary>
-        public virtual string DbType { get; protected set; }
+        public string DbType { get; protected set; }
 
         /// <summary>
         /// Parameter prefix that the database uses
         /// </summary>
-        public virtual string ParameterPrefix { get; protected set; }
+        public string ParameterPrefix { get; protected set; }
 
         /// <summary>
         /// Should calls to this database be profiled?
         /// </summary>
-        public virtual bool Profile { get; protected set; }
+        public bool Profile { get; protected set; }
 
         /// <summary>
         /// Contains the mappings associated with this database
         /// </summary>
-        public virtual ConcurrentDictionary<Type, IMapping> Mappings { get; protected set; }
+        public ConcurrentDictionary<Type, IMapping> Mappings { get; private set; }
 
         /// <summary>
         /// Should this database be used to write data?
         /// </summary>
-        public virtual bool Writable { get; protected set; }
+        public bool Writable { get; protected set; }
 
         /// <summary>
         /// Should this database be used to read data?
         /// </summary>
-        public virtual bool Readable { get; protected set; }
+        public bool Readable { get; protected set; }
 
         #endregion
     }

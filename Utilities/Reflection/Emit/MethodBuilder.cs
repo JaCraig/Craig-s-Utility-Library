@@ -70,7 +70,6 @@ namespace Utilities.Reflection.Emit
                     ++x;
                 }
             }
-            Commands = new List<ICommand>();
             Builder = Type.Builder.DefineMethod(Name, Attributes, ReturnType,
                 (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
             Generator = Builder.GetILGenerator();

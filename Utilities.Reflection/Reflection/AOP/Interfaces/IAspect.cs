@@ -76,7 +76,7 @@ namespace Utilities.Reflection.AOP.Interfaces
         /// <summary>
         /// List of interfaces that need to be injected by this aspect
         /// </summary>
-        List<Type> InterfacesUsing { get; set; }
+        List<Type> InterfacesUsing { get; }
 
         #endregion
     }

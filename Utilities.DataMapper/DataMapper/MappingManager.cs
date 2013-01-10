@@ -46,7 +46,7 @@ namespace Utilities.DataMapper
         /// <summary>
         /// Mappings
         /// </summary>
-        protected virtual List<ITypeMapping> Mappings { get; set; }
+        protected virtual List<ITypeMapping> Mappings { get;private set; }
 
         #endregion
 

@@ -148,12 +148,12 @@ namespace Utilities.Web.Email.SMTP
         /// Any attachments that are included with this
         /// message.
         /// </summary>
-        public List<Attachment> Attachments { get; set; }
+        public List<Attachment> Attachments { get;private set; }
 
         /// <summary>
         /// Any attachment (usually images) that need to be embedded in the message
         /// </summary>
-        public List<LinkedResource> EmbeddedResources { get; set; }
+        public List<LinkedResource> EmbeddedResources { get;private set; }
 
         /// <summary>
         /// The priority of this message

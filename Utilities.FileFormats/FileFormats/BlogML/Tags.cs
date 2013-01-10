@@ -66,14 +66,14 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Tags list
         /// </summary>
-        public virtual List<Tag> TagList { get; set; }
+        public List<Tag> TagList { get; private set; }
 
         /// <summary>
         /// gets a specific tag
         /// </summary>
         /// <param name="index">Index of the tag</param>
         /// <returns>A specific tag</returns>
-        public virtual Tag this[int index]
+        public Tag this[int index]
         {
             get { return TagList[index]; }
         }

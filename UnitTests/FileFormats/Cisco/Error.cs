@@ -32,12 +32,12 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class Error
     {
-        protected Utilities.Cisco.Error Entry = null;
+        protected Utilities.FileFormats.Cisco.Error Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public Error()
         {
-            Entry = new Utilities.Cisco.Error();
+            Entry = new Utilities.FileFormats.Cisco.Error();
             Random = new Utilities.Random.Random();
         }
 

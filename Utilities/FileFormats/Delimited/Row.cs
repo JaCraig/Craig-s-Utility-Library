@@ -47,6 +47,7 @@ namespace Utilities.FileFormats.Delimited
         /// <param name="Delimiter">Delimiter to parse the individual cells</param>
         public Row(string Delimiter)
         {
+            this.Cells = new List<Cell>();
             this.Delimiter = Delimiter;
         }
 
@@ -57,6 +58,7 @@ namespace Utilities.FileFormats.Delimited
         /// <param name="Delimiter">Delimiter to parse the individual cells</param>
         public Row(string Content, string Delimiter)
         {
+            this.Cells = new List<Cell>();
             this.Delimiter = Delimiter;
             Regex TempSplitter = new Regex(string.Format("(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(Delimiter)));
             MatchCollection Matches = TempSplitter.Matches(Content);
@@ -75,16 +77,10 @@ namespace Utilities.FileFormats.Delimited
 
         #region Public Properties
 
-        private List<Cell> _Cells = new List<Cell>();
-
         /// <summary>
         /// Cells within the row
         /// </summary>
-        public virtual List<Cell> Cells
-        {
-            get { return _Cells; }
-            set { _Cells = value; }
-        }
+        public List<Cell> Cells { get; private set; }
 
         /// <summary>
         /// Returns a cell within the row
@@ -93,8 +89,8 @@ namespace Utilities.FileFormats.Delimited
         /// <returns>The specified cell</returns>
         public virtual Cell this[int Position]
         {
-            get { return _Cells[Position]; }
-            set { _Cells[Position] = value; }
+            get { return Cells[Position]; }
+            set { Cells[Position] = value; }
         }
 
         /// <summary>

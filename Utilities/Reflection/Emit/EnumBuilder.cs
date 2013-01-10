@@ -101,37 +101,37 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Field name
         /// </summary>
-        public virtual string Name { get; protected set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Literals defined within the enum
         /// </summary>
-        public virtual List<System.Reflection.Emit.FieldBuilder> Literals { get; protected set; }
+        public List<System.Reflection.Emit.FieldBuilder> Literals { get; private set; }
 
         /// <summary>
         /// Field builder
         /// </summary>
-        public virtual System.Reflection.Emit.EnumBuilder Builder { get; protected set; }
+        public System.Reflection.Emit.EnumBuilder Builder { get; protected set; }
 
         /// <summary>
         /// Base enum type (int32, etc.)
         /// </summary>
-        public virtual Type EnumType { get; protected set; }
+        public Type EnumType { get; protected set; }
 
         /// <summary>
         /// Type defined by this enum
         /// </summary>
-        public virtual Type DefinedType { get; protected set; }
+        public Type DefinedType { get; protected set; }
 
         /// <summary>
         /// Attributes for the enum (private, public, etc.)
         /// </summary>
-        public virtual TypeAttributes Attributes { get; protected set; }
+        public TypeAttributes Attributes { get; protected set; }
 
         /// <summary>
         /// Assembly builder
         /// </summary>
-        protected virtual Assembly Assembly { get; set; }
+        protected Assembly Assembly { get; set; }
 
         #endregion
 

@@ -57,12 +57,12 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// <summary>
         /// Length
         /// </summary>
-        public virtual int Length { get; set; }
+        public int Length { get; set; }
 
         /// <summary>
         /// The list of fields
         /// </summary>
-        public virtual List<IField<T>> Fields { get; set; }
+        public List<IField<T>> Fields { get; private set; }
 
         #endregion
 

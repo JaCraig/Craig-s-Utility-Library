@@ -181,57 +181,57 @@ namespace Utilities.FileFormats
         /// <summary>
         /// First name
         /// </summary>
-        public virtual string FirstName { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Last name
         /// </summary>
-        public virtual string LastName { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Middle name
         /// </summary>
-        public virtual string MiddleName { get; set; }
+        public string MiddleName { get; set; }
 
         /// <summary>
         /// Prefix
         /// </summary>
-        public virtual string Prefix { get; set; }
+        public string Prefix { get; set; }
 
         /// <summary>
         /// Suffix
         /// </summary>
-        public virtual string Suffix { get; set; }
+        public string Suffix { get; set; }
 
         /// <summary>
         /// Work phone number of the individual
         /// </summary>
-        public virtual string DirectDial { get; set; }
+        public string DirectDial { get; set; }
 
         /// <summary>
         /// Email of the individual
         /// </summary>
-        public virtual string Email { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Title of the person
         /// </summary>
-        public virtual string Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Organization the person belongs to
         /// </summary>
-        public virtual string Organization { get; set; }
+        public string Organization { get; set; }
 
         /// <summary>
         /// Relationship to the person (uses XFN)
         /// </summary>
-        public virtual List<Relationship> Relationships { get; set; }
+        public List<Relationship> Relationships { get; private set; }
 
         /// <summary>
         /// Url to the person's site
         /// </summary>
-        public virtual string Url { get; set; }
+        public string Url { get; set; }
 
         #endregion
     }

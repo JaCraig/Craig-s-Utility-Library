@@ -329,7 +329,7 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Interfaces this aspect is using
         /// </summary>
-        public virtual List<Type> InterfacesUsing { get; set; }
+        public List<Type> InterfacesUsing { get;private set; }
 
         /// <summary>
         /// Class mappings

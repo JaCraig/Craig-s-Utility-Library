@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.AI
@@ -38,7 +39,7 @@ namespace Utilities.AI
         /// Constructor
         /// </summary>
         /// <param name="DictionaryOfWords">Dictionary of words to use to find anagrams</param>
-        public Anagram(System.Collections.Generic.List<string> DictionaryOfWords)
+        public Anagram(ICollection<string> DictionaryOfWords)
         {
             DictionaryOfWords.ThrowIfNull("DictionaryOfWords");
             this.InitialDictionary = DictionaryOfWords;
@@ -53,12 +54,12 @@ namespace Utilities.AI
         /// <summary>
         /// Dictionary of words used to find anagrams
         /// </summary>
-        public virtual System.Collections.Generic.List<string> InitialDictionary { get; set; }
+        public ICollection<string> InitialDictionary { get; private set; }
 
         /// <summary>
         /// Dictionary of anagram equivalents found in the original dictionary
         /// </summary>
-        public virtual ListMapping<string, string> DictionaryOfAnagrams { get; set; }
+        public ListMapping<string, string> DictionaryOfAnagrams { get; private set; }
 
         #endregion
 
@@ -87,7 +88,7 @@ namespace Utilities.AI
         /// </summary>
         /// <param name="Word">Word to check</param>
         /// <returns>A list of words that are anagrams of the word entered</returns>
-        public virtual System.Collections.Generic.List<string> FindAnagrams(string Word)
+        public virtual IEnumerable<string> FindAnagrams(string Word)
         {
             System.Collections.Generic.List<string> ReturnValues = new System.Collections.Generic.List<string>();
             ReturnValues.AddRange(DictionaryOfAnagrams[GetAnagramKey(Word)]);

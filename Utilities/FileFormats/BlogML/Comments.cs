@@ -66,7 +66,7 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// List of comments
         /// </summary>
-        public virtual List<Comment> CommentList { get; set; }
+        public List<Comment> CommentList { get;private set; }
 
         #endregion
 

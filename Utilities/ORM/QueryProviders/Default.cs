@@ -752,22 +752,22 @@ namespace Utilities.ORM.QueryProviders
         /// <summary>
         /// Mappings associated to databases
         /// </summary>
-        public virtual ListMapping<IDatabase, IMapping> Mappings { get; set; }
+        public ListMapping<IDatabase, IMapping> Mappings { get;private set; }
 
         /// <summary>
         /// List of database configurations
         /// </summary>
-        public virtual System.Collections.Generic.List<IDatabase> Databases { get; set; }
+        public System.Collections.Generic.List<IDatabase> Databases { get;private set; }
 
         /// <summary>
         /// AOP manager (used to create objects)
         /// </summary>
-        public virtual Reflection.AOP.AOPManager Manager { get; set; }
+        public Reflection.AOP.AOPManager Manager { get; set; }
 
         /// <summary>
         /// Should the queries be profiled?
         /// </summary>
-        public virtual bool Profile { get; set; }
+        public bool Profile { get; set; }
 
         #endregion
     }

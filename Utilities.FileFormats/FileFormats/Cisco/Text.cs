@@ -22,10 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using System.Text;
-using Utilities.Cisco.Interfaces;
+using Utilities.FileFormats.Cisco.Interfaces;
 #endregion
 
-namespace Utilities.Cisco
+namespace Utilities.FileFormats.Cisco
 {
     /// <summary>
     /// Text class
@@ -49,22 +49,22 @@ namespace Utilities.Cisco
         /// <summary>
         /// Title
         /// </summary>
-        public virtual string Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Prompt
         /// </summary>
-        public virtual string Prompt { get; set; }
+        public string Prompt { get; set; }
 
         /// <summary>
         /// Text
         /// </summary>
-        public virtual string Content { get; set; }
+        public string Content { get; set; }
 
         /// <summary>
         /// Soft keys
         /// </summary>
-        public virtual List<SoftKeyItem> SoftKeys { get; set; }
+        public List<SoftKeyItem> SoftKeys { get; private set; }
 
         #endregion
 

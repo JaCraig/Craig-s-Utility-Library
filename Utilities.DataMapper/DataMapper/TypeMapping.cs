@@ -51,7 +51,7 @@ namespace Utilities.DataMapper
         /// <summary>
         /// List of mappings
         /// </summary>
-        protected virtual List<Mapping<Left, Right>> Mappings { get; set; }
+        protected List<Mapping<Left, Right>> Mappings { get; private set; }
 
         #endregion
 

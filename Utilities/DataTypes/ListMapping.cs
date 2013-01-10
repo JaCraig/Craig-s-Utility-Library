@@ -52,7 +52,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Container holding the data
         /// </summary>
-        protected virtual Dictionary<T1, List<T2>> Items { get; set; }
+        protected Dictionary<T1, List<T2>> Items { get; private set; }
 
         #endregion
 
@@ -61,7 +61,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Event called if the list is changed
         /// </summary>
-        public virtual EventHandler<ChangedEventArgs> Changed { get; set; }
+        public EventHandler<ChangedEventArgs> Changed { get; set; }
 
         #endregion
 

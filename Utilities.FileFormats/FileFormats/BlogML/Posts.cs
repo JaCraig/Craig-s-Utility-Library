@@ -66,7 +66,7 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// List of posts
         /// </summary>
-        public virtual List<Post> PostList { get; set; }
+        public List<Post> PostList { get;private set; }
 
         #endregion
 

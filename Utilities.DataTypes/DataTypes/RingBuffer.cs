@@ -183,7 +183,7 @@ namespace Utilities.DataTypes
         public virtual void Add(T[] buffer, int offset, int count)
         {
             if (count > buffer.Length - offset)
-                throw new ArgumentOutOfRangeException("buffer is too small");
+                throw new ArgumentOutOfRangeException("buffer");
             for (int x = offset; x < offset + count; ++x)
                 Add(buffer[x]);
         }
@@ -369,7 +369,7 @@ namespace Utilities.DataTypes
         public virtual int Remove(T[] array, int offset, int count)
         {
             if (Count > array.Length - offset)
-                throw new ArgumentOutOfRangeException("array is too small");
+                throw new ArgumentOutOfRangeException("array");
             if (Count == 0)
                 return 0;
             int y = ReadPosition;

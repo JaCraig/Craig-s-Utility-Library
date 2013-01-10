@@ -23,7 +23,7 @@ THE SOFTWARE.*/
 using System.Text;
 #endregion
 
-namespace Utilities.Cisco
+namespace Utilities.FileFormats.Cisco
 {
     /// <summary>
     /// Softkey class

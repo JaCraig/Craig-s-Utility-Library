@@ -32,12 +32,12 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class Image
     {
-        protected Utilities.Cisco.Image Entry = null;
+        protected Utilities.FileFormats.Cisco.Image Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public Image()
         {
-            Entry = new Utilities.Cisco.Image();
+            Entry = new Utilities.FileFormats.Cisco.Image();
             Random = new Utilities.Random.Random();
         }
 
@@ -45,7 +45,6 @@ namespace UnitTests.FileFormats.Cisco
         public void NullTest()
         {
             Entry.Prompt = null;
-            Entry.SoftKeys = null;
             Entry.Title = null;
             Entry.URL = null;
             Entry.X = 0;

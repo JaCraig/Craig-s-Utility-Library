@@ -36,7 +36,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <summary>
         /// Mappings
         /// </summary>
-        ListMapping<Type, IMapping> Mappings { get; set; }
+        ListMapping<Type, IMapping> Mappings { get; }
 
         #endregion
     }

@@ -107,7 +107,7 @@ namespace Utilities.ORM.Mapping
         /// <summary>
         /// List of mappings
         /// </summary>
-        public virtual ListMapping<Type, IMapping> Mappings { get; set; }
+        public ListMapping<Type, IMapping> Mappings { get;private set; }
 
         #endregion
     }

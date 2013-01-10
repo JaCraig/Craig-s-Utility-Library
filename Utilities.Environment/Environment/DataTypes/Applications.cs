@@ -55,7 +55,7 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Application list
         /// </summary>
-        public virtual List<Application> ApplicationList { get; set; }
+        public List<Application> ApplicationList { get;private set; }
 
         #endregion
 

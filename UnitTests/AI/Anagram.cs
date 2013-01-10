@@ -35,8 +35,8 @@ namespace UnitTests.AI
         public void BasicTest()
         {
             Utilities.AI.Anagram TestObject = new Utilities.AI.Anagram(new string[] { "bat", "bored", "care" }.ToList());
-            Assert.Equal(1, TestObject.FindAnagrams("tab").Count);
-            Assert.Equal("bat", TestObject.FindAnagrams("tab")[0]);
+            Assert.Equal(1, TestObject.FindAnagrams("tab").Count());
+            Assert.Equal("bat", TestObject.FindAnagrams("tab").ElementAt(0));
         }
     }
 }

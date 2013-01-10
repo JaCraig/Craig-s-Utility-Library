@@ -46,7 +46,8 @@ namespace Utilities.DataTypes
             int x = 0;
             foreach (string ColumnName in ColumnNames)
             {
-                this.ColumnNameHash.Add(ColumnName, x++);
+                if (!this.ColumnNameHash.ContainsKey(ColumnName))
+                    this.ColumnNameHash.Add(ColumnName, x++);
             }
         }
 
@@ -65,7 +66,8 @@ namespace Utilities.DataTypes
             int y = 0;
             foreach (string ColumnName in ColumnNames)
             {
-                this.ColumnNameHash.Add(ColumnName, y++);
+                if (!this.ColumnNameHash.ContainsKey(ColumnName))
+                    this.ColumnNameHash.Add(ColumnName, y++);
             }
             this.Rows = new List<Row>();
             while (Reader.Read())
@@ -86,17 +88,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Column names for the table
         /// </summary>
-        public virtual string[] ColumnNames { get; protected set; }
+        public string[] ColumnNames { get; protected set; }
 
         /// <summary>
         /// Column Name hash table
         /// </summary>
-        public virtual Hashtable ColumnNameHash { get; protected set; }
+        public Hashtable ColumnNameHash { get; private set; }
 
         /// <summary>
         /// Rows within the table
         /// </summary>
-        public virtual List<Row> Rows { get; protected set; }
+        public List<Row> Rows { get; private set; }
 
         /// <summary>
         /// Gets a specific row
@@ -156,17 +158,17 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Column names
         /// </summary>
-        public virtual Hashtable ColumnNameHash { get; protected set; }
+        public Hashtable ColumnNameHash { get; private set; }
 
         /// <summary>
         /// Column names
         /// </summary>
-        public virtual string[] ColumnNames { get; protected set; }
+        public string[] ColumnNames { get; protected set; }
 
         /// <summary>
         /// Column values
         /// </summary>
-        public virtual object[] ColumnValues { get; protected set; }
+        public object[] ColumnValues { get; protected set; }
 
         /// <summary>
         /// Returns a column based on the column name specified
@@ -194,7 +196,7 @@ namespace Utilities.DataTypes
             get
             {
                 if (Column < 0)
-                    throw new ArgumentOutOfRangeException("Column can not be below 0");
+                    throw new ArgumentOutOfRangeException("Column");
                 if (ColumnValues.Length <= Column)
                     return null;
                 return ColumnValues[Column];

@@ -32,19 +32,18 @@ namespace UnitTests.FileFormats.Cisco
 {
     public class Status
     {
-        protected Utilities.Cisco.Status Entry = null;
+        protected Utilities.FileFormats.Cisco.Status Entry = null;
         protected Utilities.Random.Random Random = null;
 
         public Status()
         {
-            Entry = new Utilities.Cisco.Status();
+            Entry = new Utilities.FileFormats.Cisco.Status();
             Random = new Utilities.Random.Random();
         }
 
         [Fact]
         public void NullTest()
         {
-            Entry.SoftKeys = null;
             Entry.Text = null;
             Entry.Timer = 0;
             Entry.URL = null;

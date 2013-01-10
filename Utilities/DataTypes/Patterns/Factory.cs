@@ -51,7 +51,7 @@ namespace Utilities.DataTypes.Patterns
         /// <summary>
         /// List of constructors/initializers
         /// </summary>
-        protected virtual Dictionary<Key, Func<T>> Constructors { get; set; }
+        protected Dictionary<Key, Func<T>> Constructors { get;private set; }
 
         #endregion
 

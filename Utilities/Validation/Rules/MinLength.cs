@@ -79,6 +79,8 @@ namespace Utilities.Validation.Rules
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            if (value.IsNull())
+                return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             IEnumerable ValueList = value as IEnumerable;
             long Count = 0;
             foreach (object Item in ValueList)
