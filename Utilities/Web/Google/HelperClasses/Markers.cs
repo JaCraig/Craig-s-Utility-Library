@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Web.Google.Enums;
+using Utilities.Web.ExtensionMethods;
 using Utilities.Web.Google.Interfaces;
 #endregion
 
@@ -91,13 +92,13 @@ namespace Utilities.Web.Google.HelperClasses
         /// <returns>Url encoded string of the location</returns>
         public override string ToString()
         {
-            string ReturnValue = "markers=size:" + Size.ToString().ToLower()
+            string ReturnValue = "size:" + Size.ToString().ToLower()
                     + (Color.IsNullOrEmpty() ? "" : "|color:" + Color)
                     + (Label.IsNullOrEmpty() ? "" : "|label:" + Label.ToUpper())
                     + (CustomIcon.IsNull() ? "" : ("|icon:" + CustomIcon + "|shadow:" + CustomIconShadow.ToString().ToLower()));
             foreach (ILocation Marker in MarkerList)
                 ReturnValue += "|" + Marker.ToString();
-            return ReturnValue;
+            return "markers=" + ReturnValue.URLEncode();
         }
 
         #endregion

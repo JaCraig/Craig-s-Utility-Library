@@ -134,11 +134,11 @@ namespace Utilities.Web.Google.StaticMaps
                 + "&size=" + (Width.ToString() + "x" + Height.ToString()).URLEncode()
                 + "&scale=" + Scale.ToString().URLEncode()
                 + "&format=" + Format.ToString().ToLower().URLEncode()
-                + "&maptype" + MapType.ToString().ToLower().URLEncode()
+                + "&maptype=" + MapType.ToString().ToLower().URLEncode()
                 + (Language.IsNullOrEmpty() ? "" : "&language=" + Language.URLEncode())
                 + (Region.IsNullOrEmpty() ? "" : "&region=" + Region.URLEncode());
             foreach (Markers Marker in Markers)
-                Result += "&" + Marker.ToString().URLEncode();
+                Result += "&" + Marker.ToString();
             Result += base.ToString();
             return APILocation + "?" + Result;
         }

@@ -56,7 +56,7 @@ namespace UnitTests.Web.Google.StaticMaps
             TestMap.Markers.Add(MarkerSet);
             TestMap.Sensor = false;
             TestMap.UseHTTPS = true;
-            Assert.Equal("https://maps.googleapis.com/maps/api/staticmap?sensor=false&center=123+Somewhere+St.+Detroit%2c+MI&zoom=12&size=100x100&scale=1&format=jpg&maptypehybrid&markers%3dsize%3atiny%7ccolor%3a0x00FF00%7c2.03123%2c1.03123%7c123+Somewhere+St.+Detroit%2c+MI&key=12345678", TestMap.ToString());
+            Assert.Equal("https://maps.googleapis.com/maps/api/staticmap?sensor=false&center=123+Somewhere+St.+Detroit%2c+MI&zoom=12&size=100x100&scale=1&format=jpg&maptype=hybrid&markers=size%3atiny%7ccolor%3a0x00FF00%7c2.03123%2c1.03123%7c123+Somewhere+St.+Detroit%2c+MI&key=12345678", TestMap.ToString());
         }
     }
 }
