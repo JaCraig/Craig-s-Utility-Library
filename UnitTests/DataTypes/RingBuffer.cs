@@ -58,7 +58,7 @@ namespace UnitTests.DataTypes
 
             for (int x = 0; x < 10; ++x)
             {
-                Assert.Throws<IndexOutOfRangeException>(() => TestObject.Add(Rand.Next()));
+                Assert.Throws<InvalidOperationException>(() => TestObject.Add(Rand.Next()));
                 Assert.Equal(10, TestObject.Count);
             }
         }

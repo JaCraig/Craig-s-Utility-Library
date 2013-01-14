@@ -59,7 +59,6 @@ namespace Utilities.DataTypes.ExtensionMethods
                     }
                     Temp.Write(Buffer, 0, Count);
                 }
-                Temp.Close();
             }
             return ReturnValue;
         }

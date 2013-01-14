@@ -192,7 +192,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator +(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
@@ -205,7 +205,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator -(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
@@ -218,7 +218,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator *(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
@@ -231,7 +231,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator /(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
@@ -244,7 +244,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator %(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
@@ -257,7 +257,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator +(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
@@ -270,7 +270,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator -(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
@@ -283,7 +283,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator *(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
@@ -296,7 +296,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator /(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
@@ -309,7 +309,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator %(VariableBase Left, object Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
@@ -322,7 +322,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator +(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
@@ -335,7 +335,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator -(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
@@ -348,7 +348,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator *(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
@@ -361,7 +361,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator /(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
@@ -374,7 +374,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator %(object Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
@@ -386,7 +386,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator ++(VariableBase Left)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             Left.Assign(MethodBase.CurrentMethod.Add(Left, 1));
             return Left;
         }
@@ -399,7 +399,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         public static VariableBase operator --(VariableBase Left)
         {
             if (MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             Left.Assign(MethodBase.CurrentMethod.Subtract(Left, 1));
             return Left;
         }

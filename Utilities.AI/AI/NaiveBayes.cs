@@ -167,7 +167,7 @@ namespace Utilities.AI
         {
             Items.ThrowIfNull("Items");
             if (Probabilities.IsNull())
-                throw new NullReferenceException("Probabilities has not been initialized");
+                throw new InvalidOperationException("Probabilities has not been initialized");
             SortedList<string, double> SortedProbabilities = new SortedList<string, double>();
             for (int x = 0; x < Items.Count; ++x)
             {
@@ -205,7 +205,7 @@ namespace Utilities.AI
         protected virtual double CalculateProbabilityOfToken(T Item)
         {
             if (SetA == null || SetB == null)
-                throw new NullReferenceException("Probabilities have not been initialized");
+                throw new InvalidOperationException("Probabilities have not been initialized");
             double Probability = 0;
             int ACount = SetA.Contains(Item) ? SetA[Item] * ATokenWeight : 0;
             int BCount = SetB.Contains(Item) ? SetB[Item] * BTokenWeight : 0;

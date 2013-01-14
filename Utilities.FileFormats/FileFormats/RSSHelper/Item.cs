@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Diagnostics.CodeAnalysis;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -176,6 +177,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Categories associated with the item
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<string> Categories
         {
             get

@@ -32,7 +32,6 @@ namespace Utilities.Random.DefaultClasses
     /// Randomly generates ints
     /// </summary>
     public class IntegerGenerator<T> : IGenerator<T>
-        where T : IConvertible
     {
         /// <summary>
         /// Generates a random value of the specified type
@@ -226,6 +225,7 @@ namespace Utilities.Random.DefaultClasses
     /// <summary>
     /// sbyte generator
     /// </summary>
+    [CLSCompliant(false)]
     public class SByteGenerator : GeneratorAttributeBase
     {
         /// <summary>
@@ -302,6 +302,7 @@ namespace Utilities.Random.DefaultClasses
     /// <summary>
     /// uint generator
     /// </summary>
+    [CLSCompliant(false)]
     public class UIntGenerator : GeneratorAttributeBase
     {
         /// <summary>
@@ -340,6 +341,7 @@ namespace Utilities.Random.DefaultClasses
     /// <summary>
     /// ulong generator
     /// </summary>
+    [CLSCompliant(false)]
     public class ULongGenerator : GeneratorAttributeBase
     {
         /// <summary>
@@ -378,6 +380,7 @@ namespace Utilities.Random.DefaultClasses
     /// <summary>
     /// ushort generator
     /// </summary>
+    [CLSCompliant(false)]
     public class UShortGenerator : GeneratorAttributeBase
     {
         /// <summary>

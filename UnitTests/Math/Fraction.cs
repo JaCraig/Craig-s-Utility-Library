@@ -36,7 +36,7 @@ namespace UnitTests.Math
             Utilities.Math.Fraction TestObject = new Utilities.Math.Fraction(9, 27);
             Utilities.Math.Fraction TestObject2 = new Utilities.Math.Fraction(3, 4);
             TestObject.Reduce();
-            Assert.Equal(3u, TestObject.Denominator);
+            Assert.Equal(3, TestObject.Denominator);
             Assert.Equal(1, TestObject.Numerator);
             Assert.Equal(new Utilities.Math.Fraction(1, 4), TestObject * TestObject2);
             Assert.Equal(new Utilities.Math.Fraction(13, 12), TestObject + TestObject2);

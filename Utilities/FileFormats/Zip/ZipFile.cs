@@ -138,7 +138,6 @@ namespace Utilities.FileFormats.Zip
                     if (Size != 1024)
                         break;
                 }
-                FileStream.Close();
             }
         }
 

@@ -70,9 +70,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void DbTypeToSqlDbType()
         {
-            Assert.Equal(SqlDbType.Int, DbType.Int32.ToSqlDbType());
-            Assert.Equal(SqlDbType.NVarChar, DbType.String.ToSqlDbType());
-            Assert.Equal(SqlDbType.Real, DbType.Single.ToSqlDbType());
+            Assert.Equal(SqlDbType.Int, DbType.Int32.ToSQLDbType());
+            Assert.Equal(SqlDbType.NVarChar, DbType.String.ToSQLDbType());
+            Assert.Equal(SqlDbType.Real, DbType.Single.ToSQLDbType());
         }
 
         [Fact]

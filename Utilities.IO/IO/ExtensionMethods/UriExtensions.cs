@@ -69,7 +69,6 @@ namespace Utilities.IO.ExtensionMethods
                 using (StreamReader Reader = new StreamReader(URL.Read(Client, UserName, Password,Domain,AuthenticationType)))
                 {
                     string Contents = Reader.ReadToEnd();
-                    Reader.Close();
                     return Contents;
                 }
             }
@@ -137,8 +136,6 @@ namespace Utilities.IO.ExtensionMethods
                             FinalStream.Write(Buffer, 0, Count);
                         }
                         byte[] ReturnValue = FinalStream.ToArray();
-                        Reader.Close();
-                        FinalStream.Close();
                         return ReturnValue;
                     }
                 }

@@ -24,6 +24,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Web;
 #endregion
 
 namespace Utilities.Web.REST
@@ -149,7 +150,7 @@ namespace Utilities.Web.REST
             using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
             {
                 if (Response.StatusCode != HttpStatusCode.OK)
-                    throw new Exception("The request did not complete successfully and returned status code " + Response.StatusCode);
+                    throw new HttpException("The request did not complete successfully and returned status code " + Response.StatusCode);
                 using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
                 {
                     return Reader.ReadToEnd();

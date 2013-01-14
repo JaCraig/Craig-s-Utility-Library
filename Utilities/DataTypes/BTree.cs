@@ -80,7 +80,7 @@ namespace Utilities.DataTypes
             get
             {
                 if (IsEmpty)
-                    throw new Exception("The tree is empty");
+                    throw new InvalidOperationException("The tree is empty");
                 TreeNode<T> TempNode = Root;
                 while (TempNode.Left != null)
                     TempNode = TempNode.Left;
@@ -96,7 +96,7 @@ namespace Utilities.DataTypes
             get
             {
                 if (IsEmpty)
-                    throw new Exception("The tree is empty");
+                    throw new InvalidOperationException("The tree is empty");
                 TreeNode<T> TempNode = Root;
                 while (TempNode.Right != null)
                     TempNode = TempNode.Right;

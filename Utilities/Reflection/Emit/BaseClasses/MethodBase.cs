@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using Utilities.Reflection.Emit.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 #endregion
 
@@ -436,6 +437,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Parameters
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public List<ParameterBuilder> Parameters { get; protected set; }
 
         /// <summary>

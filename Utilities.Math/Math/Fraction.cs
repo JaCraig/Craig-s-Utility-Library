@@ -42,28 +42,6 @@ namespace Utilities.Math
         public Fraction(int Numerator, int Denominator)
         {
             this.Numerator = Numerator;
-            this.Denominator = (uint)Denominator;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Numerator">Numerator</param>
-        /// <param name="Denominator">Denominator</param>
-        public Fraction(int Numerator, uint Denominator)
-        {
-            this.Numerator = Numerator;
-            this.Denominator = Denominator;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Numerator">Numerator</param>
-        /// <param name="Denominator">Denominator</param>
-        public Fraction(uint Numerator, uint Denominator)
-        {
-            this.Numerator = (int)Numerator;
             this.Denominator = Denominator;
         }
 
@@ -81,7 +59,7 @@ namespace Utilities.Math
                 Denominator *= 10;
             }
             this.Numerator = (int)Numerator;
-            this.Denominator = (uint)Denominator;
+            this.Denominator = (int)Denominator;
             this.Reduce();
         }
 
@@ -99,7 +77,7 @@ namespace Utilities.Math
                 Denominator *= 10;
             }
             this.Numerator = (int)Numerator;
-            this.Denominator = (uint)Denominator;
+            this.Denominator = (int)Denominator;
             this.Reduce();
         }
 
@@ -117,7 +95,7 @@ namespace Utilities.Math
                 Denominator *= 10;
             }
             this.Numerator = (int)Numerator;
-            this.Denominator = (uint)Denominator;
+            this.Denominator = (int)Denominator;
             this.Reduce();
         }
 
@@ -133,7 +111,7 @@ namespace Utilities.Math
         /// <summary>
         /// Denominator of the fraction
         /// </summary>
-        public uint Denominator { get; set; }
+        public int Denominator { get; set; }
 
         #endregion
 
@@ -195,7 +173,7 @@ namespace Utilities.Math
             if (GCD != 0)
             {
                 this.Numerator /= GCD;
-                this.Denominator /= (uint)GCD;
+                this.Denominator /= GCD;
             }
         }
 
@@ -397,9 +375,10 @@ namespace Utilities.Math
         /// </summary>
         /// <param name="Fraction">Fraction</param>
         /// <returns>The uint as a fraction</returns>
+        [CLSCompliant(false)]
         public static implicit operator Fraction(uint Fraction)
         {
-            return new Fraction(Fraction, 1);
+            return new Fraction((int)Fraction, 1);
         }
 
         #endregion

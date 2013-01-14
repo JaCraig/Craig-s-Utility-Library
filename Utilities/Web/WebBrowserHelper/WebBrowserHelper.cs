@@ -20,7 +20,7 @@ namespace Utilities.Web.WebBrowserHelper
         /// For PInvoke: Contains information about an entry in the Internet cache
         /// </summary>
         [StructLayout(LayoutKind.Explicit, Size = 80)]
-        public struct INTERNET_CACHE_ENTRY_INFOA
+        private struct INTERNET_CACHE_ENTRY_INFOA
         {
             /// <summary>
             /// Struct size

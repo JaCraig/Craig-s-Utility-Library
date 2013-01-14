@@ -72,18 +72,18 @@ namespace Utilities.Environment.DataTypes
         {
             get
             {
-                if (_BIOS == null)
+                if (BIOS_ == null)
                 {
-                    _BIOS = new BIOS(Name, UserName, Password);
+                    BIOS_ = new BIOS(Name, UserName, Password);
                 }
-                return _BIOS;
+                return BIOS_;
             }
         }
 
         /// <summary>
         /// BIOS info
         /// </summary>
-        protected BIOS _BIOS = null;
+        protected BIOS BIOS_ { get; set; }
 
         /// <summary>
         /// Application info
@@ -92,18 +92,18 @@ namespace Utilities.Environment.DataTypes
         {
             get
             {
-                if (_Applications == null)
+                if (Applications_ == null)
                 {
-                    _Applications = new Applications(Name, UserName, Password);
+                    Applications_ = new Applications(Name, UserName, Password);
                 }
-                return _Applications;
+                return Applications_;
             }
         }
 
         /// <summary>
         /// Applications
         /// </summary>
-        protected Applications _Applications = null;
+        protected Applications Applications_ { get; set; }
 
         /// <summary>
         /// Network info
@@ -112,18 +112,18 @@ namespace Utilities.Environment.DataTypes
         {
             get
             {
-                if (_Network == null)
+                if (Network_ == null)
                 {
-                    _Network = new Network(Name, UserName, Password);
+                    Network_ = new Network(Name, UserName, Password);
                 }
-                return _Network;
+                return Network_;
             }
         }
 
         /// <summary>
         /// Network info
         /// </summary>
-        protected Network _Network = null;
+        protected Network Network_ { get; set; }
 
         /// <summary>
         /// Operating system info
@@ -132,18 +132,18 @@ namespace Utilities.Environment.DataTypes
         {
             get
             {
-                if (_OperatingSystem == null)
+                if (OperatingSystem_ == null)
                 {
-                    _OperatingSystem = new OperatingSystem(Name, UserName, Password);
+                    OperatingSystem_ = new OperatingSystem(Name, UserName, Password);
                 }
-                return _OperatingSystem;
+                return OperatingSystem_;
             }
         }
 
         /// <summary>
         /// Operating system info
         /// </summary>
-        protected OperatingSystem _OperatingSystem = null;
+        protected OperatingSystem OperatingSystem_ { get; set; }
 
         /// <summary>
         /// Holds a list of users that have logged into the machine recently
@@ -152,18 +152,18 @@ namespace Utilities.Environment.DataTypes
         {
             get
             {
-                if (_User == null)
+                if (User_ == null)
                 {
-                    _User = new User(Name, UserName, Password);
+                    User_ = new User(Name, UserName, Password);
                 }
-                return _User;
+                return User_;
             }
         }
 
         /// <summary>
         /// User info
         /// </summary>
-        protected User _User = null;
+        protected User User_ { get; set; }
 
 
         #endregion

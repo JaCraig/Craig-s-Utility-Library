@@ -90,7 +90,6 @@ namespace Utilities.IO.ExtensionMethods
             using (StreamReader Reader = File.OpenText())
             {
                 string Contents = Reader.ReadToEnd();
-                Reader.Close();
                 return Contents;
             }
         }
@@ -129,7 +128,6 @@ namespace Utilities.IO.ExtensionMethods
             using (FileStream Reader = File.OpenRead())
             {
                 byte[] Output = Reader.ReadAllBinary();
-                Reader.Close();
                 return Output;
             }
         }
@@ -276,7 +274,6 @@ namespace Utilities.IO.ExtensionMethods
             using (FileStream Writer = File.Open(Mode, FileAccess.Write))
             {
                 Writer.Write(Content, 0, Content.Length);
-                Writer.Close();
             }
             return File;
         }
@@ -358,7 +355,6 @@ namespace Utilities.IO.ExtensionMethods
             using (FileStream Writer = File.Open(Mode, FileAccess.Write))
             {
                 Writer.BeginWrite(Content, 0, Content.Length, CallBack, StateObject);
-                Writer.Close();
             }
             return File;
         }

@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Diagnostics.CodeAnalysis;
 
 #endregion
 
@@ -150,6 +151,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Items for this channel
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<Item> Items
         {
             get
@@ -228,6 +230,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Categories associated with this channel
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<string> Categories
         {
             get

@@ -71,23 +71,20 @@ namespace Utilities.Web.PingBack
                 Request.ContentType = "text/xml";
                 Request.Method = "POST";
                 Request.Timeout = 10000;
-                using (Stream Stream = (Stream)Request.GetRequestStream())
+                using (XmlTextWriter XMLWriter = new XmlTextWriter(Request.GetRequestStream(), Encoding.ASCII))
                 {
-                    using (XmlTextWriter XMLWriter = new XmlTextWriter(Stream, Encoding.ASCII))
-                    {
-                        XMLWriter.WriteStartDocument();
-                        XMLWriter.WriteStartElement("methodCall");
-                        XMLWriter.WriteElementString("methodName", "weblogUpdates.ping");
-                        XMLWriter.WriteStartElement("params");
-                        XMLWriter.WriteStartElement("param");
-                        XMLWriter.WriteElementString("value", BlogName);
-                        XMLWriter.WriteEndElement();
-                        XMLWriter.WriteStartElement("param");
-                        XMLWriter.WriteElementString("value", Blog.ToString());
-                        XMLWriter.WriteEndElement();
-                        XMLWriter.WriteEndElement();
-                        XMLWriter.WriteEndElement();
-                    }
+                    XMLWriter.WriteStartDocument();
+                    XMLWriter.WriteStartElement("methodCall");
+                    XMLWriter.WriteElementString("methodName", "weblogUpdates.ping");
+                    XMLWriter.WriteStartElement("params");
+                    XMLWriter.WriteStartElement("param");
+                    XMLWriter.WriteElementString("value", BlogName);
+                    XMLWriter.WriteEndElement();
+                    XMLWriter.WriteStartElement("param");
+                    XMLWriter.WriteElementString("value", Blog.ToString());
+                    XMLWriter.WriteEndElement();
+                    XMLWriter.WriteEndElement();
+                    XMLWriter.WriteEndElement();
                 }
             }
         }

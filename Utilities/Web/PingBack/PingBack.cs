@@ -59,29 +59,26 @@ namespace Utilities.Web.PingBack
                 Request.ContentType = "text/xml";
                 Request.ProtocolVersion = HttpVersion.Version11;
                 Request.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 6.0)";
-                using (Stream StreamUsing = (Stream)Request.GetRequestStream())
+                using (XmlTextWriter Writer = new XmlTextWriter(Request.GetRequestStream(), Encoding.ASCII))
                 {
-                    using (XmlTextWriter Writer = new XmlTextWriter(StreamUsing, Encoding.ASCII))
-                    {
-                        Writer.WriteStartDocument(true);
-                        Writer.WriteStartElement("methodCall");
-                        Writer.WriteElementString("methodName", "pingback.ping");
-                        Writer.WriteStartElement("params");
-                        Writer.WriteStartElement("param");
-                        Writer.WriteStartElement("value");
-                        Writer.WriteElementString("string", Message.Source);
-                        Writer.WriteEndElement();
-                        Writer.WriteEndElement();
-                        Writer.WriteStartElement("param");
-                        Writer.WriteStartElement("value");
-                        Writer.WriteElementString("string", Message.Target);
-                        Writer.WriteEndElement();
-                        Writer.WriteEndElement();
-                        Writer.WriteEndElement();
-                        Writer.WriteEndElement();
-                    }
-                    Request.GetResponse();
+                    Writer.WriteStartDocument(true);
+                    Writer.WriteStartElement("methodCall");
+                    Writer.WriteElementString("methodName", "pingback.ping");
+                    Writer.WriteStartElement("params");
+                    Writer.WriteStartElement("param");
+                    Writer.WriteStartElement("value");
+                    Writer.WriteElementString("string", Message.Source);
+                    Writer.WriteEndElement();
+                    Writer.WriteEndElement();
+                    Writer.WriteStartElement("param");
+                    Writer.WriteStartElement("value");
+                    Writer.WriteElementString("string", Message.Target);
+                    Writer.WriteEndElement();
+                    Writer.WriteEndElement();
+                    Writer.WriteEndElement();
+                    Writer.WriteEndElement();
                 }
+                Request.GetResponse();
             }
         }
 

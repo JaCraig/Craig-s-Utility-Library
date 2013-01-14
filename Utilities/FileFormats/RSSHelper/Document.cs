@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Diagnostics.CodeAnalysis;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -79,6 +80,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Channels for the RSS feed
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<Channel> Channels
         {
             get

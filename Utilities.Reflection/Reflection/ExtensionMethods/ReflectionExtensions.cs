@@ -65,7 +65,7 @@ namespace Utilities.Reflection.ExtensionMethods
                 MethodInputTypes[x] = InputVariables[x].GetType();
             MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
             if (Method == null)
-                throw new NullReferenceException("Could not find method " + MethodName + " with the appropriate input variables.");
+                throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
             return (ReturnType)Method.Invoke(Object, InputVariables);
         }
 

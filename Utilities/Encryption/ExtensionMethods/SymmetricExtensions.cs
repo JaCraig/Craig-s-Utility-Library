@@ -25,6 +25,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.CodeAnalysis;
 #endregion
 
 namespace Utilities.Encryption.ExtensionMethods
@@ -117,6 +118,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
         /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
         /// <returns>An encrypted byte array</returns>
+        [SuppressMessage("Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes")]
         public static byte[] Encrypt(this byte[] Data,
             DeriveBytes Key,
             SymmetricAlgorithm AlgorithmUsing = null,
@@ -142,8 +144,6 @@ namespace Utilities.Encryption.ExtensionMethods
                                 CryptoStream.Write(Data, 0, Data.Length);
                                 CryptoStream.FlushFinalBlock();
                                 CipherTextBytes = MemStream.ToArray();
-                                MemStream.Close();
-                                CryptoStream.Close();
                             }
                         }
                     }
@@ -217,6 +217,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
         /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
         /// <returns>An encrypted byte array</returns>
+        [SuppressMessage("Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes")]
         public static byte[] Decrypt(this byte[] Data,
             DeriveBytes Key,
             SymmetricAlgorithm AlgorithmUsing = null,
@@ -240,8 +241,6 @@ namespace Utilities.Encryption.ExtensionMethods
                             using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
                             {
                                 PlainTextBytes = CryptoStream.ReadAllBinary();
-                                MemStream.Close();
-                                CryptoStream.Close();
                             }
                         }
                     }

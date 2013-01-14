@@ -37,6 +37,7 @@ using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 #endregion
 
 namespace Utilities.SQL
@@ -156,11 +157,13 @@ namespace Utilities.SQL
         /// <summary>
         /// List of database connections
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         protected static ConcurrentDictionary<string, Database> Databases = new ConcurrentDictionary<string, Database>();
 
         /// <summary>
         /// Cache that is used internally
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         protected static Cache<int> Cache = new Cache<int>();
 
         /// <summary>
@@ -1263,7 +1266,6 @@ namespace Utilities.SQL
                     using (DbDataReader TempReader = ExecutableCommand.ExecuteReader())
                     {
                         Reader = new CacheTables(TempReader);
-                        TempReader.Close();
                     }
                     if (Cache)
                         SQLHelper.Cache.Add(Command.GetHashCode(), new CacheTables(Reader));

@@ -27,6 +27,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
+using System.Diagnostics.CodeAnalysis;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -63,6 +64,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// The list of rows
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<Row> Rows
         {
             get { return _Rows; }

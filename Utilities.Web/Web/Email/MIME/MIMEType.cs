@@ -43,12 +43,12 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Defines the types in string form
         /// </summary>
-        public static readonly string[] TypeTable = { "text", "image", "audio", "vedio", "application", "multipart", "message", null };
+        public static string[] TypeTable = { "text", "image", "audio", "vedio", "application", "multipart", "message", null };
 
         /// <summary>
         /// Defines the sub types, file extensions, and media types
         /// </summary>
-        public static readonly MediaType[] TypeCvtTable =
+        public static MediaType[] TypeCvtTable =
             new MediaType[] {
 								   // media-type, sub-type, file extension
 								   new MediaType( MediaEnum.MEDIA_APPLICATION, "xml", "xml" ),

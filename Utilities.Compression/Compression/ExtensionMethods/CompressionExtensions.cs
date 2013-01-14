@@ -25,6 +25,7 @@ using System.IO.Compression;
 using System.Text;
 using Utilities.Compression.ExtensionMethods.Enums;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.CodeAnalysis;
 #endregion
 
 namespace Utilities.Compression.ExtensionMethods
@@ -44,6 +45,7 @@ namespace Utilities.Compression.ExtensionMethods
         /// <param name="Data">Data to compress</param>
         /// <param name="CompressionType">Compression type</param>
         /// <returns>The compressed data</returns>
+        [SuppressMessage("Microsoft.Usage","CA2202:DoNotDisposeObjectsMultipleTimes")]
         public static byte[] Compress(this byte[] Data, CompressionType CompressionType = CompressionType.Deflate)
         {
             Data.ThrowIfNull("Data");
@@ -81,6 +83,7 @@ namespace Utilities.Compression.ExtensionMethods
         /// <param name="Data">Data to decompress</param>
         /// <param name="CompressionType">The compression type used</param>
         /// <returns>The data decompressed</returns>
+        [SuppressMessage("Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes")]
         public static byte[] Decompress(this byte[] Data, CompressionType CompressionType = CompressionType.Deflate)
         {
             Data.ThrowIfNull("Data");

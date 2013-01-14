@@ -193,7 +193,7 @@ namespace Utilities.LDAP
         public virtual void Save()
         {
             if (DirectoryEntry == null)
-                throw new NullReferenceException("DirectoryEntry shouldn't be null");
+                throw new InvalidOperationException("DirectoryEntry shouldn't be null");
             DirectoryEntry.CommitChanges();
         }
 

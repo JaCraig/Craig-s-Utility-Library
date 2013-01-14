@@ -123,7 +123,7 @@ namespace Utilities.Environment.DataTypes
         public virtual IEnumerator GetEnumerator()
         {
             if (ApplicationList == null)
-                throw new NullReferenceException("ApplicationList");
+                throw new InvalidOperationException("ApplicationList");
             return ApplicationList.GetEnumerator();
         }
 

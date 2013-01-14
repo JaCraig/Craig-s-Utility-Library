@@ -68,12 +68,12 @@ namespace Utilities.Web.PingBack
             {
                 if (!ResponseText.Contains("<error>0</error>"))
                 {
-                    throw new Exception(ResponseText);
+                    throw new InvalidOperationException(ResponseText);
                 }
             }
             else
             {
-                throw new Exception("HTTP Error occurred: " + Response.StatusCode.ToString());
+                throw new HttpException("HTTP Error occurred: " + Response.StatusCode.ToString());
             }
         }
 

@@ -145,7 +145,7 @@ namespace Utilities.Reflection.Emit
         public static FieldBuilder operator ++(FieldBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Add(Left, 1));
             return Left;
         }
@@ -158,7 +158,7 @@ namespace Utilities.Reflection.Emit
         public static FieldBuilder operator --(FieldBuilder Left)
         {
             if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new NullReferenceException("Unsure which method is the current method");
+                throw new InvalidOperationException("Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Subtract(Left, 1));
             return Left;
         }

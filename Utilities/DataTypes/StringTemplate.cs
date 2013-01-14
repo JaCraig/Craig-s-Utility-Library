@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using Utilities.DataTypes.ExtensionMethods;
 using System;
 using System.Runtime.Serialization;
+using System.Security;
+using System.Diagnostics.CodeAnalysis;
 
 #endregion
 
@@ -97,6 +99,8 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="info">Serialization info</param>
         /// <param name="context">Streaming context</param>
+        [SecurityCritical]
+        [SuppressMessage("Microsoft.Security","CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

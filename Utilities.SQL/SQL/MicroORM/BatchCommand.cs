@@ -44,8 +44,8 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Commands">Commands that are being merged for batching</param>
         public BatchCommand(params Command[] Commands)
         {
-            this._SQLCommand = "";
-            this._Parameters = new List<IParameter>();
+            this.SQLCommand_ = "";
+            this.Parameters_ = new List<IParameter>();
             this.CommandType = CommandType.Text;
             this.Commands = new List<ICommand>();
             this.Batched = false;
@@ -70,14 +70,14 @@ namespace Utilities.SQL.MicroORM
             {
                 if (!Batched)
                     Batch();
-                return _SQLCommand;
+                return SQLCommand_;
             }
         }
 
         /// <summary>
         /// Batched SQL Command
         /// </summary>
-        protected string _SQLCommand = "";
+        protected string SQLCommand_ { get; private set; }
 
         /// <summary>
         /// Command type
@@ -93,19 +93,19 @@ namespace Utilities.SQL.MicroORM
             {
                 if (!Batched)
                     Batch();
-                return _Parameters;
+                return Parameters_;
             }
         }
 
         /// <summary>
         /// Batched parameter list
         /// </summary>
-        protected List<IParameter> _Parameters = new List<IParameter>();
+        protected List<IParameter> Parameters_ { get; private set; }
 
         /// <summary>
         /// Used to parse SQL commands to find parameters (when batching)
         /// </summary>
-        protected static Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
+        private static Regex ParameterRegex = new Regex(@"[^@](?<ParamStart>[:@?])(?<ParamName>\w+)", RegexOptions.Compiled);
 
         /// <summary>
         /// Commands to batch
@@ -256,20 +256,20 @@ namespace Utilities.SQL.MicroORM
         protected virtual void Batch()
         {
             Batched = true;
-            this._Parameters = new List<IParameter>();
-            this._SQLCommand = "";
+            this.Parameters_ = new List<IParameter>();
+            this.SQLCommand_ = "";
             int Count = 0;
             if (Commands.Count == 1)
             {
-                this._SQLCommand = Commands[0].SQLCommand;
-                this._Parameters = Commands[0].Parameters;
+                this.SQLCommand_ = Commands[0].SQLCommand;
+                this.Parameters_ = Commands[0].Parameters;
                 return;
             }
             foreach (ICommand Command in Commands)
             {
                 if (Command.CommandType == System.Data.CommandType.Text)
                 {
-                    this._SQLCommand += Command.SQLCommand.IsNullOrEmpty() ?
+                    this.SQLCommand_ += Command.SQLCommand.IsNullOrEmpty() ?
                                         "" :
                                         ParameterRegex.Replace(Command.SQLCommand, x =>
                                         {
@@ -279,15 +279,15 @@ namespace Utilities.SQL.MicroORM
                                         }) + System.Environment.NewLine;
                     foreach (IParameter Parameter in Command.Parameters)
                     {
-                        this._Parameters.Add(Parameter.CreateCopy("Command" + Count.ToString()));
+                        this.Parameters_.Add(Parameter.CreateCopy("Command" + Count.ToString()));
                     }
                 }
                 else
                 {
-                    this._SQLCommand += Command.SQLCommand + System.Environment.NewLine;
+                    this.SQLCommand_ += Command.SQLCommand + System.Environment.NewLine;
                     foreach (IParameter Parameter in Command.Parameters)
                     {
-                        this._Parameters.Add(Parameter.CreateCopy(""));
+                        this.Parameters_.Add(Parameter.CreateCopy(""));
                     }
                 }
                 ++Count;

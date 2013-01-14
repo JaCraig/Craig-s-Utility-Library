@@ -28,6 +28,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.ORM.Interfaces;
 using Utilities.SQL.Interfaces;
 using Utilities.Validation.ExtensionMethods;
+using System.Diagnostics.CodeAnalysis;
 #endregion
 
 namespace Utilities.ORM
@@ -555,6 +556,7 @@ namespace Utilities.ORM
         /// <summary>
         /// Called when the object is saved
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         public static EventHandler<SavedEventArgs> Saved;
 
         /// <summary>
@@ -569,6 +571,7 @@ namespace Utilities.ORM
         /// <summary>
         /// Called when the object is deleted
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         public static EventHandler<DeletedEventArgs> Deleted;
 
         /// <summary>
@@ -583,6 +586,7 @@ namespace Utilities.ORM
         /// <summary>
         /// Called prior to an object is saving
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         public static EventHandler<SavingEventArgs> Saving;
 
         /// <summary>
@@ -597,6 +601,7 @@ namespace Utilities.ORM
         /// <summary>
         /// Called prior to an object is deleting
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         public static EventHandler<DeletingEventArgs> Deleting;
 
         /// <summary>
@@ -611,6 +616,7 @@ namespace Utilities.ORM
         /// <summary>
         /// Called prior to an object is loading
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         public static EventHandler<LoadingEventArgs> Loading;
 
         /// <summary>
@@ -635,6 +641,7 @@ namespace Utilities.ORM
         /// <summary>
         /// Called prior to an object being loaded
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         public static EventHandler<LoadedEventArgs> Loaded;
 
         /// <summary>

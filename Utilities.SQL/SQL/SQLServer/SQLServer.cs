@@ -394,7 +394,7 @@ namespace Utilities.SQL.SQLServer
                 if (CurrentColumn == null)
                 {
                     Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ").Append(DesiredTable.Name)
-                        .Append(" ADD ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
+                        .Append(" ADD ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSQLDbType().ToString());
                     if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                     {
                         if (Column.Length < 0 || Column.Length >= 4000)
@@ -428,7 +428,7 @@ namespace Utilities.SQL.SQLServer
                         && (CurrentColumn.Length != -1 && Column.Length != -1)))
                 {
                     Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ").Append(DesiredTable.Name)
-                        .Append(" ALTER COLUMN ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
+                        .Append(" ALTER COLUMN ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSQLDbType().ToString());
                     if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                     {
                         if (Column.Length < 0 || Column.Length >= 4000)
@@ -574,7 +574,7 @@ namespace Utilities.SQL.SQLServer
             string Splitter = "";
             foreach (IColumn Column in Table.Columns)
             {
-                Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.ToSqlDbType().ToString());
+                Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.ToSQLDbType().ToString());
                 if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
                 {
                     if (Column.Length < 0 || Column.Length >= 4000)

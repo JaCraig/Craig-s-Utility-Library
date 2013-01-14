@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 #endregion
 
@@ -92,6 +93,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Attributes associated with the field
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public List<Attribute> Attributes
         {
             get { return _Attributes; }

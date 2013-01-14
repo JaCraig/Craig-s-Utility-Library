@@ -40,7 +40,7 @@ namespace UnitTests.DataTypes.Patterns.BaseClasses
         [Fact]
         public void Creation2()
         {
-            Assert.Throws<Exception>(() => TestClass2.Instance.Function());
+            Assert.Throws<InvalidOperationException>(() => TestClass2.Instance.Function());
         }
 
         [Fact]

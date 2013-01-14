@@ -83,19 +83,20 @@ namespace Utilities.Math
         {
             get
             {
-                if (X.Between(0, _Width) && Y.Between(0, _Height))
-                    return Values[X, Y];
-                throw new Exception("Index out of bounds");
+                if (!X.Between(0, _Width))
+                    throw new ArgumentOutOfRangeException("X");
+                if (!Y.Between(0, _Height))
+                    throw new ArgumentOutOfRangeException("Y");
+                return Values[X, Y];
             }
 
             set
             {
-                if (X.Between(0, _Width) && Y.Between(0, _Height))
-                {
-                    Values[X, Y] = value;
-                    return;
-                }
-                throw new Exception("Index out of bounds");
+                if (!X.Between(0, _Width))
+                    throw new ArgumentOutOfRangeException("X");
+                if (!Y.Between(0, _Height))
+                    throw new ArgumentOutOfRangeException("Y");
+                Values[X, Y] = value;
             }
         }
 
@@ -371,7 +372,7 @@ namespace Utilities.Math
         public virtual double Determinant()
         {
             if (Width != Height)
-                throw new Exception("The determinant can not be calculated for a non square matrix");
+                throw new InvalidOperationException("The determinant can not be calculated for a non square matrix");
             if (Width == 2)
                 return (this[0, 0] * this[1, 1]) - (this[0, 1] * this[1, 0]);
             double Answer = 0.0;

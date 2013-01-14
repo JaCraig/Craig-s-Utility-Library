@@ -160,6 +160,7 @@ namespace Utilities.Math.ExtensionMethods
         /// <param name="Value1">Value 1</param>
         /// <param name="Value2">Value 2</param>
         /// <returns>The greatest common denominator if one exists</returns>
+        [CLSCompliant(false)]
         public static int GreatestCommonDenominator(this int Value1, uint Value2)
         {
             return Value1.GreatestCommonDenominator((int)Value2);
@@ -171,6 +172,7 @@ namespace Utilities.Math.ExtensionMethods
         /// <param name="Value1">Value 1</param>
         /// <param name="Value2">Value 2</param>
         /// <returns>The greatest common denominator if one exists</returns>
+        [CLSCompliant(false)]
         public static int GreatestCommonDenominator(this uint Value1, uint Value2)
         {
             return ((int)Value1).GreatestCommonDenominator((int)Value2);

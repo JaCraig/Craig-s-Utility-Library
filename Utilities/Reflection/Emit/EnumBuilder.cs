@@ -85,7 +85,7 @@ namespace Utilities.Reflection.Emit
         public virtual Type Create()
         {
             if (Builder == null)
-                throw new NullReferenceException("The builder object has not been defined. Ensure that Setup is called prior to Create");
+                throw new InvalidOperationException("The builder object has not been defined. Ensure that Setup is called prior to Create");
             if (DefinedType != null)
                 return DefinedType;
             DefinedType = Builder.CreateType();

@@ -365,12 +365,12 @@ namespace Utilities.Reflection.AOP
         /// <summary>
         /// Dictionary containing generated types and associates it with original type
         /// </summary>
-        protected static Dictionary<Type, Type> Classes = new Dictionary<Type, Type>();
+        private static Dictionary<Type, Type> Classes = new Dictionary<Type, Type>();
 
         /// <summary>
         /// The list of aspects that are being used
         /// </summary>
-        protected static List<IAspect> Aspects = new List<IAspect>();
+        private static List<IAspect> Aspects = new List<IAspect>();
 
         /// <summary>
         /// Assembly directory

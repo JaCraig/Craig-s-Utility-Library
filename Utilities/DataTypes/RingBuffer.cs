@@ -155,7 +155,7 @@ namespace Utilities.DataTypes
         public virtual void Add(T item)
         {
             if (Count >= MaxCapacity && !AllowOverflow)
-                throw new IndexOutOfRangeException("Unable to add item to circular buffer because the buffer is full");
+                throw new InvalidOperationException("Unable to add item to circular buffer because the buffer is full");
             Buffer[WritePosition] = item;
             ++Count;
             ++WritePosition;

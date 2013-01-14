@@ -65,7 +65,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The corresponding SQLDbType</returns>
         public static SqlDbType ToSQLDbType(this Type Type)
         {
-            return Type.ToDbType().ToSqlDbType();
+            return Type.ToDbType().ToSQLDbType();
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Type">Type to convert</param>
         /// <returns>The corresponding SqlDbType (if it exists)</returns>
-        public static SqlDbType ToSqlDbType(this DbType Type)
+        public static SqlDbType ToSQLDbType(this DbType Type)
         {
             SqlParameter Parameter = new SqlParameter();
             Parameter.DbType = Type;

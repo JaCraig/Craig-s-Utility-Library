@@ -32,7 +32,6 @@ namespace Utilities.Random.DefaultClasses
     /// Randomly generates decimals
     /// </summary>
     public class DecimalGenerator<T> : IGenerator<T>
-        where T : IConvertible
     {
         /// <summary>
         /// Generates a random value of the specified type
