@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Text;
 using Utilities.FileFormats.Cisco.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.Cisco
@@ -60,7 +61,7 @@ namespace Utilities.FileFormats.Cisco
         /// <summary>
         /// Menu items for the menu
         /// </summary>
-        public List<IMenuItem> MenuItems { get;private set; }
+        public ICollection<IMenuItem> MenuItems { get;private set; }
 
         /// <summary>
         /// X location of backgroun image (if present)
@@ -80,7 +81,7 @@ namespace Utilities.FileFormats.Cisco
         /// <summary>
         /// Soft keys
         /// </summary>
-        public List<SoftKeyItem> SoftKeys { get;private set; }
+        public ICollection<SoftKeyItem> SoftKeys { get;private set; }
 
         #endregion
 
@@ -110,19 +111,11 @@ namespace Utilities.FileFormats.Cisco
             }
             if (MenuItems != null)
             {
-                for (int x = 0; x < MenuItems.Count; ++x)
-                {
-                    if(MenuItems[x]!=null)
-                        Builder.Append(MenuItems[x].ToString());
-                }
+                Builder.Append(MenuItems.ToString(x => x == null ? "" : x.ToString()));
             }
             if (SoftKeys != null)
             {
-                for (int x = 0; x < SoftKeys.Count; ++x)
-                {
-                    if(SoftKeys[x]!=null)
-                        Builder.Append(SoftKeys[x].ToString());
-                }
+                Builder.Append(SoftKeys.ToString(x => x == null ? "" : x.ToString()));
             }
             if (string.IsNullOrEmpty(ImageURL))
             {

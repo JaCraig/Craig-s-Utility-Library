@@ -63,16 +63,12 @@ namespace Utilities.IO.Logging.BaseClasses
         /// <summary>
         /// Called to log the current message
         /// </summary>
-        protected Dictionary<MessageType, Action<string>> Log = new Dictionary<MessageType, Action<string>>();
+        protected Dictionary<MessageType, Action<string>> Log { get { return Log_; } }
 
         /// <summary>
-        /// Delegate used to format the message
+        /// Called to log the current message
         /// </summary>
-        /// <param name="Message">Message to format</param>
-        /// <param name="Type">Type of message</param>
-        /// <param name="args">Args to insert into the message</param>
-        /// <returns>The formatted message</returns>
-        public delegate string Format(string Message, MessageType Type, params object[] args);
+        private Dictionary<MessageType, Action<string>> Log_ = new Dictionary<MessageType, Action<string>>();
 
         /// <summary>
         /// Format message function
@@ -106,4 +102,13 @@ namespace Utilities.IO.Logging.BaseClasses
 
         #endregion
     }
+
+    /// <summary>
+    /// Delegate used to format the message
+    /// </summary>
+    /// <param name="Message">Message to format</param>
+    /// <param name="Type">Type of message</param>
+    /// <param name="args">Args to insert into the message</param>
+    /// <returns>The formatted message</returns>
+    public delegate string Format(string Message, MessageType Type, params object[] args);
 }

@@ -44,6 +44,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// Constructor
         /// </summary>
         /// <param name="Element">XML element holding info for the enclosure</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public GUID(XmlElement Element)
         {
             if (Element == null)

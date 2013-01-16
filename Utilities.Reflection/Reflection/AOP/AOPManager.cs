@@ -289,10 +289,10 @@ namespace Utilities.Reflection.AOP
             VariableBase ParameterList = EndingArgs.Call(typeof(Ending).GetProperty("Parameters").GetGetMethod());
             for (int x = 1; x < Method.Parameters.Count; ++x)
             {
-                if (Method.Parameters[x].DataType != null && Method.Parameters[x].DataType.IsValueType)
-                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Box(Method.Parameters[x]) });
+                if (Method.Parameters.ElementAt(x).DataType != null && Method.Parameters.ElementAt(x).DataType.IsValueType)
+                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Box(Method.Parameters.ElementAt(x)) });
                 else
-                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Parameters[x] });
+                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Parameters.ElementAt(x) });
             }
 
             VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
@@ -325,10 +325,10 @@ namespace Utilities.Reflection.AOP
             VariableBase ParameterList = StartingArgs.Call(typeof(Starting).GetProperty("Parameters").GetGetMethod());
             for (int x = 1; x < Method.Parameters.Count; ++x)
             {
-                if (Method.Parameters[x].DataType != null && Method.Parameters[x].DataType.IsValueType)
-                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Box(Method.Parameters[x]) });
+                if (Method.Parameters.ElementAt(x).DataType != null && Method.Parameters.ElementAt(x).DataType.IsValueType)
+                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Box(Method.Parameters.ElementAt(x)) });
                 else
-                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Parameters[x] });
+                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Parameters.ElementAt(x) });
             }
 
             VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));

@@ -48,7 +48,7 @@ namespace Utilities.FileFormats.Cisco
         /// <summary>
         /// Execute items
         /// </summary>
-        public List<ExecuteItem> ExecuteItems { get; private set; }
+        public ICollection<ExecuteItem> ExecuteItems { get; private set; }
 
         #endregion
 

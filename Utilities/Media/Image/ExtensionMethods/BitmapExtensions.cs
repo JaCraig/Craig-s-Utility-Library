@@ -848,7 +848,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// </summary>
         /// <param name="OriginalImage">Image to get the palette of</param>
         /// <returns>A list containing HTML color values (ex: #041845)</returns>
-        public static List<string> GetHTMLPalette(this Bitmap OriginalImage)
+        public static IEnumerable<string> GetHTMLPalette(this Bitmap OriginalImage)
         {
             OriginalImage.ThrowIfNull("OriginalImage");
             List<string> ReturnArray = new List<string>();
@@ -2278,7 +2278,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Image">Image to convert</param>
         /// <param name="DesiredFormat">Desired image format (defaults to Jpeg)</param>
         /// <returns>The image in base64 string format</returns>
-        public static string ToBase64(this Bitmap Image, ImageFormat DesiredFormat = null)
+        public static string ToBase64(this System.Drawing.Image Image, ImageFormat DesiredFormat = null)
         {
             DesiredFormat = DesiredFormat.NullCheck(ImageFormat.Jpeg);
             using (MemoryStream Stream = new MemoryStream())
@@ -2461,63 +2461,6 @@ namespace Utilities.Media.Image.ExtensionMethods
 
         #endregion
 
-        #region Enums
-
-        /// <summary>
-        /// Enum defining alignment
-        /// </summary>
-        public enum Align
-        {
-            /// <summary>
-            /// Top
-            /// </summary>
-            Top,
-            /// <summary>
-            /// Bottom
-            /// </summary>
-            Bottom,
-            /// <summary>
-            /// Left
-            /// </summary>
-            Left,
-            /// <summary>
-            /// Right
-            /// </summary>
-            Right
-        }
-
-        /// <summary>
-        /// Enum defining quality
-        /// </summary>
-        public enum Quality
-        {
-            /// <summary>
-            /// High
-            /// </summary>
-            High,
-            /// <summary>
-            /// Low
-            /// </summary>
-            Low
-        }
-
-        /// <summary>
-        /// Direction
-        /// </summary>
-        public enum Direction
-        {
-            /// <summary>
-            /// Top to bottom
-            /// </summary>
-            TopBottom = 0,
-            /// <summary>
-            /// Left to right
-            /// </summary>
-            LeftRight
-        };
-
-        #endregion
-
         #region Variables
 
         /// <summary>
@@ -2527,4 +2470,61 @@ namespace Utilities.Media.Image.ExtensionMethods
 
         #endregion
     }
+
+    #region Enums
+
+    /// <summary>
+    /// Enum defining alignment
+    /// </summary>
+    public enum Align
+    {
+        /// <summary>
+        /// Top
+        /// </summary>
+        Top,
+        /// <summary>
+        /// Bottom
+        /// </summary>
+        Bottom,
+        /// <summary>
+        /// Left
+        /// </summary>
+        Left,
+        /// <summary>
+        /// Right
+        /// </summary>
+        Right
+    }
+
+    /// <summary>
+    /// Enum defining quality
+    /// </summary>
+    public enum Quality
+    {
+        /// <summary>
+        /// High
+        /// </summary>
+        High,
+        /// <summary>
+        /// Low
+        /// </summary>
+        Low
+    }
+
+    /// <summary>
+    /// Direction
+    /// </summary>
+    public enum Direction
+    {
+        /// <summary>
+        /// Top to bottom
+        /// </summary>
+        TopBottom = 0,
+        /// <summary>
+        /// Left to right
+        /// </summary>
+        LeftRight
+    };
+
+    #endregion
 }

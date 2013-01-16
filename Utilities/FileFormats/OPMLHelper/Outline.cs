@@ -47,6 +47,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// Constructors
         /// </summary>
         /// <param name="Element">Element containing outline information</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public Outline(XmlElement Element)
         {
             if (Element == null)
@@ -106,7 +107,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// Outline list
         /// </summary>
-        public List<Outline> Outlines { get;private set; }
+        public ICollection<Outline> Outlines { get; private set; }
 
         /// <summary>
         /// Url of the XML file

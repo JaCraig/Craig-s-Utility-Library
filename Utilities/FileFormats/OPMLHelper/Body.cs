@@ -46,6 +46,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// Constructor
         /// </summary>
         /// <param name="Element">XmlElement containing the body information</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public Body(XmlElement Element)
         {
             if (Element == null)
@@ -73,7 +74,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <summary>
         /// List of outlines
         /// </summary>
-        public List<Outline> Outlines { get;private set; }
+        public ICollection<Outline> Outlines { get; private set; }
 
         #endregion
 

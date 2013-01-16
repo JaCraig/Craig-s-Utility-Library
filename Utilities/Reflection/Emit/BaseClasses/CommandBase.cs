@@ -39,7 +39,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public CommandBase()
+        protected CommandBase()
         {
             SetupOpCodes();
         }

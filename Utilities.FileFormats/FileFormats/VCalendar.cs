@@ -132,6 +132,7 @@ namespace Utilities.FileFormats
         /// Returns the VCalendar item
         /// </summary>
         /// <returns>a string output of the VCalendar item</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public virtual string GetVCalendar()
         {
             return new StringBuilder().AppendLine("BEGIN:VCALENDAR")
@@ -153,6 +154,7 @@ namespace Utilities.FileFormats
         /// Returns the ICalendar item
         /// </summary>
         /// <returns>a string output of the ICalendar item</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public virtual string GetICalendar()
         {
             StringBuilder FileOutput = new StringBuilder();
@@ -210,6 +212,7 @@ namespace Utilities.FileFormats
         /// Returns the HCalendar item
         /// </summary>
         /// <returns>A string output of the HCalendar item</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public virtual string GetHCalendar()
         {
             StringBuilder Output = new StringBuilder();

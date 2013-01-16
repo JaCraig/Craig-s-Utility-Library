@@ -46,6 +46,7 @@ namespace Utilities.FileFormats.RSD
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the info</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public APIs(XmlElement Element)
         {
             if (Element == null)
@@ -65,7 +66,7 @@ namespace Utilities.FileFormats.RSD
         /// <summary>
         /// List of APIs
         /// </summary>
-        public List<API> APIList { get;private set; }
+        public ICollection<API> APIList { get;private set; }
 
         #endregion
 

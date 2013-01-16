@@ -43,7 +43,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="ID">Parameter name</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public static DataType GetParameter<DataType>(this IDataReader Reader, string ID, DataType Default = default(DataType))
+        public static DataType GetParameter<DataType>(this IDataRecord Reader, string ID, DataType Default = default(DataType))
         {
             if (Reader.IsNull())
                 return Default;
@@ -62,7 +62,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="Position">Position in the reader row</param>
         /// <param name="Default">Default value for the parameter</param>
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
-        public static DataType GetParameter<DataType>(this IDataReader Reader, int Position, DataType Default = default(DataType))
+        public static DataType GetParameter<DataType>(this IDataRecord Reader, int Position, DataType Default = default(DataType))
         {
             if (Reader.IsNull())
                 return Default;

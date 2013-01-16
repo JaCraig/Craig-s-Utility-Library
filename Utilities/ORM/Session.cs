@@ -184,6 +184,7 @@ namespace Utilities.ORM
         /// <param name="PropertyName">Property name</param>
         /// <param name="Parameters">Extra parameters (generally will be the ID of the object)</param>
         /// <returns>The appropriate property value</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public virtual List<DataType> LoadListProperties<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
             where ObjectType : class,new()
             where DataType : class,new()

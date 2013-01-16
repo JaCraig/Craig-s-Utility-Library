@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
+using System.Linq;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -44,7 +45,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="Parameters">Parameter types for the constructor</param>
         /// <param name="CallingConventions">Calling convention for the constructor</param>
         public ConstructorBuilder(TypeBuilder TypeBuilder, MethodAttributes Attributes,
-            List<Type> Parameters, CallingConventions CallingConventions)
+            IEnumerable<Type> Parameters, CallingConventions CallingConventions)
             : base()
         {
             if (TypeBuilder == null)
@@ -64,7 +65,7 @@ namespace Utilities.Reflection.Emit
             }
             this.CallingConventions = CallingConventions;
             this.Builder = Type.Builder.DefineConstructor(Attributes, CallingConventions,
-                (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
+                (Parameters != null && Parameters.Count() > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
             this.Generator = Builder.GetILGenerator();
         }
 

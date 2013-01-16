@@ -55,7 +55,7 @@ namespace Utilities.Web.Google.HelperClasses
         /// <summary>
         /// Marker list
         /// </summary>
-        public List<ILocation> MarkerList { get;private set; }
+        public ICollection<ILocation> MarkerList { get;private set; }
 
         /// <summary>
         /// Marker size

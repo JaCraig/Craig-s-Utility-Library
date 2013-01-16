@@ -37,7 +37,7 @@ namespace UnitTests.SQL.DataClasses
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Utilities.SQL.DataClasses.Table Table = Database.AddTable("TestTable");
-            Assert.Equal(Table, Database.Tables[0]);
+            Assert.Equal(Table, Database.Tables.First());
             Assert.Equal("TestTable", Table.Name);
         }
 
@@ -47,7 +47,7 @@ namespace UnitTests.SQL.DataClasses
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Utilities.SQL.DataClasses.Table Table = Database.AddTable("TestTable");
             IColumn Column = Table.AddColumn<int>("Column1", DbType.Int32);
-            Assert.Equal(Column, Table.Columns[0]);
+            Assert.Equal(Column, Table.Columns.First());
             Assert.Equal("Column1", Column.Name);
             Assert.Equal(DbType.Int32, Column.DataType);
             Assert.Equal("", Column.Default);

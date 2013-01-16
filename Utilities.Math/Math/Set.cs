@@ -165,9 +165,54 @@ namespace Utilities.Math
             return ReturnValue;
         }
 
+        /// <summary>
+        /// Determines if the two sets are equivalent
+        /// </summary>
+        /// <param name="Set1">Set 1</param>
+        /// <param name="Set2">Set 2</param>
+        /// <returns>True if they are, false otherwise</returns>
+        public static bool operator ==(Set<T> Set1, Set<T> Set2)
+        {
+            if (((object)Set1) == null && ((object)Set2) == null)
+                return true;
+            if (((object)Set1) == null || ((object)Set2) == null)
+                return false;
+            return Set1.Contains(Set2)&&Set2.Contains(Set1);
+        }
+
+        /// <summary>
+        /// Determines if the two sets are not equivalent
+        /// </summary>
+        /// <param name="Set1">Set 1</param>
+        /// <param name="Set2">Set 2</param>
+        /// <returns>False if they are, true otherwise</returns>
+        public static bool operator !=(Set<T> Set1, Set<T> Set2)
+        {
+            return !(Set1 == Set2);
+        }
+
         #endregion
 
         #region Public Overridden Functions
+
+        /// <summary>
+        /// Returns the hash code for the object
+        /// </summary>
+        /// <returns>The hash code for the object</returns>
+        public override int GetHashCode()
+        {
+            return this.Items.GetHashCode();
+        }
+
+        /// <summary>
+        /// Determines if the two sets are equivalent
+        /// </summary>
+        /// <param name="obj">The object to compare to</param>
+        /// <returns>True if they are, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            return this == (obj as Set<T>);
+        }
 
         /// <summary>
         /// Returns the set as a string

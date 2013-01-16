@@ -74,6 +74,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// Constructor
         /// </summary>
         /// <param name="Document">XmlDocument containing the OPML file</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public OPML(XmlDocument Document)
         {
             if (Document == null)

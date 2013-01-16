@@ -238,6 +238,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Internal list of items
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
         protected T[] Items = null;
 
         /// <summary>

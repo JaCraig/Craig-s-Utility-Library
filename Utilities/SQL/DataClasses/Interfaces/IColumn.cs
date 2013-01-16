@@ -67,7 +67,7 @@ namespace Utilities.SQL.DataClasses.Interfaces
         /// <summary>
         /// Foreign keys
         /// </summary>
-        List<IColumn> ForeignKey { get; }
+        ICollection<IColumn> ForeignKey { get; }
 
         /// <summary>
         /// Primary key?

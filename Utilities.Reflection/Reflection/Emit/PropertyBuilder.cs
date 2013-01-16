@@ -28,6 +28,8 @@ using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -55,7 +57,7 @@ namespace Utilities.Reflection.Emit
             MethodAttributes GetMethodAttributes,
             MethodAttributes SetMethodAttributes,
             Type PropertyType, 
-            List<Type> Parameters)
+            IEnumerable<Type> Parameters)
             : base()
         {
             if (TypeBuilder == null)
@@ -79,7 +81,7 @@ namespace Utilities.Reflection.Emit
                 }
             }
             Builder = Type.Builder.DefineProperty(Name, Attributes, PropertyType,
-                (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
+                (Parameters != null && Parameters.Count() > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
             GetMethod = new MethodBuilder(Type, "get_" + Name, GetMethodAttributes, Parameters, PropertyType);
             List<Type> SetParameters = new List<System.Type>();
             if (Parameters != null)
@@ -184,7 +186,7 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Parameter list
         /// </summary>
-        public List<ParameterBuilder> Parameters { get; private set; }
+        public ICollection<ParameterBuilder> Parameters { get; private set; }
 
         /// <summary>
         /// Builder object

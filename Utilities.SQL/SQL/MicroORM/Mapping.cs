@@ -110,7 +110,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Parameter listing
         /// </summary>
-        public List<string> ParameterNames { get;private set; }
+        public ICollection<string> ParameterNames { get;private set; }
 
         #endregion
 

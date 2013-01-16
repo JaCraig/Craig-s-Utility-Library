@@ -93,6 +93,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="RetryDelay">The amount of milliseconds to wait between tries</param>
         /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
         /// <returns>The returned value from the function</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static T Execute<T>(this Func<T> Function, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
             Function.ThrowIfNull("Function");
@@ -120,6 +121,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Attempts">Number of times to attempt it</param>
         /// <param name="RetryDelay">The amount of milliseconds to wait between tries</param>
         /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static void Execute(this Action Action, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
             Action.ThrowIfNull("Action");

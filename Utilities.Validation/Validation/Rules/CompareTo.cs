@@ -60,12 +60,12 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Property to compare to
         /// </summary>
-        public string PropertyName { get; set; }
+        public string PropertyName { get;private set; }
 
         /// <summary>
         /// Comparison type
         /// </summary>
-        public ComparisonType Type { get; set; }
+        public ComparisonType Type { get;private set; }
 
         #endregion
 

@@ -90,7 +90,7 @@ namespace Utilities.Environment
         /// <summary>
         /// List of parameters found
         /// </summary>
-        public List<string> Parameters { get;private set; }
+        public ICollection<string> Parameters { get;private set; }
 
         #endregion
     }

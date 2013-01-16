@@ -26,7 +26,8 @@ using System.Reflection;
 using Utilities.Reflection.Emit.Commands;
 using Utilities.Reflection.Emit.Interfaces;
 using System.Diagnostics.CodeAnalysis;
-
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.Reflection.Emit.BaseClasses
@@ -438,7 +439,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// Parameters
         /// </summary>
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public List<ParameterBuilder> Parameters { get; protected set; }
+        public ICollection<ParameterBuilder> Parameters { get; protected set; }
 
         /// <summary>
         /// Attributes for the method
@@ -458,7 +459,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Commands used in the method
         /// </summary>
-        public List<ICommand> Commands { get; private set; }
+        public ICollection<ICommand> Commands { get; private set; }
 
         /// <summary>
         /// Object counter
@@ -472,7 +473,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         {
             get
             {
-                return Parameters[0];
+                return Parameters.FirstOrDefault();
             }
         }
 

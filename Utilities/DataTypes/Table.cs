@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Data;
+using System.Linq;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.DataTypes
@@ -98,7 +100,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Rows within the table
         /// </summary>
-        public List<Row> Rows { get; private set; }
+        public ICollection<Row> Rows { get; private set; }
 
         /// <summary>
         /// Gets a specific row
@@ -109,7 +111,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                return Rows.Count > RowNumber ? Rows[RowNumber] : null;
+                return Rows.Count > RowNumber ? Rows.ElementAt(RowNumber) : null;
             }
         }
 

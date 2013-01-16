@@ -47,9 +47,9 @@ namespace UnitTests.SQL.DataClasses
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Database.AddFunction("TestFunction", "FunctionDefinition");
             Assert.Equal(1, Database.Functions.Count);
-            Assert.Equal("TestFunction", Database.Functions[0].Name);
-            Assert.Equal("FunctionDefinition", Database.Functions[0].Definition);
-            Assert.Equal(Database, Database.Functions[0].ParentDatabase);
+            Assert.Equal("TestFunction", Database.Functions.First().Name);
+            Assert.Equal("FunctionDefinition", Database.Functions.First().Definition);
+            Assert.Equal(Database, Database.Functions.First().ParentDatabase);
         }
 
         [Fact]
@@ -58,9 +58,9 @@ namespace UnitTests.SQL.DataClasses
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Database.AddStoredProcedure("TestFunction", "FunctionDefinition");
             Assert.Equal(1, Database.StoredProcedures.Count);
-            Assert.Equal("TestFunction", Database.StoredProcedures[0].Name);
-            Assert.Equal("FunctionDefinition", Database.StoredProcedures[0].Definition);
-            Assert.Equal(Database, Database.StoredProcedures[0].ParentDatabase);
+            Assert.Equal("TestFunction", Database.StoredProcedures.First().Name);
+            Assert.Equal("FunctionDefinition", Database.StoredProcedures.First().Definition);
+            Assert.Equal(Database, Database.StoredProcedures.First().ParentDatabase);
         }
 
         [Fact]
@@ -69,8 +69,8 @@ namespace UnitTests.SQL.DataClasses
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Database.AddTable("TestTable");
             Assert.Equal(1, Database.Tables.Count);
-            Assert.Equal("TestTable", Database.Tables[0].Name);
-            Assert.Equal(Database, Database.Tables[0].ParentDatabase);
+            Assert.Equal("TestTable", Database.Tables.First().Name);
+            Assert.Equal(Database, Database.Tables.First().ParentDatabase);
         }
 
         [Fact]
@@ -79,8 +79,8 @@ namespace UnitTests.SQL.DataClasses
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Database.AddView("TestTable");
             Assert.Equal(1, Database.Views.Count);
-            Assert.Equal("TestTable", Database.Views[0].Name);
-            Assert.Equal(Database, Database.Views[0].ParentDatabase);
+            Assert.Equal("TestTable", Database.Views.First().Name);
+            Assert.Equal(Database, Database.Views.First().ParentDatabase);
         }
     }
 }

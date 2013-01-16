@@ -51,7 +51,7 @@ namespace Utilities.DataMapper
         /// <summary>
         /// List of mappings
         /// </summary>
-        protected List<Mapping<Left, Right>> Mappings { get; private set; }
+        protected ICollection<Mapping<Left, Right>> Mappings { get; private set; }
 
         #endregion
 

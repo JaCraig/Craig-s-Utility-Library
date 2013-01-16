@@ -48,7 +48,7 @@ namespace Utilities.FileFormats.XMDP
         /// <summary>
         /// Properties to be included
         /// </summary>
-        public List<Property> Properties { get; private set; }
+        public ICollection<Property> Properties { get; private set; }
 
         #endregion
 

@@ -47,14 +47,14 @@ namespace UnitTests.ORM.ListTest
         {
             Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false");
             Assert.Equal(8, DatabaseObject.Tables.Count);
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project2_"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task2_"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task2_Task2"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project2_Task2"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project2_Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task2_Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task2_Task2Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project2_Task2Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project2_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task2_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task2_Task2"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project2_Task2"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project2_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task2_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task2_Task2Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project2_Task2Audit"));
         }
 
         [Fact]

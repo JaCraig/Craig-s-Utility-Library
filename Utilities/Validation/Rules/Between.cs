@@ -48,8 +48,8 @@ namespace Utilities.Validation.Rules
         public BetweenAttribute(object Min, object Max, string ErrorMessage = "")
             : base(ErrorMessage.IsNullOrEmpty() ? "{0} is not between {1} and {2}" : ErrorMessage)
         {
-            this.MinCompareValue = Min;
-            this.MaxCompareValue = Max;
+            this.Min = Min;
+            this.Max = Max;
         }
 
         #endregion
@@ -59,12 +59,12 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Min value to compare to
         /// </summary>
-        public object MinCompareValue { get; set; }
+        public object Min { get;private set; }
 
         /// <summary>
         /// Max value to compare to
         /// </summary>
-        public object MaxCompareValue { get; set; }
+        public object Max { get;private set; }
 
         #endregion
 
@@ -77,7 +77,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The formatted string</returns>
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name, MinCompareValue.ToString(), MaxCompareValue.ToString());
+            return string.Format(ErrorMessageString, name, Min.ToString(), Max.ToString());
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace Utilities.Validation.Rules
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
-            IComparable MaxValue = (IComparable)MaxCompareValue.TryTo<object>(value.GetType());
-            IComparable MinValue = (IComparable)MinCompareValue.TryTo<object>(value.GetType());
+            IComparable MaxValue = (IComparable)Max.TryTo<object>(value.GetType());
+            IComparable MinValue = (IComparable)Min.TryTo<object>(value.GetType());
             IComparable TempValue = value as IComparable;
             return (Comparer.Compare(MaxValue, TempValue) < 0
                     || Comparer.Compare(TempValue, MinValue) < 0) ?
@@ -108,8 +108,8 @@ namespace Utilities.Validation.Rules
         {
             ModelClientValidationRule Rule = new ModelClientValidationRule();
             Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
-            Rule.ValidationParameters.Add("Min", MinCompareValue);
-            Rule.ValidationParameters.Add("Max", MaxCompareValue);
+            Rule.ValidationParameters.Add("Min", Min);
+            Rule.ValidationParameters.Add("Max", Max);
             Rule.ValidationType = "Between";
             return new ModelClientValidationRule[] { Rule };
         }

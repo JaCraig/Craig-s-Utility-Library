@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -44,7 +45,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="Interfaces">Interfaces that the type implements</param>
         /// <param name="Attributes">Attributes for the type (public, private, etc.)</param>
         /// <param name="BaseClass">Base class for the type</param>
-        public TypeBuilder(Assembly Assembly, string Name, List<Type> Interfaces,
+        public TypeBuilder(Assembly Assembly, string Name, IEnumerable<Type> Interfaces,
             Type BaseClass, TypeAttributes Attributes)
         {
             if (Assembly == null)
@@ -55,14 +56,14 @@ namespace Utilities.Reflection.Emit
             this.Name = Name;
             this.Interfaces = new List<Type>();
             if (Interfaces != null)
-                this.Interfaces.AddRange(Interfaces);
+                this.Interfaces.Add(Interfaces);
             this.BaseClass = BaseClass;
             this.Attributes = Attributes;
             Methods = new List<IMethodBuilder>();
             Fields = new List<FieldBuilder>();
             Properties = new List<IPropertyBuilder>();
             Constructors = new List<IMethodBuilder>();
-            Builder = Assembly.Module.DefineType(Assembly.Name + "." + Name, Attributes, BaseClass, this.Interfaces.ToArray());
+            Builder = Assembly.Module.DefineType(Assembly.Name + "." + Name, Attributes, BaseClass, this.Interfaces.ToArray(x => x));
         }
 
         #endregion
@@ -99,7 +100,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>Method builder for the method</returns>
         public virtual IMethodBuilder CreateMethod(string Name,
             MethodAttributes Attributes = MethodAttributes.Public| MethodAttributes.Virtual,
-            Type ReturnType = null, List<Type> ParameterTypes = null)
+            Type ReturnType = null, IEnumerable<Type> ParameterTypes = null)
         {
             MethodBuilder ReturnValue = new MethodBuilder(this, Name, Attributes, ParameterTypes, ReturnType);
             Methods.Add(ReturnValue);
@@ -142,7 +143,7 @@ namespace Utilities.Reflection.Emit
             PropertyAttributes Attributes = PropertyAttributes.SpecialName,
             MethodAttributes GetMethodAttributes = MethodAttributes.Public | MethodAttributes.Virtual,
             MethodAttributes SetMethodAttributes = MethodAttributes.Public | MethodAttributes.Virtual,
-            List<Type> Parameters = null)
+            IEnumerable<Type> Parameters = null)
         {
             PropertyBuilder ReturnValue = new PropertyBuilder(this, Name, Attributes,
                 GetMethodAttributes, SetMethodAttributes, PropertyType, Parameters);
@@ -168,7 +169,7 @@ namespace Utilities.Reflection.Emit
             PropertyAttributes Attributes = PropertyAttributes.SpecialName,
             MethodAttributes GetMethodAttributes = MethodAttributes.Public | MethodAttributes.Virtual,
             MethodAttributes SetMethodAttributes = MethodAttributes.Public | MethodAttributes.Virtual,
-            List<Type> Parameters = null)
+            IEnumerable<Type> Parameters = null)
         {
             DefaultPropertyBuilder ReturnValue = new DefaultPropertyBuilder(this, Name, Attributes,
                 GetMethodAttributes, SetMethodAttributes, PropertyType, Parameters);
@@ -188,7 +189,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="CallingConventions">The calling convention used</param>
         /// <returns>Constructor builder for the constructor</returns>
         public virtual IMethodBuilder CreateConstructor(MethodAttributes Attributes = MethodAttributes.Public,
-            List<Type> ParameterTypes = null, CallingConventions CallingConventions = CallingConventions.Standard)
+            IEnumerable<Type> ParameterTypes = null, CallingConventions CallingConventions = CallingConventions.Standard)
         {
             ConstructorBuilder ReturnValue = new ConstructorBuilder(this, Attributes, ParameterTypes, CallingConventions);
             Constructors.Add(ReturnValue);
@@ -226,29 +227,29 @@ namespace Utilities.Reflection.Emit
         /// List of methods defined by this TypeBuilder 
         /// (does not include methods defined in base classes unless overridden)
         /// </summary>
-        public List<IMethodBuilder> Methods { get; private set; }
+        public ICollection<IMethodBuilder> Methods { get; private set; }
 
         /// <summary>
         /// List of fields defined by the TypeBuilder
         /// (does not include fields defined in base classes)
         /// </summary>
-        public List<FieldBuilder> Fields { get; private set; }
+        public ICollection<FieldBuilder> Fields { get; private set; }
 
         /// <summary>
         /// List of properties defined by the TypeBuilder
         /// (does not include properties defined in base classes)
         /// </summary>
-        public List<IPropertyBuilder> Properties { get; private set; }
+        public ICollection<IPropertyBuilder> Properties { get; private set; }
 
         /// <summary>
         /// Constructors defined by the TypeBuilder
         /// </summary>
-        public List<IMethodBuilder> Constructors { get; private set; }
+        public ICollection<IMethodBuilder> Constructors { get; private set; }
 
         /// <summary>
         /// List of interfaces used by this type
         /// </summary>
-        public List<Type> Interfaces { get; private set; }
+        public ICollection<Type> Interfaces { get; private set; }
 
         /// <summary>
         /// Base class used by this type

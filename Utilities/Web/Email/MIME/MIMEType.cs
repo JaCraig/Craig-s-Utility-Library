@@ -28,17 +28,8 @@ namespace Utilities.Web.Email.MIME
     /// <summary>
     /// Defines basic MIME Types
     /// </summary>
-    public class MIMEType
+    public static class MIMEType
     {
-        #region Constructor
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public MIMEType()
-        {
-        }
-        #endregion
-
         #region Public Variables
         /// <summary>
         /// Defines the types in string form

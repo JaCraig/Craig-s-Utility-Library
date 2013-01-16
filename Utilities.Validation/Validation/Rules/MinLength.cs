@@ -45,7 +45,7 @@ namespace Utilities.Validation.Rules
         public MinLengthAttribute(long Value, string ErrorMessage = "")
             : base(ErrorMessage.IsNullOrEmpty() ? "{0} is shorter than {1}" : ErrorMessage)
         {
-            this.CompareValue = Value;
+            this.Value = Value;
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Value to compare to
         /// </summary>
-        public long CompareValue { get; set; }
+        public long Value { get;private set; }
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The formatted string</returns>
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name, CompareValue.ToString());
+            return string.Format(ErrorMessageString, name, Value.ToString());
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Utilities.Validation.Rules
             foreach (object Item in ValueList)
             {
                 ++Count;
-                if (Count >= CompareValue)
+                if (Count >= Value)
                     return ValidationResult.Success;
             }
             return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));

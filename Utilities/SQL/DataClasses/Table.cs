@@ -70,7 +70,7 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Columns in the table
         /// </summary>
-        public List<IColumn> Columns { get;private set; }
+        public ICollection<IColumn> Columns { get;private set; }
         /// <summary>
         /// Parent database
         /// </summary>
@@ -79,7 +79,7 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// List of triggers associated with the table
         /// </summary>
-        public List<Trigger> Triggers { get;private set; }
+        public ICollection<Trigger> Triggers { get;private set; }
 
         #endregion
 

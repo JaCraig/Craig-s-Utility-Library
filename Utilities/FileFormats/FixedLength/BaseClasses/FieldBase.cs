@@ -36,7 +36,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public FieldBase()
+        protected FieldBase()
         {
         }
 

@@ -111,7 +111,7 @@ namespace Utilities.Web.Google.StaticMaps
         /// <summary>
         /// A list of markers
         /// </summary>
-        public List<Markers> Markers { get;private set; }
+        public ICollection<Markers> Markers { get; private set; }
 
         /// <summary>
         /// Determines if a sensor is used to determine the user's location

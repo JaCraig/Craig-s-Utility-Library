@@ -105,33 +105,33 @@ namespace Utilities.Caching.ExtensionMethods
             }
             return DefaultValue;
         }
+    }
 
+    /// <summary>
+    /// Determines where an item is cached
+    /// </summary>
+    [Flags]
+    public enum CacheType
+    {
         /// <summary>
-        /// Determines where an item is cached
+        /// Cache (ASP.Net only)
         /// </summary>
-        [Flags]
-        public enum CacheType
-        {
-            /// <summary>
-            /// Cache (ASP.Net only)
-            /// </summary>
-            Cache = 1,
-            /// <summary>
-            /// Item (ASP.Net only)
-            /// </summary>
-            Item = 2,
-            /// <summary>
-            /// Session (ASP.Net only)
-            /// </summary>
-            Session = 4,
-            /// <summary>
-            /// Cookie (ASP.Net only)
-            /// </summary>
-            Cookie = 8,
-            /// <summary>
-            /// Internal caching
-            /// </summary>
-            Internal = 16
-        }
+        Cache = 1,
+        /// <summary>
+        /// Item (ASP.Net only)
+        /// </summary>
+        Item = 2,
+        /// <summary>
+        /// Session (ASP.Net only)
+        /// </summary>
+        Session = 4,
+        /// <summary>
+        /// Cookie (ASP.Net only)
+        /// </summary>
+        Cookie = 8,
+        /// <summary>
+        /// Internal caching
+        /// </summary>
+        Internal = 16
     }
 }

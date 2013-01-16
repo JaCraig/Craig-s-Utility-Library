@@ -83,7 +83,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// The individual fields for the header
         /// </summary>
-        public List<Field>Fields{get;private set;}
+        public ICollection<Field>Fields{get;private set;}
         
         /// <summary>
         /// Can be used to get a specific field based on its name

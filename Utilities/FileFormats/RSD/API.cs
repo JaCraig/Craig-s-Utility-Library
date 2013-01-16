@@ -43,6 +43,7 @@ namespace Utilities.FileFormats.RSD
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the API info</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public API(XmlElement Element)
         {
             if (Element == null)

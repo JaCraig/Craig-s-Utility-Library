@@ -46,20 +46,20 @@ namespace UnitTests.ORM.Test1
         {
             Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase;Integrated Security=SSPI;Pooling=false");
             Assert.Equal(18, DatabaseObject.Tables.Count);
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Account_"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Group_"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Role_"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "User_"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Account_Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Group_Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Role_Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "User_Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Account_User"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Account_UserAudit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Group_User"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Group_UserAudit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Role_User"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Role_UserAudit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Account_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Group_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "User_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Account_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Group_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "User_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Account_User"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Account_UserAudit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Group_User"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Group_UserAudit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_User"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Role_UserAudit"));
         }
 
         [Fact]

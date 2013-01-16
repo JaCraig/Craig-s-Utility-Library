@@ -122,7 +122,7 @@ namespace UnitTests.Reflection.AOP
             
         }
 
-        public List<Type> InterfacesUsing
+        public ICollection<Type> InterfacesUsing
         {
             get
             {

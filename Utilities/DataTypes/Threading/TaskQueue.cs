@@ -125,6 +125,7 @@ namespace Utilities.DataTypes.Threading
         /// <summary>
         /// Processes the queue
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private void Process()
         {
             while (true)

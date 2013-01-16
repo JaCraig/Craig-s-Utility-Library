@@ -106,7 +106,7 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Literals defined within the enum
         /// </summary>
-        public List<System.Reflection.Emit.FieldBuilder> Literals { get; private set; }
+        public ICollection<System.Reflection.Emit.FieldBuilder> Literals { get; private set; }
 
         /// <summary>
         /// Field builder

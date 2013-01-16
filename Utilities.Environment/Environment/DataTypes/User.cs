@@ -55,7 +55,7 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// User names
         /// </summary>
-        public List<string> UserNames { get; private set; }
+        public ICollection<string> UserNames { get; private set; }
 
         #endregion
 

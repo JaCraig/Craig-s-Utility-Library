@@ -74,7 +74,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (this.CommandToLoad != null)
                 return;
-            IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
+            IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
             if (ForeignMapping.TableName == Mapping.TableName)
             {
                 LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @"2.*
@@ -127,7 +127,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             if (Item == null)
                 return new List<Command>();
             List<Command> Commands = new List<Command>();
-            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
             {
                 if (!Property.Cascade
                     && (Property is IManyToMany
@@ -161,7 +161,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             if (Item == null)
                 return new List<Command>();
             List<Command> Commands = new List<Command>();
-            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
             {
                 if (!Property.Cascade &&
                         (Property is IManyToMany
@@ -193,12 +193,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return;
-            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
             {
                 if (Property.Cascade)
                     ((IProperty<DataType>)Property).CascadeDelete(Item, MicroORM);
             }
-            ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeDelete(Item, MicroORM);
+            ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeDelete(Item, MicroORM);
         }
 
         /// <summary>
@@ -213,12 +213,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return;
-            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+            foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
             {
                 if (Property.Cascade)
                     ((IProperty<DataType>)Property).CascadeSave(Item, MicroORM);
             }
-            ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeSave(Item, MicroORM);
+            ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeSave(Item, MicroORM);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return null;
-            IParameter Parameter = ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsParameter(Item);
+            IParameter Parameter = ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsParameter(Item);
             Parameter.ID = FieldName;
             return Parameter;
         }
@@ -250,7 +250,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return null;
-            return ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsObject(Item);
+            return ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).GetAsObject(Item);
         }
 
         /// <summary>

@@ -37,7 +37,7 @@ namespace UnitTests.SQL.DataClasses
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Utilities.SQL.DataClasses.StoredProcedure Function = Database.AddStoredProcedure("TestStoredProcedure", "Definition");
-            Assert.Equal(Function, Database.StoredProcedures[0]);
+            Assert.Equal(Function, Database.StoredProcedures.First());
             Assert.Equal("TestStoredProcedure", Function.Name);
             Assert.Equal("Definition", Function.Definition);
             Assert.Equal(Database, Function.ParentDatabase);

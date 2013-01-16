@@ -117,7 +117,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Stream">Input stream</param>
         /// <param name="CurrentLine">The current line</param>
-        protected void DecodeOneLine(MemoryStream Stream,string CurrentLine)
+        protected void DecodeOneLine(Stream Stream,string CurrentLine)
         {
             if (Stream == null)
                 throw new ArgumentNullException("Stream");

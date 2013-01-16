@@ -110,6 +110,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Object">Object to dunp</param>
         /// <param name="HTMLOutput">Determines if the output should be HTML or not</param>
         /// <returns>An HTML formatted table containing the information about the object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string DumpProperties(this object Object, bool HTMLOutput = true)
         {
             if (Object == null)
@@ -143,6 +144,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="ObjectType">Object type to dunp</param>
         /// <param name="HTMLOutput">Should this be output as an HTML string</param>
         /// <returns>An HTML formatted table containing the information about the object type</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string DumpProperties(this Type ObjectType, bool HTMLOutput = true)
         {
             if (ObjectType == null)
@@ -404,11 +406,9 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <summary>
         /// Gets a property name
         /// </summary>
-        /// <typeparam name="ClassType">Class type</typeparam>
-        /// <typeparam name="DataType">Data type of the property</typeparam>
         /// <param name="Expression">LINQ expression</param>
         /// <returns>The name of the property</returns>
-        public static string GetPropertyName<ClassType, DataType>(this Expression<Func<ClassType, DataType>> Expression)
+        public static string GetPropertyName(this LambdaExpression Expression)
         {
             if (Expression.Body is UnaryExpression && Expression.Body.NodeType == ExpressionType.Convert)
             {
@@ -484,6 +484,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <typeparam name="DataType">Data type expecting</typeparam>
         /// <param name="Property">Property</param>
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static Expression<Action<ClassType, DataType>> GetPropertySetter<ClassType, DataType>(this Expression<Func<ClassType, DataType>> Property)
         {
             if (Property == null)
@@ -721,6 +722,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Object">Object to copy</param>
         /// <param name="SimpleTypesOnly">If true, it only copies simple types (no classes, only items like int, string, etc.), false copies everything.</param>
         /// <returns>A copy of the object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static T MakeShallowCopy<T>(this T Object, bool SimpleTypesOnly=false)
         {
             if (Object == null)

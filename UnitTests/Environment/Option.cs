@@ -39,7 +39,7 @@ namespace UnitTests.Environment
         {
             Utilities.Environment.Option TestObject = new Utilities.Environment.Option("/TestOption Parameter", "/");
             Assert.NotNull(TestObject);
-            Assert.Equal("Parameter", TestObject.Parameters[0]);
+            Assert.Equal("Parameter", TestObject.Parameters.First());
             Assert.Equal("TestOption", TestObject.Command);
         }
     }

@@ -38,7 +38,7 @@ namespace Utilities.Random.BaseClasses
         /// </summary>
         /// <param name="Min">Minimum value</param>
         /// <param name="Max">Maximum value</param>
-        public GeneratorAttributeBase(object Min,object Max)
+        protected GeneratorAttributeBase(object Min,object Max)
             : base()
         {
             this.Min = Min;
@@ -48,12 +48,12 @@ namespace Utilities.Random.BaseClasses
         /// <summary>
         /// Minimum allowed
         /// </summary>
-        protected virtual object Min { get; set; }
+        public virtual object Min { get; protected set; }
 
         /// <summary>
         /// Maximum allowed
         /// </summary>
-        protected virtual object Max { get; set; }
+        public virtual object Max { get; protected set; }
 
         /// <summary>
         /// Generates next object

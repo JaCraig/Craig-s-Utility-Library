@@ -39,7 +39,7 @@ namespace UnitTests.SQL.DataClasses
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Utilities.SQL.DataClasses.Table Table = Database.AddTable("TestTable");
             Utilities.SQL.DataClasses.Trigger TempTrigger = Table.AddTrigger("Trigger", "Definition", TriggerType.INSERT);
-            Assert.Equal(TempTrigger, Table.Triggers[0]);
+            Assert.Equal(TempTrigger, Table.Triggers.First());
             Assert.Equal("Trigger", TempTrigger.Name);
             Assert.Equal("Definition", TempTrigger.Definition);
             Assert.Equal(TriggerType.INSERT, TempTrigger.Type);

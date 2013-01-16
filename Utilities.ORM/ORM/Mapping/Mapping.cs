@@ -50,7 +50,7 @@ namespace Utilities.ORM.Mapping
         /// <param name="TableName">Table name</param>
         /// <param name="Suffix">Suffix used to define names of properties/table name</param>
         /// <param name="Prefix">Prefix used to define names of properties/table name</param>
-        public Mapping(string TableName = "", string Suffix = "_", string Prefix = "")
+        protected Mapping(string TableName = "", string Suffix = "_", string Prefix = "")
         {
             if (!string.IsNullOrEmpty(TableName))
                 this.TableName = TableName;
@@ -343,7 +343,7 @@ namespace Utilities.ORM.Mapping
         /// <summary>
         /// List of properties
         /// </summary>
-        public virtual List<IProperty> Properties { get; private set; }
+        public virtual ICollection<IProperty> Properties { get; private set; }
 
         /// <summary>
         /// ID property

@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 namespace Utilities.Web.Email.Pop3
 {
     /// <summary>
@@ -33,6 +34,25 @@ namespace Utilities.Web.Email.Pop3
     public class Pop3Exception:System.Exception
     {
         #region Constructors
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Pop3Exception()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ExceptionText">Message</param>
+        /// <param name="Exception">Inner exception</param>
+        public Pop3Exception(string ExceptionText, Exception Exception)
+            : base(ExceptionText, Exception)
+        {
+        }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -41,6 +61,13 @@ namespace Utilities.Web.Email.Pop3
             : base(ExceptionText)
         {
         }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Info">Serialization info</param>
+        /// <param name="Context">Streaming context</param>
+        protected Pop3Exception(SerializationInfo Info, StreamingContext Context) : base(Info, Context) { }
         #endregion
     }
 }

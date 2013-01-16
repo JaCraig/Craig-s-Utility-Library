@@ -152,6 +152,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Data">DataTable to convert</param>
         /// <param name="Creator">Function used to create each object</param>
         /// <returns>The DataTable converted to a list of objects</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static System.Collections.Generic.List<T> ToList<T>(this DataTable Data, Func<T> Creator = null) where T : new()
         {
             if (Data.IsNull())
@@ -263,6 +264,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Object">Object to convert</param>
         /// <param name="DefaultValue">Default value in case it can't convert the expando object</param>
         /// <returns>The object as the specified type</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static R TryTo<R>(this ExpandoObject Object, R DefaultValue = default(R))
             where R : class,new()
         {
@@ -291,6 +293,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Object">Object to convert</param>
         /// <param name="DefaultValue">Default value to return if there is an issue or it can't be converted</param>
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static object TryTo<T>(this T Object, Type ResultType, object DefaultValue = null)
         {
             try

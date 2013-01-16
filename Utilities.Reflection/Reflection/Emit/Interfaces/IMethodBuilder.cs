@@ -240,7 +240,7 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// <summary>
         /// Parameters
         /// </summary>
-        List<ParameterBuilder> Parameters { get; }
+        ICollection<ParameterBuilder> Parameters { get; }
 
         /// <summary>
         /// Attributes for the method

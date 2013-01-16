@@ -52,7 +52,7 @@ namespace Utilities.Random.ContactInfoGenerators
         /// <summary>
         /// Should common domain name endings be used
         /// </summary>
-        public virtual bool CommonEndings { get; set; }
+        public virtual bool CommonEndings { get;private set; }
 
         #endregion
 

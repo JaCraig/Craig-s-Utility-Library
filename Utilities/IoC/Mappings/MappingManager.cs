@@ -28,6 +28,8 @@ using Utilities.IoC.Mappings.Interfaces;
 using Utilities.IoC.Mappings.Internal_Classes;
 using Utilities.IoC.Providers;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.IoC.Mappings
@@ -71,7 +73,7 @@ namespace Utilities.IoC.Mappings
                 Module.Manager = this;
                 Module.Setup();
             }
-            this.Modules.AddRange(TempModules);
+            this.Modules.Add(TempModules);
         }
 
         /// <summary>
@@ -107,7 +109,7 @@ namespace Utilities.IoC.Mappings
         public IMapping GetMapping(Type ServiceType)
         {
             MappingKey Key = new MappingKey(ServiceType, null, ProviderManager, this);
-            return Mappings.Find(x => x.Equals(Key));
+            return Mappings.FirstOrDefault(x => x.Equals(Key));
         }
 
         /// <summary>
@@ -119,7 +121,7 @@ namespace Utilities.IoC.Mappings
         public IMapping GetMapping(Type ServiceType, Type AttributeType)
         {
             MappingKey Key = new MappingKey(ServiceType, AttributeType, ProviderManager, this);
-            return Mappings.Find(x => x.Equals(Key));
+            return Mappings.FirstOrDefault(x => x.Equals(Key));
         }
 
         #endregion
@@ -129,12 +131,12 @@ namespace Utilities.IoC.Mappings
         /// <summary>
         /// Modules listing
         /// </summary>
-        protected List<IModule> Modules { get;private set; }
+        protected ICollection<IModule> Modules { get;private set; }
 
         /// <summary>
         /// Mapping listing
         /// </summary>
-        protected List<IMapping> Mappings { get;private set; }
+        protected ICollection<IMapping> Mappings { get; private set; }
 
         /// <summary>
         /// Provider manager

@@ -39,7 +39,7 @@ namespace Utilities.Math.Geometry.BaseClasses
         /// <param name="Max">Max X,Y value</param>
         /// <param name="Min">Min X,Y value</param>
         /// <param name="Center">Center of the shape</param>
-        public Shape(Point Min,Point Max,Point Center)
+        protected Shape(Point Min,Point Max,Point Center)
         {
             this.Min = Min;
             this.Max = Max;

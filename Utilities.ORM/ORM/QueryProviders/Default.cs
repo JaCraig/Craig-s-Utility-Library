@@ -403,6 +403,7 @@ namespace Utilities.ORM.QueryProviders
         /// <param name="PropertyName">Property name</param>
         /// <param name="Parameters">Extra parameters</param>
         /// <returns>The appropriate property value</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public virtual System.Collections.Generic.List<DataType> LoadListProperties<ObjectType, DataType>(Session CurrentSession, ObjectType Object, string PropertyName, params IParameter[] Parameters)
             where ObjectType : class,new()
             where DataType : class,new()
@@ -757,7 +758,7 @@ namespace Utilities.ORM.QueryProviders
         /// <summary>
         /// List of database configurations
         /// </summary>
-        public System.Collections.Generic.List<IDatabase> Databases { get;private set; }
+        public ICollection<IDatabase> Databases { get;private set; }
 
         /// <summary>
         /// AOP manager (used to create objects)

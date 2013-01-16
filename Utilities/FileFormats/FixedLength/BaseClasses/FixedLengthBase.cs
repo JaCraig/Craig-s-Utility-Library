@@ -38,7 +38,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public FixedLengthBase()
+        protected FixedLengthBase()
         {
             Records = new List<IRecord<T>>();
         }
@@ -61,7 +61,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// <summary>
         /// List of records
         /// </summary>
-        protected List<IRecord<T>> Records { get;private set; }
+        protected ICollection<IRecord<T>> Records { get;private set; }
 
         #endregion
 

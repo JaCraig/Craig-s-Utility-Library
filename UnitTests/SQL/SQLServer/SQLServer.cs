@@ -85,14 +85,14 @@ namespace UnitTests.SQL.SQLServer
                 Assert.Equal(1, Helper.ExecuteNonQuery());
             }
             Database Database3 = Utilities.SQL.SQLServer.SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Assert.Equal(Database2.Tables[0].Name, Database3.Tables[0].Name);
-            Assert.Equal(Database2.Tables[0].Columns.Count, Database3.Tables[0].Columns.Count);
-            Assert.Equal(DbType.Int32, Database3.Tables[0].Columns.First(x => x.Name == "ID_").DataType);
-            Assert.Equal(DbType.String, Database3.Tables[0].Columns.First(x => x.Name == "Value1").DataType);
-            Assert.Equal(DbType.Double, Database3.Tables[0].Columns.First(x => x.Name == "Value2").DataType);
-            Assert.Equal(100, Database3.Tables[0].Columns.First(x => x.Name == "Value1").Length);
-            Assert.Equal(4, Database3.Tables[0].Columns.First(x => x.Name == "ID_").Length);
-            Assert.Equal(8, Database3.Tables[0].Columns.First(x => x.Name == "Value2").Length);
+            Assert.Equal(Database2.Tables.First().Name, Database3.Tables.First().Name);
+            Assert.Equal(Database2.Tables.First().Columns.Count, Database3.Tables.First().Columns.Count);
+            Assert.Equal(DbType.Int32, Database3.Tables.First().Columns.First(x => x.Name == "ID_").DataType);
+            Assert.Equal(DbType.String, Database3.Tables.First().Columns.First(x => x.Name == "Value1").DataType);
+            Assert.Equal(DbType.Double, Database3.Tables.First().Columns.First(x => x.Name == "Value2").DataType);
+            Assert.Equal(100, Database3.Tables.First().Columns.First(x => x.Name == "Value1").Length);
+            Assert.Equal(4, Database3.Tables.First().Columns.First(x => x.Name == "ID_").Length);
+            Assert.Equal(8, Database3.Tables.First().Columns.First(x => x.Name == "Value2").Length);
         }
 
         [Fact]
@@ -105,14 +105,14 @@ namespace UnitTests.SQL.SQLServer
             TestTable.AddColumn<string>("Value2", DbType.Double);
             Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Database Database2 = Utilities.SQL.SQLServer.SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Assert.Equal(Database.Tables[0].Name, Database2.Tables[0].Name);
-            Assert.Equal(Database.Tables[0].Columns.Count, Database2.Tables[0].Columns.Count);
-            Assert.Equal(DbType.Int32, Database2.Tables[0].Columns.First(x => x.Name == "ID_").DataType);
-            Assert.Equal(DbType.String, Database2.Tables[0].Columns.First(x => x.Name == "Value1").DataType);
-            Assert.Equal(DbType.Double, Database2.Tables[0].Columns.First(x => x.Name == "Value2").DataType);
-            Assert.Equal(100, Database2.Tables[0].Columns.First(x => x.Name == "Value1").Length);
-            Assert.Equal(4, Database2.Tables[0].Columns.First(x => x.Name == "ID_").Length);
-            Assert.Equal(8, Database2.Tables[0].Columns.First(x => x.Name == "Value2").Length);
+            Assert.Equal(Database.Tables.First().Name, Database2.Tables.First().Name);
+            Assert.Equal(Database.Tables.First().Columns.Count, Database2.Tables.First().Columns.Count);
+            Assert.Equal(DbType.Int32, Database2.Tables.First().Columns.First(x => x.Name == "ID_").DataType);
+            Assert.Equal(DbType.String, Database2.Tables.First().Columns.First(x => x.Name == "Value1").DataType);
+            Assert.Equal(DbType.Double, Database2.Tables.First().Columns.First(x => x.Name == "Value2").DataType);
+            Assert.Equal(100, Database2.Tables.First().Columns.First(x => x.Name == "Value1").Length);
+            Assert.Equal(4, Database2.Tables.First().Columns.First(x => x.Name == "ID_").Length);
+            Assert.Equal(8, Database2.Tables.First().Columns.First(x => x.Name == "Value2").Length);
         }
 
         public void Dispose()

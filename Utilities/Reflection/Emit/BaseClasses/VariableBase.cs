@@ -38,7 +38,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public VariableBase()
+        protected VariableBase()
         {
         }
 
@@ -85,6 +85,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// Gets the definition of the variable
         /// </summary>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public virtual string GetDefinition()
         {
             return DataType.GetName() + " " + Name;
@@ -189,6 +190,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <param name="Left">Left side</param>
         /// <param name="Right">Right side</param>
         /// <returns>The resulting object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1013:OverloadOperatorEqualsOnOverloadingAddAndSubtract")]
         public static VariableBase operator +(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)
@@ -202,6 +204,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <param name="Left">Left side</param>
         /// <param name="Right">Right side</param>
         /// <returns>The resulting object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1013:OverloadOperatorEqualsOnOverloadingAddAndSubtract")]
         public static VariableBase operator -(VariableBase Left, VariableBase Right)
         {
             if (MethodBase.CurrentMethod == null)

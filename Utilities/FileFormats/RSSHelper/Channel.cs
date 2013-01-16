@@ -48,6 +48,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// Constructor
         /// </summary>
         /// <param name="Element">XML representation of the channel</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Channel(XmlElement Element)
         {
             if (Element == null)
@@ -127,12 +128,12 @@ namespace Utilities.FileFormats.RSSHelper
         private string _Language = "en-us";
         private string _webMaster = string.Empty;
         private DateTime _pubDate = DateTime.Now;
-        private List<string> _Categories = null;
+        private ICollection<string> _Categories = null;
         private string _Docs = "http://blogs.law.harvard.edu/tech/rss";
         private string _Cloud = string.Empty;
         private int _TTL = 5;
         private string _ImageUrl = string.Empty;
-        private List<Item> _Items = null;
+        private ICollection<Item> _Items = null;
         private bool _Explicit = false;
         #endregion
 
@@ -151,8 +152,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Items for this channel
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual List<Item> Items
+        public virtual ICollection<Item> Items
         {
             get
             {
@@ -230,8 +230,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Categories associated with this channel
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual List<string> Categories
+        public virtual ICollection<string> Categories
         {
             get
             {

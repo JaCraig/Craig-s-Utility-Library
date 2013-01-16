@@ -60,7 +60,7 @@ namespace Utilities.FileFormats.XMDP
         /// List of sub properties (only used for rel type when you need to
         /// define new link types)
         /// </summary>
-        public List<Property> Properties { get; private set; }
+        public ICollection<Property> Properties { get; private set; }
 
         #endregion
 

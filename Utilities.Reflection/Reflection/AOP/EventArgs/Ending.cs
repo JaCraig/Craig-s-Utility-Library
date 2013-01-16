@@ -56,7 +56,7 @@ namespace Utilities.Reflection.AOP.EventArgs
         /// <summary>
         /// Parameters list
         /// </summary>
-        public List<object> Parameters { get;private set; }
+        public ICollection<object> Parameters { get; private set; }
 
         /// <summary>
         /// Return value

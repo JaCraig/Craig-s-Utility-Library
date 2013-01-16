@@ -46,7 +46,7 @@ namespace Utilities.Web.PingBack
         /// <param name="BlogName">Name of the blog</param>
         /// <param name="Threaded">If true this is done in a seperate thread,
         /// if false it will wait for it to end</param>
-        public static void PingServices(List<Uri> Services, Uri Blog, string BlogName, bool Threaded)
+        public static void PingServices(IEnumerable<Uri> Services, Uri Blog, string BlogName, bool Threaded)
         {
             if (Threaded)
             {
@@ -62,7 +62,7 @@ namespace Utilities.Web.PingBack
 
         #region Private Static Functions
 
-        private static void PingServices(List<Uri> Services, Uri Blog, string BlogName)
+        private static void PingServices(IEnumerable<Uri> Services, Uri Blog, string BlogName)
         {
             foreach (Uri Service in Services)
             {

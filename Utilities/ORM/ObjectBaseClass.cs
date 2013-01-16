@@ -522,6 +522,36 @@ namespace Utilities.ORM
         }
 
         /// <summary>
+        /// The &lt; operator
+        /// </summary>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
+        /// <returns>True if the first item is less than the second, false otherwise</returns>
+        public static bool operator <(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
+        {
+            if (Object.ReferenceEquals(first, second))
+                return false;
+            if ((object)first == null || (object)second == null)
+                return false;
+            return first.GetHashCode() < second.GetHashCode();
+        }
+
+        /// <summary>
+        /// The &gt; operator
+        /// </summary>
+        /// <param name="first">First item</param>
+        /// <param name="second">Second item</param>
+        /// <returns>True if the first item is greater than the second, false otherwise</returns>
+        public static bool operator >(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
+        {
+            if (Object.ReferenceEquals(first, second))
+                return false;
+            if ((object)first == null || (object)second == null)
+                return false;
+            return first.GetHashCode() > second.GetHashCode();
+        }
+
+        /// <summary>
         /// The == operator
         /// </summary>
         /// <param name="first">First item</param>

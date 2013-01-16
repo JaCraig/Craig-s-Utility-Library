@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Linq;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -80,7 +81,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// Cells within the row
         /// </summary>
-        public List<Cell> Cells { get; private set; }
+        public ICollection<Cell> Cells { get; private set; }
 
         /// <summary>
         /// Returns a cell within the row
@@ -89,8 +90,7 @@ namespace Utilities.FileFormats.Delimited
         /// <returns>The specified cell</returns>
         public virtual Cell this[int Position]
         {
-            get { return Cells[Position]; }
-            set { Cells[Position] = value; }
+            get { return Cells.ElementAt(Position); }
         }
 
         /// <summary>

@@ -90,6 +90,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Subject of the message
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public string Subject
         {
             get { try { return Header[Constants.Subject].Attributes[0].Value; } catch { return ""; } }
@@ -98,6 +99,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Whom the message is to
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public string To
         {
             get { try { return Header[Constants.To].Attributes[0].Value; } catch { return ""; } }
@@ -106,6 +108,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Whom the message is from
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public string From
         {
             get { try { return Header[Constants.From].Attributes[0].Value; } catch { return ""; } }
@@ -114,6 +117,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// The text of the message
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public string BodyText
         {
             get
@@ -143,6 +147,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Gets the HTML version of the text
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public string HTMLBodyText
         {
             get
@@ -172,6 +177,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Gets the plain version of the text
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public string PlainBodyText
         {
             get

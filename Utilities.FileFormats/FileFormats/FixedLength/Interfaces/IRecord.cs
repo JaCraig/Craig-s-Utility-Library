@@ -52,7 +52,7 @@ namespace Utilities.FileFormats.FixedLength.Interfaces
         /// <summary>
         /// List of fields
         /// </summary>
-        List<IField<T>> Fields { get; }
+        ICollection<IField<T>> Fields { get; }
 
         #endregion
     }

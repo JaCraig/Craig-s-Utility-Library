@@ -49,6 +49,7 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Categories element</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Categories(XmlElement Element)
         {
             Element.ThrowIfNull("Element");
@@ -67,7 +68,7 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Categories list
         /// </summary>
-        public List<Category> CategoryList { get;private set; }
+        public ICollection<Category> CategoryList { get;private set; }
 
         /// <summary>
         /// Gets a specified category

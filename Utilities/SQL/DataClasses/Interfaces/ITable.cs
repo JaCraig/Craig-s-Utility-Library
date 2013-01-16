@@ -41,7 +41,7 @@ namespace Utilities.SQL.DataClasses.Interfaces
         /// <summary>
         /// Columns
         /// </summary>
-        List<IColumn> Columns { get; }
+        ICollection<IColumn> Columns { get; }
 
         /// <summary>
         /// Parent of the table structure

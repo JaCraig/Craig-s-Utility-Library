@@ -20,7 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-
+using System.Collections.Generic;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes
@@ -53,7 +54,7 @@ namespace Utilities.DataTypes
         public virtual T Peek()
         {
             if (Items.ContainsKey(HighestKey))
-                return Items[HighestKey][0];
+                return Items[HighestKey].FirstOrDefault();
             return default(T);
         }
 
@@ -62,7 +63,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Priority">Priority</param>
         /// <param name="Value">Items to add</param>
-        public override void Add(int Priority, List<T> Value)
+        public override void Add(int Priority, ICollection<T> Value)
         {
             if (Priority > HighestKey)
                 HighestKey = Priority;
@@ -73,7 +74,7 @@ namespace Utilities.DataTypes
         /// Adds an item to the queue
         /// </summary>
         /// <param name="item">Item to add</param>
-        public override void Add(System.Collections.Generic.KeyValuePair<int, List<T>> item)
+        public override void Add(System.Collections.Generic.KeyValuePair<int, ICollection<T>> item)
         {
             if (item.Key > HighestKey)
                 HighestKey = item.Key;
@@ -101,7 +102,7 @@ namespace Utilities.DataTypes
             T ReturnValue = default(T);
             if (Items.ContainsKey(HighestKey) && Items[HighestKey].Count > 0)
             {
-                ReturnValue = Items[HighestKey][0];
+                ReturnValue = Items[HighestKey].FirstOrDefault();
                 Remove(HighestKey, ReturnValue);
                 if (!ContainsKey(HighestKey))
                 {

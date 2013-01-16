@@ -47,6 +47,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// Constructor
         /// </summary>
         /// <param name="Element">XML element containing the item content</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Item(XmlElement Element)
         {
             if (Element == null)
@@ -110,7 +111,7 @@ namespace Utilities.FileFormats.RSSHelper
         private string _Description = string.Empty;
         private string _Author = string.Empty;
         private Thumbnail _Thumbnail = null;
-        private List<string> _Categories = null;
+        private ICollection<string> _Categories = null;
         private DateTime _pubDate = DateTime.Now;
         private Enclosure _Enclosure = null;
         #endregion
@@ -177,8 +178,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Categories associated with the item
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual List<string> Categories
+        public virtual ICollection<string> Categories
         {
             get
             {

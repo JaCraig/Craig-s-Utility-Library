@@ -89,7 +89,7 @@ namespace Utilities.LDAP
         /// <summary>
         /// MemberOf property for this entry
         /// </summary>
-        public virtual List<string> MemberOf
+        public virtual IEnumerable<string> MemberOf
         {
             get
             {

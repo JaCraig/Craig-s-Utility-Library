@@ -33,14 +33,17 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Enum associated with the sub type and file extension
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
         public MediaEnum MediaEnum;
         /// <summary>
         /// Sub type
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
         public string SubType;
         /// <summary>
         /// File extension
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
         public string FileExtension;
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace Utilities.DataTypes
     /// </summary>
     /// <typeparam name="T1">Key value</typeparam>
     /// <typeparam name="T2">Type that the list should contain</typeparam>
-    public class ListMapping<T1, T2> : IDictionary<T1, List<T2>>
+    public class ListMapping<T1, T2> : IDictionary<T1, ICollection<T2>>
     {
         #region Constructors
 
@@ -42,7 +42,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public ListMapping()
         {
-            Items = new Dictionary<T1, List<T2>>();
+            Items = new Dictionary<T1, ICollection<T2>>();
         }
 
         #endregion
@@ -52,7 +52,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Container holding the data
         /// </summary>
-        protected Dictionary<T1, List<T2>> Items { get; private set; }
+        protected Dictionary<T1, ICollection<T2>> Items { get; private set; }
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace Utilities.DataTypes
         /// Adds a key value pair
         /// </summary>
         /// <param name="item">Key value pair to add</param>
-        public virtual void Add(KeyValuePair<T1, List<T2>> item)
+        public virtual void Add(KeyValuePair<T1, ICollection<T2>> item)
         {
             Add(item.Key, item.Value);
         }
@@ -99,7 +99,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Key">Key value</param>
         /// <param name="Value">The values to add</param>
-        public virtual void Add(T1 Key, List<T2> Value)
+        public virtual void Add(T1 Key, ICollection<T2> Value)
         {
             if (!Items.ContainsKey(Key))
             {
@@ -107,7 +107,7 @@ namespace Utilities.DataTypes
                 Temp.Changed = Changed;
                 Items.Add(Key, Temp);
             }
-            Items[Key].AddRange(Value);
+            Items[Key].Add(Value);
         }
 
         #endregion
@@ -145,7 +145,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">items to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public virtual bool Remove(KeyValuePair<T1, List<T2>> item)
+        public virtual bool Remove(KeyValuePair<T1, ICollection<T2>> item)
         {
             if (!Contains(item))
                 return false;
@@ -194,7 +194,7 @@ namespace Utilities.DataTypes
         /// <param name="Key">Key value</param>
         /// <param name="Value">The values getting</param>
         /// <returns>True if it was able to get the value, false otherwise</returns>
-        public virtual bool TryGetValue(T1 Key, out List<T2> Value)
+        public virtual bool TryGetValue(T1 Key, out ICollection<T2> Value)
         {
             if (ContainsKey(Key))
             {
@@ -214,7 +214,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="item">Key value pair to check</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Contains(KeyValuePair<T1, List<T2>> item)
+        public virtual bool Contains(KeyValuePair<T1, ICollection<T2>> item)
         {
             if (!ContainsKey(item.Key))
                 return false;
@@ -229,7 +229,7 @@ namespace Utilities.DataTypes
         /// <param name="Key">Key value</param>
         /// <param name="Values">Value</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public virtual bool Contains(T1 Key, List<T2> Values)
+        public virtual bool Contains(T1 Key, ICollection<T2> Values)
         {
             if (!ContainsKey(Key))
                 return false;
@@ -263,7 +263,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="array">Array to copy to</param>
         /// <param name="arrayIndex">array index</param>
-        public void CopyTo(KeyValuePair<T1, List<T2>>[] array, int arrayIndex)
+        public void CopyTo(KeyValuePair<T1, ICollection<T2>>[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
@@ -276,10 +276,10 @@ namespace Utilities.DataTypes
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator for this object</returns>
-        public IEnumerator<KeyValuePair<T1, List<T2>>> GetEnumerator()
+        public IEnumerator<KeyValuePair<T1, ICollection<T2>>> GetEnumerator()
         {
             foreach (T1 Key in Keys)
-                yield return new KeyValuePair<T1, List<T2>>(Key, this[Key]);
+                yield return new KeyValuePair<T1, ICollection<T2>>(Key, this[Key]);
         }
 
         /// <summary>
@@ -301,11 +301,11 @@ namespace Utilities.DataTypes
         /// <summary>
         /// List that contains the list of values
         /// </summary>
-        public ICollection<List<T2>> Values
+        public ICollection<ICollection<T2>> Values
         {
             get 
             {
-                List<List<T2>> Lists = new List<List<T2>>();
+                List<ICollection<T2>> Lists = new List<ICollection<T2>>();
                 foreach (T1 Key in Keys)
                     Lists.Add(this[Key]);
                 return Lists;
@@ -325,7 +325,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="key">Key to look for</param>
         /// <returns>The list of values</returns>
-        public virtual List<T2> this[T1 key]
+        public virtual ICollection<T2> this[T1 key]
         {
             get { return Items[key]; }
             set { Items[key] = value; Changed.Raise(this, new ChangedEventArgs()); }

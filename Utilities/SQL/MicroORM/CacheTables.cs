@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using Utilities.DataTypes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Utilities.SQL.MicroORM
 {
@@ -21,7 +23,7 @@ namespace Utilities.SQL.MicroORM
             {
                 CacheTables Temp = Reader as CacheTables;
                 this.Tables = Temp.Tables;
-                CurrentTable = Tables[0];
+                CurrentTable = Tables.FirstOrDefault();
                 CurrentRow = CurrentTable[0];
                 CurrentTablePosition = 0;
                 RowPosition = -1;
@@ -33,7 +35,7 @@ namespace Utilities.SQL.MicroORM
             {
                 Tables.Add(new Table(Reader));
             }
-            CurrentTable = Tables[0];
+            CurrentTable = Tables.FirstOrDefault();
             CurrentRow = CurrentTable[0];
             CurrentTablePosition = 0;
             RowPosition = -1;
@@ -46,7 +48,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// List of tables being held
         /// </summary>
-        public System.Collections.Generic.List<Table> Tables { get; private set; }
+        public ICollection<Table> Tables { get; private set; }
 
         /// <summary>
         /// Current row
@@ -90,7 +92,7 @@ namespace Utilities.SQL.MicroORM
             RowPosition = -1;
             if (Tables.Count <= CurrentTablePosition)
                 return false;
-            CurrentTable = Tables[CurrentTablePosition];
+            CurrentTable = Tables.ElementAt(CurrentTablePosition);
             CurrentRow = CurrentTable[0];
             return true;
         }

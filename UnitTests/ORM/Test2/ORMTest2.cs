@@ -30,6 +30,7 @@ using Xunit;
 
 using System.Data;
 using Utilities.SQL.ParameterTypes;
+using Utilities.DataTypes.ExtensionMethods;
 
 namespace UnitTests.ORM.Test2
 {
@@ -45,14 +46,14 @@ namespace UnitTests.ORM.Test2
         {
             Database DatabaseObject = SQLServer.GetDatabaseStructure("Data Source=localhost;Initial Catalog=ORMTestDatabase2;Integrated Security=SSPI;Pooling=false");
             Assert.Equal(8, DatabaseObject.Tables.Count);
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project_"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task_"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task_Task"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project_Task"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project_Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task_Audit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Task_TaskAudit"));
-            Assert.True(DatabaseObject.Tables.Exists(x => x.Name == "Project_TaskAudit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_Task"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_Task"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_Audit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Task_TaskAudit"));
+            Assert.True(DatabaseObject.Tables.Any(x => x.Name == "Project_TaskAudit"));
         }
 
         [Fact]

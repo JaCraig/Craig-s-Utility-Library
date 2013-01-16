@@ -77,7 +77,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         {
             if (this.CommandToLoad != null)
                 return;
-            IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
+            IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
             if (ForeignMapping == Mapping)
             {
                 LoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
@@ -135,7 +135,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                 if (Item != null)
                 {
                     object CurrentIDParameter = ((IProperty<ClassType>)Mapping.IDProperty).GetAsObject(Object);
-                    IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
+                    IMapping ForeignMapping = Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
                     object ForeignIDParameter = ((IProperty<DataType>)ForeignMapping.IDProperty).GetAsObject(Item);
                     string Parameters = "";
                     object[] Values = new object[2];
@@ -184,7 +184,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             {
                 if (Item != null)
                 {
-                    foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+                    foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
                     {
                         if (!Property.Cascade
                                 && (Property is IManyToMany
@@ -224,7 +224,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             {
                 if (Item != null)
                 {
-                    foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+                    foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
                     {
                         if (!Property.Cascade &&
                                 (Property is IManyToMany
@@ -262,12 +262,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             {
                 if (Item != null)
                 {
-                    foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+                    foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
                     {
                         if (Property.Cascade)
                             ((IProperty<DataType>)Property).CascadeDelete(Item, MicroORM);
                     }
-                    ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeDelete(Item, MicroORM);
+                    ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeDelete(Item, MicroORM);
                 }
             }
         }
@@ -288,12 +288,12 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             {
                 if (Item != null)
                 {
-                    foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
+                    foreach (IProperty Property in Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).Properties)
                     {
                         if (Property.Cascade)
                             ((IProperty<DataType>)Property).CascadeSave(Item, MicroORM);
                     }
-                    ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].First(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeSave(Item, MicroORM);
+                    ((IProperty<DataType>)Mapping.Manager.Mappings[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType).IDProperty).CascadeSave(Item, MicroORM);
                 }
             }
         }

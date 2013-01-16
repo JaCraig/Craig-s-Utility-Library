@@ -32,7 +32,7 @@ namespace Utilities.Validation.Rules
     /// <summary>
     /// Does not contain attribute
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments"), AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class DoesNotContainAttribute : ValidationAttribute
     {
         #region Constructor
@@ -45,7 +45,7 @@ namespace Utilities.Validation.Rules
         public DoesNotContainAttribute(object Value, string ErrorMessage = "")
             : base(ErrorMessage.IsNullOrEmpty() ? "{0} contains {1}" : ErrorMessage)
         {
-            this.CompareValue = (IComparable)Value;
+            this.Value = (IComparable)Value;
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Value to compare to
         /// </summary>
-        public IComparable CompareValue { get; set; }
+        public IComparable Value { get;private set; }
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The formatted string</returns>
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name, CompareValue.ToString());
+            return string.Format(ErrorMessageString, name, Value.ToString());
         }
 
         /// <summary>
@@ -83,15 +83,15 @@ namespace Utilities.Validation.Rules
                 return ValidationResult.Success;
             GenericEqualityComparer<IComparable> Comparer = new GenericEqualityComparer<IComparable>();
             IEnumerable ValueList = value as IEnumerable;
-            IComparable CompareValueTemp = 0;
+            IComparable ValueTemp = 0;
             foreach (IComparable Item in ValueList)
             {
-                CompareValueTemp = (IComparable)CompareValue.TryTo<object>(Item.GetType());
+                ValueTemp = (IComparable)Value.TryTo<object>(Item.GetType());
                 break;
             }
             foreach (IComparable Item in ValueList)
             {
-                if (Comparer.Equals(Item, CompareValueTemp))
+                if (Comparer.Equals(Item, ValueTemp))
                     return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             }
             return ValidationResult.Success;

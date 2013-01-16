@@ -35,7 +35,7 @@ namespace Utilities.IoC.Providers.Scope
         /// <summary>
         /// Constructor
         /// </summary>
-        public BaseScope() { }
+        protected BaseScope() { }
 
         #endregion
 

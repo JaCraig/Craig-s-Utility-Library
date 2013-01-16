@@ -28,27 +28,18 @@ namespace Utilities.Web.Email.MIME
     /// <summary>
     /// Defines basic MIME Types
     /// </summary>
-    public class MIMEType
+    public static class MIMEType
     {
-        #region Constructor
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public MIMEType()
-        {
-        }
-        #endregion
-
         #region Public Variables
         /// <summary>
         /// Defines the types in string form
         /// </summary>
-        public static string[] TypeTable = { "text", "image", "audio", "vedio", "application", "multipart", "message", null };
+        public static readonly string[] TypeTable = { "text", "image", "audio", "vedio", "application", "multipart", "message", null };
 
         /// <summary>
         /// Defines the sub types, file extensions, and media types
         /// </summary>
-        public static MediaType[] TypeCvtTable =
+        public static readonly MediaType[] TypeCvtTable =
             new MediaType[] {
 								   // media-type, sub-type, file extension
 								   new MediaType( MediaEnum.MEDIA_APPLICATION, "xml", "xml" ),

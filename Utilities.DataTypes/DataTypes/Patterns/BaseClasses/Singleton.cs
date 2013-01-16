@@ -30,6 +30,7 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
     /// Base class used for singletons
     /// </summary>
     /// <typeparam name="T">The class type</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1053:StaticHolderTypesShouldNotHaveConstructors")]
     public class Singleton<T> where T : class
     {
         #region Constructor

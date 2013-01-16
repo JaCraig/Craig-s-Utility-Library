@@ -31,7 +31,7 @@ namespace Utilities.Environment.DataTypes
     /// <summary>
     /// Application list
     /// </summary>
-    public class Applications : IEnumerable
+    public class Applications : IEnumerable<Application>
     {
         #region Constructor
 
@@ -55,7 +55,7 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Application list
         /// </summary>
-        public List<Application> ApplicationList { get;private set; }
+        public ICollection<Application> ApplicationList { get;private set; }
 
         #endregion
 
@@ -121,6 +121,17 @@ namespace Utilities.Environment.DataTypes
         /// </summary>
         /// <returns>The enumerator</returns>
         public virtual IEnumerator GetEnumerator()
+        {
+            if (ApplicationList == null)
+                throw new InvalidOperationException("ApplicationList");
+            return ApplicationList.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        IEnumerator<Application> IEnumerable<Application>.GetEnumerator()
         {
             if (ApplicationList == null)
                 throw new InvalidOperationException("ApplicationList");

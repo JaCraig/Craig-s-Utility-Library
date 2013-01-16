@@ -164,6 +164,7 @@ namespace Utilities.DataTypes
         /// <param name="key">Key</param>
         /// <param name="value">Values associated with a key</param>
         /// <returns>True if something is returned, false otherwise</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public bool TryGetValue(Key key, out IEnumerable<Value> value)
         {
             value = new List<Value>();

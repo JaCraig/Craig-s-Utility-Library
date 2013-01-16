@@ -50,6 +50,7 @@ namespace Utilities.FileFormats
         /// Gets the vCard
         /// </summary>
         /// <returns>A vCard in string format</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public virtual string GetVCard()
         {
             StringBuilder Builder = new StringBuilder();
@@ -87,6 +88,7 @@ namespace Utilities.FileFormats
         /// Gets the hCard version of the vCard
         /// </summary>
         /// <returns>A hCard in string format</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public virtual string GetHCard()
         {
             StringBuilder Builder = new StringBuilder();
@@ -226,7 +228,7 @@ namespace Utilities.FileFormats
         /// <summary>
         /// Relationship to the person (uses XFN)
         /// </summary>
-        public List<Relationship> Relationships { get; private set; }
+        public ICollection<Relationship> Relationships { get; private set; }
 
         /// <summary>
         /// Url to the person's site

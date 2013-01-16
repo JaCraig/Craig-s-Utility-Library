@@ -57,7 +57,7 @@ namespace Utilities.FileFormats.GenericDelimited
         /// <summary>
         /// Delimiter using
         /// </summary>
-        protected string Delimiter_ = "";
+        private string Delimiter_ = "";
 
         #endregion
     }

@@ -48,7 +48,7 @@ namespace Utilities.FileFormats.XFN
         /// <summary>
         /// List of people
         /// </summary>
-        public List<People> People { get; private set; }
+        public ICollection<People> People { get; private set; }
 
         #endregion
 

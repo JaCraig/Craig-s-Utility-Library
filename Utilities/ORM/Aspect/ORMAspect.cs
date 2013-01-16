@@ -72,12 +72,12 @@ namespace Utilities.ORM.Aspect
                 foreach (IMapping Mapping in ClassMappings[BaseType])
                 {
                     string PropertyName = Method.Name.Replace("set_", "");
-                    IProperty Property = Mapping.Properties.Find(x => x.Name == PropertyName);
+                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
                     if (Property != null)
                     {
                         Utilities.Reflection.Emit.FieldBuilder Field = Fields.Find(x => x.Name == Property.DerivedFieldName);
                         if (Field != null)
-                            Field.Assign(Method.Parameters[1]);
+                            Field.Assign(Method.Parameters.ElementAt(1));
                         return;
                     }
                 }
@@ -99,7 +99,7 @@ namespace Utilities.ORM.Aspect
                 foreach (IMapping Mapping in ClassMappings[BaseType])
                 {
                     string PropertyName = Method.Name.Replace("get_", "");
-                    IProperty Property = Mapping.Properties.Find(x => x.Name == PropertyName);
+                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
                     if (Property != null)
                     {
                         if (Property is IManyToOne || Property is IMap)
@@ -329,7 +329,7 @@ namespace Utilities.ORM.Aspect
         /// <summary>
         /// Interfaces this aspect is using
         /// </summary>
-        public List<Type> InterfacesUsing { get;private set; }
+        public ICollection<Type> InterfacesUsing { get;private set; }
 
         /// <summary>
         /// Class mappings

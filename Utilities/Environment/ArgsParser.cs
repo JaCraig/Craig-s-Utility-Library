@@ -56,7 +56,7 @@ namespace Utilities.Environment
         /// </summary>
         /// <param name="Args">Args to parse</param>
         /// <returns>A list of options</returns>
-        public virtual List<Option> Parse(string[] Args)
+        public virtual IEnumerable<Option> Parse(string[] Args)
         {
             if (Args == null)
                 return new List<Option>();

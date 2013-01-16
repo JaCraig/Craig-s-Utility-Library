@@ -125,7 +125,7 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Foreign keys
         /// </summary>
-        public List<IColumn> ForeignKey { get;private set; }
+        public ICollection<IColumn> ForeignKey { get;private set; }
 
         /// <summary>
         /// Primary key?

@@ -64,7 +64,7 @@ namespace Utilities.FileFormats.Cisco
         /// <summary>
         /// Soft keys
         /// </summary>
-        public List<SoftKeyItem> SoftKeys { get; private set; }
+        public ICollection<SoftKeyItem> SoftKeys { get; private set; }
 
         #endregion
 

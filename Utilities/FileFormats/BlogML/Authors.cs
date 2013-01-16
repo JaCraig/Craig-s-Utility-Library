@@ -49,6 +49,7 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the authors information</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Authors(XmlElement Element)
         {
             Element.ThrowIfNull("Element");
@@ -67,7 +68,7 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// List of authors
         /// </summary>
-        public List<Author> AuthorList { get;private set; }
+        public ICollection<Author> AuthorList { get;private set; }
 
         /// <summary>
         /// Gets a specific author
@@ -76,7 +77,7 @@ namespace Utilities.FileFormats.BlogML
         /// <returns>The author specified</returns>
         public Author this[int index]
         {
-            get { return AuthorList[index]; }
+            get { return AuthorList.ElementAt(index); }
         }
 
         /// <summary>

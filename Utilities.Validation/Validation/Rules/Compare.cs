@@ -60,12 +60,12 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Value to compare to
         /// </summary>
-        public object Value { get; set; }
+        public object Value { get;private set; }
 
         /// <summary>
         /// Comparison type
         /// </summary>
-        public ComparisonType Type { get; set; }
+        public ComparisonType Type { get;private set; }
 
         #endregion
 

@@ -28,6 +28,7 @@ using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -42,7 +43,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// Constructor
         /// </summary>
-        public Delimited()
+        protected Delimited()
         {
         }
 
@@ -50,7 +51,7 @@ namespace Utilities.FileFormats.Delimited
         /// Constructor
         /// </summary>
         /// <param name="FileContent">File content</param>
-        public Delimited(string FileContent)
+        protected Delimited(string FileContent)
         {
             Parse(FileContent);
         }
@@ -59,13 +60,12 @@ namespace Utilities.FileFormats.Delimited
 
         #region Public Properties
 
-        private List<Row> _Rows = new List<Row>();
+        private ICollection<Row> _Rows = new List<Row>();
 
         /// <summary>
         /// The list of rows
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual List<Row> Rows
+        public virtual ICollection<Row> Rows
         {
             get { return _Rows; }
             set { _Rows = value; }
@@ -86,8 +86,7 @@ namespace Utilities.FileFormats.Delimited
         /// <returns>The row requested</returns>
         public virtual Row this[int Position]
         {
-            get { return _Rows[Position]; }
-            set { _Rows[Position] = value; }
+            get { return _Rows.ElementAt(Position); }
         }
 
         /// <summary>
@@ -123,7 +122,7 @@ namespace Utilities.FileFormats.Delimited
             DataTable ReturnValue = new DataTable();
             if (FirstRowIsHeader)
             {
-                foreach (Cell Cell in Rows[0].Cells)
+                foreach (Cell Cell in Rows.FirstOrDefault().Cells)
                     ReturnValue.Columns.Add(Cell.Value);
             }
             else
@@ -134,9 +133,9 @@ namespace Utilities.FileFormats.Delimited
             for (int y = FirstRowIsHeader ? 1 : 0; y < Rows.Count; ++y)
             {
                 object[] TempRow = new object[ReturnValue.Columns.Count];
-                for (int x = 0; x < Rows[y].Cells.Count; ++x)
+                for (int x = 0; x < Rows.ElementAt(y).Cells.Count; ++x)
                 {
-                    TempRow[x] = Rows[y][x].Value;
+                    TempRow[x] = Rows.ElementAt(y)[x].Value;
                 }
                 ReturnValue.Rows.Add(TempRow);
             }

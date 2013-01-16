@@ -41,7 +41,7 @@ namespace Utilities.Validation.ExtensionMethods
         /// <param name="Object">Object to validate</param>
         /// <param name="Results">Results list</param>
         /// <returns>True if valid, false otherwise</returns>
-        public static bool TryValidate<ObjectType>(this ObjectType Object, List<ValidationResult> Results)
+        public static bool TryValidate<ObjectType>(this ObjectType Object, ICollection<ValidationResult> Results)
         {
             if (Object.IsNull())
                 return true;

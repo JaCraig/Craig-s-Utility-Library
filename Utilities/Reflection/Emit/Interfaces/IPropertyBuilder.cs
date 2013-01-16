@@ -81,6 +81,7 @@ namespace Utilities.Reflection.Emit.Interfaces
         /// Gets the definition of the variable
         /// </summary>
         /// <returns>string representation of the variable definition</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         string GetDefinition();
 
         #endregion

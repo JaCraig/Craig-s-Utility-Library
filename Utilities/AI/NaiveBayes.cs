@@ -139,7 +139,7 @@ namespace Utilities.AI
         /// </summary>
         /// <param name="SetATokens">Set A</param>
         /// <param name="SetBTokens">Set B</param>
-        public virtual void LoadTokens(System.Collections.Generic.List<T> SetATokens, System.Collections.Generic.List<T> SetBTokens)
+        public virtual void LoadTokens(IEnumerable<T> SetATokens, IEnumerable<T> SetBTokens)
         {
             SetATokens.ThrowIfNull("SetATokens");
             SetBTokens.ThrowIfNull("SetBTokens");
@@ -163,19 +163,21 @@ namespace Utilities.AI
         /// </summary>
         /// <param name="Items">List of items</param>
         /// <returns>The probability that the tokens are from set A</returns>
-        public virtual double CalculateProbabilityOfTokens(System.Collections.Generic.List<T> Items)
+        public virtual double CalculateProbabilityOfTokens(IEnumerable<T> Items)
         {
             Items.ThrowIfNull("Items");
             if (Probabilities.IsNull())
                 throw new InvalidOperationException("Probabilities has not been initialized");
             SortedList<string, double> SortedProbabilities = new SortedList<string, double>();
-            for (int x = 0; x < Items.Count; ++x)
+            int x = 0;
+            foreach(T Item in Items)
             {
                 double TokenProbability = 0.5;
-                if (Probabilities.ContainsKey(Items[x]))
-                    TokenProbability = Probabilities[Items[x]];
-                string Difference = ((0.5 - System.Math.Abs(0.5 - TokenProbability))).ToString(".0000000") + Items[x] + x;
+                if (Probabilities.ContainsKey(Item))
+                    TokenProbability = Probabilities[Item];
+                string Difference = ((0.5 - System.Math.Abs(0.5 - TokenProbability))).ToString(".0000000") + Item + x;
                 SortedProbabilities.Add(Difference, TokenProbability);
+                ++x;
             }
             double TotalProbability = 1;
             double NegativeTotalProbability = 1;

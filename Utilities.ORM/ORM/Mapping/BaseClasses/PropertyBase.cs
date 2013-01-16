@@ -46,10 +46,10 @@ namespace Utilities.ORM.Mapping.BaseClasses
         /// </summary>
         /// <param name="Expression">Expression used to point to the property</param>
         /// <param name="Mapping">Mapping the StringID is added to</param>
-        public PropertyBase(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
+        protected PropertyBase(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
         {
             this.Expression = Expression;
-            this.Name = Expression.GetPropertyName<ClassType, DataType>();
+            this.Name = Expression.GetPropertyName();
             this.Type = typeof(DataType);
             this.DerivedFieldName = "_" + Name + "Derived";
             this.Mapping = (IMapping)Mapping;

@@ -93,7 +93,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Attributes associated with the field
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public List<Attribute> Attributes
         {
             get { return _Attributes; }

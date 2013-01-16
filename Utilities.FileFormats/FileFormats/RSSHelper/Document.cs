@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Diagnostics.CodeAnalysis;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -60,6 +62,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// Constructor
         /// </summary>
         /// <param name="Document">XML document containing an RSS feed</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Document(XmlDocument Document)
         {
             if (Document == null)
@@ -71,7 +74,7 @@ namespace Utilities.FileFormats.RSSHelper
 
         #region Private Variables
 
-        private List<Channel> _Channels = null;
+        private ICollection<Channel> _Channels = null;
 
         #endregion
 
@@ -80,8 +83,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Channels for the RSS feed
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual List<Channel> Channels
+        public virtual ICollection<Channel> Channels
         {
             get
             {
@@ -160,7 +162,7 @@ namespace Utilities.FileFormats.RSSHelper
                 }
                 if (Channels.Count > 0)
                 {
-                    Channels[0].Items = Items;
+                    Channels.FirstOrDefault().Items = Items;
                 }
             }
         }

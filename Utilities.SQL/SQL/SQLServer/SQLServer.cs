@@ -821,6 +821,7 @@ namespace Utilities.SQL.SQLServer
         /// <param name="Name">Name of the item</param>
         /// <param name="ConnectionString">Connection string</param>
         /// <returns>True if it exists, false otherwise</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private static bool CheckExists(string Command, string Name, string ConnectionString)
         {
             using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))

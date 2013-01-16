@@ -38,7 +38,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public RecordBase()
+        protected RecordBase()
         {
             Fields = new List<IField<T>>();
         }
@@ -62,7 +62,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// <summary>
         /// The list of fields
         /// </summary>
-        public List<IField<T>> Fields { get; private set; }
+        public ICollection<IField<T>> Fields { get; private set; }
 
         #endregion
 

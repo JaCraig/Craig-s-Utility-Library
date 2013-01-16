@@ -56,12 +56,12 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// Network addresses (IP Addresses, etc.)
         /// </summary>
-        public List<NetworkAddress> NetworkAddresses { get;private set; }
+        public ICollection<NetworkAddress> NetworkAddresses { get; private set; }
 
         /// <summary>
         /// MAC Address 
         /// </summary>
-        public List<NetworkAdapter> MACAddresses { get;private set; }
+        public ICollection<NetworkAdapter> MACAddresses { get; private set; }
 
         #endregion
 

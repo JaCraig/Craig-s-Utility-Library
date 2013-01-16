@@ -82,7 +82,7 @@ namespace Utilities.Math.Geometry
         /// </summary>
         /// <param name="Object">Object to check</param>
         /// <returns>True if they overlap, false otherwise</returns>
-        public bool Overlap(Rectangle Object)
+        public bool Overlap(Shape Object)
         {
             return Contains(Object.Min.X, Object.Min.Y)
                     || Contains(Object.Min.X, Object.Max.Y)

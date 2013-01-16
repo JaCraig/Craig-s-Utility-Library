@@ -42,7 +42,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password (if not local)</param>
         /// <param name="Extension">File extension to look for</param>
         /// <returns>List of files that are found to have the specified extension</returns>
-        public static List<string> GetFilesWithExtension(string Computer, string UserName, string Password, string Extension)
+        public static IEnumerable<string> GetFilesWithExtension(string Computer, string UserName, string Password, string Extension)
         {
             if (string.IsNullOrEmpty(Computer))
                 throw new ArgumentNullException("Computer");

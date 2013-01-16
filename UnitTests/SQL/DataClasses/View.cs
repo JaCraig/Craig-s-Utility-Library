@@ -38,7 +38,7 @@ namespace UnitTests.SQL.DataClasses
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Utilities.SQL.DataClasses.View View = Database.AddView("TestView");
-            Assert.Equal(View, Database.Views[0]);
+            Assert.Equal(View, Database.Views.First());
             Assert.Equal("TestView", View.Name);
         }
 

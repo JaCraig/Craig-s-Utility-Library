@@ -219,7 +219,7 @@ namespace Utilities.ORM.Mapping.Interfaces
         /// <summary>
         /// Properties list
         /// </summary>
-        List<IProperty> Properties { get; }
+        ICollection<IProperty> Properties { get; }
 
         /// <summary>
         /// ID property

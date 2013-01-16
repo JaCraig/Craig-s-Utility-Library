@@ -57,7 +57,7 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Type of validation to do
         /// </summary>
-        public IsValid Type { get; set; }
+        public IsValid Type { get;private set; }
 
         #endregion
 

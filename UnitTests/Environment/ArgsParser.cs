@@ -38,12 +38,12 @@ namespace UnitTests.Environment
         public void Create()
         {
             Utilities.Environment.ArgsParser TestObject = new Utilities.Environment.ArgsParser();
-            List<Utilities.Environment.Option> Options= TestObject.Parse(new string[] { "/TestOption Parameter /TestOption2 \"This is a test\"" });
+            IEnumerable<Utilities.Environment.Option> Options= TestObject.Parse(new string[] { "/TestOption Parameter /TestOption2 \"This is a test\"" });
             Assert.NotNull(TestObject);
-            Assert.Equal("Parameter", Options[0].Parameters[0]);
-            Assert.Equal("TestOption", Options[0].Command);
-            Assert.Equal("\"This is a test\"", Options[1].Parameters[0]);
-            Assert.Equal("TestOption2", Options[1].Command);
+            Assert.Equal("Parameter", Options.ElementAt(0).Parameters.ElementAt(0));
+            Assert.Equal("TestOption", Options.ElementAt(0).Command);
+            Assert.Equal("\"This is a test\"", Options.ElementAt(1).Parameters.ElementAt(0));
+            Assert.Equal("TestOption2", Options.ElementAt(1).Command);
         }
     }
 }

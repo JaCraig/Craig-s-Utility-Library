@@ -29,6 +29,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.DataClasses.Enums;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.ORM.Database
@@ -106,7 +107,7 @@ namespace Utilities.ORM.Database
                 SetupInsertUpdateTrigger(Table);
                 SetupDeleteTrigger(Table);
             }
-            TempDatabase.Tables.AddRange(TempTables);
+            TempDatabase.Tables.Add(TempTables);
         }
 
         private SQL.DataClasses.Table SetupAuditTables(SQL.DataClasses.Table Table)
@@ -181,7 +182,7 @@ namespace Utilities.ORM.Database
                 {
                     if (Property is IMap)
                     {
-                        IMapping MapMapping = Mappings[Key].First(x => x.ObjectType == Property.Type);
+                        IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
                         TempDatabase[Mapping.TableName].AddColumn(Property.FieldName,
                             MapMapping.IDProperty.Type.ToDbType(),
                             MapMapping.IDProperty.MaxLength,
@@ -213,7 +214,7 @@ namespace Utilities.ORM.Database
         {
             if (TempDatabase.Tables.FirstOrDefault(x => x.Name == Property.TableName) != null)
                 return;
-            IMapping MapMapping = Mappings[Key].First(x => x.ObjectType == Property.Type);
+            IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
             if (MapMapping == Mapping)
             {
                 TempDatabase.AddTable(Property.TableName);
@@ -354,7 +355,7 @@ namespace Utilities.ORM.Database
         /// <summary>
         /// List of database structures
         /// </summary>
-        public System.Collections.Generic.List<Utilities.SQL.DataClasses.Database> DatabaseStructures { get;private set; }
+        public ICollection<Utilities.SQL.DataClasses.Database> DatabaseStructures { get;private set; }
 
         #endregion
     }

@@ -32,7 +32,7 @@ namespace Utilities.Validation.Rules
     /// <summary>
     /// Not in range attribute
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments"), AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class NotInRangeAttribute : ValidationAttribute
     {
         #region Constructor
@@ -46,8 +46,8 @@ namespace Utilities.Validation.Rules
         public NotInRangeAttribute(object Min, object Max, string ErrorMessage = "")
             : base(ErrorMessage.IsNullOrEmpty() ? "{0} is between {1} and {2}" : ErrorMessage)
         {
-            this.MinCompareValue = (IComparable)Min;
-            this.MaxCompareValue = (IComparable)Max;
+            this.Min = (IComparable)Min;
+            this.Max = (IComparable)Max;
         }
 
         #endregion
@@ -57,12 +57,12 @@ namespace Utilities.Validation.Rules
         /// <summary>
         /// Min value to compare to
         /// </summary>
-        public IComparable MinCompareValue { get; set; }
+        public IComparable Min { get;private set; }
 
         /// <summary>
         /// Max value to compare to
         /// </summary>
-        public IComparable MaxCompareValue { get; set; }
+        public IComparable Max { get;private set; }
 
         #endregion
 
@@ -75,7 +75,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The formatted string</returns>
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name, MinCompareValue.ToString(), MaxCompareValue.ToString());
+            return string.Format(ErrorMessageString, name, Min.ToString(), Max.ToString());
         }
 
         /// <summary>
@@ -87,8 +87,8 @@ namespace Utilities.Validation.Rules
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
-            IComparable MaxValue = (IComparable)MaxCompareValue.TryTo<object>(value.GetType());
-            IComparable MinValue = (IComparable)MinCompareValue.TryTo<object>(value.GetType());
+            IComparable MaxValue = (IComparable)Max.TryTo<object>(value.GetType());
+            IComparable MinValue = (IComparable)Min.TryTo<object>(value.GetType());
             IComparable TempValue = value as IComparable;
             return (Comparer.Compare(MaxValue, TempValue) >= 0
                     && Comparer.Compare(TempValue, MinValue) >= 0) ?

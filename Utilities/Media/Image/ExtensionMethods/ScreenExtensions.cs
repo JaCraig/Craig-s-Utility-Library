@@ -45,6 +45,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Screen">Screen to get the screenshot from</param>
         /// <param name="FileName">Name of the file to save the screenshot (optional)</param>
         /// <returns>Returns a bitmap containing the screen shot</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static Bitmap TakeScreenShot(this Screen Screen, string FileName = "")
         {
             if (Screen == null)
@@ -73,6 +74,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Screens">Screens to get the screenshot from</param>
         /// <param name="FileName">Name of the file to save the screenshot (optional)</param>
         /// <returns>Returns a bitmap containing the screen shot</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static Bitmap TakeScreenShot(this IEnumerable<Screen> Screens, string FileName = "")
         {
             if (Screens == null)

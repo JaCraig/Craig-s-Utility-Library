@@ -41,6 +41,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Prefix">Prefix</param>
         /// <param name="Suffix">Suffix</param>
         /// <returns>The exception as a string</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string ToString(this Exception Exception, string Prefix, string Suffix = "")
         {
             if (Exception == null)

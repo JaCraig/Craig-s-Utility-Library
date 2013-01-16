@@ -63,7 +63,7 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// Columns in the stored procedure
         /// </summary>
-        public List<IColumn> Columns { get; private set; }
+        public ICollection<IColumn> Columns { get; private set; }
 
         /// <summary>
         /// Definition

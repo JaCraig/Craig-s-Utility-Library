@@ -234,8 +234,8 @@ namespace UnitTests.Media.Image.ExtensionMethods
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
                 using (Bitmap Image = TestObject.Crop(100,100,
-                                                                Utilities.Media.Image.ExtensionMethods.BitmapExtensions.Align.Bottom,
-                                                                Utilities.Media.Image.ExtensionMethods.BitmapExtensions.Align.Right,
+                                                                Utilities.Media.Image.ExtensionMethods.Align.Bottom,
+                                                                Utilities.Media.Image.ExtensionMethods.Align.Right,
                                                                 @".\Testing\LennaCrop.jpg"))
                 {
                     Assert.NotNull(Image);
@@ -344,9 +344,9 @@ namespace UnitTests.Media.Image.ExtensionMethods
         {
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                List<string> Image =  TestObject.GetHTMLPalette();
+                IEnumerable<string> Image =  TestObject.GetHTMLPalette();
                 Assert.NotNull(Image);
-                Assert.Equal(37270, Image.Count);
+                Assert.Equal(37270, Image.Count());
             }
         }
 
@@ -466,7 +466,7 @@ namespace UnitTests.Media.Image.ExtensionMethods
         {
             using (Bitmap TestObject = new Bitmap(@"..\..\Data\Image\Lenna.jpg"))
             {
-                using (Bitmap Image = TestObject.Resize(50, Utilities.Media.Image.ExtensionMethods.BitmapExtensions.Quality.Low, @".\Testing\LennaResize.jpg"))
+                using (Bitmap Image = TestObject.Resize(50, Utilities.Media.Image.ExtensionMethods.Quality.Low, @".\Testing\LennaResize.jpg"))
                 {
                     Assert.NotNull(Image);
                     Assert.Equal(50,Image.Width);

@@ -84,7 +84,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Parameters associated with the command
         /// </summary>
-        public List<IParameter> Parameters { get; private set; }
+        public ICollection<IParameter> Parameters { get; private set; }
 
         #endregion
 

@@ -58,7 +58,7 @@ namespace Utilities.FileFormats.XFN
         /// <summary>
         /// Person's relationships
         /// </summary>
-        public List<Relationship> Relationships { get;private set; }
+        public ICollection<Relationship> Relationships { get; private set; }
 
         #endregion
 

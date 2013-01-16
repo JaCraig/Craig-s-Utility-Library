@@ -93,7 +93,8 @@ namespace Utilities.Web.Email.Pop3
         /// Gets a list of messages from the server
         /// </summary>
         /// <returns>A list of messages (only contains message number and size)</returns>
-        public List<Message> GetMessageList()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        public ICollection<Message> GetMessageList()
         {
             string ResponseString;
 

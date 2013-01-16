@@ -87,7 +87,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Parameters associated with the command
         /// </summary>
-        public virtual List<IParameter> Parameters
+        public virtual ICollection<IParameter> Parameters
         {
             get
             {
@@ -100,7 +100,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Batched parameter list
         /// </summary>
-        protected List<IParameter> Parameters_ { get; private set; }
+        protected ICollection<IParameter> Parameters_ { get; private set; }
 
         /// <summary>
         /// Used to parse SQL commands to find parameters (when batching)
@@ -110,7 +110,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Commands to batch
         /// </summary>
-        protected List<ICommand> Commands { get;private set; }
+        protected ICollection<ICommand> Commands { get;private set; }
 
         /// <summary>
         /// Has this been batched?
@@ -162,7 +162,7 @@ namespace Utilities.SQL.MicroORM
             if (Commands != null)
             {
                 Batched = false;
-                this.Commands.AddRange(Commands);
+                this.Commands.Add(Commands);
             }
             return this;
         }
@@ -261,8 +261,8 @@ namespace Utilities.SQL.MicroORM
             int Count = 0;
             if (Commands.Count == 1)
             {
-                this.SQLCommand_ = Commands[0].SQLCommand;
-                this.Parameters_ = Commands[0].Parameters;
+                this.SQLCommand_ = Commands.FirstOrDefault().SQLCommand;
+                this.Parameters_ = Commands.FirstOrDefault().Parameters;
                 return;
             }
             foreach (ICommand Command in Commands)

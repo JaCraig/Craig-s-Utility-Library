@@ -70,22 +70,22 @@ namespace Utilities.SQL.DataClasses
         /// <summary>
         /// List of tables
         /// </summary>
-        public List<Table> Tables { get;private set; }
+        public ICollection<Table> Tables { get; private set; }
 
         /// <summary>
         /// List of stored procedures
         /// </summary>
-        public List<StoredProcedure> StoredProcedures { get;private set; }
+        public ICollection<StoredProcedure> StoredProcedures { get; private set; }
 
         /// <summary>
         /// List of views
         /// </summary>
-        public List<View> Views { get;private set; }
+        public ICollection<View> Views { get; private set; }
 
         /// <summary>
         /// List of functions
         /// </summary>
-        public List<Function> Functions { get;private set; }
+        public ICollection<Function> Functions { get;private set; }
 
         /// <summary>
         /// Returns a table with the given name

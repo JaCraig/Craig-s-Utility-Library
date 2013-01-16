@@ -46,6 +46,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Input">Body text</param>
         /// <param name="Header">Header of the message</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public MIMEBody(string Input,MIMEHeader Header)
         {
             if (string.IsNullOrEmpty(Input))
@@ -168,7 +169,7 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Boundaries found within this item (files/messages)
         /// </summary>
-        public List<MIMEMessage> Boundries{get;private set;}
+        public ICollection<MIMEMessage> Boundries { get; private set; }
 
         /// <summary>
         /// Content of this boundary/message

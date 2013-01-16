@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -48,6 +49,7 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing tags info</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Tags(XmlElement Element)
         {
             Element.ThrowIfNull("Element");
@@ -66,7 +68,7 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// Tags list
         /// </summary>
-        public List<Tag> TagList { get; private set; }
+        public ICollection<Tag> TagList { get; private set; }
 
         /// <summary>
         /// gets a specific tag
@@ -75,7 +77,7 @@ namespace Utilities.FileFormats.BlogML
         /// <returns>A specific tag</returns>
         public Tag this[int index]
         {
-            get { return TagList[index]; }
+            get { return TagList.ElementAt(index); }
         }
 
         #endregion

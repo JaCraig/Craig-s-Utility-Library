@@ -48,7 +48,7 @@ namespace UnitTests.DataTypes
                     int Value=Rand.Next();
                     TestObject.Add(Name, Value);
                     Assert.Equal(y + 1, TestObject[Name].Count);
-                    Assert.Equal(Value, TestObject[Name][y]);
+                    Assert.Equal(Value, TestObject[Name].ElementAt(y));
                 }
             }
             Assert.Equal(10, TestObject.Count);
@@ -62,7 +62,7 @@ namespace UnitTests.DataTypes
             TestObject.Add("A", 1);
             TestObject.Remove("A", 0);
             Assert.Equal(1, TestObject["A"].Count);
-            Assert.Equal(1, TestObject["A"][0]);
+            Assert.Equal(1, TestObject["A"].FirstOrDefault());
         }
 
         [Fact]

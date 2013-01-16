@@ -28,7 +28,7 @@ using System.Text;
 using System.Threading;
 using Utilities.Reflection.Emit.Enums;
 using Utilities.Reflection.Emit.Interfaces;
-
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -99,7 +99,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="Interfaces">Interfaces used by this type</param>
         /// <returns>A TypeBuilder class</returns>
         public virtual TypeBuilder CreateType(string Name, TypeAttributes Attributes = TypeAttributes.Public,
-            Type BaseClass = null, List<Type> Interfaces = null)
+            Type BaseClass = null, IEnumerable<Type> Interfaces = null)
         {
             TypeBuilder ReturnValue = new TypeBuilder(this, Name, Interfaces, BaseClass, Attributes);
             Classes.Add(ReturnValue);
@@ -169,12 +169,12 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// List of classes associated with this assembly
         /// </summary>
-        public List<TypeBuilder> Classes { get; private set; }
+        public ICollection<TypeBuilder> Classes { get; private set; }
 
         /// <summary>
         /// List of enums associated with this assembly
         /// </summary>
-        public List<EnumBuilder> Enums { get; private set; }
+        public ICollection<EnumBuilder> Enums { get; private set; }
 
         /// <summary>
         /// Assembly type (exe or dll)

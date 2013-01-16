@@ -28,6 +28,7 @@ using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -52,7 +53,7 @@ namespace Utilities.Reflection.Emit
         public DefaultPropertyBuilder(TypeBuilder TypeBuilder, string Name,
             PropertyAttributes Attributes, MethodAttributes GetMethodAttributes,
             MethodAttributes SetMethodAttributes,
-            Type PropertyType, List<Type> Parameters)
+            Type PropertyType, IEnumerable<Type> Parameters)
             : base()
         {
             if (TypeBuilder == null)
@@ -77,7 +78,7 @@ namespace Utilities.Reflection.Emit
             }
             Field = new FieldBuilder(Type, "_" + Name + "field", PropertyType, FieldAttributes.Private);
             Builder = Type.Builder.DefineProperty(Name, Attributes, PropertyType,
-                (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
+                (Parameters != null && Parameters.Count() > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
             GetMethod = new MethodBuilder(Type, "get_" + Name, GetMethodAttributes, Parameters, PropertyType);
             GetMethod.Generator.Emit(OpCodes.Ldarg_0);
             GetMethod.Generator.Emit(OpCodes.Ldfld, Field.Builder);
@@ -180,7 +181,7 @@ namespace Utilities.Reflection.Emit
         /// <summary>
         /// Parameter types
         /// </summary>
-        public List<ParameterBuilder> Parameters { get; private set; }
+        public ICollection<ParameterBuilder> Parameters { get; private set; }
 
         /// <summary>
         /// Method builder

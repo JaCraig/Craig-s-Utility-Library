@@ -27,7 +27,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Patterns;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
-
+using System.Linq;
 #endregion
 
 namespace Utilities.SQL
@@ -73,11 +73,13 @@ namespace Utilities.SQL
         /// <summary>
         /// Columns
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         protected List<string> Columns { get; private set; }
 
         /// <summary>
         /// Joins
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         protected List<SQLJoin> Joins { get; private set; }
 
         /// <summary>
@@ -88,6 +90,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Parameters
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         protected List<IParameter> Parameters { get; private set; }
 
         /// <summary>
@@ -98,6 +101,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Order by
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         protected List<string> OrderByColumns { get; private set; }
 
         /// <summary>

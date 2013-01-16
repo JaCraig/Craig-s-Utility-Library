@@ -48,6 +48,7 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing post info</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Comments(XmlElement Element)
         {
             Element.ThrowIfNull("Element");
@@ -66,7 +67,7 @@ namespace Utilities.FileFormats.BlogML
         /// <summary>
         /// List of comments
         /// </summary>
-        public List<Comment> CommentList { get;private set; }
+        public ICollection<Comment> CommentList { get;private set; }
 
         #endregion
 

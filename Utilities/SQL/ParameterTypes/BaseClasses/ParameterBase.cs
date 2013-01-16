@@ -45,7 +45,7 @@ namespace Utilities.SQL.Interfaces
         /// <param name="Direction">Direction of the parameter</param>
         /// <param name="ParameterStarter">What the database expects as the
         /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
-        public ParameterBase(string ID, DataType Value, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
+        protected ParameterBase(string ID, DataType Value, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
         {
             this.ID = ID;
             this.Value = Value;
@@ -67,7 +67,7 @@ namespace Utilities.SQL.Interfaces
         /// <param name="Direction">Direction of the parameter</param>
         /// <param name="ParameterStarter">What the database expects as the
         /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
-        public ParameterBase(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
+        protected ParameterBase(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
         {
             this.ID = ID;
             this.Value = (DataType)Value;
@@ -86,7 +86,7 @@ namespace Utilities.SQL.Interfaces
         /// <param name="Direction">Direction of the parameter</param>
         /// <param name="ParameterStarter">What the database expects as the
         /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
-        public ParameterBase(string ID, DbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
+        protected ParameterBase(string ID, DbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
         {
             this.ID = ID;
             this.Value = (DataType)Value;

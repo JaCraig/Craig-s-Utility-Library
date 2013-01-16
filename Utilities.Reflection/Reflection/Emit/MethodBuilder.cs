@@ -26,6 +26,8 @@ using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -46,7 +48,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="Parameters">Parameter types for the method</param>
         /// <param name="ReturnType">Return type for the method</param>
         public MethodBuilder(TypeBuilder TypeBuilder, string Name,
-            MethodAttributes Attributes, List<Type> Parameters, Type ReturnType)
+            MethodAttributes Attributes, IEnumerable<Type> Parameters, Type ReturnType)
             : base()
         {
             if (TypeBuilder == null)
@@ -71,7 +73,7 @@ namespace Utilities.Reflection.Emit
                 }
             }
             Builder = Type.Builder.DefineMethod(Name, Attributes, ReturnType,
-                (Parameters != null && Parameters.Count > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
+                (Parameters != null && Parameters.Count() > 0) ? Parameters.ToArray() : System.Type.EmptyTypes);
             Generator = Builder.GetILGenerator();
         }
 

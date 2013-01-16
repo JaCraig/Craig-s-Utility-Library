@@ -63,11 +63,12 @@ namespace Utilities.LDAP
         /// Checks to see if the person was authenticated
         /// </summary>
         /// <returns>true if they were authenticated properly, false otherwise</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public virtual bool Authenticate()
         {
             try
             {
-                if (!Entry.Guid.ToString().ToLower().Trim().Equals(""))
+                if (!Entry.Guid.ToString().Trim().Equals(""))
                     return true;
             }
             catch { }
@@ -95,12 +96,13 @@ namespace Utilities.LDAP
         /// <param name="GroupName">The group's name</param>
         /// <param name="Recursive">Should sub groups' members be added instead of the sub group itself?</param>
         /// <returns>A list of the members</returns>
-        public virtual List<Entry> FindActiveGroupMembers(string GroupName, bool Recursive = false)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        public virtual ICollection<Entry> FindActiveGroupMembers(string GroupName, bool Recursive = false)
         {
             try
             {
                 Entry Group = FindGroup(GroupName);
-                List<Entry> Entries = this.FindActiveUsersAndGroups("memberOf=" + Group.DistinguishedName);
+                ICollection<Entry> Entries = this.FindActiveUsersAndGroups("memberOf=" + Group.DistinguishedName);
                 if (Recursive)
                 {
                     List<Entry> ReturnValue = new List<LDAP.Entry>();
@@ -135,7 +137,7 @@ namespace Utilities.LDAP
         /// <param name="Filter">Filter used to modify the query</param>
         /// <param name="args">Additional arguments (used in string formatting</param>
         /// <returns>A list of all active groups' entries</returns>
-        public virtual List<Entry> FindActiveGroups(string Filter, params object[] args)
+        public virtual ICollection<Entry> FindActiveGroups(string Filter, params object[] args)
         {
             Filter = string.Format(Filter, args);
             Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
@@ -152,7 +154,7 @@ namespace Utilities.LDAP
         /// <param name="Filter">Filter used to modify the query</param>
         /// <param name="args">Additional arguments (used in string formatting</param>
         /// <returns>A list of all active users' entries</returns>
-        public virtual List<Entry> FindActiveUsers(string Filter, params object[] args)
+        public virtual ICollection<Entry> FindActiveUsers(string Filter, params object[] args)
         {
             Filter = string.Format(Filter, args);
             Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
@@ -169,7 +171,7 @@ namespace Utilities.LDAP
         /// <param name="Filter">Filter used to modify the query</param>
         /// <param name="args">Additional arguments (used in string formatting</param>
         /// <returns>A list of all active groups' entries</returns>
-        public virtual List<Entry> FindActiveUsersAndGroups(string Filter, params object[] args)
+        public virtual ICollection<Entry> FindActiveUsersAndGroups(string Filter, params object[] args)
         {
             Filter = string.Format(Filter, args);
             Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
@@ -184,7 +186,7 @@ namespace Utilities.LDAP
         /// Finds all entries that match the query
         /// </summary>
         /// <returns>A list of all entries that match the query</returns>
-        public virtual List<Entry> FindAll()
+        public virtual ICollection<Entry> FindAll()
         {
             List<Entry> ReturnedResults = new List<Entry>();
             using (SearchResultCollection Results = Searcher.FindAll())
@@ -205,7 +207,7 @@ namespace Utilities.LDAP
         /// <param name="Filter">Filter used to modify the query</param>
         /// <param name="args">Additional arguments (used in string formatting</param>
         /// <returns>A list of all computers meeting the specified Filter</returns>
-        public virtual List<Entry> FindComputers(string Filter, params object[] args)
+        public virtual ICollection<Entry> FindComputers(string Filter, params object[] args)
         {
             Filter = string.Format(Filter, args);
             Filter = string.Format("(&(objectClass=computer)({0}))", Filter);
@@ -223,12 +225,13 @@ namespace Utilities.LDAP
         /// <param name="GroupName">The group's name</param>
         /// <param name="Recursive">Should sub groups' members be added instead of the sub group itself?</param>
         /// <returns>A list of the members</returns>
-        public virtual List<Entry> FindGroupMembers(string GroupName, bool Recursive = false)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        public virtual ICollection<Entry> FindGroupMembers(string GroupName, bool Recursive = false)
         {
             try
             {
                 Entry Group = FindGroup(GroupName);
-                List<Entry> Entries = this.FindUsersAndGroups("memberOf=" + Group.DistinguishedName);
+                ICollection<Entry> Entries = this.FindUsersAndGroups("memberOf=" + Group.DistinguishedName);
                 if (Recursive)
                 {
                     List<Entry> ReturnValue = new List<LDAP.Entry>();
@@ -277,7 +280,7 @@ namespace Utilities.LDAP
         /// <param name="Filter">Filter used to modify the query</param>
         /// <param name="args">Additional arguments (used in string formatting</param>
         /// <returns>A list of all groups meeting the specified Filter</returns>
-        public virtual List<Entry> FindGroups(string Filter, params object[] args)
+        public virtual ICollection<Entry> FindGroups(string Filter, params object[] args)
         {
             Filter = string.Format(Filter, args);
             Filter = string.Format("(&(objectClass=Group)(objectCategory=Group)({0}))", Filter);
@@ -308,7 +311,7 @@ namespace Utilities.LDAP
         /// <param name="Filter">Filter used to modify the query</param>
         /// <param name="args">Additional arguments (used in string formatting</param>
         /// <returns>A list of all users and groups meeting the specified Filter</returns>
-        public virtual List<Entry> FindUsersAndGroups(string Filter, params object[] args)
+        public virtual ICollection<Entry> FindUsersAndGroups(string Filter, params object[] args)
         {
             Filter = string.Format(Filter, args);
             Filter = string.Format("(&(|(&(objectClass=Group)(objectCategory=Group))(&(objectClass=User)(objectCategory=Person)))({0}))", Filter);
@@ -342,7 +345,7 @@ namespace Utilities.LDAP
         /// <param name="Filter">Filter used to modify the query</param>
         /// <param name="args">Additional arguments (used in string formatting</param>
         /// <returns>A list of all users meeting the specified Filter</returns>
-        public virtual List<Entry> FindUsers(string Filter, params object[] args)
+        public virtual ICollection<Entry> FindUsers(string Filter, params object[] args)
         {
             Filter = string.Format(Filter, args);
             Filter = string.Format("(&(objectClass=User)(objectCategory=Person)({0}))", Filter);

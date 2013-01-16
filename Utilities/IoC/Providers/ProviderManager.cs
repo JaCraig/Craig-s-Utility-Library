@@ -26,6 +26,7 @@ using System.Reflection;
 using Utilities.IoC.Providers.Interfaces;
 using Utilities.IoC.Providers.Scope;
 using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.IoC.Providers
@@ -43,7 +44,7 @@ namespace Utilities.IoC.Providers
         public ProviderManager()
         {
             Providers = new List<IProvider>();
-            Providers.AddRange(typeof(ProviderManager).Assembly.GetObjects<IProvider>());
+            Providers.Add(typeof(ProviderManager).Assembly.GetObjects<IProvider>());
         }
 
         #endregion
@@ -56,7 +57,7 @@ namespace Utilities.IoC.Providers
         /// <param name="Assembly">Assembly to scan</param>
         public void Setup(Assembly Assembly)
         {
-            Providers.AddRange(Assembly.GetObjects<IProvider>());
+            Providers.Add(Assembly.GetObjects<IProvider>());
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace Utilities.IoC.Providers
         /// <summary>
         /// List of providers
         /// </summary>
-        protected List<IProvider> Providers { get;private set; }
+        protected ICollection<IProvider> Providers { get;private set; }
 
         #endregion
     }

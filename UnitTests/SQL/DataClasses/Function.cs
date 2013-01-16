@@ -37,7 +37,7 @@ namespace UnitTests.SQL.DataClasses
         {
             Utilities.SQL.DataClasses.Database Database = new Utilities.SQL.DataClasses.Database("TestDatabase");
             Utilities.SQL.DataClasses.Function Function = Database.AddFunction("TestFunction", "Definition");
-            Assert.Equal(Function, Database.Functions[0]);
+            Assert.Equal(Function, Database.Functions.First());
             Assert.Equal("TestFunction", Function.Name);
             Assert.Equal("Definition", Function.Definition);
             Assert.Equal(Database, Function.ParentDatabase);

@@ -86,12 +86,12 @@ namespace Utilities.Profiler
         /// <summary>
         /// Total time that the profiler has taken (in milliseconds)
         /// </summary>
-        public List<long> Times { get; private set; }
+        public ICollection<long> Times { get; private set; }
 
         /// <summary>
         /// Children profiler items
         /// </summary>
-        public List<Profiler> Children { get; private set; }
+        public ICollection<Profiler> Children { get; private set; }
 
         /// <summary>
         /// Parent profiler item
@@ -130,7 +130,7 @@ namespace Utilities.Profiler
         {
             get
             {
-                Profiler ReturnValue = "Root_Profiler".GetFromCache<Profiler>(CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
+                Profiler ReturnValue = "Root_Profiler".GetFromCache<Profiler>(CacheType.Item | CacheType.Internal);
                 if (ReturnValue == null)
                 {
                     ReturnValue = new Profiler("Start");
@@ -140,7 +140,7 @@ namespace Utilities.Profiler
             }
             protected set
             {
-                value.Cache("Root_Profiler", CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
+                value.Cache("Root_Profiler", CacheType.Item | CacheType.Internal);
             }
         }
 
@@ -151,17 +151,17 @@ namespace Utilities.Profiler
         {
             get
             {
-                Profiler ReturnValue = "Current_Profiler".GetFromCache<Profiler>(CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
+                Profiler ReturnValue = "Current_Profiler".GetFromCache<Profiler>(CacheType.Item | CacheType.Internal);
                 if (ReturnValue == null)
                 {
-                    ReturnValue = "Root_Profiler".GetFromCache<Profiler>(CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
+                    ReturnValue = "Root_Profiler".GetFromCache<Profiler>(CacheType.Item | CacheType.Internal);
                     Current = ReturnValue;
                 }
                 return ReturnValue;
             }
             protected set
             {
-                value.Cache("Current_Profiler", CachingExtensions.CacheType.Item | CachingExtensions.CacheType.Internal);
+                value.Cache("Current_Profiler", CacheType.Item | CacheType.Internal);
             }
         }
 
@@ -292,7 +292,7 @@ namespace Utilities.Profiler
                 Continue = false;
                 for (int x = 0; x < Children.Count; ++x)
                 {
-                    IEnumerable<Profiler> Combinables = Children.Where(y => y == Children[x]).ToList();
+                    IEnumerable<Profiler> Combinables = Children.Where(y => y == Children.ElementAt(x)).ToList();
                     if (Combinables.Count() > 1)
                     {
                         Continue = true;

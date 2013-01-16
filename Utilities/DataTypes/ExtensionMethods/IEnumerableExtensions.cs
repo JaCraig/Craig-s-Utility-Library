@@ -464,13 +464,13 @@ namespace Utilities.DataTypes.ExtensionMethods
             PropertyInfo[] Properties = typeof(T).GetProperties();
             if(Columns.Length==0)
                 Columns = Properties.ToArray(x => x.Name);
-            Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.First(z => z.Name == x).PropertyType));
+            Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.FirstOrDefault(z => z.Name == x).PropertyType));
             object[] Row = new object[Columns.Length];
             foreach (T Item in List)
             {
                 for (int x = 0; x < Row.Length; ++x)
                 {
-                    Row[x] = Properties.First(z => z.Name == Columns[x]).GetValue(Item, new object[] { });
+                    Row[x] = Properties.FirstOrDefault(z => z.Name == Columns[x]).GetValue(Item, new object[] { });
                 }
                 ReturnValue.Rows.Add(Row);
             }
@@ -559,6 +559,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Action">Action to run on each item</param>
         /// <param name="CatchAction">Catch action (defaults to null)</param>
         /// <returns>The list after the action is run on everything</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static IEnumerable<T> TryAll<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
         {
             List.ThrowIfNull("List");
@@ -588,6 +589,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Action">Action to run on each item</param>
         /// <param name="CatchAction">Catch action (defaults to null)</param>
         /// <returns>The list after the action is run on everything</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static IEnumerable<T> TryAllParallel<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
         {
             List.ThrowIfNull("List");
