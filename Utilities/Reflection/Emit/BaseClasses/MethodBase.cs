@@ -28,6 +28,7 @@ using Utilities.Reflection.Emit.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit.BaseClasses
@@ -109,10 +110,8 @@ namespace Utilities.Reflection.Emit.BaseClasses
             {
                 foreach (object Variable in Variables)
                 {
-                    if (Variable is VariableBase)
-                        VariableTypes.Add(((VariableBase)Variable).DataType);
-                    else
-                        VariableTypes.Add(Variable.GetType());
+                    VariableBase TempVariable = Variable as VariableBase;
+                    VariableTypes.Add(TempVariable != null ? TempVariable.DataType : Variable.GetType());
                 }
             }
             ConstructorInfo Constructor = ObjectType.GetConstructor(VariableTypes.ToArray());
@@ -342,7 +341,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
             Utilities.Reflection.Emit.Commands.Catch TempCommand = new Utilities.Reflection.Emit.Commands.Catch(ExceptionType);
             TempCommand.Setup();
             Commands.Add(TempCommand);
-            TempCommand.Exception = CreateLocal("ExceptionLocal" + ObjectCounter.ToString(), ExceptionType);
+            TempCommand.Exception = CreateLocal("ExceptionLocal" + ObjectCounter.ToString(CultureInfo.InvariantCulture), ExceptionType);
             TempCommand.Exception.Save(Generator);
             ++ObjectCounter;
             return TempCommand;

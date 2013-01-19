@@ -1,0 +1,13 @@
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\UnitTests.Lite.dll
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\UnitTests.Lite.pdb
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\Utilities.Lite.dll
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\xunit.dll
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\xunit.runner.msbuild.dll
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\xunit.runner.tdnet.dll
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\xunit.runner.utility.dll
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\Utilities.Lite.pdb
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\Utilities.Lite.xml
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\bin\Debug\xunit.xml
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\obj\Debug\ResolveAssemblyReference.cache
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\obj\Debug\UnitTests.Lite.dll
+C:\dev\com\Mine\Libraries\Utilities\UnitTests.Lite\obj\Debug\UnitTests.Lite.pdb

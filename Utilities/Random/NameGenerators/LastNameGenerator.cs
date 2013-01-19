@@ -24,6 +24,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Random.NameGenerators
@@ -49,9 +50,10 @@ namespace Utilities.Random.NameGenerators
         /// </summary>
         /// <param name="Rand">Random number generator that it can use</param>
         /// <returns>A randomly generated object of the specified type</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public virtual string Next(System.Random Rand)
         {
-            return Rand.Next(LastNames).ToLower().ToFirstCharacterUpperCase();
+            return Rand.Next(LastNames).ToLower(CultureInfo.InvariantCulture).ToFirstCharacterUpperCase();
         }
 
         /// <summary>

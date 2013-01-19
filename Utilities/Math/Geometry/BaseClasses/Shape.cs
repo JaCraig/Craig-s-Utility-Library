@@ -93,7 +93,7 @@ namespace Utilities.Math.Geometry.BaseClasses
         /// <param name="X2">X2 coordinate</param>
         /// <param name="Y2">Y2 coordinate</param>
         /// <returns>The Euclidean distance between the two points</returns>
-        protected double EuclideanDistance(double X1, double Y1, double X2, double Y2)
+        protected static double EuclideanDistance(double X1, double Y1, double X2, double Y2)
         {
             return ((X1 - X2).Pow(2) + (Y1 - Y2).Pow(2)).Sqrt();
         }

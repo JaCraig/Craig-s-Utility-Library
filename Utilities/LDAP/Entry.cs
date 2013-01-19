@@ -262,17 +262,35 @@ namespace Utilities.LDAP
         #endregion
 
         #region IDisposable Members
-
+        
         /// <summary>
-        /// Disposes of the entry object
+        /// Disposes the object
         /// </summary>
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected virtual void Dispose(bool Disposing)
         {
             if (DirectoryEntry != null)
             {
                 DirectoryEntry.Dispose();
                 DirectoryEntry = null;
             }
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Entry()
+        {
+            Dispose(false);
         }
 
         #endregion

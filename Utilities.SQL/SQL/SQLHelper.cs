@@ -38,6 +38,7 @@ using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Interfaces;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 #endregion
 
 namespace Utilities.SQL
@@ -245,6 +246,7 @@ namespace Utilities.SQL
         /// <summary>
         /// Opens the connection
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         protected virtual SQLHelper Open()
         {
             ExecutableCommand.Open();
@@ -289,7 +291,7 @@ namespace Utilities.SQL
                     Splitter = " AND ";
                 }
             }
-            return string.Format("SELECT {0} FROM {1} {2}", Command, Mapping.TableName, WhereCommand);
+            return string.Format(CultureInfo.InvariantCulture, "SELECT {0} FROM {1} {2}", Command, Mapping.TableName, WhereCommand);
         }
 
         #endregion
@@ -304,7 +306,7 @@ namespace Utilities.SQL
         protected virtual string SetupDeleteCommand<ClassType>(Mapping<ClassType> Mapping)
             where ClassType : class,new()
         {
-            return string.Format("DELETE FROM {0} WHERE {1}", Mapping.TableName, Mapping.PrimaryKey + "=" + DatabaseUsing.ParameterPrefix + Mapping.PrimaryKey);
+            return string.Format(CultureInfo.InvariantCulture, "DELETE FROM {0} WHERE {1}", Mapping.TableName, Mapping.PrimaryKey + "=" + DatabaseUsing.ParameterPrefix + Mapping.PrimaryKey);
         }
 
         #endregion
@@ -338,7 +340,7 @@ namespace Utilities.SQL
                 ValueList += Splitter + DatabaseUsing.ParameterPrefix + Parameter.ID;
                 Splitter = ",";
             }
-            return string.Format("INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [ID]", Mapping.TableName, ParameterList, ValueList);
+            return string.Format(CultureInfo.InvariantCulture, "INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [ID]", Mapping.TableName, ParameterList, ValueList);
         }
 
         #endregion
@@ -366,7 +368,7 @@ namespace Utilities.SQL
                     Splitter = " AND ";
                 }
             }
-            return string.Format("SELECT COUNT(*) as Total FROM (SELECT {0} FROM {1} {2}) as Query", Mapping.PrimaryKey, Mapping.TableName, WhereCommand);
+            return string.Format(CultureInfo.InvariantCulture, "SELECT COUNT(*) as Total FROM (SELECT {0} FROM {1} {2}) as Query", Mapping.PrimaryKey, Mapping.TableName, WhereCommand);
         }
 
         /// <summary>
@@ -376,7 +378,7 @@ namespace Utilities.SQL
         /// <returns>The string command</returns>
         protected virtual string SetupPageCountCommand(string Command)
         {
-            return string.Format("SELECT COUNT(*) as Total FROM ({0}) as Query", Command);
+            return string.Format(CultureInfo.InvariantCulture, "SELECT COUNT(*) as Total FROM ({0}) as Query", Command);
         }
 
         #endregion
@@ -411,7 +413,7 @@ namespace Utilities.SQL
                     Splitter = " AND ";
                 }
             }
-            return SetupPagedCommand(string.Format("SELECT {0} FROM {1} {2}", Columns, Mapping.TableName, WhereCommand), OrderBy, PageSize, CurrentPage, Mapping);
+            return SetupPagedCommand(string.Format(CultureInfo.InvariantCulture, "SELECT {0} FROM {1} {2}", Columns, Mapping.TableName, WhereCommand), OrderBy, PageSize, CurrentPage, Mapping);
         }
 
         /// <summary>
@@ -430,7 +432,7 @@ namespace Utilities.SQL
             if (OrderBy.IsNullOrEmpty())
                 OrderBy = Mapping.PrimaryKey;
             int PageStart = CurrentPage * PageSize;
-            return string.Format("SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {1}) AS Row, Query.* FROM ({0}) as Query) AS Paged WHERE Row>{2} AND Row<={3}",
+            return string.Format(CultureInfo.InvariantCulture, "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {1}) AS Row, Query.* FROM ({0}) as Query) AS Paged WHERE Row>{2} AND Row<={3}",
                                     Query,
                                     OrderBy,
                                     PageStart,
@@ -466,8 +468,8 @@ namespace Utilities.SQL
                 }
             }
             if (!OrderBy.IsNullOrEmpty())
-                Command += OrderBy.Trim().ToLower().StartsWith("order by", StringComparison.CurrentCultureIgnoreCase) ? " " + OrderBy : " ORDER BY " + OrderBy;
-            return string.Format(Command, Columns, Mapping.TableName);
+                Command += OrderBy.Trim().ToUpperInvariant().StartsWith("ORDER BY", StringComparison.CurrentCultureIgnoreCase) ? " " + OrderBy : " ORDER BY " + OrderBy;
+            return string.Format(CultureInfo.InvariantCulture, Command, Columns, Mapping.TableName);
         }
 
         #endregion
@@ -499,7 +501,7 @@ namespace Utilities.SQL
                 ParameterList += Splitter + Parameter.ToString();
                 Splitter = ",";
             }
-            return string.Format("UPDATE {0} SET {1} WHERE {2}", Mapping.TableName, ParameterList, WhereCommand);
+            return string.Format(CultureInfo.InvariantCulture, "UPDATE {0} SET {1} WHERE {2}", Mapping.TableName, ParameterList, WhereCommand);
         }
 
         #endregion
@@ -834,7 +836,6 @@ namespace Utilities.SQL
         public virtual int PageCount<ClassType>(string Command, int PageSize = 25, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             this.Command = new Command(SetupPageCountCommand(Command), CommandType.Text, Parameters);
             ExecuteReader(false, Cache);
             if (Read())
@@ -984,7 +985,6 @@ namespace Utilities.SQL
         public virtual DataType Scalar<ClassType, DataType>(string Command, CommandType CommandType, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             this.Command = new Command(Command, CommandType.Text, Parameters);
             return ExecuteScalar<DataType>(false, Cache);
         }
@@ -1255,6 +1255,7 @@ namespace Utilities.SQL
         /// <param name="Cache">Determines if the query should be cached for future queries</param>
         /// <param name="NotUsed">Not used</param>
         /// <returns>this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         protected virtual SQLHelper ExecuteReader(bool CreateTransaction, bool Cache,bool NotUsed)
         {
             try
@@ -1438,6 +1439,7 @@ namespace Utilities.SQL
         /// Sets up the info for 
         /// </summary>
         /// <param name="Transaction">Should a transaction be set up for this call?</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         private void Setup(bool Transaction)
         {
             if (Reader != null)
@@ -1545,16 +1547,14 @@ namespace Utilities.SQL
         /// <param name="TableName">Table name</param>
         /// <param name="PrimaryKey">Primary key</param>
         /// <param name="AutoIncrement">Auto incrementing primar key</param>
-        /// <param name="ParameterStarter">Parameter starter</param>
         /// <param name="Database">Database to use</param>
         /// <returns>The created mapping (or an already created one if it exists)</returns>
-        public static Mapping<ClassType> Map<ClassType>(string TableName, string PrimaryKey, bool AutoIncrement = true,
-                                                        string ParameterStarter = "@", string Database = "Default")
+        public static Mapping<ClassType> Map<ClassType>(string TableName, string PrimaryKey, bool AutoIncrement = true, string Database = "Default")
             where ClassType : class,new()
         {
             return (Mapping<ClassType>)Databases.GetOrAdd(Database, new Database("", Database))
                                                 .Mappings
-                                                .GetOrAdd(typeof(ClassType), new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement, ParameterStarter));
+                                                .GetOrAdd(typeof(ClassType), new Mapping<ClassType>(TableName, PrimaryKey, AutoIncrement));
         }
 
         #endregion
@@ -1564,9 +1564,19 @@ namespace Utilities.SQL
         #region IDisposable Members
 
         /// <summary>
-        /// Closes the connection (if open) and disposes of the objects.
+        /// Disposes the object
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected virtual void Dispose(bool Disposing)
         {
             Close();
             if (Connection != null)
@@ -1589,6 +1599,14 @@ namespace Utilities.SQL
                 Reader.Dispose();
                 Reader = null;
             }
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~SQLHelper()
+        {
+            Dispose(false);
         }
 
         #endregion

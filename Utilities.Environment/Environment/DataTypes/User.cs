@@ -55,6 +55,7 @@ namespace Utilities.Environment.DataTypes
         /// <summary>
         /// User names
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public ICollection<string> UserNames { get; private set; }
 
         #endregion

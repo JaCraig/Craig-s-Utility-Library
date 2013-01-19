@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.IO;
 using System.Text;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Email.MIME.CodeTypes
@@ -56,24 +57,24 @@ namespace Utilities.Web.Email.MIME.CodeTypes
             }
 
             string CurrentLine="";
-            MemoryStream MemoryStream=new MemoryStream();
-            StringReader Reader=new StringReader(Input);
-            try
+            using (MemoryStream MemoryStream = new MemoryStream())
             {
-                CurrentLine=Reader.ReadLine();
-                while (!string.IsNullOrEmpty(CurrentLine))
+                StringReader Reader = new StringReader(Input);
+                try
                 {
-                    DecodeOneLine(MemoryStream, CurrentLine);
-                    CurrentLine=Reader.ReadLine();
+                    CurrentLine = Reader.ReadLine();
+                    while (!string.IsNullOrEmpty(CurrentLine))
+                    {
+                        DecodeOneLine(MemoryStream, CurrentLine);
+                        CurrentLine = Reader.ReadLine();
+                    }
+                    Output = MemoryStream.ToArray();
                 }
-                Output = MemoryStream.ToArray();
-            }
-            finally
-            {
-                MemoryStream.Close();
-                MemoryStream = null;
-                Reader.Close();
-                Reader = null;
+                finally
+                {
+                    Reader.Close();
+                    Reader = null;
+                }
             }
         }
 
@@ -95,7 +96,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
                     && Index != 0x09 && Index != 0x20 && Index != 0x0D && Index != 0x0A)
                 {
                     int Code = (int)Index;
-                    Output.AppendFormat("={0}", Code.ToString("X2"));
+                    Output.AppendFormat("={0}", Code.ToString("X2",CultureInfo.InvariantCulture));
                 }
                 else
                 {
@@ -117,7 +118,8 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Stream">Input stream</param>
         /// <param name="CurrentLine">The current line</param>
-        protected void DecodeOneLine(Stream Stream,string CurrentLine)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.EndsWith(System.String,System.StringComparison)")]
+        protected static void DecodeOneLine(Stream Stream,string CurrentLine)
         {
             if (Stream == null)
                 throw new ArgumentNullException("Stream");
@@ -146,7 +148,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
                 }
                 Stream.WriteByte(CurrentByte);
             }
-            if (!CurrentLine.EndsWith("="))
+            if (!CurrentLine.EndsWith("=",StringComparison.InvariantCulture))
             {
                 Stream.WriteByte(0x0D);
                 Stream.WriteByte(0x0A);
@@ -158,7 +160,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Input">Input character</param>
         /// <returns>true if it is, false otherwise</returns>
-		protected bool IsHex(char Input)
+		protected static bool IsHex(char Input)
 		{
 			if((Input >= '0' && Input <= '9') || (Input >= 'A' && Input <= 'F') || (Input >= 'a' && Input <= 'f'))
 				return true;
@@ -171,41 +173,34 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>An encoded string</returns>
-		protected string FormatEncodedString(string Input)
-		{
-			string CurrentLine;
-			StringReader Reader = new StringReader(Input);
-			StringBuilder Builder = new StringBuilder();
-			try
-			{
+        protected static string FormatEncodedString(string Input)
+        {
+            string CurrentLine;
+            using (StringReader Reader = new StringReader(Input))
+            {
+                StringBuilder Builder = new StringBuilder();
                 CurrentLine = Reader.ReadLine();
-				while(!string.IsNullOrEmpty(CurrentLine))
-				{
+                while (!string.IsNullOrEmpty(CurrentLine))
+                {
                     int Index = MAX_CHAR_LEN;
-					int LastIndex = 0;
-					while(Index < CurrentLine.Length)
-					{
-						if(IsHex(CurrentLine[Index]) && IsHex(CurrentLine[Index-1]) && CurrentLine[Index-2] == '=')
-						{
-							Index -= 2;
-						}
-						Builder.Append(CurrentLine.Substring(LastIndex, Index - LastIndex));
-						Builder.Append("=\r\n");
+                    int LastIndex = 0;
+                    while (Index < CurrentLine.Length)
+                    {
+                        if (IsHex(CurrentLine[Index]) && IsHex(CurrentLine[Index - 1]) && CurrentLine[Index - 2] == '=')
+                        {
+                            Index -= 2;
+                        }
+                        Builder.Append(CurrentLine.Substring(LastIndex, Index - LastIndex));
+                        Builder.Append("=\r\n");
                         LastIndex = Index;
-						Index += MAX_CHAR_LEN;
-					}
-					Builder.Append(CurrentLine.Substring(LastIndex, CurrentLine.Length - LastIndex));
-					Builder.Append("\r\n");
-				}
-				return Builder.ToString();
-			}
-			finally
-			{
-				Reader.Close();
-				Reader=null;
-				Builder=null;
-			}
-		}
+                        Index += MAX_CHAR_LEN;
+                    }
+                    Builder.Append(CurrentLine.Substring(LastIndex, CurrentLine.Length - LastIndex));
+                    Builder.Append("\r\n");
+                }
+                return Builder.ToString();
+            }
+        }
         
         /// <summary>
         /// Max char length

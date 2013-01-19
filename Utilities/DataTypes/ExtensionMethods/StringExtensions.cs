@@ -80,7 +80,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The StringBuilder passed in</returns>
         public static StringBuilder AppendLineFormat(this StringBuilder Builder, string Format, params object[] Objects)
         {
-            return Builder.AppendFormat(Format, Objects).AppendLine();
+            return Builder.AppendFormat(CultureInfo.InvariantCulture, Format, Objects).AppendLine();
         }
 
         #endregion
@@ -359,6 +359,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Value1">Value 1</param>
         /// <param name="Value2">Value 2</param>
         /// <returns>The Levenshtein distance</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body")]
         public static int LevenshteinDistance(this string Value1, string Value2)
         {
             int[,] Matrix = new int[Value1.Length + 1, Value2.Length + 1];
@@ -436,7 +437,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string NextSequence(this string Sequence, char Min = ' ', char Max = '~')
         {
             byte[] Values = Sequence.ToByteArray();
-            byte MinValue = (byte)Min;
             byte MaxValue = (byte)Max;
             byte Remainder = 1;
             for (int x = Sequence.Length - 1; x >= 0; --x)
@@ -703,7 +703,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             {
                 if (InputChars[x] != ' ' && InputChars[x] != '\t')
                 {
-                    InputChars[x] = char.ToUpper(InputChars[x]);
+                    InputChars[x] = char.ToUpper(InputChars[x], CultureInfo.InvariantCulture);
                     break;
                 }
             }

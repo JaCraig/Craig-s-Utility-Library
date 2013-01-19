@@ -19,9 +19,9 @@ namespace Utilities.SQL.MicroORM
         /// <param name="Reader">Reader to copy from</param>
         public CacheTables(IDataReader Reader)
         {
-            if (Reader is CacheTables)
+            CacheTables Temp = Reader as CacheTables;
+            if (Temp!=null)
             {
-                CacheTables Temp = Reader as CacheTables;
                 this.Tables = Temp.Tables;
                 CurrentTable = Tables.FirstOrDefault();
                 CurrentRow = CurrentTable[0];
@@ -198,7 +198,25 @@ namespace Utilities.SQL.MicroORM
         /// </summary>
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected virtual void Dispose(bool Disposing)
+        {
+            
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~CacheTables()
+        {
+            Dispose(false);
         }
 
         /// <summary>

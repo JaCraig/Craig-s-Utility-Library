@@ -43,6 +43,7 @@ namespace Utilities.Media.Image.Procedural
         /// <param name="NumberOfPoints">Number of points</param>
         /// <param name="Seed">Random seed</param>
         /// <returns>Returns an image of a cellular texture</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body")]
         public static Bitmap Generate(int Width, int Height, int NumberOfPoints, int Seed)
         {
             float[,] DistanceBuffer = new float[Width, Height];
@@ -69,10 +70,11 @@ namespace Utilities.Media.Image.Procedural
             return ReturnValue;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "2#")]
         private static float GetHeight(float X, float Y, float[,] DistanceBuffer,
             float MinimumDistance, float MaxDistance)
         {
-            return (DistanceBuffer[(int)X, (int)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);
+            return (DistanceBuffer[(int)X,(int)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);
         }
 
         #endregion

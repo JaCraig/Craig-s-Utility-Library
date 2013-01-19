@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Math.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Math
@@ -125,7 +126,7 @@ namespace Utilities.Math
         /// <returns>The fraction as a string</returns>
         public override string ToString()
         {
-            return string.Format("{0}/{1}", Numerator, Denominator);
+            return string.Format(CultureInfo.InvariantCulture, "{0}/{1}", Numerator, Denominator);
         }
 
         #endregion

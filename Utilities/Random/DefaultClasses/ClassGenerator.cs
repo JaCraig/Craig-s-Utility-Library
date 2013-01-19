@@ -22,7 +22,6 @@ namespace Utilities.Random.DefaultClasses
         {
             T ReturnItem = new T();
             System.Type ObjectType = typeof(T);
-            System.Type[] Interfaces = ObjectType.GetInterfaces();
             foreach (PropertyInfo Property in ObjectType.GetProperties())
             {
                 GeneratorAttributeBase Attribute = Property.GetAttribute<GeneratorAttributeBase>();

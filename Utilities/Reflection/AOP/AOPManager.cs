@@ -228,7 +228,7 @@ namespace Utilities.Reflection.AOP
 
         #region Private Functions
 
-        private void SetupMethod(Type BaseType, IMethodBuilder Method, IPropertyBuilder AspectusStarting,
+        private static void SetupMethod(Type BaseType, IMethodBuilder Method, IPropertyBuilder AspectusStarting,
             IPropertyBuilder AspectusEnding, IPropertyBuilder AspectusException, MethodInfo BaseMethod)
         {
             if (BaseMethod == null)
@@ -264,7 +264,7 @@ namespace Utilities.Reflection.AOP
                 Method.Return();
         }
 
-        private void SetupException(IMethodBuilder Method, Utilities.Reflection.Emit.Commands.Catch Catch, IPropertyBuilder AspectusException)
+        private static void SetupException(IMethodBuilder Method, Utilities.Reflection.Emit.Commands.Catch Catch, IPropertyBuilder AspectusException)
         {
             VariableBase ExceptionArgs = Method.NewObj(typeof(Utilities.Reflection.AOP.EventArgs.Exception).GetConstructor(new Type[0]));
             ExceptionArgs.Call(typeof(Utilities.Reflection.AOP.EventArgs.Exception).GetProperty("InternalException").GetSetMethod(), new object[] { Catch.Exception });
@@ -278,7 +278,7 @@ namespace Utilities.Reflection.AOP
             Method.Call(null, TempMethod, new object[] { AspectusException, IEventsThis, ExceptionArgs });
         }
 
-        private void SetupEnd(IMethodBuilder Method, VariableBase ReturnValue, IPropertyBuilder AspectusEnding)
+        private static void SetupEnd(IMethodBuilder Method, VariableBase ReturnValue, IPropertyBuilder AspectusEnding)
         {
             VariableBase EndingArgs = Method.NewObj(typeof(Ending).GetConstructor(new Type[0]));
             EndingArgs.Call(typeof(Ending).GetProperty("MethodName").GetSetMethod(), new object[] { Method.Name });
@@ -316,7 +316,7 @@ namespace Utilities.Reflection.AOP
             }
         }
 
-        private void SetupStart(IMethodBuilder Method, System.Reflection.Emit.Label EndLabel,
+        private static void SetupStart(IMethodBuilder Method, System.Reflection.Emit.Label EndLabel,
             VariableBase ReturnValue, IPropertyBuilder AspectusStarting)
         {
             VariableBase StartingArgs = Method.NewObj(typeof(Starting).GetConstructor(new Type[0]));

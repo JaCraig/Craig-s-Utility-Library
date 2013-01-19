@@ -28,28 +28,24 @@ using Xunit;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 
-namespace UnitTests.DataTypes.ExtensionMethods
+namespace UnitTests.DataTypes.Patterns
 {
-    public class ArrayExtensions
+    public class SafeDisposableBaseClass
     {
         [Fact]
-        public void ClearTest()
+        public void DisposeTest()
         {
-            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
-            TestObject=TestObject.Clear();
-            foreach (int Item in TestObject)
-                Assert.Equal(0, Item);
+            Assert.DoesNotThrow(() => { using (SafeDisposableClass TestObject = new SafeDisposableClass()) { } });
         }
 
-        [Fact]
-        public void CombineTest()
+        private class SafeDisposableClass : Utilities.DataTypes.Patterns.SafeDisposableBaseClass
         {
-            int[] TestObject1 = new int[] { 1, 2, 3 };
-            int[] TestObject2 = new int[] { 4, 5, 6 };
-            int[] TestObject3 = new int[] { 7, 8, 9 };
-            TestObject1 = TestObject1.Combine(TestObject2, TestObject3);
-            for (int x = 0; x < 8; ++x)
-                Assert.Equal(x + 1, TestObject1[x]);
+            public SafeDisposableClass() : base() { }
+
+            protected override void Dispose(bool Managed)
+            {
+                
+            }
         }
     }
 }

@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes.Comparison;
+using System.Globalization;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -459,6 +460,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static DataTable ToDataTable<T>(this IEnumerable<T> List, params string[] Columns)
         {
             DataTable ReturnValue = new DataTable();
+            ReturnValue.Locale = CultureInfo.CurrentCulture;
             if (List.IsNullOrEmpty())
                 return ReturnValue;
             PropertyInfo[] Properties = typeof(T).GetProperties();

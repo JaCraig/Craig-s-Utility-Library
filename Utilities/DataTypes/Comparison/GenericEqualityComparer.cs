@@ -54,11 +54,13 @@ namespace Utilities.DataTypes.Comparison
             }
             if (x.GetType() != y.GetType())
                 return false;
-            if (x is IEnumerable && y is IEnumerable)
+            IEnumerable IEnumerablex = x as IEnumerable;
+            IEnumerable IEnumerabley = y as IEnumerable;
+            if (IEnumerablex != null && IEnumerabley!=null)
             {
                 GenericEqualityComparer<object> Comparer = new GenericEqualityComparer<object>();
-                IEnumerator XEnumerator = ((IEnumerable)x).GetEnumerator();
-                IEnumerator YEnumerator = ((IEnumerable)y).GetEnumerator();
+                IEnumerator XEnumerator = IEnumerablex.GetEnumerator();
+                IEnumerator YEnumerator = IEnumerabley.GetEnumerator();
                 while (true)
                 {
                     bool XFinished = !XEnumerator.MoveNext();
@@ -69,12 +71,15 @@ namespace Utilities.DataTypes.Comparison
                         return false;
                 }
             }
-            if (x is IEquatable<T>)
-                return ((IEquatable<T>)x).Equals(y);
-            if (x is IComparable<T>)
-                return ((IComparable<T>)x).CompareTo(y) == 0;
-            if (x is IComparable)
-                return ((IComparable)x).CompareTo(y) == 0;
+            IEqualityComparer<T> TempEquality = x as IEqualityComparer<T>;
+            if (TempEquality != null)
+                return TempEquality.Equals(y);
+            IComparable<T> TempComparable = x as IComparable<T>;
+            if (TempComparable != null)
+                return TempComparable.CompareTo(y) == 0;
+            IComparable TempComparable2 = x as IComparable;
+            if (TempComparable2 != null)
+                return TempComparable2.CompareTo(y) == 0;
             return x.Equals(y);
         }
 

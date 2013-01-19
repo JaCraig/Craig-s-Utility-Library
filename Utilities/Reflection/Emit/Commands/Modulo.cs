@@ -24,6 +24,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -43,15 +44,17 @@ namespace Utilities.Reflection.Emit.Commands
         public Modulo(object LeftHandSide, object RightHandSide)
             : base()
         {
-            if (!(LeftHandSide is VariableBase))
+            VariableBase TempLeftHandSide = LeftHandSide as VariableBase;
+            VariableBase TempRightHandSide = RightHandSide as VariableBase;
+            if (TempLeftHandSide == null)
                 this.LeftHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(LeftHandSide);
             else
-                this.LeftHandSide = (VariableBase)LeftHandSide;
-            if (!(RightHandSide is VariableBase))
+                this.LeftHandSide = TempLeftHandSide;
+            if (TempRightHandSide == null)
                 this.RightHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(RightHandSide);
             else
-                this.RightHandSide = (VariableBase)RightHandSide;
-            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("ModuloLocalResult" + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(),
+                this.RightHandSide = TempRightHandSide;
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("ModuloLocalResult" + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(CultureInfo.InvariantCulture),
                 this.LeftHandSide.DataType);
         }
 

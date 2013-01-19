@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Text;
 using System.Xml;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.OPMLHelper
@@ -72,11 +73,11 @@ namespace Utilities.FileFormats.OPMLHelper
                         }
                         else if (Child.Name.Equals("dateCreated", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            DateCreated = DateTime.Parse(Child.InnerText);
+                            DateCreated = DateTime.Parse(Child.InnerText, CultureInfo.InvariantCulture);
                         }
                         else if (Child.Name.Equals("dateModified", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            DateModified = DateTime.Parse(Child.InnerText);
+                            DateModified = DateTime.Parse(Child.InnerText, CultureInfo.InvariantCulture);
                         }
                         else if (Child.Name.Equals("docs", StringComparison.CurrentCultureIgnoreCase))
                         {
@@ -133,8 +134,8 @@ namespace Utilities.FileFormats.OPMLHelper
             StringBuilder HeadString = new StringBuilder();
             HeadString.Append("<head>");
             HeadString.Append("<title>" + Title + "</title>\r\n");
-            HeadString.Append("<dateCreated>" + DateCreated.ToString("R") + "</dateCreated>\r\n");
-            HeadString.Append("<dateModified>" + DateModified.ToString("R") + "</dateModified>\r\n");
+            HeadString.Append("<dateCreated>" + DateCreated.ToString("R", CultureInfo.InvariantCulture) + "</dateCreated>\r\n");
+            HeadString.Append("<dateModified>" + DateModified.ToString("R", CultureInfo.InvariantCulture) + "</dateModified>\r\n");
             HeadString.Append("<ownerName>" + OwnerName + "</ownerName>\r\n");
             HeadString.Append("<ownerEmail>" + OwnerEmail + "</ownerEmail>\r\n");
             HeadString.Append("<docs>" + Docs + "</docs>\r\n");

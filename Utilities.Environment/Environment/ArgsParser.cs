@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 #endregion
 
@@ -44,7 +45,7 @@ namespace Utilities.Environment
             if (string.IsNullOrEmpty(OptionStarter))
                 throw new ArgumentNullException("OptionStarter");
             this.OptionStarter = OptionStarter;
-            OptionRegex = new Regex(string.Format(@"(?<Command>{0}[^\s]+)[\s|\S|$](?<Parameter>""[^""]*""|[^""{0}]*)", OptionStarter));
+            OptionRegex = new Regex(string.Format(CultureInfo.InvariantCulture, @"(?<Command>{0}[^\s]+)[\s|\S|$](?<Parameter>""[^""]*""|[^""{0}]*)", OptionStarter));
         }
 
         #endregion
@@ -56,6 +57,7 @@ namespace Utilities.Environment
         /// </summary>
         /// <param name="Args">Args to parse</param>
         /// <returns>A list of options</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public virtual IEnumerable<Option> Parse(string[] Args)
         {
             if (Args == null)
@@ -72,7 +74,7 @@ namespace Utilities.Environment
             string Option = "";
             foreach (Match OptionMatch in Matches)
             {
-                if (OptionMatch.Value.StartsWith(OptionStarter) && !string.IsNullOrEmpty(Option))
+                if (OptionMatch.Value.StartsWith(OptionStarter, StringComparison.InvariantCulture) && !string.IsNullOrEmpty(Option))
                 {
                     Result.Add(new Option(Option, OptionStarter));
                     Option = "";

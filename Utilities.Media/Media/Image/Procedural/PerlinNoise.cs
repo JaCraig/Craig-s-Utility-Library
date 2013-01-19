@@ -48,6 +48,7 @@ namespace Utilities.Media.Image.Procedural
         /// <param name="Octaves">Octaves</param>
         /// <param name="Seed">Random seed</param>
         /// <returns>An image containing perlin noise</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Generate(int Width, int Height, int MaxRGBValue, int MinRGBValue,
             float Frequency, float Amplitude, float Persistance, int Octaves, int Seed)
         {
@@ -70,6 +71,7 @@ namespace Utilities.Media.Image.Procedural
             return ReturnValue;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "8#")]
         private static float GetValue(int X, int Y, int Width, int Height, float Frequency, float Amplitude,
             float Persistance, int Octaves, float[,] Noise)
         {
@@ -84,6 +86,7 @@ namespace Utilities.Media.Image.Procedural
             return FinalValue;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "4#")]
         private static float GetSmoothNoise(float X, float Y, int Width, int Height, float[,] Noise)
         {
             float FractionX = X - (int)X;
@@ -102,6 +105,7 @@ namespace Utilities.Media.Image.Procedural
             return FinalValue;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Return")]
         private static float[,] GenerateNoise(int Seed, int Width, int Height)
         {
             float[,] Noise = new float[Width, Height];

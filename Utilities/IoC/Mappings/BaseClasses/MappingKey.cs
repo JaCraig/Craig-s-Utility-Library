@@ -57,11 +57,10 @@ namespace Utilities.IoC.Mappings.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is IMapping))
-                return false;
-            IMapping ObjectMapping = (IMapping)obj;
-            return ObjectMapping.AttributeType == AttributeType
-                && ObjectMapping.ServiceType == ServiceType;
+            IMapping Tempobj = obj as IMapping;
+            return Tempobj != null
+                && Tempobj.AttributeType == AttributeType
+                && Tempobj.ServiceType == ServiceType;
         }
 
         /// <summary>

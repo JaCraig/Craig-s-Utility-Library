@@ -96,7 +96,7 @@ namespace Utilities.ORM.Database
 
         #region SetupAuditTables
 
-        private void SetupAuditTables(IDatabase Key, SQL.DataClasses.Database TempDatabase)
+        private static void SetupAuditTables(IDatabase Key, SQL.DataClasses.Database TempDatabase)
         {
             if (!Key.Audit)
                 return;
@@ -110,7 +110,7 @@ namespace Utilities.ORM.Database
             TempDatabase.Tables.Add(TempTables);
         }
 
-        private SQL.DataClasses.Table SetupAuditTables(SQL.DataClasses.Table Table)
+        private static SQL.DataClasses.Table SetupAuditTables(SQL.DataClasses.Table Table)
         {
             SQL.DataClasses.Table AuditTable = new Utilities.SQL.DataClasses.Table(Table.Name + "Audit", Table.ParentDatabase);
             AuditTable.AddColumn("ID", DbType.Int32, 0, false, true, true, true, false, "", "", 0);
@@ -124,7 +124,7 @@ namespace Utilities.ORM.Database
 
         #region SetupDeleteTrigger
 
-        private void SetupDeleteTrigger(SQL.DataClasses.Table Table)
+        private static void SetupDeleteTrigger(SQL.DataClasses.Table Table)
         {
             StringBuilder Columns = new StringBuilder();
             StringBuilder Builder = new StringBuilder();
@@ -148,7 +148,7 @@ namespace Utilities.ORM.Database
 
         #region SetupInsertUpdateTrigger
 
-        private void SetupInsertUpdateTrigger(SQL.DataClasses.Table Table)
+        private static void SetupInsertUpdateTrigger(SQL.DataClasses.Table Table)
         {
             StringBuilder Columns = new StringBuilder();
             StringBuilder Builder = new StringBuilder();
@@ -300,7 +300,7 @@ namespace Utilities.ORM.Database
 
         #region SetupProperties
 
-        private void SetupProperties(SQL.DataClasses.Table Table, IMapping Mapping)
+        private static void SetupProperties(SQL.DataClasses.Table Table, IMapping Mapping)
         {
             Table.AddColumn(Mapping.IDProperty.FieldName,
                 Mapping.IDProperty.Type.ToDbType(),
@@ -336,7 +336,7 @@ namespace Utilities.ORM.Database
 
         #region SetupFunctions
 
-        private void SetupFunctions(SQL.DataClasses.Database Database)
+        private static void SetupFunctions(SQL.DataClasses.Database Database)
         {
             Database.AddFunction("Split", "CREATE FUNCTION dbo.Split(@List nvarchar(MAX),@SplitOn nvarchar(5)) RETURNS @ReturnValue table(Id int identity(1,1),Value nvarchar(200)) AS  BEGIN While (Charindex(@SplitOn,@List)>0) Begin Insert Into @ReturnValue (value) Select Value = ltrim(rtrim(Substring(@List,1,Charindex(@SplitOn,@List)-1))) Set @List = Substring(@List,Charindex(@SplitOn,@List)+len(@SplitOn),len(@List)) End Insert Into @ReturnValue (Value) Select Value = ltrim(rtrim(@List)) Return END");
         }

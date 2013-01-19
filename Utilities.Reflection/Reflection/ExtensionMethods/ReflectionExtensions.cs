@@ -229,6 +229,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// </summary>
         /// <param name="ObjectType">Type to get the name of</param>
         /// <returns>string name of the type</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.IndexOf(System.String,System.StringComparison)")]
         public static string GetName(this Type ObjectType)
         {
             if (ObjectType == null)
@@ -243,7 +244,7 @@ namespace Utilities.Reflection.ExtensionMethods
                 if (ObjectType.Name.Contains("`"))
                 {
                     Type[] GenericTypes = ObjectType.GetGenericArguments();
-                    Output.Append(ObjectType.Name.Remove(ObjectType.Name.IndexOf("`")))
+                    Output.Append(ObjectType.Name.Remove(ObjectType.Name.IndexOf("`", StringComparison.InvariantCulture)))
                         .Append("<");
                     string Seperator = "";
                     foreach (Type GenericType in GenericTypes)
@@ -427,9 +428,10 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The name of the property</returns>
         public static string GetPropertyName(this Expression Expression)
         {
-            if (!(Expression is MemberExpression))
+            MemberExpression TempExpression = Expression as MemberExpression;
+            if (TempExpression==null)
                 return "";
-            return ((MemberExpression)Expression).Expression.GetPropertyName() + ((MemberExpression)Expression).Member.Name + ".";
+            return TempExpression.Expression.GetPropertyName() + TempExpression.Member.Name + ".";
         }
 
         #endregion
@@ -780,11 +782,11 @@ namespace Utilities.Reflection.ExtensionMethods
                 throw new ArgumentNullException("Property");
             if (Value == null)
                 throw new ArgumentNullException("Value");
-            if(Property.PropertyType==typeof(string))
-                Value=Value.FormatToString(Format);
-            if(!Value.GetType().IsOfType(Property.PropertyType))
-                Value=Convert.ChangeType(Value,Property.PropertyType);
-            Property.SetValue(Object, Value, null);
+            if (Property.PropertyType == typeof(string))
+                Value = Value.FormatToString(Format);
+            //if(!Value.GetType().IsOfType(Property.PropertyType))
+            //    Value=Convert.ChangeType(Value,Property.PropertyType);
+            Property.SetValue(Object, Value.TryTo(Property.PropertyType, null), null);
             return Object;
         }
 

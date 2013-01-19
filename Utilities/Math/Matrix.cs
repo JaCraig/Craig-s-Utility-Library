@@ -56,21 +56,21 @@ namespace Utilities.Math
         /// <summary>
         /// Width of the matrix
         /// </summary>
-        [XmlElement]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body"), XmlElement]
         public virtual int Width
         {
             get { return _Width; }
-            set { _Width = value; Values = new double[Width, Height]; }
+            set { _Width = value; Values = new double[Width,Height]; }
         }
 
         /// <summary>
         /// Height of the matrix
         /// </summary>
-        [XmlElement]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body"), XmlElement]
         public virtual int Height
         {
             get { return _Height; }
-            set { _Height = value; Values = new double[Width, Height]; }
+            set { _Height = value; Values = new double[Width,Height]; }
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Utilities.Math
         /// <summary>
         /// Values for the matrix
         /// </summary>
-        [XmlElement]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member"), XmlElement]
         public virtual double[,] Values { get; set; }
 
         #endregion
@@ -306,9 +306,8 @@ namespace Utilities.Math
         /// <returns>True if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Matrix)
-                return this == (Matrix)obj;
-            return false;
+            Matrix Tempobj = obj as Matrix;
+            return Tempobj != null && this == Tempobj;
         }
 
         /// <summary>

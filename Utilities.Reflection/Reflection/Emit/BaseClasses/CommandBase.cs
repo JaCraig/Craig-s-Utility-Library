@@ -48,7 +48,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
 
         #region Functions
 
-        private void SetupOpCodes()
+        private static void SetupOpCodes()
         {
             if (ConversionOpCodes == null)
             {

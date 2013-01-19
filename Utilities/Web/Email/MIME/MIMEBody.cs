@@ -46,7 +46,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Input">Body text</param>
         /// <param name="Header">Header of the message</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.IndexOf(System.String,System.Int32,System.StringComparison)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public MIMEBody(string Input,MIMEHeader Header)
         {
             if (string.IsNullOrEmpty(Input))
@@ -64,9 +64,9 @@ namespace Utilities.Web.Email.MIME
                 string BoundryStart = "--"+CurrentBoundry;
                 string BoundryEnd = BoundryStart+"--";
 
-                int StartIndex = Input.IndexOf(BoundryStart, 0);
+                int StartIndex = Input.IndexOf(BoundryStart, 0, StringComparison.InvariantCulture);
                 if (StartIndex == -1) return;
-                int EndIndex = Input.IndexOf(BoundryEnd, 0);
+                int EndIndex = Input.IndexOf(BoundryEnd, 0, StringComparison.InvariantCulture);
                 if (EndIndex == -1) EndIndex = Input.Length;
 
                 Content = Input.Substring(0, StartIndex);
@@ -75,7 +75,7 @@ namespace Utilities.Web.Email.MIME
                     StartIndex += BoundryStart.Length + 2;
                     if (StartIndex >= EndIndex)
                         break;
-                    int TempIndex = Input.IndexOf(BoundryStart, StartIndex);
+                    int TempIndex = Input.IndexOf(BoundryStart, StartIndex, StringComparison.InvariantCulture);
                     if (TempIndex != -1)
                     {
                         Boundries.Add(new MIMEMessage(Input.Substring(StartIndex, TempIndex - StartIndex)));
@@ -112,7 +112,8 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Header">Header of the message</param>
         /// <returns>The media type</returns>
-        private MediaEnum GetMediaType(MIMEHeader Header)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Equals(System.String,System.StringComparison)")]
+        private static MediaEnum GetMediaType(MIMEHeader Header)
         {
             string ContentType = GetContentType(Header);
             int x=0;
@@ -132,7 +133,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Header">Header of the message</param>
         /// <returns>A string containing the content type</returns>
-        private string GetContentType(MIMEHeader Header)
+        private static string GetContentType(MIMEHeader Header)
         {
             if (Header != null && Header[Constants.ContentType] != null && Header[Constants.ContentType].Attributes.Count > 0)
             {
@@ -158,7 +159,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Header">Header of the message</param>
         /// <returns>A string containing the boundary marker</returns>
-        private string GetBoundryMarker(MIMEHeader Header)
+        private static string GetBoundryMarker(MIMEHeader Header)
         {
             return Header[Constants.ContentType][Constants.Boundary];
         }

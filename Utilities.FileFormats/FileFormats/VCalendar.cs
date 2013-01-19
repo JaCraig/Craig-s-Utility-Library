@@ -25,6 +25,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats
@@ -106,7 +107,7 @@ namespace Utilities.FileFormats
 
         #region Private Functions
 
-        private string StripHTML(string HTML)
+        private static string StripHTML(string HTML)
         {
             if (string.IsNullOrEmpty(HTML))
                 return string.Empty;
@@ -116,7 +117,7 @@ namespace Utilities.FileFormats
             return HTML.Replace("&#160;", string.Empty);
         }
 
-        private bool ContainsHTML(string Input)
+        private static bool ContainsHTML(string Input)
         {
             if (string.IsNullOrEmpty(Input))
                 return false;
@@ -138,12 +139,12 @@ namespace Utilities.FileFormats
             return new StringBuilder().AppendLine("BEGIN:VCALENDAR")
                       .AppendLine("VERSION:1.0")
                       .AppendLine("BEGIN:VEVENT")
-                      .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss"))
-                      .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss"))
+                      .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture))
+                      .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture))
                       .AppendLineFormat("Location;ENCODING=QUOTED-PRINTABLE:{0}", Location)
                       .AppendLineFormat("SUMMARY;ENCODING=QUOTED-PRINTABLE:{0}", Subject)
                       .AppendLineFormat("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:{0}", Description)
-                      .AppendLineFormat("UID:{0}{1}{2}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss"), CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss"), Subject)
+                      .AppendLineFormat("UID:{0}{1}{2}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture), CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture), Subject)
                       .AppendLine("PRIORITY:3")
                       .AppendLine("End:VEVENT")
                       .AppendLine("End:VCALENDAR")
@@ -164,14 +165,14 @@ namespace Utilities.FileFormats
                       .AppendLine("VERSION:2.0")
                       .AppendLine("BEGIN:VEVENT")
                       .AppendLine("CLASS:PUBLIC")
-                      .AppendLineFormat("DTSTAMP:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
-                      .AppendLineFormat("CREATED:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
+                      .AppendLineFormat("DTSTAMP:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
+                      .AppendLineFormat("CREATED:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
                       .AppendLine(StripHTML(Description.Replace("<br />", "\\n")))
-                      .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmssZ"))
-                      .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmssZ"))
+                      .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
+                      .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
                       .AppendLineFormat("LOCATION:{0}", Location)
                       .AppendLineFormat("SUMMARY;LANGUAGE=en-us:{0}", Subject)
-                      .AppendLineFormat("UID:{0}{1}{2}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmssZ"), CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmssZ"), Subject);
+                      .AppendLineFormat("UID:{0}{1}{2}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture), CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture), Subject);
             if (AttendeeList.Count > 0)
                 FileOutput.AppendLineFormat("ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=\"{0}\":MAILTO:{0}", AttendeeList.ToString());
             if (Organizer != null)
@@ -187,7 +188,7 @@ namespace Utilities.FileFormats
             return FileOutput.AppendLine("SEQUENCE:1")
                              .AppendLine("PRIORITY:5")
                              .AppendLine("CLASS:")
-                             .AppendLineFormat("LAST-MODIFIED:{0}",DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
+                             .AppendLineFormat("LAST-MODIFIED:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
                              .AppendLine("STATUS:CONFIRMED")
                              .AppendLine("TRANSP:OPAQUE")
                              .AppendLineFormat("X-MICROSOFT-CDO-BUSYSTATUS:{0}",Status)
@@ -196,8 +197,8 @@ namespace Utilities.FileFormats
                              .AppendLine("X-MICROSOFT-CDO-ALLDAYEVENT:FALSE")
                              .AppendLine("X-MICROSOFT-CDO-IMPORTANCE:1")
                              .AppendLine("X-MICROSOFT-CDO-OWNERAPPTID:-1")
-                             .AppendLineFormat("X-MICROSOFT-CDO-ATTENDEE-CRITICAL-CHANGE:{0}",DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
-                             .AppendLineFormat("X-MICROSOFT-CDO-OWNER-CRITICAL-CHANGE:{0}",DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"))
+                             .AppendLineFormat("X-MICROSOFT-CDO-ATTENDEE-CRITICAL-CHANGE:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
+                             .AppendLineFormat("X-MICROSOFT-CDO-OWNER-CRITICAL-CHANGE:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
                              .AppendLine("BEGIN:VALARM")
                              .AppendLine("TRIGGER;RELATED=START:-PT00H15M00S")
                              .AppendLine("ACTION:DISPLAY")
@@ -219,25 +220,25 @@ namespace Utilities.FileFormats
             Output.Append("<div class=\"vevent\">")
                   .Append("<div class=\"summary\">").Append(Subject).Append("</div>")
                   .Append("<div>Date: <abbr class=\"dtstart\" title=\"")
-                  .Append(StartTime.ToString("MM-dd-yyyy hh:mm tt")).Append("\">")
-                  .Append(StartTime.ToString("MMMM dd, yyyy hh:mm tt")).Append("</abbr> to ")
-                  .Append("<abbr class=\"dtend\" title=\"").Append(EndTime.ToString("MM-dd-yyyy hh:mm tt"))
+                  .Append(StartTime.ToString("MM-dd-yyyy hh:mm tt", CultureInfo.InvariantCulture)).Append("\">")
+                  .Append(StartTime.ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.InvariantCulture)).Append("</abbr> to ")
+                  .Append("<abbr class=\"dtend\" title=\"").Append(EndTime.ToString("MM-dd-yyyy hh:mm tt", CultureInfo.InvariantCulture))
                   .Append("\">");
             if (EndTime.Year != StartTime.Year)
             {
-                Output.Append(EndTime.ToString("MMMM dd, yyyy hh:mm tt"));
+                Output.Append(EndTime.ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.CurrentCulture));
             }
             else if (EndTime.Month != StartTime.Month)
             {
-                Output.Append(EndTime.ToString("MMMM dd hh:mm tt"));
+                Output.Append(EndTime.ToString("MMMM dd hh:mm tt", CultureInfo.CurrentCulture));
             }
             else if (EndTime.Day != StartTime.Day)
             {
-                Output.Append(EndTime.ToString("dd hh:mm tt"));
+                Output.Append(EndTime.ToString("dd hh:mm tt", CultureInfo.CurrentCulture));
             }
             else
             {
-                Output.Append(EndTime.ToString("hh:mm tt"));
+                Output.Append(EndTime.ToString("hh:mm tt", CultureInfo.CurrentCulture));
             }
             return Output.Append("</abbr></div>")
                          .Append("<div>Location: <span class=\"location\">").Append(Location).Append("</span></div>")

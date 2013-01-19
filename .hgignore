@@ -15,3 +15,5 @@ Utilities/CraigsUtilityLibrary.3.0.nupkg
 *.nupkg
 .git/*
 ct.ignore
+UnitTests.Lite/bin/*
+UnitTests.Lite/obj/*

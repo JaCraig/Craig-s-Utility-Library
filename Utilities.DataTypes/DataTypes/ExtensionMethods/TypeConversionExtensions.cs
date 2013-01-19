@@ -28,6 +28,7 @@ using System.Data.SqlClient;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
+using System.Globalization;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -89,6 +90,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Type">.Net Type</param>
         /// <returns>The corresponding DbType</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public static DbType ToDbType(this Type Type)
         {
             if (Type.IsEnum) return Enum.GetUnderlyingType(Type).ToDbType();
@@ -309,7 +311,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 if(ResultType.IsEnum)
                     return System.Enum.Parse(ResultType, ObjectValue, true);
                 if ((Object as IConvertible).IsNotNull())
-                    return Convert.ChangeType(Object, ResultType);
+                    return Convert.ChangeType(Object, ResultType, CultureInfo.InvariantCulture);
                 TypeConverter Converter = TypeDescriptor.GetConverter(ObjectType);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Object, ResultType);

@@ -89,7 +89,7 @@ namespace Utilities.Environment.DataTypes
             {
                 const uint HKEY_LOCAL_MACHINE = unchecked((uint)0x80000002);
                 object[] Args = new object[] { HKEY_LOCAL_MACHINE, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", null };
-                uint MethodValue = (uint)Registry.InvokeMethod("EnumKey", Args);
+                Registry.InvokeMethod("EnumKey", Args);
                 string[] Keys = Args[2] as String[];
                 using (ManagementBaseObject MethodParams = Registry.GetMethodParameters("GetStringValue"))
                 {

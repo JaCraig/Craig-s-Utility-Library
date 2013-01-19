@@ -28,6 +28,7 @@ namespace Utilities.Web.Email.MIME
     /// <summary>
     /// Media type struct
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes")]
     public struct MediaType
     {
         /// <summary>

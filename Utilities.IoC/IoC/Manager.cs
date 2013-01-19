@@ -59,6 +59,7 @@ namespace Utilities.IoC
         /// Loads all mapping modules found within the assembly
         /// </summary>
         /// <param name="ModuleAssembly">Module assembly</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public void Setup(Assembly ModuleAssembly)
         {
             ProviderManager.Setup(ModuleAssembly);
@@ -89,6 +90,7 @@ namespace Utilities.IoC
         /// </summary>
         /// <typeparam name="ServiceType">Service type</typeparam>
         /// <returns>An object of the specified type</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public ServiceType Get<ServiceType>()
         {
             return (ServiceType)Get(typeof(ServiceType));
@@ -110,7 +112,7 @@ namespace Utilities.IoC
         /// </summary>
         /// <param name="ServiceType">Service type</param>
         /// <returns>An object of the specified type</returns>
-        public object Get(Type ServiceType)
+        public static object Get(Type ServiceType)
         {
             IMapping Mapping = MappingManager.GetMapping(ServiceType);
             if (Mapping.IsNull())
@@ -124,6 +126,7 @@ namespace Utilities.IoC
         /// <param name="ServiceType">Service type</param>
         /// <param name="AttributeType">Attribute type</param>
         /// <returns>An object of the specified type</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public object Get(Type ServiceType, Type AttributeType)
         {
             IMapping Mapping = MappingManager.GetMapping(ServiceType, AttributeType);

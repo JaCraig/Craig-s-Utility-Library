@@ -65,11 +65,12 @@ namespace Utilities.FileFormats.Zip
         /// Adds a folder to the zip file
         /// </summary>
         /// <param name="Folder">Folder to add</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.EndsWith(System.String,System.StringComparison)")]
         public virtual void AddFolder(string Folder)
         {
             Folder.ThrowIfNullOrEmpty("Folder");
             Folder = new DirectoryInfo(Folder).FullName;
-            if (Folder.EndsWith(@"\"))
+            if (Folder.EndsWith(@"\", StringComparison.InvariantCulture))
                 Folder = Folder.Remove(Folder.Length - 1);
             using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.OpenOrCreate))
             {
@@ -162,11 +163,21 @@ namespace Utilities.FileFormats.Zip
         #endregion
 
         #region IDisposable Members
-
+        
         /// <summary>
-        /// Disposes of the zip file
+        /// Disposes the object
         /// </summary>
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected virtual void Dispose(bool Disposing)
         {
             if (ZipFileStream != null)
             {
@@ -174,6 +185,14 @@ namespace Utilities.FileFormats.Zip
                 ZipFileStream.Dispose();
                 ZipFileStream = null;
             }
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~ZipFile()
+        {
+            Dispose(false);
         }
 
         #endregion

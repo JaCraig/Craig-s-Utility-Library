@@ -29,6 +29,7 @@ using System.Text;
 using Utilities.Caching.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Environment.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Profiler
@@ -172,11 +173,30 @@ namespace Utilities.Profiler
         #region Dispose
 
         /// <summary>
-        /// Disposes of the object
+        /// Disposes the object
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            Stop();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected virtual void Dispose(bool Disposing)
+        {
+            if(Disposing)
+                Stop();
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Profiler()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -284,6 +304,7 @@ namespace Utilities.Profiler
         /// <summary>
         /// Compiles data, combining instances where appropriate
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         protected virtual void CompileData()
         {
             bool Continue = true;
@@ -399,11 +420,11 @@ namespace Utilities.Profiler
             StringBuilder Builder = new StringBuilder();
             if (Level == 0)
                 Builder.Append("<table><tr><th>Called From</th><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
-            Builder.AppendFormat("<tr><td>{0}</td><td>", CalledFrom);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<tr><td>{0}</td><td>", CalledFrom);
             if (Level == 0)
-                Builder.AppendFormat("{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, 0, 0, 0, 0, Times.Count);
+                Builder.AppendFormat(CultureInfo.InvariantCulture, "{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, 0, 0, 0, 0, Times.Count);
             else
-                Builder.AppendFormat("{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, Times.Sum(), Times.Max(), Times.Min(), string.Format("{0:0.##}", Times.Average()), Times.Count);
+                Builder.AppendFormat(CultureInfo.InvariantCulture, "{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, Times.Sum(), Times.Max(), Times.Min(), string.Format(CultureInfo.InvariantCulture, "{0:0.##}", Times.Average()), Times.Count);
             foreach (Profiler Child in Children)
             {
                 Builder.AppendLineFormat(Child.ToHTML());

@@ -27,6 +27,7 @@ using Utilities.Web.Google.BaseClasses;
 using Utilities.Web.Google.Enums;
 using Utilities.Web.Google.HelperClasses;
 using Utilities.Web.Google.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Google.StaticMaps
@@ -126,15 +127,16 @@ namespace Utilities.Web.Google.StaticMaps
         /// Converts the map data to a URL
         /// </summary>
         /// <returns>The map as a URL</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public override string ToString()
         {
-            string Result = "sensor=" + Sensor.ToString().ToLower().URLEncode()
+            string Result = "sensor=" + Sensor.ToString(CultureInfo.InvariantCulture).ToLower(CultureInfo.InvariantCulture).URLEncode()
                 + (Center.IsNull() ? "" : ("&center=" + Center.ToString().URLEncode()))
-                + "&zoom=" + Zoom.ToString().URLEncode()
-                + "&size=" + (Width.ToString() + "x" + Height.ToString()).URLEncode()
-                + "&scale=" + Scale.ToString().URLEncode()
-                + "&format=" + Format.ToString().ToLower().URLEncode()
-                + "&maptype=" + MapType.ToString().ToLower().URLEncode()
+                + "&zoom=" + Zoom.ToString(CultureInfo.InvariantCulture).URLEncode()
+                + "&size=" + (Width.ToString(CultureInfo.InvariantCulture) + "x" + Height.ToString(CultureInfo.InvariantCulture)).URLEncode()
+                + "&scale=" + Scale.ToString(CultureInfo.InvariantCulture).URLEncode()
+                + "&format=" + Format.ToString().ToLower(CultureInfo.InvariantCulture).URLEncode()
+                + "&maptype=" + MapType.ToString().ToLower(CultureInfo.InvariantCulture).URLEncode()
                 + (Language.IsNullOrEmpty() ? "" : "&language=" + Language.URLEncode())
                 + (Region.IsNullOrEmpty() ? "" : "&region=" + Region.URLEncode());
             foreach (Markers Marker in Markers)

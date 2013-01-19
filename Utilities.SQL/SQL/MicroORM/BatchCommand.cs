@@ -27,6 +27,8 @@ using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM.Interfaces;
+using System.Globalization;
+using System;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -253,6 +255,7 @@ namespace Utilities.SQL.MicroORM
         /// <summary>
         /// Batches the data
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         protected virtual void Batch()
         {
             Batched = true;
@@ -273,13 +276,13 @@ namespace Utilities.SQL.MicroORM
                                         "" :
                                         ParameterRegex.Replace(Command.SQLCommand, x =>
                                         {
-                                            if (!x.Value.StartsWith("@@"))
-                                                return x.Value + "Command" + Count.ToString();
+                                            if (!x.Value.StartsWith("@@", StringComparison.InvariantCulture))
+                                                return x.Value + "Command" + Count.ToString(CultureInfo.InvariantCulture);
                                             return x.Value;
                                         }) + System.Environment.NewLine;
                     foreach (IParameter Parameter in Command.Parameters)
                     {
-                        this.Parameters_.Add(Parameter.CreateCopy("Command" + Count.ToString()));
+                        this.Parameters_.Add(Parameter.CreateCopy("Command" + Count.ToString(CultureInfo.InvariantCulture)));
                     }
                 }
                 else

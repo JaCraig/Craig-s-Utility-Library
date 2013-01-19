@@ -45,6 +45,7 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         #region Private Variables
 
         private static T _Instance = null;
+        private static object Temp = 1;
 
         #endregion
 
@@ -59,13 +60,16 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
             {
                 if (_Instance == null)
                 {
-                    lock (typeof(T))
+                    lock (Temp)
                     {
-                        ConstructorInfo Constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
-                            null, new Type[0], null);
-                        if (Constructor == null || Constructor.IsAssembly)
-                            throw new InvalidOperationException("Constructor is not private or protected for type " + typeof(T).Name);
-                        _Instance = (T)Constructor.Invoke(null);
+                        if (_Instance == null)
+                        {
+                            ConstructorInfo Constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
+                                null, new Type[0], null);
+                            if (Constructor == null || Constructor.IsAssembly)
+                                throw new InvalidOperationException("Constructor is not private or protected for type " + typeof(T).Name);
+                            _Instance = (T)Constructor.Invoke(null);
+                        }
                     }
                 }
                 return _Instance;

@@ -124,6 +124,7 @@ namespace Utilities.Web.ExtensionMethods
             return MyString;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         private static string JavaScriptMinify(string Input)
         {
             string[] CodeLines = Input.Split(new string[] { System.Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -131,7 +132,7 @@ namespace Utilities.Web.ExtensionMethods
             foreach (string Line in CodeLines)
             {
                 string Temp = Line.Trim();
-                if (Temp.Length > 0 && !Temp.StartsWith("//"))
+                if (Temp.Length > 0 && !Temp.StartsWith("//", StringComparison.InvariantCulture))
                     Builder.AppendLine(Temp);
             }
 

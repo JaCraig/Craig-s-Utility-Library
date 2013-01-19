@@ -63,11 +63,12 @@ namespace Utilities.ORM.Aspect
         /// </summary>
         /// <param name="Method">Method builder to use</param>
         /// <param name="BaseType">Base type</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public void SetupStartMethod(Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType)
         {
             Method.SetCurrentMethod();
             if (ClassMappings.ContainsKey(BaseType)
-                && Method.Name.StartsWith("set_"))
+                && Method.Name.StartsWith("set_", StringComparison.InvariantCulture))
             {
                 foreach (IMapping Mapping in ClassMappings[BaseType])
                 {
@@ -90,11 +91,12 @@ namespace Utilities.ORM.Aspect
         /// <param name="Method">Method builder to use</param>
         /// <param name="BaseType">Base type</param>
         /// <param name="ReturnValue">Return value (if there is one)</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public void SetupEndMethod(Reflection.Emit.Interfaces.IMethodBuilder Method, Type BaseType, Reflection.Emit.BaseClasses.VariableBase ReturnValue)
         {
             Method.SetCurrentMethod();
             if (ClassMappings.ContainsKey(BaseType)
-                && Method.Name.StartsWith("get_"))
+                && Method.Name.StartsWith("get_", StringComparison.InvariantCulture))
             {
                 foreach (IMapping Mapping in ClassMappings[BaseType])
                 {
@@ -181,7 +183,7 @@ namespace Utilities.ORM.Aspect
         /// Creates the default constructor
         /// </summary>
         /// <param name="TypeBuilder">Type builder</param>
-        private void CreateConstructor(Reflection.Emit.TypeBuilder TypeBuilder)
+        private static void CreateConstructor(Reflection.Emit.TypeBuilder TypeBuilder)
         {
             IMethodBuilder Constructor = TypeBuilder.CreateConstructor();
             {
@@ -198,7 +200,7 @@ namespace Utilities.ORM.Aspect
         /// <param name="Name">Name of the property</param>
         /// <param name="PropertyType">Property type</param>
         /// <returns>The property builder</returns>
-        private IPropertyBuilder CreateProperty(Reflection.Emit.TypeBuilder TypeBuilder, string Name, Type PropertyType)
+        private static IPropertyBuilder CreateProperty(Reflection.Emit.TypeBuilder TypeBuilder, string Name, Type PropertyType)
         {
             return TypeBuilder.CreateDefaultProperty(Name, PropertyType, PropertyAttributes.SpecialName,
                 MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.Public,

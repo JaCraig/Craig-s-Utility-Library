@@ -52,7 +52,7 @@ namespace Utilities.ORM
 
         #region Functions
 
-        private void Setup(bool Profile, Assembly[] Assemblies)
+        private static void Setup(bool Profile, Assembly[] Assemblies)
         {
             MappingManager = new MappingManager(Assemblies);
             QueryProvider = new Default(Profile, Assemblies);
@@ -69,6 +69,7 @@ namespace Utilities.ORM
         /// Can be used to setup various bits of data that are normally created on the fly as the system is used.
         /// Also calls initialization code found in mappings.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public void Setup()
         {
             Utilities.Reflection.AOP.AOPManager Manager = new Reflection.AOP.AOPManager();

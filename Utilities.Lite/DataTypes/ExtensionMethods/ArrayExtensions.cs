@@ -21,7 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-
+using System.Diagnostics.Contracts;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -48,7 +49,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </example>
         public static Array Clear(this Array Array)
         {
-            if (Array.IsNull())
+            if (Array == null)
                 return null;
             System.Array.Clear(Array, 0, Array.Length);
             return Array;
@@ -73,47 +74,37 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region Combine
+        #region Concat
 
         /// <summary>
-        /// Combines two arrays and returns a new array containing both values
+        /// Combines multiple arrays together and returns a new array containing all of the values
         /// </summary>
-        /// <typeparam name="ArrayType">Type of the data in the array</typeparam>
+        /// <typeparam name="T">Type of the data in the arrays</typeparam>
         /// <param name="Array1">Array 1</param>
-        /// <param name="Array2">Array 2</param>
-        /// <returns>A new array containing both arrays' values</returns>
+        /// <param name="Additions">Arrays to concat onto the first item</param>
+        /// <returns>A new array containing all values</returns>
         /// <example>
         /// <code>
         ///  int[] TestObject1 = new int[] { 1, 2, 3 };
         ///  int[] TestObject2 = new int[] { 4, 5, 6 };
         ///  int[] TestObject3 = new int[] { 7, 8, 9 };
-        ///  TestObject1 = TestObject1.Combine(TestObject2, TestObject3);
+        ///  TestObject1 = TestObject1.Concat(TestObject2, TestObject3);
         /// </code>
         /// </example>
-        public static ArrayType[] Combine<ArrayType>(this ArrayType[] Array1, params ArrayType[][] Array2)
+        public static T[] Concat<T>(this T[] Array1, params T[][] Additions)
         {
-            if (Array1.IsNull() && Array2.IsNull())
-                return null;
-            int ResultLength = (Array1.IsNull() ? 0 : Array1.Length);
-            if (Array2.IsNotNull())
-                foreach (ArrayType[] Array in Array2)
-                    ResultLength += (Array.IsNull() ? 0 : Array.Length);
-            ArrayType[] ReturnValue = new ArrayType[ResultLength];
-            int StartPosition = 0;
-            if (Array1.IsNotNull())
+            Contract.Requires<ArgumentNullException>(Array1 != null, "Array1");
+            Contract.Requires<ArgumentNullException>(Additions != null, "Additions");
+            Contract.Requires<ArgumentNullException>(Contract.ForAll(Additions, x => x != null), "Additions");
+            T[] Result = new T[Array1.Length + Additions.Sum(x => x.Length)];
+            int Offset = Array1.Length;
+            Array.Copy(Array1, 0, Result, 0, Array1.Length);
+            for (int x = 0; x < Additions.Length; ++x)
             {
-                Array.Copy(Array1, ReturnValue, Array1.Length);
-                StartPosition = Array1.Length;
+                Array.Copy(Additions[x], 0, Result, Offset, Additions[x].Length);
+                Offset += Additions[x].Length;
             }
-            if (Array2.IsNotNull())
-            {
-                foreach (ArrayType[] TempArray in Array2)
-                {
-                    Array.Copy(TempArray, 0, ReturnValue, StartPosition, TempArray.Length);
-                    StartPosition += TempArray.Length;
-                }
-            }
-            return ReturnValue;
+            return Result;
         }
 
         #endregion

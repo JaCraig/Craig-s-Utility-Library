@@ -1,0 +1,315 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Utilities.Lite</name>
+  </assembly>
+  <members>
+    <member name="T:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions">
+      <summary>
+            IEnumerable extensions
+            </summary>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.Concat``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0}[])">
+      <summary>
+            Combines multiple IEnumerables together and returns a new IEnumerable containing all of the values
+            </summary>
+      <typeparam name="T">Type of the data in the IEnumerable</typeparam>
+      <param name="Enumerable1">IEnumerable 1</param>
+      <param name="Additions">IEnumerables to concat onto the first item</param>
+      <returns>A new IEnumerable containing all values</returns>
+      <example>
+        <code>
+             int[] TestObject1 = new int[] { 1, 2, 3 };
+             int[] TestObject2 = new int[] { 4, 5, 6 };
+             int[] TestObject3 = new int[] { 7, 8, 9 };
+             TestObject1 = TestObject1.Concat(TestObject2, TestObject3).ToArray();
+            </code>
+      </example>
+      <requires description="Enumerable1" exception="T:System.ArgumentNullException" csharp="Enumerable1 != null" vb="Enumerable1 &lt;&gt; Nothing">Enumerable1 != null</requires>
+      <exception cref="T:System.ArgumentNullException">Enumerable1 == null</exception>
+      <requires description="Additions" exception="T:System.ArgumentNullException" csharp="Additions != null" vb="Additions &lt;&gt; Nothing">Additions != null</requires>
+      <exception cref="T:System.ArgumentNullException">Additions == null</exception>
+      <requires description="Additions" exception="T:System.ArgumentNullException" csharp="for all x in Additions x != null" vb="for all x in Additions x &lt;&gt; Nothing">for all x in Additions x != null</requires>
+      <exception cref="T:System.ArgumentNullException">!(Contract.ForAll(Additions, x =&gt; x != null))</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.ElementsBetween``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
+      <summary>
+            Returns elements starting at the index and ending at the end index
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <param name="List">List to search</param>
+      <param name="Start">Start index (inclusive)</param>
+      <param name="End">End index (exclusive)</param>
+      <returns>The items between the start and end index</returns>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.For``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32,System.Action{``0})">
+      <summary>
+            Does an action for each item in the IEnumerable between the start and end indexes
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <param name="List">IEnumerable to iterate over</param>
+      <param name="Start">Item to start with</param>
+      <param name="End">Item to end with</param>
+      <param name="Action">Action to do</param>
+      <returns>The original list</returns>
+      <requires description="List" exception="T:System.ArgumentNullException" csharp="List != null" vb="List &lt;&gt; Nothing">List != null</requires>
+      <exception cref="T:System.ArgumentNullException">List == null</exception>
+      <requires description="Action" exception="T:System.ArgumentNullException" csharp="Action != null" vb="Action &lt;&gt; Nothing">Action != null</requires>
+      <exception cref="T:System.ArgumentNullException">Action == null</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.For``2(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32,System.Func{``0,``1})">
+      <summary>
+            Does a function for each item in the IEnumerable between the start and end indexes and returns an IEnumerable of the results
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <typeparam name="R">Return type</typeparam>
+      <param name="List">IEnumerable to iterate over</param>
+      <param name="Start">Item to start with</param>
+      <param name="End">Item to end with</param>
+      <param name="Function">Function to do</param>
+      <returns>The resulting list</returns>
+      <requires description="List" exception="T:System.ArgumentNullException" csharp="List != null" vb="List &lt;&gt; Nothing">List != null</requires>
+      <exception cref="T:System.ArgumentNullException">List == null</exception>
+      <requires description="Function" exception="T:System.ArgumentNullException" csharp="Function != null" vb="Function &lt;&gt; Nothing">Function != null</requires>
+      <exception cref="T:System.ArgumentNullException">Function == null</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+      <summary>
+            Does an action for each item in the IEnumerable
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <param name="List">IEnumerable to iterate over</param>
+      <param name="Action">Action to do</param>
+      <returns>The original list</returns>
+      <requires description="List" exception="T:System.ArgumentNullException" csharp="List != null" vb="List &lt;&gt; Nothing">List != null</requires>
+      <exception cref="T:System.ArgumentNullException">List == null</exception>
+      <requires description="Action" exception="T:System.ArgumentNullException" csharp="Action != null" vb="Action &lt;&gt; Nothing">Action != null</requires>
+      <exception cref="T:System.ArgumentNullException">Action == null</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.ForEach``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+      <summary>
+            Does a function for each item in the IEnumerable, returning a list of the results
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <typeparam name="R">Return type</typeparam>
+      <param name="List">IEnumerable to iterate over</param>
+      <param name="Function">Function to do</param>
+      <returns>The resulting list</returns>
+      <requires description="List" exception="T:System.ArgumentNullException" csharp="List != null" vb="List &lt;&gt; Nothing">List != null</requires>
+      <exception cref="T:System.ArgumentNullException">List == null</exception>
+      <requires description="Function" exception="T:System.ArgumentNullException" csharp="Function != null" vb="Function &lt;&gt; Nothing">Function != null</requires>
+      <exception cref="T:System.ArgumentNullException">Function == null</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.Last``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+      <summary>
+            Returns the last X number of items from the list
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <param name="List">IEnumerable to iterate over</param>
+      <param name="Count">Numbers of items to return</param>
+      <returns>The last X items from the list</returns>
+      <requires description="List" exception="T:System.ArgumentNullException" csharp="List != null" vb="List &lt;&gt; Nothing">List != null</requires>
+      <exception cref="T:System.ArgumentNullException">List == null</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.PositionOf``1(System.Collections.Generic.IEnumerable{``0},``0,System.Collections.Generic.IEqualityComparer{``0})">
+      <summary>
+            Determines the position of an object if it is present, otherwise it returns -1
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <param name="List">List of objects to search</param>
+      <param name="Object">Object to find the position of</param>
+      <param name="EqualityComparer">Equality comparer used to determine if the object is present</param>
+      <returns>The position of the object if it is present, otherwise -1</returns>
+      <requires description="List" exception="T:System.ArgumentNullException" csharp="List != null" vb="List &lt;&gt; Nothing">List != null</requires>
+      <exception cref="T:System.ArgumentNullException">List == null</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.Remove``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+      <summary>
+            Removes values from a list that meet the criteria set forth by the predicate
+            </summary>
+      <typeparam name="T">Value type</typeparam>
+      <param name="Value">List to cull items from</param>
+      <param name="Predicate">Predicate that determines what items to remove</param>
+      <returns>An IEnumerable with the objects that meet the criteria removed</returns>
+      <requires description="Predicate" exception="T:System.ArgumentNullException" csharp="new Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.&lt;&gt;c__DisplayClass4&lt;T&gt;(){
+    Predicate = Predicate, 
+}.Predicate != null" vb="(() =&gt; {
+    Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.&lt;&gt;c__DisplayClass4&lt;T&gt; local_0_prime = New Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.&lt;&gt;c__DisplayClass4(Of T)();
+    (local_0_prime.Predicate = Predicate)
+    return local_0_prime; })().Predicate &lt;&gt; Nothing">new Utilities.DataTypes.ExtensionMethods.IEnumerableExtensions.&lt;&gt;c__DisplayClass4&lt;T&gt;(){
+    Predicate = Predicate, 
+}.Predicate != null</requires>
+      <exception cref="T:System.ArgumentNullException">Predicate == null</exception>
+    </member>
+    <member name="T:Utilities.DataTypes.Comparison.GenericComparer`1">
+      <summary>
+            Generic IComparable class
+            </summary>
+      <typeparam name="T">Data type</typeparam>
+    </member>
+    <member name="M:Utilities.DataTypes.Comparison.GenericComparer`1.Compare(`0,`0)">
+      <summary>
+            Compares the two objects
+            </summary>
+      <param name="x">Object 1</param>
+      <param name="y">Object 2</param>
+      <returns>0 if they're equal, any other value they are not</returns>
+    </member>
+    <member name="T:Utilities.DataTypes.ExtensionMethods.ArrayExtensions">
+      <summary>
+            Array extensions
+            </summary>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.ArrayExtensions.Clear(System.Array)">
+      <summary>
+            Clears the array completely
+            </summary>
+      <param name="Array">Array to clear</param>
+      <returns>The final array</returns>
+      <example>
+        <code>
+             int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+             TestObject.Clear();
+            </code>
+      </example>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.ArrayExtensions.Clear``1(``0[])">
+      <summary>
+            Clears the array completely
+            </summary>
+      <param name="Array">Array to clear</param>
+      <typeparam name="ArrayType">Array type</typeparam>
+      <returns>The final array</returns>
+      <example>
+        <code>
+             int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+             TestObject.Clear();
+            </code>
+      </example>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.ArrayExtensions.Concat``1(``0[],``0[][])">
+      <summary>
+            Combines multiple arrays together and returns a new array containing all of the values
+            </summary>
+      <typeparam name="T">Type of the data in the arrays</typeparam>
+      <param name="Array1">Array 1</param>
+      <param name="Additions">Arrays to concat onto the first item</param>
+      <returns>A new array containing all values</returns>
+      <example>
+        <code>
+             int[] TestObject1 = new int[] { 1, 2, 3 };
+             int[] TestObject2 = new int[] { 4, 5, 6 };
+             int[] TestObject3 = new int[] { 7, 8, 9 };
+             TestObject1 = TestObject1.Concat(TestObject2, TestObject3);
+            </code>
+      </example>
+      <requires description="Array1" exception="T:System.ArgumentNullException" csharp="Array1 != null" vb="Array1 &lt;&gt; Nothing">Array1 != null</requires>
+      <exception cref="T:System.ArgumentNullException">Array1 == null</exception>
+      <requires description="Additions" exception="T:System.ArgumentNullException" csharp="Additions != null" vb="Additions &lt;&gt; Nothing">Additions != null</requires>
+      <exception cref="T:System.ArgumentNullException">Additions == null</exception>
+      <requires description="Additions" exception="T:System.ArgumentNullException" csharp="for all x in Additions x != null" vb="for all x in Additions x &lt;&gt; Nothing">for all x in Additions x != null</requires>
+      <exception cref="T:System.ArgumentNullException">!(Contract.ForAll(Additions, x =&gt; x != null))</exception>
+    </member>
+    <member name="T:Utilities.DataTypes.Comparison.GenericEqualityComparer`1">
+      <summary>
+            Generic equality comparer
+            </summary>
+      <typeparam name="T">Data type</typeparam>
+    </member>
+    <member name="M:Utilities.DataTypes.Comparison.GenericEqualityComparer`1.Equals(`0,`0)">
+      <summary>
+            Determines if the two items are equal
+            </summary>
+      <param name="x">Object 1</param>
+      <param name="y">Object 2</param>
+      <returns>True if they are, false otherwise</returns>
+    </member>
+    <member name="M:Utilities.DataTypes.Comparison.GenericEqualityComparer`1.GetHashCode(`0)">
+      <summary>
+            Get hash code
+            </summary>
+      <param name="obj">Object to get the hash code of</param>
+      <returns>The object's hash code</returns>
+    </member>
+    <member name="T:Utilities.DataTypes.ExtensionMethods.GenericObjectExtensions">
+      <summary>
+            Generic extensions dealing with objects
+            </summary>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.GenericObjectExtensions.Check``1(``0,System.Predicate{``0},``0)">
+      <summary>
+            Checks to see if the object meets all the criteria. If it does, it returns the object. If it does not, it returns the default object
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <param name="Object">Object to check</param>
+      <param name="DefaultValue">The default value to return</param>
+      <param name="Predicate">Predicate to check the object against</param>
+      <returns>The default object if it fails the criteria, the object otherwise</returns>
+      <requires description="Predicate" exception="T:System.ArgumentNullException" csharp="Predicate != null" vb="Predicate &lt;&gt; Nothing">Predicate != null</requires>
+      <exception cref="T:System.ArgumentNullException">Predicate == null</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.GenericObjectExtensions.Check``1(``0,System.Predicate{``0},System.Func{``0})">
+      <summary>
+            Checks to see if the object meets all the criteria. If it does, it returns the object. If it does not, it returns the default object
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <param name="Object">Object to check</param>
+      <param name="DefaultValue">The default value to return</param>
+      <param name="Predicate">Predicate to check the object against</param>
+      <returns>The default object if it fails the criteria, the object otherwise</returns>
+      <requires description="Predicate" exception="T:System.ArgumentNullException" csharp="Predicate != null" vb="Predicate &lt;&gt; Nothing">Predicate != null</requires>
+      <exception cref="T:System.ArgumentNullException">Predicate == null</exception>
+      <requires description="DefaultValue" exception="T:System.ArgumentNullException" csharp="DefaultValue != null" vb="DefaultValue &lt;&gt; Nothing">DefaultValue != null</requires>
+      <exception cref="T:System.ArgumentNullException">DefaultValue == null</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.GenericObjectExtensions.Is``1(``0,System.Predicate{``0}[])">
+      <summary>
+            Determines if the object passes the set of predicates passed in
+            </summary>
+      <typeparam name="T">Object type</typeparam>
+      <param name="Object">Object to test</param>
+      <param name="Predicates">Predicates to test</param>
+      <returns>True if the object passes all of the predicates, false otherwise</returns>
+      <requires description="Predicates" exception="T:System.ArgumentNullException" csharp="Predicates != null" vb="Predicates &lt;&gt; Nothing">Predicates != null</requires>
+      <exception cref="T:System.ArgumentNullException">Predicates == null</exception>
+      <requires description="Predicates" exception="T:System.ArgumentNullException" csharp="for all x in Predicates x != null" vb="for all x in Predicates x &lt;&gt; Nothing">for all x in Predicates x != null</requires>
+      <exception cref="T:System.ArgumentNullException">!(Contract.ForAll(Predicates, x =&gt; x != null))</exception>
+    </member>
+    <member name="M:Utilities.DataTypes.ExtensionMethods.GenericObjectExtensions.Is``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0})">
+      <summary>
+            Determines if the object is equal to a specific value
+            </summary>
+      <typeparam name="T" />
+      <param name="Object" />
+      <param name="ComparisonObject" />
+      <param name="Comparer" />
+      <returns />
+    </member>
+    <member name="T:Utilities.DataTypes.Patterns.SafeDisposableBaseClass">
+      <summary>
+            Base class used for disposable objects
+            </summary>
+    </member>
+    <member name="M:Utilities.DataTypes.Patterns.SafeDisposableBaseClass.#ctor">
+      <summary>
+            Construct
+            </summary>
+    </member>
+    <member name="M:Utilities.DataTypes.Patterns.SafeDisposableBaseClass.Dispose">
+      <summary>
+            Dispose function
+            </summary>
+    </member>
+    <member name="M:Utilities.DataTypes.Patterns.SafeDisposableBaseClass.Dispose(System.Boolean)">
+      <summary>
+            Function to override in order to dispose objects
+            </summary>
+      <param name="Managed">If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.</param>
+    </member>
+    <member name="M:Utilities.DataTypes.Patterns.SafeDisposableBaseClass.Finalize">
+      <summary>
+            Destructor
+            </summary>
+    </member>
+  </members>
+</doc>

@@ -401,6 +401,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </summary>
         /// <param name="Date">Date object</param>
         /// <returns>The local time zone</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "Date")]
         public static TimeZoneInfo LocalTimeZone(this DateTime Date)
         {
             return TimeZoneInfo.Local;

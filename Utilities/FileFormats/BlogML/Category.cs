@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -52,8 +53,8 @@ namespace Utilities.FileFormats.BlogML
             Element.ThrowIfNull("Element");
             ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
             REF = Element.Attributes["ref"] != null ? Element.Attributes["ref"].Value : "";
-            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value) : DateTime.Now;
-            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value) : DateTime.Now;
+            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
+            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
             ParentREF = Element.Attributes["parentref"] != null ? Element.Attributes["parentref"].Value : "";
             foreach (XmlNode Children in Element.ChildNodes)
             {
@@ -110,13 +111,13 @@ namespace Utilities.FileFormats.BlogML
             Builder.Append("<category ");
             if(REF.IsNullOrEmpty())
             {
-                Builder.AppendFormat("id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" parentref=\"{3}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), ParentREF);
-                Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
+                Builder.AppendFormat(CultureInfo.InvariantCulture, "id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" parentref=\"{3}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), DateModified.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), ParentREF);
+                Builder.AppendFormat(CultureInfo.InvariantCulture, "<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
                 Builder.AppendLine("</category>");
             }
             else
             {
-                Builder.AppendFormat("ref=\"{0}\" />\n",REF);
+                Builder.AppendFormat(CultureInfo.InvariantCulture, "ref=\"{0}\" />\n", REF);
             }
             return Builder.ToString();
         }

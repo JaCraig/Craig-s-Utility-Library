@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -53,8 +54,8 @@ namespace Utilities.FileFormats.BlogML
             ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
             Email = Element.Attributes["email"] != null ? Element.Attributes["email"].Value : "";
             REF = Element.Attributes["ref"] != null ? Element.Attributes["ref"].Value : "";
-            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value) : DateTime.Now;
-            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value) : DateTime.Now;
+            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
+            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
             foreach (XmlNode Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
@@ -110,8 +111,8 @@ namespace Utilities.FileFormats.BlogML
             Builder.Append("<author ");
             if (REF.IsNullOrEmpty())
             {
-                Builder.AppendFormat("id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" email=\"{3}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), Email);
-                Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
+                Builder.AppendFormat(CultureInfo.InvariantCulture, "id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" email=\"{3}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), DateModified.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), Email);
+                Builder.AppendFormat(CultureInfo.InvariantCulture, "<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
                 Builder.AppendLine("</author>");
             }
             else

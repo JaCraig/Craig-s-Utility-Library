@@ -47,9 +47,7 @@ namespace Utilities.SQL.MicroORM
         /// <param name="TableName">Table name</param>
         /// <param name="PrimaryKey">Primary key</param>
         /// <param name="AutoIncrement">Is the primary key set to auto increment?</param>
-        /// <param name="ParameterStarter">What the database expects as the
-        /// parameter starting string ("@" for SQL Server, ":" for Oracle, etc.)</param>
-        public Mapping(string TableName, string PrimaryKey, bool AutoIncrement = true, string ParameterStarter = "@")
+        public Mapping(string TableName, string PrimaryKey, bool AutoIncrement = true)
         {
             Mappings = new TypeMapping<ClassType, SQLHelper>();
             ParameterNames = new List<string>();

@@ -28,6 +28,7 @@ using System.Web.Mvc;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Validation.Rules.Enums;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -91,7 +92,7 @@ namespace Utilities.Validation.Rules
                 ComparisonTypeString = "less than or equal";
             else if (Type == ComparisonType.NotEqual)
                 ComparisonTypeString = "not equal";
-            return string.Format(ErrorMessageString, name, ComparisonTypeString, Value.ToString());
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, ComparisonTypeString, Value.ToString());
         }
 
         /// <summary>

@@ -51,6 +51,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="FileName">Location to save the image to (optional)</param>
         /// <param name="Amount">Amount of noise to add (defaults to 10)</param>
         /// <returns>New image object with the noise added</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap AddNoise(this Bitmap OriginalImage, int Amount = 10, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -125,6 +126,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Value">Used to set the contrast (-100 to 100)</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap AdjustContrast(this Bitmap OriginalImage, float Value = 0, string FileName = "")
         {
             if (OriginalImage == null)
@@ -176,6 +178,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Value">Used to build the gamma ramp (usually .2 to 5)</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap AdjustGamma(this Bitmap OriginalImage, float Value = 1.0f, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -224,6 +227,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Image2">Image to manipulate</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap And(this Bitmap Image1, Bitmap Image2, string FileName = "")
         {
             Image1.ThrowIfNull("Image1");
@@ -427,6 +431,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Colors">Color array to use for the image</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>The colorized image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Colorize(this Bitmap OriginalImage, Color[] Colors, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -514,6 +519,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Size">Size of the aperture</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A Bitmap object of the resulting image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Dilate(this Bitmap OriginalImage, int Size, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -588,6 +594,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="CornerRadius">Radius of the corners</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>The bitmap with the rounded box on it</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap DrawRoundedRectangle(this Bitmap Image, Color BoxColor, int XPosition, int YPosition,
             int Height, int Width, int CornerRadius, string FileName = "")
         {
@@ -633,6 +640,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="BoxToDrawWithin">Rectangle to draw the image within</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object with the text drawn on it</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap DrawText(this Bitmap Image, string TextToDraw,
             Font FontToUse, Brush BrushUsing, RectangleF BoxToDrawWithin,
             string FileName = "")
@@ -664,6 +672,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="EdgeColor">Color of the edge</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap which has the edges drawn on it</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap EdgeDetection(this Bitmap OriginalImage, float Threshold, Color EdgeColor, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -749,6 +758,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>The resulting bitmap image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Equalize(this Bitmap OriginalImage, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -795,6 +805,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="FlipY">Flips an image along the Y axis</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap which is flipped</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Flip(this Bitmap Image, bool FlipX, bool FlipY, string FileName = "")
         {
             Image.ThrowIfNull("Image");
@@ -924,6 +935,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// </summary>
         /// <param name="FileName"></param>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.EndsWith(System.String,System.StringComparison)")]
         public static ImageFormat GetImageFormat(this string FileName)
         {
             if (string.IsNullOrEmpty(FileName))
@@ -1029,6 +1041,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="MaxJitter">Maximum number of pixels the item can move</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Jitter(this Bitmap OriginalImage, int MaxJitter = 5, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -1072,6 +1085,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Size">Size of the aperture</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap KuwaharaBlur(this Bitmap OriginalImage, int Size = 3, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -1253,6 +1267,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="FileName">File to save to</param>
         /// <param name="Size">Size of the aperture</param>
         /// <returns>A bitmap image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap MedianFilter(this Bitmap OriginalImage, int Size = 3, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -1398,6 +1413,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Negative(this Bitmap OriginalImage, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -1436,6 +1452,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="InvertX">Invert the X direction</param>
         /// <param name="InvertY">Invert the Y direction</param>
         /// <returns>Returns the resulting normal map</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap NormalMap(this Bitmap ImageUsing,bool InvertX=false,bool InvertY=false)
         {
             ImageUsing.ThrowIfNull("ImageUsing");
@@ -1492,6 +1509,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Image2">Image to manipulate</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Or(this Bitmap Image1, Bitmap Image2, string FileName = "")
         {
             Image1.ThrowIfNull("Image1");
@@ -1538,6 +1556,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Seed">Randomization seed</param>
         /// <param name="NumberOfPoints">Number of points for the painting</param>
         /// <returns>The resulting bitmap</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap OilPainting(this Bitmap Image, int Seed, int NumberOfPoints=100)
         {
             Image.ThrowIfNull("Image");
@@ -1557,7 +1576,7 @@ namespace Utilities.Media.Image.ExtensionMethods
                 {
                     for (int y = 0; y < Height; ++y)
                     {
-                        if (Map.ClosestPoint[x, y] == i)
+                        if (Map.ClosestPoint[x,y] == i)
                         {
                             Color Pixel = ImageData.GetPixel(x, y, ImagePixelSize);
                             Red += Pixel.R;
@@ -1572,7 +1591,7 @@ namespace Utilities.Media.Image.ExtensionMethods
                 {
                     for (int y = 0; y < Height; ++y)
                     {
-                        if (Map.ClosestPoint[x, y] == i)
+                        if (Map.ClosestPoint[x,y] == i)
                         {
                             ImageData.SetPixel(x, y, Color.FromArgb(Red / Counter, Green / Counter, Blue / Counter), ImagePixelSize);
                             ++Counter2;
@@ -1599,6 +1618,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="PixelSize">Size of the "pixels" in pixels</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Pixelate(this Bitmap OriginalImage, int PixelSize = 5, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -1719,6 +1739,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Quality">Quality of the resizing</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object of the resized image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Resize(this Bitmap Image, int Width, int Height, Quality Quality = Quality.Low, string FileName = "")
         {
             Image.ThrowIfNull("Image");
@@ -1756,6 +1777,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="DegreesToRotate">Degrees to rotate the image</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object containing the rotated image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Rotate(this Bitmap Image, float DegreesToRotate, string FileName = "")
         {
             Image.ThrowIfNull("Image");
@@ -1909,6 +1931,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="YDirection">Determines if this should be done in the Y direction</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap which has been modified</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap SinWave(this Bitmap OriginalImage, float Amplitude, float Frequency, bool XDirection, bool YDirection, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -2072,6 +2095,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="FileName">File to save to</param>
         /// <param name="Size">Size of the aperture</param>
         /// <returns>The resulting bitmap</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap SNNBlur(this Bitmap OriginalImage, int Size = 3, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -2151,6 +2175,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="OriginalImage">Image to manipulate</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap StretchContrast(this Bitmap OriginalImage, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -2194,6 +2219,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Threshold">Float defining the threshold at which to set the pixel to black vs white.</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object containing the new image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Threshold(this Bitmap OriginalImage, float Threshold = 0.5f, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -2301,6 +2327,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Seed">Random seed</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object containing the new image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Turbulence(this Bitmap OriginalImage, int Roughness = 8, float Power = 5.0f, int Seed = 25123864, string FileName = "")
         {
             OriginalImage.ThrowIfNull("OriginalImage");
@@ -2375,6 +2402,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="KeyColor">Transparent color used in watermark image, set to null if not used</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>The results in the form of a bitmap object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Watermark(this Bitmap Image, Bitmap WatermarkImage, float Opacity, int X, int Y, Color KeyColor, string FileName = "")
         {
             Image.ThrowIfNull("Image");
@@ -2422,6 +2450,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="Image2">Image to manipulate</param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap image</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Xor(this Bitmap Image1, Bitmap Image2, string FileName = "")
         {
             Image1.ThrowIfNull("Image1");

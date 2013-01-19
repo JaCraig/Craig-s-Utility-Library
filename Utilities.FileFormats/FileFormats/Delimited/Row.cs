@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -61,7 +62,7 @@ namespace Utilities.FileFormats.Delimited
         {
             this.Cells = new List<Cell>();
             this.Delimiter = Delimiter;
-            Regex TempSplitter = new Regex(string.Format("(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(Delimiter)));
+            Regex TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(Delimiter)));
             MatchCollection Matches = TempSplitter.Matches(Content);
             bool Finished = false;
             foreach (Match Match in Matches)

@@ -25,6 +25,7 @@ using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 
 #endregion
 
@@ -69,7 +70,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The formatted string</returns>
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name, Value.ToString());
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, Value.ToString());
         }
 
         /// <summary>

@@ -29,6 +29,7 @@ using Utilities.SQL.DataClasses;
 using Utilities.SQL.DataClasses.Enums;
 using Utilities.SQL.DataClasses.Interfaces;
 using Utilities.SQL.MicroORM.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.SQL.SQLServer
@@ -213,6 +214,7 @@ namespace Utilities.SQL.SQLServer
         /// <param name="DesiredDatabase">Desired database structure</param>
         /// <param name="CurrentDatabase">Current database structure</param>
         /// <returns>A list of commands</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         private static string BuildCommands(Database DesiredDatabase, Database CurrentDatabase)
         {
             StringBuilder Builder = new StringBuilder();
@@ -403,7 +405,7 @@ namespace Utilities.SQL.SQLServer
                         }
                         else
                         {
-                            Builder.Append("(").Append(Column.Length.ToString()).Append(")");
+                            Builder.Append("(").Append(Column.Length.ToString(CultureInfo.InvariantCulture)).Append(")");
                         }
                     }
                     Builder.Append("'\n");
@@ -437,7 +439,7 @@ namespace Utilities.SQL.SQLServer
                         }
                         else
                         {
-                            Builder.Append("(").Append(Column.Length.ToString()).Append(")");
+                            Builder.Append("(").Append(Column.Length.ToString(CultureInfo.InvariantCulture)).Append(")");
                         }
                     }
                     Builder.Append("'\n");
@@ -583,7 +585,7 @@ namespace Utilities.SQL.SQLServer
                     }
                     else
                     {
-                        Builder.Append("(").Append(Column.Length.ToString()).Append(")");
+                        Builder.Append("(").Append(Column.Length.ToString(CultureInfo.InvariantCulture)).Append(")");
                     }
                 }
                 if (!Column.Nullable)
@@ -615,14 +617,14 @@ namespace Utilities.SQL.SQLServer
                 if (Column.Index && Column.Unique)
                 {
                     Builder.Append("EXEC dbo.sp_executesql @statement = N'CREATE UNIQUE INDEX ");
-                    Builder.Append("Index_").Append(Column.Name).Append(Counter.ToString()).Append(" ON ");
+                    Builder.Append("Index_").Append(Column.Name).Append(Counter.ToString(CultureInfo.InvariantCulture)).Append(" ON ");
                     Builder.Append(Column.ParentTable.Name).Append("(").Append(Column.Name).Append(")");
                     Builder.Append("'\n");
                 }
                 else if (Column.Index)
                 {
                     Builder.Append("EXEC dbo.sp_executesql @statement = N'CREATE INDEX ");
-                    Builder.Append("Index_").Append(Column.Name).Append(Counter.ToString()).Append(" ON ");
+                    Builder.Append("Index_").Append(Column.Name).Append(Counter.ToString(CultureInfo.InvariantCulture)).Append(" ON ");
                     Builder.Append(Column.ParentTable.Name).Append("(").Append(Column.Name).Append(")");
                     Builder.Append("'\n");
                 }
@@ -777,7 +779,7 @@ namespace Utilities.SQL.SQLServer
                         string Name = Helper.GetParameter("Name", "");
                         int Type = Helper.GetParameter("Type", 0);
                         string Definition = Helper.GetParameter("Definition", "");
-                        Table.AddTrigger(Name, Definition, Type.ToString().TryTo<string, TriggerType>());
+                        Table.AddTrigger(Name, Definition, Type.ToString(CultureInfo.InvariantCulture).TryTo<string, TriggerType>());
                     }
                 }
             }

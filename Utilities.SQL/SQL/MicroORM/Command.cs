@@ -27,6 +27,7 @@ using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -128,12 +129,13 @@ namespace Utilities.SQL.MicroORM
             {
                 foreach (object Parameter in Parameters)
                 {
+                    string TempParameter = Parameter as string;
                     if (Parameter == null)
-                        this.Parameters.Add(new Parameter<object>(this.Parameters.Count.ToString(), default(DbType), null, ParameterDirection.Input, ParameterStarter));
-                    else if (Parameter is string)
-                        this.Parameters.Add(new StringParameter(this.Parameters.Count.ToString(), (string)Parameter, ParameterDirection.Input, ParameterStarter));
+                        this.Parameters.Add(new Parameter<object>(this.Parameters.Count.ToString(CultureInfo.InvariantCulture), default(DbType), null, ParameterDirection.Input, ParameterStarter));
+                    else if (TempParameter != null)
+                        this.Parameters.Add(new StringParameter(this.Parameters.Count.ToString(CultureInfo.InvariantCulture), TempParameter, ParameterDirection.Input, ParameterStarter));
                     else
-                        this.Parameters.Add(new Parameter<object>(this.Parameters.Count.ToString(), Parameter, ParameterDirection.Input, ParameterStarter));
+                        this.Parameters.Add(new Parameter<object>(this.Parameters.Count.ToString(CultureInfo.InvariantCulture), Parameter, ParameterDirection.Input, ParameterStarter));
                 }
             }
         }

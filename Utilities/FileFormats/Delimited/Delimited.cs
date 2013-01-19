@@ -29,6 +29,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -65,6 +66,7 @@ namespace Utilities.FileFormats.Delimited
         /// <summary>
         /// The list of rows
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Row> Rows
         {
             get { return _Rows; }
@@ -117,9 +119,11 @@ namespace Utilities.FileFormats.Delimited
         /// <param name="FirstRowIsHeader">Determines if the first row should be treated as a header or not</param>
         /// <param name="Headers">Headers for the columns if the first row is not a header</param>
         /// <returns>The delimited file as a DataTable</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public DataTable ToDataTable(bool FirstRowIsHeader = true, params string[] Headers)
         {
             DataTable ReturnValue = new DataTable();
+            ReturnValue.Locale = CultureInfo.CurrentCulture;
             if (FirstRowIsHeader)
             {
                 foreach (Cell Cell in Rows.FirstOrDefault().Cells)

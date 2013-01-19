@@ -70,14 +70,12 @@
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
@@ -246,7 +244,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{57A7AF88-994B-46A5-BB9D-46ED06757B3F}</Project>
-      <Name>Utilities %28Utilities\Utilities%29</Name>
+      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

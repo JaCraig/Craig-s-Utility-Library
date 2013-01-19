@@ -26,6 +26,7 @@ using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -57,7 +58,7 @@ namespace Utilities.Reflection.Emit.Commands
                         this.Parameters[x] = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(Parameters[x]);
                 }
             }
-            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("ObjLocal" + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(),
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("ObjLocal" + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(CultureInfo.InvariantCulture),
                 Constructor.DeclaringType);
         }
 
@@ -73,6 +74,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Variables sent to the Constructor
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         protected virtual VariableBase[] Parameters { get; set; }
 
         #endregion

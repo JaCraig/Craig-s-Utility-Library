@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Security.Cryptography;
 using Utilities.Encryption.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Gravatar
@@ -39,10 +40,11 @@ namespace Utilities.Web.Gravatar
         /// <param name="Email">Email identifier</param>
         /// <param name="AppendJPG">Should jpg be appended to the link?</param>
         /// <returns>The full path to the Gravatar image link</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public static string GetImageLink(string Email, bool AppendJPG = false)
         {
             string Ending = AppendJPG ? ".jpg" : "";
-            return "http://www.gravatar.com/avatar/" + Email.Trim().ToLower().Hash(new MD5CryptoServiceProvider()).ToLower() + Ending;
+            return "http://www.gravatar.com/avatar/" + Email.Trim().ToLower(CultureInfo.InvariantCulture).Hash(new MD5CryptoServiceProvider()).ToLower(CultureInfo.InvariantCulture) + Ending;
         }
 
         #endregion

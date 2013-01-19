@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using Utilities.IO.Logging.BaseClasses;
 using Utilities.IO.Logging.Enums;
+using System.Globalization;
 #endregion
 
 namespace Utilities.IO.Logging
@@ -47,8 +48,8 @@ namespace Utilities.IO.Logging
             Log.Add(MessageType.Info, x => Console.WriteLine(x));
             Log.Add(MessageType.Trace, x => Console.WriteLine(x));
             Log.Add(MessageType.Warn, x => Console.WriteLine(x));
-            FormatMessage = (Message, Type, args) => Type.ToString() 
-                + ": " + (args.Length > 0 ? string.Format(Message, args) : Message);
+            FormatMessage = (Message, Type, args) => Type.ToString()
+                + ": " + (args.Length > 0 ? string.Format(CultureInfo.InvariantCulture, Message, args) : Message);
         }
 
         #endregion

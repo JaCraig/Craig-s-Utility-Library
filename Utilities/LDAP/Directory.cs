@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.LDAP
@@ -68,8 +69,7 @@ namespace Utilities.LDAP
         {
             try
             {
-                if (!Entry.Guid.ToString().Trim().Equals(""))
-                    return true;
+                return !Entry.Guid.ToString().Trim().IsNullOrEmpty();
             }
             catch { }
             return false;
@@ -96,7 +96,7 @@ namespace Utilities.LDAP
         /// <param name="GroupName">The group's name</param>
         /// <param name="Recursive">Should sub groups' members be added instead of the sub group itself?</param>
         /// <returns>A list of the members</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "Entry"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public virtual ICollection<Entry> FindActiveGroupMembers(string GroupName, bool Recursive = false)
         {
             try
@@ -139,8 +139,8 @@ namespace Utilities.LDAP
         /// <returns>A list of all active groups' entries</returns>
         public virtual ICollection<Entry> FindActiveGroups(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+            Filter = string.Format(CultureInfo.InvariantCulture, Filter, args);
+            Filter = string.Format(CultureInfo.InvariantCulture,"(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
             return FindGroups(Filter);
         }
 
@@ -156,8 +156,8 @@ namespace Utilities.LDAP
         /// <returns>A list of all active users' entries</returns>
         public virtual ICollection<Entry> FindActiveUsers(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+            Filter = string.Format(CultureInfo.InvariantCulture, Filter, args);
+            Filter = string.Format(CultureInfo.InvariantCulture, "(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
             return FindUsers(Filter);
         }
 
@@ -173,8 +173,8 @@ namespace Utilities.LDAP
         /// <returns>A list of all active groups' entries</returns>
         public virtual ICollection<Entry> FindActiveUsersAndGroups(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
+            Filter = string.Format(CultureInfo.InvariantCulture, Filter, args);
+            Filter = string.Format(CultureInfo.InvariantCulture, "(&((userAccountControl:1.2.840.113556.1.4.803:=512)(!(userAccountControl:1.2.840.113556.1.4.803:=2))(!(cn=*$)))({0}))", Filter);
             return FindUsersAndGroups(Filter);
         }
 
@@ -209,8 +209,8 @@ namespace Utilities.LDAP
         /// <returns>A list of all computers meeting the specified Filter</returns>
         public virtual ICollection<Entry> FindComputers(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(objectClass=computer)({0}))", Filter);
+            Filter = string.Format(CultureInfo.InvariantCulture, Filter, args);
+            Filter = string.Format(CultureInfo.InvariantCulture, "(&(objectClass=computer)({0}))", Filter);
             Searcher.Filter = Filter;
             return FindAll();
         }
@@ -225,7 +225,7 @@ namespace Utilities.LDAP
         /// <param name="GroupName">The group's name</param>
         /// <param name="Recursive">Should sub groups' members be added instead of the sub group itself?</param>
         /// <returns>A list of the members</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "Entry"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public virtual ICollection<Entry> FindGroupMembers(string GroupName, bool Recursive = false)
         {
             try
@@ -282,8 +282,8 @@ namespace Utilities.LDAP
         /// <returns>A list of all groups meeting the specified Filter</returns>
         public virtual ICollection<Entry> FindGroups(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(objectClass=Group)(objectCategory=Group)({0}))", Filter);
+            Filter = string.Format(CultureInfo.InvariantCulture, Filter, args);
+            Filter = string.Format(CultureInfo.InvariantCulture, "(&(objectClass=Group)(objectCategory=Group)({0}))", Filter);
             Searcher.Filter = Filter;
             return FindAll();
         }
@@ -313,8 +313,8 @@ namespace Utilities.LDAP
         /// <returns>A list of all users and groups meeting the specified Filter</returns>
         public virtual ICollection<Entry> FindUsersAndGroups(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(|(&(objectClass=Group)(objectCategory=Group))(&(objectClass=User)(objectCategory=Person)))({0}))", Filter);
+            Filter = string.Format(CultureInfo.InvariantCulture, Filter, args);
+            Filter = string.Format(CultureInfo.InvariantCulture, "(&(|(&(objectClass=Group)(objectCategory=Group))(&(objectClass=User)(objectCategory=Person)))({0}))", Filter);
             Searcher.Filter = Filter;
             return FindAll();
         }
@@ -347,8 +347,8 @@ namespace Utilities.LDAP
         /// <returns>A list of all users meeting the specified Filter</returns>
         public virtual ICollection<Entry> FindUsers(string Filter, params object[] args)
         {
-            Filter = string.Format(Filter, args);
-            Filter = string.Format("(&(objectClass=User)(objectCategory=Person)({0}))", Filter);
+            Filter = string.Format(CultureInfo.InvariantCulture, Filter, args);
+            Filter = string.Format(CultureInfo.InvariantCulture, "(&(objectClass=User)(objectCategory=Person)({0}))", Filter);
             Searcher.Filter = Filter;
             return FindAll();
         }
@@ -484,6 +484,16 @@ namespace Utilities.LDAP
         /// </summary>
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected virtual void Dispose(bool Disposing)
+        {
             if (Entry != null)
             {
                 Entry.Close();
@@ -495,6 +505,14 @@ namespace Utilities.LDAP
                 Searcher.Dispose();
                 Searcher = null;
             }
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Directory()
+        {
+            Dispose(false);
         }
 
         #endregion

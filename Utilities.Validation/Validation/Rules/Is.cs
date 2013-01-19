@@ -27,6 +27,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Validation.Rules.Enums;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -79,7 +80,7 @@ namespace Utilities.Validation.Rules
                 ComparisonString = "a domain";
             else if (Type == Enums.IsValid.Integer)
                 ComparisonString = "an integer";
-            return string.Format(ErrorMessageString, name, ComparisonString);
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, ComparisonString);
         }
 
         /// <summary>
@@ -90,14 +91,15 @@ namespace Utilities.Validation.Rules
         /// <returns>The validation result</returns>
         protected override System.ComponentModel.DataAnnotations.ValidationResult IsValid(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext)
         {
+            string Tempvalue = value as string;
             if(Type==Enums.IsValid.CreditCard)
-                return (value as string).IsCreditCard() ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Tempvalue.IsCreditCard() ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if(Type==Enums.IsValid.Decimal)
-                return Regex.IsMatch(value as string,@"^(\d+)+(\.\d+)?$|^(\d+)?(\.\d+)+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Regex.IsMatch(Tempvalue, @"^(\d+)+(\.\d+)?$|^(\d+)?(\.\d+)+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == Enums.IsValid.Domain)
-                return Regex.IsMatch(value as string, @"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Regex.IsMatch(Tempvalue, @"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == Enums.IsValid.Integer)
-                return Regex.IsMatch(value as string, @"^\d+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Regex.IsMatch(Tempvalue, @"^\d+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             return ValidationResult.Success;
         }
 

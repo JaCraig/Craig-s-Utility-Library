@@ -114,6 +114,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Key">Name of the attribute</param>
         /// <returns>A string containing the value of the attribute</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Equals(System.String,System.StringComparison)")]
         public string this[string Key]
         {
             get

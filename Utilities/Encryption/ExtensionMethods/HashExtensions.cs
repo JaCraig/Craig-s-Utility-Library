@@ -44,6 +44,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <param name="Random">Randomization object</param>
         /// <param name="Size">Size of the salt byte array</param>
         /// <returns>A byte array as salt</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "Random")]
         public static byte[] GenerateSalt(this System.Random Random, int Size)
         {
             byte[] Salt = new byte[Size];

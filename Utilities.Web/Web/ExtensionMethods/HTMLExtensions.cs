@@ -229,6 +229,7 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         /// <param name="Context">Current context</param>
         /// <returns>The relative root of the web site</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "Context")]
         public static string RelativeRoot(this HttpContextBase Context)
         {
             return VirtualPathUtility.ToAbsolute("~/");
@@ -239,6 +240,7 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         /// <param name="Context">Current context</param>
         /// <returns>The relative root of the web site</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "Context")]
         public static string RelativeRoot(this HttpContext Context)
         {
             return VirtualPathUtility.ToAbsolute("~/");

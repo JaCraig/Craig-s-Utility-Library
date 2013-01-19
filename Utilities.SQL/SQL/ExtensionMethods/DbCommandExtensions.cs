@@ -25,6 +25,7 @@ using System.Data;
 using System.Data.Common;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 
 #endregion
 
@@ -135,6 +136,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// </summary>
         /// <param name="Command">Command object</param>
         /// <returns>A transaction object</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static DbTransaction BeginTransaction(this DbCommand Command)
         {
             if (Command.IsNull() && Command.Connection.IsNull())
@@ -204,6 +206,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="Command">Command object</param>
         /// <param name="Factory">DbProviderFactory being used</param>
         /// <returns>A dataset filled with the results of the query</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static DataSet ExecuteDataSet(this DbCommand Command, DbProviderFactory Factory)
         {
             if (Command.IsNull())
@@ -213,6 +216,7 @@ namespace Utilities.SQL.ExtensionMethods
             {
                 Adapter.SelectCommand = Command;
                 DataSet ReturnSet = new DataSet();
+                ReturnSet.Locale = CultureInfo.CurrentCulture;
                 Adapter.Fill(ReturnSet);
                 return ReturnSet;
             }
@@ -228,6 +232,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <param name="Command">Command object</param>
         /// <param name="Default">Default value if there is an issue</param>
         /// <returns>The object of the first row and first column</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static DataType ExecuteScalar<DataType>(this DbCommand Command, DataType Default = default(DataType))
         {
             if (Command.IsNull())

@@ -89,17 +89,20 @@ namespace Utilities.Compression.ExtensionMethods
             Data.ThrowIfNull("Data");
             using (MemoryStream Stream = new MemoryStream())
             {
-                using (Stream ZipStream = GetStream(new MemoryStream(Data), CompressionMode.Decompress, CompressionType))
+                using (MemoryStream DataStream = new MemoryStream(Data))
                 {
-                    byte[] Buffer = new byte[4096];
-                    while (true)
+                    using (Stream ZipStream = GetStream(DataStream, CompressionMode.Decompress, CompressionType))
                     {
-                        int Size = ZipStream.Read(Buffer, 0, Buffer.Length);
-                        if (Size > 0) Stream.Write(Buffer, 0, Size);
-                        else break;
+                        byte[] Buffer = new byte[4096];
+                        while (true)
+                        {
+                            int Size = ZipStream.Read(Buffer, 0, Buffer.Length);
+                            if (Size > 0) Stream.Write(Buffer, 0, Size);
+                            else break;
+                        }
+                        ZipStream.Close();
+                        return Stream.ToArray();
                     }
-                    ZipStream.Close();
-                    return Stream.ToArray();
                 }
             }
         }

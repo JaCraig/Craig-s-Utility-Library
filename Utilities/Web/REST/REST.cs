@@ -145,7 +145,7 @@ namespace Utilities.Web.REST
         /// </summary>
         /// <param name="Request">The web request object</param>
         /// <returns>The string returned by the service</returns>
-        private string SendRequest(HttpWebRequest Request)
+        private static string SendRequest(HttpWebRequest Request)
         {
             using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
             {

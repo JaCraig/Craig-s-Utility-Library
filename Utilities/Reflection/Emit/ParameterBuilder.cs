@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.BaseClasses;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -56,7 +57,7 @@ namespace Utilities.Reflection.Emit
                 this.DataType = null;
                 return;
             }
-            this.Name = "Parameter" + Number.ToString();
+            this.Name = "Parameter" + Number.ToString(CultureInfo.InvariantCulture);
             this.Number = Number;
             this.DataType = ParameterType;
         }
