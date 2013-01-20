@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -52,7 +53,7 @@ namespace Utilities.FileFormats.BlogML
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Authors(XmlElement Element)
         {
-            Element.ThrowIfNull("Element");
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
             AuthorList = new List<Author>();
             foreach (XmlNode Children in Element.ChildNodes)
             {

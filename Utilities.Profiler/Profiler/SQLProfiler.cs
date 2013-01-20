@@ -114,8 +114,8 @@ namespace Utilities.Profiler
                 return false;
             return First.Function == Second.Function
                 && First.Query == Second.Query
-                && First.Parameters.TrueForAll(x => Second.Parameters.Contains(x))
-                && Second.Parameters.TrueForAll(x => First.Parameters.Contains(x));
+                && First.Parameters.All(x => Second.Parameters.Contains(x))
+                && Second.Parameters.All(x => First.Parameters.Contains(x));
         }
 
         /// <summary>

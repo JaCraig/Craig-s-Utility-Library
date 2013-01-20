@@ -154,7 +154,7 @@ namespace Utilities.Web.ExtensionMethods.Streams
         /// </summary>
         public override void Flush()
         {
-            if (FinalString.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(FinalString))
                 return;
             byte[] Data = FinalString.Minify(Type).ToByteArray();
             Data = Data.Compress(Compression);

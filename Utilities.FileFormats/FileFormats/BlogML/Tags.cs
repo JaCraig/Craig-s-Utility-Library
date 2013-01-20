@@ -26,6 +26,7 @@ using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -52,7 +53,7 @@ namespace Utilities.FileFormats.BlogML
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Tags(XmlElement Element)
         {
-            Element.ThrowIfNull("Element");
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
             TagList = new List<Tag>();
             foreach (XmlNode Children in Element.ChildNodes)
             {

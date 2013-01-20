@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Data;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.DataClasses.Interfaces;
+using Utilities.DataTypes.Comparison;
 #endregion
 
 namespace Utilities.SQL.DataClasses
@@ -81,7 +82,7 @@ namespace Utilities.SQL.DataClasses
             this.Index = Index;
             this.PrimaryKey = PrimaryKey;
             this.Unique = Unique;
-            this.Default = DefaultValue.IsDefault() ? "" : DefaultValue.ToString();
+            this.Default = new GenericEqualityComparer<T>().Equals(DefaultValue, default(T)) ? "" : DefaultValue.ToString();
             this.OnDeleteCascade = OnDeleteCascade;
             this.OnUpdateCascade = OnUpdateCascade;
             this.OnDeleteSetNull = OnDeleteSetNull;

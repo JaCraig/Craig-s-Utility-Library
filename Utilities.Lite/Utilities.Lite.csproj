@@ -5,7 +5,7 @@
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Utilities.Lite.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -110,10 +110,27 @@
   <ItemGroup>
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
+    <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ObjectExtensions.cs" />
-    <Compile Include="DataTypes\Patterns\SafeDisposableBaseClass.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\TypeConversionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ValueTypeExtensions.cs" />
+    <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
+    <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />
+    <Compile Include="DataTypes\Patterns\Factory.cs" />
+    <Compile Include="DataTypes\Patterns\IFluentInterface.cs" />
+    <Compile Include="DataTypes\Patterns\BaseClasses\SafeDisposableBaseClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -127,7 +144,7 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Utilities.Lite.snk" />
+    <None Include="Utilities.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

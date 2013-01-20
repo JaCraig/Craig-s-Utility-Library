@@ -43,7 +43,7 @@ namespace Utilities.Validation.ExtensionMethods
         /// <returns>True if valid, false otherwise</returns>
         public static bool TryValidate<ObjectType>(this ObjectType Object, ICollection<ValidationResult> Results)
         {
-            if (Object.IsNull())
+            if (Object==null)
                 return true;
             return Validator.TryValidateObject(Object, new ValidationContext(Object, null, null), Results);
         }
@@ -60,7 +60,7 @@ namespace Utilities.Validation.ExtensionMethods
         /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException" />
         public static void Validate<ObjectType>(this ObjectType Object)
         {
-            if (Object.IsNull())
+            if (Object==null)
                 return;
             Validator.ValidateObject(Object, new ValidationContext(Object, null, null), true);
         }

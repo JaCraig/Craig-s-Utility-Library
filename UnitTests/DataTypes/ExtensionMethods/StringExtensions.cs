@@ -49,7 +49,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void StringEncodingTest()
         {
             string Value = "ASDF";
-            Assert.Equal("ASDF", Value.Encode());
+            Assert.Equal("ASDF", Value.Encode(new ASCIIEncoding()));
             Assert.Equal("ASDF", Value.Encode(new ASCIIEncoding(), new UTF32Encoding()).Encode(new UTF32Encoding(), new ASCIIEncoding()));
         }
 

@@ -43,7 +43,7 @@ namespace Utilities.Validation.Rules
         /// </summary>
         /// <param name="ErrorMessage">Error message</param>
         public CascadeAttribute(string ErrorMessage = "")
-            : base(ErrorMessage.IsNullOrEmpty() ? "The following errors have occurred on property {0}:" + System.Environment.NewLine + "{1}" : ErrorMessage)
+            : base(string.IsNullOrEmpty(ErrorMessage) ? "The following errors have occurred on property {0}:" + System.Environment.NewLine + "{1}" : ErrorMessage)
         {
         }
 

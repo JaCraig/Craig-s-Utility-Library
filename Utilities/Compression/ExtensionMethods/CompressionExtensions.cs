@@ -26,6 +26,8 @@ using System.Text;
 using Utilities.Compression.ExtensionMethods.Enums;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
+using System;
 #endregion
 
 namespace Utilities.Compression.ExtensionMethods
@@ -48,7 +50,7 @@ namespace Utilities.Compression.ExtensionMethods
         [SuppressMessage("Microsoft.Usage","CA2202:DoNotDisposeObjectsMultipleTimes")]
         public static byte[] Compress(this byte[] Data, CompressionType CompressionType = CompressionType.Deflate)
         {
-            Data.ThrowIfNull("Data");
+            Contract.Requires<ArgumentNullException>(Data != null, "Data");
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (Stream ZipStream = GetStream(Stream, CompressionMode.Compress, CompressionType))
@@ -69,7 +71,7 @@ namespace Utilities.Compression.ExtensionMethods
         /// <returns>The data Compressed</returns>
         public static string Compress(this string Data, Encoding EncodingUsing = null, CompressionType CompressionType = CompressionType.Deflate)
         {
-            Data.ThrowIfNullOrEmpty("Data");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Data), "Data");
             return Data.ToByteArray(EncodingUsing).Compress(CompressionType).ToBase64String();
         }
 
@@ -86,7 +88,7 @@ namespace Utilities.Compression.ExtensionMethods
         [SuppressMessage("Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes")]
         public static byte[] Decompress(this byte[] Data, CompressionType CompressionType = CompressionType.Deflate)
         {
-            Data.ThrowIfNull("Data");
+            Contract.Requires<ArgumentNullException>(Data != null, "Data");
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (MemoryStream DataStream = new MemoryStream(Data))
@@ -116,7 +118,7 @@ namespace Utilities.Compression.ExtensionMethods
         /// <returns>The data decompressed</returns>
         public static string Decompress(this string Data, Encoding EncodingUsing = null, CompressionType CompressionType = CompressionType.Deflate)
         {
-            Data.ThrowIfNullOrEmpty("Data");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Data), "Data");
             return Data.FromBase64().Decompress(CompressionType).ToEncodedString(EncodingUsing);
         }
 

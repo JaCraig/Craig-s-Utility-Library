@@ -26,6 +26,7 @@ using System.Text;
 using System.Xml.Serialization;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.Serializers.Interfaces;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.Serializers
@@ -43,7 +44,7 @@ namespace Utilities.IO.Serializers
         /// <param name="EncodingUsing">Encoding that the serializer should use (defaults to ASCII)</param>
         public XMLSerializer(Encoding EncodingUsing = null)
         {
-            this.EncodingUsing = EncodingUsing.NullCheck(new ASCIIEncoding());
+            this.EncodingUsing = EncodingUsing.Check(new ASCIIEncoding());
         }
 
         #endregion
@@ -66,7 +67,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The serialized object</returns>
         public string Serialize(object Object)
         {
-            Object.ThrowIfNull("Object");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 XmlSerializer Serializer = new XmlSerializer(Object.GetType());
@@ -84,7 +85,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The resulting object</returns>
         public object Deserialize(string Data, Type ObjectType)
         {
-            if (Data.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Data))
                 return null;
             using (MemoryStream Stream = new MemoryStream(EncodingUsing.GetBytes(Data)))
             {

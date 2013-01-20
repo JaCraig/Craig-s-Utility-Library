@@ -46,7 +46,7 @@ namespace Utilities.Validation.Rules
         /// <param name="Type">Validation type enum</param>
         /// <param name="ErrorMessage">Error message</param>
         public IsAttribute(IsValid Type, string ErrorMessage = "")
-            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is not {1}" : ErrorMessage)
+            : base(string.IsNullOrEmpty(ErrorMessage) ? "{0} is not {1}" : ErrorMessage)
         {
             this.Type = Type;
         }

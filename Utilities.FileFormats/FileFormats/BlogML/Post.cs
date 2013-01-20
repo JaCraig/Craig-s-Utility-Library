@@ -25,6 +25,7 @@ using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -54,7 +55,7 @@ namespace Utilities.FileFormats.BlogML
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Post(XmlElement Element)
         {
-            Element.ThrowIfNull("Element");
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
             DateCreated = DateTime.Now;
             DateModified = DateTime.Now;
             ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";

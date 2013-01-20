@@ -25,6 +25,7 @@ using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -52,7 +53,7 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Location">Location of the XML file</param>
         public BlogML(string Location)
         {
-            Location.ThrowIfNullOrEmpty("Location");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Location), "Location");
             XmlDocument Document = new XmlDocument();
             Document.Load(Location);
             foreach (XmlNode Children in Document.ChildNodes)

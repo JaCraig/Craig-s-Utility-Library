@@ -27,6 +27,7 @@ using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.Serializers;
 using Utilities.IO.Serializers.Interfaces;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -50,9 +51,9 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The serialized object</returns>
         public static string Serialize(this object Object, ISerializer<string> Serializer = null, Encoding EncodingUsing = null, string FileLocation = "")
         {
-            Object.ThrowIfNull("Object");
-            string Data = Serializer.NullCheck(()=>new JSONSerializer(EncodingUsing)).Serialize(Object);
-            if (!FileLocation.IsNullOrEmpty())
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            string Data = Serializer.Check(()=>new JSONSerializer(EncodingUsing)).Serialize(Object);
+            if (!string.IsNullOrEmpty(FileLocation))
                 FileLocation.Save(Data);
             return Data;
         }
@@ -70,9 +71,9 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The serialized object</returns>
         public static byte[] SerializeBinary(this object Object, ISerializer<byte[]> Serializer = null, string FileLocation = "")
         {
-            Object.ThrowIfNull("Object");
-            byte[] Data = Serializer.NullCheck(()=>new BinarySerializer()).Serialize(Object);
-            if (!FileLocation.IsNullOrEmpty())
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            byte[] Data = Serializer.Check(()=>new BinarySerializer()).Serialize(Object);
+            if (!string.IsNullOrEmpty(FileLocation))
                 FileLocation.Save(Data);
             return Data;
         }
@@ -91,7 +92,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static R Deserialize<R>(this string Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data.IsNullOrEmpty()) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer, EncodingUsing);
+            return (string.IsNullOrEmpty(Data)) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer, EncodingUsing);
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Utilities.IO.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public static R Deserialize<R>(this XmlDocument Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data == null) ? default(R) : (R)Data.InnerXml.Deserialize(typeof(R), Serializer.NullCheck(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
+            return (Data == null) ? default(R) : (R)Data.InnerXml.Deserialize(typeof(R), Serializer.Check(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
         }
 
         /// <summary>
@@ -117,7 +118,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static R Deserialize<R>(this byte[] Data, ISerializer<byte[]> Serializer = null)
         {
-            return (Data.IsNull()) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer);
+            return (Data==null) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer);
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static R Deserialize<R>(this FileInfo Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data.IsNull() || !Data.Exists) ? default(R) : (R)Data.Read().Deserialize(typeof(R), Serializer, EncodingUsing);
+            return (Data==null || !Data.Exists) ? default(R) : (R)Data.Read().Deserialize(typeof(R), Serializer, EncodingUsing);
         }
 
         /// <summary>
@@ -143,7 +144,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static object Deserialize(this FileInfo Data,Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data.IsNull() || !Data.Exists) ? null : Data.Read().Deserialize(ObjectType, Serializer, EncodingUsing);
+            return (Data==null || !Data.Exists) ? null : Data.Read().Deserialize(ObjectType, Serializer, EncodingUsing);
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static object Deserialize(this string Data,Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return Serializer.NullCheck(()=>new JSONSerializer(EncodingUsing)).Deserialize(Data, ObjectType);
+            return Serializer.Check(()=>new JSONSerializer(EncodingUsing)).Deserialize(Data, ObjectType);
         }
 
         /// <summary>
@@ -168,7 +169,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static object Deserialize(this byte[] Data, Type ObjectType, ISerializer<byte[]> Serializer = null)
         {
-            return Serializer.NullCheck(()=>new BinarySerializer()).Deserialize(Data, ObjectType);
+            return Serializer.Check(()=>new BinarySerializer()).Deserialize(Data, ObjectType);
         }
 
         /// <summary>
@@ -182,7 +183,7 @@ namespace Utilities.IO.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public static object Deserialize(this XmlDocument Data, Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data == null) ? null : Data.InnerXml.Deserialize(ObjectType, Serializer.NullCheck(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
+            return (Data == null) ? null : Data.InnerXml.Deserialize(ObjectType, Serializer.Check(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
         }
 
         #endregion
@@ -198,7 +199,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static object DeserializeBinary(this FileInfo Data, Type ObjectType, ISerializer<byte[]> Serializer = null)
         {
-            return (Data.IsNull() || !Data.Exists) ? null : Data.ReadBinary().Deserialize(ObjectType, Serializer);
+            return (Data==null || !Data.Exists) ? null : Data.ReadBinary().Deserialize(ObjectType, Serializer);
         }
 
         /// <summary>
@@ -210,7 +211,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static R DeserializeBinary<R>(this FileInfo Data, ISerializer<byte[]> Serializer = null)
         {
-            return (Data.IsNull() || !Data.Exists) ? default(R) : (R)Data.ReadBinary().Deserialize(typeof(R), Serializer);
+            return (Data==null || !Data.Exists) ? default(R) : (R)Data.ReadBinary().Deserialize(typeof(R), Serializer);
         }
 
         #endregion

@@ -50,7 +50,7 @@ namespace Utilities.SQL
         {
             this.CommandType = CommandType;
             this.Columns = new List<string>();
-            if (Columns.IsNullOrEmpty())
+            if (Columns==null||Columns.Length==0)
                 this.Columns.Add("*");
             else
                 this.Columns.Add(Columns);
@@ -149,9 +149,9 @@ namespace Utilities.SQL
             string Command = (TopNumber > 0 ? "SELECT TOP " + TopNumber : "SELECT") + (IsDistinct ? " DISTINCT" : "") + " {0} FROM {1} {2} {3} {4}";
             string Where = "";
             string OrderBy = "";
-            if (WhereClause.IsNotNullOrEmpty())
+            if (!string.IsNullOrEmpty(WhereClause))
                 Where += WhereClause.Trim().ToUpperInvariant().StartsWith("WHERE", StringComparison.CurrentCulture) ? WhereClause.Trim() : "WHERE " + WhereClause.Trim();
-            else if (Parameters.IsNotNullOrEmpty())
+            else if (Parameters != null && Parameters.Count != 0)
             {
                 Where += "WHERE ";
                 Where += Parameters[0];
@@ -160,7 +160,7 @@ namespace Utilities.SQL
                     Where += " AND " + Parameters[x];
                 }
             }
-            if (OrderByColumns.IsNotNullOrEmpty())
+            if (OrderByColumns != null && OrderByColumns.Count != 0)
             {
                 OrderBy += " ORDER BY " + OrderByColumns[0];
                 for (int x = 1; x < OrderByColumns.Count; ++x)

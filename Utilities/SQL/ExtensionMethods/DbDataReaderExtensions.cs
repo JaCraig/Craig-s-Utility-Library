@@ -45,7 +45,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public static DataType GetParameter<DataType>(this IDataRecord Reader, string ID, DataType Default = default(DataType))
         {
-            if (Reader.IsNull())
+            if (Reader==null)
                 return Default;
             for (int x = 0; x < Reader.FieldCount; ++x)
             {
@@ -64,9 +64,9 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public static DataType GetParameter<DataType>(this IDataRecord Reader, int Position, DataType Default = default(DataType))
         {
-            if (Reader.IsNull())
+            if (Reader==null)
                 return Default;
-            return Reader[Position].IsNull() ? Default : Reader[Position].TryTo<object, DataType>(Default);
+            return Reader[Position]==null ? Default : Reader[Position].TryTo<object, DataType>(Default);
         }
 
         #endregion

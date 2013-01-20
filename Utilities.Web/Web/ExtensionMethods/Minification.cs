@@ -28,6 +28,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Web.ExtensionMethods
@@ -96,7 +97,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A stripped file</returns>
         public static string Minify(this FileInfo Input, MinificationType Type = MinificationType.HTML)
         {
-            Input.ThrowIfNull("Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             if (!Input.Exists)
                 throw new ArgumentException("Input file does not exist");
             return Input.Read().Minify(Type);

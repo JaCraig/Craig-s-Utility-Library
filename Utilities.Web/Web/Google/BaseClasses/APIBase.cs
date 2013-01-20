@@ -57,7 +57,7 @@ namespace Utilities.Web.Google.BaseClasses
         /// <returns>The API base class as a string</returns>
         public override string ToString()
         {
-            return Key.IsNullOrEmpty() ? "" : ("&key=" + Key);
+            return string.IsNullOrEmpty(Key) ? "" : ("&key=" + Key);
         }
 
         #endregion

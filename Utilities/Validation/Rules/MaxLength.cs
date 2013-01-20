@@ -44,7 +44,7 @@ namespace Utilities.Validation.Rules
         /// <param name="Value">Value to check</param>
         /// <param name="ErrorMessage">Error message</param>
         public MaxLengthAttribute(long Value, string ErrorMessage = "")
-            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is longer than {1}" : ErrorMessage)
+            : base(string.IsNullOrEmpty(ErrorMessage) ? "{0} is longer than {1}" : ErrorMessage)
         {
             this.Value = Value;
         }
@@ -81,7 +81,7 @@ namespace Utilities.Validation.Rules
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "Item")]
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value.IsNull())
+            if (value==null)
                 return ValidationResult.Success;
             IEnumerable ValueList = value as IEnumerable;
             long Count = 0;

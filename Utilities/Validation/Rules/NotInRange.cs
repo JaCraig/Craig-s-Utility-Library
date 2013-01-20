@@ -45,7 +45,7 @@ namespace Utilities.Validation.Rules
         /// <param name="Min">Min value</param>
         /// <param name="ErrorMessage">Error message</param>
         public NotInRangeAttribute(object Min, object Max, string ErrorMessage = "")
-            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is between {1} and {2}" : ErrorMessage)
+            : base(string.IsNullOrEmpty(ErrorMessage) ? "{0} is between {1} and {2}" : ErrorMessage)
         {
             this.Min = (IComparable)Min;
             this.Max = (IComparable)Max;

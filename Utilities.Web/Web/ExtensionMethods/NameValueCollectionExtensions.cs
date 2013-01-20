@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 using System.Collections.Specialized;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.Contracts;
+using System;
 #endregion
 
 namespace Utilities.Web.ExtensionMethods
@@ -43,7 +45,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>The NameValueCollection expressed as a string</returns>
         public static string ToQueryString(this NameValueCollection Input)
         {
-            Input.ThrowIfNull("Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             if (Input.Count <= 0)
                 return "";
             StringBuilder Builder = new StringBuilder();

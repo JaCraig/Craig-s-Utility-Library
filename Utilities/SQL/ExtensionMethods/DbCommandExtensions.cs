@@ -26,6 +26,7 @@ using System.Data.Common;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -51,17 +52,17 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, string Value = "",
             ParameterDirection Direction = ParameterDirection.Input)
         {
-            Command.ThrowIfNull("Command");
-            ID.ThrowIfNullOrEmpty("ID");
-            int Length = Value.IsNullOrEmpty() ? 1 : Value.Length;
+            Contract.Requires<ArgumentNullException>(Command != null, "Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
+            int Length = string.IsNullOrEmpty(Value) ? 1 : Value.Length;
             if (Direction == ParameterDirection.Output
                 || Direction == ParameterDirection.InputOutput
                 || Length > 4000
                 || Length < -1)
                 Length = -1;
             DbParameter Parameter = Command.GetOrCreateParameter(ID);
-            Parameter.Value = Value.IsNullOrEmpty() ? System.DBNull.Value : (object)Value;
-            Parameter.IsNullable = Value.IsNullOrEmpty();
+            Parameter.Value = string.IsNullOrEmpty(Value) ? System.DBNull.Value : (object)Value;
+            Parameter.IsNullable = string.IsNullOrEmpty(Value);
             Parameter.DbType = typeof(string).ToDbType();
             Parameter.Direction = Direction;
             Parameter.Size = Length;
@@ -80,8 +81,8 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, SqlDbType Type,
             object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
-            Command.ThrowIfNull("Command");
-            ID.ThrowIfNullOrEmpty("ID");
+            Contract.Requires<ArgumentNullException>(Command != null, "Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             return Command.AddParameter(ID, Type.ToDbType(), Value, Direction);
         }
 
@@ -97,8 +98,8 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter<DataType>(this DbCommand Command, string ID, DataType Value = default(DataType),
             ParameterDirection Direction = ParameterDirection.Input)
         {
-            Command.ThrowIfNull("Command");
-            ID.ThrowIfNullOrEmpty("ID");
+            Contract.Requires<ArgumentNullException>(Command != null, "Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             return Command.AddParameter(ID,
                 new GenericEqualityComparer<DataType>().Equals(Value, default(DataType)) ? typeof(DataType).ToDbType() : Value.GetType().ToDbType(),
                 Value, Direction);
@@ -116,11 +117,11 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, DbType Type, object Value = null,
             ParameterDirection Direction = ParameterDirection.Input)
         {
-            Command.ThrowIfNull("Command");
-            ID.ThrowIfNullOrEmpty("ID");
+            Contract.Requires<ArgumentNullException>(Command != null, "Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             DbParameter Parameter = Command.GetOrCreateParameter(ID);
-            Parameter.Value = Value.IsNull() ? System.DBNull.Value : Value;
-            Parameter.IsNullable = Value.IsNull();
+            Parameter.Value = Value==null ? System.DBNull.Value : Value;
+            Parameter.IsNullable = Value==null;
             if (Type != default(DbType))
                 Parameter.DbType = Type;
             Parameter.Direction = Direction;
@@ -139,7 +140,7 @@ namespace Utilities.SQL.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static DbTransaction BeginTransaction(this DbCommand Command)
         {
-            if (Command.IsNull() && Command.Connection.IsNull())
+            if (Command==null && Command.Connection==null)
                 return null;
             Command.Open();
             Command.Transaction=Command.Connection.BeginTransaction();
@@ -157,7 +158,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand ClearParameters(this DbCommand Command)
         {
-            if (Command.IsNotNull() && Command.Parameters.IsNotNull())
+            if (Command!=null && Command.Parameters!=null)
                 Command.Parameters.Clear();
             return Command;
         }
@@ -173,8 +174,8 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand Close(this DbCommand Command)
         {
-            if (Command.IsNotNull()
-                && Command.Connection.IsNotNull()
+            if (Command!=null
+                && Command.Connection!=null
                 && Command.Connection.State != ConnectionState.Closed)
                 Command.Connection.Close();
             return Command;
@@ -191,7 +192,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand Commit(this DbCommand Command)
         {
-            if (Command.IsNotNull() && Command.Transaction.IsNotNull())
+            if (Command!=null && Command.Transaction!=null)
                 Command.Transaction.Commit();
             return Command;
         }
@@ -209,7 +210,7 @@ namespace Utilities.SQL.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static DataSet ExecuteDataSet(this DbCommand Command, DbProviderFactory Factory)
         {
-            if (Command.IsNull())
+            if (Command==null)
                 return null;
             Command.Open();
             using (DbDataAdapter Adapter = Factory.CreateDataAdapter())
@@ -235,7 +236,7 @@ namespace Utilities.SQL.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static DataType ExecuteScalar<DataType>(this DbCommand Command, DataType Default = default(DataType))
         {
-            if (Command.IsNull())
+            if (Command==null)
                 return Default;
             Command.Open();
             return Command.ExecuteScalar().TryTo<object, DataType>(Default);
@@ -278,7 +279,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>if the parameter exists (and isn't null or empty), it returns the parameter's value. Otherwise the default value is returned.</returns>
         public static DataType GetOutputParameter<DataType>(this DbCommand Command, string ID, DataType Default = default(DataType))
         {
-            return Command.IsNotNull() && Command.Parameters[ID].IsNotNull() ?
+            return Command!=null && Command.Parameters[ID]!=null ?
                 Command.Parameters[ID].Value.TryTo<object, DataType>(Default) :
                 Default;
         }
@@ -294,8 +295,8 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand Open(this DbCommand Command)
         {
-            if (Command.IsNotNull()
-                && Command.Connection.IsNotNull()
+            if (Command!=null
+                && Command.Connection!=null
                 && Command.Connection.State != ConnectionState.Open)
                 Command.Connection.Open();
             return Command;
@@ -312,7 +313,7 @@ namespace Utilities.SQL.ExtensionMethods
         /// <returns>The DBCommand object</returns>
         public static DbCommand Rollback(this DbCommand Command)
         {
-            if (Command.IsNotNull() && Command.Transaction.IsNotNull())
+            if (Command!=null && Command.Transaction!=null)
                 Command.Transaction.Rollback();
             return Command;
         }

@@ -50,8 +50,8 @@ namespace Utilities.SQL.MicroORM
                         string ParameterPrefix = "@", bool Profile = false, bool Writable = true,
                         bool Readable = true)
         {
-            this.Name = Name.IsNullOrEmpty() && ConfigurationManager.ConnectionStrings[0] != null ? ConfigurationManager.ConnectionStrings[0].Name : Name;
-            if (Connection.IsNullOrEmpty() && ConfigurationManager.ConnectionStrings[this.Name] != null)
+            this.Name = string.IsNullOrEmpty(Name) && ConfigurationManager.ConnectionStrings[0] != null ? ConfigurationManager.ConnectionStrings[0].Name : Name;
+            if (string.IsNullOrEmpty(Connection) && ConfigurationManager.ConnectionStrings[this.Name] != null)
             {
                 this.Connection = ConfigurationManager.ConnectionStrings[this.Name].ConnectionString;
                 this.DbType = ConfigurationManager.ConnectionStrings[this.Name].ProviderName;
@@ -61,7 +61,7 @@ namespace Utilities.SQL.MicroORM
                 this.Connection = Connection;
                 this.DbType = DbType;
             }
-            if (ParameterPrefix.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(ParameterPrefix))
             {
                 this.ParameterPrefix = "@";
                 if (DbType.Contains("MySql"))

@@ -24,6 +24,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Media.Image.ExtensionMethods;
+using System.Diagnostics.Contracts;
+using System;
 
 #endregion
 
@@ -59,7 +61,7 @@ namespace Utilities.Media.Image
         /// <param name="ImageUsing">Image to load</param>
         public virtual void LoadImage(Bitmap ImageUsing)
         {
-            ImageUsing.ThrowIfNull("ImageUsing");
+            Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
             BitmapData OldData = ImageUsing.LockImage();
             int PixelSize = OldData.GetPixelSize();
             Width = ImageUsing.Width;

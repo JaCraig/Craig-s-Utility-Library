@@ -25,6 +25,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.Serializers.Interfaces;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.Serializers
@@ -41,7 +42,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The serialized object</returns>
         public byte[] Serialize(object Object)
         {
-            Object.ThrowIfNull("Object");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 BinaryFormatter Formatter = new BinaryFormatter();

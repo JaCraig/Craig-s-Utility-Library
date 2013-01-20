@@ -185,6 +185,56 @@ namespace Utilities.DataTypes.ExtensionMethods
             return ReturnValues;
         }
 
+        /// <summary>
+        /// Does an action for each item in the IEnumerable
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Action">Action to do</param>
+        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <returns>The original list</returns>
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
+            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
+            foreach (T Item in List)
+            {
+                try
+                {
+                    Action(Item);
+                }
+                catch { CatchAction(Item); }
+            }
+            return List;
+        }
+
+        /// <summary>
+        /// Does a function for each item in the IEnumerable, returning a list of the results
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Function">Function to do</param>
+        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <returns>The resulting list</returns>
+        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> List, Func<T, R> Function, Action<T> CatchAction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
+            List<R> ReturnValues = new List<R>();
+            foreach (T Item in List)
+            {
+                try
+                {
+                    ReturnValues.Add(Function(Item));
+                }
+                catch { CatchAction(Item); }
+            }
+            return ReturnValues;
+        }
+
         #endregion
 
         #region Last
@@ -217,7 +267,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static int PositionOf<T>(this IEnumerable<T> List, T Object, IEqualityComparer<T> EqualityComparer = null)
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
-            EqualityComparer = EqualityComparer.Check(x => x != null, () => new GenericEqualityComparer<T>());
+            EqualityComparer = EqualityComparer.Check(() => new GenericEqualityComparer<T>());
             int Count = 0;
             foreach (T Item in List)
             {
@@ -249,110 +299,70 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        //#region ToArray
+        #region ToArray
 
-        ///// <summary>
-        ///// Converts a list to an array
-        ///// </summary>
-        ///// <typeparam name="Source">Source type</typeparam>
-        ///// <typeparam name="Target">Target type</typeparam>
-        ///// <param name="List">List to convert</param>
-        ///// <param name="ConvertingFunction">Function used to convert each item</param>
-        ///// <returns>The array containing the items from the list</returns>
-        //public static Target[] ToArray<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
-        //{
-        //    List.ThrowIfNull("List");
-        //    ConvertingFunction.ThrowIfNull("ConvertingFunction");
-        //    return List.ForEach(ConvertingFunction).ToArray();
-        //}
+        /// <summary>
+        /// Converts a list to an array
+        /// </summary>
+        /// <typeparam name="Source">Source type</typeparam>
+        /// <typeparam name="Target">Target type</typeparam>
+        /// <param name="List">List to convert</param>
+        /// <param name="ConvertingFunction">Function used to convert each item</param>
+        /// <returns>The array containing the items from the list</returns>
+        public static Target[] ToArray<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
+            return List.ForEach(ConvertingFunction).ToArray();
+        }
 
-        //#endregion
+        #endregion
 
-        //#region ToString
+        #region ToList
 
-        ///// <summary>
-        ///// Converts the list to a string where each item is seperated by the Seperator
-        ///// </summary>
-        ///// <typeparam name="T">Item type</typeparam>
-        ///// <param name="List">List to convert</param>
-        ///// <param name="ItemOutput">Used to convert the item to a string (defaults to calling ToString)</param>
-        ///// <param name="Seperator">Seperator to use between items (defaults to ,)</param>
-        ///// <returns>The string version of the list</returns>
-        //public static string ToString<T>(this IEnumerable<T> List, Func<T, string> ItemOutput = null, string Seperator = ",")
-        //{
-        //    List.ThrowIfNull("List");
-        //    Seperator = Seperator.NullCheck("");
-        //    ItemOutput = ItemOutput.NullCheck(x => x.ToString());
-        //    StringBuilder Builder = new StringBuilder();
-        //    string TempSeperator = "";
-        //    List.ForEach(x =>
-        //    {
-        //        Builder.Append(TempSeperator).Append(ItemOutput(x));
-        //        TempSeperator = Seperator;
-        //    });
-        //    return Builder.ToString();
-        //}
+        /// <summary>
+        /// Converts an IEnumerable to a list
+        /// </summary>
+        /// <typeparam name="Source">Source type</typeparam>
+        /// <typeparam name="Target">Target type</typeparam>
+        /// <param name="List">IEnumerable to convert</param>
+        /// <param name="ConvertingFunction">Function used to convert each item</param>
+        /// <returns>The list containing the items from the IEnumerable</returns>
+        public static List<Target> ToList<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
+            return List.ForEach(ConvertingFunction).ToList();
+        }
 
-        //#endregion
+        #endregion
 
-        //#region TryAll
+        #region ToString
 
-        ///// <summary>
-        ///// Tries to do the action on each item in the list. If an exception is thrown,
-        ///// it does the catch action on the item (if it is not null).
-        ///// </summary>
-        ///// <typeparam name="T">The type of the items in the list</typeparam>
-        ///// <param name="List">IEnumerable to look through</param>
-        ///// <param name="Action">Action to run on each item</param>
-        ///// <param name="CatchAction">Catch action (defaults to null)</param>
-        ///// <returns>The list after the action is run on everything</returns>
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        //public static IEnumerable<T> TryAll<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
-        //{
-        //    List.ThrowIfNull("List");
-        //    Action.ThrowIfNull("Action");
-        //    foreach (T Item in List)
-        //    {
-        //        try
-        //        {
-        //            Action(Item);
-        //        }
-        //        catch { if (CatchAction != null) CatchAction(Item); }
-        //    }
-        //    return List;
-        //}
+        /// <summary>
+        /// Converts the list to a string where each item is seperated by the Seperator
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">List to convert</param>
+        /// <param name="ItemOutput">Used to convert the item to a string (defaults to calling ToString)</param>
+        /// <param name="Seperator">Seperator to use between items (defaults to ,)</param>
+        /// <returns>The string version of the list</returns>
+        public static string ToString<T>(this IEnumerable<T> List, Func<T, string> ItemOutput = null, string Seperator = ",")
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Seperator = Seperator.Check("");
+            ItemOutput = ItemOutput.Check(x => x.ToString());
+            StringBuilder Builder = new StringBuilder();
+            string TempSeperator = "";
+            List.ForEach(x =>
+            {
+                Builder.Append(TempSeperator).Append(ItemOutput(x));
+                TempSeperator = Seperator;
+            });
+            return Builder.ToString();
+        }
 
-        //#endregion
-
-        //#region TryAllParallel
-
-        ///// <summary>
-        ///// Tries to do the action on each item in the list. If an exception is thrown,
-        ///// it does the catch action on the item (if it is not null). This is done in
-        ///// parallel.
-        ///// </summary>
-        ///// <typeparam name="T">The type of the items in the list</typeparam>
-        ///// <param name="List">IEnumerable to look through</param>
-        ///// <param name="Action">Action to run on each item</param>
-        ///// <param name="CatchAction">Catch action (defaults to null)</param>
-        ///// <returns>The list after the action is run on everything</returns>
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        //public static IEnumerable<T> TryAllParallel<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
-        //{
-        //    List.ThrowIfNull("List");
-        //    Action.ThrowIfNull("Action");
-        //    Parallel.ForEach<T>(List, delegate(T Item)
-        //    {
-        //        try
-        //        {
-        //            Action(Item);
-        //        }
-        //        catch { if (CatchAction != null) CatchAction(Item); }
-        //    });
-        //    return List;
-        //}
-
-        //#endregion
+        #endregion
 
         #endregion
     }

@@ -27,6 +27,7 @@ using System.Security;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.Serializers.Interfaces;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.Serializers
@@ -44,7 +45,7 @@ namespace Utilities.IO.Serializers
         /// <param name="EncodingUsing">Encoding that the serializer should use (defaults to ASCII)</param>
         public SOAPSerializer(Encoding EncodingUsing = null)
         {
-            this.EncodingUsing = EncodingUsing.NullCheck(new ASCIIEncoding());
+            this.EncodingUsing = EncodingUsing.Check(new ASCIIEncoding());
         }
 
         #endregion
@@ -68,7 +69,7 @@ namespace Utilities.IO.Serializers
         [SecuritySafeCritical]
         public string Serialize(object Object)
         {
-            Object.ThrowIfNull("Object can not be null");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 SoapFormatter Serializer = new SoapFormatter();
@@ -87,7 +88,7 @@ namespace Utilities.IO.Serializers
         [SecuritySafeCritical]
         public object Deserialize(string Data, Type ObjectType)
         {
-            if (Data.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Data))
                 return null;
             using (MemoryStream Stream = new MemoryStream(EncodingUsing.GetBytes(Data)))
             {

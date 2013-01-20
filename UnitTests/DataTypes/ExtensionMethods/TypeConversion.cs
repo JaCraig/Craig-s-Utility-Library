@@ -104,7 +104,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
             List<PreDataTable> Temp2 = Temp.ToDataTable().ToList<PreDataTable>();
-            Assert.Equal(Temp, Temp2);
+            for (int x = 0; x < Temp.Count; ++x)
+            {
+                Assert.Equal(Temp[x].ID, Temp2[x].ID);
+                Assert.Equal(Temp[x].Value, Temp2[x].Value);
+            }
         }
 
         [Fact]
@@ -115,6 +119,13 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(10, ((IDictionary<string, object>)Object)["B"]);
             ((IDictionary<string, object>)Object)["B"] = 20;
             Assert.Equal(20, Object.TryTo(new MyTestClass()).B);
+        }
+
+        public class PreDataTable
+        {
+            public PreDataTable() { }
+            public int ID { get; set; }
+            public string Value { get; set; }
         }
     }
 

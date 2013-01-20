@@ -272,7 +272,7 @@ namespace Utilities.SQL.MicroORM
             {
                 if (Command.CommandType == System.Data.CommandType.Text)
                 {
-                    this.SQLCommand_ += Command.SQLCommand.IsNullOrEmpty() ?
+                    this.SQLCommand_ += string.IsNullOrEmpty(Command.SQLCommand) ?
                                         "" :
                                         ParameterRegex.Replace(Command.SQLCommand, x =>
                                         {

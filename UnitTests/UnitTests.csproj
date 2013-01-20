@@ -67,11 +67,8 @@
     <Compile Include="DataMapper\TypeMapping.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
-    <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
-    <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
@@ -85,7 +82,6 @@
     <Compile Include="DataTypes\List.cs" />
     <Compile Include="DataTypes\ListMapping.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
-    <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />
     <Compile Include="DataTypes\RingBuffer.cs" />
     <Compile Include="DataTypes\StringTemplate.cs" />
@@ -242,6 +238,10 @@
     <Compile Include="Web\WebPageThumbnail\WebPageThumbnail.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Utilities.Lite\Utilities.Lite.csproj">
+      <Project>{0FD33BE8-BE8F-4E7B-A5FB-DECB13804FA8}</Project>
+      <Name>Utilities.Lite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{57A7AF88-994B-46A5-BB9D-46ED06757B3F}</Project>
       <Name>Utilities</Name>

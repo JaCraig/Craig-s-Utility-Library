@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.Contracts;
+using System;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -48,7 +50,7 @@ namespace Utilities.FileFormats.BlogML
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Tag(XmlElement Element)
         {
-            Element.ThrowIfNull("Element");
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
             if (Element.Attributes["ref"] != null)
                 REF = Element.Attributes["ref"].Value;
         }

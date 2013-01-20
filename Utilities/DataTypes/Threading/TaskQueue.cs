@@ -25,6 +25,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.Threading
@@ -49,7 +50,7 @@ namespace Utilities.DataTypes.Threading
             : base(new ConcurrentQueue<T>())
         {
             this.ProcessItem = ProcessItem;
-            this.HandleError = HandleError.NullCheck(x => { });
+            this.HandleError = HandleError.Check(x => { });
             CancellationToken = new CancellationTokenSource();
             Tasks = new Task[Capacity];
             Capacity.Times(x => Tasks[x] = Task.Factory.StartNew(Process));
@@ -92,7 +93,7 @@ namespace Utilities.DataTypes.Threading
         /// </summary>
         public bool IsComplete
         {
-            get { return Tasks.TrueForAll(x => x.IsCompleted); }
+            get { return Tasks.All(x => x.IsCompleted); }
         }
 
         #endregion

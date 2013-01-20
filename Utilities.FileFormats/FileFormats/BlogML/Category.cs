@@ -25,6 +25,7 @@ using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -50,7 +51,7 @@ namespace Utilities.FileFormats.BlogML
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Category(XmlElement Element)
         {
-            Element.ThrowIfNull("Element");
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
             ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
             REF = Element.Attributes["ref"] != null ? Element.Attributes["ref"].Value : "";
             DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
@@ -109,7 +110,7 @@ namespace Utilities.FileFormats.BlogML
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<category ");
-            if(REF.IsNullOrEmpty())
+            if(string.IsNullOrEmpty(REF))
             {
                 Builder.AppendFormat(CultureInfo.InvariantCulture, "id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" parentref=\"{3}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), DateModified.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), ParentREF);
                 Builder.AppendFormat(CultureInfo.InvariantCulture, "<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);

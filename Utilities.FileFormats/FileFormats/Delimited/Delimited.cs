@@ -30,6 +30,8 @@ using Utilities.IO.ExtensionMethods;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Globalization;
+using System.Diagnostics.Contracts;
+using System;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -106,7 +108,7 @@ namespace Utilities.FileFormats.Delimited
         /// <param name="FileContent">File content</param>
         public void Parse(string FileContent)
         {
-            FileContent.ThrowIfNullOrEmpty("FileContent");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(FileContent), "FileContent");
             Regex TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
             MatchCollection Matches = TempSplitter.Matches(FileContent);
             Matches.Where(x => !string.IsNullOrEmpty(x.Value))

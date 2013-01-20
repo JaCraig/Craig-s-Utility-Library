@@ -133,7 +133,7 @@ namespace UnitTests.Random.ExtensionMethods
         {
             Utilities.Random.Random Rand = new Utilities.Random.Random();
             Assert.DoesNotThrow(() => Rand.RegisterGenerator<string>(new NameGenerator()));
-            Assert.True(100.Times(x => Rand.Next<string>()).TrueForAll(x => x.Split(' ').Length == 2));
+            Assert.True(100.Times(x => Rand.Next<string>()).All(x => x.Split(' ').Length == 2));
         }
 
         [Fact]

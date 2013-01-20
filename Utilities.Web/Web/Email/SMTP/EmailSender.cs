@@ -57,7 +57,7 @@ namespace Utilities.Web.Email.SMTP
         /// <param name="MessageBody">The body of the message</param>
         public virtual void SendMail(string MessageBody = "")
         {
-            if (MessageBody.IsNotNullOrEmpty())
+            if (!string.IsNullOrEmpty(MessageBody))
                 Body = MessageBody;
             using (System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage())
             {
@@ -126,7 +126,7 @@ namespace Utilities.Web.Email.SMTP
         /// <param name="MessageBody">The body of the message</param>
         public virtual void SendMailAsync(string MessageBody = "")
         {
-            if (MessageBody.IsNotNullOrEmpty())
+            if (!string.IsNullOrEmpty(MessageBody))
                 Body = MessageBody;
             ThreadPool.QueueUserWorkItem(delegate { SendMail(); });
         }

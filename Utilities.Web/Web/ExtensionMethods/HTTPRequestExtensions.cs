@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Web.ExtensionMethods
@@ -46,7 +47,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>The IPAddress object if it exists, null otherwise</returns>
         public static IPAddress UserIPAddress(this HttpRequestBase Request)
         {
-            Request.ThrowIfNull("Request");
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
             IPAddress Address = null;
             if (!IPAddress.TryParse(Request.UserHostAddress, out Address))
                 Address = null;
@@ -60,7 +61,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>The IPAddress object if it exists, null otherwise</returns>
         public static IPAddress UserIPAddress(this HttpRequest Request)
         {
-            Request.ThrowIfNull("Request");
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
             IPAddress Address = null;
             if (!IPAddress.TryParse(Request.UserHostAddress, out Address))
                 Address = null;
@@ -105,11 +106,11 @@ namespace Utilities.Web.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public static bool IsMobile(this HttpRequestBase Request)
         {
-            Request.ThrowIfNull("Request");
-            Request.Browser.ThrowIfNull("Browser");
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<ArgumentNullException>(Request.Browser != null, "Request.Browser");
             if (Request.Browser.IsMobileDevice
-                || !Request.ServerVariables["HTTP_X_WAP_PROFILE"].IsNullOrEmpty()
-                || (!Request.ServerVariables["HTTP_ACCEPT"].IsNullOrEmpty()
+                || !string.IsNullOrEmpty(Request.ServerVariables["HTTP_X_WAP_PROFILE"])
+                || (!string.IsNullOrEmpty(Request.ServerVariables["HTTP_ACCEPT"])
                     && (Request.ServerVariables["HTTP_ACCEPT"].ToLower(CultureInfo.InvariantCulture).Contains("wap")
                        || Request.ServerVariables["HTTP_ACCEPT"].ToLower(CultureInfo.InvariantCulture).Contains("wml+xml"))))
                 return true;
@@ -128,11 +129,11 @@ namespace Utilities.Web.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public static bool IsMobile(this HttpRequest Request)
         {
-            Request.ThrowIfNull("Request");
-            Request.Browser.ThrowIfNull("Browser");
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<ArgumentNullException>(Request.Browser != null, "Request.Browser");
             if (Request.Browser.IsMobileDevice
-                || !Request.ServerVariables["HTTP_X_WAP_PROFILE"].IsNullOrEmpty()
-                || (!Request.ServerVariables["HTTP_ACCEPT"].IsNullOrEmpty()
+                || !string.IsNullOrEmpty(Request.ServerVariables["HTTP_X_WAP_PROFILE"])
+                || (!string.IsNullOrEmpty(Request.ServerVariables["HTTP_ACCEPT"])
                     && (Request.ServerVariables["HTTP_ACCEPT"].ToLower(CultureInfo.InvariantCulture).Contains("wap")
                        || Request.ServerVariables["HTTP_ACCEPT"].ToLower(CultureInfo.InvariantCulture).Contains("wml+xml"))))
                 return true;

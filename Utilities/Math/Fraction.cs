@@ -154,7 +154,7 @@ namespace Utilities.Math
         public override bool Equals(object obj)
         {
             Fraction Other = obj as Fraction;
-            if (Other.IsNull())
+            if (((object)Other) == null)
                 return false;
             decimal Value1 = this;
             decimal Value2 = Other;

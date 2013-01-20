@@ -28,6 +28,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Reflection.ExtensionMethods;
 using Utilities.SQL.MicroORM.Enums;
 using Utilities.SQL.MicroORM.Interfaces;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -128,9 +129,9 @@ namespace Utilities.SQL.MicroORM
             DataType DefaultValue = default(DataType),
             Mode Mode = Mode.Read|Mode.Write)
         {
-            Property.ThrowIfNull("Property");
-            Mappings.ThrowIfNull("Mappings");
-            if (DatabasePropertyName.IsNullOrEmpty())
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
+            if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
@@ -159,9 +160,9 @@ namespace Utilities.SQL.MicroORM
             string DefaultValue = "",
             Mode Mode = Mode.Read|Mode.Write)
         {
-            Property.ThrowIfNull("Property");
-            Mappings.ThrowIfNull("Mappings");
-            if (DatabasePropertyName.IsNullOrEmpty())
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
+            if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);

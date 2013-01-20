@@ -29,6 +29,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -608,7 +609,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>True if it does, false otherwise</returns>
         public static bool HasDefaultConstructor(this Type Type)
         {
-            Type.ThrowIfNull("Type");
+            Contract.Requires<ArgumentNullException>(Type != null, "Type");
             return Type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
                         .Any(x => x.GetParameters().Length == 0);
         }
@@ -676,7 +677,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The assembly specified if it exists</returns>
         public static System.Reflection.Assembly Load(this AssemblyName Name)
         {
-            Name.ThrowIfNull("Name");
+            Contract.Requires<ArgumentNullException>(Name != null, "Name");
             return AppDomain.CurrentDomain.Load(Name);
         }
 

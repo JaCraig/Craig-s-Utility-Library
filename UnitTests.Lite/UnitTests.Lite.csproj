@@ -55,9 +55,22 @@
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ObjectExtensions.cs" />
-    <Compile Include="DataTypes\Patterns\SafeDisposableBaseClass.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\TypeConversion.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ValueType.cs" />
+    <Compile Include="DataTypes\Patterns\Factory.cs" />
+    <Compile Include="DataTypes\Patterns\BaseClasses\SafeDisposableBaseClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

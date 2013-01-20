@@ -48,7 +48,7 @@ namespace Utilities.Validation.Rules
         /// <param name="Type">Comparison type to use</param>
         /// <param name="ErrorMessage">Error message</param>
         public CompareToAttribute(string PropertyName, ComparisonType Type, string ErrorMessage = "")
-            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is not {1} {2}" : ErrorMessage)
+            : base(string.IsNullOrEmpty(ErrorMessage) ? "{0} is not {1} {2}" : ErrorMessage)
         {
             this.PropertyName = PropertyName;
             this.Type = Type;

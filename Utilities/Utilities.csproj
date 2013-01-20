@@ -42,7 +42,7 @@
     <SccProvider>
     </SccProvider>
     <TargetFrameworkProfile />
-    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,24 +56,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug\Utilities.XML</DocumentationFile>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Custom.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Release\Utilities.XML</DocumentationFile>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
     <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
     <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
-    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
     <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
     <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
     <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
@@ -89,7 +77,7 @@
     <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
     <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
     <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
     <CodeContractsCustomRewriterAssembly />
     <CodeContractsCustomRewriterClass />
     <CodeContractsLibPaths />
@@ -98,7 +86,51 @@
     <CodeContractsBaseLineFile />
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>DoNotBuild</CodeContractsReferenceAssembly>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>Custom.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\Utilities.XML</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsInferRequires>False</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
+    <CodeContractsSuggestEnsures>False</CodeContractsSuggestEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
@@ -138,20 +170,9 @@
     <Compile Include="AI\Anagram.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
-    <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ExtraMethods.cs" />
     <Compile Include="DataTypes\RingBuffer.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
-    <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
     <Compile Include="DataTypes\StringTemplate.cs" />
     <Compile Include="DataTypes\Table.cs" />
     <Compile Include="DataTypes\TagDictionary.cs" />
@@ -275,10 +296,6 @@
     <Compile Include="Validation\Rules\Enums\ComparisonType.cs" />
     <Compile Include="Validation\Rules\Enums\IsValidEnum.cs" />
     <Compile Include="Validation\Rules\Is.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\TypeConversionExtensions.cs" />
-    <Compile Include="DataTypes\ExtensionMethods\ValueTypeExtensions.cs" />
     <Compile Include="FileFormats\Cisco\Directory.cs" />
     <Compile Include="FileFormats\Cisco\DirectoryEntry.cs" />
     <Compile Include="FileFormats\Cisco\Error.cs" />
@@ -303,12 +320,8 @@
     <Compile Include="DataMapper\Mapping.cs" />
     <Compile Include="DataMapper\MappingManager.cs" />
     <Compile Include="DataMapper\TypeMapping.cs" />
-    <Compile Include="DataTypes\Patterns\IFluentInterface.cs" />
     <Compile Include="FileFormats\Zip\ZipFile.cs" />
     <Compile Include="DataTypes\Bag.cs" />
-    <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
-    <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
-    <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
     <Compile Include="DataTypes\List.cs" />
     <Compile Include="DataTypes\ListMapping.cs" />
@@ -327,7 +340,6 @@
     <Compile Include="Environment\DataTypes\OperatingSystem.cs" />
     <Compile Include="Environment\Option.cs" />
     <Compile Include="Environment\WMI.cs" />
-    <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="FileFormats\BlogML\Author.cs" />
     <Compile Include="FileFormats\BlogML\Authors.cs" />
     <Compile Include="FileFormats\BlogML\BlogML.cs" />
@@ -572,6 +584,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Math\Geometry\ExtensionMethods\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities.Lite\Utilities.Lite.csproj">
+      <Project>{0FD33BE8-BE8F-4E7B-A5FB-DECB13804FA8}</Project>
+      <Name>Utilities.Lite</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
