@@ -104,6 +104,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
             bool ReturnValue = false;
             foreach (T Item in Items)
             {
@@ -146,6 +147,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static bool AddIfUnique<T>(this ICollection<T> Collection, params T[] Items)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
             return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 
@@ -159,6 +161,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static bool AddIfUnique<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
             return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 

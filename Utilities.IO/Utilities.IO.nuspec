@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-IO</id>
-		<version>3.3.0230</version>
+		<version>3.3.0242</version>
 		<title>Craig's Utility Library IO Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

@@ -171,9 +171,6 @@
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExtraMethods.cs" />
-    <Compile Include="DataTypes\RingBuffer.cs" />
-    <Compile Include="DataTypes\DateSpan.cs" />
-    <Compile Include="DataTypes\StringTemplate.cs" />
     <Compile Include="DataTypes\Table.cs" />
     <Compile Include="DataTypes\TagDictionary.cs" />
     <Compile Include="DataTypes\Threading\TaskQueue.cs" />
@@ -321,13 +318,7 @@
     <Compile Include="DataMapper\MappingManager.cs" />
     <Compile Include="DataMapper\TypeMapping.cs" />
     <Compile Include="FileFormats\Zip\ZipFile.cs" />
-    <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
-    <Compile Include="DataTypes\List.cs" />
-    <Compile Include="DataTypes\ListMapping.cs" />
-    <Compile Include="DataTypes\BTree.cs" />
-    <Compile Include="DataTypes\PriorityQueue.cs" />
-    <Compile Include="DataTypes\Vector.cs" />
     <Compile Include="Environment\ArgsParser.cs" />
     <Compile Include="Environment\DataTypes\Application.cs" />
     <Compile Include="Environment\DataTypes\Applications.cs" />

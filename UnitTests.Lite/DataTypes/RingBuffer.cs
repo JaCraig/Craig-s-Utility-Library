@@ -27,52 +27,38 @@ using Xunit;
 
 using Utilities.DataTypes;
 using System.Data;
-using Utilities.Random;
-using Utilities.Random.ExtensionMethods;
-using Utilities.Random.StringGenerators;
 
 namespace UnitTests.DataTypes
 {
-    public class ListMapping
+    public class RingBuffer
     {
         [Fact]
         public void RandomTest()
         {
-            ListMapping<string, int> TestObject = new ListMapping<string, int>();
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            RingBuffer<int> TestObject = new RingBuffer<int>(10);
+            System.Random Rand = new System.Random();
+            int Value = 0;
             for (int x = 0; x < 10; ++x)
             {
-                string Name = Rand.Next<string>(new RegexStringGenerator(10));
-                for (int y = 0; y < 5; ++y)
-                {
-                    int Value=Rand.Next();
-                    TestObject.Add(Name, Value);
-                    Assert.Equal(y + 1, TestObject[Name].Count);
-                    Assert.Equal(Value, TestObject[Name].ElementAt(y));
-                }
+                Value = Rand.Next();
+                TestObject.Add(Value);
+                Assert.Equal(1, TestObject.Count);
+                Assert.Equal(Value, TestObject.Remove());
             }
-            Assert.Equal(10, TestObject.Count);
-        }
+            Assert.Equal(0, TestObject.Count);
+            System.Collections.Generic.List<int> Values=new System.Collections.Generic.List<int>();
+            for (int x = 0; x < 10; ++x)
+            {
+                Values.Add(Rand.Next());
+            }
+            TestObject.Add(Values);
+            Assert.Equal(Values.ToArray(), TestObject.ToArray());
 
-        [Fact]
-        public void RemoveTest()
-        {
-            ListMapping<string, int> TestObject = new ListMapping<string, int>();
-            TestObject.Add("A", 0);
-            TestObject.Add("A", 1);
-            TestObject.Remove("A", 0);
-            Assert.Equal(1, TestObject["A"].Count);
-            Assert.Equal(1, TestObject["A"].FirstOrDefault());
-        }
-
-        [Fact]
-        public void ContainsTest()
-        {
-            ListMapping<string, int> TestObject = new ListMapping<string, int>();
-            TestObject.Add("A", 0);
-            TestObject.Add("A", 1);
-            Assert.True(TestObject.Contains("A", 0));
-            Assert.False(TestObject.Contains("A", 2));
+            for (int x = 0; x < 10; ++x)
+            {
+                Assert.Throws<InvalidOperationException>(() => TestObject.Add(Rand.Next()));
+                Assert.Equal(10, TestObject.Count);
+            }
         }
     }
 }

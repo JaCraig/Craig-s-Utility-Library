@@ -28,25 +28,48 @@ using Xunit;
 using Utilities.DataTypes;
 using System.Data;
 
-using Utilities.DataTypes.EventArgs;
-
 namespace UnitTests.DataTypes
 {
-    public class List
+    public class ListMapping
     {
         [Fact]
-        public void ChangedTest()
+        public void RandomTest()
         {
-            Utilities.DataTypes.List<int> TestObject = new Utilities.DataTypes.List<int>();
-            TestObject.Changed = (x, y) => ItemChanged((Utilities.DataTypes.List<int>)x, y);
-            TestObject.PropertyName = "TestObject";
-            TestObject.Add(10);
+            ListMapping<int, int> TestObject = new ListMapping<int, int>();
+            System.Random Rand = new Random();
+            for (int x = 0; x < 10; ++x)
+            {
+                int Name = Rand.Next();
+                for (int y = 0; y < 5; ++y)
+                {
+                    int Value=Rand.Next();
+                    TestObject.Add(Name, Value);
+                    Assert.Equal(y + 1, TestObject[Name].Count);
+                    Assert.Equal(Value, TestObject[Name].ElementAt(y));
+                }
+            }
+            Assert.Equal(10, TestObject.Count);
         }
 
-        private object ItemChanged(Utilities.DataTypes.List<int> x, ChangedEventArgs y)
+        [Fact]
+        public void RemoveTest()
         {
-            Assert.Equal("TestObject", y.Content);
-            return null;
+            ListMapping<string, int> TestObject = new ListMapping<string, int>();
+            TestObject.Add("A", 0);
+            TestObject.Add("A", 1);
+            TestObject.Remove("A", 0);
+            Assert.Equal(1, TestObject["A"].Count);
+            Assert.Equal(1, TestObject["A"].FirstOrDefault());
+        }
+
+        [Fact]
+        public void ContainsTest()
+        {
+            ListMapping<string, int> TestObject = new ListMapping<string, int>();
+            TestObject.Add("A", 0);
+            TestObject.Add("A", 1);
+            Assert.True(TestObject.Contains("A", 0));
+            Assert.False(TestObject.Contains("A", 2));
         }
     }
 }

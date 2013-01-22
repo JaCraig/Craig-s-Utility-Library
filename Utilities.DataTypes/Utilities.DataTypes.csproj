@@ -114,19 +114,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTypes\Bag.cs" />
-    <Compile Include="DataTypes\BTree.cs" />
-    <Compile Include="DataTypes\List.cs" />
-    <Compile Include="DataTypes\ListMapping.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
-    <Compile Include="DataTypes\PriorityQueue.cs" />
-    <Compile Include="DataTypes\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataTypes\DateSpan.cs" />
-    <Compile Include="DataTypes\RingBuffer.cs" />
     <Compile Include="DataTypes\Threading\TaskQueue.cs" />
     <Compile Include="DataTypes\TagDictionary.cs" />
-    <Compile Include="DataTypes\StringTemplate.cs" />
     <Compile Include="DataTypes\Table.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExtraMethods.cs" />
   </ItemGroup>

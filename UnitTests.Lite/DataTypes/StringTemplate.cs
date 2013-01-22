@@ -27,41 +27,20 @@ using Xunit;
 
 using Utilities.DataTypes;
 using System.Data;
-
-using Utilities.Random;
+using Utilities.DataTypes.ExtensionMethods;
 
 namespace UnitTests.DataTypes
 {
-    public class PriorityQueue
+    public class StringTemplate
     {
         [Fact]
-        public void RandomTest()
+        public void BasicTest()
         {
-            PriorityQueue<int> TestObject = new PriorityQueue<int>();
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            int Value=0;
-            for (int x = 0; x < 10; ++x)
-            {
-                Value=Rand.Next();
-                TestObject.Add(x, Value);
-                Assert.Equal(Value, TestObject.Peek());
-            }
-            int HighestValue = TestObject.Peek();
-            for (int x = 9; x >= 0; --x)
-            {
-                Value = Rand.Next();
-                TestObject.Add(x, Value);
-                Assert.Equal(HighestValue, TestObject.Peek());
-            }
-            int Count=0;
-            foreach(int Priority in TestObject.Keys)
-            {
-                foreach(int Item in TestObject[Priority])
-                {
-                    ++Count;
-                }
-            }
-            Assert.Equal(20, Count);
+            Utilities.DataTypes.StringTemplate Template = new Utilities.DataTypes.StringTemplate("{AccessModifier} {Type} {Name} { get; set; }");
+            Template.Add("AccessModifier", "public");
+            Template.Add("Type", "string");
+            Template.Add("Name", "TestProperty");
+            Assert.Equal("public string TestProperty { get; set; }", Template.ToString());
         }
     }
 }

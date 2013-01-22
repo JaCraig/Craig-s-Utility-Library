@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes
@@ -155,8 +156,7 @@ namespace Utilities.DataTypes
         /// <param name="item">Item to add</param>
         public virtual void Add(T item)
         {
-            if (Count >= MaxCapacity && !AllowOverflow)
-                throw new InvalidOperationException("Unable to add item to circular buffer because the buffer is full");
+            Contract.Requires<InvalidOperationException>(Count < MaxCapacity || AllowOverflow, "Unable to add item to circular buffer because the buffer is full");
             Buffer[WritePosition] = item;
             ++Count;
             ++WritePosition;
@@ -172,6 +172,7 @@ namespace Utilities.DataTypes
         /// <param name="Items">Items to add</param>
         public virtual void Add(IEnumerable<T> Items)
         {
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
             Items.ForEach(x => Add(x));
         }
 
@@ -183,8 +184,7 @@ namespace Utilities.DataTypes
         /// <param name="offset">Offset to start at</param>
         public virtual void Add(T[] buffer, int offset, int count)
         {
-            if (count > buffer.Length - offset)
-                throw new ArgumentOutOfRangeException("buffer");
+            Contract.Requires<ArgumentOutOfRangeException>(count <= buffer.Length - offset, "buffer");
             for (int x = offset; x < offset + count; ++x)
                 Add(buffer[x]);
         }
@@ -369,8 +369,7 @@ namespace Utilities.DataTypes
         /// <returns>The number of items that were read</returns>
         public virtual int Remove(T[] array, int offset, int count)
         {
-            if (Count > array.Length - offset)
-                throw new ArgumentOutOfRangeException("array");
+            Contract.Requires<ArgumentOutOfRangeException>(Count <= array.Length - offset, "array");
             if (Count == 0)
                 return 0;
             int y = ReadPosition;

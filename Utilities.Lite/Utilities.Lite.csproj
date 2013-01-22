@@ -108,8 +108,11 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\Bag.cs" />
+    <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
+    <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
@@ -128,10 +131,15 @@
     <Compile Include="DataTypes\ExtensionMethods\ValueTypeExtensions.cs" />
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
     <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />
+    <Compile Include="DataTypes\ListMapping.cs" />
     <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\Patterns\IFluentInterface.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\SafeDisposableBaseClass.cs" />
+    <Compile Include="DataTypes\PriorityQueue.cs" />
+    <Compile Include="DataTypes\RingBuffer.cs" />
+    <Compile Include="DataTypes\StringTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

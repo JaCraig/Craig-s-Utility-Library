@@ -28,34 +28,38 @@ using Xunit;
 using Utilities.DataTypes;
 using System.Data;
 
-using Utilities.Random;
-
 namespace UnitTests.DataTypes
 {
-    public class Vector
+    public class PriorityQueue
     {
         [Fact]
         public void RandomTest()
         {
-            Vector<int> TestObject = new Vector<int>();
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            int Value = 0;
+            PriorityQueue<int> TestObject = new PriorityQueue<int>();
+            System.Random Rand = new System.Random();
+            int Value=0;
             for (int x = 0; x < 10; ++x)
             {
-                Value = Rand.Next();
-                TestObject.Add(Value);
-                Assert.Equal(Value, TestObject[x]);
+                Value=Rand.Next();
+                TestObject.Add(x, Value);
+                Assert.Equal(Value, TestObject.Peek());
             }
-            int Count = 0;
-            foreach (int Temp in TestObject)
+            int HighestValue = TestObject.Peek();
+            for (int x = 9; x >= 0; --x)
             {
-                ++Count;
+                Value = Rand.Next();
+                TestObject.Add(x, Value);
+                Assert.Equal(HighestValue, TestObject.Peek());
             }
-            Assert.Equal(10, Count);
-            TestObject.Remove(TestObject[0]);
-            Assert.Equal(9, TestObject.Count);
-            TestObject.Clear();
-            Assert.Equal(0, TestObject.Count);
+            int Count=0;
+            foreach(int Priority in TestObject.Keys)
+            {
+                foreach(int Item in TestObject[Priority])
+                {
+                    ++Count;
+                }
+            }
+            Assert.Equal(20, Count);
         }
     }
 }

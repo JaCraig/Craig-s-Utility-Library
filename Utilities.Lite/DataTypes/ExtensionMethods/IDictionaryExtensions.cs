@@ -48,7 +48,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Key">Key to look for</param>
         /// <param name="Default">Default value if the key is not found</param>
         /// <returns>The value associated with the key or the default value if the key is not found</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
         public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
         {
             Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
@@ -69,7 +68,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Key">Key to look for</param>
         /// <param name="Value">Value to add</param>
         /// <returns>The dictionary</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
         public static IDictionary<TKey, TValue> SetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Value)
         {
             Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");

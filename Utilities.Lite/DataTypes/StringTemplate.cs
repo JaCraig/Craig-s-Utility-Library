@@ -34,7 +34,6 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Acts as a template for a string
     /// </summary>
-    [Serializable]
     public class StringTemplate : Dictionary<string, string>
     {
         #region Constructor
@@ -50,16 +49,6 @@ namespace Utilities.DataTypes
             this.KeyStart = KeyStart;
             this.KeyEnd = KeyEnd;
             this.Template = Template;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Info">Serialization info</param>
-        /// <param name="Context">Streaming context</param>
-        protected StringTemplate(SerializationInfo Info, StreamingContext Context)
-            : base(Info, Context)
-        {
         }
 
         #endregion
@@ -92,18 +81,6 @@ namespace Utilities.DataTypes
         public override string ToString()
         {
             return Template.FormatString(this.ToArray(x => new KeyValuePair<string, string>(KeyStart + x.Key + KeyEnd, x.Value)));
-        }
-
-        /// <summary>
-        /// Implements the ISerializable interface and returns the data needed to serialize the dictionary instance
-        /// </summary>
-        /// <param name="info">Serialization info</param>
-        /// <param name="context">Streaming context</param>
-        [SecurityCritical]
-        [SuppressMessage("Microsoft.Security","CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
         }
 
         #endregion

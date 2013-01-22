@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Text;
 using Utilities.DataTypes.Formatters.Interfaces;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -91,7 +92,6 @@ namespace Utilities.DataTypes.Formatters
         {
             if (!IsValid(FormatPattern))
                 throw new ArgumentException("FormatPattern is not valid");
-
             StringBuilder ReturnValue = new StringBuilder();
             for (int x = 0; x < FormatPattern.Length; ++x)
             {
