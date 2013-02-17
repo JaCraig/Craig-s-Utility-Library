@@ -99,9 +99,10 @@ namespace Utilities.IO.ExtensionMethods
         /// </summary>
         /// <param name="Location">File to read</param>
         /// <returns>A string containing the contents of the file</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public static string Read(this string Location)
         {
-            if (Location.StartsWith("~"))
+            if (Location.StartsWith("~", StringComparison.InvariantCulture))
             {
                 if (HttpContext.Current == null)
                     Location = Location.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
@@ -137,9 +138,10 @@ namespace Utilities.IO.ExtensionMethods
         /// </summary>
         /// <param name="Location">File to open</param>
         /// <returns>A binary array containing the contents of the file</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public static byte[] ReadBinary(this string Location)
         {
-            if (Location.StartsWith("~"))
+            if (Location.StartsWith("~", StringComparison.InvariantCulture))
             {
                 if (HttpContext.Current == null)
                     Location = Location.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
@@ -209,6 +211,7 @@ namespace Utilities.IO.ExtensionMethods
             Info.UserName = User;
             Info.WindowStyle = WindowStyle;
             Info.UseShellExecute = false;
+            Info.WorkingDirectory = WorkingDirectory;
             return File.Execute(Info);
         }
 
@@ -286,9 +289,10 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="EncodingUsing">Encoding that the content is using (defaults to ASCII)</param>
         /// <param name="Mode">Mode for saving the file (defaults to Create)</param>
         /// <returns>The FileInfo object associated with the location</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public static FileInfo Save(this string Location, string Content, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
         {
-            if (Location.StartsWith("~"))
+            if (Location.StartsWith("~", StringComparison.InvariantCulture))
             {
                 if (HttpContext.Current == null)
                     Location = Location.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
@@ -305,9 +309,10 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="Content">Content to save to the file</param>
         /// <param name="Mode">Mode for saving the file (defaults to Create)</param>
         /// <returns>The FileInfo object associated with the location</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public static FileInfo Save(this string Location, byte[] Content, FileMode Mode = FileMode.Create)
         {
-            if (Location.StartsWith("~"))
+            if (Location.StartsWith("~", StringComparison.InvariantCulture))
             {
                 if (HttpContext.Current == null)
                     Location = Location.Replace("~", AppDomain.CurrentDomain.BaseDirectory);
@@ -335,7 +340,7 @@ namespace Utilities.IO.ExtensionMethods
             object StateObject, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
         {
             File.ThrowIfNull("File");
-            return File.SaveAsync(EncodingUsing.NullCheck(new ASCIIEncoding()).GetBytes(Content), CallBack, StateObject);
+            return File.SaveAsync(EncodingUsing.NullCheck(new ASCIIEncoding()).GetBytes(Content), CallBack, StateObject, Mode);
         }
 
         /// <summary>

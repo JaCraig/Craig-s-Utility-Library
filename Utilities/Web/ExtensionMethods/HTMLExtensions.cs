@@ -229,6 +229,7 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         /// <param name="Context">Current context</param>
         /// <returns>The relative root of the web site</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "Context")]
         public static string RelativeRoot(this HttpContextBase Context)
         {
             return VirtualPathUtility.ToAbsolute("~/");
@@ -239,6 +240,7 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         /// <param name="Context">Current context</param>
         /// <returns>The relative root of the web site</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "Context")]
         public static string RelativeRoot(this HttpContext Context)
         {
             return VirtualPathUtility.ToAbsolute("~/");
@@ -374,9 +376,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>Stripped string</returns>
         private static string RemoveExtraHyphen(string Input)
         {
-            while (Input.Contains("--"))
-                Input = Input.Replace("--", "-");
-            return Input;
+            return new Regex(@"[-]{2,}", RegexOptions.None).Replace(Input, "-");
         }
 
         /// <summary>

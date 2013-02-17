@@ -57,7 +57,8 @@ namespace Utilities.IoC.Providers.Scope
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            return (obj is BaseScope) && ((BaseScope)obj).Name == Name;
+            BaseScope Tempobj = obj as BaseScope;
+            return Tempobj != null && Tempobj.Name == Name;
         }
 
         /// <summary>

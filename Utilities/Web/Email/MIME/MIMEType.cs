@@ -34,11 +34,13 @@ namespace Utilities.Web.Email.MIME
         /// <summary>
         /// Defines the types in string form
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2105:ArrayFieldsShouldNotBeReadOnly")]
         public static readonly string[] TypeTable = { "text", "image", "audio", "vedio", "application", "multipart", "message", null };
 
         /// <summary>
         /// Defines the sub types, file extensions, and media types
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2105:ArrayFieldsShouldNotBeReadOnly")]
         public static readonly MediaType[] TypeCvtTable =
             new MediaType[] {
 								   // media-type, sub-type, file extension

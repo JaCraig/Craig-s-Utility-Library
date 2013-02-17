@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Text;
 using Utilities.FileFormats.Cisco.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.Cisco
@@ -88,7 +89,7 @@ namespace Utilities.FileFormats.Cisco
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<CiscoIPPhoneImageFile><Title>").Append(Title).Append("</Title><Prompt>").Append(Prompt).Append("</Prompt><LocationX>")
-                .Append(X.ToString()).Append("</LocationX><LocationY>").Append(Y.ToString()).Append("</LocationY><URL>")
+                .Append(X.ToString(CultureInfo.InvariantCulture)).Append("</LocationX><LocationY>").Append(Y.ToString(CultureInfo.InvariantCulture)).Append("</LocationY><URL>")
                 .Append(URL).Append("</URL>");
             if (SoftKeys != null)
             {

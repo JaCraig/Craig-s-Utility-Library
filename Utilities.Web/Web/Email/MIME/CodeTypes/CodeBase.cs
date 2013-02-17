@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Text;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Email.MIME.CodeTypes
@@ -47,17 +48,18 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <param name="Output">Output string</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.IndexOf(System.String,System.Int32,System.StringComparison)")]
         public override void Decode(string Input, out string Output)
         {
             Output = "";
             int Index = 0;
             while(Index<Input.Length)
             {
-                int CurrentIndex=Input.IndexOf("=?",Index);
+                int CurrentIndex = Input.IndexOf("=?", Index, StringComparison.InvariantCulture);
                 if(CurrentIndex!=-1)
                 {
                     Output+=Input.Substring(Index,CurrentIndex-Index);
-                    int CurrentIndex2 = Input.IndexOf("?=", CurrentIndex + 2);
+                    int CurrentIndex2 = Input.IndexOf("?=", CurrentIndex + 2, StringComparison.InvariantCulture);
                     if(CurrentIndex2!=-1)
                     {
                         CurrentIndex+=2;
@@ -141,6 +143,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// <summary>
         /// Fold characters
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         protected virtual string[] FoldCharacters
         {
             get { return null; }
@@ -165,6 +168,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// <summary>
         /// Delimeter characters
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         protected virtual char[] DelimeterCharacters
         {
             get { return null; }
@@ -177,6 +181,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>A string encoded based off of delimeters</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Equals(System.String,System.StringComparison)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         protected string EncodeDelimeter(string Input)
         {
             StringBuilder Builder = new StringBuilder();
@@ -192,7 +197,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
                     {
                         CharacterSet = System.Text.Encoding.Default.BodyName;
                     }
-                    string EncodingUsing = SelectEncoding(Input).ToLower();
+                    string EncodingUsing = SelectEncoding(Input).ToLower(CultureInfo.InvariantCulture);
                     if (EncodingUsing.Equals("non", StringComparison.InvariantCultureIgnoreCase))
                     {
                         Builder.Append(TempString);
@@ -217,13 +222,14 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>An encoded string</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Equals(System.String,System.StringComparison)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         protected string EncodeNoDelimeter(string Input)
         {
             StringBuilder Builder = new StringBuilder();
             if(string.IsNullOrEmpty(CharacterSet))
                 CharacterSet = System.Text.Encoding.Default.BodyName;
 
-            string EncodingUsing = SelectEncoding(Input).ToLower();
+            string EncodingUsing = SelectEncoding(Input).ToLower(CultureInfo.InvariantCulture);
             if (EncodingUsing.Equals("non", StringComparison.InvariantCultureIgnoreCase))
             {
                 Builder.Append(Input);
@@ -243,7 +249,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <returns>A string containing the encoding type that should be used</returns>
-        protected string SelectEncoding(string Input)
+        protected static string SelectEncoding(string Input)
         {
             int NumberOfNonASCII = 0;
             for (int x = 0; x < Input.Length; ++x)
@@ -263,7 +269,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// </summary>
         /// <param name="Input"></param>
         /// <returns>True if it is, false otherwise</returns>
-        protected bool IsNonASCIICharacter(char Input)
+        protected static bool IsNonASCIICharacter(char Input)
         {
             return (int)Input > 255;
         }

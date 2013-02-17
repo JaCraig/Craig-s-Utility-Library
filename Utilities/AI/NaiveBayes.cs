@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 
 #endregion
 
@@ -175,7 +176,7 @@ namespace Utilities.AI
                 double TokenProbability = 0.5;
                 if (Probabilities.ContainsKey(Item))
                     TokenProbability = Probabilities[Item];
-                string Difference = ((0.5 - System.Math.Abs(0.5 - TokenProbability))).ToString(".0000000") + Item + x;
+                string Difference = ((0.5 - System.Math.Abs(0.5 - TokenProbability))).ToString(".0000000", CultureInfo.InvariantCulture) + Item + x;
                 SortedProbabilities.Add(Difference, TokenProbability);
                 ++x;
             }

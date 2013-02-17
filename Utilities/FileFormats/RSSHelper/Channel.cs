@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 #endregion
 
@@ -89,7 +90,7 @@ namespace Utilities.FileFormats.RSSHelper
             Node = Element.SelectSingleNode("./pubdate", NamespaceManager);
             if (Node != null)
             {
-                PubDate = DateTime.Parse(Node.InnerText);
+                PubDate = DateTime.Parse(Node.InnerText, CultureInfo.InvariantCulture);
             }
             XmlNodeList Nodes = Element.SelectNodes("./category", NamespaceManager);
             foreach (XmlNode TempNode in Nodes)
@@ -104,7 +105,7 @@ namespace Utilities.FileFormats.RSSHelper
             Node = Element.SelectSingleNode("./ttl", NamespaceManager);
             if (Node != null)
             {
-                TTL = int.Parse(Node.InnerText);
+                TTL = int.Parse(Node.InnerText, CultureInfo.InvariantCulture);
             }
             Node = Element.SelectSingleNode("./image/url", NamespaceManager);
             if (Node != null)
@@ -124,7 +125,7 @@ namespace Utilities.FileFormats.RSSHelper
         private string _Title = string.Empty;
         private string _Link = string.Empty;
         private string _Description = string.Empty;
-        private string _Copyright = "Copyright " + DateTime.Now.ToString("yyyy") + ". All rights reserved.";
+        private string _Copyright = "Copyright " + DateTime.Now.ToString("yyyy", CultureInfo.InvariantCulture) + ". All rights reserved.";
         private string _Language = "en-us";
         private string _webMaster = string.Empty;
         private DateTime _pubDate = DateTime.Now;
@@ -152,6 +153,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Items for this channel
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items
         {
             get
@@ -230,6 +232,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Categories associated with this channel
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<string> Categories
         {
             get
@@ -298,7 +301,7 @@ namespace Utilities.FileFormats.RSSHelper
             ChannelString.Append("<language>").Append(Language).Append("</language>\r\n");
             ChannelString.Append("<copyright>").Append(Copyright).Append("</copyright>\r\n");
             ChannelString.Append("<webMaster>").Append(WebMaster).Append("</webMaster>\r\n");
-            ChannelString.Append("<pubDate>").Append(PubDate.ToString("Ddd, dd MMM yyyy HH':'mm':'ss")).Append("</pubDate>\r\n");
+            ChannelString.Append("<pubDate>").Append(PubDate.ToString("Ddd, dd MMM yyyy HH':'mm':'ss", CultureInfo.InvariantCulture)).Append("</pubDate>\r\n");
             ChannelString.Append("<itunes:explicit>").Append((Explicit ? "yes" : "no")).Append("</itunes:explicit>");
             ChannelString.Append("<itunes:subtitle>").Append(Title).Append("</itunes:subtitle>");
             ChannelString.Append("<itunes:summary><![CDATA[").Append(Description).Append("]]></itunes:summary>");
@@ -309,7 +312,7 @@ namespace Utilities.FileFormats.RSSHelper
                 ChannelString.Append("<itunes:category text=\"").Append(Category).Append("\" />\r\n");
             }
             ChannelString.Append("<docs>").Append(Docs).Append("</docs>\r\n");
-            ChannelString.Append("<ttl>").Append(TTL.ToString()).Append("</ttl>\r\n");
+            ChannelString.Append("<ttl>").Append(TTL.ToString(CultureInfo.InvariantCulture)).Append("</ttl>\r\n");
             if (!string.IsNullOrEmpty(ImageUrl))
             {
                 ChannelString.Append("<image><url>").Append(ImageUrl).Append("</url>\r\n<title>").Append(Title).Append("</title>\r\n<link>").Append(Link).Append("</link>\r\n</image>\r\n");

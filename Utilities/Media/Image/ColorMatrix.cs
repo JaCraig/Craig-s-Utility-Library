@@ -48,6 +48,7 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Matrix containing the values of the ColorMatrix
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public virtual float[][] Matrix { get; set; }
 
         #endregion
@@ -59,6 +60,7 @@ namespace Utilities.Media.Image
         /// </summary>
         /// <param name="OriginalImage">Image sent in</param>
         /// <returns>An image with the color matrix applied</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public virtual Bitmap Apply(Bitmap OriginalImage)
         {
             OriginalImage.ThrowIfNull("OriginalImage");

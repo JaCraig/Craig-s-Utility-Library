@@ -19,12 +19,13 @@ namespace Utilities.Web.WebBrowserHelper
         /// <summary>
         /// For PInvoke: Contains information about an entry in the Internet cache
         /// </summary>
-        [StructLayout(LayoutKind.Explicit, Size = 80)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1900:ValueTypeFieldsShouldBePortable", MessageId = "lpszSourceUrlName"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1900:ValueTypeFieldsShouldBePortable", MessageId = "lpszLocalFileName"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1900:ValueTypeFieldsShouldBePortable", MessageId = "dwReserved"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1900:ValueTypeFieldsShouldBePortable", MessageId = "dwHeaderInfoSize"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1900:ValueTypeFieldsShouldBePortable", MessageId = "dwExemptDelta"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1900:ValueTypeFieldsShouldBePortable", MessageId = "CacheEntryType"), StructLayout(LayoutKind.Explicit, Size = 80)]
         private struct INTERNET_CACHE_ENTRY_INFOA
         {
             /// <summary>
             /// Struct size
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(0)]
             public uint dwStructSize;
             /// <summary>
@@ -35,76 +36,91 @@ namespace Utilities.Web.WebBrowserHelper
             /// <summary>
             /// Local file name
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(8)]
             public IntPtr lpszLocalFileName;
             /// <summary>
             /// Entry type
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(12)]
             public uint CacheEntryType;
             /// <summary>
             /// Use count
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(16)]
             public uint dwUseCount;
             /// <summary>
             /// Hit rate
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(20)]
             public uint dwHitRate;
             /// <summary>
             /// Size low
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(24)]
             public uint dwSizeLow;
             /// <summary>
             /// Size high
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(28)]
             public uint dwSizeHigh;
             /// <summary>
             /// Last modified time
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(32)]
             public System.Runtime.InteropServices.ComTypes.FILETIME LastModifiedTime;
             /// <summary>
             /// Expire time
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(40)]
             public System.Runtime.InteropServices.ComTypes.FILETIME ExpireTime;
             /// <summary>
             /// Last access time
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(48)]
             public System.Runtime.InteropServices.ComTypes.FILETIME LastAccessTime;
             /// <summary>
             /// Last sync time
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(56)]
             public System.Runtime.InteropServices.ComTypes.FILETIME LastSyncTime;
             /// <summary>
             /// Header info
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(64)]
             public IntPtr lpHeaderInfo;
             /// <summary>
             /// Header info size
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(68)]
             public uint dwHeaderInfoSize;
             /// <summary>
             /// File extension
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(72)]
             public IntPtr lpszFileExtension;
             /// <summary>
             /// Reserved
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(76)]
             public uint dwReserved;
             /// <summary>
             /// Exempt delta
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
             [FieldOffset(76)]
             public uint dwExemptDelta;
         }
@@ -125,7 +141,7 @@ namespace Utilities.Web.WebBrowserHelper
             CharSet = CharSet.Auto,
             EntryPoint = "FindFirstUrlCacheGroup",
             CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr FindFirstUrlCacheGroup(
+        internal static extern IntPtr FindFirstUrlCacheGroup(
             int dwFlags,
             int dwFilter,
             IntPtr lpSearchCondition,
@@ -141,12 +157,12 @@ namespace Utilities.Web.WebBrowserHelper
         /// <param name="lpGroupId"></param>
         /// <param name="lpReserved"></param>
         /// <returns></returns>
-        [DllImport(@"wininet",
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1414:MarkBooleanPInvokeArgumentsWithMarshalAs"), DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
             EntryPoint = "FindNextUrlCacheGroup",
             CallingConvention = CallingConvention.StdCall)]
-        public static extern bool FindNextUrlCacheGroup(
+        internal static extern bool FindNextUrlCacheGroup(
             IntPtr hFind,
             ref long lpGroupId,
             IntPtr lpReserved);
@@ -159,12 +175,12 @@ namespace Utilities.Web.WebBrowserHelper
         /// <param name="dwFlags"></param>
         /// <param name="lpReserved"></param>
         /// <returns></returns>
-        [DllImport(@"wininet",
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1414:MarkBooleanPInvokeArgumentsWithMarshalAs"), DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
             EntryPoint = "DeleteUrlCacheGroup",
             CallingConvention = CallingConvention.StdCall)]
-        public static extern bool DeleteUrlCacheGroup(
+        internal static extern bool DeleteUrlCacheGroup(
             long GroupId,
             int dwFlags,
             IntPtr lpReserved);
@@ -177,12 +193,12 @@ namespace Utilities.Web.WebBrowserHelper
         /// <param name="lpFirstCacheEntryInfo"></param>
         /// <param name="lpdwFirstCacheEntryInfoBufferSize"></param>
         /// <returns></returns>
-        [DllImport(@"wininet",
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId = "0"), DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
             EntryPoint = "FindFirstUrlCacheEntryA",
             CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr FindFirstUrlCacheEntry(
+        internal static extern IntPtr FindFirstUrlCacheEntry(
             [MarshalAs(UnmanagedType.LPTStr)] string lpszUrlSearchPattern,
             IntPtr lpFirstCacheEntryInfo,
             ref int lpdwFirstCacheEntryInfoBufferSize);
@@ -195,12 +211,12 @@ namespace Utilities.Web.WebBrowserHelper
         /// <param name="lpNextCacheEntryInfo"></param>
         /// <param name="lpdwNextCacheEntryInfoBufferSize"></param>
         /// <returns></returns>
-        [DllImport(@"wininet",
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1414:MarkBooleanPInvokeArgumentsWithMarshalAs"), DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
             EntryPoint = "FindNextUrlCacheEntryA",
             CallingConvention = CallingConvention.StdCall)]
-        public static extern bool FindNextUrlCacheEntry(
+        internal static extern bool FindNextUrlCacheEntry(
             IntPtr hFind,
             IntPtr lpNextCacheEntryInfo,
             ref int lpdwNextCacheEntryInfoBufferSize);
@@ -211,12 +227,12 @@ namespace Utilities.Web.WebBrowserHelper
         /// </summary>
         /// <param name="lpszUrlName"></param>
         /// <returns></returns>
-        [DllImport(@"wininet",
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1414:MarkBooleanPInvokeArgumentsWithMarshalAs"), DllImport(@"wininet",
             SetLastError = true,
             CharSet = CharSet.Auto,
             EntryPoint = "DeleteUrlCacheEntryA",
             CallingConvention = CallingConvention.StdCall)]
-        public static extern bool DeleteUrlCacheEntry(
+        internal static extern bool DeleteUrlCacheEntry(
             IntPtr lpszUrlName);
         #endregion
 

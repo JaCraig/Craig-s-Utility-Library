@@ -26,6 +26,7 @@ using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -44,10 +45,8 @@ namespace Utilities.Reflection.Emit.Commands
         public Box(object Value)
             : base()
         {
-            if (Value is VariableBase)
-                this.Value = (VariableBase)Value;
-            else
-                this.Value = new ConstantBuilder(Value);
+            VariableBase TempValue = Value as VariableBase;
+            this.Value = TempValue == null ? new ConstantBuilder(Value) : TempValue;
         }
 
         #endregion
@@ -70,7 +69,7 @@ namespace Utilities.Reflection.Emit.Commands
         {
             if (!Value.DataType.IsValueType)
                 throw new ArgumentException("Value is not a value type, box operations convert value types to reference types");
-            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("BoxResult" + Value.Name+Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(), typeof(object));
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("BoxResult" + Value.Name+Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(CultureInfo.InvariantCulture), typeof(object));
             ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
             if (Value is FieldBuilder || Value is IPropertyBuilder)
                 Generator.Emit(OpCodes.Ldarg_0);

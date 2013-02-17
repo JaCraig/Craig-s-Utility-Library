@@ -47,10 +47,8 @@ namespace Utilities.Reflection.Emit.Commands
             if (LeftHandSide == null)
                 throw new ArgumentNullException("LeftHandSide");
             this.LeftHandSide = LeftHandSide;
-            if (!(Value is VariableBase))
-                this.RightHandSide = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(Value);
-            else
-                this.RightHandSide = (VariableBase)Value;
+            VariableBase TempValue = Value as VariableBase;
+            this.RightHandSide = TempValue == null ? Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(Value) : TempValue;
         }
 
         #endregion

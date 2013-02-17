@@ -169,11 +169,6 @@ namespace Utilities.Web.PingBack
 
         #region Private Functions
 
-        private static string GetRequest(HttpContext Context)
-        {
-            return GetRequest(Context.Request);
-        }
-
         private static string GetRequest(HttpRequest Request)
         {
             byte[] TempBuffer = new byte[Request.InputStream.Length];

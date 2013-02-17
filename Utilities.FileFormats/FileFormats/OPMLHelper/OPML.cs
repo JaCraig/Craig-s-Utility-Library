@@ -55,15 +55,15 @@ namespace Utilities.FileFormats.OPMLHelper
             {
                 if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    foreach (XmlElement Child in Children.ChildNodes)
                     {
                         if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Body = new Body((XmlElement)Child);
+                            Body = new Body(Child);
                         }
                         else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Head = new Head((XmlElement)Child);
+                            Head = new Head(Child);
                         }
                     }
                 }
@@ -83,15 +83,15 @@ namespace Utilities.FileFormats.OPMLHelper
             {
                 if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    foreach (XmlElement Child in Children.ChildNodes)
                     {
                         if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Body = new Body((XmlElement)Child);
+                            Body = new Body(Child);
                         }
                         else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Head = new Head((XmlElement)Child);
+                            Head = new Head(Child);
                         }
                     }
                 }

@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 
 #endregion
 
@@ -58,7 +59,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The formatted string</returns>
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name);
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name);
         }
 
         /// <summary>
@@ -72,11 +73,7 @@ namespace Utilities.Validation.Rules
             if (value.IsNull())
                 return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             IEnumerable ValueList = value as IEnumerable;
-            foreach (IComparable Item in ValueList)
-            {
-                return ValidationResult.Success;
-            }
-            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            return ValueList != null && ValueList.GetEnumerator().MoveNext() ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
 
         #endregion

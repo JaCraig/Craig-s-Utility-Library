@@ -57,6 +57,7 @@ namespace Utilities.Media.Image
         /// <summary>
         /// The actual filter array
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member")]
         public virtual int[,] MyFilter { get; set; }
 
         /// <summary>
@@ -88,6 +89,7 @@ namespace Utilities.Media.Image
         /// </summary>
         /// <param name="Input">input image</param>
         /// <returns>Returns a separate image with the filter applied</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public virtual Bitmap ApplyFilter(Bitmap Input)
         {
             Input.ThrowIfNull("Input");

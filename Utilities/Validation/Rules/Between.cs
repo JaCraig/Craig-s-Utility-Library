@@ -27,6 +27,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -77,7 +78,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The formatted string</returns>
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name, Min.ToString(), Max.ToString());
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, Min.ToString(), Max.ToString());
         }
 
         /// <summary>

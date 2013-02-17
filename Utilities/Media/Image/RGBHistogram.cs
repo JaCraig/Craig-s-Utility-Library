@@ -164,16 +164,19 @@ namespace Utilities.Media.Image
         /// <summary>
         /// Red values
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public virtual float[] R { get; set; }
 
         /// <summary>
         /// Green values
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public virtual float[] G { get; set; }
 
         /// <summary>
         /// Blue values
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public virtual float[] B { get; set; }
 
         #endregion

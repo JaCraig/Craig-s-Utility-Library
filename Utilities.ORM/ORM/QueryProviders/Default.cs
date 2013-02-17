@@ -76,7 +76,6 @@ namespace Utilities.ORM.QueryProviders
             IEnumerable<Type> Types = AssemblyUsing.GetTypes(typeof(IDatabase));
             foreach (Type Type in Types)
             {
-                Type BaseType = Type.BaseType;
                 IDatabase TempObject = (IDatabase)Activator.CreateInstance(Type);
                 if (!string.IsNullOrEmpty(TempObject.ConnectionString))
                 {
@@ -136,8 +135,9 @@ namespace Utilities.ORM.QueryProviders
                     }
                 }
             }
-            if (ReturnValue is IORMObject)
-                ((IORMObject)ReturnValue).Session0 = CurrentSession;
+            IORMObject TempReturnValue = ReturnValue as IORMObject;
+            if (TempReturnValue!=null)
+                TempReturnValue.Session0 = CurrentSession;
             return ReturnValue;
         }
 
@@ -162,8 +162,9 @@ namespace Utilities.ORM.QueryProviders
                     }
                 }
             }
-            if (ReturnValue is IORMObject)
-                ((IORMObject)ReturnValue).Session0 = CurrentSession;
+            IORMObject TempReturnValue = ReturnValue as IORMObject;
+            if (TempReturnValue != null)
+                TempReturnValue.Session0 = CurrentSession;
             return ReturnValue;
         }
 
@@ -189,8 +190,9 @@ namespace Utilities.ORM.QueryProviders
                     }
                 }
             }
-            if (ReturnValue is IORMObject)
-                ((IORMObject)ReturnValue).Session0 = CurrentSession;
+            IORMObject TempReturnValue = ReturnValue as IORMObject;
+            if (TempReturnValue != null)
+                TempReturnValue.Session0 = CurrentSession;
             return ReturnValue;
         }
 
@@ -223,8 +225,9 @@ namespace Utilities.ORM.QueryProviders
             }
             foreach (ObjectType ReturnValue in ReturnValues)
             {
-                if (ReturnValue is IORMObject)
-                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
+                IORMObject TempReturn = ReturnValue as IORMObject;
+                if (TempReturn != null)
+                    TempReturn.Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -253,8 +256,9 @@ namespace Utilities.ORM.QueryProviders
             }
             foreach (ObjectType ReturnValue in ReturnValues)
             {
-                if (ReturnValue is IORMObject)
-                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
+                IORMObject TempReturn = ReturnValue as IORMObject;
+                if (TempReturn != null)
+                    TempReturn.Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -289,8 +293,9 @@ namespace Utilities.ORM.QueryProviders
             }
             foreach (ObjectType ReturnValue in ReturnValues)
             {
-                if (ReturnValue is IORMObject)
-                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
+                IORMObject TempReturn = ReturnValue as IORMObject;
+                if (TempReturn != null)
+                    TempReturn.Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -304,6 +309,7 @@ namespace Utilities.ORM.QueryProviders
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Object">Object to delete</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public virtual void Delete<ObjectType>(ObjectType Object) where ObjectType : class,new()
         {
             foreach (IDatabase Database in Mappings.Keys.Where(x => x.Writable).OrderBy(x => x.Order))
@@ -383,8 +389,9 @@ namespace Utilities.ORM.QueryProviders
             }
             foreach (DataType Item in ReturnValue)
             {
-                if (Item is IORMObject)
-                    ((IORMObject)Item).Session0 = CurrentSession;
+                IORMObject TempItem = Item as IORMObject;
+                if (TempItem != null)
+                    TempItem.Session0 = CurrentSession;
             }
             return ReturnValue;
         }
@@ -430,8 +437,9 @@ namespace Utilities.ORM.QueryProviders
             }
             foreach (DataType Item in ReturnValue)
             {
-                if (Item is IORMObject)
-                    ((IORMObject)Item).Session0 = CurrentSession;
+                IORMObject TempItem = Item as IORMObject;
+                if (TempItem != null)
+                    TempItem.Session0 = CurrentSession;
             }
             return ReturnValue;
         }
@@ -473,8 +481,9 @@ namespace Utilities.ORM.QueryProviders
                     }
                 }
             }
-            if (ReturnValue is IORMObject)
-                ((IORMObject)ReturnValue).Session0 = CurrentSession;
+            IORMObject TempReturn = ReturnValue as IORMObject;
+            if (TempReturn != null)
+                TempReturn.Session0 = CurrentSession;
             return ReturnValue;
         }
 
@@ -509,8 +518,9 @@ namespace Utilities.ORM.QueryProviders
             }
             foreach (ObjectType ReturnValue in ReturnValues)
             {
-                if (ReturnValue is IORMObject)
-                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
+                IORMObject TempReturn = ReturnValue as IORMObject;
+                if (TempReturn != null)
+                    TempReturn.Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -546,8 +556,9 @@ namespace Utilities.ORM.QueryProviders
             }
             foreach (ObjectType ReturnValue in ReturnValues)
             {
-                if (ReturnValue is IORMObject)
-                    ((IORMObject)ReturnValue).Session0 = CurrentSession;
+                IORMObject TempReturn = ReturnValue as IORMObject;
+                if (TempReturn != null)
+                    TempReturn.Session0 = CurrentSession;
             }
             return ReturnValues;
         }
@@ -614,6 +625,7 @@ namespace Utilities.ORM.QueryProviders
         /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
         /// <param name="Object">Object to save</param>
         /// <param name="Parameters">Extra parameters used in saving the object</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public virtual void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] Parameters) where ObjectType : class,new()
         {
             foreach (IDatabase Database in Mappings.Keys.Where(x => x.Writable).OrderBy(x => x.Order))

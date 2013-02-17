@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Utilities.DataTypes.ExtensionMethods;
+using System;
 #endregion
 
 namespace Utilities.Environment.ExtensionMethods
@@ -55,6 +56,7 @@ namespace Utilities.Environment.ExtensionMethods
         /// <param name="Frames">Frames to get the methods from</param>
         /// <param name="ExcludedAssemblies">Excludes methods from the specified assemblies</param>
         /// <returns>The list of methods involved</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public static IEnumerable<MethodBase> GetMethods(this IEnumerable<StackFrame> Frames, params Assembly[] ExcludedAssemblies)
         {
             List<MethodBase> Methods = new List<MethodBase>();
@@ -64,9 +66,9 @@ namespace Utilities.Environment.ExtensionMethods
             {
                 Methods.AddIf(x => x.DeclaringType != null
                     && !ExcludedAssemblies.Contains(x.DeclaringType.Assembly)
-                    && !x.DeclaringType.Assembly.FullName.StartsWith("System")
-                    && !x.DeclaringType.Assembly.FullName.StartsWith("mscorlib")
-                    && !x.DeclaringType.Assembly.FullName.StartsWith("WebDev.WebHost40"),
+                    && !x.DeclaringType.Assembly.FullName.StartsWith("System", StringComparison.InvariantCulture)
+                    && !x.DeclaringType.Assembly.FullName.StartsWith("mscorlib", StringComparison.InvariantCulture)
+                    && !x.DeclaringType.Assembly.FullName.StartsWith("WebDev.WebHost40", StringComparison.InvariantCulture),
                         Frame.GetMethod());
             }
             return Methods;

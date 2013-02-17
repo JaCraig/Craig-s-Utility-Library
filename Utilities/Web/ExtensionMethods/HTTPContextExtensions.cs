@@ -141,7 +141,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A string containing the cookie information</returns>
         public static string DumpCookies(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
-            return Page.Request.Cookies.DumpCookies();
+            return Page.Request.Cookies.DumpCookies(HTMLOutput);
         }
 
         /// <summary>

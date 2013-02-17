@@ -53,13 +53,14 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// </summary>
         /// <param name="Expression">Expression pointing to the many to one</param>
         /// <param name="Mapping">Mapping the StringID is added to</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Compare(System.String,System.String,System.StringComparison)")]
         public ManyToOne(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {
             SetDefaultValue(() => default(DataType));
             string Class1 = typeof(ClassType).Name;
             string Class2 = typeof(DataType).Name;
-            if (Class1.CompareTo(Class2) < 0)
+            if (string.Compare(Class1, Class2, StringComparison.InvariantCulture) < 0)
                 SetTableName(Class1 + "_" + Class2);
             else
                 SetTableName(Class2 + "_" + Class1);
@@ -132,6 +133,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object to add</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Compare(System.String,System.String,System.StringComparison)")]
         public override IEnumerable<Command> JoinsSave(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
@@ -151,7 +153,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                 Values[1] = CurrentIDParameter;
                 Values[0] = ForeignIDParameter;
             }
-            else if (Mapping.TableName.CompareTo(ForeignMapping.TableName) <= 0)
+            else if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) <= 0)
             {
                 Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName;
                 Values[0] = CurrentIDParameter;
@@ -176,6 +178,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
@@ -210,6 +213,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object to add</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)

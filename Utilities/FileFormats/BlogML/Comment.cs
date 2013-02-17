@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -50,7 +51,7 @@ namespace Utilities.FileFormats.BlogML
         public Comment(XmlElement Element)
         {
             Element.ThrowIfNull("Element");
-            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value) : DateTime.MinValue;
+            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.MinValue;
             Approved = Element.Attributes["approved"] != null ? bool.Parse(Element.Attributes["approved"].Value) : false;
             UserName = Element.Attributes["user-name"] != null ? Element.Attributes["user-name"].Value : "";
             UserEmail = Element.Attributes["user-email"] != null ? Element.Attributes["user-email"].Value : "";
@@ -127,8 +128,8 @@ namespace Utilities.FileFormats.BlogML
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.AppendFormat("<comment id=\"{0}\" parentid=\"00000000-0000-0000-0000-000000000000\" date-created=\"{1}\" date-modified=\"{1}\" approved=\"true\" user-name=\"{2}\" user-email=\"{3}\" user-ip=\"{4}\" user-url=\"{5}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), UserName, UserEmail, UserIP, UserURL);
-            Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n<content type=\"text\"><![CDATA[{1}]]></content>\n</comment>\n", Title, Content);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<comment id=\"{0}\" parentid=\"00000000-0000-0000-0000-000000000000\" date-created=\"{1}\" date-modified=\"{1}\" approved=\"true\" user-name=\"{2}\" user-email=\"{3}\" user-ip=\"{4}\" user-url=\"{5}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), UserName, UserEmail, UserIP, UserURL);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<title type=\"text\"><![CDATA[{0}]]></title>\n<content type=\"text\"><![CDATA[{1}]]></content>\n</comment>\n", Title, Content);
             return Builder.ToString();
         }
 

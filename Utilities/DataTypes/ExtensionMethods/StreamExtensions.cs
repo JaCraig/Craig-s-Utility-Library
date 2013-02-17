@@ -43,8 +43,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static byte[] ReadAllBinary(this Stream Input)
         {
             Input.ThrowIfNull("Input");
-            if (Input is MemoryStream)
-                return ((MemoryStream)Input).ToArray();
+            MemoryStream TempInput = Input as MemoryStream;
+            if (TempInput!=null)
+                return TempInput.ToArray();
             byte[] Buffer = new byte[1024];
             byte[] ReturnValue = null;
             using (MemoryStream Temp = new MemoryStream())

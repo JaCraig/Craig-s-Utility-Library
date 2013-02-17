@@ -45,6 +45,7 @@ namespace Utilities.Media.Image.Procedural
         /// <param name="MaxLength">Maximum length of the cracks</param>
         /// <param name="Seed">Random seed</param>
         /// <returns>An image containing "cracks"</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Generate(int Width,int Height,int NumberOfCracks,int Iterations,
             int MaxChange,int MaxLength,int Seed)
         {

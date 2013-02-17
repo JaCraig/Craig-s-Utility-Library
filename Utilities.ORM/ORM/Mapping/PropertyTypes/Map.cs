@@ -119,6 +119,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
@@ -153,6 +154,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object to add</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)

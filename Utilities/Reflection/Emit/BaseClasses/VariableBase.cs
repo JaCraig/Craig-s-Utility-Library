@@ -106,10 +106,8 @@ namespace Utilities.Reflection.Emit.BaseClasses
             {
                 foreach (object Parameter in Parameters)
                 {
-                    if (Parameter is VariableBase)
-                        ParameterTypes.Add(((VariableBase)Parameter).DataType);
-                    else
-                        ParameterTypes.Add(Parameter.GetType());
+                    VariableBase TempParameter = Parameter as VariableBase;
+                    ParameterTypes.Add(TempParameter != null ? TempParameter.DataType : Parameter.GetType());
                 }
             }
             return Call(DataType.GetMethod(MethodName, ParameterTypes.ToArray()), Parameters);

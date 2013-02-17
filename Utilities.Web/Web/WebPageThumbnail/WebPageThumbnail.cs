@@ -59,6 +59,7 @@ namespace Utilities.Web.WebPageThumbnail
         /// <param name="Url">Url to take the screen shot of</param>
         /// <param name="Width">Width of the image (-1 for full size)</param>
         /// <param name="Height">Height of the image (-1 for full size)</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "Width"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "Url"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "Height"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "FileName")]
         public void GenerateBitmap(string FileName, string Url, int Width = -1, int Height = -1)
         {
             this.Url = Url;

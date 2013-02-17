@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -58,9 +59,9 @@ namespace Utilities.FileFormats.BlogML
             {
                 if (Children.Name.Equals("blog", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    DateCreated = Children.Attributes["date-created"] != null ? DateTime.Parse(Children.Attributes["date-created"].Value) : DateTime.Now;
+                    DateCreated = Children.Attributes["date-created"] != null ? DateTime.Parse(Children.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
                     RootURL = Children.Attributes["root-url"] != null ? Children.Attributes["root-url"].Value : "";
-                    foreach (XmlNode Child in Children.ChildNodes)
+                    foreach (XmlElement Child in Children.ChildNodes)
                     {
                         if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
                         {
@@ -72,15 +73,15 @@ namespace Utilities.FileFormats.BlogML
                         }
                         else if (Child.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Authors = new Authors((XmlElement)Child);
+                            Authors = new Authors(Child);
                         }
                         else if (Child.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Categories = new Categories((XmlElement)Child);
+                            Categories = new Categories(Child);
                         }
                         else if (Child.Name.Equals("posts", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Posts = new Posts((XmlElement)Child);
+                            Posts = new Posts(Child);
                         }
                     }
                 }
@@ -138,7 +139,7 @@ namespace Utilities.FileFormats.BlogML
         {
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
-                .AppendFormat("<blog root-url=\"{0}\" date-created=\"{1}\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.blogml.com/2006/09/BlogML\">\n", RootURL, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"))
+                .AppendFormat("<blog root-url=\"{0}\" date-created=\"{1}\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.blogml.com/2006/09/BlogML\">\n", RootURL, DateCreated.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture))
                 .AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title)
                 .AppendFormat("<sub-title type=\"text\"><![CDATA[{0}]]></sub-title>\n", SubTitle)
                 .Append(Authors.ToString())

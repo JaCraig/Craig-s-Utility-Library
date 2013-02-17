@@ -90,6 +90,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Key">Name of the field</param>
         /// <returns>Field specified</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Equals(System.String,System.StringComparison)")]
         public Field this[string Key]
         {
             get

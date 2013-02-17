@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 
 #endregion
 
@@ -75,8 +76,8 @@ namespace Utilities.Profiler
         {
             CompileData();
             StringBuilder Builder = new StringBuilder();
-            Builder.AppendFormat("<tr><td>{0}</td><td>", CalledFrom);
-            Builder.AppendFormat("{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Query, Times.Sum(), Times.Max(), Times.Min(), string.Format("{0:0.##}", Times.Average()), Times.Count);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<tr><td>{0}</td><td>", CalledFrom);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Query, Times.Sum(), Times.Max(), Times.Min(), string.Format(CultureInfo.InvariantCulture, "{0:0.##}", Times.Average()), Times.Count);
             foreach (Profiler Child in Children)
             {
                 Builder.AppendLineFormat(Child.ToHTML());

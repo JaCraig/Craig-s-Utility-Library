@@ -28,6 +28,7 @@ using Utilities.DataTypes.Patterns;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
 using System.Linq;
+using System.Globalization;
 #endregion
 
 namespace Utilities.SQL
@@ -149,7 +150,7 @@ namespace Utilities.SQL
             string Where = "";
             string OrderBy = "";
             if (WhereClause.IsNotNullOrEmpty())
-                Where += WhereClause.Trim().ToLower().StartsWith("where", StringComparison.CurrentCulture) ? WhereClause.Trim() : "WHERE " + WhereClause.Trim();
+                Where += WhereClause.Trim().ToUpperInvariant().StartsWith("WHERE", StringComparison.CurrentCulture) ? WhereClause.Trim() : "WHERE " + WhereClause.Trim();
             else if (Parameters.IsNotNullOrEmpty())
             {
                 Where += "WHERE ";
@@ -167,7 +168,7 @@ namespace Utilities.SQL
                     OrderBy += "," + OrderByColumns[1];
                 }
             }
-            return new Command(string.Format(Command, Columns.ToString(x => x), Table, Joins.ToString(x => x.ToString(), " "), Where, OrderBy).Trim(), System.Data.CommandType.Text, Parameters.ToArray());
+            return new Command(string.Format(CultureInfo.InvariantCulture, Command, Columns.ToString(x => x), Table, Joins.ToString(x => x.ToString(), " "), Where, OrderBy).Trim(), System.Data.CommandType.Text, Parameters.ToArray());
         }
 
         #endregion
@@ -272,12 +273,13 @@ namespace Utilities.SQL
             this.WhereClause = WhereClause;
             foreach (object Parameter in Parameters)
             {
+                string TempParameter = Parameter as string;
                 if (Parameter == null)
-                    this.Parameters.Add(new Parameter<object>(this.Parameters.Count.ToString(), default(DbType), null, ParameterDirection.Input, ParameterStarter));
-                else if (Parameter is string)
-                    this.Parameters.Add(new StringParameter(this.Parameters.Count.ToString(), (string)Parameter, ParameterDirection.Input, ParameterStarter));
+                    this.Parameters.Add(new Parameter<object>(this.Parameters.Count.ToString(CultureInfo.InvariantCulture), default(DbType), null, ParameterDirection.Input, ParameterStarter));
+                else if (TempParameter!=null)
+                    this.Parameters.Add(new StringParameter(this.Parameters.Count.ToString(CultureInfo.InvariantCulture), TempParameter, ParameterDirection.Input, ParameterStarter));
                 else
-                    this.Parameters.Add(new Parameter<object>(this.Parameters.Count.ToString(), Parameter, ParameterDirection.Input, ParameterStarter));
+                    this.Parameters.Add(new Parameter<object>(this.Parameters.Count.ToString(CultureInfo.InvariantCulture), Parameter, ParameterDirection.Input, ParameterStarter));
             }
             return this;
         }
@@ -329,7 +331,7 @@ namespace Utilities.SQL
             /// <returns>The join as a string</returns>
             public override string ToString()
             {
-                return Type + " " + Table + (ONClause.Trim().ToLower().StartsWith("on", StringComparison.CurrentCulture) ? " " + ONClause : " ON " + ONClause);
+                return Type + " " + Table + (ONClause.Trim().ToUpperInvariant().StartsWith("ON", StringComparison.CurrentCulture) ? " " + ONClause : " ON " + ONClause);
             }
         }
 

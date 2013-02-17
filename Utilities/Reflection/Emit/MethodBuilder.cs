@@ -47,6 +47,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="Attributes">Attributes for the method (public, private, etc.)</param>
         /// <param name="Parameters">Parameter types for the method</param>
         /// <param name="ReturnType">Return type for the method</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public MethodBuilder(TypeBuilder TypeBuilder, string Name,
             MethodAttributes Attributes, IEnumerable<Type> Parameters, Type ReturnType)
             : base()
@@ -64,7 +65,7 @@ namespace Utilities.Reflection.Emit
             if (Parameters != null)
             {
                 int x = 1;
-                if (Name.StartsWith("set_"))
+                if (Name.StartsWith("set_", StringComparison.InvariantCulture))
                     x = -1;
                 foreach (Type ParameterType in Parameters)
                 {

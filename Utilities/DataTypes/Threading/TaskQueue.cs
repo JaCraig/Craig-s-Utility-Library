@@ -44,6 +44,7 @@ namespace Utilities.DataTypes.Threading
         /// <param name="Capacity">Number of items that are allowed to be processed in the queue at one time</param>
         /// <param name="ProcessItem">Action that is used to process each item</param>
         /// <param name="HandleError">Handles an exception if it occurs (defaults to eating the error)</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public TaskQueue(int Capacity, Action<T> ProcessItem, Action<Exception> HandleError = null)
             : base(new ConcurrentQueue<T>())
         {
@@ -146,17 +147,26 @@ namespace Utilities.DataTypes.Threading
         }
 
         /// <summary>
-        /// Disposes of the object
+        /// Disposes of the objects
         /// </summary>
-        public new void Dispose()
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected override void Dispose(bool Disposing)
         {
-            Cancel(true);
-            foreach (Task Task in Tasks)
+            if (Tasks != null)
             {
-                Task.Dispose();
+                Cancel(true);
+                foreach (Task Task in Tasks)
+                {
+                    Task.Dispose();
+                }
+                Tasks = null;
             }
-            CancellationToken.Dispose();
-            base.Dispose();
+            if (CancellationToken != null)
+            {
+                CancellationToken.Dispose();
+                CancellationToken = null;
+            }
+            base.Dispose(Disposing);
         }
 
         #endregion

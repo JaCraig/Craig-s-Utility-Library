@@ -24,6 +24,7 @@ using System;
 using System.Management;
 using System.Text;
 using Utilities.Reflection.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Environment
@@ -129,7 +130,7 @@ namespace Utilities.Environment
                 {
                     foreach (ManagementObject TempObject in Searcher.Get())
                     {
-                        ReturnValue = long.Parse(TempObject["TotalPhysicalMemory"].ToString()) * 1024;
+                        ReturnValue = long.Parse(TempObject["TotalPhysicalMemory"].ToString(), CultureInfo.InvariantCulture) * 1024;
                     }
                 }
                 return ReturnValue;

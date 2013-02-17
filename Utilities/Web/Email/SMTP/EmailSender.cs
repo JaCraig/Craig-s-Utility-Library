@@ -132,12 +132,38 @@ namespace Utilities.Web.Email.SMTP
         }
 
         /// <summary>
-        /// Disposes of the objects (attachments, embedded resources, etc) associated with the email
+        /// Disposes the object
         /// </summary>
         public void Dispose()
         {
-            Attachments.ForEach(x => x.Dispose());
-            EmbeddedResources.ForEach(x => x.Dispose());
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected virtual void Dispose(bool Disposing)
+        {
+            if (Attachments != null)
+            {
+                Attachments.ForEach(x => x.Dispose());
+                Attachments = null;
+            }
+            if (EmbeddedResources != null)
+            {
+                EmbeddedResources.ForEach(x => x.Dispose());
+                EmbeddedResources = null;
+            }
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~EmailSender()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -148,12 +174,12 @@ namespace Utilities.Web.Email.SMTP
         /// Any attachments that are included with this
         /// message.
         /// </summary>
-        public ICollection<Attachment> Attachments { get;private set; }
+        public ICollection<Attachment> Attachments { get; private set; }
 
         /// <summary>
         /// Any attachment (usually images) that need to be embedded in the message
         /// </summary>
-        public ICollection<LinkedResource> EmbeddedResources { get;private set; }
+        public ICollection<LinkedResource> EmbeddedResources { get; private set; }
 
         /// <summary>
         /// The priority of this message

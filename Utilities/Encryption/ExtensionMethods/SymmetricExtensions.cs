@@ -101,6 +101,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
         /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
         /// <returns>An encrypted byte array</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static byte[] Encrypt(this byte[] Data, string Key,
             SymmetricAlgorithm AlgorithmUsing = null, string Salt = "Kosher",
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
@@ -262,6 +263,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
         /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
         /// <returns>A decrypted byte array</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static byte[] Decrypt(this byte[] Data, string Key,
             SymmetricAlgorithm AlgorithmUsing = null, string Salt = "Kosher",
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,

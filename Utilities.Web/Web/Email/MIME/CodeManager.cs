@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
+using System.Globalization;
 
 #endregion
 
@@ -106,11 +107,13 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Key">Content type</param>
         /// <returns>The coder associated with the type</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public Code this[string Key]
         {
             get
             {
-                Key = Key.ToLower();
+                Key = Key.ToLower(CultureInfo.InvariantCulture);
                 if (Codes.ContainsKey(Key))
                 {
                     return Codes[Key];
@@ -122,7 +125,7 @@ namespace Utilities.Web.Email.MIME
             }
             set
             {
-                Key = Key.ToLower();
+                Key = Key.ToLower(CultureInfo.InvariantCulture);
                 if (Codes.ContainsKey(Key))
                 {
                     Codes[Key] = value;

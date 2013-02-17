@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Xml;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -57,11 +58,11 @@ namespace Utilities.FileFormats.RSSHelper
             }
             if (Element.Attributes["width"] != null)
             {
-                Width = int.Parse(Element.Attributes["width"].Value);
+                Width = int.Parse(Element.Attributes["width"].Value, CultureInfo.InvariantCulture);
             }
             if (Element.Attributes["height"] != null)
             {
-                Height = int.Parse(Element.Attributes["height"].Value);
+                Height = int.Parse(Element.Attributes["height"].Value, CultureInfo.InvariantCulture);
             }
         }
 
@@ -96,7 +97,7 @@ namespace Utilities.FileFormats.RSSHelper
         {
             if (!string.IsNullOrEmpty(Url))
             {
-                return "<media:thumbnail url=\"" + Url + "\" width=\"" + Width.ToString() + "\" height=\"" + Height + "\" />\r\n";
+                return "<media:thumbnail url=\"" + Url + "\" width=\"" + Width.ToString(CultureInfo.InvariantCulture) + "\" height=\"" + Height + "\" />\r\n";
             }
             return string.Empty;
         }

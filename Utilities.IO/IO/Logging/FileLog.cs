@@ -25,6 +25,7 @@ using System.IO;
 using Utilities.IO.ExtensionMethods;
 using Utilities.IO.Logging.BaseClasses;
 using Utilities.IO.Logging.Enums;
+using System.Globalization;
 #endregion
 
 namespace Utilities.IO.Logging
@@ -50,7 +51,7 @@ namespace Utilities.IO.Logging
             Log.Add(MessageType.Trace, x => new FileInfo(FileName).Save(x, Mode: FileMode.Append));
             Log.Add(MessageType.Warn, x => new FileInfo(FileName).Save(x, Mode: FileMode.Append));
             FormatMessage = (Message, Type, args) => Type.ToString()
-                + ": " + (args.Length > 0 ? string.Format(Message, args) : Message)
+                + ": " + (args.Length > 0 ? string.Format(CultureInfo.InvariantCulture, Message, args) : Message)
                 + System.Environment.NewLine;
         }
 

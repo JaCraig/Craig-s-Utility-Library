@@ -28,6 +28,7 @@ using System.Web.Mvc;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Validation.Rules.Enums;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Validation.Rules
@@ -91,7 +92,7 @@ namespace Utilities.Validation.Rules
                 ComparisonTypeString = "less than or equal";
             else if (Type == ComparisonType.NotEqual)
                 ComparisonTypeString = "not equal";
-            return string.Format(ErrorMessageString, name, ComparisonTypeString, PropertyName);
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, ComparisonTypeString, PropertyName);
         }
 
         /// <summary>
@@ -102,20 +103,21 @@ namespace Utilities.Validation.Rules
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            IComparable Tempvalue = value as IComparable;
             GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
             IComparable ComparisonValue = (IComparable)validationContext.ObjectType.GetProperty(PropertyName).GetValue(validationContext.ObjectInstance, null).TryTo<object>(value.GetType());
             if (Type == ComparisonType.Equal)
-                return Comparer.Compare(value as IComparable, ComparisonValue) == 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Comparer.Compare(Tempvalue, ComparisonValue) == 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == ComparisonType.NotEqual)
-                return Comparer.Compare(value as IComparable, ComparisonValue) != 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Comparer.Compare(Tempvalue, ComparisonValue) != 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == ComparisonType.GreaterThan)
-                return Comparer.Compare(value as IComparable, ComparisonValue) > 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Comparer.Compare(Tempvalue, ComparisonValue) > 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == ComparisonType.GreaterThanOrEqual)
-                return Comparer.Compare(value as IComparable, ComparisonValue) >= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Comparer.Compare(Tempvalue, ComparisonValue) >= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == ComparisonType.LessThan)
-                return Comparer.Compare(value as IComparable, ComparisonValue) < 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Comparer.Compare(Tempvalue, ComparisonValue) < 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == ComparisonType.LessThanOrEqual)
-                return Comparer.Compare(value as IComparable, ComparisonValue) <= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Comparer.Compare(Tempvalue, ComparisonValue) <= 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else
                 return ValidationResult.Success;
         }

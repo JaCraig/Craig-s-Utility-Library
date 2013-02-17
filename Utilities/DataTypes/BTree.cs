@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 
 #endregion
 
@@ -48,10 +49,7 @@ namespace Utilities.DataTypes
                 return;
             }
             this.Root = Root;
-            foreach (TreeNode<T> Node in Traversal(Root))
-            {
-                ++NumberOfNodes;
-            }
+            NumberOfNodes = Traversal(Root).Count();
         }
 
         #endregion

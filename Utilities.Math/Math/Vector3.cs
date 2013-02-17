@@ -96,9 +96,8 @@ namespace Utilities.Math
         /// <returns>true if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Vector3)
-                return this == (Vector3)obj;
-            return false;
+            Vector3 Tempobj = obj as Vector3;
+            return Tempobj != null && this == Tempobj;
         }
 
         #endregion
@@ -108,6 +107,7 @@ namespace Utilities.Math
         /// <summary>
         /// Used for converting this to an array and back
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public virtual double[] Array
         {
             get { return new double[] { X, Y, Z }; }

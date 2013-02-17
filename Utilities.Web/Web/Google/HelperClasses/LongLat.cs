@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using Utilities.Web.Google.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Google.HelperClasses
@@ -61,7 +62,7 @@ namespace Utilities.Web.Google.HelperClasses
         /// <returns>String of the location</returns>
         public override string ToString()
         {
-            return Latitude.ToString("#.######") + "," + Longitude.ToString("#.######");
+            return Latitude.ToString("#.######", CultureInfo.InvariantCulture) + "," + Longitude.ToString("#.######", CultureInfo.InvariantCulture);
         }
 
         #endregion

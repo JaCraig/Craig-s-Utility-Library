@@ -26,6 +26,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Web.Google.Enums;
 using Utilities.Web.ExtensionMethods;
 using Utilities.Web.Google.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Google.HelperClasses
@@ -90,12 +91,13 @@ namespace Utilities.Web.Google.HelperClasses
         /// Exports the location as an url encoded string
         /// </summary>
         /// <returns>Url encoded string of the location</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public override string ToString()
         {
-            string ReturnValue = "size:" + Size.ToString().ToLower()
+            string ReturnValue = "size:" + Size.ToString().ToLower(CultureInfo.InvariantCulture)
                     + (Color.IsNullOrEmpty() ? "" : "|color:" + Color)
-                    + (Label.IsNullOrEmpty() ? "" : "|label:" + Label.ToUpper())
-                    + (CustomIcon.IsNull() ? "" : ("|icon:" + CustomIcon + "|shadow:" + CustomIconShadow.ToString().ToLower()));
+                    + (Label.IsNullOrEmpty() ? "" : "|label:" + Label.ToUpper(CultureInfo.InvariantCulture))
+                    + (CustomIcon.IsNull() ? "" : ("|icon:" + CustomIcon + "|shadow:" + CustomIconShadow.ToString().ToLower(CultureInfo.InvariantCulture)));
             foreach (ILocation Marker in MarkerList)
                 ReturnValue += "|" + Marker.ToString();
             return "markers=" + ReturnValue.URLEncode();

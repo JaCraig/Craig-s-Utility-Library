@@ -26,6 +26,7 @@ using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -74,7 +75,7 @@ namespace Utilities.Reflection.Emit.Commands
         {
             if (!ValueType.IsValueType)
                 throw new ArgumentException("ValueType is not a value type, unbox operations convert reference types to value types");
-            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("UnBoxResult" + Value.Name + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(), ValueType);
+            Result = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateLocal("UnBoxResult" + Value.Name + Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(CultureInfo.InvariantCulture), ValueType);
             ILGenerator Generator = Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Generator;
             if (Value is FieldBuilder || Value is IPropertyBuilder)
                 Generator.Emit(OpCodes.Ldarg_0);

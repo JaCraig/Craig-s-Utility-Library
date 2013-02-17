@@ -101,17 +101,17 @@ namespace Utilities.IoC.Providers.Implementations
 
         #region IsInjectable
 
-        private bool IsInjectable(MethodInfo Method)
+        private static bool IsInjectable(MethodInfo Method)
         {
             return IsInjectable(Method.GetCustomAttributes(false));
         }
 
-        private bool IsInjectable(PropertyInfo Property)
+        private static bool IsInjectable(PropertyInfo Property)
         {
             return IsInjectable(Property.GetCustomAttributes(false));
         }
 
-        private bool IsInjectable(object[] Attributes)
+        private static bool IsInjectable(object[] Attributes)
         {
             return Attributes.OfType<Inject>().Count() > 0;
         }

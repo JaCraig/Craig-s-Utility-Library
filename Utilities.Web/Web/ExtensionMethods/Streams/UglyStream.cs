@@ -233,7 +233,7 @@ namespace Utilities.Web.ExtensionMethods.Streams
         /// </summary>
         /// <param name="Matcher">Match found</param>
         /// <returns>The string minus any extra white space</returns>
-        protected string Evaluate(Match Matcher)
+        protected static string Evaluate(Match Matcher)
         {
             string MyString = Matcher.ToString();
             MyString = Regex.Replace(MyString, @"\r\n\s*", "");

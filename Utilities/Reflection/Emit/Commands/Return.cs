@@ -45,10 +45,8 @@ namespace Utilities.Reflection.Emit.Commands
             : base()
         {
             this.ReturnType = ReturnType;
-            if (ReturnValue == null || !(ReturnValue is VariableBase))
-                this.ReturnValue = new ConstantBuilder(ReturnValue);
-            else
-                this.ReturnValue = (VariableBase)ReturnValue;
+            VariableBase TempReturnValue = ReturnValue as VariableBase;
+            this.ReturnValue = ReturnValue == null || TempReturnValue == null ? new ConstantBuilder(ReturnValue) : TempReturnValue;
         }
 
         #endregion

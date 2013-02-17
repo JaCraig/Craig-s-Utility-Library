@@ -26,6 +26,7 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Email.Pop3
@@ -45,6 +46,7 @@ namespace Utilities.Web.Email.Pop3
         /// <param name="Password">Password used to log into the server</param>
         /// <param name="Server">Server location</param>
         /// <param name="Port">Port on the server to use</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public void Connect(string UserName, string Password, string Server, int Port)
         {
             this.UserName = UserName;
@@ -78,6 +80,7 @@ namespace Utilities.Web.Email.Pop3
         /// <summary>
         /// Disconnects from the server
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public void Disconnect()
         {
             string ResponseString;
@@ -93,7 +96,7 @@ namespace Utilities.Web.Email.Pop3
         /// Gets a list of messages from the server
         /// </summary>
         /// <returns>A list of messages (only contains message number and size)</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.EndsWith(System.String,System.StringComparison)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public ICollection<Message> GetMessageList()
         {
             string ResponseString;
@@ -109,9 +112,9 @@ namespace Utilities.Web.Email.Pop3
             while (!Done)
             {
                 Regex TempRegex = new Regex(Regex.Escape("+") + "OK.*\r\n");
-                if (!ResponseString.EndsWith("\r\n.\r\n"))
+                if (!ResponseString.EndsWith("\r\n.\r\n", StringComparison.InvariantCulture))
                 {
-                    while (!ResponseString.EndsWith("\r\n.\r\n"))
+                    while (!ResponseString.EndsWith("\r\n.\r\n", StringComparison.InvariantCulture))
                         ResponseString += GetResponse();
                 }
                 ResponseString = TempRegex.Replace(ResponseString, "");
@@ -124,8 +127,8 @@ namespace Utilities.Web.Email.Pop3
                     if (Pair.Length > 1)
                     {
                         Message TempMessage = new Message();
-                        TempMessage.MessageNumber = Int32.Parse(Pair[0]);
-                        TempMessage.MessageSize = Int32.Parse(Pair[1]);
+                        TempMessage.MessageNumber = Int32.Parse(Pair[0], CultureInfo.InvariantCulture);
+                        TempMessage.MessageSize = Int32.Parse(Pair[1], CultureInfo.InvariantCulture);
                         TempMessage.Retrieved = false;
                         ReturnArray.Add(TempMessage);
                     }
@@ -144,6 +147,7 @@ namespace Utilities.Web.Email.Pop3
         /// </summary>
         /// <param name="MessageWanted">The message that you want to pull down from the server</param>
         /// <returns>A new message containing the content</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public Message GetMessage(Message MessageWanted)
         {
             string ResponseString;
@@ -186,6 +190,7 @@ namespace Utilities.Web.Email.Pop3
         /// Deletes a message from the server
         /// </summary>
         /// <param name="MessageToDelete">Message to delete</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.StartsWith(System.String,System.StringComparison)")]
         public void Delete(Message MessageToDelete)
         {
             string ResponseString;

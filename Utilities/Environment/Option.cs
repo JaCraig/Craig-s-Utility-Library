@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Environment
@@ -47,7 +48,7 @@ namespace Utilities.Environment
                 throw new ArgumentNullException("Text");
             if (string.IsNullOrEmpty(OptionStarter))
                 throw new ArgumentNullException("OptionStarter");
-            Regex CommandParser = new Regex(string.Format(@"{0}(?<Command>[^\s]*)\s(?<Parameters>.*)", OptionStarter));
+            Regex CommandParser = new Regex(string.Format(CultureInfo.InvariantCulture, @"{0}(?<Command>[^\s]*)\s(?<Parameters>.*)", OptionStarter));
             Regex ParameterParser = new Regex("(?<Parameter>\"[^\"]*\")[\\s]?|(?<Parameter>[^\\s]*)[\\s]?");
             Parameters = new List<string>();
             Match CommandMatch = CommandParser.Match(Text);

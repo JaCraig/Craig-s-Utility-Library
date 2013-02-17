@@ -82,7 +82,10 @@ namespace Utilities.Encryption
         /// <returns>XML representation of the key information</returns>
         public static string CreateKey(bool PrivatePublic)
         {
-            return new RSACryptoServiceProvider().ToXmlString(PrivatePublic);
+            using (RSACryptoServiceProvider Provider = new RSACryptoServiceProvider())
+            {
+                return Provider.ToXmlString(PrivatePublic);
+            }
         }
 
         /// <summary>

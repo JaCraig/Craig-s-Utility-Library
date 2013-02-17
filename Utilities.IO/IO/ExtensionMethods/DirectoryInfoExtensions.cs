@@ -25,6 +25,8 @@ using System.IO;
 using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.ExtensionMethods.Enums;
+using System.Collections;
+using System.Collections.Generic;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -219,6 +221,25 @@ namespace Utilities.IO.ExtensionMethods
         {
             Directory.ThrowIfNull("Directory");
             return new DriveInfo(Directory.Root.FullName);
+        }
+
+        #endregion
+
+        #region EnumerateFiles
+
+        /// <summary>
+        /// Enumerates the files within a directory
+        /// </summary>
+        /// <param name="Directory">Directory to search in</param>
+        /// <param name="SearchPatterns">Patterns to search for</param>
+        /// <param name="Options">Search options</param>
+        /// <returns>The enumerated files from the directory</returns>
+        public static IEnumerable<FileInfo> EnumerateFiles(this DirectoryInfo Directory, IEnumerable<string> SearchPatterns, SearchOption Options)
+        {
+            List<FileInfo> Files = new List<FileInfo>();
+            foreach (string SearchPattern in SearchPatterns)
+                Files.Add(Directory.EnumerateFiles(SearchPattern, Options));
+            return Files;
         }
 
         #endregion

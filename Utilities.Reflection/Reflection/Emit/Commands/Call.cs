@@ -25,6 +25,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
+using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands
@@ -51,7 +52,7 @@ namespace Utilities.Reflection.Emit.Commands
             this.MethodCallingFrom = Method;
             if (MethodCalling.ReturnType != null && MethodCalling.ReturnType != typeof(void))
             {
-                Result = Method.CreateLocal(MethodCalling.Name + "ReturnObject"+Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(), MethodCalling.ReturnType);
+                Result = Method.CreateLocal(MethodCalling.Name + "ReturnObject"+Utilities.Reflection.Emit.BaseClasses.MethodBase.ObjectCounter.ToString(CultureInfo.InvariantCulture), MethodCalling.ReturnType);
             }
             if (Parameters != null)
             {
@@ -122,6 +123,7 @@ namespace Utilities.Reflection.Emit.Commands
         /// <summary>
         /// Parameters sent in
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         protected virtual VariableBase[] Parameters { get; set; }
 
         /// <summary>

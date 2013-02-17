@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Random</id>
-		<version>3.3.0133</version>
+		<version>3.3.0220</version>
 		<title>Craig's Utility Library Random Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

@@ -80,11 +80,30 @@ namespace Utilities.IO.Logging.BaseClasses
         #region Interface Functions
 
         /// <summary>
-        /// Disposes of the log file
+        /// Disposes the object
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            End((LogType)this);
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        protected virtual void Dispose(bool Disposing)
+        {
+            if(Disposing)
+                End((LogType)this);
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~LogBase()
+        {
+            Dispose(false);
         }
 
         /// <summary>

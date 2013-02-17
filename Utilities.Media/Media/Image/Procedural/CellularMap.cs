@@ -47,8 +47,8 @@ namespace Utilities.Media.Image.Procedural
             MinDistance = float.MaxValue;
             MaxDistance = float.MinValue;
             Random.Random Rand = new Random.Random(Seed);
-            Distances = new float[Width, Height];
-            ClosestPoint = new int[Width, Height];
+            Distances = new float[Width,Height];
+            ClosestPoint = new int[Width,Height];
             for (int x = 0; x < NumberOfPoints; ++x)
             {
                 Point TempPoint = new Point();
@@ -95,8 +95,8 @@ namespace Utilities.Media.Image.Procedural
                     Index = z;
                 }
             }
-            ClosestPoint[x, y] = Index;
-            Distances[x, y] = MaxDistance;
+            ClosestPoint[x,y] = Index;
+            Distances[x,y] = MaxDistance;
             if (MaxDistance < this.MinDistance)
                 this.MinDistance = MaxDistance;
             if (MaxDistance > this.MaxDistance)
@@ -110,11 +110,13 @@ namespace Utilities.Media.Image.Procedural
         /// <summary>
         /// List of closest cells
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member")]
         public virtual int[,] ClosestPoint { get; set; }
 
         /// <summary>
         /// Distances to the closest cell
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Member")]
         public virtual float[,] Distances { get; set; }
 
         /// <summary>

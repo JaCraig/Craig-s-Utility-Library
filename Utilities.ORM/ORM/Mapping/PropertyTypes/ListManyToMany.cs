@@ -53,6 +53,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// </summary>
         /// <param name="Expression">Expression pointing to the many to one</param>
         /// <param name="Mapping">Mapping the StringID is added to</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Compare(System.String,System.String,System.StringComparison)")]
         public ListManyToMany(Expression<Func<ClassType, List<DataType>>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {
@@ -60,7 +61,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
             SetDefaultValue(() => new List<DataType>());
             string Class1 = typeof(ClassType).Name;
             string Class2 = typeof(DataType).Name;
-            if (Class1.CompareTo(Class2) < 0)
+            if (string.Compare(Class1, Class2, StringComparison.InvariantCulture) < 0)
                 SetTableName(Class1 + "_" + Class2);
             else
                 SetTableName(Class2 + "_" + Class1);
@@ -122,6 +123,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object to add</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Compare(System.String,System.String,System.StringComparison)")]
         public override IEnumerable<Command> JoinsSave(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
@@ -139,7 +141,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
                     object ForeignIDParameter = ((IProperty<DataType>)ForeignMapping.IDProperty).GetAsObject(Item);
                     string Parameters = "";
                     object[] Values = new object[2];
-                    if (Mapping.TableName.CompareTo(ForeignMapping.TableName) <= 0)
+                    if (string.Compare(Mapping.TableName,ForeignMapping.TableName,StringComparison.InvariantCulture) <= 0)
                     {
                         Parameters = Mapping.TableName + Mapping.IDProperty.FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperty.FieldName + ((ForeignMapping == Mapping) ? "2" : "");
                         Values[0] = CurrentIDParameter;
@@ -166,6 +168,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override IEnumerable<Command> CascadeJoinsDelete(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)
@@ -206,6 +209,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         /// <param name="Object">Object to add</param>
         /// <param name="MicroORM">Micro ORM object</param>
         /// <returns>The list of commands needed to do this</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override IEnumerable<Command> CascadeJoinsSave(ClassType Object, SQLHelper MicroORM)
         {
             if (Object == null)

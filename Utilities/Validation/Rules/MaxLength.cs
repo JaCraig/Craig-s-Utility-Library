@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 
 #endregion
 
@@ -68,7 +69,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The formatted string</returns>
         public override string FormatErrorMessage(string name)
         {
-            return string.Format(ErrorMessageString, name, Value.ToString());
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, Value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -77,6 +78,7 @@ namespace Utilities.Validation.Rules
         /// <param name="value">Value to check</param>
         /// <param name="validationContext">Validation context</param>
         /// <returns>The validation result</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "Item")]
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (value.IsNull())

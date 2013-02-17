@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -89,7 +90,7 @@ namespace Utilities.FileFormats.RSSHelper
             Node = Element.SelectSingleNode("./pubdate", NamespaceManager);
             if (Node != null)
             {
-                PubDate = DateTime.Parse(Node.InnerText);
+                PubDate = DateTime.Parse(Node.InnerText, CultureInfo.InvariantCulture);
             }
             Node = Element.SelectSingleNode("./media:thumbnail", NamespaceManager);
             if (Node != null)
@@ -178,6 +179,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Categories associated with the item
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<string> Categories
         {
             get
@@ -233,7 +235,7 @@ namespace Utilities.FileFormats.RSSHelper
             {
                 ItemString.Append("<category>").Append(Category).Append("</category>\r\n");
             }
-            ItemString.Append("<pubDate>").Append(PubDate.ToString("r")).Append("</pubDate>\r\n");
+            ItemString.Append("<pubDate>").Append(PubDate.ToString("r", CultureInfo.InvariantCulture)).Append("</pubDate>\r\n");
             if (Enclosure != null)
                 ItemString.Append(Enclosure.ToString());
             if (Thumbnail != null)

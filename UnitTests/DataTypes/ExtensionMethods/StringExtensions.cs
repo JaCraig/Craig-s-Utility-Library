@@ -302,5 +302,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.True("4408041234567893".IsCreditCard());
         }
+
+        [Fact]
+        public void RemoveExtraSpaces()
+        {
+            Assert.Equal("This is a test.", "This  is      a test.".RemoveExtraSpaces());
+        }
     }
 }

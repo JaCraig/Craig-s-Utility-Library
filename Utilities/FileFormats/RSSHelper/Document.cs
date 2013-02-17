@@ -83,6 +83,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <summary>
         /// Channels for the RSS feed
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Channel> Channels
         {
             get

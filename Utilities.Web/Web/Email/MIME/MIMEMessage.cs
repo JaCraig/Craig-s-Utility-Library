@@ -54,10 +54,11 @@ namespace Utilities.Web.Email.MIME
         /// Loads the message
         /// </summary>
         /// <param name="Input">string containing the message</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.IndexOf(System.String,System.StringComparison)")]
         public void LoadMessage(string Input)
         {
             _Content = Input;
-            int HeaderEnd = Input.IndexOf("\r\n\r\n");
+            int HeaderEnd = Input.IndexOf("\r\n\r\n", StringComparison.InvariantCulture);
             Header = new MIMEHeader(Input.Substring(0, HeaderEnd + 2));
             Input = Input.Substring(HeaderEnd + 2);
             Body = new MIMEBody(Input, Header);
@@ -211,7 +212,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Header">Header of the message</param>
         /// <returns>A string stating the content type</returns>
-        private string GetContentType(MIMEHeader Header)
+        private static string GetContentType(MIMEHeader Header)
         {
             if (Header != null && Header[Constants.ContentType] != null && Header[Constants.ContentType].Attributes.Count > 0)
             {
@@ -237,7 +238,8 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Header">The header of the message</param>
         /// <returns>An enum value indicating the media type of the boundary</returns>
-        private MediaEnum GetMediaType(MIMEHeader Header)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.Equals(System.String,System.StringComparison)")]
+        private static MediaEnum GetMediaType(MIMEHeader Header)
         {
             string ContentType = GetContentType(Header);
             int x = 0;
@@ -257,7 +259,7 @@ namespace Utilities.Web.Email.MIME
         /// </summary>
         /// <param name="Header">Header for this boundary/message</param>
         /// <returns>a string indicating the sub type of the boundary/message</returns>
-        private string GetContentSubType(MIMEHeader Header)
+        private static string GetContentSubType(MIMEHeader Header)
         {
             if (Header != null && Header[Constants.ContentType] != null && Header[Constants.ContentType].Attributes.Count > 0)
             {

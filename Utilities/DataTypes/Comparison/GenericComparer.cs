@@ -54,8 +54,9 @@ namespace Utilities.DataTypes.Comparison
             }
             if (x.GetType() != y.GetType())
                 return -1;
-            if (x is IComparable<T>)
-                return ((IComparable<T>)x).CompareTo(y);
+            IComparable<T> TempComparable = x as IComparable<T>;
+            if (TempComparable != null)
+                return TempComparable.CompareTo(y);
             return x.CompareTo(y);
         }
 

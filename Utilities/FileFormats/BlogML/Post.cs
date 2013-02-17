@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -58,10 +59,10 @@ namespace Utilities.FileFormats.BlogML
             DateModified = DateTime.Now;
             ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
             PostURL = Element.Attributes["post-url"] != null ? Element.Attributes["post-url"].Value : "";
-            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value) : DateTime.MinValue;
-            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value) : DateCreated;
+            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.MinValue;
+            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value, CultureInfo.InvariantCulture) : DateCreated;
 
-            foreach (XmlNode Children in Element.ChildNodes)
+            foreach (XmlElement Children in Element.ChildNodes)
             {
                 if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -81,19 +82,19 @@ namespace Utilities.FileFormats.BlogML
                 }
                 else if (Children.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    Authors = new Authors((XmlElement)Children);
+                    Authors = new Authors(Children);
                 }
                 else if (Children.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    Categories = new Categories((XmlElement)Children);
+                    Categories = new Categories(Children);
                 }
                 else if (Children.Name.Equals("tags", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    Tags = new Tags((XmlElement)Children);
+                    Tags = new Tags(Children);
                 }
                 else if (Children.Name.Equals("comments", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    Comments = new Comments((XmlElement)Children);
+                    Comments = new Comments(Children);
                 }
             }
         }
@@ -172,11 +173,11 @@ namespace Utilities.FileFormats.BlogML
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.AppendFormat("<post id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" post-url=\"{3}\" type=\"normal\" hasexcerpt=\"true\" views=\"0\" is-published=\"True\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss"), DateModified.ToString("yyyy-MM-ddThh:mm:ss"), PostURL);
-            Builder.AppendFormat("<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
-            Builder.AppendFormat("<content type=\"text\"><![CDATA[{0}]]></content>\n", Content);
-            Builder.AppendFormat("<post-name type=\"text\"><![CDATA[{0}]]></post-name>\n", PostName);
-            Builder.AppendFormat("<excerpt type=\"text\"><![CDATA[{0}]]></excerpt>\n", Excerpt);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<post id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" post-url=\"{3}\" type=\"normal\" hasexcerpt=\"true\" views=\"0\" is-published=\"True\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), DateModified.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), PostURL);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<content type=\"text\"><![CDATA[{0}]]></content>\n", Content);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<post-name type=\"text\"><![CDATA[{0}]]></post-name>\n", PostName);
+            Builder.AppendFormat(CultureInfo.InvariantCulture, "<excerpt type=\"text\"><![CDATA[{0}]]></excerpt>\n", Excerpt);
             Builder.AppendLine(Authors.ToString());
             Builder.AppendLine(Categories.ToString());
             Builder.AppendLine(Tags.ToString());
