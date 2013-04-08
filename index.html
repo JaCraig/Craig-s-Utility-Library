@@ -1,0 +1,588 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Craig's Utility Library by JaCraig</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/JaCraig/Craig-s-Utility-Library">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/JaCraig/Craig-s-Utility-Library/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/JaCraig/Craig-s-Utility-Library/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Craig's Utility Library</h1>
+          <p>Contains more utilities than Batman's belt</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/JaCraig">JaCraig</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h3>I'm Batman</h3>
+
+<p>Have you ever thought about why Batman is as effective as he is? I mean sure he's rich, in better shape than any of us will ever be, and is a master at martial arts, but what almost always wins the day for him is that utility belt. It's the never ending supply of gadgets and utilities that he can use in the appropriate situation that really saves the day. And Craig's Utility Library is the same for programmers.</p>
+
+<p>With .Net we have a number of built in classes and functions to help make a programmer's life easier, but let's face facts, they didn't think of everything. Craig's Utility Library tries to fill in some of those gaps (or at least the ones that I've run into). It comes with a couple hundred extension methods, built in data types such as a BTree, priority queue, ring buffer, etc. And that's just the DataTypes namespace. When you add it all up, Craig's Utility Library is one of the largest set of utilities for .Net out there.</p>
+
+<h3>C'mon, Deckard. Show Me What You're Made Of.</h3>
+
+<p>So let's look at a couple of examples of where these might come in handy. Have you ever been trying to download a web page?</p>
+
+<pre><code>string Content=new Uri("http://www.duckduckgo.com").Read();
+</code></pre>
+
+<p>That's it. Well that and adding the Utilities.IO.ExtensionMethods namespace. Want to format a string as a phone number?</p>
+
+<pre><code>string PhoneNumber="5555551010".FormatString("(###)###-####"); //Becomes (555)555-1010
+</code></pre>
+
+<p>Want to remove all items from an ICollection that are greater than 5?</p>
+
+<pre><code>ICollection&lt;int&gt; Values=new int[]{1,2,3,4,5,6,7,8,9,10}.Remove(x=&gt;x&gt;5); //Will return 1,2,3,4,5
+</code></pre>
+
+<p>Want to load every DLL from a given directory and then search it for any class that uses a specific interface and create an instance of it?</p>
+
+<pre><code>IEnumerable&lt;IMyInterface&gt; Classes=new DirectoryInfo("./MyAssemblies/").GetObjects&lt;IMyInterface&gt;();
+</code></pre>
+
+<p>Want to change an image into ASCII art?</p>
+
+<pre><code>using(Bitmap MyImage=new Bitmap("FileToLoad"))
+{
+   string ASCIIArt=MyImage.ToASCIIArt();
+}
+</code></pre>
+
+<p>And that's just a couple examples for the extension methods. Want to connect to a database but hate ADO.Net? Use SQLHelper:</p>
+
+<pre><code>using(SQLHelper Helper=new SQLHelper("SELECT * FROM MyTable",System.Data.CommandType.Text,"DatabaseConnection"))
+{
+   Helper.ExecuteReader();
+   while(Helper.Read())
+   {
+      int Value1=Helper.GetParameter("Value1",0);
+      string Value2=Helper.GetParameter("Value2","");
+   }
+}
+</code></pre>
+
+<p>This utility library contains code for caching, compression, configuration, data mapping (think AutoMapper), encryption, IO, an IoC container, LDAP/AD querying, Math helpers, image manipulation, a micro ORM (somewhere between BLToolkit and PetaPoco in terms of speed), a full blown ORM, a profiler, randomization helpers, extension methods to help with reflection, a set of classes that allow you to do AOP, DataAnnotations additions for validation, a number of file formats, as well as web related helpers.</p>
+
+<h3>That's Not a Knife, This is a Knife</h3>
+
+<p>Still don't think that it's a lot? Here's just a small list of the extension methods:
+<strong>Utilities.DataTypes.ExtensionMethods</strong></p>
+
+<ul>
+<li>Array extensions
+
+<ul>
+<li>Clear</li>
+<li>Combine</li>
+</ul>
+</li>
+<li>DateTime extensions
+
+<ul>
+<li>DaysInMonth</li>
+<li>DaysLeftInMonth</li>
+<li>DaysLeftInYear</li>
+<li>FirstDayOfMonth</li>
+<li>FirstDayOfWeek</li>
+<li>FromUnixTime (actually extension for int and long values)</li>
+<li>IsInFuture</li>
+<li>IsInPast</li>
+<li>IsWeekDay</li>
+<li>IsWeekEnd</li>
+<li>LastDayOfMonth</li>
+<li>LastDayOfWeek</li>
+<li>ToUnix</li>
+<li>FirstDayOfQuarter</li>
+<li>FirstDayOfYear</li>
+<li>LastDayOfQuarter</li>
+<li>LastDayOfYear</li>
+<li>ConvertToTimeZone (assumes that times are in UTC time)</li>
+<li>LocalTimeZone</li>
+<li>AddWeeks</li>
+<li>Age</li>
+<li>BeginningOfDay</li>
+<li>EndOfDay</li>
+<li>IsToday</li>
+<li>SetTime</li>
+<li>UTCOffset</li>
+</ul>
+</li>
+<li>Generic object extensions
+
+<ul>
+<li>If</li>
+<li>NotIf</li>
+<li>Return</li>
+<li>Chain</li>
+<li>Do</li>
+<li>Execute</li>
+<li>ThrowIfTrue</li>
+<li>ThrowIfFalse</li>
+</ul>
+</li>
+<li>ICollection extensions
+
+<ul>
+<li>AddAndReturn</li>
+<li>AddRange</li>
+<li>AddIf</li>
+<li>AddIfUnique</li>
+<li>Remove</li>
+<li>RemoveRange</li>
+</ul>
+</li>
+<li>IComparable extensions
+
+<ul>
+<li>Between</li>
+</ul>
+</li>
+<li>IDictionary extensions
+
+<ul>
+<li>Sort</li>
+<li>SortByValue</li>
+</ul>
+</li>
+<li>IEnumerable extensions
+
+<ul>
+<li>Exists</li>
+<li>For</li>
+<li>ForEach</li>
+<li>ForParallel</li>
+<li>ForEachParallel</li>
+<li>IsNullOrEmpty</li>
+<li>RemoveDefaults</li>
+<li>ToArray</li>
+<li>ToString</li>
+<li>TrueForAll</li>
+<li>TryAll</li>
+<li>TryAllParallel</li>
+<li>FalseForAll</li>
+<li>FalseForAny</li>
+<li>TrueForAll</li>
+<li>TrueForAny</li>
+<li>ThrowIfFalseForAll</li>
+<li>ThrowIfFalseForAny</li>
+<li>ThrowIfTrueForAll</li>
+<li>ThrowIfTrueForAny</li>
+<li>ElementsBetween</li>
+<li>First</li>
+<li>Last</li>
+<li>ToDataTable</li>
+<li>ToCSV</li>
+<li>ToDelimitedFile</li>
+</ul>
+</li>
+</ul><blockquote>
+<p>Keep Going...</p>
+</blockquote>
+
+<ul>
+<li>MatchCollection extensions
+
+<ul>
+<li>Where</li>
+</ul>
+</li>
+<li>string extensions
+
+<ul>
+<li>Encode</li>
+<li>FromBase64</li>
+<li>Left</li>
+<li>Right</li>
+<li>ToBase64</li>
+<li>ToByteArray</li>
+<li>ToFirstCharacterUpperCase</li>
+<li>ToSentenceCapitalize</li>
+<li>ToTitleCase</li>
+<li>NumberTimesOccurs</li>
+<li>Reverse</li>
+<li>FilterOutText</li>
+<li>KeepFilterText</li>
+<li>AlphaNumericOnly</li>
+<li>AlphaCharactersOnly</li>
+<li>NumericOnly</li>
+<li>IsUnicode</li>
+<li>FormatString</li>
+<li>RegexFormat</li>
+<li>ExpandTabs</li>
+<li>StripLeft</li>
+<li>StripRight</li>
+<li>Pluralize</li>
+<li>Singularize</li>
+<li>Center</li>
+<li>MaskLeft</li>
+<li>MaskRight</li>
+<li>UrlDecode</li>
+<li>UrlEncode</li>
+</ul>
+</li>
+<li>Various type conversion/type checking extensions
+
+<ul>
+<li>FormatToString</li>
+<li>IsNotDefault</li>
+<li>IsDefault</li>
+<li>IsNotNull</li>
+<li>IsNull</li>
+<li>IsNotNullOrDBNull</li>
+<li>IsNullOrDBNull</li>
+<li>NullCheck</li>
+<li>ThrowIfDefault</li>
+<li>ThrowIfNullOrEmpty</li>
+<li>ThrowIfNullOrDBNull</li>
+<li>ToSQLDbType</li>
+<li>ToDbType</li>
+<li>ToType</li>
+<li>TryTo</li>
+</ul>
+</li>
+</ul><blockquote>
+<p>Yeah, there's more...</p>
+</blockquote>
+
+<ul>
+<li>Various value type extensions
+
+<ul>
+<li>ToBool (int)</li>
+<li>ToInt (bool)</li>
+<li>ToBase64String (byte array)</li>
+<li>ToEncodedString (byte array)</li>
+<li>IsUnicode (byte array)</li>
+</ul>
+</li>
+<li>TimeSpan Extensions
+
+<ul>
+<li>Years</li>
+<li>Months</li>
+<li>DaysRemainder</li>
+</ul>
+</li>
+<li>DataTable Extensions
+
+<ul>
+<li>ToList</li>
+<li>ToCSV</li>
+<li>ToDelimitedFile</li>
+</ul>
+</li>
+</ul><p><strong>Utilities.Math.ExtensionMethods</strong></p>
+
+<ul>
+<li>Math extensions
+
+<ul>
+<li>Between</li>
+<li>Clamp</li>
+<li>Factorial</li>
+<li>Max</li>
+<li>Median</li>
+<li>Min</li>
+<li>Mode</li>
+<li>Pow</li>
+<li>Round</li>
+<li>StandardDeviation</li>
+<li>Sqrt</li>
+<li>Variance</li>
+<li>Permute</li>
+</ul>
+</li>
+</ul><blockquote>
+<p>OK, now we're done... With the first half of the list...</p>
+</blockquote>
+
+<p><strong>Utilities.SQL.ExtensionMethods</strong></p>
+
+<ul>
+<li>DbCommand extensions
+
+<ul>
+<li>AddParameter</li>
+<li>BeginTransaction</li>
+<li>ClearParameters</li>
+<li>Close</li>
+<li>Commit</li>
+<li>ExecuteDataSet</li>
+<li>ExecuteScalar</li>
+<li>GetOutputParameter</li>
+<li>Open</li>
+<li>Rollback</li>
+</ul>
+</li>
+<li>DbDataReader extensions
+
+<ul>
+<li>GetParameter</li>
+</ul>
+</li>
+</ul><p><strong>Utilities.Compression.ExtensionMethods</strong></p>
+
+<ul>
+<li>Compress (both byte arrays and strings)</li>
+<li>Decompress (both byte arrays and strings)</li>
+</ul><p><strong>Utilities.Encryption.ExtensionMethods</strong></p>
+
+<ul>
+<li>Hash (Now handles all hash algorithms in one function for both byte arrays and strings)</li>
+<li>Encrypt (Handles any symmetric encryption algorithm inside .Net)</li>
+<li>Decrypt (Handles any symmetric encryption algorithm inside .Net)</li>
+</ul><p><strong>Utilities.IO.ExtensionMethods</strong></p>
+
+<ul>
+<li>DirectoryInfo extensions
+
+<ul>
+<li>CopyTo</li>
+<li>DeleteAll</li>
+<li>DeleteFiles</li>
+<li>DeleteFilesNewerThan</li>
+<li>DeleteFilesOlderThan</li>
+<li>Size</li>
+<li>SetAttribute</li>
+<li>DriveInfo</li>
+<li>DeleteDirectoriesNewerThan</li>
+<li>DeleteDirectoriesOlderThan</li>
+</ul>
+</li>
+</ul><blockquote>
+<p>Want to cry yet?</p>
+</blockquote>
+
+<ul>
+<li>FileInfo extensions
+
+<ul>
+<li>Append</li>
+<li>CompareTo</li>
+<li>Read</li>
+<li>ReadBinary</li>
+<li>Save</li>
+<li>SaveAsync</li>
+<li>SetAttributes</li>
+<li>DriveInfo</li>
+<li>Execute</li>
+</ul>
+</li>
+<li>String extensions
+
+<ul>
+<li>RemoveIllegalDirectoryNameCharacters</li>
+<li>RemoveIllegalFileNameCharacters</li>
+</ul>
+</li>
+<li>Serialization extensions
+
+<ul>
+<li>ToBinary</li>
+<li>ToJSON</li>
+<li>ToSOAP</li>
+<li>ToXML</li>
+<li>ToObject</li>
+<li>JSONToObject</li>
+<li>SOAPToObject</li>
+<li>XMLToObject</li>
+</ul>
+</li>
+<li>Uri extensions
+
+<ul>
+<li>Read</li>
+<li>ReadBinary</li>
+<li>Execute</li>
+</ul>
+</li>
+</ul><p><strong>Utilities.Web.ExtensionMethods</strong></p>
+
+<ul>
+<li>Web related extensions
+
+<ul>
+<li>AbsoluteRoot</li>
+<li>AddScriptFile</li>
+<li>ContainsHTML</li>
+<li>HTTPCompress</li>
+<li>IsEncodingAccepted</li>
+<li>RelativeRoot</li>
+<li>RemoveURLIllegalCharacters</li>
+<li>SetEncoding</li>
+<li>StripHTML</li>
+</ul>
+</li>
+<li>IPAddress extensions
+
+<ul>
+<li>GetHostName</li>
+</ul>
+</li>
+<li>Minification
+
+<ul>
+<li>Combine (can be used for HTML,JavaScript, or CSS)</li>
+<li>Minify (can be used for HTML, JavaScript, or CSS)</li>
+</ul>
+</li>
+<li>HttpRequest extensions
+
+<ul>
+<li>IsMobile</li>
+</ul>
+</li>
+</ul><p><strong>Utilities.Image.ExtensionMethods</strong></p>
+
+<ul>
+<li>All Bitmap functions were moved
+
+<ul>
+<li>Added ToBase64 extension method</li>
+<li>Added DrawRoundedRectangle extension</li>
+</ul>
+</li>
+<li>Screen extensions
+
+<ul>
+<li>TakeScreenShot</li>
+</ul>
+</li>
+</ul><blockquote>
+<p>Just a bit further</p>
+</blockquote>
+
+<p><strong>Utilities.Error.ExtensionMethods</strong></p>
+
+<ul>
+<li>Various error related extensions
+
+<ul>
+<li>DumpApplicationState</li>
+<li>DumpCache</li>
+<li>DumpCookies</li>
+<li>DumpRequestVariable</li>
+<li>DumpResponseVariable</li>
+<li>DumpServerVars</li>
+<li>DumpSession</li>
+</ul>
+</li>
+</ul><p><strong>Utilities.Reflection.ExtensionMethods</strong></p>
+
+<ul>
+<li>Various reflection related extensions
+
+<ul>
+<li>CallMethod</li>
+<li>CreateInstance</li>
+<li>DumpProperties</li>
+<li>GetAttribute</li>
+<li>GetAttributes</li>
+<li>GetName</li>
+<li>GetObjects</li>
+<li>GetProperty</li>
+<li>GetPropertyGetter</li>
+<li>GetPropertyName</li>
+<li>GetPropertyType</li>
+<li>GetPropertySetter</li>
+<li>GetTypes</li>
+<li>IsIEnumerable</li>
+<li>IsOfType</li>
+<li>Load</li>
+<li>LoadAssemblies</li>
+<li>MarkedWith</li>
+<li>MakeShallowCopy</li>
+<li>SetProperty</li>
+<li>ToLongVersionString</li>
+<li>ToShortVersionString</li>
+</ul>
+</li>
+</ul><p><strong>Utilities.Environment.ExtensionMethods</strong></p>
+
+<ul>
+<li>Process related extensions
+
+<ul>
+<li>KillProcessAsync</li>
+<li>GetInformation</li>
+</ul>
+</li>
+</ul><blockquote>
+<p>Now we're done... With the Extensions...</p>
+</blockquote>
+
+<p>Seriously, if you can't find something in here that would make your life a bit easier, you're not doing .Net development.</p>
+
+<h3>Where Are My Dragons?</h3>
+
+<p>The nice thing about this library is I let you pick what you need. Want to just use the DataTypes and IO namespaces? Not a problem. Want everything? I have a DLL for that also. The easiest approach though is to use NuGet:</p>
+
+<p><strong>Entire library (with command from package manager console):</strong></p>
+
+<ul>
+<li>Craig's Utility Library: Install-Package CraigsUtilityLibrary</li>
+</ul><p><strong>Individual namespaces (with command from package manager console):</strong></p>
+
+<ul>
+<li>DataTypes: Install-Package CraigsUtilityLibrary-DataTypes</li>
+<li>LDAP: Install-Package CraigsUtilityLibrary-LDAP</li>
+<li>SQL: Install-Package CraigsUtilityLibrary-SQL</li>
+<li>Encryption: Install-Package CraigsUtilityLibrary-Encryption </li>
+<li>Caching: Install-Package CraigsUtilityLibrary-Caching</li>
+<li>Math: Install-Package CraigsUtilityLibrary-Math</li>
+<li>Validation: Install-Package CraigsUtilityLibrary-Validation </li>
+<li>Environment: Install-Package CraigsUtilityLibrary-Environment</li>
+<li>Media: Install-Package CraigsUtilityLibrary-Media </li>
+<li>Web: Install-Package CraigsUtilityLibrary-Web </li>
+<li>ORM: Install-Package CraigsUtilityLibrary-ORM </li>
+<li>Compression: Install-Package CraigsUtilityLibrary-Compression </li>
+<li>Profiler: Install-Package CraigsUtilityLibrary-Profiler </li>
+<li>FileFormats: Install-Package CraigsUtilityLibrary-FileFormats </li>
+<li>Configuration: Install-Package CraigsUtilityLibrary-Configuration </li>
+<li>Random: Install-Package CraigsUtilityLibrary-Random </li>
+<li>DataMapper: Install-Package CraigsUtilityLibrary-DataMapper </li>
+<li>IO: Install-Package CraigsUtilityLibrary-IO </li>
+<li>Reflection: Install-Package CraigsUtilityLibrary-Reflection</li>
+<li>AI: Install-Package CraigsUtilityLibrary-AI </li>
+<li>IoC: Install-Package CraigsUtilityLibrary-IoC </li>
+</ul><h3>You're Still Here? It's Over. Go Home.</h3>
+
+<ul>
+<li>The library uses the MIT license</li>
+<li>The code is well documented and comes with the needed XML docs through NuGet</li>
+<li>The code has many unit tests that are available with the source.</li>
+<li>I can be reached either on the <a href="https://github.com/JaCraig/Craig-s-Utility-Library">Github</a> or <a href="http://cul.codeplex.com/">CodePlex</a> pages.</li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
