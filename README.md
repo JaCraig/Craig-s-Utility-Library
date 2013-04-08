@@ -112,7 +112,7 @@ The library is available on NuGet in both a single DLL as well as each individua
 * Exchange: Install-Package CraigsUtilityLibrary-Exchange 
 
 ### Contributors/Contributing
-Maintained by James Craig @jacraig
+Maintained by [James Craig](https://github.com/JaCraig)
 
 If you have a method, fix, or change that you would like added the best option is to:
 1. Fork the codebase
