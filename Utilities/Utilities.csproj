@@ -126,6 +126,8 @@
     <Compile Include="DataTypes\Threading\TaskQueue.cs" />
     <Compile Include="Environment\DataTypes\User.cs" />
     <Compile Include="Environment\ExtensionMethods\ProcessExtensions.cs" />
+    <Compile Include="FileFormats\BaseClasses\FormatBase.cs" />
+    <Compile Include="FileFormats\BaseClasses\StringFormatBase.cs" />
     <Compile Include="FileFormats\ExtensionMethods\ExtensionMethods.cs" />
     <Compile Include="FileFormats\GenericDelimited\GenericDelimited.cs" />
     <Compile Include="IoC\Manager.cs" />

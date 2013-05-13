@@ -21,8 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities.FileFormats.BaseClasses;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats
@@ -30,7 +33,7 @@ namespace Utilities.FileFormats
     /// <summary>
     /// Class for creating vCards
     /// </summary>
-    public class VCard
+    public class VCard:StringFormatBase<VCard>
     {
         #region Constructor
 
@@ -163,7 +166,7 @@ namespace Utilities.FileFormats
         }
         #endregion
 
-        #region Private Functions
+        #region Private/Protected Functions
 
         private static string StripHTML(string HTML)
         {
@@ -176,6 +179,12 @@ namespace Utilities.FileFormats
         }
 
         private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
+
+        protected override VCard InternalLoad(string Location)
+        {
+            string Content = new FileInfo(Location).Read();
+            
+        }
 
         #endregion
 
