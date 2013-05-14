@@ -32,20 +32,17 @@ using Utilities.IO.ExtensionMethods;
 namespace Utilities.FileFormats.BaseClasses
 {
     /// <summary>
-    /// Format base class for objects that are string based
+    /// Format base class
     /// </summary>
-    public abstract class StringFormatBase<FormatType> : FormatBase<FormatType, string>
-        where FormatType : StringFormatBase<FormatType>, new()
+    public abstract class FormatBase<FormatType,ContentType> : IComparable, IComparable<FormatType>
+        where FormatType : FormatBase<FormatType, ContentType>, new()
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        protected StringFormatBase()
-            : base()
-        {
-        }
+        protected FormatBase() { }
 
         #endregion
 
@@ -54,37 +51,45 @@ namespace Utilities.FileFormats.BaseClasses
         /// <summary>
         /// Compares the object to another object
         /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
+        public int CompareTo(object obj)
+        {
+            if (obj is FormatBase<FormatType, ContentType>)
+                return CompareTo((FormatType)obj);
+            return -1;
+        }
+
+        /// <summary>
+        /// Compares the object to another object
+        /// </summary>
         /// <param name="other">Object to compare to</param>
         /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public override int CompareTo(FormatType other)
+        public abstract int CompareTo(FormatType other);
+
+        /// <summary>
+        /// Loads the object from the location specified
+        /// </summary>
+        /// <param name="Location">Location of the file to load</param>
+        /// <returns>The object specified in the location</returns>
+        public static FormatType Load(string Location)
         {
-            return other.ToString().CompareTo(ToString());
+            return new FormatType().InternalLoad(Location);
         }
-        
+
+        /// <summary>
+        /// Loads the object from the location specified
+        /// </summary>
+        /// <param name="Location">Location of the file to load</param>
+        /// <returns>This</returns>
+        protected abstract FormatType InternalLoad(string Location);
+
         /// <summary>
         /// Saves the object
         /// </summary>
         /// <param name="Location">Location to save it to</param>
         /// <returns>This</returns>
-        public override FormatType Save(string Location)
-        {
-            new FileInfo(Location).Save(ToString());
-            return (FormatType)this;
-        }
-
-        #endregion
-
-        #region Operators
-
-        /// <summary>
-        /// Converts the format to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(StringFormatBase<FormatType> Value)
-        {
-            return Value.ToString();
-        }
+        public abstract FormatType Save(string Location);
 
         #endregion
     }

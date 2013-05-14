@@ -56,6 +56,14 @@ namespace UnitTests.FileFormats.CSV
         }
 
         [Fact]
+        public void Load5()
+        {
+            Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
+            Assert.Equal(1, TestObject.NumberOfRows);
+            Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject);
+        }
+
+        [Fact]
         public void Load4()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV();

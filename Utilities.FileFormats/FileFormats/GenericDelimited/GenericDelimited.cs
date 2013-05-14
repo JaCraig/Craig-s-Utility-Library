@@ -28,9 +28,15 @@ namespace Utilities.FileFormats.GenericDelimited
     /// <summary>
     /// Generic delimited loader
     /// </summary>
-    public class GenericDelimited : Delimited.Delimited
+    public class GenericDelimited : Delimited.Delimited<GenericDelimited>
     {
         #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Delimiter">Delimiter used to parse the file</param>
+        public GenericDelimited() : base() { this.Delimiter_ = ","; }
 
         /// <summary>
         /// Constructor

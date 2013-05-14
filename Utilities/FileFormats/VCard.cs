@@ -164,6 +164,16 @@ namespace Utilities.FileFormats
             Builder.Append("</div>");
             return Builder.ToString();
         }
+
+        /// <summary>
+        /// Gets the VCard as a string
+        /// </summary>
+        /// <returns>VCard as a string</returns>
+        public override string ToString()
+        {
+            return GetVCard();
+        }
+
         #endregion
 
         #region Private/Protected Functions
@@ -183,7 +193,42 @@ namespace Utilities.FileFormats
         protected override VCard InternalLoad(string Location)
         {
             string Content = new FileInfo(Location).Read();
-            
+            foreach (Match TempMatch in Regex.Matches(Content,"(?<Title>[^:]+):(?<Value>.*)"))
+            {
+                if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "N")
+                {
+                    string[] Name = TempMatch.Groups["Value"].Value.Split(';');
+                    if (Name.Length > 0)
+                    {
+                        LastName = Name[0];
+                        if (Name.Length > 1)
+                            FirstName = Name[1];
+                        if (Name.Length > 2)
+                            MiddleName = Name[2];
+                        if (Name.Length > 3)
+                            Prefix = Name[3];
+                        if (Name.Length > 4)
+                            Suffix = Name[4];
+                    }
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "TEL;WORK")
+                {
+                    DirectDial = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "EMAIL;INTERNET")
+                {
+                    Email = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "TITLE")
+                {
+                    Title = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "ORG")
+                {
+                    Organization = TempMatch.Groups["Value"].Value;
+                }
+            }
+            return this;
         }
 
         #endregion

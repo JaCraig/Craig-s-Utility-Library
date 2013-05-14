@@ -30,6 +30,7 @@ using Utilities.IO.ExtensionMethods;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Globalization;
+using Utilities.FileFormats.BaseClasses;
 #endregion
 
 namespace Utilities.FileFormats.Delimited
@@ -37,7 +38,9 @@ namespace Utilities.FileFormats.Delimited
     /// <summary>
     /// Base classs for delimited files (CSV, etc.)
     /// </summary>
-    public abstract class Delimited
+    /// <typeparam name="T">Delimited</typeparam>
+    public abstract class Delimited<T> : StringFormatBase<T>
+        where T : Delimited<T>, new()
     {
         #region Constructor
 
@@ -98,6 +101,17 @@ namespace Utilities.FileFormats.Delimited
 
         #endregion
 
+        #region Protected Functions
+
+        protected override T InternalLoad(string Location)
+        {
+            string Content = new FileInfo(Location).Read();
+            Parse(Content);
+            return (T)this;
+        }
+
+        #endregion
+
         #region Public Functions
 
         /// <summary>
@@ -146,15 +160,6 @@ namespace Utilities.FileFormats.Delimited
             return ReturnValue;
         }
 
-        /// <summary>
-        /// Exports the delimited file to a specific location
-        /// </summary>
-        /// <param name="Location">Location to save the delimited file to</param>
-        public void ToFile(string Location)
-        {
-            new FileInfo(Location).Save(this.ToString());
-        }
-
         #endregion
 
         #region Public Overridden Function
@@ -169,6 +174,12 @@ namespace Utilities.FileFormats.Delimited
             Rows.ForEach<Row>(x => Builder.Append(x.ToString()));
             return Builder.ToString();
         }
+
+        #endregion
+
+        #region Operators
+
+
 
         #endregion
     }

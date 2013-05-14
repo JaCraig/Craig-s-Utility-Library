@@ -28,7 +28,7 @@ namespace Utilities.FileFormats.PipeDelimited
     /// <summary>
     /// Pipe delimited loader
     /// </summary>
-    public class PipeDelimited : Delimited.Delimited
+    public class PipeDelimited : Delimited.Delimited<PipeDelimited>
     {
         #region Constructor
 

@@ -114,6 +114,8 @@
     <Compile Include="FileFormats\Cisco\Text.cs" />
     <Compile Include="FileFormats\ExtensionMethods\ExtensionMethods.cs" />
     <Compile Include="FileFormats\GenericDelimited\GenericDelimited.cs" />
+    <Compile Include="FileFormats\BaseClasses\FormatBase.cs" />
+    <Compile Include="FileFormats\BaseClasses\StringFormatBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">

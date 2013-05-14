@@ -26,6 +26,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using Utilities.FileFormats.BaseClasses;
+using System.IO;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats
@@ -33,7 +36,7 @@ namespace Utilities.FileFormats
     /// <summary>
     /// Creates a VCalendar item
     /// </summary>
-    public class VCalendar
+    public class VCalendar : StringFormatBase<VCalendar>
     {
         #region Constructors
 
@@ -123,6 +126,31 @@ namespace Utilities.FileFormats
                 return false;
 
             return STRIP_HTML_REGEX.IsMatch(Input);
+        }
+
+        protected override VCalendar InternalLoad(string Location)
+        {
+            string Content = new FileInfo(Location).Read();
+            foreach (Match TempMatch in Regex.Matches(Content, "\r\n(?<Title>[^:]+):(?<Value>[^\r\n]*)\r\n"))
+            {
+                if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTSTART")
+                {
+                    StartTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.FormatString(@"####/##/## ##:##")));
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTEND")
+                {
+                    EndTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.FormatString(@"####/##/## ##:##")));
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "LOCATION")
+                {
+                    Location = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "SUMMARY;LANGUAGE=EN-US")
+                {
+                    Subject = TempMatch.Groups["Value"].Value;
+                }
+            }
+            return this;
         }
 
         #endregion
@@ -251,16 +279,25 @@ namespace Utilities.FileFormats
         /// Returns the text version of the appointment
         /// </summary>
         /// <returns>A text version of the appointement</returns>
-        public override string ToString()
+        public virtual string GetText()
         {
             return "Type:Single Meeting\r\n" +
-                "Organizer:" + Organizer.DisplayName + "\r\n" +
+                "Organizer:" + (Organizer == null ? "" : Organizer.DisplayName) + "\r\n" +
                 "Start Time:" + StartTime.ToLongDateString() + " " + StartTime.ToLongTimeString() + "\r\n" +
                 "End Time:" + EndTime.ToLongDateString() + " " + EndTime.ToLongTimeString() + "\r\n" +
                 "Time Zone:" + System.TimeZone.CurrentTimeZone.StandardName + "\r\n" +
                 "Location: " + Location + "\r\n\r\n" +
                 "*~*~*~*~*~*~*~*~*~*\r\n\r\n" +
                 Description;
+        }
+
+        /// <summary>
+        /// Returns the text version of the appointment
+        /// </summary>
+        /// <returns>A text version of the appointement</returns>
+        public override string ToString()
+        {
+            return GetICalendar();
         }
 
         #endregion

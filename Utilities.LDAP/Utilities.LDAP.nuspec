@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-LDAP</id>
-		<version>3.3.0225</version>
+		<version>3.3.0233</version>
 		<title>Craig's Utility Library LDAP Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

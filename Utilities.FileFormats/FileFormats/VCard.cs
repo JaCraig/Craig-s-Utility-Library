@@ -21,8 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities.FileFormats.BaseClasses;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats
@@ -30,7 +33,7 @@ namespace Utilities.FileFormats
     /// <summary>
     /// Class for creating vCards
     /// </summary>
-    public class VCard
+    public class VCard:StringFormatBase<VCard>
     {
         #region Constructor
 
@@ -161,9 +164,19 @@ namespace Utilities.FileFormats
             Builder.Append("</div>");
             return Builder.ToString();
         }
+
+        /// <summary>
+        /// Gets the VCard as a string
+        /// </summary>
+        /// <returns>VCard as a string</returns>
+        public override string ToString()
+        {
+            return GetVCard();
+        }
+
         #endregion
 
-        #region Private Functions
+        #region Private/Protected Functions
 
         private static string StripHTML(string HTML)
         {
@@ -176,6 +189,47 @@ namespace Utilities.FileFormats
         }
 
         private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
+
+        protected override VCard InternalLoad(string Location)
+        {
+            string Content = new FileInfo(Location).Read();
+            foreach (Match TempMatch in Regex.Matches(Content,"(?<Title>[^:]+):(?<Value>.*)"))
+            {
+                if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "N")
+                {
+                    string[] Name = TempMatch.Groups["Value"].Value.Split(';');
+                    if (Name.Length > 0)
+                    {
+                        LastName = Name[0];
+                        if (Name.Length > 1)
+                            FirstName = Name[1];
+                        if (Name.Length > 2)
+                            MiddleName = Name[2];
+                        if (Name.Length > 3)
+                            Prefix = Name[3];
+                        if (Name.Length > 4)
+                            Suffix = Name[4];
+                    }
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "TEL;WORK")
+                {
+                    DirectDial = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "EMAIL;INTERNET")
+                {
+                    Email = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "TITLE")
+                {
+                    Title = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "ORG")
+                {
+                    Organization = TempMatch.Groups["Value"].Value;
+                }
+            }
+            return this;
+        }
 
         #endregion
 

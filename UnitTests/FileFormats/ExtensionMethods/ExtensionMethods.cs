@@ -47,7 +47,7 @@ namespace UnitTests.FileFormats.ExtensionMethods
         {
             List<ExportClass> Temp = new ExportClass[] { new ExportClass { ID = 1, Value = "A" }, new ExportClass { ID = 2, Value = "B" }, new ExportClass { ID = 3, Value = "C" } }.ToList();
             Assert.DoesNotThrow(() => Temp.ToDelimitedFile());
-            Utilities.FileFormats.Delimited.Delimited TestObject = Temp.ToDelimitedFile();
+            Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = Temp.ToDelimitedFile();
             Assert.Equal(4, TestObject.NumberOfRows);
             Assert.Equal("\"ID\"\t\"Value\"\r\n\"1\"\t\"A\"\r\n\"2\"\t\"B\"\r\n\"3\"\t\"C\"\r\n", TestObject.ToString());
         }

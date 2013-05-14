@@ -86,7 +86,7 @@ namespace Utilities.FileFormats.ExtensionMethods
         /// <param name="List">The list to convert</param>
         /// <param name="Delimiter">Delimiter to use</param>
         /// <returns>The delimited file containing the list</returns>
-        public static Delimited.Delimited ToDelimitedFile<T>(this IEnumerable<T> List, string Delimiter = "\t")
+        public static GenericDelimited.GenericDelimited ToDelimitedFile<T>(this IEnumerable<T> List, string Delimiter = "\t")
         {
             return List.ToDataTable().ToDelimitedFile(Delimiter);
         }
@@ -97,7 +97,7 @@ namespace Utilities.FileFormats.ExtensionMethods
         /// <param name="Data">The DataTable to convert</param>
         /// <param name="Delimiter">Delimiter to use</param>
         /// <returns>The delimited file containing the list</returns>
-        public static Delimited.Delimited ToDelimitedFile(this DataTable Data, string Delimiter = "\t")
+        public static GenericDelimited.GenericDelimited ToDelimitedFile(this DataTable Data, string Delimiter = "\t")
         {
             GenericDelimited.GenericDelimited ReturnValue = new GenericDelimited.GenericDelimited(Delimiter);
             if (Data.IsNull())

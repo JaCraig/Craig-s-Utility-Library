@@ -25,6 +25,7 @@ using System.Text;
 using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using Utilities.FileFormats.BaseClasses;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -32,7 +33,7 @@ namespace Utilities.FileFormats.BlogML
     /// <summary>
     /// BlogML class
     /// </summary>
-    public class BlogML
+    public class BlogML:StringFormatBase<BlogML>
     {
         #region Constructor
 
@@ -52,40 +53,7 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Location">Location of the XML file</param>
         public BlogML(string Location)
         {
-            Location.ThrowIfNullOrEmpty("Location");
-            XmlDocument Document = new XmlDocument();
-            Document.Load(Location);
-            foreach (XmlNode Children in Document.ChildNodes)
-            {
-                if (Children.Name.Equals("blog", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    DateCreated = Children.Attributes["date-created"] != null ? DateTime.Parse(Children.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
-                    RootURL = Children.Attributes["root-url"] != null ? Children.Attributes["root-url"].Value : "";
-                    foreach (XmlElement Child in Children.ChildNodes)
-                    {
-                        if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Title = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("sub-title", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            SubTitle = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Authors = new Authors(Child);
-                        }
-                        else if (Child.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Categories = new Categories(Child);
-                        }
-                        else if (Child.Name.Equals("posts", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Posts = new Posts(Child);
-                        }
-                    }
-                }
-            }
+            InternalLoad(Location);
         }
 
         #endregion
@@ -130,6 +98,45 @@ namespace Utilities.FileFormats.BlogML
         #endregion
 
         #region Overridden Functions
+
+        protected override BlogML InternalLoad(string Location)
+        {
+            Location.ThrowIfNullOrEmpty("Location");
+            XmlDocument Document = new XmlDocument();
+            Document.Load(Location);
+            foreach (XmlNode Children in Document.ChildNodes)
+            {
+                if (Children.Name.Equals("blog", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    DateCreated = Children.Attributes["date-created"] != null ? DateTime.Parse(Children.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
+                    RootURL = Children.Attributes["root-url"] != null ? Children.Attributes["root-url"].Value : "";
+                    foreach (XmlElement Child in Children.ChildNodes)
+                    {
+                        if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Title = Child.InnerText;
+                        }
+                        else if (Child.Name.Equals("sub-title", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            SubTitle = Child.InnerText;
+                        }
+                        else if (Child.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Authors = new Authors(Child);
+                        }
+                        else if (Child.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Categories = new Categories(Child);
+                        }
+                        else if (Child.Name.Equals("posts", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Posts = new Posts(Child);
+                        }
+                    }
+                }
+            }
+            return this;
+        }
 
         /// <summary>
         /// Converts the object to a string

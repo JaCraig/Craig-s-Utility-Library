@@ -28,7 +28,7 @@ namespace Utilities.FileFormats.CSV
     /// <summary>
     /// CSV loader
     /// </summary>
-    public class CSV : Delimited.Delimited
+    public class CSV : Delimited.Delimited<CSV>
     {
         #region Constructor
 
