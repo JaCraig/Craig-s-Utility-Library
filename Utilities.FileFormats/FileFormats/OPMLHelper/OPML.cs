@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Text;
 using System.Xml;
+using Utilities.FileFormats.BaseClasses;
 #endregion
 
 namespace Utilities.FileFormats.OPMLHelper
@@ -30,9 +31,10 @@ namespace Utilities.FileFormats.OPMLHelper
     /// <summary>
     /// OPML class
     /// </summary>
-    public class OPML
+    public class OPML:StringFormatBase<OPML>
     {
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -49,25 +51,7 @@ namespace Utilities.FileFormats.OPMLHelper
         {
             if (string.IsNullOrEmpty(Location))
                 throw new ArgumentNullException("Location");
-            XmlDocument Document = new XmlDocument();
-            Document.Load(Location);
-            foreach (XmlNode Children in Document.ChildNodes)
-            {
-                if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    foreach (XmlElement Child in Children.ChildNodes)
-                    {
-                        if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Body = new Body(Child);
-                        }
-                        else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Head = new Head(Child);
-                        }
-                    }
-                }
-            }
+            InternalLoad(Location);
         }
 
         /// <summary>
@@ -79,23 +63,7 @@ namespace Utilities.FileFormats.OPMLHelper
         {
             if (Document == null)
                 throw new ArgumentNullException("Document");
-            foreach (XmlNode Children in Document.ChildNodes)
-            {
-                if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    foreach (XmlElement Child in Children.ChildNodes)
-                    {
-                        if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Body = new Body(Child);
-                        }
-                        else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Head = new Head(Child);
-                        }
-                    }
-                }
-            }
+            LoadDoc(Document);
         }
         #endregion
 
@@ -114,6 +82,35 @@ namespace Utilities.FileFormats.OPMLHelper
         #endregion
 
         #region Overridden Functions
+
+        protected override OPML InternalLoad(string Location)
+        {
+            XmlDocument Document = new XmlDocument();
+            Document.Load(Location);
+            LoadDoc(Document);
+            return this;
+        }
+
+        private void LoadDoc(XmlDocument Document)
+        {
+            foreach (XmlNode Children in Document.ChildNodes)
+            {
+                if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    foreach (XmlElement Child in Children.ChildNodes)
+                    {
+                        if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Body = new Body(Child);
+                        }
+                        else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            Head = new Head(Child);
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Converts the file to a string

@@ -131,7 +131,7 @@ namespace Utilities.FileFormats
         protected override VCalendar InternalLoad(string Location)
         {
             string Content = new FileInfo(Location).Read();
-            foreach (Match TempMatch in Regex.Matches(Content, "\r\n(?<Title>[^:]+):(?<Value>[^\r\n]*)\r\n"))
+            foreach (Match TempMatch in Regex.Matches(Content, "(?<Title>[^\r\n:]+):(?<Value>[^\r\n]*)"))
             {
                 if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTSTART")
                 {
@@ -143,11 +143,15 @@ namespace Utilities.FileFormats
                 }
                 else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "LOCATION")
                 {
-                    Location = TempMatch.Groups["Value"].Value;
+                    this.Location = TempMatch.Groups["Value"].Value;
                 }
                 else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "SUMMARY;LANGUAGE=EN-US")
                 {
                     Subject = TempMatch.Groups["Value"].Value;
+                }
+                else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DESCRIPTION" && string.IsNullOrEmpty(Description))
+                {
+                    Description = TempMatch.Groups["Value"].Value;
                 }
             }
             return this;
@@ -195,7 +199,7 @@ namespace Utilities.FileFormats
                       .AppendLine("CLASS:PUBLIC")
                       .AppendLineFormat("DTSTAMP:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
                       .AppendLineFormat("CREATED:{0}", DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
-                      .AppendLine(StripHTML(Description.Replace("<br />", "\\n")))
+                      .AppendLine(StripHTML(Description.Replace("<br />", System.Environment.NewLine)))
                       .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
                       .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture))
                       .AppendLineFormat("LOCATION:{0}", Location)

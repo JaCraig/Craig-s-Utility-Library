@@ -26,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities.FileFormats.BaseClasses;
 using Utilities.IO.ExtensionMethods;
 
 
@@ -36,7 +37,7 @@ namespace Utilities.FileFormats.INI
     /// <summary>
     /// Class for helping with INI files
     /// </summary>
-    public class INI
+    public class INI : StringFormatBase<INI>
     {
         #region Constructor
 
@@ -45,7 +46,7 @@ namespace Utilities.FileFormats.INI
         /// </summary>
         public INI()
         {
-            LoadFile();
+            InternalLoad("");
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace Utilities.FileFormats.INI
                 TempDictionary.Add(Key, Value);
                 FileContents.Add(Section, TempDictionary);
             }
-            WriteFile();
+            Save(_FileName);
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace Utilities.FileFormats.INI
         /// <param name="Section">Section</param>
         /// <param name="Key">Key</param>
         /// <param name="DefaultValue">Default value if it does not exist</param>
-        public virtual string ReadFromINI(string Section, string Key, string DefaultValue="")
+        public virtual string ReadFromINI(string Section, string Key, string DefaultValue = "")
         {
             if (FileContents.Keys.Contains(Section) && FileContents[Section].Keys.Contains(Key))
                 return FileContents[Section][Key];
@@ -137,7 +138,7 @@ namespace Utilities.FileFormats.INI
             if (FileContents.ContainsKey(Section))
             {
                 ReturnValue = FileContents.Remove(Section);
-                WriteFile();
+                Save(_FileName);
             }
             return ReturnValue;
         }
@@ -154,7 +155,7 @@ namespace Utilities.FileFormats.INI
             if (FileContents.ContainsKey(Section) && FileContents[Section].ContainsKey(Key))
             {
                 ReturnValue = FileContents[Section].Remove(Key);
-                WriteFile();
+                Save(_FileName);
             }
             return ReturnValue;
         }
@@ -178,26 +179,13 @@ namespace Utilities.FileFormats.INI
         #endregion
 
         #region Private Functions
-        /// <summary>
-        /// Writes the INI information to a file
-        /// </summary>
-        private void WriteFile()
-        {
-            if (string.IsNullOrEmpty(this.FileName))
-                return;
-            new FileInfo(FileName).Save(this.ToString());
-        }
 
-        /// <summary>
-        /// Loads an INI file
-        /// </summary>
-        private void LoadFile()
+        protected override INI InternalLoad(string Location)
         {
             FileContents = new Dictionary<string, Dictionary<string, string>>();
-            if (string.IsNullOrEmpty(this.FileName))
-                return;
-
-            string Contents = new FileInfo(FileName).Read();
+            if (string.IsNullOrEmpty(Location))
+                return this;
+            string Contents = new FileInfo(Location).Read();
             Regex Section = new Regex("[" + Regex.Escape(" ") + "\t]*" + Regex.Escape("[") + ".*" + Regex.Escape("]\r\n"));
             string[] Sections = Section.Split(Contents);
             MatchCollection SectionHeaders = Section.Matches(Contents);
@@ -215,21 +203,24 @@ namespace Utilities.FileFormats.INI
                 FileContents.Add(SectionHeader.Value.Replace("[", "").Replace("]\r\n", ""), SectionValues);
                 ++Counter;
             }
+            return this;
         }
 
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Name of the file
         /// </summary>
         public virtual string FileName
         {
             get { return _FileName; }
-            set { _FileName = value; LoadFile(); }
+            set { _FileName = value; InternalLoad(_FileName); }
         }
 
         private Dictionary<string, Dictionary<string, string>> FileContents { get; set; }
+
         private string _FileName = string.Empty;
 
         #endregion
