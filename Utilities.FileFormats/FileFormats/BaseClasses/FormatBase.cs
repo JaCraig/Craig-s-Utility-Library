@@ -34,7 +34,7 @@ namespace Utilities.FileFormats.BaseClasses
     /// <summary>
     /// Format base class
     /// </summary>
-    public abstract class FormatBase<FormatType,ContentType> : IComparable, IComparable<FormatType>
+    public abstract class FormatBase<FormatType,ContentType> : IComparable, IComparable<FormatType>,IEquatable<FormatType>
         where FormatType : FormatBase<FormatType, ContentType>, new()
     {
         #region Constructor
@@ -68,6 +68,13 @@ namespace Utilities.FileFormats.BaseClasses
         public abstract int CompareTo(FormatType other);
 
         /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="other">Other object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public abstract bool Equals(FormatType other);
+
+        /// <summary>
         /// Loads the object from the location specified
         /// </summary>
         /// <param name="Location">Location of the file to load</param>
@@ -90,6 +97,28 @@ namespace Utilities.FileFormats.BaseClasses
         /// <param name="Location">Location to save it to</param>
         /// <returns>This</returns>
         public abstract FormatType Save(string Location);
+
+        /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="obj">Other object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            FormatType TempItem = obj as FormatType;
+            if (TempItem == null)
+                return false;
+            return Equals(TempItem);
+        }
+
+        /// <summary>
+        /// Gets the hash code for the object
+        /// </summary>
+        /// <returns>The hash code for the object</returns>
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
 
         #endregion
     }

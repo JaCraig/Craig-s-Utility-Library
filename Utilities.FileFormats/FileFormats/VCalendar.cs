@@ -128,6 +128,11 @@ namespace Utilities.FileFormats
             return STRIP_HTML_REGEX.IsMatch(Input);
         }
 
+        /// <summary>
+        /// Internal load function
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>This</returns>
         protected override VCalendar InternalLoad(string Location)
         {
             string Content = new FileInfo(Location).Read();

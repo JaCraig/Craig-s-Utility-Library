@@ -72,6 +72,16 @@ namespace Utilities.FileFormats.BaseClasses
             return (FormatType)this;
         }
 
+        /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="other">Other object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public override bool Equals(FormatType other)
+        {
+            return ToString().Equals(other.ToString(), StringComparison.InvariantCultureIgnoreCase);
+        }
+
         #endregion
 
         #region Operators

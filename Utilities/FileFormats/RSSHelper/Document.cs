@@ -27,6 +27,9 @@ using System.Xml;
 using System.Diagnostics.CodeAnalysis;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
+using Utilities.FileFormats.BaseClasses;
+using System.IO;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -34,7 +37,7 @@ namespace Utilities.FileFormats.RSSHelper
     /// <summary>
     /// RSS document class
     /// </summary>
-    public class Document
+    public class Document : StringFormatBase<Document>
     {
         #region Constructors
 
@@ -53,9 +56,7 @@ namespace Utilities.FileFormats.RSSHelper
         {
             if (string.IsNullOrEmpty(Location))
                 throw new ArgumentNullException("Location");
-            XmlDocument Document = new XmlDocument();
-            Document.Load(Location);
-            Load(Document);
+            InternalLoad(Location);
         }
 
         /// <summary>
@@ -166,6 +167,19 @@ namespace Utilities.FileFormats.RSSHelper
                     Channels.FirstOrDefault().Items = Items;
                 }
             }
+        }
+
+        /// <summary>
+        /// Internal load function
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>This</returns>
+        protected override Document InternalLoad(string Location)
+        {
+            XmlDocument Document = new XmlDocument();
+            Document.Load(Location);
+            Load(Document);
+            return this;
         }
 
         #endregion

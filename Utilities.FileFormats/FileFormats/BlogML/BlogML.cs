@@ -99,6 +99,11 @@ namespace Utilities.FileFormats.BlogML
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Internal load function
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>This</returns>
         protected override BlogML InternalLoad(string Location)
         {
             Location.ThrowIfNullOrEmpty("Location");

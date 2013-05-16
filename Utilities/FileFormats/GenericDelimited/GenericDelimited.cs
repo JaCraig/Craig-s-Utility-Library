@@ -35,7 +35,6 @@ namespace Utilities.FileFormats.GenericDelimited
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Delimiter">Delimiter used to parse the file</param>
         public GenericDelimited() : base() { this.Delimiter_ = ","; }
 
         /// <summary>

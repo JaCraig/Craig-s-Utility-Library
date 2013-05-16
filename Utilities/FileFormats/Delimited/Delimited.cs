@@ -103,6 +103,11 @@ namespace Utilities.FileFormats.Delimited
 
         #region Protected Functions
 
+        /// <summary>
+        /// Internal load function
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>This</returns>
         protected override T InternalLoad(string Location)
         {
             string Content = new FileInfo(Location).Read();

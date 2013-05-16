@@ -190,6 +190,11 @@ namespace Utilities.FileFormats
 
         private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Internal load function
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>This</returns>
         protected override VCard InternalLoad(string Location)
         {
             string Content = new FileInfo(Location).Read();

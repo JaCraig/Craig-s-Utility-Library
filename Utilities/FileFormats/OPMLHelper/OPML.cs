@@ -83,6 +83,11 @@ namespace Utilities.FileFormats.OPMLHelper
 
         #region Overridden Functions
 
+        /// <summary>
+        /// Internal load function
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>This</returns>
         protected override OPML InternalLoad(string Location)
         {
             XmlDocument Document = new XmlDocument();

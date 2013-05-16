@@ -180,6 +180,11 @@ namespace Utilities.FileFormats.INI
 
         #region Private Functions
 
+        /// <summary>
+        /// Internal load function
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>This</returns>
         protected override INI InternalLoad(string Location)
         {
             FileContents = new Dictionary<string, Dictionary<string, string>>();

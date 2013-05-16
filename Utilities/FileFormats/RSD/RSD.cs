@@ -21,8 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.IO;
 using System.Text;
 using System.Xml;
+using Utilities.FileFormats.BaseClasses;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.RSD
@@ -30,7 +33,7 @@ namespace Utilities.FileFormats.RSD
     /// <summary>
     /// Basic helper for RSD
     /// </summary>
-    public class RSD
+    public class RSD : StringFormatBase<RSD>
     {
         #region Constructor
 
@@ -50,8 +53,51 @@ namespace Utilities.FileFormats.RSD
         {
             if (string.IsNullOrEmpty(FileContent))
                 throw new ArgumentNullException("FileContent");
+            LoadContent(FileContent);
+        }
+        #endregion
+
+        #region Public Properties
+        /// <summary>
+        /// Engine name
+        /// </summary>
+        public virtual string EngineName { get; set; }
+
+        /// <summary>
+        /// Link to the engine
+        /// </summary>
+        public virtual string EngineLink { get; set; }
+
+        /// <summary>
+        /// Link to the home page
+        /// </summary>
+        public virtual string HomePageLink { get; set; }
+
+        /// <summary>
+        /// API definitions
+        /// </summary>
+        public virtual APIs APIs { get; set; }
+
+        #endregion
+
+        #region Public Overridden Functions
+
+        /// <summary>
+        /// Internal load function
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>This</returns>
+        protected override RSD InternalLoad(string Location)
+        {
+            string Content = new FileInfo(Location).Read();
+            LoadContent(Content);
+            return this;
+        }
+
+        private void LoadContent(string Content)
+        {
             XmlDocument Document = new XmlDocument();
-            Document.LoadXml(FileContent);
+            Document.LoadXml(Content);
             foreach (XmlNode Children in Document.ChildNodes)
             {
                 if (Children.Name.Equals("RSD", StringComparison.CurrentCultureIgnoreCase))
@@ -84,32 +130,6 @@ namespace Utilities.FileFormats.RSD
                 }
             }
         }
-        #endregion
-
-        #region Public Properties
-        /// <summary>
-        /// Engine name
-        /// </summary>
-        public virtual string EngineName { get; set; }
-
-        /// <summary>
-        /// Link to the engine
-        /// </summary>
-        public virtual string EngineLink { get; set; }
-
-        /// <summary>
-        /// Link to the home page
-        /// </summary>
-        public virtual string HomePageLink { get; set; }
-
-        /// <summary>
-        /// API definitions
-        /// </summary>
-        public virtual APIs APIs { get; set; }
-
-        #endregion
-
-        #region Public Overridden Functions
 
         /// <summary>
         /// Outputs the RSD file
