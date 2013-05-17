@@ -46,7 +46,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static ICollection<T> Add<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Collection.ThrowIfNull("Collection");
-            if (Items.IsNull())
+            if (Items==null)
                 return Collection;
             Items.ForEach(x => Collection.Add(x));
             return Collection;
@@ -62,7 +62,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static ICollection<T> Add<T>(this ICollection<T> Collection, params T[] Items)
         {
             Collection.ThrowIfNull("Collection");
-            if (Items.IsNull())
+            if (Items==null)
                 return Collection;
             Items.ForEach(x => Collection.Add(x));
             return Collection;
@@ -186,7 +186,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static ICollection<T> Remove<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Collection.ThrowIfNull("Collection");
-            if (Items.IsNull())
+            if (Items==null)
                 return Collection;
             return Collection.Where(x => !Items.Contains(x)).ToList();
         }

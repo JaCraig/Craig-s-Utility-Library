@@ -131,14 +131,14 @@ namespace Utilities.Web.Google.StaticMaps
         public override string ToString()
         {
             string Result = "sensor=" + Sensor.ToString(CultureInfo.InvariantCulture).ToLower(CultureInfo.InvariantCulture).URLEncode()
-                + (Center.IsNull() ? "" : ("&center=" + Center.ToString().URLEncode()))
+                + (Center==null ? "" : ("&center=" + Center.ToString().URLEncode()))
                 + "&zoom=" + Zoom.ToString(CultureInfo.InvariantCulture).URLEncode()
                 + "&size=" + (Width.ToString(CultureInfo.InvariantCulture) + "x" + Height.ToString(CultureInfo.InvariantCulture)).URLEncode()
                 + "&scale=" + Scale.ToString(CultureInfo.InvariantCulture).URLEncode()
                 + "&format=" + Format.ToString().ToLower(CultureInfo.InvariantCulture).URLEncode()
                 + "&maptype=" + MapType.ToString().ToLower(CultureInfo.InvariantCulture).URLEncode()
-                + (Language.IsNullOrEmpty() ? "" : "&language=" + Language.URLEncode())
-                + (Region.IsNullOrEmpty() ? "" : "&region=" + Region.URLEncode());
+                + (string.IsNullOrEmpty(Language) ? "" : "&language=" + Language.URLEncode())
+                + (string.IsNullOrEmpty(Region) ? "" : "&region=" + Region.URLEncode());
             foreach (Markers Marker in Markers)
                 Result += "&" + Marker.ToString();
             Result += base.ToString();

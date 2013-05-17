@@ -52,7 +52,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The items between the start and end index</returns>
         public static IEnumerable<T> ElementsBetween<T>(this IEnumerable<T> List, int Start, int End)
         {
-            if (List.IsNull())
+            if (List==null)
                 return List;
             if (End > List.Count())
                 End = List.Count();
@@ -333,10 +333,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>An IEnumerable with the default values removed</returns>
         public static IEnumerable<T> RemoveDefaults<T>(this IEnumerable<T> Value, IEqualityComparer<T> EqualityComparer = null)
         {
-            if (Value.IsNull())
+            if (Value==null)
                 return Value;
             EqualityComparer=EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>());
-            return Value.Where(x => !x.IsDefault(EqualityComparer));
+            return Value.Where(x => !EqualityComparer.Equals(x, default(T)));
         }
 
         #endregion
@@ -461,7 +461,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             DataTable ReturnValue = new DataTable();
             ReturnValue.Locale = CultureInfo.CurrentCulture;
-            if (List.IsNullOrEmpty())
+            if (List==null||List.Count()==0)
                 return ReturnValue;
             PropertyInfo[] Properties = typeof(T).GetProperties();
             if(Columns.Length==0)

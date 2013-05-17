@@ -45,9 +45,9 @@ namespace Utilities.IoC
         /// </summary>
         public Manager()
         {
-            if (ProviderManager.IsNull())
+            if (ProviderManager==null)
                 ProviderManager = new ProviderManager();
-            if (MappingManager.IsNull())
+            if (MappingManager==null)
                 MappingManager = new MappingManager(ProviderManager);
         }
 
@@ -115,7 +115,7 @@ namespace Utilities.IoC
         public static object Get(Type ServiceType)
         {
             IMapping Mapping = MappingManager.GetMapping(ServiceType);
-            if (Mapping.IsNull())
+            if (Mapping==null)
                 throw new ArgumentException("ServiceType not found in mappings");
             return Mapping.Implementation.Create();
         }
@@ -130,7 +130,7 @@ namespace Utilities.IoC
         public object Get(Type ServiceType, Type AttributeType)
         {
             IMapping Mapping = MappingManager.GetMapping(ServiceType, AttributeType);
-            if (Mapping.IsNull())
+            if (Mapping==null)
                 throw new ArgumentException("ServiceType not found in mappings");
             return Mapping.Implementation.Create();
         }

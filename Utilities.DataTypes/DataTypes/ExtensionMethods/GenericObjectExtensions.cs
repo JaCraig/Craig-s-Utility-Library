@@ -52,7 +52,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static T Chain<T>(this T Object, Action<T> Action, T DefaultObjectValue = default(T))
         {
             Object = Object.NullCheck(DefaultObjectValue);
-            if (Action.IsNull() || Object.IsNull())
+            if (Action==null || Object==null)
                 return Object;
             Action(Object);
             return Object;
@@ -75,7 +75,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static R Chain<T, R>(this T Object, Func<T, R> Function, R DefaultReturnValue = default(R), T DefaultObjectValue = default(T))
         {
             Object = Object.NullCheck(DefaultObjectValue);
-            if (Function.IsNull() || Object.IsNull())
+            if (Function==null || Object==null)
                 return DefaultReturnValue;
             return Function(Object).NullCheck(DefaultReturnValue);
         }
@@ -139,7 +139,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 Thread.Sleep(RetryDelay);
                 --Attempts;
             }
-            if (Holder.IsNotNull())
+            if (Holder!=null)
                 throw Holder;
         }
 
@@ -158,7 +158,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original value if predicate is true, the default value otherwise</returns>
         public static T If<T>(this T Object, Predicate<T> Predicate, T DefaultValue = default(T))
         {
-            if (Predicate.IsNull())
+            if (Predicate==null)
                 return DefaultValue;
             return Predicate(Object) ? Object : DefaultValue;
         }
@@ -268,7 +268,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original value if predicate is false, the default value otherwise</returns>
         public static T NotIf<T>(this T Object, Predicate<T> Predicate, T DefaultValue = default(T))
         {
-            if (Predicate.IsNull())
+            if (Predicate==null)
                 return DefaultValue;
             return Predicate(Object) ? DefaultValue : Object;
         }
@@ -286,7 +286,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The default value if it is null, the object otherwise</returns>
         public static T NullCheck<T>(this T Object, T DefaultValue = default(T))
         {
-            return Object.IsNull() ? DefaultValue : Object;
+            return Object==null||Convert.IsDBNull(Object) ? DefaultValue : Object;
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The default value if it is null, the object otherwise</returns>
         public static T NullCheck<T>(this T Object, Func<T> DefaultValue)
         {
-            return Object.IsNull() ? DefaultValue() : Object;
+            return Object == null || Convert.IsDBNull(Object) ? DefaultValue() : Object;
         }
 
         #endregion
@@ -360,7 +360,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Returns Item</returns>
         public static T ThrowIfDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
         {
-            return Item.ThrowIf(x => x.IsDefault(EqualityComparer), Exception);
+            return Item.ThrowIf(x => EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>()).Equals(x,default(T)), Exception);
         }
 
         #endregion
@@ -388,7 +388,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Returns Item</returns>
         public static T ThrowIfNotDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
         {
-            return Item.ThrowIf(x => x.IsNotDefault(EqualityComparer), Exception);
+            return Item.ThrowIf(x => !EqualityComparer.NullCheck(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
         }
 
         #endregion
@@ -431,7 +431,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Returns Item</returns>
         public static T ThrowIfNotNull<T>(this T Item, Exception Exception)
         {
-            return Item.ThrowIf(x => x.IsNotNull(), Exception);
+            return Item.ThrowIf(x => x!=null||!Convert.IsDBNull(x), Exception);
         }
 
         #endregion
@@ -457,7 +457,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Returns Item</returns>
         public static T ThrowIfNull<T>(this T Item, Exception Exception)
         {
-            return Item.ThrowIf(x => x.IsNull(), Exception);
+            return Item.ThrowIf(x => x==null||Convert.IsDBNull(x), Exception);
         }
 
         #endregion
@@ -485,7 +485,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Returns Item</returns>
         public static IEnumerable<T> ThrowIfNotNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
         {
-            return Item.ThrowIf(x => x.IsNotNullOrEmpty(), Exception);
+            return Item.ThrowIf(x => x != null && x.Count() > 0, Exception);
         }
 
         #endregion
@@ -513,7 +513,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>Returns Item</returns>
         public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
         {
-            return Item.ThrowIf(x => x.IsNullOrEmpty(), Exception);
+            return Item.ThrowIf(x => x==null||x.Count()==0, Exception);
         }
 
         #endregion

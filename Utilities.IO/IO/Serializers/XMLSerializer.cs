@@ -84,7 +84,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The resulting object</returns>
         public object Deserialize(string Data, Type ObjectType)
         {
-            if (Data.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Data))
                 return null;
             using (MemoryStream Stream = new MemoryStream(EncodingUsing.GetBytes(Data)))
             {

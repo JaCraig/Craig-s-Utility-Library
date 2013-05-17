@@ -48,7 +48,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </example>
         public static Array Clear(this Array Array)
         {
-            if (Array.IsNull())
+            if (Array==null)
                 return null;
             System.Array.Clear(Array, 0, Array.Length);
             return Array;
@@ -92,20 +92,20 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// </example>
         public static ArrayType[] Combine<ArrayType>(this ArrayType[] Array1, params ArrayType[][] Array2)
         {
-            if (Array1.IsNull() && Array2.IsNull())
+            if (Array1==null && Array2==null)
                 return null;
-            int ResultLength = (Array1.IsNull() ? 0 : Array1.Length);
-            if (Array2.IsNotNull())
+            int ResultLength = (Array1==null ? 0 : Array1.Length);
+            if (Array2!=null)
                 foreach (ArrayType[] Array in Array2)
-                    ResultLength += (Array.IsNull() ? 0 : Array.Length);
+                    ResultLength += (Array==null ? 0 : Array.Length);
             ArrayType[] ReturnValue = new ArrayType[ResultLength];
             int StartPosition = 0;
-            if (Array1.IsNotNull())
+            if (Array1!=null)
             {
                 Array.Copy(Array1, ReturnValue, Array1.Length);
                 StartPosition = Array1.Length;
             }
-            if (Array2.IsNotNull())
+            if (Array2!=null)
             {
                 foreach (ArrayType[] TempArray in Array2)
                 {

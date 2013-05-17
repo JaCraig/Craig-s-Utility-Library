@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes.ExtensionMethods;
@@ -63,7 +65,7 @@ namespace Utilities.Media.Image
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public virtual Bitmap Apply(Bitmap OriginalImage)
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
             {

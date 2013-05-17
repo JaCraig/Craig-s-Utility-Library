@@ -77,7 +77,7 @@ namespace Utilities.IoC.Providers.Implementations
 
         private void SetupMethods(object Instance)
         {
-            if (Instance.IsNull())
+            if (Instance==null)
                 return;
             foreach (MethodInfo Method in Instance.GetType().GetMethods().Where(x => IsInjectable(x)))
                 Method.Invoke(Instance, Method.GetParameters().ForEach(x => CreateInstance(x)).ToArray());
@@ -89,7 +89,7 @@ namespace Utilities.IoC.Providers.Implementations
 
         private void SetupProperties(object Instance)
         {
-            if (Instance.IsNull())
+            if (Instance==null)
                 return;
             Instance.GetType()
                 .GetProperties()
@@ -122,7 +122,7 @@ namespace Utilities.IoC.Providers.Implementations
 
         private object CreateInstance(ConstructorInfo Constructor)
         {
-            if (Constructor.IsNull() || MappingManager.IsNull())
+            if (Constructor==null || MappingManager==null)
                 return null;
             List<object> ParameterValues = new List<object>();
             Constructor.GetParameters().ForEach<ParameterInfo>(x => ParameterValues.Add(CreateInstance(x)));
@@ -146,7 +146,7 @@ namespace Utilities.IoC.Providers.Implementations
                 foreach (Attribute Attribute in Attributes)
                 {
                     object TempObject = GetObject(Type, Attribute.GetType());
-                    if (!TempObject.IsNull())
+                    if (TempObject != null)
                         return TempObject;
                 }
             }
@@ -160,13 +160,13 @@ namespace Utilities.IoC.Providers.Implementations
         private object GetObject(Type Type)
         {
             IMapping Mapping = MappingManager.GetMapping(Type);
-            return Mapping.IsNull() ? null : Mapping.Implementation.Create();
+            return Mapping==null ? null : Mapping.Implementation.Create();
         }
 
         private object GetObject(Type Type, Type AttributeType)
         {
             IMapping Mapping = MappingManager.GetMapping(Type, AttributeType);
-            return Mapping.IsNull() ? null : Mapping.Implementation.Create();
+            return Mapping==null ? null : Mapping.Implementation.Create();
         }
 
         #endregion

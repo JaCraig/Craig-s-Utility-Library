@@ -70,7 +70,7 @@ namespace Utilities.Random.StringGenerators
         /// <returns>A randomly generated object of the specified type</returns>
         public string Next(System.Random Rand)
         {
-            if (Pattern.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Pattern))
                 return "";
             StringBuilder TempBuilder = new StringBuilder();
             for (int x = 0; x < Pattern.Length; ++x)

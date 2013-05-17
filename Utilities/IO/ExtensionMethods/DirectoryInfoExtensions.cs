@@ -27,6 +27,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.ExtensionMethods.Enums;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.ExtensionMethods
@@ -50,9 +51,9 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The DirectoryInfo for the destination info</returns>
         public static DirectoryInfo CopyTo(this DirectoryInfo Source, string Destination, bool Recursive = true, CopyOptions Options = CopyOptions.CopyAlways)
         {
-            Source.ThrowIfNull("Source");
-            Source.ThrowIfNot(x => x.Exists, new DirectoryNotFoundException("Source directory " + Source.FullName + " not found."));
-            Destination.ThrowIfNullOrEmpty("Destination");
+            Contract.Requires<ArgumentNullException>(Source!=null, "Source");
+            Contract.Requires<DirectoryNotFoundException>(Source.Exists, "Source directory not found.");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Destination), "Destination");
             DirectoryInfo DestinationInfo = new DirectoryInfo(Destination);
             DestinationInfo.Create();
             foreach (FileInfo TempFile in Source.EnumerateFiles())

@@ -52,7 +52,7 @@ namespace Utilities.IO.ExtensionMethods
         {
             Object.ThrowIfNull("Object");
             string Data = Serializer.NullCheck(()=>new JSONSerializer(EncodingUsing)).Serialize(Object);
-            if (!FileLocation.IsNullOrEmpty())
+            if (!string.IsNullOrEmpty(FileLocation))
                 FileLocation.Save(Data);
             return Data;
         }
@@ -72,7 +72,7 @@ namespace Utilities.IO.ExtensionMethods
         {
             Object.ThrowIfNull("Object");
             byte[] Data = Serializer.NullCheck(()=>new BinarySerializer()).Serialize(Object);
-            if (!FileLocation.IsNullOrEmpty())
+            if (!string.IsNullOrEmpty(FileLocation))
                 FileLocation.Save(Data);
             return Data;
         }
@@ -91,7 +91,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static R Deserialize<R>(this string Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data.IsNullOrEmpty()) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer, EncodingUsing);
+            return string.IsNullOrEmpty(Data) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer, EncodingUsing);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static R Deserialize<R>(this byte[] Data, ISerializer<byte[]> Serializer = null)
         {
-            return (Data.IsNull()) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer);
+            return (Data==null) ? default(R) : (R)Data.Deserialize(typeof(R), Serializer);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static R Deserialize<R>(this FileInfo Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data.IsNull() || !Data.Exists) ? default(R) : (R)Data.Read().Deserialize(typeof(R), Serializer, EncodingUsing);
+            return (Data==null || !Data.Exists) ? default(R) : (R)Data.Read().Deserialize(typeof(R), Serializer, EncodingUsing);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static object Deserialize(this FileInfo Data,Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data.IsNull() || !Data.Exists) ? null : Data.Read().Deserialize(ObjectType, Serializer, EncodingUsing);
+            return (Data==null || !Data.Exists) ? null : Data.Read().Deserialize(ObjectType, Serializer, EncodingUsing);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static object DeserializeBinary(this FileInfo Data, Type ObjectType, ISerializer<byte[]> Serializer = null)
         {
-            return (Data.IsNull() || !Data.Exists) ? null : Data.ReadBinary().Deserialize(ObjectType, Serializer);
+            return (Data==null || !Data.Exists) ? null : Data.ReadBinary().Deserialize(ObjectType, Serializer);
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static R DeserializeBinary<R>(this FileInfo Data, ISerializer<byte[]> Serializer = null)
         {
-            return (Data.IsNull() || !Data.Exists) ? default(R) : (R)Data.ReadBinary().Deserialize(typeof(R), Serializer);
+            return (Data==null || !Data.Exists) ? default(R) : (R)Data.ReadBinary().Deserialize(typeof(R), Serializer);
         }
 
         #endregion

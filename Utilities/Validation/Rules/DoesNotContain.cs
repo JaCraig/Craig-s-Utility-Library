@@ -44,7 +44,7 @@ namespace Utilities.Validation.Rules
         /// <param name="Value">Value to check for</param>
         /// <param name="ErrorMessage">Error message</param>
         public DoesNotContainAttribute(object Value, string ErrorMessage = "")
-            : base(ErrorMessage.IsNullOrEmpty() ? "{0} contains {1}" : ErrorMessage)
+            : base(string.IsNullOrEmpty(ErrorMessage) ? "{0} contains {1}" : ErrorMessage)
         {
             this.Value = (IComparable)Value;
         }
@@ -80,7 +80,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value.IsNull())
+            if (value==null)
                 return ValidationResult.Success;
             GenericEqualityComparer<IComparable> Comparer = new GenericEqualityComparer<IComparable>();
             IEnumerable ValueList = value as IEnumerable;

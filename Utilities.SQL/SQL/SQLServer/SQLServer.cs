@@ -754,8 +754,8 @@ namespace Utilities.SQL.SQLServer
                         bool Nullable = Helper.GetParameter("IS NULLABLE", false);
                         bool Identity = Helper.GetParameter("IS IDENTITY", false);
                         bool Index = Helper.GetParameter("IS INDEX", 0) != 0;
-                        bool PrimaryKey = Helper.GetParameter("PRIMARY KEY", "").IsNullOrEmpty() ? false : true;
-                        bool Unique = Helper.GetParameter("UNIQUE", "").IsNullOrEmpty() ? false : true;
+                        bool PrimaryKey = string.IsNullOrEmpty(Helper.GetParameter("PRIMARY KEY", "")) ? false : true;
+                        bool Unique = string.IsNullOrEmpty(Helper.GetParameter("UNIQUE", "")) ? false : true;
                         string ForeignKeyTable = Helper.GetParameter("FOREIGN KEY TABLE", "");
                         string ForeignKeyColumn = Helper.GetParameter("FOREIGN KEY COLUMN", "");
                         string DefaultValue = Helper.GetParameter("DEFAULT VALUE", "");

@@ -92,7 +92,7 @@ namespace Utilities.Configuration
         /// </summary>
         public void Load()
         {
-            if (ConfigFileLocation.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(ConfigFileLocation))
                 return;
             string FileContent = new FileInfo(ConfigFileLocation).Read();
             if (string.IsNullOrEmpty(FileContent))
@@ -109,7 +109,7 @@ namespace Utilities.Configuration
         /// </summary>
         public void Save()
         {
-            if (ConfigFileLocation.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(ConfigFileLocation))
                 return;
             Encrypt();
             new FileInfo(ConfigFileLocation).Save(ObjectToString(this));
@@ -122,7 +122,7 @@ namespace Utilities.Configuration
 
         private void LoadProperties(ConfigClassType Temp)
         {
-            if (Temp.IsNull())
+            if (Temp==null)
                 return;
             foreach (PropertyInfo Property in Temp.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead))
                 this.SetProperty(Property, Temp.GetProperty(Property));
@@ -130,7 +130,7 @@ namespace Utilities.Configuration
 
         private void Encrypt()
         {
-            if (EncryptionPassword.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(EncryptionPassword))
                 return;
             foreach (PropertyInfo Property in this.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead && x.PropertyType == typeof(string)))
                 this.SetProperty(Property, ((string)this.GetProperty(Property)).Encrypt(EncryptionPassword));
@@ -138,7 +138,7 @@ namespace Utilities.Configuration
 
         private void Decrypt()
         {
-            if (EncryptionPassword.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(EncryptionPassword))
                 return;
             foreach (PropertyInfo Property in this.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead && x.PropertyType == typeof(string)))
                 this.SetProperty(Property, ((string)this.GetProperty(Property)).Decrypt(EncryptionPassword));

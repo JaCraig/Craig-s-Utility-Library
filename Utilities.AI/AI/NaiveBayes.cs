@@ -167,7 +167,7 @@ namespace Utilities.AI
         public virtual double CalculateProbabilityOfTokens(IEnumerable<T> Items)
         {
             Items.ThrowIfNull("Items");
-            if (Probabilities.IsNull())
+            if (Probabilities==null)
                 throw new InvalidOperationException("Probabilities has not been initialized");
             SortedList<string, double> SortedProbabilities = new SortedList<string, double>();
             int x = 0;

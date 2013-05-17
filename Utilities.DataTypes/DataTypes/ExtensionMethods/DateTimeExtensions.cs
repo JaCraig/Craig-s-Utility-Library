@@ -60,7 +60,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The total age in years</returns>
         public static int Age(this DateTime Date, DateTime CalculateFrom = default(DateTime))
         {
-            if (CalculateFrom.IsDefault())
+            if (CalculateFrom==default(DateTime))
                 CalculateFrom = DateTime.Now;
             return (CalculateFrom-Date).Years();
         }
@@ -182,7 +182,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static DateTime FirstDayOfQuarter(this DateTime Date, DateTime Quarter1Start = default(DateTime))
         {
             Date.ThrowIfNull("Date");
-            if (Quarter1Start.IsDefault())
+            if (Quarter1Start==default(DateTime))
                 Quarter1Start = Date.FirstDayOfYear();
             if (Date.Between(Quarter1Start, Quarter1Start.AddMonths(3).AddDays(-1).EndOfDay()))
                 return Quarter1Start.Date;
@@ -350,7 +350,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static DateTime LastDayOfQuarter(this DateTime Date, DateTime Quarter1Start = default(DateTime))
         {
             Date.ThrowIfNull("Date");
-            if (Quarter1Start.IsDefault())
+            if (Quarter1Start==default(DateTime))
                 Quarter1Start = Date.FirstDayOfYear();
             if (Date.Between(Quarter1Start, Quarter1Start.AddMonths(3).AddDays(-1).EndOfDay()))
                 return Quarter1Start.AddMonths(3).AddDays(-1).Date;

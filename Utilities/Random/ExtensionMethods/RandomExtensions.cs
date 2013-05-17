@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
@@ -50,11 +51,12 @@ namespace Utilities.Random.ExtensionMethods
         /// <returns>The randomly generated value</returns>
         public static T Next<T>(this System.Random Random, IGenerator<T> Generator = null)
         {
-            Random.ThrowIfNull("Random");
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
             if (Generator == null)
             {
-                Generators.ThrowIfNot(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
+                if (!Generators.ContainsKey(typeof(T)))
+                    throw new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator.");
                 Generator = (IGenerator<T>)Generators[typeof(T)];
             }
             return Generator.Next(Random);
@@ -70,7 +72,7 @@ namespace Utilities.Random.ExtensionMethods
         public static T NextClass<T>(this System.Random Random, IGenerator<T> Generator = null)
             where T : class,new()
         {
-            Random.ThrowIfNull("Random");
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
             if (Generator == null)
             {
@@ -90,11 +92,12 @@ namespace Utilities.Random.ExtensionMethods
         /// <returns>The randomly generated value</returns>
         public static T Next<T>(this System.Random Random, T Min, T Max, IGenerator<T> Generator = null)
         {
-            Random.ThrowIfNull("Random");
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
             if (Generator == null)
             {
-                Generators.ThrowIfNot(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
+                if (!Generators.ContainsKey(typeof(T)))
+                    throw new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator.");
                 Generator = (IGenerator<T>)Generators[typeof(T)];
             }
             return Generator.Next(Random, Min, Max);
@@ -110,11 +113,12 @@ namespace Utilities.Random.ExtensionMethods
         /// <returns>The randomly generated value</returns>
         public static IEnumerable<T> Next<T>(this System.Random Random, int Amount, IGenerator<T> Generator = null)
         {
-            Random.ThrowIfNull("Random");
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
             if (Generator == null)
             {
-                Generators.ThrowIfNot(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
+                if (!Generators.ContainsKey(typeof(T)))
+                    throw new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator.");
                 Generator = (IGenerator<T>)Generators[typeof(T)];
             }
             return Amount.Times(x => Generator.Next(Random));
@@ -131,7 +135,7 @@ namespace Utilities.Random.ExtensionMethods
         public static IEnumerable<T> NextClass<T>(this System.Random Random, int Amount, IGenerator<T> Generator = null)
             where T : class,new()
         {
-            Random.ThrowIfNull("Random");
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
             if (Generator == null)
             {
@@ -152,11 +156,12 @@ namespace Utilities.Random.ExtensionMethods
         /// <returns>The randomly generated value</returns>
         public static IEnumerable<T> Next<T>(this System.Random Random, int Amount, T Min, T Max, IGenerator<T> Generator = null)
         {
-            Random.ThrowIfNull("Random");
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
             if (Generator == null)
             {
-                Generators.ThrowIfNot(x => x.ContainsKey(typeof(T)), new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator."));
+                if (!Generators.ContainsKey(typeof(T)))
+                    throw new ArgumentOutOfRangeException("The type specified, " + typeof(T).Name + ", does not have a default generator.");
                 Generator = (IGenerator<T>)Generators[typeof(T)];
             }
             return Amount.Times(x => Generator.Next(Random, Min, Max));
@@ -195,7 +200,7 @@ namespace Utilities.Random.ExtensionMethods
         /// <returns>The randomly generated value</returns>
         public static T NextEnum<T>(this System.Random Random, IGenerator<T> Generator = null)
         {
-            Random.ThrowIfNull("Random");
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
             Generator = Generator.NullCheck(new EnumGenerator<T>());
             return Generator.Next(Random);
@@ -211,7 +216,7 @@ namespace Utilities.Random.ExtensionMethods
         /// <returns>The randomly generated value</returns>
         public static IEnumerable<T> NextEnum<T>(this System.Random Random, int Amount, IGenerator<T> Generator = null)
         {
-            Random.ThrowIfNull("Random");
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
             Generator = Generator.NullCheck(new EnumGenerator<T>());
             return Amount.Times(x => Generator.Next(Random));
@@ -278,7 +283,7 @@ namespace Utilities.Random.ExtensionMethods
         /// <returns>The shuffled list</returns>
         public static IEnumerable<T> Shuffle<T>(this System.Random Random, IEnumerable<T> List)
         {
-            if (List.IsNullOrEmpty())
+            if (List==null||List.Count()==0)
                 return List;
             return List.OrderBy(x => Random.Next());
         }

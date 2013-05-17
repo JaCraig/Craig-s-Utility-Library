@@ -71,7 +71,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The equivalent byte array in a base 64 string</returns>
         public static string ToBase64String(this byte[] Input)
         {
-            return Input.IsNull() ? "" : Convert.ToBase64String(Input);
+            return Input==null ? "" : Convert.ToBase64String(Input);
         }
 
         #endregion
@@ -88,7 +88,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>string of the byte array</returns>
         public static string ToEncodedString(this byte[] Input, Encoding EncodingUsing = null, int Index = 0, int Count = -1)
         {
-            if (Input.IsNull())
+            if (Input==null)
                 return "";
             if (Count == -1)
                 Count = Input.Length - Index;
@@ -288,7 +288,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it's unicode, false otherwise</returns>
         public static bool IsUnicode(this byte[] Input)
         {
-            return Input.IsNull() ? true : Input.ToEncodedString(new UnicodeEncoding()).IsUnicode();
+            return Input==null ? true : Input.ToEncodedString(new UnicodeEncoding()).IsUnicode();
         }
 
         #endregion

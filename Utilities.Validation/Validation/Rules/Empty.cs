@@ -44,7 +44,7 @@ namespace Utilities.Validation.Rules
         /// </summary>
         /// <param name="ErrorMessage">Error message</param>
         public EmptyAttribute(string ErrorMessage = "")
-            : base(ErrorMessage.IsNullOrEmpty() ? "{0} is not empty" : ErrorMessage)
+            : base(string.IsNullOrEmpty(ErrorMessage) ? "{0} is not empty" : ErrorMessage)
         {
             
         }
@@ -71,7 +71,7 @@ namespace Utilities.Validation.Rules
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value.IsNull())
+            if (value==null)
                 return ValidationResult.Success;
             IEnumerable ValueList = value as IEnumerable;
             return ValueList != null && ValueList.GetEnumerator().MoveNext() ? new ValidationResult(FormatErrorMessage(validationContext.DisplayName)) : ValidationResult.Success;

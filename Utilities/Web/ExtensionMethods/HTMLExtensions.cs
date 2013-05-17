@@ -344,7 +344,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A decoded string</returns>
         public static string URLDecode(this string Input)
         {
-            if (Input.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Input))
                 return "";
             return HttpUtility.UrlDecode(Input);
         }
@@ -360,7 +360,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>An encoded string</returns>
         public static string URLEncode(this string Input)
         {
-            if (Input.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Input))
                 return "";
             return HttpUtility.UrlEncode(Input);
         }

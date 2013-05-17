@@ -153,9 +153,9 @@ namespace Utilities.Math
         /// <returns>True if they are, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            Fraction Other = obj as Fraction;
-            if (Other.IsNull())
+            if (!(obj is Fraction))
                 return false;
+            Fraction Other = obj as Fraction;
             decimal Value1 = this;
             decimal Value2 = Other;
             return Value1 == Value2;

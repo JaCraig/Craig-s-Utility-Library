@@ -58,7 +58,7 @@ namespace Utilities.Encryption.ExtensionMethods
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
             string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            if (Data.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Data))
                 return "";
             return Data.ToByteArray(EncodingUsing)
                        .Encrypt(Key, AlgorithmUsing, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize)
@@ -82,7 +82,7 @@ namespace Utilities.Encryption.ExtensionMethods
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
-            if (Data.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Data))
                 return "";
             return Data.ToByteArray(EncodingUsing)
                        .Encrypt(Key, AlgorithmUsing, InitialVector, KeySize)
@@ -126,7 +126,7 @@ namespace Utilities.Encryption.ExtensionMethods
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
-            if (Data.IsNull())
+            if (Data==null)
                 return null;
             AlgorithmUsing = AlgorithmUsing.NullCheck(()=>new RijndaelManaged());
             InitialVector.ThrowIfNullOrEmpty("InitialVector");
@@ -175,7 +175,7 @@ namespace Utilities.Encryption.ExtensionMethods
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
-            if (Data.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Data))
                 return "";
             return Convert.FromBase64String(Data)
                           .Decrypt(Key, AlgorithmUsing, InitialVector, KeySize)
@@ -201,7 +201,7 @@ namespace Utilities.Encryption.ExtensionMethods
             string HashAlgorithm = "SHA1", int PasswordIterations = 2,
             string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            if (Data.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Data))
                 return "";
             return Convert.FromBase64String(Data)
                           .Decrypt(Key, AlgorithmUsing, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize)
@@ -225,7 +225,7 @@ namespace Utilities.Encryption.ExtensionMethods
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
-            if (Data.IsNull())
+            if (Data==null)
                 return null;
             AlgorithmUsing = AlgorithmUsing.NullCheck(()=>new RijndaelManaged());
             InitialVector.ThrowIfNullOrEmpty("InitialVector");

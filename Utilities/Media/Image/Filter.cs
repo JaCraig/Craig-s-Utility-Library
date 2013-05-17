@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
@@ -92,7 +94,7 @@ namespace Utilities.Media.Image
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public virtual Bitmap ApplyFilter(Bitmap Input)
         {
-            Input.ThrowIfNull("Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             Bitmap NewBitmap = new Bitmap(Input.Width, Input.Height);
             BitmapData NewData = NewBitmap.LockImage();
             BitmapData OldData = Input.LockImage();

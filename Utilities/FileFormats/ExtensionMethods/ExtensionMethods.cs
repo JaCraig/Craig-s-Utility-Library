@@ -55,7 +55,7 @@ namespace Utilities.FileFormats.ExtensionMethods
         public static CSV.CSV ToCSV(this DataTable Data)
         {
             CSV.CSV ReturnValue = new CSV.CSV();
-            if (Data.IsNull())
+            if (Data==null)
                 return ReturnValue;
             Delimited.Row TempRow = new Delimited.Row(",");
             foreach (DataColumn Column in Data.Columns)
@@ -100,7 +100,7 @@ namespace Utilities.FileFormats.ExtensionMethods
         public static GenericDelimited.GenericDelimited ToDelimitedFile(this DataTable Data, string Delimiter = "\t")
         {
             GenericDelimited.GenericDelimited ReturnValue = new GenericDelimited.GenericDelimited(Delimiter);
-            if (Data.IsNull())
+            if (Data==null)
                 return ReturnValue;
             Delimited.Row TempRow = new Delimited.Row(Delimiter);
             foreach (DataColumn Column in Data.Columns)

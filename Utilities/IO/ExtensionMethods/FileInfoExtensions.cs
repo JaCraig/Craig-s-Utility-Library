@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Security;
 using System.Text;
@@ -201,7 +202,7 @@ namespace Utilities.IO.ExtensionMethods
             string Domain = "", string User = "", string Password = "",
             ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal, string WorkingDirectory = "")
         {
-            File.ThrowIfNullOrEmpty("File");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(File), "File");
             ProcessStartInfo Info = new ProcessStartInfo();
             Info.Arguments = Arguments;
             Info.Domain = Domain;
@@ -223,10 +224,9 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The process object created when the executable is started</returns>
         public static System.Diagnostics.Process Execute(this FileInfo File, ProcessStartInfo Info)
         {
-            File.ThrowIfNull("File");
-            if (!File.Exists)
-                throw new FileNotFoundException("File note found", File.FullName);
-            Info.ThrowIfNull("Info");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
+            Contract.Requires<FileNotFoundException>(File.Exists, "File not found");
+            Contract.Requires<ArgumentNullException>(Info != null, "Info");
             Info.FileName = File.FullName;
             return System.Diagnostics.Process.Start(Info);
         }
@@ -239,8 +239,8 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The process object created when the executable is started</returns>
         public static System.Diagnostics.Process Execute(this string File, ProcessStartInfo Info)
         {
-            File.ThrowIfNullOrEmpty("File");
-            Info.ThrowIfNull("Info");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(File), "File");
+            Contract.Requires<ArgumentNullException>(Info!=null, "Info");
             Info.FileName = File;
             return System.Diagnostics.Process.Start(Info);
         }

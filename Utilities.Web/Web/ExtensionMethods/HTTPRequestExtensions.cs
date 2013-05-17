@@ -108,8 +108,8 @@ namespace Utilities.Web.ExtensionMethods
             Request.ThrowIfNull("Request");
             Request.Browser.ThrowIfNull("Browser");
             if (Request.Browser.IsMobileDevice
-                || !Request.ServerVariables["HTTP_X_WAP_PROFILE"].IsNullOrEmpty()
-                || (!Request.ServerVariables["HTTP_ACCEPT"].IsNullOrEmpty()
+                || !string.IsNullOrEmpty(Request.ServerVariables["HTTP_X_WAP_PROFILE"])
+                || (!string.IsNullOrEmpty(Request.ServerVariables["HTTP_ACCEPT"])
                     && (Request.ServerVariables["HTTP_ACCEPT"].ToLower(CultureInfo.InvariantCulture).Contains("wap")
                        || Request.ServerVariables["HTTP_ACCEPT"].ToLower(CultureInfo.InvariantCulture).Contains("wml+xml"))))
                 return true;
@@ -131,8 +131,8 @@ namespace Utilities.Web.ExtensionMethods
             Request.ThrowIfNull("Request");
             Request.Browser.ThrowIfNull("Browser");
             if (Request.Browser.IsMobileDevice
-                || !Request.ServerVariables["HTTP_X_WAP_PROFILE"].IsNullOrEmpty()
-                || (!Request.ServerVariables["HTTP_ACCEPT"].IsNullOrEmpty()
+                || !string.IsNullOrEmpty(Request.ServerVariables["HTTP_X_WAP_PROFILE"])
+                || (!string.IsNullOrEmpty(Request.ServerVariables["HTTP_ACCEPT"])
                     && (Request.ServerVariables["HTTP_ACCEPT"].ToLower(CultureInfo.InvariantCulture).Contains("wap")
                        || Request.ServerVariables["HTTP_ACCEPT"].ToLower(CultureInfo.InvariantCulture).Contains("wml+xml"))))
                 return true;

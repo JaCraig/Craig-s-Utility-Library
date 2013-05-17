@@ -95,9 +95,9 @@ namespace Utilities.Web.Google.HelperClasses
         public override string ToString()
         {
             string ReturnValue = "size:" + Size.ToString().ToLower(CultureInfo.InvariantCulture)
-                    + (Color.IsNullOrEmpty() ? "" : "|color:" + Color)
-                    + (Label.IsNullOrEmpty() ? "" : "|label:" + Label.ToUpper(CultureInfo.InvariantCulture))
-                    + (CustomIcon.IsNull() ? "" : ("|icon:" + CustomIcon + "|shadow:" + CustomIconShadow.ToString().ToLower(CultureInfo.InvariantCulture)));
+                    + (string.IsNullOrEmpty(Color) ? "" : "|color:" + Color)
+                    + (string.IsNullOrEmpty(Label) ? "" : "|label:" + Label.ToUpper(CultureInfo.InvariantCulture))
+                    + (CustomIcon==null ? "" : ("|icon:" + CustomIcon + "|shadow:" + CustomIconShadow.ToString().ToLower(CultureInfo.InvariantCulture)));
             foreach (ILocation Marker in MarkerList)
                 ReturnValue += "|" + Marker.ToString();
             return "markers=" + ReturnValue.URLEncode();

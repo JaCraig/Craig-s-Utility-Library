@@ -50,7 +50,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The formatted string</returns>
         public static string FormatToString(this object Input, string Format)
         {
-            if (Input.IsNull())
+            if (Input==null)
                 return "";
             return !string.IsNullOrEmpty(Format) ? (string)CallMethod("ToString", Input, Format) : Input.ToString();
         }
@@ -157,7 +157,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static System.Collections.Generic.List<T> ToList<T>(this DataTable Data, Func<T> Creator = null) where T : new()
         {
-            if (Data.IsNull())
+            if (Data==null)
                 return new List<T>();
             Creator = Creator.NullCheck(() => new T());
             Type TType = typeof(T);
@@ -170,7 +170,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 for (int y = 0; y < Data.Columns.Count; ++y)
                 {
                     PropertyInfo Property = Properties.FirstOrDefault(z => z.Name == Data.Columns[y].ColumnName);
-                    if (!Property.IsNull())
+                    if (Property!=null)
                         Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]].TryTo(Property.PropertyType, null), new object[] { });
                 }
                 Results.Add(RowObject);
@@ -300,22 +300,22 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             try
             {
-                if (Object.IsNull())
+                if (Object==null||Convert.IsDBNull(Object))
                     return DefaultValue;
                 string ObjectValue = Object as string;
-                if (ObjectValue.IsNotNull() && ObjectValue.Length == 0)
+                if (ObjectValue!=null && ObjectValue.Length == 0)
                     return DefaultValue;
                 Type ObjectType = Object.GetType();
                 if (ResultType.IsAssignableFrom(ObjectType))
                     return Object;
                 if(ResultType.IsEnum)
                     return System.Enum.Parse(ResultType, ObjectValue, true);
-                if ((Object as IConvertible).IsNotNull())
+                if ((Object as IConvertible)!=null)
                     return Convert.ChangeType(Object, ResultType, CultureInfo.InvariantCulture);
                 TypeConverter Converter = TypeDescriptor.GetConverter(ObjectType);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Object, ResultType);
-                if (ObjectValue.IsNotNull())
+                if (ObjectValue!=null)
                     return ObjectValue.TryTo<string>(ResultType, DefaultValue);
             }
             catch { }
@@ -337,11 +337,11 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The returned value of the method</returns>
         private static object CallMethod(string MethodName, object Object, params object[] InputVariables)
         {
-            if (string.IsNullOrEmpty(MethodName) || Object.IsNull())
+            if (string.IsNullOrEmpty(MethodName) || Object==null)
                 return null;
             Type ObjectType = Object.GetType();
             MethodInfo Method = null;
-            if (InputVariables.IsNotNull())
+            if (InputVariables!=null)
             {
                 Type[] MethodInputTypes = new Type[InputVariables.Length];
                 for (int x = 0; x < InputVariables.Length; ++x)
@@ -351,7 +351,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                     return Method.Invoke(Object, InputVariables);
             }
             Method = ObjectType.GetMethod(MethodName);
-            return Method.IsNull() ? null : Method.Invoke(Object, null);
+            return Method==null ? null : Method.Invoke(Object, null);
         }
 
         #endregion

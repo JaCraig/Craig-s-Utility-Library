@@ -130,7 +130,7 @@ namespace Utilities.SQL.MicroORM
         {
             Property.ThrowIfNull("Property");
             Mappings.ThrowIfNull("Mappings");
-            if (DatabasePropertyName.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
@@ -161,7 +161,7 @@ namespace Utilities.SQL.MicroORM
         {
             Property.ThrowIfNull("Property");
             Mappings.ThrowIfNull("Mappings");
-            if (DatabasePropertyName.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);

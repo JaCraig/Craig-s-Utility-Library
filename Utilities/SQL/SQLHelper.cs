@@ -39,6 +39,7 @@ using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.SQL
@@ -236,7 +237,7 @@ namespace Utilities.SQL
         protected virtual Database GetDatabase(string Name = "Default")
         {
             Database TempDatabase = Databases.GetValue(Name, null);
-            return TempDatabase.IsNull() ? SQLHelper.Database("", Name, "", "", false) : TempDatabase;
+            return TempDatabase==null ? SQLHelper.Database("", Name, "", "", false) : TempDatabase;
         }
 
         #endregion
@@ -281,7 +282,7 @@ namespace Utilities.SQL
             where ClassType : class,new()
         {
             string WhereCommand = "";
-            if (!Parameters.IsNullOrEmpty() && Parameters.Length > 0)
+            if (Parameters != null && Parameters.Length > 0)
             {
                 WhereCommand += " WHERE ";
                 string Splitter = "";
@@ -358,7 +359,7 @@ namespace Utilities.SQL
             where ClassType : class,new()
         {
             string WhereCommand = "";
-            if (!Parameters.IsNullOrEmpty() && Parameters.Length > 0)
+            if (Parameters!=null && Parameters.Length > 0)
             {
                 WhereCommand += " WHERE ";
                 string Splitter = "";
@@ -399,11 +400,11 @@ namespace Utilities.SQL
                                                               Mapping<ClassType> Mapping, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            if (OrderBy.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(OrderBy))
                 OrderBy = Mapping.PrimaryKey;
 
             string WhereCommand = "";
-            if (!Parameters.IsNullOrEmpty() && Parameters.Length > 0)
+            if (Parameters!=null && Parameters.Length > 0)
             {
                 WhereCommand += " WHERE ";
                 string Splitter = "";
@@ -429,7 +430,7 @@ namespace Utilities.SQL
                                                               int CurrentPage, Mapping<ClassType> Mapping)
             where ClassType : class,new()
         {
-            if (OrderBy.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(OrderBy))
                 OrderBy = Mapping.PrimaryKey;
             int PageStart = CurrentPage * PageSize;
             return string.Format(CultureInfo.InvariantCulture, "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {1}) AS Row, Query.* FROM ({0}) as Query) AS Paged WHERE Row>{2} AND Row<={3}",
@@ -457,7 +458,7 @@ namespace Utilities.SQL
             where ClassType : class,new()
         {
             string Command = (Limit > 0 ? "SELECT TOP " + Limit : "SELECT") + " {0} FROM {1}";
-            if (!Parameters.IsNullOrEmpty() && Parameters.Length > 0)
+            if (Parameters!=null && Parameters.Length > 0)
             {
                 Command += " WHERE ";
                 string Splitter = "";
@@ -467,7 +468,7 @@ namespace Utilities.SQL
                     Splitter = " AND ";
                 }
             }
-            if (!OrderBy.IsNullOrEmpty())
+            if (!string.IsNullOrEmpty(OrderBy))
                 Command += OrderBy.Trim().ToUpperInvariant().StartsWith("ORDER BY", StringComparison.CurrentCultureIgnoreCase) ? " " + OrderBy : " ORDER BY " + OrderBy;
             return string.Format(CultureInfo.InvariantCulture, Command, Columns, Mapping.TableName);
         }
@@ -607,8 +608,8 @@ namespace Utilities.SQL
                                                             Func<ClassType> ObjectCreator = null,bool Cache=false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Command.ThrowIfNullOrEmpty("Command");
-            DatabaseUsing.Mappings.ThrowIfNull("Mappings");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
+            Contract.Requires<ArgumentNullException>(DatabaseUsing.Mappings != null, "Mappings");
             List<ClassType> Return = Objects == null ? new List<ClassType>() : Objects.ToList();
             ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             this.Command = new Command(Command, CommandType, Parameters);
@@ -646,7 +647,7 @@ namespace Utilities.SQL
                                                             Func<ClassType> ObjectCreator = null, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Columns.ThrowIfNullOrEmpty("Columns");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Columns), "Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             return All(SetupSelectCommand(Columns, Limit, OrderBy, MappingUsing, Parameters), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
@@ -669,7 +670,7 @@ namespace Utilities.SQL
         public virtual ClassType Any<ClassType>(string Columns = "*", ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Columns.ThrowIfNullOrEmpty("Columns");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Columns), "Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             return Any(SetupSelectCommand(Columns, 1, "", MappingUsing, Parameters), CommandType.Text, ObjectToReturn, ObjectCreator, Cache, Parameters);
         }
@@ -690,8 +691,8 @@ namespace Utilities.SQL
                                                 bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            DatabaseUsing.Mappings.ThrowIfNull("Mappings");
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(DatabaseUsing.Mappings!=null, "Mappings");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             this.Command = new Command(Command, CommandType, Parameters);
             Mapping<ClassType> MappingUsing = null;
@@ -721,8 +722,8 @@ namespace Utilities.SQL
         public virtual int Delete<ClassType>(string Command, CommandType CommandType, ClassType Object)
             where ClassType : class,new()
         {
-            Object.ThrowIfNull("Object");
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             this.Command = new Command(Command, CommandType, DatabaseUsing.ParameterPrefix);
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             MappingUsing.Mappings.Copy(Object, this);
@@ -777,8 +778,8 @@ namespace Utilities.SQL
         public virtual DataType Insert<ClassType, DataType>(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Object.ThrowIfNull("Object");
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             this.Command = new Command(Command, CommandType, Parameters);
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             MappingUsing.Mappings.Copy(Object, this);
@@ -867,7 +868,7 @@ namespace Utilities.SQL
                                                                bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Columns.ThrowIfNullOrEmpty("Columns");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Columns), "Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, MappingUsing, Parameters), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
@@ -893,7 +894,7 @@ namespace Utilities.SQL
                                                                       bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             return All(SetupPagedCommand(Command, OrderBy, PageSize, CurrentPage, MappingUsing), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
@@ -1021,7 +1022,7 @@ namespace Utilities.SQL
         public virtual int Update<ClassType>(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             this.Command = new Command(Command, CommandType.Text, Parameters);
             MappingUsing.Mappings.Copy(Object, this);
@@ -1172,7 +1173,7 @@ namespace Utilities.SQL
             {
                 if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
                     ReturnValue = SQLHelper.Cache.Get<DataSet>(Command.GetHashCode());
-                else if (ExecutableCommand.IsNotNull())
+                else if (ExecutableCommand!=null)
                 {
                     ReturnValue = ExecutableCommand.ExecuteDataSet(Factory);
                     if (Cache)
@@ -1196,7 +1197,7 @@ namespace Utilities.SQL
         public virtual int ExecuteNonQuery(bool CreateTransaction = false)
         {
             Setup(CreateTransaction);
-            if (ExecutableCommand.IsNull())
+            if (ExecutableCommand==null)
                 return 0;
             if (DatabaseUsing.Profile)
             {
@@ -1262,7 +1263,7 @@ namespace Utilities.SQL
             {
                 if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
                     Reader = new CacheTables(SQLHelper.Cache.Get<IDataReader>(Command.GetHashCode()));
-                else if (ExecutableCommand.IsNotNull())
+                else if (ExecutableCommand!=null)
                 {
                     using (DbDataReader TempReader = ExecutableCommand.ExecuteReader())
                     {
@@ -1316,7 +1317,7 @@ namespace Utilities.SQL
                 DataType ReturnValue = default(DataType);
                 if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
                     ReturnValue = SQLHelper.Cache.Get<DataType>(Command.GetHashCode());
-                else if (ExecutableCommand.IsNotNull())
+                else if (ExecutableCommand!=null)
                 {
                     ReturnValue = ExecutableCommand.ExecuteScalar<DataType>();
                     if (Cache)
@@ -1361,7 +1362,7 @@ namespace Utilities.SQL
             try
             {
                 XmlReader ReturnValue = null;
-                if (ExecutableCommand.IsNotNull() && ExecutableCommand is SqlCommand)
+                if (ExecutableCommand!=null && ExecutableCommand is SqlCommand)
                     ReturnValue = ((SqlCommand)ExecutableCommand).ExecuteXmlReader();
                 Commit();
                 return ReturnValue;
@@ -1409,7 +1410,7 @@ namespace Utilities.SQL
         /// </summary>
         public virtual SQLHelper NextResult()
         {
-            if (Reader.IsNotNull())
+            if (Reader!=null)
                 Reader.NextResult();
             return this;
         }
@@ -1424,7 +1425,7 @@ namespace Utilities.SQL
         /// <returns>True if there is more rows, false otherwise</returns>
         public virtual bool Read()
         {
-            return Reader.IsNull() ? false : Reader.Read();
+            return Reader==null ? false : Reader.Read();
         }
 
         #endregion

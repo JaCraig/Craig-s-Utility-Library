@@ -278,7 +278,7 @@ namespace Utilities.Random.ExtensionMethods
         /// <returns>The shuffled list</returns>
         public static IEnumerable<T> Shuffle<T>(this System.Random Random, IEnumerable<T> List)
         {
-            if (List.IsNullOrEmpty())
+            if (List==null||List.Count()==0)
                 return List;
             return List.OrderBy(x => Random.Next());
         }

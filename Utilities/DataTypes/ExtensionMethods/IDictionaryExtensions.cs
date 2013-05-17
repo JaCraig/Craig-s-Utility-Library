@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes.Comparison;
 #endregion
@@ -50,7 +51,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
         public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
         {
-            Dictionary.ThrowIfNull("Dictionary");
+            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             TValue ReturnValue = Default;
             return Dictionary.TryGetValue(Key, out ReturnValue) ? ReturnValue : Default;
         }
@@ -71,7 +72,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
         public static IDictionary<TKey, TValue> SetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Value)
         {
-            Dictionary.ThrowIfNull("Dictionary");
+            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             if (Dictionary.ContainsKey(Key))
                 Dictionary[Key] = Value;
             else
@@ -94,7 +95,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static IDictionary<T1, T2> Sort<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null)
             where T1 : IComparable
         {
-            Dictionary.ThrowIfNull("Dictionary");
+            Contract.Requires<ArgumentNullException>(Dictionary!= null, "Dictionary");
             return Dictionary.Sort(x => x.Key, Comparer);
         }
 
@@ -111,8 +112,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static IDictionary<T1, T2> Sort<T1, T2, T3>(this IDictionary<T1, T2> Dictionary, Func<KeyValuePair<T1, T2>, T3> OrderBy, IComparer<T3> Comparer = null)
             where T3 : IComparable
         {
-            Dictionary.ThrowIfNull("Dictionary");
-            OrderBy.ThrowIfNull("OrderBy");
+            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
+            Contract.Requires<ArgumentNullException>(OrderBy != null, "OrderBy");
             return Dictionary.OrderBy(OrderBy, Comparer.NullCheck(()=>new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
         }
 

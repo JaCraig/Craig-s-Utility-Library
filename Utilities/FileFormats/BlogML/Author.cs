@@ -109,7 +109,7 @@ namespace Utilities.FileFormats.BlogML
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append("<author ");
-            if (REF.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(REF))
             {
                 Builder.AppendFormat(CultureInfo.InvariantCulture, "id=\"{0}\" date-created=\"{1}\" date-modified=\"{2}\" approved=\"true\" email=\"{3}\">\n", ID, DateCreated.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), DateModified.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), Email);
                 Builder.AppendFormat(CultureInfo.InvariantCulture, "<title type=\"text\"><![CDATA[{0}]]></title>\n", Title);

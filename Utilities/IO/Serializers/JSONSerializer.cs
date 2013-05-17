@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -66,7 +67,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The serialized object</returns>
         public string Serialize(object Object)
         {
-            Object.ThrowIfNull("Object");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 DataContractJsonSerializer Serializer = new DataContractJsonSerializer(Object.GetType());
@@ -84,7 +85,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The resulting object</returns>
         public object Deserialize(string Data,Type ObjectType)
         {
-            if (Data.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Data))
                 return null;
             using (MemoryStream Stream = new MemoryStream(EncodingUsing.GetBytes(Data)))
             {

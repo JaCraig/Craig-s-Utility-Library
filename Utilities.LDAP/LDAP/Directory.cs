@@ -69,7 +69,7 @@ namespace Utilities.LDAP
         {
             try
             {
-                return !Entry.Guid.ToString().Trim().IsNullOrEmpty();
+                return !string.IsNullOrEmpty(Entry.Guid.ToString().Trim());
             }
             catch { }
             return false;

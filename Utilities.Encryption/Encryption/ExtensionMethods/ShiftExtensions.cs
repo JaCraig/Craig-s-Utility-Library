@@ -45,7 +45,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static byte[] Encrypt(this byte[] Data, byte[] Key, bool OneTimePad)
         {
-            if (Data.IsNull())
+            if (Data==null)
                 return null;
             Key.ThrowIfNull("Key");
             if (OneTimePad && Key.Length < Data.Length)
@@ -63,7 +63,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static string Encrypt(this string Data, string Key, bool OneTimePad, Encoding EncodingUsing = null)
         {
-            if (Data.IsNull())
+            if (Data==null)
                 return "";
             Key.ThrowIfNull("Key");
             return Data.ToByteArray(EncodingUsing).Encrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToEncodedString(EncodingUsing);
@@ -82,7 +82,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The decrypted data</returns>
         public static byte[] Decrypt(this byte[] Data, byte[] Key, bool OneTimePad)
         {
-            if (Data.IsNull())
+            if (Data==null)
                 return null;
             Key.ThrowIfNull("Key");
             if (OneTimePad && Key.Length < Data.Length)
@@ -100,7 +100,7 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static string Decrypt(this string Data, string Key, bool OneTimePad, Encoding EncodingUsing = null)
         {
-            if (Data.IsNull())
+            if (Data==null)
                 return "";
             Key.ThrowIfNull("Key");
             return Data.ToByteArray(EncodingUsing).Decrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToEncodedString(EncodingUsing);
@@ -140,9 +140,9 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The XOred string</returns>
         public static string XOr(this string Input, string Key, Encoding EncodingUsing = null)
         {
-            if (Input.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Input))
                 return "";
-            if (Key.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Key))
                 return Input;
             byte[] InputArray = Input.ToByteArray(EncodingUsing);
             byte[] KeyArray = Key.ToByteArray(EncodingUsing);

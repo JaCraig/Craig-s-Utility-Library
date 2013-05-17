@@ -96,7 +96,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The centered string</returns>
         public static string Center(this string Input,int Length,string Padding=" ")
         {
-            if (Input.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Input))
                 Input = "";
             string Output = "";
             for (int x = 0; x < (Length - Input.Length) / 2; ++x)
@@ -144,7 +144,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The input string, with the tabs replaced with spaces</returns>
         public static string ExpandTabs(this string Input, int TabSize = 4)
         {
-            if (Input.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Input))
                 return Input;
             string Spaces = "";
             for (int x = 0; x < TabSize; ++x)
@@ -199,14 +199,14 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The formatted string</returns>
         public static string FormatString(this string Input, object Object, string StartSeperator = "{", string EndSeperator = "}")
         {
-            if (Object.IsNull())
+            if (Object==null)
                 return Input;
             Object.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => x.CanRead)
                 .ForEach(x =>
                 {
                     var Value = x.GetValue(Object, null);
-                    Input = Input.Replace(StartSeperator + x.Name + EndSeperator, Value.IsNull() ? "" : Value.ToString());
+                    Input = Input.Replace(StartSeperator + x.Name + EndSeperator, Value==null ? "" : Value.ToString());
                 });
             return Input;
         }
@@ -219,7 +219,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The string after the changes have been made</returns>
         public static string FormatString(this string Input, params KeyValuePair<string, string>[] Pairs)
         {
-            if (Input.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Input))
                 return Input;
             foreach (KeyValuePair<string, string> Pair in Pairs)
             {
@@ -498,7 +498,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The word pluralized</returns>
         public static string Pluralize(this string Word, CultureInfo Culture = null)
         {
-            if (Word.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Word))
                 return "";
             Culture = Culture.NullCheck(CultureInfo.CurrentCulture);
             return PluralizationService.CreateService(Culture).Pluralize(Word);
@@ -580,7 +580,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The word singularized</returns>
         public static string Singularize(this string Word, CultureInfo Culture = null)
         {
-            if (Word.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Word))
                 return "";
             Culture = Culture.NullCheck(CultureInfo.CurrentCulture);
             return PluralizationService.CreateService(Culture).Singularize(Word);
@@ -598,9 +598,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The Input string with specified characters stripped out</returns>
         public static string StripLeft(this string Input, string Characters = " ")
         {
-            if (Input.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Input))
                 return Input;
-            if (Characters.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Characters))
                 return Input;
             return Input.SkipWhile(x => Characters.Contains(x)).ToString(x => x.ToString(), "");
         }
@@ -617,9 +617,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The Input string with specified characters stripped out</returns>
         public static string StripRight(this string Input, string Characters = " ")
         {
-            if (Input.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Input))
                 return Input;
-            if (Characters.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Characters))
                 return Input;
             int Position = Input.Length - 1;
             for (int x = Input.Length - 1; x >= 0; --x)
@@ -644,7 +644,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The stripped string</returns>
         public static string StripIllegalXML(this string Content)
         {
-            if (Content.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Content))
                 return "";
             StringBuilder Builder = new StringBuilder();
             foreach (char Char in Content)

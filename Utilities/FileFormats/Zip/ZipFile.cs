@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace Utilities.FileFormats.Zip
         /// <param name="Overwrite">Should the zip file be overwritten?</param>
         public ZipFile(string FilePath, bool Overwrite = true)
         {
-            FilePath.ThrowIfNullOrEmpty("FilePath");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(FilePath), "FilePath");
             ZipFileStream = new FileStream(FilePath, Overwrite ? FileMode.Create : FileMode.OpenOrCreate);
         }
 
@@ -68,7 +69,7 @@ namespace Utilities.FileFormats.Zip
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.EndsWith(System.String,System.StringComparison)")]
         public virtual void AddFolder(string Folder)
         {
-            Folder.ThrowIfNullOrEmpty("Folder");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Folder), "Folder");
             Folder = new DirectoryInfo(Folder).FullName;
             if (Folder.EndsWith(@"\", StringComparison.InvariantCulture))
                 Folder = Folder.Remove(Folder.Length - 1);
@@ -86,7 +87,7 @@ namespace Utilities.FileFormats.Zip
         /// <param name="File">File to add</param>
         public virtual void AddFile(string File)
         {
-            File.ThrowIfNullOrEmpty("File");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(File), "File");
             FileInfo TempFileInfo = new FileInfo(File);
             if (!TempFileInfo.Exists)
                 throw new ArgumentException("File does not exist");
@@ -102,7 +103,7 @@ namespace Utilities.FileFormats.Zip
         /// <param name="Folder">Folder to uncompress the file in</param>
         public virtual void UncompressFile(string Folder)
         {
-            Folder.ThrowIfNullOrEmpty("Folder");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Folder), "Folder");
             new DirectoryInfo(Folder).Create();
             Folder = new DirectoryInfo(Folder).FullName;
             using (Package Package = ZipPackage.Open(ZipFileStream, FileMode.Open, FileAccess.Read))
@@ -125,7 +126,7 @@ namespace Utilities.FileFormats.Zip
         /// <param name="Folder">Folder to extract it into</param>
         protected virtual void Extract(PackagePart Document, string Folder)
         {
-            Folder.ThrowIfNullOrEmpty("Folder");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Folder), "Folder");
             string Location = Folder + System.Web.HttpUtility.UrlDecode(Document.Uri.ToString()).Replace('\\', '/');
             new DirectoryInfo(Path.GetDirectoryName(Location)).Create();
             byte[] Data = new byte[1024];
@@ -150,7 +151,7 @@ namespace Utilities.FileFormats.Zip
         /// <param name="Package">Package to add the file to</param>
         protected virtual void AddFile(string File, FileInfo FileInfo, Package Package)
         {
-            File.ThrowIfNullOrEmpty("File");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(File), "File");
             if (!FileInfo.Exists)
                 throw new ArgumentException("FileInfo does not exist");
             Uri UriPath = PackUriHelper.CreatePartUri(new Uri(File, UriKind.Relative));

@@ -26,6 +26,7 @@ using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -142,8 +143,8 @@ namespace Utilities.AI
         /// <param name="SetBTokens">Set B</param>
         public virtual void LoadTokens(IEnumerable<T> SetATokens, IEnumerable<T> SetBTokens)
         {
-            SetATokens.ThrowIfNull("SetATokens");
-            SetBTokens.ThrowIfNull("SetBTokens");
+            Contract.Requires<ArgumentNullException>(SetATokens != null, "SetATokens");
+            Contract.Requires<ArgumentNullException>(SetBTokens != null, "SetBTokens");
             SetA = SetA.NullCheck(()=>new Bag<T>());
             SetB = SetB.NullCheck(()=>new Bag<T>());
             SetA.Add(SetATokens);
@@ -166,8 +167,8 @@ namespace Utilities.AI
         /// <returns>The probability that the tokens are from set A</returns>
         public virtual double CalculateProbabilityOfTokens(IEnumerable<T> Items)
         {
-            Items.ThrowIfNull("Items");
-            if (Probabilities.IsNull())
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
+            if (Probabilities==null)
                 throw new InvalidOperationException("Probabilities has not been initialized");
             SortedList<string, double> SortedProbabilities = new SortedList<string, double>();
             int x = 0;
