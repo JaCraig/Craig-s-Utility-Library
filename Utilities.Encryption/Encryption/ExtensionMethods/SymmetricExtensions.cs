@@ -26,6 +26,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Encryption.ExtensionMethods
@@ -126,10 +127,10 @@ namespace Utilities.Encryption.ExtensionMethods
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(InitialVector), "InitialVector");
             if (Data==null)
                 return null;
             AlgorithmUsing = AlgorithmUsing.NullCheck(()=>new RijndaelManaged());
-            InitialVector.ThrowIfNullOrEmpty("InitialVector");
             using (DeriveBytes DerivedPassword = Key)
             {
                 using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)
@@ -225,10 +226,10 @@ namespace Utilities.Encryption.ExtensionMethods
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(InitialVector), "InitialVector");
             if (Data==null)
                 return null;
             AlgorithmUsing = AlgorithmUsing.NullCheck(()=>new RijndaelManaged());
-            InitialVector.ThrowIfNullOrEmpty("InitialVector");
             using (DeriveBytes DerivedPassword = Key)
             {
                 using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)

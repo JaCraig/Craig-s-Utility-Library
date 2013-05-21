@@ -39,6 +39,7 @@ using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.SQL
@@ -607,8 +608,8 @@ namespace Utilities.SQL
                                                             Func<ClassType> ObjectCreator = null,bool Cache=false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Command.ThrowIfNullOrEmpty("Command");
-            DatabaseUsing.Mappings.ThrowIfNull("Mappings");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
+            Contract.Requires<ArgumentNullException>(DatabaseUsing.Mappings != null, "Mappings");
             List<ClassType> Return = Objects == null ? new List<ClassType>() : Objects.ToList();
             ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             this.Command = new Command(Command, CommandType, Parameters);
@@ -646,7 +647,7 @@ namespace Utilities.SQL
                                                             Func<ClassType> ObjectCreator = null, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Columns.ThrowIfNullOrEmpty("Columns");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Columns), "Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             return All(SetupSelectCommand(Columns, Limit, OrderBy, MappingUsing, Parameters), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
@@ -669,7 +670,7 @@ namespace Utilities.SQL
         public virtual ClassType Any<ClassType>(string Columns = "*", ClassType ObjectToReturn = null, Func<ClassType> ObjectCreator = null, bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Columns.ThrowIfNullOrEmpty("Columns");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Columns), "Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             return Any(SetupSelectCommand(Columns, 1, "", MappingUsing, Parameters), CommandType.Text, ObjectToReturn, ObjectCreator, Cache, Parameters);
         }
@@ -690,8 +691,8 @@ namespace Utilities.SQL
                                                 bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            DatabaseUsing.Mappings.ThrowIfNull("Mappings");
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(DatabaseUsing.Mappings!=null, "Mappings");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             ObjectCreator = (ObjectCreator == null) ? (() => new ClassType()) : ObjectCreator;
             this.Command = new Command(Command, CommandType, Parameters);
             Mapping<ClassType> MappingUsing = null;
@@ -721,8 +722,8 @@ namespace Utilities.SQL
         public virtual int Delete<ClassType>(string Command, CommandType CommandType, ClassType Object)
             where ClassType : class,new()
         {
-            Object.ThrowIfNull("Object");
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             this.Command = new Command(Command, CommandType, DatabaseUsing.ParameterPrefix);
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             MappingUsing.Mappings.Copy(Object, this);
@@ -777,8 +778,8 @@ namespace Utilities.SQL
         public virtual DataType Insert<ClassType, DataType>(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Object.ThrowIfNull("Object");
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             this.Command = new Command(Command, CommandType, Parameters);
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             MappingUsing.Mappings.Copy(Object, this);
@@ -867,7 +868,7 @@ namespace Utilities.SQL
                                                                bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Columns.ThrowIfNullOrEmpty("Columns");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Columns), "Columns");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             return All(SetupPagedCommand(Columns, OrderBy, PageSize, CurrentPage, MappingUsing, Parameters), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
@@ -893,7 +894,7 @@ namespace Utilities.SQL
                                                                       bool Cache = false, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             return All(SetupPagedCommand(Command, OrderBy, PageSize, CurrentPage, MappingUsing), CommandType.Text, Objects, ObjectCreator, Cache, Parameters);
         }
@@ -1021,7 +1022,7 @@ namespace Utilities.SQL
         public virtual int Update<ClassType>(string Command, CommandType CommandType, ClassType Object, params IParameter[] Parameters)
             where ClassType : class,new()
         {
-            Command.ThrowIfNullOrEmpty("Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Command), "Command");
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
             this.Command = new Command(Command, CommandType.Text, Parameters);
             MappingUsing.Mappings.Copy(Object, this);

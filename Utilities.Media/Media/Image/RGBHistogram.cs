@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes.ExtensionMethods;
@@ -59,7 +61,7 @@ namespace Utilities.Media.Image
         /// <param name="ImageUsing">Image to load</param>
         public virtual void LoadImage(Bitmap ImageUsing)
         {
-            ImageUsing.ThrowIfNull("ImageUsing");
+            Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
             BitmapData OldData = ImageUsing.LockImage();
             int PixelSize = OldData.GetPixelSize();
             Width = ImageUsing.Width;

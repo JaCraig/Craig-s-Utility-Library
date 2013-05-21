@@ -70,7 +70,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The drive info connected to the file</returns>
         public static DriveInfo DriveInfo(this FileInfo File)
         {
-            File.ThrowIfNull("File");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
             return File.Directory.DriveInfo();
         }
 
@@ -85,7 +85,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>A string containing the contents of the file</returns>
         public static string Read(this FileInfo File)
         {
-            File.ThrowIfNull("File");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
             if (!File.Exists)
                 return "";
             using (StreamReader Reader = File.OpenText())
@@ -124,7 +124,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>A binary array containing the contents of the file</returns>
         public static byte[] ReadBinary(this FileInfo File)
         {
-            File.ThrowIfNull("File");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
             if (!File.Exists)
                 return new byte[0];
             using (FileStream Reader = File.OpenRead())
@@ -171,9 +171,8 @@ namespace Utilities.IO.ExtensionMethods
             string Domain = "", string User = "", string Password = "",
             ProcessWindowStyle WindowStyle = ProcessWindowStyle.Normal, string WorkingDirectory = "")
         {
-            File.ThrowIfNull("File");
-            if (!File.Exists)
-                throw new FileNotFoundException("File note found", File.FullName);
+            Contract.Requires<ArgumentNullException>(File != null, "File");
+            Contract.Requires<FileNotFoundException>(File.Exists, "file does not exist");
             ProcessStartInfo Info = new ProcessStartInfo();
             Info.Arguments = Arguments;
             Info.Domain = Domain;
@@ -259,7 +258,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The FileInfo object</returns>
         public static FileInfo Save(this FileInfo File, string Content, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
         {
-            File.ThrowIfNull("File");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
             return File.Save(EncodingUsing.NullCheck(new ASCIIEncoding()).GetBytes(Content), Mode);
         }
 
@@ -272,7 +271,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The FileInfo object</returns>
         public static FileInfo Save(this FileInfo File, byte[] Content, FileMode Mode = FileMode.Create)
         {
-            File.ThrowIfNull("File");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
             new DirectoryInfo(File.DirectoryName).Create();
             using (FileStream Writer = File.Open(Mode, FileAccess.Write))
             {
@@ -339,7 +338,7 @@ namespace Utilities.IO.ExtensionMethods
         public static FileInfo SaveAsync(this FileInfo File, string Content, AsyncCallback CallBack,
             object StateObject, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
         {
-            File.ThrowIfNull("File");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
             return File.SaveAsync(EncodingUsing.NullCheck(new ASCIIEncoding()).GetBytes(Content), CallBack, StateObject, Mode);
         }
 
@@ -355,7 +354,7 @@ namespace Utilities.IO.ExtensionMethods
         public static FileInfo SaveAsync(this FileInfo File, byte[] Content, AsyncCallback CallBack,
             object StateObject, FileMode Mode = FileMode.Create)
         {
-            File.ThrowIfNull("File");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
             new DirectoryInfo(File.DirectoryName).Create();
             using (FileStream Writer = File.Open(Mode, FileAccess.Write))
             {
@@ -376,7 +375,8 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The file info</returns>
         public static FileInfo SetAttributes(this FileInfo File, System.IO.FileAttributes Attributes)
         {
-            File.ThrowIf(x => x == null || !File.Exists, new ArgumentNullException("File"));
+            Contract.Requires<ArgumentNullException>(File != null, "File");
+            Contract.Requires<FileNotFoundException>(File.Exists, "File");
             System.IO.File.SetAttributes(File.FullName, Attributes);
             return File;
         }

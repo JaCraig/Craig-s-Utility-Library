@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.DataMapper;
 using Utilities.DataTypes.ExtensionMethods;
@@ -128,8 +129,8 @@ namespace Utilities.SQL.MicroORM
             DataType DefaultValue = default(DataType),
             Mode Mode = Mode.Read|Mode.Write)
         {
-            Property.ThrowIfNull("Property");
-            Mappings.ThrowIfNull("Mappings");
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
             if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
@@ -159,8 +160,8 @@ namespace Utilities.SQL.MicroORM
             string DefaultValue = "",
             Mode Mode = Mode.Read|Mode.Write)
         {
-            Property.ThrowIfNull("Property");
-            Mappings.ThrowIfNull("Mappings");
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
             if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));

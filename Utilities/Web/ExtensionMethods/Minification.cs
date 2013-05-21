@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -96,9 +97,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>A stripped file</returns>
         public static string Minify(this FileInfo Input, MinificationType Type = MinificationType.HTML)
         {
-            Input.ThrowIfNull("Input");
-            if (!Input.Exists)
-                throw new ArgumentException("Input file does not exist");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
+            Contract.Requires<FileNotFoundException>(Input.Exists, "Input file does not exist");
             return Input.Read().Minify(Type);
         }
 

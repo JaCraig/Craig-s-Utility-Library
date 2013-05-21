@@ -26,6 +26,7 @@ using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
 using Utilities.FileFormats.BaseClasses;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -106,7 +107,7 @@ namespace Utilities.FileFormats.BlogML
         /// <returns>This</returns>
         protected override BlogML InternalLoad(string Location)
         {
-            Location.ThrowIfNullOrEmpty("Location");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Location), "Location");
             XmlDocument Document = new XmlDocument();
             Document.Load(Location);
             foreach (XmlNode Children in Document.ChildNodes)

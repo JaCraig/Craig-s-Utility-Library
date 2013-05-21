@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
@@ -96,7 +97,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static T Execute<T>(this Func<T> Function, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
-            Function.ThrowIfNull("Function");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
             Exception Holder = null;
             long Start = System.Environment.TickCount;
             while (Attempts > 0)
@@ -124,7 +125,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static void Execute(this Action Action, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
-            Action.ThrowIfNull("Action");
+            Contract.Requires<ArgumentNullException>(Action!=null, "Action");
             Exception Holder = null;
             long Start = System.Environment.TickCount;
             while (Attempts > 0)
@@ -303,220 +304,220 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region ThrowIf
+        //#region ThrowIf
 
-        /// <summary>
-        /// Throws the specified exception if the predicate is true for the item
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Item">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
-        /// <returns>the original Item</returns>
-        public static T ThrowIf<T>(this T Item, Predicate<T> Predicate, Func<Exception> Exception)
-        {
-            if (Predicate(Item))
-                throw Exception();
-            return Item;
-        }
+        ///// <summary>
+        ///// Throws the specified exception if the predicate is true for the item
+        ///// </summary>
+        ///// <typeparam name="T">Item type</typeparam>
+        ///// <param name="Item">The item</param>
+        ///// <param name="Predicate">Predicate to check</param>
+        ///// <param name="Exception">Exception to throw if predicate is true</param>
+        ///// <returns>the original Item</returns>
+        //public static T ThrowIf<T>(this T Item, Predicate<T> Predicate, Func<Exception> Exception)
+        //{
+        //    if (Predicate(Item))
+        //        throw Exception();
+        //    return Item;
+        //}
 
-        /// <summary>
-        /// Throws the specified exception if the predicate is true for the item
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Item">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
-        /// <returns>the original Item</returns>
-        public static T ThrowIf<T>(this T Item, Predicate<T> Predicate, Exception Exception)
-        {
-            if (Predicate(Item))
-                throw Exception;
-            return Item;
-        }
+        ///// <summary>
+        ///// Throws the specified exception if the predicate is true for the item
+        ///// </summary>
+        ///// <typeparam name="T">Item type</typeparam>
+        ///// <param name="Item">The item</param>
+        ///// <param name="Predicate">Predicate to check</param>
+        ///// <param name="Exception">Exception to throw if predicate is true</param>
+        ///// <returns>the original Item</returns>
+        //public static T ThrowIf<T>(this T Item, Predicate<T> Predicate, Exception Exception)
+        //{
+        //    if (Predicate(Item))
+        //        throw Exception;
+        //    return Item;
+        //}
 
-        #endregion
+        //#endregion
 
-        #region ThrowIfDefault
+        //#region ThrowIfDefault
 
-        /// <summary>
-        /// Determines if the object is equal to default value and throws an ArgumentNullException if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
-        /// <param name="Name">Name of the argument</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
-        {
-            return Item.ThrowIfDefault(new ArgumentNullException(Name), EqualityComparer);
-        }
+        ///// <summary>
+        ///// Determines if the object is equal to default value and throws an ArgumentNullException if it is
+        ///// </summary>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        ///// <param name="Name">Name of the argument</param>
+        ///// <returns>Returns Item</returns>
+        //public static T ThrowIfDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
+        //{
+        //    return Item.ThrowIfDefault(new ArgumentNullException(Name), EqualityComparer);
+        //}
 
-        /// <summary>
-        /// Determines if the object is equal to default value and throws the exception that is passed in if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
-        /// <param name="Exception">Exception to throw</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
-        {
-            return Item.ThrowIf(x => EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>()).Equals(x,default(T)), Exception);
-        }
+        ///// <summary>
+        ///// Determines if the object is equal to default value and throws the exception that is passed in if it is
+        ///// </summary>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        ///// <param name="Exception">Exception to throw</param>
+        ///// <returns>Returns Item</returns>
+        //public static T ThrowIfDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
+        //{
+        //    return Item.ThrowIf(x => EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>()).Equals(x,default(T)), Exception);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region ThrowIfNotDefault
+        //#region ThrowIfNotDefault
 
-        /// <summary>
-        /// Determines if the object is not equal to default value and throws an ArgumentException if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
-        /// <param name="Name">Name of the argument</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNotDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
-        {
-            return Item.ThrowIfNotDefault(new ArgumentException(Name), EqualityComparer);
-        }
+        ///// <summary>
+        ///// Determines if the object is not equal to default value and throws an ArgumentException if it is
+        ///// </summary>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        ///// <param name="Name">Name of the argument</param>
+        ///// <returns>Returns Item</returns>
+        //public static T ThrowIfNotDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
+        //{
+        //    return Item.ThrowIfNotDefault(new ArgumentException(Name), EqualityComparer);
+        //}
 
-        /// <summary>
-        /// Determines if the object is not equal to default value and throws the exception that is passed in if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
-        /// <param name="Exception">Exception to throw</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNotDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
-        {
-            return Item.ThrowIf(x => !EqualityComparer.NullCheck(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
-        }
+        ///// <summary>
+        ///// Determines if the object is not equal to default value and throws the exception that is passed in if it is
+        ///// </summary>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        ///// <param name="Exception">Exception to throw</param>
+        ///// <returns>Returns Item</returns>
+        //public static T ThrowIfNotDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
+        //{
+        //    return Item.ThrowIf(x => !EqualityComparer.NullCheck(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region ThrowIfNot
+        //#region ThrowIfNot
 
-        /// <summary>
-        /// Throws the specified exception if the predicate is false for the item
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Item">The item</param>
-        /// <param name="Predicate">Predicate to check</param>
-        /// <param name="Exception">Exception to throw if predicate is false</param>
-        /// <returns>the original Item</returns>
-        public static T ThrowIfNot<T>(this T Item, Predicate<T> Predicate, Exception Exception)
-        {
-            return Item.ThrowIf(x => !Predicate(x), Exception);
-        }
+        ///// <summary>
+        ///// Throws the specified exception if the predicate is false for the item
+        ///// </summary>
+        ///// <typeparam name="T">Item type</typeparam>
+        ///// <param name="Item">The item</param>
+        ///// <param name="Predicate">Predicate to check</param>
+        ///// <param name="Exception">Exception to throw if predicate is false</param>
+        ///// <returns>the original Item</returns>
+        //public static T ThrowIfNot<T>(this T Item, Predicate<T> Predicate, Exception Exception)
+        //{
+        //    return Item.ThrowIf(x => !Predicate(x), Exception);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region ThrowIfNotNull
+        //#region ThrowIfNotNull
 
-        /// <summary>
-        /// Determines if the object is not null and throws an ArgumentException if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Name">Name of the argument</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNotNull<T>(this T Item, string Name)
-        {
-            return Item.ThrowIfNotNull(new ArgumentException(Name));
-        }
+        ///// <summary>
+        ///// Determines if the object is not null and throws an ArgumentException if it is
+        ///// </summary>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="Name">Name of the argument</param>
+        ///// <returns>Returns Item</returns>
+        //public static T ThrowIfNotNull<T>(this T Item, string Name)
+        //{
+        //    return Item.ThrowIfNotNull(new ArgumentException(Name));
+        //}
 
-        /// <summary>
-        /// Determines if the object is not null and throws the exception passed in if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Exception">Exception to throw</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNotNull<T>(this T Item, Exception Exception)
-        {
-            return Item.ThrowIf(x => x!=null||!Convert.IsDBNull(x), Exception);
-        }
+        ///// <summary>
+        ///// Determines if the object is not null and throws the exception passed in if it is
+        ///// </summary>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="Exception">Exception to throw</param>
+        ///// <returns>Returns Item</returns>
+        //public static T ThrowIfNotNull<T>(this T Item, Exception Exception)
+        //{
+        //    return Item.ThrowIf(x => x!=null||!Convert.IsDBNull(x), Exception);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region ThrowIfNull
+        //#region ThrowIfNull
 
-        /// <summary>
-        /// Determines if the object is null and throws an ArgumentNullException if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Name">Name of the argument</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNull<T>(this T Item, string Name)
-        {
-            return Item.ThrowIfNull(new ArgumentNullException(Name));
-        }
+        ///// <summary>
+        ///// Determines if the object is null and throws an ArgumentNullException if it is
+        ///// </summary>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="Name">Name of the argument</param>
+        ///// <returns>Returns Item</returns>
+        //public static T ThrowIfNull<T>(this T Item, string Name)
+        //{
+        //    return Item.ThrowIfNull(new ArgumentNullException(Name));
+        //}
 
-        /// <summary>
-        /// Determines if the object is null and throws the exception passed in if it is
-        /// </summary>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Exception">Exception to throw</param>
-        /// <returns>Returns Item</returns>
-        public static T ThrowIfNull<T>(this T Item, Exception Exception)
-        {
-            return Item.ThrowIf(x => x==null||Convert.IsDBNull(x), Exception);
-        }
+        ///// <summary>
+        ///// Determines if the object is null and throws the exception passed in if it is
+        ///// </summary>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="Exception">Exception to throw</param>
+        ///// <returns>Returns Item</returns>
+        //public static T ThrowIfNull<T>(this T Item, Exception Exception)
+        //{
+        //    return Item.ThrowIf(x => x==null||Convert.IsDBNull(x), Exception);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region ThrowIfNotNullOrEmpty
+        //#region ThrowIfNotNullOrEmpty
 
-        /// <summary>
-        /// Determines if the IEnumerable is not null or empty and throws an ArgumentException if it is
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Name">Name of the argument</param>
-        /// <returns>Returns Item</returns>
-        public static IEnumerable<T> ThrowIfNotNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
-        {
-            return Item.ThrowIfNotNullOrEmpty(new ArgumentException(Name));
-        }
+        ///// <summary>
+        ///// Determines if the IEnumerable is not null or empty and throws an ArgumentException if it is
+        ///// </summary>
+        ///// <typeparam name="T">Item type</typeparam>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="Name">Name of the argument</param>
+        ///// <returns>Returns Item</returns>
+        //public static IEnumerable<T> ThrowIfNotNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
+        //{
+        //    return Item.ThrowIfNotNullOrEmpty(new ArgumentException(Name));
+        //}
 
-        /// <summary>
-        /// Determines if the IEnumerable is not null or empty and throws the exception passed in if it is
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Exception">Exception to throw</param>
-        /// <returns>Returns Item</returns>
-        public static IEnumerable<T> ThrowIfNotNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
-        {
-            return Item.ThrowIf(x => x != null && x.Count() > 0, Exception);
-        }
+        ///// <summary>
+        ///// Determines if the IEnumerable is not null or empty and throws the exception passed in if it is
+        ///// </summary>
+        ///// <typeparam name="T">Item type</typeparam>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="Exception">Exception to throw</param>
+        ///// <returns>Returns Item</returns>
+        //public static IEnumerable<T> ThrowIfNotNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
+        //{
+        //    return Item.ThrowIf(x => x != null && x.Count() > 0, Exception);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region ThrowIfNullOrEmpty
+        //#region ThrowIfNullOrEmpty
 
-        /// <summary>
-        /// Determines if the IEnumerable is null or empty and throws an ArgumentNullException if it is
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Name">Name of the argument</param>
-        /// <returns>Returns Item</returns>
-        public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
-        {
-            return Item.ThrowIfNullOrEmpty(new ArgumentNullException(Name));
-        }
+        ///// <summary>
+        ///// Determines if the IEnumerable is null or empty and throws an ArgumentNullException if it is
+        ///// </summary>
+        ///// <typeparam name="T">Item type</typeparam>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="Name">Name of the argument</param>
+        ///// <returns>Returns Item</returns>
+        //public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
+        //{
+        //    return Item.ThrowIfNullOrEmpty(new ArgumentNullException(Name));
+        //}
 
-        /// <summary>
-        /// Determines if the IEnumerable is null or empty and throws the exception passed in if it is
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <param name="Item">The object to check</param>
-        /// <param name="Exception">Exception to throw</param>
-        /// <returns>Returns Item</returns>
-        public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
-        {
-            return Item.ThrowIf(x => x==null||x.Count()==0, Exception);
-        }
+        ///// <summary>
+        ///// Determines if the IEnumerable is null or empty and throws the exception passed in if it is
+        ///// </summary>
+        ///// <typeparam name="T">Item type</typeparam>
+        ///// <param name="Item">The object to check</param>
+        ///// <param name="Exception">Exception to throw</param>
+        ///// <returns>Returns Item</returns>
+        //public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
+        //{
+        //    return Item.ThrowIf(x => x==null||x.Count()==0, Exception);
+        //}
 
-        #endregion
+        //#endregion
 
         #region Times
 

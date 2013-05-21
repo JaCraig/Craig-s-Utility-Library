@@ -29,6 +29,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes.Comparison;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -77,8 +78,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if they all fail all of the predicates, false otherwise</returns>
         public static bool FalseForAll<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
         {
-            List.ThrowIfNull("List");
-            Predicates.ThrowIfNull("Predicate");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
             foreach (Predicate<T> Predicate in Predicates)
                 if (List.All(x => Predicate(x)))
                     return false;
@@ -98,8 +99,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if any fail any of the predicates, false otherwise</returns>
         public static bool FalseForAny<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
         {
-            List.ThrowIfNull("List");
-            Predicates.ThrowIfNull("Predicate");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
             foreach (Predicate<T> Predicate in Predicates)
                 if (List.Any(x => !Predicate(x)))
                     return true;
@@ -119,7 +120,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The first X items from the list</returns>
         public static IEnumerable<T> First<T>(this IEnumerable<T> List, int Count)
         {
-            List.ThrowIfNull("List");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
             return List.ElementsBetween(0, Count);
         }
 
@@ -138,8 +139,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original list</returns>
         public static IEnumerable<T> For<T>(this IEnumerable<T> List, int Start, int End, Action<T> Action)
         {
-            List.ThrowIfNull("List");
-            Action.ThrowIfNull("Action");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
             foreach (T Item in List.ElementsBetween(Start, End + 1))
                 Action(Item);
             return List;
@@ -157,8 +158,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The resulting list</returns>
         public static IEnumerable<R> For<T, R>(this IEnumerable<T> List, int Start, int End, Func<T, R> Function)
         {
-            List.ThrowIfNull("List");
-            Function.ThrowIfNull("Function");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
             List<R> ReturnValues = new List<R>();
             foreach (T Item in List.ElementsBetween(Start, End + 1))
                     ReturnValues.Add(Function(Item));
@@ -178,8 +179,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original list</returns>
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action)
         {
-            List.ThrowIfNull("List");
-            Action.ThrowIfNull("Action");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
             foreach (T Item in List)
                 Action(Item);
             return List;
@@ -195,8 +196,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The resulting list</returns>
         public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> List, Func<T, R> Function)
         {
-            List.ThrowIfNull("List");
-            Function.ThrowIfNull("Function");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
             List<R> ReturnValues = new List<R>();
             foreach (T Item in List)
                 ReturnValues.Add(Function(Item));
@@ -218,8 +219,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original list</returns>
         public static IEnumerable<T> ForParallel<T>(this IEnumerable<T> List, int Start, int End, Action<T> Action)
         {
-            List.ThrowIfNull("List");
-            Action.ThrowIfNull("Action");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
             Parallel.For(Start, End + 1, new Action<int>(x => Action(List.ElementAt(x))));
             return List;
         }
@@ -236,8 +237,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The resulting list</returns>
         public static IEnumerable<R> ForParallel<T, R>(this IEnumerable<T> List, int Start, int End, Func<T, R> Function)
         {
-            List.ThrowIfNull("List");
-            Function.ThrowIfNull("Function");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
             R[] Results = new R[(End + 1) - Start];
             Parallel.For(Start, End + 1, new Action<int>(x => Results[x - Start] = Function(List.ElementAt(x))));
             return Results;
@@ -256,8 +257,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original list</returns>
         public static IEnumerable<T> ForEachParallel<T>(this IEnumerable<T> List, Action<T> Action)
         {
-            List.ThrowIfNull("List");
-            Action.ThrowIfNull("Action");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
             Parallel.ForEach(List, Action);
             return List;
         }
@@ -272,8 +273,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The results in an IEnumerable list</returns>
         public static IEnumerable<R> ForEachParallel<T, R>(this IEnumerable<T> List, Func<T, R> Function)
         {
-            List.ThrowIfNull("List");
-            Function.ThrowIfNull("Function");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
             return List.ForParallel(0, List.Count() - 1, Function);
         }
 
@@ -290,7 +291,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The last X items from the list</returns>
         public static IEnumerable<T> Last<T>(this IEnumerable<T> List, int Count)
         {
-            List.ThrowIfNull("List");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
             return List.ElementsBetween(List.Count() - Count, List.Count());
         }
 
@@ -308,7 +309,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The position of the object if it is present, otherwise -1</returns>
         public static int PositionOf<T>(this IEnumerable<T> List, T Object, IEqualityComparer<T> EqualityComparer = null)
         {
-            List.ThrowIfNull("List");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
             EqualityComparer = EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>());
             int Count = 0;
             foreach (T Item in List)
@@ -354,8 +355,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>the original IEnumerable</returns>
         public static IEnumerable<T> ThrowIfTrueForAll<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
         {
-            Predicates.ThrowIfNull("Predicates");
-            Exception.ThrowIfNull("Exception");
+            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
             if (Items.TrueForAll(Predicates))
                 throw Exception;
             return Items;
@@ -376,8 +377,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>the original list</returns>
         public static IEnumerable<T> ThrowIfFalseForAll<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
         {
-            Predicates.ThrowIfNull("Predicates");
-            Exception.ThrowIfNull("Exception");
+            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
             if (Items.FalseForAll(Predicates))
                 throw Exception;
             return Items;
@@ -398,8 +399,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>the original IEnumerable</returns>
         public static IEnumerable<T> ThrowIfTrueForAny<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
         {
-            Predicates.ThrowIfNull("Predicates");
-            Exception.ThrowIfNull("Exception");
+            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
             if (Items.TrueForAny(Predicates))
                 throw Exception;
             return Items;
@@ -420,8 +421,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>the original list</returns>
         public static IEnumerable<T> ThrowIfFalseForAny<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
         {
-            Predicates.ThrowIfNull("Predicates");
-            Exception.ThrowIfNull("Exception");
+            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
             if (Items.FalseForAny(Predicates))
                 throw Exception;
             return Items;
@@ -441,8 +442,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The array containing the items from the list</returns>
         public static Target[] ToArray<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
         {
-            List.ThrowIfNull("List");
-            ConvertingFunction.ThrowIfNull("ConvertingFunction");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
             return List.ForEach(ConvertingFunction).ToArray();
         }
 
@@ -493,7 +494,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The string version of the list</returns>
         public static string ToString<T>(this IEnumerable<T> List, Func<T, string> ItemOutput = null, string Seperator = ",")
         {
-            List.ThrowIfNull("List");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
             Seperator = Seperator.NullCheck("");
             ItemOutput = ItemOutput.NullCheck(x => x.ToString());
             StringBuilder Builder = new StringBuilder();
@@ -519,8 +520,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if they all pass all of the predicates, false otherwise</returns>
         public static bool TrueForAll<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
         {
-            List.ThrowIfNull("List");
-            Predicates.ThrowIfNull("Predicate");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
             foreach (Predicate<T> Predicate in Predicates)
                 if (List.Any(x => !Predicate(x)))
                     return false;
@@ -540,8 +541,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if any pass any of the predicates, false otherwise</returns>
         public static bool TrueForAny<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
         {
-            List.ThrowIfNull("List");
-            Predicates.ThrowIfNull("Predicate");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
             foreach (Predicate<T> Predicate in Predicates)
                 if (List.Any(x => Predicate(x)))
                     return true;
@@ -564,8 +565,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static IEnumerable<T> TryAll<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
         {
-            List.ThrowIfNull("List");
-            Action.ThrowIfNull("Action");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
             foreach (T Item in List)
             {
                 try
@@ -594,8 +595,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static IEnumerable<T> TryAllParallel<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
         {
-            List.ThrowIfNull("List");
-            Action.ThrowIfNull("Action");
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
             Parallel.ForEach<T>(List, delegate(T Item)
             {
                 try

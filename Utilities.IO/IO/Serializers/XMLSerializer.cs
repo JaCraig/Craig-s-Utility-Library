@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -66,7 +67,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The serialized object</returns>
         public string Serialize(object Object)
         {
-            Object.ThrowIfNull("Object");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 XmlSerializer Serializer = new XmlSerializer(Object.GetType());

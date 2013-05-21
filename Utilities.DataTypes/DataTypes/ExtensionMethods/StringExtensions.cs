@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -518,7 +519,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The input string formatted by using the regex string</returns>
         public static string RegexFormat(this string Input, string Format, string OutputFormat, RegexOptions Options = RegexOptions.None)
         {
-            Input.ThrowIfNullOrEmpty("Input");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
             return Regex.Replace(Input, Format, OutputFormat, Options);
         }
 

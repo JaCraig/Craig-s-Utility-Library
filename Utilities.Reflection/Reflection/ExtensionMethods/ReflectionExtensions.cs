@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -608,7 +609,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>True if it does, false otherwise</returns>
         public static bool HasDefaultConstructor(this Type Type)
         {
-            Type.ThrowIfNull("Type");
+            Contract.Requires<ArgumentNullException>(Type != null, "Type");
             return Type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
                         .Any(x => x.GetParameters().Length == 0);
         }
@@ -676,7 +677,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The assembly specified if it exists</returns>
         public static System.Reflection.Assembly Load(this AssemblyName Name)
         {
-            Name.ThrowIfNull("Name");
+            Contract.Requires<ArgumentNullException>(Name != null, "Name");
             return AppDomain.CurrentDomain.Load(Name);
         }
 

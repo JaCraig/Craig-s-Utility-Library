@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
 
 #endregion
@@ -45,9 +46,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The matches that satisfy the predicate</returns>
         public static IEnumerable<Match> Where(this MatchCollection Collection, Predicate<Match> Predicate)
         {
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
             if (Collection==null)
                 return null;
-            Predicate.ThrowIfNull("Predicate");
             List<Match> Matches = new List<Match>();
             foreach (Match Item in Collection)
                 if (Predicate(Item))

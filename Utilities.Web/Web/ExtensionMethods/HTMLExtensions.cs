@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -47,7 +48,7 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         public static Uri AbsoluteRoot(this HttpContextBase Context)
         {
-            Context.ThrowIfNull("Context");
+            Contract.Requires<ArgumentNullException>(Context != null, "Context");
             if (Context.Items["absoluteurl"] == null)
                 Context.Items["absoluteurl"] = new Uri(Context.Request.Url.GetLeftPart(UriPartial.Authority) + Context.RelativeRoot());
             return Context.Items["absoluteurl"] as Uri;
@@ -58,7 +59,7 @@ namespace Utilities.Web.ExtensionMethods
         /// </summary>
         public static Uri AbsoluteRoot(this HttpContext Context)
         {
-            Context.ThrowIfNull("Context");
+            Contract.Requires<ArgumentNullException>(Context != null, "Context");
             if (Context.Items["absoluteurl"] == null)
                 Context.Items["absoluteurl"] = new Uri(Context.Request.Url.GetLeftPart(UriPartial.Authority) + Context.RelativeRoot());
             return Context.Items["absoluteurl"] as Uri;
@@ -76,9 +77,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <param name="Page">Page to add it to</param>
         public static void AddScriptFile(this System.Web.UI.Page Page, FileInfo File)
         {
-            File.ThrowIfNull("File");
-            if (!File.Exists)
-                throw new ArgumentException("File does not exist");
+            Contract.Requires<ArgumentNullException>(File != null, "File");
+            Contract.Requires<FileNotFoundException>(File.Exists, "File does not exist");
             if (!Page.ClientScript.IsClientScriptIncludeRegistered(typeof(System.Web.UI.Page), File.FullName))
                 Page.ClientScript.RegisterClientScriptInclude(typeof(System.Web.UI.Page), File.FullName, File.FullName);
         }
@@ -104,7 +104,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>false if it does not contain HTML, true otherwise</returns>
         public static bool ContainsHTML(this FileInfo Input)
         {
-            Input.ThrowIfNull("Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             return Input.Exists ? Input.Read().ContainsHTML() : false;
         }
 
@@ -122,7 +122,7 @@ namespace Utilities.Web.ExtensionMethods
         /// is set to true, but can also deal with CSS and Javascript)</param>
         public static void HTTPCompress(this HttpContextBase Context, bool RemovePrettyPrinting = false, MinificationType Type = MinificationType.HTML)
         {
-            Context.ThrowIfNull("Context");
+            Contract.Requires<ArgumentNullException>(Context != null, "Context");
             if (Context.Request.UserAgent != null && Context.Request.UserAgent.Contains("MSIE 6"))
                 return;
             if (RemovePrettyPrinting)
@@ -163,7 +163,7 @@ namespace Utilities.Web.ExtensionMethods
         /// is set to true, but can also deal with CSS and Javascript)</param>
         public static void HTTPCompress(this HttpContext Context, bool RemovePrettyPrinting = false, MinificationType Type = MinificationType.HTML)
         {
-            Context.ThrowIfNull("Context");
+            Contract.Requires<ArgumentNullException>(Context != null, "Context");
             if (Context.Request.UserAgent != null && Context.Request.UserAgent.Contains("MSIE 6"))
                 return;
             if (RemovePrettyPrinting)
@@ -287,7 +287,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <param name="Context">Context to set the encoding on</param>
         public static void SetEncoding(this HttpContextBase Context, string Encoding)
         {
-            Context.ThrowIfNull("Context");
+            Contract.Requires<ArgumentNullException>(Context != null, "Context");
             Context.Response.AppendHeader("Content-encoding", Encoding);
         }
 
@@ -298,7 +298,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <param name="Context">Context to set the encoding on</param>
         public static void SetEncoding(this HttpContext Context, string Encoding)
         {
-            Context.ThrowIfNull("Context");
+            Contract.Requires<ArgumentNullException>(Context != null, "Context");
             Context.Response.AppendHeader("Content-encoding", Encoding);
         }
 
@@ -327,9 +327,8 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>HTML-less string</returns>
         public static string StripHTML(this FileInfo HTML)
         {
-            HTML.ThrowIfNull("HTML");
-            if (!HTML.Exists)
-                throw new ArgumentException("File does not exist");
+            Contract.Requires<ArgumentNullException>(HTML != null, "HTML");
+            Contract.Requires<FileNotFoundException>(HTML.Exists, "File does not exist");
             return HTML.Read().StripHTML();
         }
 

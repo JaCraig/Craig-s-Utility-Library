@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Utilities.DataTypes.ExtensionMethods;
@@ -41,7 +42,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The serialized object</returns>
         public byte[] Serialize(object Object)
         {
-            Object.ThrowIfNull("Object");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 BinaryFormatter Formatter = new BinaryFormatter();

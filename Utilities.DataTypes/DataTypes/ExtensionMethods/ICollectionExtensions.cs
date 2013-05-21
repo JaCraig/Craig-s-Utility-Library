@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 #endregion
 
@@ -45,7 +46,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The collection with the added items</returns>
         public static ICollection<T> Add<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
-            Collection.ThrowIfNull("Collection");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             if (Items==null)
                 return Collection;
             Items.ForEach(x => Collection.Add(x));
@@ -61,7 +62,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The collection with the added items</returns>
         public static ICollection<T> Add<T>(this ICollection<T> Collection, params T[] Items)
         {
-            Collection.ThrowIfNull("Collection");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             if (Items==null)
                 return Collection;
             Items.ForEach(x => Collection.Add(x));
@@ -81,8 +82,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The original item</returns>
         public static T AddAndReturn<T>(this ICollection<T> Collection, T Item)
         {
-            Collection.ThrowIfNull("Collection");
-            Item.ThrowIfNull("Item");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            Contract.Requires<ArgumentNullException>(Item != null, "Item");
             Collection.Add(Item);
             return Item;
         }
@@ -101,8 +102,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if any are added, false otherwise</returns>
         public static bool AddIf<T>(this ICollection<T> Collection, Predicate<T> Predicate, params T[] Items)
         {
-            Collection.ThrowIfNull("Collection");
-            Predicate.ThrowIfNull("Predicate");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
             bool ReturnValue = false;
             foreach (T Item in Items)
             {
@@ -125,8 +126,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIf<T>(this ICollection<T> Collection, Predicate<T> Predicate, IEnumerable<T> Items)
         {
-            Collection.ThrowIfNull("Collection");
-            Predicate.ThrowIfNull("Predicate");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
             return Collection.AddIf(Predicate, Items.ToArray());
         }
 
@@ -143,7 +144,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIfUnique<T>(this ICollection<T> Collection, params T[] Items)
         {
-            Collection.ThrowIfNull("Collection");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 
@@ -156,7 +157,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIfUnique<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
-            Collection.ThrowIfNull("Collection");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 
@@ -172,7 +173,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Predicate">Predicate used to determine what items to remove</param>
         public static ICollection<T> Remove<T>(this ICollection<T> Collection, Func<T, bool> Predicate)
         {
-            Collection.ThrowIfNull("Collection");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             return Collection.Where(x => !Predicate(x)).ToList();
         }
 
@@ -185,7 +186,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The collection with the items removed</returns>
         public static ICollection<T> Remove<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
-            Collection.ThrowIfNull("Collection");
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             if (Items==null)
                 return Collection;
             return Collection.Where(x => !Items.Contains(x)).ToList();

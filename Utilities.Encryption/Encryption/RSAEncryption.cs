@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
@@ -44,8 +46,8 @@ namespace Utilities.Encryption
         /// <returns>An encrypted string (64bit string)</returns>
         public static string Encrypt(string Input, string Key, Encoding EncodingUsing = null)
         {
-            Input.ThrowIfNullOrEmpty("Input");
-            Key.ThrowIfNullOrEmpty("Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
@@ -64,8 +66,8 @@ namespace Utilities.Encryption
         /// <returns>A decrypted string</returns>
         public static string Decrypt(string Input, string Key, Encoding EncodingUsing = null)
         {
-            Input.ThrowIfNullOrEmpty("Input");
-            Key.ThrowIfNullOrEmpty("Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
@@ -98,8 +100,8 @@ namespace Utilities.Encryption
         /// <returns>A signed hash of the input (64bit string)</returns>
         public static string SignHash(string Input, string Key, out string Hash, Encoding EncodingUsing = null)
         {
-            Input.ThrowIfNullOrEmpty("Input");
-            Key.ThrowIfNullOrEmpty("Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);
@@ -120,9 +122,9 @@ namespace Utilities.Encryption
         /// <returns>True if it is verified, false otherwise</returns>
         public static bool VerifyHash(string Hash, string SignedHash, string Key)
         {
-            Hash.ThrowIfNullOrEmpty("Hash");
-            SignedHash.ThrowIfNullOrEmpty("SignedHash");
-            Key.ThrowIfNullOrEmpty("Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Hash), "Hash");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(SignedHash), "SignedHash");
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(Key);

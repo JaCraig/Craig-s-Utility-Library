@@ -97,7 +97,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static T Execute<T>(this Func<T> Function, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
-            Function.ThrowIfNull("Function");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
             Exception Holder = null;
             long Start = System.Environment.TickCount;
             while (Attempts > 0)

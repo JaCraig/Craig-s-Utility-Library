@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
 #endregion
@@ -42,7 +44,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>A byte array</returns>
         public static byte[] ReadAllBinary(this Stream Input)
         {
-            Input.ThrowIfNull("Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             MemoryStream TempInput = Input as MemoryStream;
             if (TempInput!=null)
                 return TempInput.ToArray();

@@ -20,7 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
@@ -43,7 +45,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>The IDictionary expressed as a string</returns>
         public static string ToQueryString(this IDictionary<string, string> Input)
         {
-            Input.ThrowIfNull("Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             if (Input.Count <= 0)
                 return "";
             StringBuilder Builder = new StringBuilder();

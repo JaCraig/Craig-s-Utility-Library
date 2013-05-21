@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -53,10 +54,8 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The returned value of the method</returns>
         public static ReturnType CallMethod<ReturnType>(this object Object, string MethodName, params object[] InputVariables)
         {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            if (string.IsNullOrEmpty(MethodName))
-                throw new ArgumentNullException("MethodName");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
             if (InputVariables == null)
                 InputVariables = new object[0];
             Type ObjectType = Object.GetType();
@@ -82,8 +81,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The newly created instance of the type</returns>
         public static ClassType CreateInstance<ClassType>(this Type Type,params object[] args)
         {
-            if (Type == null)
-                throw new ArgumentNullException("Type");
+            Contract.Requires<ArgumentNullException>(Type != null, "Type");
             return (ClassType)Type.CreateInstance(args);
         }
 
@@ -95,8 +93,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The newly created instance of the type</returns>
         public static object CreateInstance(this Type Type, params object[] args)
         {
-            if (Type == null)
-                throw new ArgumentNullException("Type");
+            Contract.Requires<ArgumentNullException>(Type != null, "Type");
             return Activator.CreateInstance(Type, args);
         }
 
@@ -113,8 +110,7 @@ namespace Utilities.Reflection.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string DumpProperties(this object Object, bool HTMLOutput = true)
         {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             StringBuilder TempValue = new StringBuilder();
             TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
             Type ObjectType = Object.GetType();
@@ -147,8 +143,7 @@ namespace Utilities.Reflection.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string DumpProperties(this Type ObjectType, bool HTMLOutput = true)
         {
-            if (ObjectType == null)
-                throw new ArgumentNullException("ObjectType");
+            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             StringBuilder TempValue = new StringBuilder();
             TempValue.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody>" : "Property Name\t\t\t\tProperty Value");
             PropertyInfo[] Properties = ObjectType.GetProperties();
@@ -489,8 +484,7 @@ namespace Utilities.Reflection.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static Expression<Action<ClassType, DataType>> GetPropertySetter<ClassType, DataType>(this Expression<Func<ClassType, DataType>> Property)
         {
-            if (Property == null)
-                throw new ArgumentNullException("Property");
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             string PropertyName = Property.GetPropertyName();
             string[] SplitName = PropertyName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
             PropertyInfo PropertyInfo = typeof(ClassType).GetProperty(SplitName[0]);
@@ -608,7 +602,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>True if it does, false otherwise</returns>
         public static bool HasDefaultConstructor(this Type Type)
         {
-            Type.ThrowIfNull("Type");
+            Contract.Requires<ArgumentNullException>(Type != null, "Type");
             return Type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
                         .Any(x => x.GetParameters().Length == 0);
         }
@@ -639,10 +633,8 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>True if it is, false otherwise</returns>
         public static bool IsOfType(this object Object, Type Type)
         {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            if (Type == null)
-                throw new ArgumentNullException("Type");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(Type != null, "Type");
             return Object.GetType().IsOfType(Type);
         }
 
@@ -654,10 +646,9 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>True if it is, false otherwise</returns>
         public static bool IsOfType(this Type ObjectType, Type Type)
         {
+            Contract.Requires<ArgumentNullException>(Type != null, "Type");
             if (ObjectType == null)
                 return false;
-            if (Type == null)
-                throw new ArgumentNullException("Type");
             if (Type == ObjectType || ObjectType.GetInterfaces().Any(x => x == Type))
                 return true;
             if (ObjectType.BaseType == null)
@@ -676,7 +667,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The assembly specified if it exists</returns>
         public static System.Reflection.Assembly Load(this AssemblyName Name)
         {
-            Name.ThrowIfNull("Name");
+            Contract.Requires<ArgumentNullException>(Name != null, "Name");
             return AppDomain.CurrentDomain.Load(Name);
         }
 
@@ -776,12 +767,9 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Format">Allows for formatting if the destination is a string</param>
         public static object SetProperty(this object Object, PropertyInfo Property, object Value, string Format = "")
         {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            if (Property == null)
-                throw new ArgumentNullException("Property");
-            if (Value == null)
-                throw new ArgumentNullException("Value");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             if (Property.PropertyType == typeof(string))
                 Value = Value.FormatToString(Format);
             //if(!Value.GetType().IsOfType(Property.PropertyType))
@@ -799,12 +787,9 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <param name="Format">Allows for formatting if the destination is a string</param>
         public static object SetProperty(this object Object, string Property, object Value, string Format = "")
         {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            if (string.IsNullOrEmpty(Property))
-                throw new ArgumentNullException("Property");
-            if (Value == null)
-                throw new ArgumentNullException("Value");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Property), "Property");
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             string[] Properties = Property.Split(new string[] { "." }, StringSplitOptions.None);
             object TempObject = Object;
             Type TempObjectType = TempObject.GetType();
@@ -833,8 +818,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The long version of the version information</returns>
         public static string ToLongVersionString(this Assembly Assembly)
         {
-            if (Assembly == null)
-                throw new ArgumentNullException("Assembly");
+            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
             return Assembly.GetName().Version.ToString();
         }
 
@@ -849,8 +833,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>The short version of the version information</returns>
         public static string ToShortVersionString(this Assembly Assembly)
         {
-            if (Assembly == null)
-                throw new ArgumentNullException("Assembly");
+            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
             Version VersionInfo=Assembly.GetName().Version;
             return VersionInfo.Major + "." + VersionInfo.Minor;
         }

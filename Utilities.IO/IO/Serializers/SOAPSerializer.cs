@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Soap;
 using System.Security;
@@ -68,7 +69,7 @@ namespace Utilities.IO.Serializers
         [SecuritySafeCritical]
         public string Serialize(object Object)
         {
-            Object.ThrowIfNull("Object can not be null");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 SoapFormatter Serializer = new SoapFormatter();

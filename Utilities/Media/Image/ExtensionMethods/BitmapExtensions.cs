@@ -916,14 +916,13 @@ namespace Utilities.Media.Image.ExtensionMethods
 
         private static float GetHeight(int x, int y, BitmapData BlackAndWhiteData, int BlackAndWhitePixelSize)
         {
-            BlackAndWhiteData.ThrowIfNull("BlackAndWhiteData");
+            Contract.Requires<ArgumentNullException>(BlackAndWhiteData != null, "BlackAndWhiteData");
             Color TempColor = BlackAndWhiteData.GetPixel(x, y, BlackAndWhitePixelSize);
             return GetHeight(TempColor);
         }
 
         private static float GetHeight(Color Color)
         {
-            Color.ThrowIfNull("Color");
             return (float)Color.R / 255.0f;
         }
 
@@ -960,7 +959,7 @@ namespace Utilities.Media.Image.ExtensionMethods
 
         private static void GetMinMaxPixel(out Color Min, out Color Max, BitmapData ImageData, int PixelSize)
         {
-            ImageData.ThrowIfNull("ImageData");
+            Contract.Requires<ArgumentNullException>(ImageData != null, "ImageData");
             int MinR = 255, MinG = 255, MinB = 255;
             int MaxR = 0, MaxG = 0, MaxB = 0;
             for (int x = 0; x < ImageData.Width; ++x)
@@ -999,7 +998,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>The pixel size (in bytes)</returns>
         public static int GetPixelSize(this BitmapData Data)
         {
-            Data.ThrowIfNull("Data");
+            Contract.Requires<ArgumentNullException>(Data != null, "Data");
             if (Data.PixelFormat == PixelFormat.Format24bppRgb)
                 return 3;
             else if (Data.PixelFormat == PixelFormat.Format32bppArgb
@@ -1023,7 +1022,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>The pixel at the x,y coords</returns>
         public static unsafe Color GetPixel(this BitmapData Data, int x, int y, int PixelSizeInBytes)
         {
-            Data.ThrowIfNull("Data");
+            Contract.Requires<ArgumentNullException>(Data != null, "Data");
             byte* DataPointer = (byte*)Data.Scan0;
             DataPointer = DataPointer + (y * Data.Stride) + (x * PixelSizeInBytes);
             return (PixelSizeInBytes == 3) ?
@@ -1089,7 +1088,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap KuwaharaBlur(this Bitmap OriginalImage, int Size = 3, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -1190,7 +1189,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap object</returns>
         public static Bitmap LaplaceEdgeDetection(this Bitmap Image, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             using (Bitmap TempImage = Image.BlackAndWhite())
             {
@@ -1241,7 +1240,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>The bitmap data for the image</returns>
         public static BitmapData LockImage(this Bitmap Image)
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             return Image.LockBits(new Rectangle(0, 0, Image.Width, Image.Height),
                 ImageLockMode.ReadWrite, Image.PixelFormat);
         }
@@ -1271,7 +1270,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap MedianFilter(this Bitmap OriginalImage, int Size = 3, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -1334,9 +1333,8 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap indicating where changes between frames have occurred overlayed on top of the new image.</returns>
         public static Bitmap MotionDetection(this Bitmap NewImage, Bitmap OldImage, int Threshold, Color DetectionColor)
         {
-            NewImage.ThrowIfNull("NewImage");
-            OldImage.ThrowIfNull("OldImage");
-            DetectionColor.ThrowIfNull("DetectionColor");
+            Contract.Requires<ArgumentNullException>(NewImage != null, "NewImage");
+            Contract.Requires<ArgumentNullException>(OldImage != null, "OldImage");
             using (Bitmap NewImage1 = NewImage.BlackAndWhite())
             {
                 using (Bitmap OldImage1 = OldImage.BlackAndWhite())
@@ -1417,7 +1415,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Negative(this Bitmap OriginalImage, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -1456,7 +1454,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap NormalMap(this Bitmap ImageUsing,bool InvertX=false,bool InvertY=false)
         {
-            ImageUsing.ThrowIfNull("ImageUsing");
+            Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
             using (Bitmap TempImageX = ImageUsing.BumpMap(Direction.LeftRight,InvertX))
             {
                 using (Bitmap TempImageY = ImageUsing.BumpMap(Direction.TopBottom, InvertY))
@@ -1513,8 +1511,8 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Or(this Bitmap Image1, Bitmap Image2, string FileName = "")
         {
-            Image1.ThrowIfNull("Image1");
-            Image2.ThrowIfNull("Image2");
+            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
+            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -1560,7 +1558,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap OilPainting(this Bitmap Image, int Seed, int NumberOfPoints=100)
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             Bitmap _Image = new Bitmap(Image);
             CellularMap Map = new CellularMap(Seed, Image.Width, Image.Height, NumberOfPoints);
             BitmapData ImageData = _Image.LockImage();
@@ -1622,7 +1620,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Pixelate(this Bitmap OriginalImage, int PixelSize = 5, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -1682,7 +1680,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap image</returns>
         public static Bitmap RedFilter(this Bitmap Image, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
@@ -1712,7 +1710,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap object of the resized image</returns>
         public static Bitmap Resize(this Bitmap Image, int MaxSide, Quality Quality = Quality.Low, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             int NewWidth;
             int NewHeight;
 
@@ -1743,7 +1741,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Resize(this Bitmap Image, int Width, int Height, Quality Quality = Quality.Low, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(Width, Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
@@ -1781,7 +1779,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Rotate(this Bitmap Image, float DegreesToRotate, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(Image.Width, Image.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
@@ -1811,7 +1809,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap object of the sepia tone image</returns>
         public static Bitmap SepiaTone(this Bitmap Image, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             ColorMatrix TempMatrix = new ColorMatrix();
             TempMatrix.Matrix = new float[][]{
@@ -1841,8 +1839,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <param name="PixelSizeInBytes">Pixel size in bytes</param>
         public static unsafe void SetPixel(this BitmapData Data, int x, int y, Color PixelColor, int PixelSizeInBytes)
         {
-            Data.ThrowIfNull("Data");
-            PixelColor.ThrowIfNull("PixelColor");
+            Contract.Requires<ArgumentNullException>(Data != null, "Data");
             byte* DataPointer = (byte*)Data.Scan0;
             DataPointer = DataPointer + (y * Data.Stride) + (x * PixelSizeInBytes);
             if (PixelSizeInBytes == 3)
@@ -1870,7 +1867,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap image</returns>
         public static Bitmap Sharpen(this Bitmap Image, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Filter TempFilter = new Filter(3, 3);
             TempFilter.MyFilter[0, 0] = -1;
@@ -1900,7 +1897,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap image</returns>
         public static Bitmap SharpenLess(this Bitmap Image, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Filter TempFilter = new Filter(3, 3);
             TempFilter.MyFilter[0, 0] = -1;
@@ -1935,7 +1932,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap SinWave(this Bitmap OriginalImage, float Amplitude, float Frequency, bool XDirection, bool YDirection, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -1988,7 +1985,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEdgeDetection(this Bitmap Input, string FileName = "")
         {
-            Input.ThrowIfNull("Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             using (Bitmap TempImage = Input.BlackAndWhite())
             {
@@ -2066,7 +2063,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap image</returns>
         public static Bitmap SobelEmboss(this Bitmap Image, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Filter TempFilter = new Filter(3, 3);
             TempFilter.MyFilter[0, 0] = -1;
@@ -2099,7 +2096,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap SNNBlur(this Bitmap OriginalImage, int Size = 3, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -2179,7 +2176,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap StretchContrast(this Bitmap OriginalImage, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -2223,7 +2220,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Threshold(this Bitmap OriginalImage, float Threshold = 0.5f, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -2331,7 +2328,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Turbulence(this Bitmap OriginalImage, int Roughness = 8, float Power = 5.0f, int Seed = 25123864, string FileName = "")
         {
-            OriginalImage.ThrowIfNull("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             int Width = OriginalImage.Width;
             int Height = OriginalImage.Height;
@@ -2382,8 +2379,8 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>Returns the image</returns>
         public static Bitmap UnlockImage(this Bitmap Image, BitmapData ImageData)
         {
-            Image.ThrowIfNull("Image");
-            ImageData.ThrowIfNull("ImageData");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
+            Contract.Requires<ArgumentNullException>(ImageData != null, "ImageData");
             Image.UnlockBits(ImageData);
             return Image;
         }
@@ -2406,8 +2403,8 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Watermark(this Bitmap Image, Bitmap WatermarkImage, float Opacity, int X, int Y, Color KeyColor, string FileName = "")
         {
-            Image.ThrowIfNull("Image");
-            WatermarkImage.ThrowIfNull("WatermarkImage");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
+            Contract.Requires<ArgumentNullException>(WatermarkImage != null, "WatermarkImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(Image, Image.Width, Image.Height);
             using (Graphics NewGraphics = Graphics.FromImage(NewBitmap))
@@ -2454,8 +2451,8 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap Xor(this Bitmap Image1, Bitmap Image2, string FileName = "")
         {
-            Image1.ThrowIfNull("Image1");
-            Image2.ThrowIfNull("Image2");
+            Contract.Requires<ArgumentNullException>(Image1 != null, "Image1");
+            Contract.Requires<ArgumentNullException>(Image2 != null, "Image2");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(Image1.Width, Image1.Height);
             BitmapData NewData = NewBitmap.LockImage();

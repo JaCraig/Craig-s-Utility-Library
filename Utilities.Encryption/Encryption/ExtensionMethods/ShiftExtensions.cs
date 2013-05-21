@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
@@ -45,9 +46,9 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static byte[] Encrypt(this byte[] Data, byte[] Key, bool OneTimePad)
         {
+            Contract.Requires<ArgumentNullException>(Key != null, "Key");
             if (Data==null)
                 return null;
-            Key.ThrowIfNull("Key");
             if (OneTimePad && Key.Length < Data.Length)
                 throw new ArgumentException("Key is not long enough");
             return Process(Data, Key);
@@ -63,9 +64,9 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static string Encrypt(this string Data, string Key, bool OneTimePad, Encoding EncodingUsing = null)
         {
+            Contract.Requires<ArgumentNullException>(Key != null, "Key");
             if (Data==null)
                 return "";
-            Key.ThrowIfNull("Key");
             return Data.ToByteArray(EncodingUsing).Encrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToEncodedString(EncodingUsing);
         }
 
@@ -82,11 +83,10 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The decrypted data</returns>
         public static byte[] Decrypt(this byte[] Data, byte[] Key, bool OneTimePad)
         {
+            Contract.Requires<ArgumentNullException>(Key != null, "Key");
+            Contract.Requires<ArgumentException>(!OneTimePad || Key.Length >= Data.Length, "Key is not long enough");
             if (Data==null)
                 return null;
-            Key.ThrowIfNull("Key");
-            if (OneTimePad && Key.Length < Data.Length)
-                throw new ArgumentException("Key is not long enough");
             return Process(Data, Key);
         }
 
@@ -100,9 +100,9 @@ namespace Utilities.Encryption.ExtensionMethods
         /// <returns>The encrypted data</returns>
         public static string Decrypt(this string Data, string Key, bool OneTimePad, Encoding EncodingUsing = null)
         {
+            Contract.Requires<ArgumentNullException>(Key != null, "Key");
             if (Data==null)
                 return "";
-            Key.ThrowIfNull("Key");
             return Data.ToByteArray(EncodingUsing).Decrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToEncodedString(EncodingUsing);
         }
 

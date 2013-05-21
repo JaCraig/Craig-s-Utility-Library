@@ -26,6 +26,7 @@ using System.Data.Common;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -51,8 +52,8 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, string Value = "",
             ParameterDirection Direction = ParameterDirection.Input)
         {
-            Command.ThrowIfNull("Command");
-            ID.ThrowIfNullOrEmpty("ID");
+            Contract.Requires<ArgumentNullException>(Command!=null, "Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             int Length = string.IsNullOrEmpty(Value) ? 1 : Value.Length;
             if (Direction == ParameterDirection.Output
                 || Direction == ParameterDirection.InputOutput
@@ -80,8 +81,8 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, SqlDbType Type,
             object Value = null, ParameterDirection Direction = ParameterDirection.Input)
         {
-            Command.ThrowIfNull("Command");
-            ID.ThrowIfNullOrEmpty("ID");
+            Contract.Requires<ArgumentNullException>(Command!=null, "Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             return Command.AddParameter(ID, Type.ToDbType(), Value, Direction);
         }
 
@@ -97,8 +98,8 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter<DataType>(this DbCommand Command, string ID, DataType Value = default(DataType),
             ParameterDirection Direction = ParameterDirection.Input)
         {
-            Command.ThrowIfNull("Command");
-            ID.ThrowIfNullOrEmpty("ID");
+            Contract.Requires<ArgumentNullException>(Command != null, "Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             return Command.AddParameter(ID,
                 new GenericEqualityComparer<DataType>().Equals(Value, default(DataType)) ? typeof(DataType).ToDbType() : Value.GetType().ToDbType(),
                 Value, Direction);
@@ -116,8 +117,8 @@ namespace Utilities.SQL.ExtensionMethods
         public static DbCommand AddParameter(this DbCommand Command, string ID, DbType Type, object Value = null,
             ParameterDirection Direction = ParameterDirection.Input)
         {
-            Command.ThrowIfNull("Command");
-            ID.ThrowIfNullOrEmpty("ID");
+            Contract.Requires<ArgumentNullException>(Command != null, "Command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             DbParameter Parameter = Command.GetOrCreateParameter(ID);
             Parameter.Value = Value == null || Convert.IsDBNull(Value) ? System.DBNull.Value : Value;
             Parameter.IsNullable = Value == null || Convert.IsDBNull(Value);

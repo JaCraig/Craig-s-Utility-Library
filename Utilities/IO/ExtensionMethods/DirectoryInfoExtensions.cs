@@ -98,7 +98,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="Info">Directory info object</param>
         public static void DeleteAll(this DirectoryInfo Info)
         {
-            Info.ThrowIfNull("Info");
+            Contract.Requires<ArgumentNullException>(Info != null, "Info");
             if (!Info.Exists)
                 return;
             Info.DeleteFiles();
@@ -119,8 +119,8 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>Returns the directory object</returns>
         public static DirectoryInfo DeleteDirectoriesNewerThan(this DirectoryInfo Directory, DateTime CompareDate, bool Recursive = false)
         {
-            Directory.ThrowIfNull("Directory");
-            Directory.ThrowIfNot(x => x.Exists, new DirectoryNotFoundException("Directory"));
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
+            Contract.Requires<DirectoryNotFoundException>(Directory.Exists, "Directory");
             Directory.EnumerateDirectories("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
                      .Where(x => x.LastWriteTime > CompareDate)
                      .ForEach(x => x.DeleteAll());
@@ -140,8 +140,8 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>Returns the directory object</returns>
         public static DirectoryInfo DeleteDirectoriesOlderThan(this DirectoryInfo Directory, DateTime CompareDate, bool Recursive = false)
         {
-            Directory.ThrowIfNull("Directory");
-            Directory.ThrowIfNot(x => x.Exists, new DirectoryNotFoundException("Directory"));
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
+            Contract.Requires<DirectoryNotFoundException>(Directory.Exists, "Directory");
             Directory.EnumerateDirectories("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
                      .Where(x => x.LastWriteTime < CompareDate)
                      .ForEach(x => x.DeleteAll());
@@ -160,8 +160,8 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The directory that is sent in</returns>
         public static DirectoryInfo DeleteFiles(this DirectoryInfo Directory, bool Recursive = false)
         {
-            Directory.ThrowIfNull("Directory");
-            Directory.ThrowIfNot(x => x.Exists, new DirectoryNotFoundException("Directory"));
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
+            Contract.Requires<DirectoryNotFoundException>(Directory.Exists, "Directory");
             Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
                      .ForEach(x => x.Delete());
             return Directory;
@@ -180,8 +180,8 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>Returns the directory object</returns>
         public static DirectoryInfo DeleteFilesNewerThan(this DirectoryInfo Directory, DateTime CompareDate, bool Recursive = false)
         {
-            Directory.ThrowIfNull("Directory");
-            Directory.ThrowIfNot(x => x.Exists, new DirectoryNotFoundException("Directory"));
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
+            Contract.Requires<DirectoryNotFoundException>(Directory.Exists, "Directory");
             Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
                      .Where(x => x.LastWriteTime > CompareDate)
                      .ForEach(x => x.Delete());
@@ -201,8 +201,8 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>Returns the directory object</returns>
         public static DirectoryInfo DeleteFilesOlderThan(this DirectoryInfo Directory, DateTime CompareDate, bool Recursive = false)
         {
-            Directory.ThrowIfNull("Directory");
-            Directory.ThrowIfNot(x => x.Exists, new DirectoryNotFoundException("Directory"));
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
+            Contract.Requires<DirectoryNotFoundException>(Directory.Exists, "Directory");
             Directory.EnumerateFiles("*", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
                      .Where(x => x.LastWriteTime < CompareDate)
                      .ForEach(x => x.Delete());
@@ -220,7 +220,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The drive info connected to the directory</returns>
         public static DriveInfo DriveInfo(this DirectoryInfo Directory)
         {
-            Directory.ThrowIfNull("Directory");
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
             return new DriveInfo(Directory.Root.FullName);
         }
 
@@ -256,7 +256,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The directory size</returns>
         public static long Size(this DirectoryInfo Directory,string SearchPattern="*", bool Recursive = false)
         {
-            Directory.ThrowIfNull("Directory");
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
             return Directory.EnumerateFiles(SearchPattern, Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
                             .Sum(x => x.Length);
         }
@@ -274,7 +274,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The directory object</returns>
         public static DirectoryInfo SetAttributes(this DirectoryInfo Directory, System.IO.FileAttributes Attributes, bool Recursive = false)
         {
-            Directory.ThrowIfNull("Directory");
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
             Directory.EnumerateFiles()
                      .ForEach(x => x.SetAttributes(Attributes));
             if (Recursive)
