@@ -69,7 +69,8 @@ namespace Utilities.IO.Serializers
         [SecuritySafeCritical]
         public string Serialize(object Object)
         {
-            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            if (Object == null)
+                throw new ArgumentNullException("Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 SoapFormatter Serializer = new SoapFormatter();

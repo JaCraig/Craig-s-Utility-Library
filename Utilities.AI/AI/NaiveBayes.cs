@@ -168,8 +168,7 @@ namespace Utilities.AI
         public virtual double CalculateProbabilityOfTokens(IEnumerable<T> Items)
         {
             Contract.Requires<ArgumentNullException>(Items != null, "Items");
-            if (Probabilities==null)
-                throw new InvalidOperationException("Probabilities has not been initialized");
+            Contract.Requires<InvalidOperationException>(Probabilities != null, "Probabilities has not been initialized");
             SortedList<string, double> SortedProbabilities = new SortedList<string, double>();
             int x = 0;
             foreach(T Item in Items)
@@ -208,8 +207,7 @@ namespace Utilities.AI
         /// <returns>The probability that the token is from set A</returns>
         protected virtual double CalculateProbabilityOfToken(T Item)
         {
-            if (SetA == null || SetB == null)
-                throw new InvalidOperationException("Probabilities have not been initialized");
+            Contract.Requires<ArgumentNullException>(SetA != null && SetB != null, "Probabilities have not been initialized");
             double Probability = 0;
             int ACount = SetA.Contains(Item) ? SetA[Item] * ATokenWeight : 0;
             int BCount = SetB.Contains(Item) ? SetB[Item] * BTokenWeight : 0;

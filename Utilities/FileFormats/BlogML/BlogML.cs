@@ -107,7 +107,8 @@ namespace Utilities.FileFormats.BlogML
         /// <returns>This</returns>
         protected override BlogML InternalLoad(string Location)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Location), "Location");
+            if (string.IsNullOrEmpty(Location))
+                throw new ArgumentNullException("Location");
             XmlDocument Document = new XmlDocument();
             Document.Load(Location);
             foreach (XmlNode Children in Document.ChildNodes)

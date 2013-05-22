@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -42,8 +43,7 @@ namespace Utilities.Environment
         /// <param name="OptionStarter">The text to determine where an option starts</param>
         public ArgsParser(string OptionStarter = "/")
         {
-            if (string.IsNullOrEmpty(OptionStarter))
-                throw new ArgumentNullException("OptionStarter");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(OptionStarter), "OptionStarter");
             this.OptionStarter = OptionStarter;
             OptionRegex = new Regex(string.Format(CultureInfo.InvariantCulture, @"(?<Command>{0}[^\s]+)[\s|\S|$](?<Parameter>""[^""]*""|[^""{0}]*)", OptionStarter));
         }

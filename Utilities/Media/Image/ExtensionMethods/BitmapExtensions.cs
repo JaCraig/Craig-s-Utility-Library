@@ -130,8 +130,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public static Bitmap AdjustContrast(this Bitmap OriginalImage, float Value = 0, string FileName = "")
         {
-            if (OriginalImage == null)
-                throw new ArgumentNullException("OriginalImage");
+            Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Bitmap NewBitmap = new Bitmap(OriginalImage.Width, OriginalImage.Height);
             BitmapData NewData = NewBitmap.LockImage();
@@ -730,8 +729,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A bitmap image</returns>
         public static Bitmap Emboss(this Bitmap Image, string FileName = "")
         {
-            if (Image == null)
-                throw new ArgumentNullException("Image");
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             ImageFormat FormatUsing = FileName.GetImageFormat();
             Filter TempFilter = new Filter(3, 3);
             TempFilter.MyFilter[0, 0] = -2;
@@ -2258,8 +2256,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>A string containing the art</returns>
         public static string ToASCIIArt(this Bitmap Input)
         {
-            if (Input == null)
-                throw new ArgumentNullException("Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             bool ShowLine = true;
             using (Bitmap TempImage = Input.BlackAndWhite())
             {

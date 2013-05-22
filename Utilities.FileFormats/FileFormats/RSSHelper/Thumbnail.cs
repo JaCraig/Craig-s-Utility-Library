@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Xml;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -48,10 +49,8 @@ namespace Utilities.FileFormats.RSSHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Thumbnail(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
-            if (!Element.Name.Equals("media:thumbnail", StringComparison.CurrentCultureIgnoreCase))
-                throw new ArgumentException("Element is not a thumbnail");
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
+            Contract.Requires<ArgumentException>(Element.Name.Equals("media:thumbnail", StringComparison.CurrentCultureIgnoreCase), "Element is not a thumbnail");
             if (Element.Attributes["url"] != null)
             {
                 Url = Element.Attributes["url"].Value;

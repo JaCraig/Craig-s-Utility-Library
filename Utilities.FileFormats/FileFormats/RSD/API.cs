@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Xml;
 #endregion
 
@@ -46,8 +47,7 @@ namespace Utilities.FileFormats.RSD
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public API(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
             if (Element.Attributes["name"] != null)
             {
                 Name = Element.Attributes["name"].Value;

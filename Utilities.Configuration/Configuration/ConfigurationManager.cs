@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Text;
 using Utilities.Configuration.Interfaces;
@@ -66,7 +67,7 @@ namespace Utilities.Configuration
         /// <param name="ConfigObject">Config object to register</param>
         public static void RegisterConfigFile(IConfig ConfigObject)
         {
-            if (ConfigObject == null) throw new ArgumentNullException("ConfigObject");
+            Contract.Requires<ArgumentNullException>(ConfigObject != null, "ConfigObject");
             if (ConfigFiles.ContainsKey(ConfigObject.Name)) return;
             ConfigObject.Load();
             ConfigFiles.Add(ConfigObject.Name, ConfigObject);
@@ -78,7 +79,7 @@ namespace Utilities.Configuration
         /// <param name="ConfigObjects">Config objects to register</param>
         public static void RegisterConfigFile(IEnumerable<IConfig> ConfigObjects)
         {
-            if (ConfigObjects == null) throw new ArgumentNullException("ConfigObjects");
+            Contract.Requires<ArgumentNullException>(ConfigObjects != null, "ConfigObjects");
             foreach (IConfig ConfigObject in ConfigObjects)
                 RegisterConfigFile(ConfigObject);
         }
@@ -89,7 +90,7 @@ namespace Utilities.Configuration
         /// <param name="AssemblyContainingConfig">Assembly to search</param>
         public static void RegisterConfigFile(Assembly AssemblyContainingConfig)
         {
-            if (AssemblyContainingConfig == null) throw new ArgumentNullException("AssemblyContainingConfig");
+            Contract.Requires<ArgumentNullException>(AssemblyContainingConfig != null, "AssemblyContainingConfig");
             RegisterConfigFile(AssemblyContainingConfig.GetObjects<IConfig>());
         }
 
@@ -105,10 +106,7 @@ namespace Utilities.Configuration
         /// <returns>The config object specified</returns>
         public static T GetConfigFile<T>(string Name)
         {
-            if (!ConfigFiles.ContainsKey(Name))
-                throw new ArgumentException("The config object " + Name + " was not found.");
-            if (!(ConfigFiles[Name] is T))
-                throw new ArgumentException("The config object " + Name + " is not the specified type.");
+            Contract.Requires<ArgumentException>(ContainsConfigFile<T>(Name), "The config object was not found or was not of the type specified.");
             return (T)ConfigFiles[Name];
         }
 
@@ -122,6 +120,7 @@ namespace Utilities.Configuration
         /// <typeparam name="T">Type of the config object</typeparam>
         /// <param name="Name">Name of the config object</param>
         /// <returns>The config object specified</returns>
+        [Pure]
         public static bool ContainsConfigFile<T>(string Name)
         {
             return ConfigFiles.ContainsKey(Name) && ConfigFiles[Name] is T;

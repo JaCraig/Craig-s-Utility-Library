@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Xml;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.OPMLHelper
@@ -51,8 +52,7 @@ namespace Utilities.FileFormats.OPMLHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public Head(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
             if (Element.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
             {
                 foreach (XmlNode Child in Element.ChildNodes)

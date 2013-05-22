@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Utilities.DataTypes.EventArgs;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
@@ -51,7 +52,7 @@ namespace Utilities.DataTypes
         /// <param name="InitialSize">Initial size of the vector</param>
         public Vector(int InitialSize)
         {
-            if (InitialSize < 1) throw new ArgumentOutOfRangeException("InitialSize");
+            Contract.Requires<ArgumentOutOfRangeException>(InitialSize >= 1, "InitialSize");
             DefaultSize = InitialSize;
             Items = new T[InitialSize];
         }

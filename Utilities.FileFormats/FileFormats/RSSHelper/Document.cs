@@ -30,6 +30,7 @@ using System.Linq;
 using Utilities.FileFormats.BaseClasses;
 using System.IO;
 using Utilities.IO.ExtensionMethods;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -66,8 +67,7 @@ namespace Utilities.FileFormats.RSSHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Document(XmlDocument Document)
         {
-            if (Document == null)
-                throw new ArgumentNullException("Document");
+            Contract.Requires<ArgumentNullException>(Document!=null,"Document");
             Load(Document);
         }
 
@@ -127,8 +127,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="CopyFrom">RSS document to copy from</param>
         public virtual void Copy(Document CopyFrom)
         {
-            if (CopyFrom == null)
-                throw new ArgumentNullException("CopyFrom");
+            Contract.Requires<ArgumentNullException>(CopyFrom!=null,"CopyFrom");
             foreach (Channel CurrentChannel in CopyFrom.Channels)
             {
                 Channels.Add(CurrentChannel);
@@ -141,8 +140,7 @@ namespace Utilities.FileFormats.RSSHelper
 
         private void Load(XmlDocument Document)
         {
-            if (Document == null)
-                throw new ArgumentNullException("Document");
+            Contract.Requires<ArgumentNullException>(Document!=null,"Document");
             XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Document.NameTable);
             XmlNodeList Nodes = Document.DocumentElement.SelectNodes("./channel", NamespaceManager);
             foreach (XmlNode Element in Nodes)

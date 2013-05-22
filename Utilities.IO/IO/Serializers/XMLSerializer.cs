@@ -67,7 +67,8 @@ namespace Utilities.IO.Serializers
         /// <returns>The serialized object</returns>
         public string Serialize(object Object)
         {
-            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            if (Object == null)
+                throw new ArgumentNullException("Object");
             using (MemoryStream Stream = new MemoryStream())
             {
                 XmlSerializer Serializer = new XmlSerializer(Object.GetType());

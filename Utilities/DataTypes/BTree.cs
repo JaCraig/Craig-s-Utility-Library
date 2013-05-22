@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -77,8 +78,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                if (IsEmpty)
-                    throw new InvalidOperationException("The tree is empty");
+                Contract.Requires<InvalidOperationException>(!IsEmpty, "The tree is empty");
                 TreeNode<T> TempNode = Root;
                 while (TempNode.Left != null)
                     TempNode = TempNode.Left;
@@ -93,8 +93,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                if (IsEmpty)
-                    throw new InvalidOperationException("The tree is empty");
+                Contract.Requires<InvalidOperationException>(!IsEmpty, "The tree is empty");
                 TreeNode<T> TempNode = Root;
                 while (TempNode.Right != null)
                     TempNode = TempNode.Right;

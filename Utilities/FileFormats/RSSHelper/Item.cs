@@ -26,6 +26,7 @@ using System.Text;
 using System.Xml;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.FileFormats.RSSHelper
@@ -51,10 +52,8 @@ namespace Utilities.FileFormats.RSSHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Item(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
-            if (!Element.Name.Equals("item", StringComparison.CurrentCultureIgnoreCase))
-                throw new ArgumentException("Element is not an item");
+            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
+            Contract.Requires<ArgumentException>(Element.Name.Equals("item", StringComparison.CurrentCultureIgnoreCase), "Element is not a item");
             XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Element.OwnerDocument.NameTable);
             NamespaceManager.AddNamespace("media", "http://search.yahoo.com/mrss/");
             XmlNode Node = Element.SelectSingleNode("./title", NamespaceManager);

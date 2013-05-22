@@ -227,8 +227,7 @@ namespace Utilities.Reflection.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.IndexOf(System.String,System.StringComparison)")]
         public static string GetName(this Type ObjectType)
         {
-            if (ObjectType == null)
-                throw new ArgumentNullException("ObjectType");
+            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             StringBuilder Output = new StringBuilder();
             if (ObjectType.Name == "Void")
             {
@@ -270,8 +269,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>A list of objects that are of the type specified</returns>
         public static IEnumerable<ClassType> GetObjects<ClassType>(this Assembly Assembly)
         {
-            if (Assembly == null)
-                throw new ArgumentNullException("Assembly");
+            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
             System.Collections.Generic.List<ClassType> ReturnValues = new System.Collections.Generic.List<ClassType>();
             foreach (Type Type in Assembly.GetTypes<ClassType>().Where(x => !x.ContainsGenericParameters))
                 ReturnValues.Add(Type.CreateInstance<ClassType>());
@@ -287,8 +285,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>A list of objects that are of the type specified</returns>
         public static IEnumerable<ClassType> GetObjects<ClassType>(this IEnumerable<Assembly> Assemblies)
         {
-            if (Assemblies == null)
-                throw new ArgumentNullException("Assemblies");
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             List<ClassType> ReturnValues = new List<ClassType>();
             foreach (Assembly Assembly in Assemblies)
                 ReturnValues.AddRange(Assembly.GetObjects<ClassType>());
@@ -305,8 +302,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>A list of objects that are of the type specified</returns>
         public static IEnumerable<ClassType> GetObjects<ClassType>(this DirectoryInfo Directory, bool Recursive = false)
         {
-            if (Directory == null)
-                throw new ArgumentNullException("Directory");
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
             return Directory.LoadAssemblies(Recursive).GetObjects<ClassType>();
         }
 
@@ -322,10 +318,8 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>Returns the property's value</returns>
         public static object GetProperty(this object Object, PropertyInfo Property)
         {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            if (Property == null)
-                throw new ArgumentNullException("Property");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             return Property.GetValue(Object, null);
         }
 
@@ -337,10 +331,8 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>Returns the property's value</returns>
         public static object GetProperty(this object Object, string Property)
         {
-            if (Object == null)
-                throw new ArgumentNullException("Object");
-            if (string.IsNullOrEmpty(Property))
-                throw new ArgumentNullException("Property");
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Property), "Property");
             string[] Properties = Property.Split(new string[] { "." }, StringSplitOptions.None);
             object TempObject = Object;
             Type TempObjectType = TempObject.GetType();
@@ -541,8 +533,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>List of types that use the interface</returns>
         public static IEnumerable<Type> GetTypes<BaseType>(this Assembly Assembly)
         {
-            if (Assembly == null)
-                throw new ArgumentNullException("Assembly");
+            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
             return Assembly.GetTypes(typeof(BaseType));
         }
 
@@ -554,10 +545,8 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>List of types that use the interface</returns>
         public static IEnumerable<Type> GetTypes(this Assembly Assembly,Type BaseType)
         {
-            if (Assembly == null)
-                throw new ArgumentNullException("Assembly");
-            if (BaseType == null)
-                throw new ArgumentNullException("BaseType");
+            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
+            Contract.Requires<ArgumentNullException>(BaseType != null, "BaseType");
             return Assembly.GetTypes().Where(x => x.IsOfType(BaseType) && x.IsClass && !x.IsAbstract);
         }
 
@@ -569,8 +558,7 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>List of types that use the interface</returns>
         public static IEnumerable<Type> GetTypes<BaseType>(this IEnumerable<Assembly> Assemblies)
         {
-            if (Assemblies == null)
-                throw new ArgumentNullException("Assemblies");
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             return Assemblies.GetTypes(typeof(BaseType));
         }
 
@@ -582,10 +570,8 @@ namespace Utilities.Reflection.ExtensionMethods
         /// <returns>List of types that use the interface</returns>
         public static IEnumerable<Type> GetTypes(this IEnumerable<Assembly> Assemblies, Type BaseType)
         {
-            if (Assemblies == null)
-                throw new ArgumentNullException("Assemblies");
-            if (BaseType == null)
-                throw new ArgumentNullException("BaseType");
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
+            Contract.Requires<ArgumentNullException>(BaseType != null, "BaseType");
             List<Type> ReturnValues = new List<Type>();
             Assemblies.ForEach(y => ReturnValues.AddRange(y.GetTypes(BaseType)));
             return ReturnValues;

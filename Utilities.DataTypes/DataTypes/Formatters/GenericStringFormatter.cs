@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes.Formatters.Interfaces;
 
@@ -91,7 +92,6 @@ namespace Utilities.DataTypes.Formatters
         {
             if (!IsValid(FormatPattern))
                 throw new ArgumentException("FormatPattern is not valid");
-
             StringBuilder ReturnValue = new StringBuilder();
             for (int x = 0; x < FormatPattern.Length; ++x)
             {

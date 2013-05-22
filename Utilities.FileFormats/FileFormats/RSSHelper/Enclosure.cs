@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Xml;
 #endregion
 
@@ -47,10 +48,8 @@ namespace Utilities.FileFormats.RSSHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Enclosure(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
-            if (!Element.Name.Equals("enclosure", StringComparison.CurrentCultureIgnoreCase))
-                throw new ArgumentException("Element is not an enclosure");
+            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
+            Contract.Requires<ArgumentException>(Element.Name.Equals("enclosure", StringComparison.CurrentCultureIgnoreCase), "Element is not a enclosure");
             if (Element.Attributes["url"] != null)
             {
                 Url = Element.Attributes["url"].Value;

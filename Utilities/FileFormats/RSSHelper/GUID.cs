@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Xml;
 #endregion
 
@@ -47,10 +48,8 @@ namespace Utilities.FileFormats.RSSHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public GUID(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
-            if (!Element.Name.Equals("guid", StringComparison.CurrentCultureIgnoreCase))
-                throw new ArgumentException("Element is not a guid");
+            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
+            Contract.Requires<ArgumentException>(Element.Name.Equals("guid", StringComparison.CurrentCultureIgnoreCase), "Element is not a guid");
             if (Element.Attributes["isPermaLink"] != null)
             {
                 PermaLink = Element.Attributes["isPermaLink"].Value;

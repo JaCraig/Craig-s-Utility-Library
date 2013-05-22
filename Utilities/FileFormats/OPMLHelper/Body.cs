@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml;
 #endregion
@@ -49,8 +50,7 @@ namespace Utilities.FileFormats.OPMLHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public Body(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
+            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
             Outlines = new List<Outline>();
             if (Element.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
             {

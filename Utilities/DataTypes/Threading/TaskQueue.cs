@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.DataTypes.ExtensionMethods;
@@ -105,8 +106,7 @@ namespace Utilities.DataTypes.Threading
         /// <param name="Item">Item to process</param>
         public void Enqueue(T Item)
         {
-            if (IsCompleted || IsCanceled)
-                throw new InvalidOperationException("TaskQueue has been stopped");
+            Contract.Requires<InvalidOperationException>(!IsCompleted && !IsCanceled, "TaskQueue has been stopped");
             Add(Item);
         }
 

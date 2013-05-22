@@ -25,6 +25,7 @@ using System.Collections;
 using System.Data;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes
@@ -200,8 +201,7 @@ namespace Utilities.DataTypes
         {
             get
             {
-                if (Column < 0)
-                    throw new ArgumentOutOfRangeException("Column");
+                Contract.Requires<ArgumentOutOfRangeException>(Column >= 0, "Column");
                 if (ColumnValues.Length <= Column)
                     return null;
                 return ColumnValues[Column];

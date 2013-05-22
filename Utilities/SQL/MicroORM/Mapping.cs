@@ -129,8 +129,10 @@ namespace Utilities.SQL.MicroORM
             DataType DefaultValue = default(DataType),
             Mode Mode = Mode.Read|Mode.Write)
         {
-            Contract.Requires<ArgumentNullException>(Property != null, "Property");
-            Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
+            if (Property==null)
+                throw new ArgumentNullException("Property");
+            if (Mappings == null)
+                throw new ArgumentNullException("Mappings");
             if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
@@ -160,8 +162,10 @@ namespace Utilities.SQL.MicroORM
             string DefaultValue = "",
             Mode Mode = Mode.Read|Mode.Write)
         {
-            Contract.Requires<ArgumentNullException>(Property != null, "Property");
-            Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
+            if (Property == null)
+                throw new ArgumentNullException("Property");
+            if (Mappings == null)
+                throw new ArgumentNullException("Mappings");
             if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.GetPropertyName();
             Expression Convert = Expression.Convert(Property.Body, typeof(object));

@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Management;
 #endregion
 
@@ -43,8 +44,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">User Name</param>
         public Applications(string Name = "", string UserName = "", string Password = "")
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name), "Name");
             LoadApplications(Name, UserName, Password);
         }
 
@@ -69,8 +69,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password</param>
         protected virtual void LoadApplications(string Name, string UserName, string Password)
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name), "Name");
             ApplicationList = new List<Application>();
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))

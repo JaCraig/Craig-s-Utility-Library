@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml;
 using Utilities.FileFormats.BaseClasses;
@@ -61,8 +62,7 @@ namespace Utilities.FileFormats.OPMLHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public OPML(XmlDocument Document)
         {
-            if (Document == null)
-                throw new ArgumentNullException("Document");
+            Contract.Requires<ArgumentNullException>(Document!=null,"Document");
             LoadDoc(Document);
         }
         #endregion

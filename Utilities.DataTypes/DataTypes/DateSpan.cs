@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
@@ -40,8 +41,7 @@ namespace Utilities.DataTypes
         /// <param name="End">End of the date span</param>
         public DateSpan(DateTime Start, DateTime End)
         {
-            if (Start > End)
-                throw new ArgumentException(Start.ToString() + " is after " + End.ToString());
+            Contract.Requires<ArgumentException>(Start <= End, "Start is after End");
             this.Start = Start;
             this.End = End;
         }

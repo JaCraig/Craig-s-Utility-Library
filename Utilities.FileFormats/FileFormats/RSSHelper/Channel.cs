@@ -26,6 +26,7 @@ using System.Text;
 using System.Xml;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -52,10 +53,8 @@ namespace Utilities.FileFormats.RSSHelper
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
         public Channel(XmlElement Element)
         {
-            if (Element == null)
-                throw new ArgumentNullException("Element");
-            if (!Element.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase))
-                throw new ArgumentException("Element is not a channel");
+            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
+            Contract.Requires<ArgumentException>(Element.Name.Equals("channel", StringComparison.CurrentCultureIgnoreCase), "Element is not a channel");
             XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Element.OwnerDocument.NameTable);
             XmlNode Node = Element.SelectSingleNode("./title", NamespaceManager);
             if (Node != null)

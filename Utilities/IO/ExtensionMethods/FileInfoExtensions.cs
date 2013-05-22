@@ -50,10 +50,8 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>True if the content is the same, false otherwise</returns>
         public static bool CompareTo(this FileInfo File1, FileInfo File2)
         {
-            if (File1 == null || !File1.Exists)
-                throw new ArgumentNullException("File1");
-            if (File2 == null || !File2.Exists)
-                throw new ArgumentNullException("File2");
+            Contract.Requires<ArgumentNullException>(File1 != null && File1.Exists, "File1");
+            Contract.Requires<ArgumentNullException>(File2 != null && File2.Exists, "File2");
             if (File1.Length != File2.Length)
                 return false;
             return File1.Read().Equals(File2.Read());

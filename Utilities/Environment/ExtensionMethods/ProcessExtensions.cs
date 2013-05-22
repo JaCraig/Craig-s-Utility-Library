@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Threading;
 using Utilities.DataTypes.ExtensionMethods;
@@ -47,8 +48,7 @@ namespace Utilities.Environment.ExtensionMethods
         /// <param name="TimeToKill">Amount of time (in ms) until the process is killed.</param>
         public static void KillProcessAsync(this Process Process, int TimeToKill = 0)
         {
-            if (Process == null)
-                throw new ArgumentNullException("Process");
+            Contract.Requires<ArgumentNullException>(Process!=null,"Process");
             ThreadPool.QueueUserWorkItem(delegate { KillProcessAsyncHelper(Process, TimeToKill); });
         }
 
@@ -59,8 +59,7 @@ namespace Utilities.Environment.ExtensionMethods
         /// <param name="TimeToKill">Amount of time (in ms) until the processes are killed.</param>
         public static void KillProcessAsync(this IEnumerable<Process> Processes, int TimeToKill = 0)
         {
-            if (Processes == null)
-                throw new ArgumentNullException("Processes");
+            Contract.Requires<ArgumentNullException>(Processes!=null,"Processes");
             Processes.ForEach(x => ThreadPool.QueueUserWorkItem(delegate { KillProcessAsyncHelper(x, TimeToKill); }));
         }
 
