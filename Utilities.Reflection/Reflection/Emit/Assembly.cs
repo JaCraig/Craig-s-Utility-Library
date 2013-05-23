@@ -29,6 +29,7 @@ using System.Threading;
 using Utilities.Reflection.Emit.Enums;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -48,8 +49,7 @@ namespace Utilities.Reflection.Emit
         /// <param name="Type">Assembly type (exe or dll)</param>
         public Assembly(string Name, string Directory = "", AssemblyType Type = AssemblyType.DLL)
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             Setup(Name, Directory, Type);
         }
 

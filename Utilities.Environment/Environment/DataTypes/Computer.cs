@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Environment.DataTypes
@@ -39,8 +40,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password</param>
         public Computer(string Name, string UserName = "", string Password = "")
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name), "Name");
             this.Name = Name;
             this.UserName = UserName;
             this.Password = Password;

@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 #endregion
 
@@ -61,7 +62,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// <returns>byte array as base64</returns>
         public override string Encode(byte[] Input)
         {
-            if (Input==null)
+            if (Input == null)
                 throw new ArgumentNullException("Input");
             string TempString = System.Convert.ToBase64String(Input);
             int MAX = 76;

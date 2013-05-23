@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Management;
 using System.Text.RegularExpressions;
 #endregion
@@ -43,8 +44,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">Username</param>
         public User(string Name = "", string UserName = "", string Password = "")
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             GetCurrentUser(Name, UserName, Password);
         }
 
@@ -70,8 +70,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password</param>
         protected virtual void GetCurrentUser(string Name, string UserName, string Password)
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {

@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
@@ -44,10 +45,8 @@ namespace Utilities.Reflection.Emit
         public LocalBuilder(IMethodBuilder MethodBuilder, string Name, Type LocalType)
             : base()
         {
-            if (MethodBuilder == null)
-                throw new ArgumentNullException("MethodBuilder");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(MethodBuilder!=null,"MethodBuilder");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             this.Name = Name;
             this.MethodBuilder = MethodBuilder;
             this.DataType = LocalType;
@@ -114,8 +113,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>The local object</returns>
         public static LocalBuilder operator ++(LocalBuilder Left)
         {
-            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Add(Left, 1));
             return Left;
         }
@@ -127,8 +125,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>The local object</returns>
         public static LocalBuilder operator --(LocalBuilder Left)
         {
-            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Subtract(Left, 1));
             return Left;
         }

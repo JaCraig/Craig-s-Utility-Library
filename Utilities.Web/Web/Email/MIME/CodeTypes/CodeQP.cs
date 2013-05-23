@@ -24,6 +24,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Web.Email.MIME.CodeTypes
@@ -52,10 +53,7 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         public override void Decode(string Input, out byte[] Output)
         {
             if (string.IsNullOrEmpty(Input))
-            {
                 throw new ArgumentNullException("Input");
-            }
-
             string CurrentLine="";
             using (MemoryStream MemoryStream = new MemoryStream())
             {
@@ -85,10 +83,8 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         /// <returns>The encoded string</returns>
         public override string Encode(byte[] Input)
         {
-            if (Input == null)
-            {
+            if (Input==null)
                 throw new ArgumentNullException("Input");
-            }
             StringBuilder Output = new StringBuilder();
             foreach (byte Index in Input)
             {
@@ -121,10 +117,8 @@ namespace Utilities.Web.Email.MIME.CodeTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.EndsWith(System.String,System.StringComparison)")]
         protected static void DecodeOneLine(Stream Stream,string CurrentLine)
         {
-            if (Stream == null)
-                throw new ArgumentNullException("Stream");
-            if(string.IsNullOrEmpty(CurrentLine))
-                throw new ArgumentNullException("CurrentLine");
+            Contract.Requires<ArgumentNullException>(Stream!=null,"Stream");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(CurrentLine), "CurrentLine");
             for (int x = 0, y = 0; x < CurrentLine.Length; ++x, ++y)
             {
                 byte CurrentByte;

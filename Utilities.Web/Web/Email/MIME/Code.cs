@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 #endregion
 
@@ -61,8 +62,7 @@ namespace Utilities.Web.Email.MIME
         /// <param name="Output">Bytes once decoded</param>
         public virtual void Decode(string Input, out byte[] Output)
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input),"Input");
 
             if (string.IsNullOrEmpty(CharacterSet))
             {
@@ -78,8 +78,7 @@ namespace Utilities.Web.Email.MIME
         /// <param name="Output">Output string</param>
         public virtual void Decode(string Input, out string Output)
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input),"Input");
             if (string.IsNullOrEmpty(CharacterSet))
             {
                 CharacterSet = Encoding.Default.BodyName;
@@ -96,8 +95,7 @@ namespace Utilities.Web.Email.MIME
         /// <returns>A string of the bytes encoded</returns>
         public virtual string Encode(byte[] Input)
         {
-            if (Input==null)
-                throw new ArgumentNullException("Input");
+            Contract.Requires<ArgumentNullException>(Input!=null,"Input");
 
             if (string.IsNullOrEmpty(CharacterSet))
             {
@@ -113,8 +111,7 @@ namespace Utilities.Web.Email.MIME
         /// <returns>An encoded string</returns>
         public virtual string Encode(string Input)
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input),"Input");
             if (string.IsNullOrEmpty(CharacterSet))
             {
                 CharacterSet = Encoding.Default.BodyName;

@@ -152,8 +152,7 @@ namespace Utilities.FileFormats.Zip
         protected virtual void AddFile(string File, FileInfo FileInfo, Package Package)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(File), "File");
-            if (!FileInfo.Exists)
-                throw new ArgumentException("FileInfo does not exist");
+            Contract.Requires<FileNotFoundException>(FileInfo.Exists, "FileInfo does not exist");
             Uri UriPath = PackUriHelper.CreatePartUri(new Uri(File, UriKind.Relative));
             PackagePart PackagePart = Package.CreatePart(UriPath, System.Net.Mime.MediaTypeNames.Text.Xml, CompressionOption.Maximum);
             byte[] Data = FileInfo.ReadBinary();

@@ -28,6 +28,7 @@ using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -52,10 +53,8 @@ namespace Utilities.Reflection.Emit
             MethodAttributes Attributes, IEnumerable<Type> Parameters, Type ReturnType)
             : base()
         {
-            if (TypeBuilder == null)
-                throw new ArgumentNullException("TypeBuilder");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(TypeBuilder!=null,"TypeBuilder");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             this.Name = Name;
             this.Type = TypeBuilder;
             this.Attributes = Attributes;

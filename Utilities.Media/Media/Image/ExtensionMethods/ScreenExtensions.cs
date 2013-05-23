@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
@@ -48,8 +49,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static Bitmap TakeScreenShot(this Screen Screen, string FileName = "")
         {
-            if (Screen == null)
-                throw new ArgumentNullException("Screen");
+            Contract.Requires<ArgumentNullException>(Screen!=null,"Screen");
             Bitmap TempBitmap = new Bitmap(Screen.Bounds.Width > 1 ? Screen.Bounds.Width : 1, Screen.Bounds.Height > 1 ? Screen.Bounds.Height : 1, PixelFormat.Format32bppArgb);
             try
             {
@@ -77,8 +77,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static Bitmap TakeScreenShot(this IEnumerable<Screen> Screens, string FileName = "")
         {
-            if (Screens == null)
-                throw new ArgumentNullException("Screens");
+            Contract.Requires<ArgumentNullException>(Screens!=null,"Screens");
             Rectangle TotalScreenRect = Rectangle.Empty;
             foreach (Screen CurrentScreen in Screen.AllScreens)
                 TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);

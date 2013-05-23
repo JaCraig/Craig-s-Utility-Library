@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 
@@ -42,8 +43,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The process object created when opening the URL</returns>
         public static System.Diagnostics.Process Execute(this Uri URL)
         {
-            if (URL == null)
-                throw new ArgumentNullException("URL");
+            Contract.Requires<ArgumentNullException>(URL!=null,"URL");
             return System.Diagnostics.Process.Start(URL.ToString());
         }
 
@@ -62,8 +62,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>String representation of the content of the URL</returns>
         public static string Read(this Uri URL, string UserName = "", string Password = "", string Domain = "", string AuthenticationType = "")
         {
-            if (URL == null)
-                throw new ArgumentNullException("URL");
+            Contract.Requires<ArgumentNullException>(URL!=null,"URL");
             using (WebClient Client = new WebClient())
             {
                 using (StreamReader Reader = new StreamReader(URL.Read(Client, UserName, Password,Domain,AuthenticationType)))
@@ -119,8 +118,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>Byte array representation of the content of the URL</returns>
         public static byte[] ReadBinary(this Uri URL, string UserName = "", string Password = "", string Domain = "",string AuthenticationType="")
         {
-            if (URL == null)
-                throw new ArgumentNullException("URL");
+            Contract.Requires<ArgumentNullException>(URL!=null,"URL");
             using (WebClient Client = new WebClient())
             {
                 using (Stream Reader = URL.Read(Client, UserName, Password, Domain, AuthenticationType))

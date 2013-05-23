@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Management;
 #endregion
 
@@ -41,8 +42,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">Username</param>
         public OperatingSystem(string Name = "", string UserName = "", string Password = "")
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             GetOperatingSystemInfo(Name, UserName, Password);
         }
 
@@ -67,8 +67,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password</param>
         protected virtual void GetOperatingSystemInfo(string Name, string UserName, string Password)
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {

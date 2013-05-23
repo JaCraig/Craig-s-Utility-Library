@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
@@ -44,8 +45,7 @@ namespace Utilities.Reflection.Emit
         public DefaultConstructorBuilder(TypeBuilder TypeBuilder, MethodAttributes Attributes)
             : base()
         {
-            if (TypeBuilder == null)
-                throw new ArgumentNullException("TypeBuilder");
+            Contract.Requires<ArgumentNullException>(TypeBuilder!=null,"TypeBuilder");
             this.Type = TypeBuilder;
             this.Attributes = Attributes;
             this.Builder = Type.Builder.DefineDefaultConstructor(Attributes);

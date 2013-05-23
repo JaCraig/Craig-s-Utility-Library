@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
@@ -47,10 +48,8 @@ namespace Utilities.Reflection.Emit
         public FieldBuilder(TypeBuilder TypeBuilder, string Name, Type FieldType, FieldAttributes Attributes)
             : base()
         {
-            if (TypeBuilder == null)
-                throw new ArgumentNullException("TypeBuilder");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(TypeBuilder!=null,"TypeBuilder");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             this.Name = Name;
             this.Type = TypeBuilder;
             this.DataType = FieldType;
@@ -144,8 +143,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>The field</returns>
         public static FieldBuilder operator ++(FieldBuilder Left)
         {
-            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Add(Left, 1));
             return Left;
         }
@@ -157,8 +155,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>The field</returns>
         public static FieldBuilder operator --(FieldBuilder Left)
         {
-            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Subtract(Left, 1));
             return Left;
         }

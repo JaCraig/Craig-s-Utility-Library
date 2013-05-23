@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml.Serialization;
 using Utilities.DataTypes.ExtensionMethods;
@@ -83,19 +84,15 @@ namespace Utilities.Math
         {
             get
             {
-                if (!X.Between(0, _Width))
-                    throw new ArgumentOutOfRangeException("X");
-                if (!Y.Between(0, _Height))
-                    throw new ArgumentOutOfRangeException("Y");
+                Contract.Requires<ArgumentOutOfRangeException>(X >= 0 && X <= Width, "X");
+                Contract.Requires<ArgumentOutOfRangeException>(Y >= 0 && Y <= Height, "Y");
                 return Values[X, Y];
             }
 
             set
             {
-                if (!X.Between(0, _Width))
-                    throw new ArgumentOutOfRangeException("X");
-                if (!Y.Between(0, _Height))
-                    throw new ArgumentOutOfRangeException("Y");
+                Contract.Requires<ArgumentOutOfRangeException>(X >= 0 && X <= Width, "X");
+                Contract.Requires<ArgumentOutOfRangeException>(Y >= 0 && Y <= Height, "Y");
                 Values[X, Y] = value;
             }
         }
@@ -157,12 +154,9 @@ namespace Utilities.Math
         /// <returns>The result</returns>
         public static Matrix operator +(Matrix M1, Matrix M2)
         {
-            if (M1 == null)
-                throw new ArgumentNullException("M1");
-            if (M2 == null)
-                throw new ArgumentNullException("M2");
-            if (M1.Width != M2.Width || M1.Height != M2.Height)
-                throw new ArgumentException("Both matrices must be the same dimensions.");
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
+            Contract.Requires<ArgumentNullException>(M2 != null, "M2");
+            Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
             Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
@@ -178,12 +172,9 @@ namespace Utilities.Math
         /// <returns>The result</returns>
         public static Matrix operator -(Matrix M1, Matrix M2)
         {
-            if (M1 == null)
-                throw new ArgumentNullException("M1");
-            if (M2 == null)
-                throw new ArgumentNullException("M2");
-            if (M1.Width != M2.Width || M1.Height != M2.Height)
-                throw new ArgumentException("Both matrices must be the same dimensions.");
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
+            Contract.Requires<ArgumentNullException>(M2 != null, "M2");
+            Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
             Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
@@ -198,8 +189,7 @@ namespace Utilities.Math
         /// <returns>The result</returns>
         public static Matrix operator -(Matrix M1)
         {
-            if (M1 == null)
-                throw new ArgumentNullException("M1");
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
             Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
@@ -215,12 +205,9 @@ namespace Utilities.Math
         /// <returns>The result</returns>
         public static Matrix operator *(Matrix M1, Matrix M2)
         {
-            if (M1 == null)
-                throw new ArgumentNullException("M1");
-            if (M2 == null)
-                throw new ArgumentNullException("M2");
-            if (M1.Width != M2.Width || M1.Height != M2.Height)
-                throw new ArgumentException("Dimensions for the matrices are incorrect.");
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
+            Contract.Requires<ArgumentNullException>(M2 != null, "M2");
+            Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
             Matrix TempMatrix = new Matrix(M2.Width, M1.Height);
             for (int x = 0; x < M2.Width; ++x)
             {
@@ -243,8 +230,7 @@ namespace Utilities.Math
         /// <returns>The result</returns>
         public static Matrix operator *(Matrix M1, double D)
         {
-            if (M1 == null)
-                throw new ArgumentNullException("M1");
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
             Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
@@ -260,8 +246,7 @@ namespace Utilities.Math
         /// <returns>The result</returns>
         public static Matrix operator *(double D, Matrix M1)
         {
-            if (M1 == null)
-                throw new ArgumentNullException("M1");
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
             Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
             for (int x = 0; x < M1.Width; ++x)
                 for (int y = 0; y < M1.Height; ++y)
@@ -277,8 +262,7 @@ namespace Utilities.Math
         /// <returns>The result</returns>
         public static Matrix operator /(Matrix M1, double D)
         {
-            if (M1 == null)
-                throw new ArgumentNullException("M1");
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
             return M1 * (1 / D);
         }
 
@@ -290,8 +274,7 @@ namespace Utilities.Math
         /// <returns>The result</returns>
         public static Matrix operator /(double D, Matrix M1)
         {
-            if (M1 == null)
-                throw new ArgumentNullException("M1");
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
             return M1 * (1 / D);
         }
 
@@ -370,8 +353,7 @@ namespace Utilities.Math
         /// <returns>The determinant of a square matrix</returns>
         public virtual double Determinant()
         {
-            if (Width != Height)
-                throw new InvalidOperationException("The determinant can not be calculated for a non square matrix");
+            Contract.Requires<InvalidOperationException>(Width == Height, "The determinant can not be calculated for a non square matrix");
             if (Width == 2)
                 return (this[0, 0] * this[1, 1]) - (this[0, 1] * this[1, 0]);
             double Answer = 0.0;

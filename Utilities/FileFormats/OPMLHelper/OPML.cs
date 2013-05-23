@@ -50,8 +50,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Location">Location of the OPML file</param>
         public OPML(string Location)
         {
-            if (string.IsNullOrEmpty(Location))
-                throw new ArgumentNullException("Location");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Location),"Location");
             InternalLoad(Location);
         }
 

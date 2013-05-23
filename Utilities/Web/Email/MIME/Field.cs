@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -47,8 +48,7 @@ namespace Utilities.Web.Email.MIME
         /// <param name="FieldText">Field text</param>
         public Field(string FieldText)
         {
-            if (string.IsNullOrEmpty(FieldText))
-                throw new ArgumentNullException("FieldText");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(FieldText),"FieldText");
 
             int Index = FieldText.IndexOf(':');
             if (Index != -1)

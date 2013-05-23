@@ -55,8 +55,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// <param name="Location">Location of the RSS feed to load</param>
         public Document(string Location)
         {
-            if (string.IsNullOrEmpty(Location))
-                throw new ArgumentNullException("Location");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Location),"Location");
             InternalLoad(Location);
         }
 

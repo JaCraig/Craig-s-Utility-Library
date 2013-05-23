@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Management;
 #endregion
 
@@ -44,10 +45,8 @@ namespace Utilities.Environment.DataTypes
         /// <returns>List of files that are found to have the specified extension</returns>
         public static IEnumerable<string> GetFilesWithExtension(string Computer, string UserName, string Password, string Extension)
         {
-            if (string.IsNullOrEmpty(Computer))
-                throw new ArgumentNullException("Computer");
-            if (string.IsNullOrEmpty(Extension))
-                throw new ArgumentNullException("Extension");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Computer), "Computer");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Extension), "Extension");
             List<string> Files = new List<string>();
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))

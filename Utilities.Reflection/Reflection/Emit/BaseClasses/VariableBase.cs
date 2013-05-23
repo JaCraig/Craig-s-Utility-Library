@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
 #endregion
@@ -99,8 +100,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(string MethodName, object[] Parameters = null)
         {
-            if (string.IsNullOrEmpty(MethodName))
-                throw new ArgumentNullException("MethodName");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName),"MethodName");
             List<Type> ParameterTypes = new List<Type>();
             if (Parameters != null)
             {
@@ -121,8 +121,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(MethodBuilder Method, object[] Parameters = null)
         {
-            if (Method == null)
-                throw new ArgumentNullException("Method");
+            Contract.Requires<ArgumentNullException>(Method!=null,"Method");
             return Call(Method.Builder, Parameters);
         }
 
@@ -134,8 +133,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(System.Reflection.Emit.MethodBuilder Method, object[] Parameters = null)
         {
-            if (Method == null)
-                throw new ArgumentNullException("Method");
+            Contract.Requires<ArgumentNullException>(Method!=null,"Method");
             return MethodBase.CurrentMethod.Call(this, Method, Parameters);
         }
 
@@ -147,8 +145,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(System.Reflection.MethodInfo Method, object[] Parameters = null)
         {
-            if (Method == null)
-                throw new ArgumentNullException("Method");
+            Contract.Requires<ArgumentNullException>(Method!=null,"Method");
             return MethodBase.CurrentMethod.Call(this, Method, Parameters);
         }
 
@@ -160,8 +157,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual void Call(System.Reflection.ConstructorInfo Method, object[] Parameters = null)
         {
-            if (Method == null)
-                throw new ArgumentNullException("Method");
+            Contract.Requires<ArgumentNullException>(Method!=null,"Method");
             MethodBase.CurrentMethod.Call(this, Method, Parameters);
         }
 
@@ -173,8 +169,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>Variable returned by the function (if one exists, null otherwise)</returns>
         public virtual VariableBase Call(IMethodBuilder Method, object[] Parameters = null)
         {
-            if (Method == null)
-                throw new ArgumentNullException("Method");
+            Contract.Requires<ArgumentNullException>(Method!=null,"Method");
             return Call((MethodBuilder)Method, Parameters);
         }
 
@@ -191,8 +186,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1013:OverloadOperatorEqualsOnOverloadingAddAndSubtract")]
         public static VariableBase operator +(VariableBase Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
@@ -205,8 +199,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1013:OverloadOperatorEqualsOnOverloadingAddAndSubtract")]
         public static VariableBase operator -(VariableBase Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
@@ -218,8 +211,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator *(VariableBase Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
@@ -231,8 +223,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator /(VariableBase Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
@@ -244,8 +235,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator %(VariableBase Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
@@ -257,8 +247,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator +(VariableBase Left, object Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
@@ -270,8 +259,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator -(VariableBase Left, object Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
@@ -283,8 +271,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator *(VariableBase Left, object Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
@@ -296,8 +283,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator /(VariableBase Left, object Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
@@ -309,8 +295,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator %(VariableBase Left, object Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
@@ -322,8 +307,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator +(object Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Add(Left, Right);
         }
 
@@ -335,8 +319,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator -(object Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Subtract(Left, Right);
         }
 
@@ -348,8 +331,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator *(object Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Multiply(Left, Right);
         }
 
@@ -361,8 +343,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator /(object Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Divide(Left, Right);
         }
 
@@ -374,8 +355,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator %(object Left, VariableBase Right)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             return MethodBase.CurrentMethod.Modulo(Left, Right);
         }
 
@@ -386,8 +366,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator ++(VariableBase Left)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(MethodBase.CurrentMethod.Add(Left, 1));
             return Left;
         }
@@ -399,8 +378,7 @@ namespace Utilities.Reflection.Emit.BaseClasses
         /// <returns>The resulting object</returns>
         public static VariableBase operator --(VariableBase Left)
         {
-            if (MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(MethodBase.CurrentMethod.Subtract(Left, 1));
             return Left;
         }

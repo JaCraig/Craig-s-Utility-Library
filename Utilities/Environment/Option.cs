@@ -26,6 +26,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Environment
@@ -44,10 +45,8 @@ namespace Utilities.Environment
         /// <param name="OptionStarter">Starter text for an option ("/", "-", etc.)</param>
         public Option(string Text, string OptionStarter)
         {
-            if (string.IsNullOrEmpty(Text))
-                throw new ArgumentNullException("Text");
-            if (string.IsNullOrEmpty(OptionStarter))
-                throw new ArgumentNullException("OptionStarter");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Text),"Text");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(OptionStarter),"OptionStarter");
             Regex CommandParser = new Regex(string.Format(CultureInfo.InvariantCulture, @"{0}(?<Command>[^\s]*)\s(?<Parameters>.*)", OptionStarter));
             Regex ParameterParser = new Regex("(?<Parameter>\"[^\"]*\")[\\s]?|(?<Parameter>[^\\s]*)[\\s]?");
             Parameters = new List<string>();

@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.ORM.Mapping.Interfaces;
@@ -130,7 +131,7 @@ namespace Utilities.ORM.Mapping
         /// <returns>ID object</returns>
         public IID<ClassType, DataType> ID<DataType>(Expression<Func<ClassType, DataType>> Expression)
         {
-            if (IDProperty != null)
+            if (IDProperty!= null)
                 throw new NotSupportedException("Multiple IDs are not currently supported");
             Setup();
             ID<ClassType, DataType> Return = new ID<ClassType, DataType>(Expression, this);

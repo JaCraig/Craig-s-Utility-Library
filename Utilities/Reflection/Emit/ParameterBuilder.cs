@@ -24,6 +24,7 @@ using System;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.BaseClasses;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -117,8 +118,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>The parameter</returns>
         public static ParameterBuilder operator ++(ParameterBuilder Left)
         {
-            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Add(Left, 1));
             return Left;
         }
@@ -130,8 +130,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>The parameter</returns>
         public static ParameterBuilder operator --(ParameterBuilder Left)
         {
-            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Subtract(Left, 1));
             return Left;
         }

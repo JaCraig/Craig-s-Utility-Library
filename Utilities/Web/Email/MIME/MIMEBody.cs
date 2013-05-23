@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -49,8 +50,7 @@ namespace Utilities.Web.Email.MIME
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1309:UseOrdinalStringComparison", MessageId = "System.String.IndexOf(System.String,System.Int32,System.StringComparison)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public MIMEBody(string Input,MIMEHeader Header)
         {
-            if (string.IsNullOrEmpty(Input))
-                throw new ArgumentNullException("Input");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input),"Input");
             this.Boundries = new List<MIMEMessage>();
             MediaEnum ContentType;
             ContentType=GetMediaType(Header);

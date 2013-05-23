@@ -29,6 +29,7 @@ using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.Reflection.ExtensionMethods;
 using System.Linq;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -56,10 +57,8 @@ namespace Utilities.Reflection.Emit
             Type PropertyType, IEnumerable<Type> Parameters)
             : base()
         {
-            if (TypeBuilder == null)
-                throw new ArgumentNullException("TypeBuilder");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(TypeBuilder!=null,"TypeBuilder");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             this.Name = Name;
             this.Type = TypeBuilder;
             this.Attributes = Attributes;
@@ -247,8 +246,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>The property</returns>
         public static DefaultPropertyBuilder operator ++(DefaultPropertyBuilder Left)
         {
-            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Add(Left, 1));
             return Left;
         }
@@ -260,8 +258,7 @@ namespace Utilities.Reflection.Emit
         /// <returns>The property</returns>
         public static DefaultPropertyBuilder operator --(DefaultPropertyBuilder Left)
         {
-            if (Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod == null)
-                throw new InvalidOperationException("Unsure which method is the current method");
+            Contract.Requires<InvalidOperationException>(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod != null, "Unsure which method is the current method");
             Left.Assign(Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.Subtract(Left, 1));
             return Left;
         }

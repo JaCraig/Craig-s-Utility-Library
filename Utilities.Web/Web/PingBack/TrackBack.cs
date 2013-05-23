@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -43,9 +44,7 @@ namespace Utilities.Web.PingBack
         /// <param name="Message">Message to send</param>
         public static void SendTrackBack(TrackBackMessage Message)
         {
-            if (Message == null)
-                throw new ArgumentException("Message can not be null.");
-
+            Contract.Requires<ArgumentNullException>(Message != null, "Message");
             GetTrackBackURL(Message);
             HttpWebRequest Request = (HttpWebRequest)System.Net.HttpWebRequest.Create(Message.NotificationURL);
             Request.Credentials = CredentialCache.DefaultNetworkCredentials;

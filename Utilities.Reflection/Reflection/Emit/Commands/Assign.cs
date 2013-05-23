@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Reflection.Emit;
 using System.Text;
 using Utilities.Reflection.Emit.BaseClasses;
@@ -44,8 +45,7 @@ namespace Utilities.Reflection.Emit.Commands
         public Assign(VariableBase LeftHandSide, object Value)
             : base()
         {
-            if (LeftHandSide == null)
-                throw new ArgumentNullException("LeftHandSide");
+            Contract.Requires<ArgumentNullException>(LeftHandSide!=null,"LeftHandSide");
             this.LeftHandSide = LeftHandSide;
             VariableBase TempValue = Value as VariableBase;
             this.RightHandSide = TempValue == null ? Utilities.Reflection.Emit.BaseClasses.MethodBase.CurrentMethod.CreateConstant(Value) : TempValue;

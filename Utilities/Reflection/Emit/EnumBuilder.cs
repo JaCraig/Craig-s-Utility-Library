@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
@@ -46,10 +47,8 @@ namespace Utilities.Reflection.Emit
         /// <param name="EnumType">Type for the enum</param>
         public EnumBuilder(Assembly Assembly, string Name, Type EnumType, TypeAttributes Attributes)
         {
-            if (Assembly == null)
-                throw new ArgumentNullException("Assembly");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(Assembly!=null,"Assembly");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             this.Name = Name;
             this.Assembly = Assembly;
             this.EnumType = EnumType;

@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -48,10 +49,8 @@ namespace Utilities.Reflection.Emit
         public TypeBuilder(Assembly Assembly, string Name, IEnumerable<Type> Interfaces,
             Type BaseClass, TypeAttributes Attributes)
         {
-            if (Assembly == null)
-                throw new ArgumentNullException("Assembly");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(Assembly!=null,"Assembly");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             this.Assembly = Assembly;
             this.Name = Name;
             this.Interfaces = new List<Type>();

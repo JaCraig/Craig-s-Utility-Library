@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 #endregion
@@ -45,8 +46,7 @@ namespace Utilities.Math.ExtensionMethods
         /// <returns>The list of permutations</returns>
         public static ListMapping<int, T> Permute<T>(this IEnumerable<T> Input)
         {
-            if (Input == null)
-                throw new ArgumentNullException("Input");
+            Contract.Requires<ArgumentNullException>(Input!=null,"Input");
             System.Collections.Generic.List<T> Current = new System.Collections.Generic.List<T>();
             Current.AddRange(Input);
             ListMapping<int, T> ReturnValue = new ListMapping<int, T>();

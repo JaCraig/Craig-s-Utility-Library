@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
 using System.Linq;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Reflection.Emit
@@ -48,8 +49,7 @@ namespace Utilities.Reflection.Emit
             IEnumerable<Type> Parameters, CallingConventions CallingConventions)
             : base()
         {
-            if (TypeBuilder == null)
-                throw new ArgumentNullException("TypeBuilder");
+            Contract.Requires<ArgumentNullException>(TypeBuilder!=null,"TypeBuilder");
             this.Type = TypeBuilder;
             this.Attributes = Attributes;
             this.Parameters = new List<ParameterBuilder>();

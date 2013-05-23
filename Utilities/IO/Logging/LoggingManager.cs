@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Utilities.IO.Logging.BaseClasses;
 using Utilities.IO.Logging.Interfaces;
 #endregion
@@ -38,7 +39,7 @@ namespace Utilities.IO.Logging
         /// <summary>
         /// Logs
         /// </summary>
-        private static Dictionary<string, ILog> Logs = new Dictionary<string, ILog>();
+        public static Dictionary<string, ILog> Logs = new Dictionary<string, ILog>();
 
         #endregion
 
@@ -52,10 +53,8 @@ namespace Utilities.IO.Logging
         /// <returns>The log file specified</returns>
         public static LogType GetLog<LogType>(string Name = "Default") where LogType : ILog
         {
-            if (!Logs.ContainsKey(Name))
-                throw new ArgumentException(Name + " was not found");
-            if (!(Logs[Name] is LogType))
-                throw new ArgumentException(Name + " is not the type specified");
+            Contract.Requires<ArgumentException>(Logs.ContainsKey(Name), "Log was not found");
+            Contract.Requires<ArgumentException>(Logs[Name] is LogType, "Log is not the type specified");
             return (LogType)Logs[Name];
         }
 
@@ -66,8 +65,7 @@ namespace Utilities.IO.Logging
         /// <returns>The log file specified</returns>
         public static ILog GetLog(string Name = "Default")
         {
-            if (!Logs.ContainsKey(Name))
-                throw new ArgumentException(Name + " was not found");
+            Contract.Requires<ArgumentException>(Logs.ContainsKey(Name), "Log was not found");
             return Logs[Name];
         }
 
@@ -88,10 +86,8 @@ namespace Utilities.IO.Logging
         /// <param name="Name">The name of the log file</param>
         public static void AddLog(ILog Log, string Name = "Default")
         {
-            if (Log == null)
-                throw new ArgumentNullException("Log");
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(Log!=null, "Log");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name), "Name");
             if (Logs.ContainsKey(Name))
                 Logs[Name] = Log;
             else

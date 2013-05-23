@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 #endregion
 
@@ -48,8 +49,7 @@ namespace Utilities.Web.Email.MIME
         /// <param name="HeaderText">Text for the header</param>
         public MIMEHeader(string HeaderText)
         {
-            if(string.IsNullOrEmpty(HeaderText))
-                throw new ArgumentNullException("HeaderText");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(HeaderText), "HeaderText");
             this.Fields = new List<Field>();
             StringReader Reader=new StringReader(HeaderText);
             try

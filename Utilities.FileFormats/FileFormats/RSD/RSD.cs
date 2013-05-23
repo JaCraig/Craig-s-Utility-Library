@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -51,8 +52,7 @@ namespace Utilities.FileFormats.RSD
         /// <param name="FileContent">Content of the RSD file</param>
         public RSD(string FileContent)
         {
-            if (string.IsNullOrEmpty(FileContent))
-                throw new ArgumentNullException("FileContent");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(FileContent),"FileContent");
             LoadContent(FileContent);
         }
         #endregion

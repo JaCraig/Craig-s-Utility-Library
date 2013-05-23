@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.DirectoryServices;
 using System.Text;
 #endregion
@@ -192,8 +193,7 @@ namespace Utilities.LDAP
         /// </summary>
         public virtual void Save()
         {
-            if (DirectoryEntry == null)
-                throw new InvalidOperationException("DirectoryEntry shouldn't be null");
+            Contract.Requires<InvalidOperationException>(DirectoryEntry != null, "DirectoryEntry shouldn't be null");
             DirectoryEntry.CommitChanges();
         }
 

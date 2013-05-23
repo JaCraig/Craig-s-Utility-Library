@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Management;
 using System.Net;
 #endregion
@@ -43,8 +44,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">Username</param>
         public Network(string Name = "", string UserName = "", string Password = "")
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name), "Name");
             GetNetworkInfo(Name, UserName, Password);
             GetNetworkAdapterInfo(Name, UserName, Password);
         }
@@ -75,8 +75,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="UserName">Username</param>
         protected virtual void GetNetworkInfo(string Name, string UserName, string Password)
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             NetworkAddresses = new List<NetworkAddress>();
             IPHostEntry HostEntry = Dns.GetHostEntry(Name);
             foreach (IPAddress Address in HostEntry.AddressList)
@@ -96,8 +95,7 @@ namespace Utilities.Environment.DataTypes
         /// <param name="Password">Password</param>
         protected virtual void GetNetworkAdapterInfo(string Name, string UserName, string Password)
         {
-            if (string.IsNullOrEmpty(Name))
-                throw new ArgumentNullException("Name");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Name),"Name");
             MACAddresses = new List<NetworkAdapter>();
             ManagementScope Scope = null;
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))

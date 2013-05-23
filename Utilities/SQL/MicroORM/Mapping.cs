@@ -129,7 +129,7 @@ namespace Utilities.SQL.MicroORM
             DataType DefaultValue = default(DataType),
             Mode Mode = Mode.Read|Mode.Write)
         {
-            if (Property==null)
+            if (Property == null)
                 throw new ArgumentNullException("Property");
             if (Mappings == null)
                 throw new ArgumentNullException("Mappings");

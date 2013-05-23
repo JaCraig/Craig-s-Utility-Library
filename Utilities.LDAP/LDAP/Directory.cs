@@ -26,6 +26,7 @@ using System.DirectoryServices;
 using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.LDAP
@@ -330,8 +331,7 @@ namespace Utilities.LDAP
         /// <returns>The user's entry</returns>
         public virtual Entry FindUserByUserName(string UserName)
         {
-            if (string.IsNullOrEmpty(UserName))
-                throw new ArgumentNullException("UserName");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(UserName),"UserName");
             return FindUsers("samAccountName=" + UserName).FirstOrDefault();
         }
 
