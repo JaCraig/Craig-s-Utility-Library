@@ -167,16 +167,14 @@ namespace Utilities.FileFormats.RSSHelper
         }
 
         /// <summary>
-        /// Internal load function
+        /// Loads the object from the data specified
         /// </summary>
-        /// <param name="Location">Location of the file</param>
-        /// <returns>This</returns>
-        protected override Document InternalLoad(string Location)
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
         {
             XmlDocument Document = new XmlDocument();
-            Document.Load(Location);
+            Document.LoadXml(Data);
             Load(Document);
-            return this;
         }
 
         #endregion

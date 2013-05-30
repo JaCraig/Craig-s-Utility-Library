@@ -35,7 +35,7 @@ namespace Utilities.FileFormats.BaseClasses
     /// <summary>
     /// Format base class
     /// </summary>
-    public abstract class FormatBase<FormatType,ContentType> : IComparable, IComparable<FormatType>,IEquatable<FormatType>
+    public abstract class FormatBase<FormatType, ContentType> : IComparable, IComparable<FormatType>, IEquatable<FormatType>
         where FormatType : FormatBase<FormatType, ContentType>, new()
     {
         #region Constructor

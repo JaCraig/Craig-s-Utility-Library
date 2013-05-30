@@ -129,14 +129,12 @@ namespace Utilities.FileFormats
         }
 
         /// <summary>
-        /// Internal load function
+        /// Loads the object from the data specified
         /// </summary>
-        /// <param name="Location">Location of the file</param>
-        /// <returns>This</returns>
-        protected override VCalendar InternalLoad(string Location)
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
         {
-            string Content = new FileInfo(Location).Read();
-            foreach (Match TempMatch in Regex.Matches(Content, "(?<Title>[^\r\n:]+):(?<Value>[^\r\n]*)"))
+            foreach (Match TempMatch in Regex.Matches(Data, "(?<Title>[^\r\n:]+):(?<Value>[^\r\n]*)"))
             {
                 if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTSTART")
                 {
@@ -159,7 +157,6 @@ namespace Utilities.FileFormats
                     Description = TempMatch.Groups["Value"].Value;
                 }
             }
-            return this;
         }
 
         #endregion

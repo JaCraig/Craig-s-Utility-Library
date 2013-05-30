@@ -83,15 +83,12 @@ namespace Utilities.FileFormats.RSD
         #region Public Overridden Functions
 
         /// <summary>
-        /// Internal load function
+        /// Loads the object from the data specified
         /// </summary>
-        /// <param name="Location">Location of the file</param>
-        /// <returns>This</returns>
-        protected override RSD InternalLoad(string Location)
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
         {
-            string Content = new FileInfo(Location).Read();
-            LoadContent(Content);
-            return this;
+            LoadContent(Data);
         }
 
         private void LoadContent(string Content)

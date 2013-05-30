@@ -83,16 +83,14 @@ namespace Utilities.FileFormats.OPMLHelper
         #region Overridden Functions
 
         /// <summary>
-        /// Internal load function
+        /// Loads the object from the data specified
         /// </summary>
-        /// <param name="Location">Location of the file</param>
-        /// <returns>This</returns>
-        protected override OPML InternalLoad(string Location)
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
         {
             XmlDocument Document = new XmlDocument();
-            Document.Load(Location);
+            Document.LoadXml(Data);
             LoadDoc(Document);
-            return this;
         }
 
         private void LoadDoc(XmlDocument Document)

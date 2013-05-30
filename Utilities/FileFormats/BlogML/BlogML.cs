@@ -101,16 +101,13 @@ namespace Utilities.FileFormats.BlogML
         #region Overridden Functions
 
         /// <summary>
-        /// Internal load function
+        /// Loads the object from the data specified
         /// </summary>
-        /// <param name="Location">Location of the file</param>
-        /// <returns>This</returns>
-        protected override BlogML InternalLoad(string Location)
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
         {
-            if (string.IsNullOrEmpty(Location))
-                throw new ArgumentNullException("Location");
             XmlDocument Document = new XmlDocument();
-            Document.Load(Location);
+            Document.LoadXml(Data);
             foreach (XmlNode Children in Document.ChildNodes)
             {
                 if (Children.Name.Equals("blog", StringComparison.CurrentCultureIgnoreCase))
@@ -142,7 +139,6 @@ namespace Utilities.FileFormats.BlogML
                     }
                 }
             }
-            return this;
         }
 
         /// <summary>

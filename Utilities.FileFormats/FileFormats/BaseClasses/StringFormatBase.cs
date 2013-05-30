@@ -82,6 +82,23 @@ namespace Utilities.FileFormats.BaseClasses
             return ToString().Equals(other.ToString(), StringComparison.InvariantCultureIgnoreCase);
         }
 
+        /// <summary>
+        /// Loads the object from the location specified
+        /// </summary>
+        /// <param name="Location">Location of the file to load</param>
+        /// <returns>This</returns>
+        protected override FormatType InternalLoad(string Location)
+        {
+            LoadFromData(new FileInfo(Location).Read());
+            return (FormatType)this;
+        }
+
+        /// <summary>
+        /// Loads the object from the data specified
+        /// </summary>
+        /// <param name="Data">Data to load into the object</param>
+        protected abstract void LoadFromData(string Data);
+
         #endregion
 
         #region Operators

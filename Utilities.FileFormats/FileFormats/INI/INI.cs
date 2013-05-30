@@ -181,16 +181,13 @@ namespace Utilities.FileFormats.INI
         #region Private Functions
 
         /// <summary>
-        /// Internal load function
+        /// Loads the object from the data specified
         /// </summary>
-        /// <param name="Location">Location of the file</param>
-        /// <returns>This</returns>
-        protected override INI InternalLoad(string Location)
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
         {
             FileContents = new Dictionary<string, Dictionary<string, string>>();
-            if (string.IsNullOrEmpty(Location))
-                return this;
-            string Contents = new FileInfo(Location).Read();
+            string Contents = Data;
             Regex Section = new Regex("[" + Regex.Escape(" ") + "\t]*" + Regex.Escape("[") + ".*" + Regex.Escape("]\r\n"));
             string[] Sections = Section.Split(Contents);
             MatchCollection SectionHeaders = Section.Matches(Contents);
@@ -208,7 +205,6 @@ namespace Utilities.FileFormats.INI
                 FileContents.Add(SectionHeader.Value.Replace("[", "").Replace("]\r\n", ""), SectionValues);
                 ++Counter;
             }
-            return this;
         }
 
         #endregion

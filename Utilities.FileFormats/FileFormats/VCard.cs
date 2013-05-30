@@ -191,13 +191,12 @@ namespace Utilities.FileFormats
         private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
         /// <summary>
-        /// Internal load function
+        /// Loads the object from the data specified
         /// </summary>
-        /// <param name="Location">Location of the file</param>
-        /// <returns>This</returns>
-        protected override VCard InternalLoad(string Location)
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
         {
-            string Content = new FileInfo(Location).Read();
+            string Content = Data;
             foreach (Match TempMatch in Regex.Matches(Content,"(?<Title>[^:]+):(?<Value>.*)"))
             {
                 if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "N")
@@ -233,7 +232,6 @@ namespace Utilities.FileFormats
                     Organization = TempMatch.Groups["Value"].Value;
                 }
             }
-            return this;
         }
 
         #endregion
