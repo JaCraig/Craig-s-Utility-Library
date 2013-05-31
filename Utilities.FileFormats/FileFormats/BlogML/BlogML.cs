@@ -27,6 +27,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
 using Utilities.FileFormats.BaseClasses;
 using System.Diagnostics.Contracts;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -106,38 +107,21 @@ namespace Utilities.FileFormats.BlogML
         /// <param name="Data">Data to load into the object</param>
         protected override void LoadFromData(string Data)
         {
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(Data);
-            foreach (XmlNode Children in Document.ChildNodes)
+            XDocument Document = XDocument.Parse(Data);
+            foreach (XElement Blog in Document.Elements("blog"))
             {
-                if (Children.Name.Equals("blog", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    DateCreated = Children.Attributes["date-created"] != null ? DateTime.Parse(Children.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
-                    RootURL = Children.Attributes["root-url"] != null ? Children.Attributes["root-url"].Value : "";
-                    foreach (XmlElement Child in Children.ChildNodes)
-                    {
-                        if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Title = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("sub-title", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            SubTitle = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Authors = new Authors(Child);
-                        }
-                        else if (Child.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Categories = new Categories(Child);
-                        }
-                        else if (Child.Name.Equals("posts", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Posts = new Posts(Child);
-                        }
-                    }
-                }
+                DateCreated = Blog.Attribute("date-created") != null ? DateTime.Parse(Blog.Attribute("date-created").Value, CultureInfo.InvariantCulture) : DateTime.Now;
+                RootURL = Blog.Attribute("root-url") != null ? Blog.Attribute("root-url").Value : "";
+                if (Blog.Element("title") != null)
+                    Title = Blog.Element("title").Value;
+                if (Blog.Element("sub-title") != null)
+                    SubTitle = Blog.Element("sub-title").Value;
+                if (Blog.Element("authors") != null)
+                    Authors = new Authors(Blog.Element("authors"));
+                if (Blog.Element("categories") != null)
+                    Categories = new Categories(Blog.Element("categories"));
+                if (Blog.Element("posts") != null)
+                    Posts = new Posts(Blog.Element("posts"));
             }
         }
 

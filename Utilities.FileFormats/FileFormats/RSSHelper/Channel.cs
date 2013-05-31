@@ -50,7 +50,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// Constructor
         /// </summary>
         /// <param name="Element">XML representation of the channel</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
+        
         public Channel(XmlElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element!=null,"Element");

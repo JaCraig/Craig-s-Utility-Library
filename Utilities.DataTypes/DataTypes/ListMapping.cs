@@ -56,15 +56,6 @@ namespace Utilities.DataTypes
 
         #endregion
 
-        #region Events
-
-        /// <summary>
-        /// Event called if the list is changed
-        /// </summary>
-        public EventHandler<ChangedEventArgs> Changed { get; set; }
-
-        #endregion
-
         #region Public Functions
 
         #region Add
@@ -79,7 +70,6 @@ namespace Utilities.DataTypes
             if (!Items.ContainsKey(Key))
             {
                 List<T2> Temp = new List<T2>();
-                Temp.Changed = Changed;
                 Items.Add(Key, Temp);
             }
             Items[Key].Add(Value);
@@ -104,7 +94,6 @@ namespace Utilities.DataTypes
             if (!Items.ContainsKey(Key))
             {
                 List<T2> Temp = new List<T2>();
-                Temp.Changed = Changed;
                 Items.Add(Key, Temp);
             }
             Items[Key].Add(Value);
@@ -135,9 +124,7 @@ namespace Utilities.DataTypes
         /// <returns>True if the key is found, false otherwise</returns>
         public virtual bool Remove(T1 key)
         {
-            bool ReturnVal = Items.Remove(key);
-            Changed.Raise(this, new ChangedEventArgs());
-            return ReturnVal;
+            return Items.Remove(key);
         }
 
         /// <summary>
@@ -181,7 +168,6 @@ namespace Utilities.DataTypes
         public virtual void Clear()
         {
             Items.Clear();
-            Changed.Raise(this, new ChangedEventArgs());
         }
 
         #endregion
@@ -328,7 +314,7 @@ namespace Utilities.DataTypes
         public virtual ICollection<T2> this[T1 key]
         {
             get { return Items[key]; }
-            set { Items[key] = value; Changed.Raise(this, new ChangedEventArgs()); }
+            set { Items[key] = value; }
         }
 
         /// <summary>

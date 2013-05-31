@@ -33,7 +33,7 @@ namespace Utilities.DataTypes
     /// </summary>
     /// <typeparam name="Key">Key type</typeparam>
     /// <typeparam name="Value">Value type</typeparam>
-    public class TagDictionary<Key,Value>:IDictionary<Key,IEnumerable<Value>>
+    public class TagDictionary<Key, Value> : IDictionary<Key, IEnumerable<Value>>
     {
         #region Constructor
 
@@ -259,7 +259,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="TKey">Key type</typeparam>
         /// <typeparam name="TValue">Value type</typeparam>
-        private class TaggedItem<TKey,TValue>
+        private class TaggedItem<TKey, TValue>
         {
             #region Constructor
 
@@ -268,10 +268,10 @@ namespace Utilities.DataTypes
             /// </summary>
             /// <param name="Keys">Keys</param>
             /// <param name="Value">Value</param>
-            public TaggedItem(IEnumerable<TKey> Keys,TValue Value)
+            public TaggedItem(IEnumerable<TKey> Keys, TValue Value)
             {
-                this.Keys=new ConcurrentBag<TKey>(Keys);
-                this.Value=Value;
+                this.Keys = new ConcurrentBag<TKey>(Keys);
+                this.Value = Value;
             }
 
             /// <summary>
@@ -292,12 +292,12 @@ namespace Utilities.DataTypes
             /// <summary>
             /// The list of keys associated with the value
             /// </summary>
-            public ConcurrentBag<TKey> Keys{get;set;}
+            public ConcurrentBag<TKey> Keys { get; set; }
 
             /// <summary>
             /// Value
             /// </summary>
-            public TValue Value{get;set;}
+            public TValue Value { get; set; }
 
             #endregion
         }

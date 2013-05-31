@@ -26,6 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
@@ -50,15 +51,13 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the authors information</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public Authors(XmlElement Element)
+        public Authors(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
             AuthorList = new List<Author>();
-            foreach (XmlNode Children in Element.ChildNodes)
+            foreach(XElement Children in Element.Elements("author"))
             {
-                if (Children.Name.Equals("author", StringComparison.CurrentCultureIgnoreCase))
-                    AuthorList.Add(new Author((XmlElement)Children));
+                AuthorList.Add(new Author(Children));
             }
         }
 

@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.OPMLHelper
@@ -48,55 +49,45 @@ namespace Utilities.FileFormats.OPMLHelper
         /// Constructors
         /// </summary>
         /// <param name="Element">Element containing outline information</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public Outline(XmlElement Element)
+        public Outline(XElement Element)
         {
-            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
-            if (Element.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
+            if (Element.Attribute("text") != null)
             {
-                if (Element.Attributes["text"] != null)
-                {
-                    Text = Element.Attributes["text"].Value;
-                }
-                else if (Element.Attributes["description"] != null)
-                {
-                    Description = Element.Attributes["description"].Value;
-                }
-                else if (Element.Attributes["htmlUrl"] != null)
-                {
-                    HTMLUrl = Element.Attributes["htmlUrl"].Value;
-                }
-                else if (Element.Attributes["type"] != null)
-                {
-                    Type = Element.Attributes["type"].Value;
-                }
-                else if (Element.Attributes["language"] != null)
-                {
-                    Language = Element.Attributes["language"].Value;
-                }
-                else if (Element.Attributes["title"] != null)
-                {
-                    Title = Element.Attributes["title"].Value;
-                }
-                else if (Element.Attributes["version"] != null)
-                {
-                    Version = Element.Attributes["version"].Value;
-                }
-                else if (Element.Attributes["xmlUrl"] != null)
-                {
-                    XMLUrl = Element.Attributes["xmlUrl"].Value;
-                }
-                foreach (XmlNode Child in Element.ChildNodes)
-                {
-                    try
-                    {
-                        if (Child.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Outlines.Add(new Outline((XmlElement)Child));
-                        }
-                    }
-                    catch { }
-                }
+                Text = Element.Attribute("text").Value;
+            }
+            if (Element.Attribute("description") != null)
+            {
+                Description = Element.Attribute("description").Value;
+            }
+            if (Element.Attribute("htmlUrl") != null)
+            {
+                HTMLUrl = Element.Attribute("htmlUrl").Value;
+            }
+            if (Element.Attribute("type") != null)
+            {
+                Type = Element.Attribute("type").Value;
+            }
+            if (Element.Attribute("language") != null)
+            {
+                Language = Element.Attribute("language").Value;
+            }
+            if (Element.Attribute("title") != null)
+            {
+                Title = Element.Attribute("title").Value;
+            }
+            if (Element.Attribute("version") != null)
+            {
+                Version = Element.Attribute("version").Value;
+            }
+            if (Element.Attribute("xmlUrl") != null)
+            {
+                XMLUrl = Element.Attribute("xmlUrl").Value;
+            }
+
+            foreach (XElement Child in Element.Elements("outline"))
+            {
+                Outlines.Add(new Outline(Child));
             }
         }
 

@@ -42,15 +42,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #endregion
 
-        #region IField Members
-
-        /// <summary>
-        /// Parses the field
-        /// </summary>
-        /// <param name="Value">Value to place in the field</param>
-        /// <param name="Length">Length of the field</param>
-        /// <param name="FillerCharacter">Filler character to use</param>
-        public abstract void Parse(string Value, int Length = -1, string FillerCharacter = " ");
+        #region Properties
 
         /// <summary>
         /// Length of the field
@@ -64,7 +56,15 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #endregion
 
-        #region Public Overridden Functions
+        #region Functions
+
+        /// <summary>
+        /// Parses the field
+        /// </summary>
+        /// <param name="Value">Value to place in the field</param>
+        /// <param name="Length">Length of the field</param>
+        /// <param name="FillerCharacter">Filler character to use</param>
+        public abstract void Parse(string Value, int Length = -1, string FillerCharacter = " ");
 
         /// <summary>
         /// Converts the field to a string

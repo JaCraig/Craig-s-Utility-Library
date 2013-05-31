@@ -103,7 +103,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="Serializer">Serializer to use (defaults to XMLSerializer)</param>
         /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)></param>
         /// <returns>The deserialized object</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
+        
         public static R Deserialize<R>(this XmlDocument Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
             return (Data == null) ? default(R) : (R)Data.InnerXml.Deserialize(typeof(R), Serializer.NullCheck(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
@@ -180,7 +180,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <param name="Serializer">Serializer to use (defaults to XMLSerializer)</param>
         /// <param name="EncodingUsing">Encoding to use (defaults to ASCII)></param>
         /// <returns>The deserialized object</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
+        
         public static object Deserialize(this XmlDocument Data, Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
             return (Data == null) ? null : Data.InnerXml.Deserialize(ObjectType, Serializer.NullCheck(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);

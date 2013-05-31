@@ -26,6 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.DataTypes.ExtensionMethods;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.Threading
@@ -93,7 +94,7 @@ namespace Utilities.DataTypes.Threading
         /// </summary>
         public bool IsComplete
         {
-            get { return Tasks.TrueForAll(x => x.IsCompleted); }
+            get { return Tasks.All(x => x.IsCompleted); }
         }
 
         #endregion

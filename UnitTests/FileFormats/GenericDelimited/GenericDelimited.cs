@@ -35,7 +35,7 @@ namespace UnitTests.FileFormats.GenericDelimited
         public void Load()
         {
             Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38","\t");
-            Assert.Equal(3, TestObject.NumberOfRows);
+            Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year\"\t\"Make\"\t\"Model\"\t\"Length\"" + System.Environment.NewLine + "\"1997\"\t\"Ford\"\t\"E350\"\t\"2.34\"" + System.Environment.NewLine + "\"2000\"\t\"Mercury\"\t\"Cougar\"\t\"2.38\"" + System.Environment.NewLine, TestObject);
         }
 
@@ -43,7 +43,7 @@ namespace UnitTests.FileFormats.GenericDelimited
         public void Load2()
         {
             Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("\"Year\tMake\tModel\tLength\"\r\n\"1997\tFord\tE350\t2.34\"\r\n\"2000\tMercury\tCougar\t2.38\"","\t");
-            Assert.Equal(3, TestObject.NumberOfRows);
+            Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year\tMake\tModel\tLength\"\r\n\"1997\tFord\tE350\t2.34\"\r\n\"2000\tMercury\tCougar\t2.38\"\r\n", TestObject);
         }
 
@@ -51,7 +51,7 @@ namespace UnitTests.FileFormats.GenericDelimited
         public void Load3()
         {
             Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"","\t");
-            Assert.Equal(1, TestObject.NumberOfRows);
+            Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"\r\n", TestObject);
         }
 
@@ -60,7 +60,7 @@ namespace UnitTests.FileFormats.GenericDelimited
         {
             Utilities.FileFormats.GenericDelimited.GenericDelimited TestObject = new Utilities.FileFormats.GenericDelimited.GenericDelimited("\t");
             TestObject.Parse("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"");
-            Assert.Equal(1, TestObject.NumberOfRows);
+            Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year\tMake\tModel\tLength\r\n1997\tFord\tE350\t2.34\r\n2000\tMercury\tCougar\t2.38\"\r\n", TestObject);
         }
 

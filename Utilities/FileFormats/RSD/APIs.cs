@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.RSD
@@ -47,17 +48,13 @@ namespace Utilities.FileFormats.RSD
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the info</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public APIs(XmlElement Element)
+        public APIs(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element!=null,"Element");
             APIList = new List<API>();
-            foreach (XmlNode Children in Element.ChildNodes)
+            foreach (XElement Children in Element.Elements("API"))
             {
-                if (Children.Name.Equals("API", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    APIList.Add(new API((XmlElement)Children));
-                }
+                APIList.Add(new API(Children));
             }
         }
         #endregion

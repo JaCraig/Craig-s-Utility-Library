@@ -31,7 +31,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
     /// Record base class
     /// </summary>
     /// <typeparam name="T">Field type</typeparam>
-    public abstract class RecordBase<T> : IRecord<T>
+    public abstract class RecordBase<T> : IRecord<T>, IList<IField<T>>
     {
         #region Constructor
 
@@ -45,14 +45,7 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
 
         #endregion
 
-        #region IRecord Members
-
-        /// <summary>
-        /// Parses the record
-        /// </summary>
-        /// <param name="Value">Value</param>
-        /// <param name="Length">Length of the record</param>
-        public abstract void Parse(string Value, int Length = -1);
+        #region Properties
 
         /// <summary>
         /// Length
@@ -62,11 +55,45 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// <summary>
         /// The list of fields
         /// </summary>
-        public ICollection<IField<T>> Fields { get; private set; }
+        protected IList<IField<T>> Fields { get; private set; }
+
+        /// <summary>
+        /// Individual records
+        /// </summary>
+        /// <param name="Position">The record that you want to get</param>
+        /// <returns>The record requested</returns>
+        public IField<T> this[int Position]
+        {
+            get { return Fields[Position]; }
+            set { Fields[Position] = value; }
+        }
+
+        /// <summary>
+        /// Number of Fields
+        /// </summary>
+        public int Count
+        {
+            get { return Fields.Count; }
+        }
+
+        /// <summary>
+        /// Is the file read only
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return Fields.IsReadOnly; }
+        }
 
         #endregion
 
-        #region Public Overridden Functions
+        #region Functions
+
+        /// <summary>
+        /// Parses the record
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <param name="Length">Length of the record</param>
+        public abstract void Parse(string Value, int Length = -1);
 
         /// <summary>
         /// Converts the record to a string
@@ -78,6 +105,100 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
             foreach (IField<T> Field in Fields)
                 Builder.Append(Field.ToString());
             return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Gets the enumerator for the file
+        /// </summary>
+        /// <returns>The enumerator for this file</returns>
+        public IEnumerator<IField<T>> GetEnumerator()
+        {
+            return Fields.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the enumerator for the file
+        /// </summary>
+        /// <returns>The enumerator for this file</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return Fields.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Adds a Field to the file
+        /// </summary>
+        /// <param name="item">Field to add</param>
+        public void Add(IField<T> item)
+        {
+            Fields.Add(item);
+        }
+
+        /// <summary>
+        /// Clears the file
+        /// </summary>
+        public void Clear()
+        {
+            Fields.Clear();
+        }
+
+        /// <summary>
+        /// Determines if the file contains a Field
+        /// </summary>
+        /// <param name="item">Field to check for</param>
+        /// <returns>True if it does, false otherwise</returns>
+        public bool Contains(IField<T> item)
+        {
+            return Fields.Contains(item);
+        }
+
+        /// <summary>
+        /// Copies the delimited file to an array
+        /// </summary>
+        /// <param name="array">Array to copy to</param>
+        /// <param name="arrayIndex">Index to start at</param>
+        public void CopyTo(IField<T>[] array, int arrayIndex)
+        {
+            Fields.CopyTo(array, arrayIndex);
+        }
+
+        /// <summary>
+        /// Removes a Field from the file
+        /// </summary>
+        /// <param name="item">Field to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(IField<T> item)
+        {
+            return Fields.Remove(item);
+        }
+
+        /// <summary>
+        /// Index of a specific Field
+        /// </summary>
+        /// <param name="item">Field to search for</param>
+        /// <returns>The index of a specific Field</returns>
+        public int IndexOf(IField<T> item)
+        {
+            return Fields.IndexOf(item);
+        }
+
+        /// <summary>
+        /// Inserts a Field at a specific index
+        /// </summary>
+        /// <param name="index">Index to insert at</param>
+        /// <param name="item">Field to insert</param>
+        public void Insert(int index, IField<T> item)
+        {
+            Fields.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Removes a Field at a specific index
+        /// </summary>
+        /// <param name="index">Index of the Field to remove</param>
+        public void RemoveAt(int index)
+        {
+            Fields.RemoveAt(index);
         }
 
         #endregion

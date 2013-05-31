@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Encryption</id>
-		<version>3.3.0275</version>
+		<version>3.3.0286</version>
 		<title>Craig's Utility Library Encryption Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

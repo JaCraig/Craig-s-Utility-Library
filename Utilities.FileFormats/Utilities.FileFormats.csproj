@@ -185,6 +185,7 @@
     <Compile Include="FileFormats\GenericDelimited\GenericDelimited.cs" />
     <Compile Include="FileFormats\BaseClasses\FormatBase.cs" />
     <Compile Include="FileFormats\BaseClasses\StringFormatBase.cs" />
+    <Compile Include="FileFormats\BaseClasses\StringListFormatBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">

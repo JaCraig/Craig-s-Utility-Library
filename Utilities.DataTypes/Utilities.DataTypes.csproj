@@ -120,12 +120,10 @@
   <ItemGroup>
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
-    <Compile Include="DataTypes\List.cs" />
     <Compile Include="DataTypes\ListMapping.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
     <Compile Include="DataTypes\Patterns\Factory.cs" />
     <Compile Include="DataTypes\PriorityQueue.cs" />
-    <Compile Include="DataTypes\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
@@ -154,6 +152,7 @@
     <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="DataTypes\Table.cs" />
+    <Compile Include="DataTypes\Patterns\BaseClasses\SafeDisposableBaseClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

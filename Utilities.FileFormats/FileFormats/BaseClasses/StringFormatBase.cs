@@ -99,6 +99,15 @@ namespace Utilities.FileFormats.BaseClasses
         /// <param name="Data">Data to load into the object</param>
         protected abstract void LoadFromData(string Data);
 
+        /// <summary>
+        /// Clones the object
+        /// </summary>
+        /// <returns>A newly cloned object</returns>
+        public override object Clone()
+        {
+            return (FormatType)this.ToString();
+        }
+
         #endregion
 
         #region Operators
@@ -111,6 +120,18 @@ namespace Utilities.FileFormats.BaseClasses
         public static implicit operator string(StringFormatBase<FormatType> Value)
         {
             return Value.ToString();
+        }
+
+        /// <summary>
+        /// Converts the string to the format specified
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The string as an object</returns>
+        public static implicit operator StringFormatBase<FormatType>(string Value)
+        {
+            FormatType ReturnValue=new FormatType();
+            ReturnValue.LoadFromData(Value);
+            return ReturnValue;
         }
 
         #endregion

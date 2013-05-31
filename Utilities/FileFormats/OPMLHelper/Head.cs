@@ -25,6 +25,7 @@ using System.Text;
 using System.Xml;
 using System.Globalization;
 using System.Diagnostics.Contracts;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.OPMLHelper
@@ -49,44 +50,21 @@ namespace Utilities.FileFormats.OPMLHelper
         /// Constructor
         /// </summary>
         /// <param name="Element">XmlElement containing the header information</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public Head(XmlElement Element)
+        public Head(XElement Element)
         {
-            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
-            if (Element.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
-            {
-                foreach (XmlNode Child in Element.ChildNodes)
-                {
-                    try
-                    {
-                        if (Child.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Title = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("ownerName", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            OwnerName = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("ownerEmail", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            OwnerEmail = Child.InnerText;
-                        }
-                        else if (Child.Name.Equals("dateCreated", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            DateCreated = DateTime.Parse(Child.InnerText, CultureInfo.InvariantCulture);
-                        }
-                        else if (Child.Name.Equals("dateModified", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            DateModified = DateTime.Parse(Child.InnerText, CultureInfo.InvariantCulture);
-                        }
-                        else if (Child.Name.Equals("docs", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Docs = Child.InnerText;
-                        }
-                    }
-                    catch { }
-                }
-            }
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
+            if (Element.Element("title") != null)
+                Title = Element.Element("title").Value;
+            if (Element.Element("ownerName") != null)
+                OwnerName = Element.Element("ownerName").Value;
+            if (Element.Element("ownerEmail") != null)
+                OwnerEmail = Element.Element("ownerEmail").Value;
+            if (Element.Element("dateCreated") != null)
+                DateCreated = DateTime.Parse(Element.Element("dateCreated").Value, CultureInfo.InvariantCulture);
+            if (Element.Element("dateModified") != null)
+                DateModified = DateTime.Parse(Element.Element("dateModified").Value, CultureInfo.InvariantCulture);
+            if (Element.Element("docs") != null)
+                Docs = Element.Element("docs").Value;
         }
 
         #endregion

@@ -32,7 +32,7 @@ namespace Utilities.FileFormats.Delimited
     /// <summary>
     /// Individual row within a delimited file
     /// </summary>
-    public class Row
+    public class Row : IList<Cell>
     {
         #region Constructors
 
@@ -77,29 +77,22 @@ namespace Utilities.FileFormats.Delimited
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Cells within the row
         /// </summary>
-        public ICollection<Cell> Cells { get; private set; }
+        protected IList<Cell> Cells { get; private set; }
 
         /// <summary>
         /// Returns a cell within the row
         /// </summary>
         /// <param name="Position">The position of the cell</param>
         /// <returns>The specified cell</returns>
-        public virtual Cell this[int Position]
+        public Cell this[int Position]
         {
-            get { return Cells.ElementAt(Position); }
-        }
-
-        /// <summary>
-        /// Number of cells within the row
-        /// </summary>
-        public virtual int NumberOfCells
-        {
-            get { return Cells.Count; }
+            get { return Cells[Position]; }
+            set { Cells[Position] = value; }
         }
 
         /// <summary>
@@ -109,7 +102,7 @@ namespace Utilities.FileFormats.Delimited
 
         #endregion
 
-        #region Public Overridden Functions
+        #region Functions
 
         /// <summary>
         /// To string function
@@ -125,6 +118,116 @@ namespace Utilities.FileFormats.Delimited
                 Seperator = Delimiter;
             }
             return Builder.Append(System.Environment.NewLine).ToString();
+        }
+
+        /// <summary>
+        /// Gets the enumerator for the delimited file
+        /// </summary>
+        /// <returns>The enumerator for this file</returns>
+        public IEnumerator<Cell> GetEnumerator()
+        {
+            return Cells.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the enumerator for the delimited file
+        /// </summary>
+        /// <returns>The enumerator for this file</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return Cells.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Adds a Cell to the file
+        /// </summary>
+        /// <param name="item">Cell to add</param>
+        public void Add(Cell item)
+        {
+            Cells.Add(item);
+        }
+
+        /// <summary>
+        /// Clears the file
+        /// </summary>
+        public void Clear()
+        {
+            Cells.Clear();
+        }
+
+        /// <summary>
+        /// Determines if the file contains a Cell
+        /// </summary>
+        /// <param name="item">Cell to check for</param>
+        /// <returns>True if it does, false otherwise</returns>
+        public bool Contains(Cell item)
+        {
+            return Cells.Contains(item);
+        }
+
+        /// <summary>
+        /// Copies the delimited file to an array
+        /// </summary>
+        /// <param name="array">Array to copy to</param>
+        /// <param name="arrayIndex">Index to start at</param>
+        public void CopyTo(Cell[] array, int arrayIndex)
+        {
+            Cells.CopyTo(array, arrayIndex);
+        }
+
+        /// <summary>
+        /// Number of Cells
+        /// </summary>
+        public int Count
+        {
+            get { return Cells.Count; }
+        }
+
+        /// <summary>
+        /// Is the file read only
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return Cells.IsReadOnly; }
+        }
+
+        /// <summary>
+        /// Removes a Cell from the file
+        /// </summary>
+        /// <param name="item">Cell to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(Cell item)
+        {
+            return Cells.Remove(item);
+        }
+
+        /// <summary>
+        /// Index of a specific Cell
+        /// </summary>
+        /// <param name="item">Cell to search for</param>
+        /// <returns>The index of a specific Cell</returns>
+        public int IndexOf(Cell item)
+        {
+            return Cells.IndexOf(item);
+        }
+
+        /// <summary>
+        /// Inserts a Cell at a specific index
+        /// </summary>
+        /// <param name="index">Index to insert at</param>
+        /// <param name="item">Cell to insert</param>
+        public void Insert(int index, Cell item)
+        {
+            Cells.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Removes a Cell at a specific index
+        /// </summary>
+        /// <param name="index">Index of the Cell to remove</param>
+        public void RemoveAt(int index)
+        {
+            Cells.RemoveAt(index);
         }
 
         #endregion

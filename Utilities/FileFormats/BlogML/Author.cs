@@ -26,6 +26,7 @@ using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
 using System.Diagnostics.Contracts;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -48,20 +49,16 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">XML element containing the author info</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public Author(XmlElement Element)
+        public Author(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
-            ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
-            Email = Element.Attributes["email"] != null ? Element.Attributes["email"].Value : "";
-            REF = Element.Attributes["ref"] != null ? Element.Attributes["ref"].Value : "";
-            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
-            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value, CultureInfo.InvariantCulture) : DateTime.Now;
-            foreach (XmlNode Children in Element.ChildNodes)
-            {
-                if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                    Title = Children.InnerText;
-            }
+            ID = Element.Attribute("id") != null ? Element.Attribute("id").Value : "";
+            Email = Element.Attribute("email") != null ? Element.Attribute("email").Value : "";
+            REF = Element.Attribute("ref") != null ? Element.Attribute("ref").Value : "";
+            DateCreated = Element.Attribute("date-created") != null ? DateTime.Parse(Element.Attribute("date-created").Value, CultureInfo.InvariantCulture) : DateTime.Now;
+            DateModified = Element.Attribute("date-modified") != null ? DateTime.Parse(Element.Attribute("date-modified").Value, CultureInfo.InvariantCulture) : DateTime.Now;
+            if (Element.Element("title") != null)
+                Title = Element.Element("title").Value;
         }
 
         #endregion

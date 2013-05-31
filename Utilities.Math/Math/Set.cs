@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes;
@@ -32,7 +33,7 @@ namespace Utilities.Math
     /// Class to be used for sets of data
     /// </summary>
     /// <typeparam name="T">Type that the set holds</typeparam>
-    public class Set<T> : Vector<T>
+    public class Set<T> : List<T>
     {
         #region Constructors
 
@@ -75,11 +76,11 @@ namespace Utilities.Math
         /// <returns>True if it is, false otherwise</returns>
         public virtual bool IsSubset(Set<T> Set)
         {
-            if (Set == null || this.NumberItems > Set.NumberItems)
+            if (Set == null || this.Count > Set.Count)
                 return false;
 
-            for (int x = 0; x < this.NumberItems; ++x)
-                if (!Set.Contains(this.Items[x]))
+            for (int x = 0; x < this.Count; ++x)
+                if (!Set.Contains(this[x]))
                     return false;
             return true;
         }
@@ -93,8 +94,8 @@ namespace Utilities.Math
         {
             if (Set == null)
                 return false;
-            for (int x = 0; x < this.NumberItems; ++x)
-                if (Set.Contains(this.Items[x]))
+            for (int x = 0; x < this.Count; ++x)
+                if (Set.Contains(this[x]))
                     return true;
             return false;
         }
@@ -114,13 +115,13 @@ namespace Utilities.Math
             if (Set1 == null || Set2 == null || !Set1.Intersect(Set2))
                 return null;
             Set<T> ReturnValue = new Set<T>();
-            for (int x = 0; x < Set1.NumberItems; ++x)
-                if (Set2.Contains(Set1.Items[x]))
-                    ReturnValue.Add(Set1.Items[x]);
+            for (int x = 0; x < Set1.Count; ++x)
+                if (Set2.Contains(Set1[x]))
+                    ReturnValue.Add(Set1[x]);
 
-            for (int x = 0; x < Set2.NumberItems; ++x)
-                if (Set1.Contains(Set2.Items[x]))
-                    ReturnValue.Add(Set2.Items[x]);
+            for (int x = 0; x < Set2.Count; ++x)
+                if (Set1.Contains(Set2[x]))
+                    ReturnValue.Add(Set2[x]);
 
             return ReturnValue;
         }
@@ -137,10 +138,10 @@ namespace Utilities.Math
             Contract.Requires<ArgumentNullException>(Set2 != null, "Set2");
 
             Set<T> ReturnValue = new Set<T>();
-            for (int x = 0; x < Set1.NumberItems; ++x)
-                ReturnValue.Add(Set1.Items[x]); ;
-            for (int x = 0; x < Set2.NumberItems; ++x)
-                ReturnValue.Add(Set2.Items[x]); ;
+            for (int x = 0; x < Set1.Count; ++x)
+                ReturnValue.Add(Set1[x]); ;
+            for (int x = 0; x < Set2.Count; ++x)
+                ReturnValue.Add(Set2[x]); ;
             return ReturnValue;
         }
 
@@ -156,9 +157,9 @@ namespace Utilities.Math
             Contract.Requires<ArgumentNullException>(Set2!=null,"Set2");
 
             Set<T> ReturnValue = new Set<T>();
-            for (int x = 0; x < Set1.NumberItems; ++x)
-                if (!Set2.Contains(Set1.Items[x]))
-                    ReturnValue.Add(Set1.Items[x]);
+            for (int x = 0; x < Set1.Count; ++x)
+                if (!Set2.Contains(Set1[x]))
+                    ReturnValue.Add(Set1[x]);
             return ReturnValue;
         }
 
@@ -198,7 +199,7 @@ namespace Utilities.Math
         /// <returns>The hash code for the object</returns>
         public override int GetHashCode()
         {
-            return this.Items.GetHashCode();
+            return base.GetHashCode();
         }
 
         /// <summary>
@@ -220,10 +221,10 @@ namespace Utilities.Math
             StringBuilder Builder = new StringBuilder();
             Builder.Append("{ ");
             string Splitter = "";
-            for (int x = 0; x < this.NumberItems; ++x)
+            for (int x = 0; x < this.Count; ++x)
             {
                 Builder.Append(Splitter);
-                Builder.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, "{0}", this.Items[x]);
+                Builder.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, "{0}", this[x]);
                 Splitter = ",  ";
             }
             Builder.Append(" }");

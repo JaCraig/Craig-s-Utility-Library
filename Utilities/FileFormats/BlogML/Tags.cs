@@ -27,6 +27,7 @@ using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
 using System.Diagnostics.Contracts;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -50,15 +51,13 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing tags info</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public Tags(XmlElement Element)
+        public Tags(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
             TagList = new List<Tag>();
-            foreach (XmlNode Children in Element.ChildNodes)
+            foreach (XElement Children in Element.Elements("tag"))
             {
-                if (Children.Name.Equals("tag", StringComparison.CurrentCultureIgnoreCase))
-                    TagList.Add(new Tag((XmlElement)Children));
+                TagList.Add(new Tag(Children));
             }
         }
 

@@ -35,7 +35,7 @@ namespace UnitTests.FileFormats.CSV
         public void Load()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38");
-            Assert.Equal(3, TestObject.NumberOfRows);
+            Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year\",\"Make\",\"Model\",\"Length\"" + System.Environment.NewLine + "\"1997\",\"Ford\",\"E350\",\"2.34\"" + System.Environment.NewLine + "\"2000\",\"Mercury\",\"Cougar\",\"2.38\"" + System.Environment.NewLine, TestObject.ToString());
         }
 
@@ -43,7 +43,7 @@ namespace UnitTests.FileFormats.CSV
         public void Load2()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("\"Year,Make,Model,Length\"\r\n\"1997,Ford,E350,2.34\"\r\n\"2000,Mercury,Cougar,2.38\"");
-            Assert.Equal(3, TestObject.NumberOfRows);
+            Assert.Equal(3, TestObject.Count);
             Assert.Equal("\"Year,Make,Model,Length\"\r\n\"1997,Ford,E350,2.34\"\r\n\"2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
         }
 
@@ -51,7 +51,7 @@ namespace UnitTests.FileFormats.CSV
         public void Load3()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
-            Assert.Equal(1, TestObject.NumberOfRows);
+            Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
         }
 
@@ -59,7 +59,7 @@ namespace UnitTests.FileFormats.CSV
         public void Load5()
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
-            Assert.Equal(1, TestObject.NumberOfRows);
+            Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject);
         }
 
@@ -68,7 +68,7 @@ namespace UnitTests.FileFormats.CSV
         {
             Utilities.FileFormats.CSV.CSV TestObject = new Utilities.FileFormats.CSV.CSV();
             TestObject.Parse("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
-            Assert.Equal(1, TestObject.NumberOfRows);
+            Assert.Equal(1, TestObject.Count);
             Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject.ToString());
         }
 

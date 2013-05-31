@@ -51,16 +51,36 @@ namespace Utilities.FileFormats.Delimited
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Value within the cell
         /// </summary>
-        public virtual string Value { get; set; }
+        public string Value { get; set; }
 
         #endregion
 
-        #region Public Overridden Functions
+        #region Functions
+
+        /// <summary>
+        /// Converts the cell to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(Cell Value)
+        {
+            return Value.ToString();
+        }
+
+        /// <summary>
+        /// Converts the string to a cell
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The string as a cell</returns>
+        public static implicit operator Cell(string Value)
+        {
+            return new Cell(Value);
+        }
 
         /// <summary>
         /// To string function

@@ -25,6 +25,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Utilities.FileFormats.BaseClasses;
 using Utilities.IO.ExtensionMethods;
 #endregion
@@ -93,38 +94,17 @@ namespace Utilities.FileFormats.RSD
 
         private void LoadContent(string Content)
         {
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(Content);
-            foreach (XmlNode Children in Document.ChildNodes)
+            XDocument Document = XDocument.Parse(Content);
+            foreach (XElement Service in Document.Elements("RSD").Elements("service"))
             {
-                if (Children.Name.Equals("RSD", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    foreach (XmlNode Child in Children.ChildNodes)
-                    {
-                        if (Child.Name.Equals("service", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            foreach (XmlNode ServiceChild in Child.ChildNodes)
-                            {
-                                if (ServiceChild.Name.Equals("engineName", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    EngineName = ServiceChild.InnerText;
-                                }
-                                else if (ServiceChild.Name.Equals("engineLink", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    EngineLink = ServiceChild.InnerText;
-                                }
-                                else if (ServiceChild.Name.Equals("homePageLink", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    HomePageLink = ServiceChild.InnerText;
-                                }
-                                else if (ServiceChild.Name.Equals("apis", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    APIs = new APIs((XmlElement)ServiceChild);
-                                }
-                            }
-                        }
-                    }
-                }
+                if (Service.Element("engineName") != null)
+                    EngineName = Service.Element("engineName").Value;
+                if (Service.Element("engineLink") != null)
+                    EngineLink = Service.Element("engineLink").Value;
+                if (Service.Element("homePageLink") != null)
+                    HomePageLink = Service.Element("homePageLink").Value;
+                if (Service.Element("apis") != null)
+                    APIs = new APIs(Service.Element("apis"));
             }
         }
 

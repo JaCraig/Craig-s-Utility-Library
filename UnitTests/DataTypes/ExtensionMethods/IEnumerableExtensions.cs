@@ -51,18 +51,10 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void TrueForAny2()
-        {
-            IEnumerable<int> Temp = new int[] { 1, 2, 3 }.ToList();
-            Assert.True(Temp.TrueForAny(x => x > 2));
-            Assert.False(Temp.TrueForAny(x => x < 1));
-        }
-
-        [Fact]
         public void RemoveDefaultsTest()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            foreach (int Value in Temp.RemoveDefaults())
+            foreach (int Value in Temp.Remove(x => x == 0))
                 Assert.NotEqual(0, Value);
         }
 
@@ -183,64 +175,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void TrueForEach()
-        {
-            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.True(Temp.TrueForAll(x => x < 4));
-        }
-
-        [Fact]
-        public void ThrowIfTrueForAll()
-        {
-            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.Throws<Exception>(() => Temp.ThrowIfTrueForAll(new Exception(), x => x < 4));
-            Assert.DoesNotThrow(() => Temp.ThrowIfTrueForAll(new Exception(), x => x > 4));
-        }
-
-        [Fact]
-        public void ThrowIfFalseForAll()
-        {
-            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.Throws<Exception>(() => Temp.ThrowIfFalseForAll(new Exception(), x => x > 4));
-            Assert.DoesNotThrow(() => Temp.ThrowIfFalseForAll(new Exception(), x => x < 4));
-        }
-
-        [Fact]
-        public void ThrowIfTrueForAny()
-        {
-            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.Throws<Exception>(() => Temp.ThrowIfTrueForAny(new Exception(), x => x < 1));
-            Assert.DoesNotThrow(() => Temp.ThrowIfTrueForAny(new Exception(), x => x > 4));
-        }
-
-        [Fact]
-        public void ThrowIfFalseForAny()
-        {
-            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.Throws<Exception>(() => Temp.ThrowIfFalseForAny(new Exception(), x => x > 2));
-            Assert.DoesNotThrow(() => Temp.ThrowIfFalseForAny(new Exception(), x => x < 4));
-        }
-
-        [Fact]
-        public void TrueForAny()
-        {
-            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.True(Temp.TrueForAny(x => x < 4, x => x == 0));
-        }
-
-        [Fact]
-        public void TrueForEach2()
-        {
-            IEnumerable<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.True(Temp.TrueForAll(x => x < 4, x => x >= 0));
-        }
-
-        [Fact]
         public void TryAll()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             List<int> Results = new List<int>();
-            Temp.TryAll(x => Results.Add(x == 0 ? 4 : x));
+            Temp.ForEach(x => Results.Add(x == 0 ? 4 : x));
             Assert.Equal(4, Results[0]);
             Assert.Equal(4, Results[1]);
             Assert.Equal(1, Results[2]);
@@ -248,7 +187,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(3, Results[4]);
             List<int?> Temp2 = new int?[] { 0, 0, 1, 2, 3, null }.ToList();
             List<int?> Results2 = new List<int?>();
-            Temp2.TryAll(x => Results2.Add(x == 0 ? 4 : x.Value + 1), x => Results2.Add(5));
+            Temp2.ForEach(x => Results2.Add(x == 0 ? 4 : x.Value + 1), (x, y) => Results2.Add(5));
             Assert.Equal(4, Results2[0]);
             Assert.Equal(4, Results2[1]);
             Assert.Equal(2, Results2[2]);
@@ -262,12 +201,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             List<int> Results = new List<int>(10);
-            Temp.TryAllParallel(x => Results.Add(x == 0 ? 4 : x));
+            Temp.ForEachParallel(x => Results.Add(x == 0 ? 4 : x));
             Assert.Equal(5, Results.Count);
             Assert.Equal(14, Results.Sum());
             List<int?> Temp2 = new int?[] { 0, 0, 1, 2, 3, null }.ToList();
             List<int?> Results2 = new List<int?>(10);
-            Temp2.TryAllParallel(x => Results2.Add(x == 0 ? 4 : x.Value + 1), x => Results2.Add(5));
+            Temp2.ForEachParallel(x => Results2.Add(x == 0 ? 4 : x.Value + 1), (x, y) => Results2.Add(5));
             Assert.Equal(6, Results2.Count);
             Assert.Equal(22, Results2.Sum());
         }
@@ -278,14 +217,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
             Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.ElementsBetween(0, 3));
         }
-
-        [Fact]
-        public void First()
-        {
-            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
-            Assert.Equal(new int[] { 0, 0, 1 }.ToList(), Temp.First(3));
-        }
-
+        
         [Fact]
         public void Last()
         {

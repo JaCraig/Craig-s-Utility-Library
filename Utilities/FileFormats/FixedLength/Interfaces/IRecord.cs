@@ -49,11 +49,6 @@ namespace Utilities.FileFormats.FixedLength.Interfaces
         /// </summary>
         int Length { get; set; }
 
-        /// <summary>
-        /// List of fields
-        /// </summary>
-        ICollection<IField<T>> Fields { get; }
-
         #endregion
     }
 }

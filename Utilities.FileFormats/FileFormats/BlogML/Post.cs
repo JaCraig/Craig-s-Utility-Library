@@ -26,6 +26,7 @@ using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
 using System.Diagnostics.Contracts;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -52,52 +53,31 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the post info</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public Post(XmlElement Element)
+        public Post(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
             DateCreated = DateTime.Now;
             DateModified = DateTime.Now;
-            ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
-            PostURL = Element.Attributes["post-url"] != null ? Element.Attributes["post-url"].Value : "";
-            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.MinValue;
-            DateModified = Element.Attributes["date-modified"] != null ? DateTime.Parse(Element.Attributes["date-modified"].Value, CultureInfo.InvariantCulture) : DateCreated;
-
-            foreach (XmlElement Children in Element.ChildNodes)
-            {
-                if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Title = Children.InnerText;
-                }
-                else if (Children.Name.Equals("content", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Content = Children.InnerText;
-                }
-                else if (Children.Name.Equals("post-name", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    PostName = Children.InnerText;
-                }
-                else if (Children.Name.Equals("excerpt", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Excerpt = Children.InnerText;
-                }
-                else if (Children.Name.Equals("authors", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Authors = new Authors(Children);
-                }
-                else if (Children.Name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Categories = new Categories(Children);
-                }
-                else if (Children.Name.Equals("tags", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Tags = new Tags(Children);
-                }
-                else if (Children.Name.Equals("comments", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Comments = new Comments(Children);
-                }
-            }
+            ID = Element.Attribute("id") != null ? Element.Attribute("id").Value : "";
+            PostURL = Element.Attribute("post-url") != null ? Element.Attribute("post-url").Value : "";
+            DateCreated = Element.Attribute("date-created") != null ? DateTime.Parse(Element.Attribute("date-created").Value, CultureInfo.InvariantCulture) : DateTime.MinValue;
+            DateModified = Element.Attribute("date-modified") != null ? DateTime.Parse(Element.Attribute("date-modified").Value, CultureInfo.InvariantCulture) : DateCreated;
+            if (Element.Element("title") != null)
+                Title = Element.Element("title").Value;
+            if (Element.Element("content") != null)
+                Content = Element.Element("content").Value;
+            if (Element.Element("post-name") != null)
+                PostName = Element.Element("post-name").Value;
+            if (Element.Element("excerpt") != null)
+                Excerpt = Element.Element("excerpt").Value;
+            if (Element.Element("authors") != null)
+                Authors = new Authors(Element.Element("authors"));
+            if (Element.Element("categories") != null)
+                Categories = new Categories(Element.Element("categories"));
+            if (Element.Element("tags") != null)
+                Tags = new Tags(Element.Element("tags"));
+            if (Element.Element("comments") != null)
+                Comments = new Comments(Element.Element("comments"));
         }
         #endregion
 

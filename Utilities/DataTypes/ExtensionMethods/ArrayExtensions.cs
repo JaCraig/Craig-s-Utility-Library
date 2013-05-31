@@ -21,7 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-
+using System.Diagnostics.Contracts;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -73,14 +74,14 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region Combine
+        #region Concat
 
         /// <summary>
         /// Combines two arrays and returns a new array containing both values
         /// </summary>
         /// <typeparam name="ArrayType">Type of the data in the array</typeparam>
         /// <param name="Array1">Array 1</param>
-        /// <param name="Array2">Array 2</param>
+        /// <param name="Additions">Arrays to concat onto the first item</param>
         /// <returns>A new array containing both arrays' values</returns>
         /// <example>
         /// <code>
@@ -90,30 +91,20 @@ namespace Utilities.DataTypes.ExtensionMethods
         ///  TestObject1 = TestObject1.Combine(TestObject2, TestObject3);
         /// </code>
         /// </example>
-        public static ArrayType[] Combine<ArrayType>(this ArrayType[] Array1, params ArrayType[][] Array2)
+        public static ArrayType[] Concat<ArrayType>(this ArrayType[] Array1, params ArrayType[][] Additions)
         {
-            if (Array1==null && Array2==null)
-                return null;
-            int ResultLength = (Array1==null ? 0 : Array1.Length);
-            if (Array2!=null)
-                foreach (ArrayType[] Array in Array2)
-                    ResultLength += (Array==null ? 0 : Array.Length);
-            ArrayType[] ReturnValue = new ArrayType[ResultLength];
-            int StartPosition = 0;
-            if (Array1!=null)
+            Contract.Requires<ArgumentNullException>(Array1 != null, "Array1");
+            Contract.Requires<ArgumentNullException>(Additions != null, "Additions");
+            Contract.Requires<ArgumentNullException>(Contract.ForAll(Additions, x => x != null), "Additions");
+            ArrayType[] Result = new ArrayType[Array1.Length + Additions.Sum(x => x.Length)];
+            int Offset = Array1.Length;
+            Array.Copy(Array1, 0, Result, 0, Array1.Length);
+            for (int x = 0; x < Additions.Length; ++x)
             {
-                Array.Copy(Array1, ReturnValue, Array1.Length);
-                StartPosition = Array1.Length;
+                Array.Copy(Additions[x], 0, Result, Offset, Additions[x].Length);
+                Offset += Additions[x].Length;
             }
-            if (Array2!=null)
-            {
-                foreach (ArrayType[] TempArray in Array2)
-                {
-                    Array.Copy(TempArray, 0, ReturnValue, StartPosition, TempArray.Length);
-                    StartPosition += TempArray.Length;
-                }
-            }
-            return ReturnValue;
+            return Result;
         }
 
         #endregion

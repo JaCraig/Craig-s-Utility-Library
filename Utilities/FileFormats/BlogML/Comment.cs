@@ -26,6 +26,7 @@ using System.Xml;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
 using System.Diagnostics.Contracts;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.BlogML
@@ -48,25 +49,20 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the post info</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public Comment(XmlElement Element)
+        public Comment(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
-            DateCreated = Element.Attributes["date-created"] != null ? DateTime.Parse(Element.Attributes["date-created"].Value, CultureInfo.InvariantCulture) : DateTime.MinValue;
-            Approved = Element.Attributes["approved"] != null ? bool.Parse(Element.Attributes["approved"].Value) : false;
-            UserName = Element.Attributes["user-name"] != null ? Element.Attributes["user-name"].Value : "";
-            UserEmail = Element.Attributes["user-email"] != null ? Element.Attributes["user-email"].Value : "";
-            UserIP = Element.Attributes["user-ip"] != null ? Element.Attributes["user-ip"].Value : "";
-            UserURL = Element.Attributes["user-url"] != null ? Element.Attributes["user-url"].Value : "";
-            ID = Element.Attributes["id"] != null ? Element.Attributes["id"].Value : "";
-
-            foreach (XmlNode Children in Element.ChildNodes)
-            {
-                if (Children.Name.Equals("title", StringComparison.CurrentCultureIgnoreCase))
-                    Title = Children.InnerText;
-                else if (Children.Name.Equals("content", StringComparison.CurrentCultureIgnoreCase))
-                    Content = Children.InnerText;
-            }
+            DateCreated = Element.Attribute("date-created") != null ? DateTime.Parse(Element.Attribute("date-created").Value, CultureInfo.InvariantCulture) : DateTime.MinValue;
+            Approved = Element.Attribute("approved") != null ? bool.Parse(Element.Attribute("approved").Value) : false;
+            UserName = Element.Attribute("user-name") != null ? Element.Attribute("user-name").Value : "";
+            UserEmail = Element.Attribute("user-email") != null ? Element.Attribute("user-email").Value : "";
+            UserIP = Element.Attribute("user-ip") != null ? Element.Attribute("user-ip").Value : "";
+            UserURL = Element.Attribute("user-url") != null ? Element.Attribute("user-url").Value : "";
+            ID = Element.Attribute("id") != null ? Element.Attribute("id").Value : "";
+            if (Element.Element("title") != null)
+                Title = Element.Element("title").Value;
+            if (Element.Element("content") != null)
+                Content = Element.Element("content").Value;
         }
 
         #endregion

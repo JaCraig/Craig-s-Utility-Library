@@ -35,7 +35,7 @@ namespace Utilities.FileFormats.BaseClasses
     /// <summary>
     /// Format base class
     /// </summary>
-    public abstract class FormatBase<FormatType, ContentType> : IComparable, IComparable<FormatType>, IEquatable<FormatType>
+    public abstract class FormatBase<FormatType, ContentType> : IComparable, IComparable<FormatType>, IEquatable<FormatType>,ICloneable
         where FormatType : FormatBase<FormatType, ContentType>, new()
     {
         #region Constructor
@@ -98,6 +98,12 @@ namespace Utilities.FileFormats.BaseClasses
         /// <param name="Location">Location to save it to</param>
         /// <returns>This</returns>
         public abstract FormatType Save(string Location);
+
+        /// <summary>
+        /// Clones the object
+        /// </summary>
+        /// <returns>A newly cloned object</returns>
+        public abstract object Clone();
 
         /// <summary>
         /// Determines if the objects are equal

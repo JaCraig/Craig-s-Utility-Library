@@ -63,7 +63,7 @@ namespace Utilities.FileFormats.RSSHelper
         /// Constructor
         /// </summary>
         /// <param name="Document">XML document containing an RSS feed</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
+        
         public Document(XmlDocument Document)
         {
             Contract.Requires<ArgumentNullException>(Document!=null,"Document");

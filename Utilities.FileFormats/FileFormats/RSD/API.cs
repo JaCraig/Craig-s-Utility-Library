@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Diagnostics.Contracts;
 using System.Xml;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.RSD
@@ -44,25 +45,24 @@ namespace Utilities.FileFormats.RSD
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the API info</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public API(XmlElement Element)
+        public API(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element!=null,"Element");
-            if (Element.Attributes["name"] != null)
+            if (Element.Attribute("name") != null)
             {
-                Name = Element.Attributes["name"].Value;
+                Name = Element.Attribute("name").Value;
             }
-            if (Element.Attributes["preferred"] != null)
+            if (Element.Attribute("preferred") != null)
             {
-                Preferred = bool.Parse(Element.Attributes["preferred"].Value);
+                Preferred = bool.Parse(Element.Attribute("preferred").Value);
             }
-            if (Element.Attributes["apiLink"] != null)
+            if (Element.Attribute("apiLink") != null)
             {
-                APILink = Element.Attributes["apiLink"].Value;
+                APILink = Element.Attribute("apiLink").Value;
             }
-            if (Element.Attributes["blogID"] != null)
+            if (Element.Attribute("blogID") != null)
             {
-                BlogID = Element.Attributes["blogID"].Value;
+                BlogID = Element.Attribute("blogID").Value;
             }
         }
         #endregion

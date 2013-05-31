@@ -26,6 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
@@ -50,15 +51,13 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Categories element</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public Categories(XmlElement Element)
+        public Categories(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
             CategoryList = new List<Category>();
-            foreach (XmlNode Children in Element.ChildNodes)
+            foreach(XElement Children in Element.Elements("category"))
             {
-                if (Children.Name.Equals("category", StringComparison.CurrentCultureIgnoreCase))
-                    CategoryList.Add(new Category((XmlElement)Children));
+                CategoryList.Add(new Category((XElement)Children));
             }
         }
 

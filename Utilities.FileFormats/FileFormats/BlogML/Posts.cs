@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
@@ -49,15 +50,13 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing post info</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public Posts(XmlElement Element)
+        public Posts(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
             PostList = new List<Post>();
-            foreach (XmlNode Children in Element.ChildNodes)
+            foreach (XElement Children in Element.Elements("post"))
             {
-                if (Children.Name.Equals("post", StringComparison.CurrentCultureIgnoreCase))
-                    PostList.Add(new Post((XmlElement)Children));
+                PostList.Add(new Post(Children));
             }
         }
 

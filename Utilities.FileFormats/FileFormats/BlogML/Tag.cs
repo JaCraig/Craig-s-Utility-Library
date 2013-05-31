@@ -24,6 +24,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
@@ -47,12 +48,11 @@ namespace Utilities.FileFormats.BlogML
         /// Constructor
         /// </summary>
         /// <param name="Element">Element containing the tag info</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public Tag(XmlElement Element)
+        public Tag(XElement Element)
         {
             Contract.Requires<ArgumentNullException>(Element != null, "Element");
-            if (Element.Attributes["ref"] != null)
-                REF = Element.Attributes["ref"].Value;
+            if (Element.Attribute("ref") != null)
+                REF = Element.Attribute("ref").Value;
         }
 
         #endregion

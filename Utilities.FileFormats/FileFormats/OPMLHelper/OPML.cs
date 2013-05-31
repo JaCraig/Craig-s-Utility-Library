@@ -24,6 +24,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Utilities.FileFormats.BaseClasses;
 #endregion
 
@@ -58,8 +59,7 @@ namespace Utilities.FileFormats.OPMLHelper
         /// Constructor
         /// </summary>
         /// <param name="Document">XmlDocument containing the OPML file</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
-        public OPML(XmlDocument Document)
+        public OPML(XDocument Document)
         {
             Contract.Requires<ArgumentNullException>(Document!=null,"Document");
             LoadDoc(Document);
@@ -88,29 +88,18 @@ namespace Utilities.FileFormats.OPMLHelper
         /// <param name="Data">Data to load into the object</param>
         protected override void LoadFromData(string Data)
         {
-            XmlDocument Document = new XmlDocument();
-            Document.LoadXml(Data);
+            XDocument Document = XDocument.Parse(Data);
             LoadDoc(Document);
         }
 
-        private void LoadDoc(XmlDocument Document)
+        private void LoadDoc(XDocument Document)
         {
-            foreach (XmlNode Children in Document.ChildNodes)
+            foreach (XElement Children in Document.Elements("opml"))
             {
-                if (Children.Name.Equals("opml", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    foreach (XmlElement Child in Children.ChildNodes)
-                    {
-                        if (Child.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Body = new Body(Child);
-                        }
-                        else if (Child.Name.Equals("head", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Head = new Head(Child);
-                        }
-                    }
-                }
+                if (Children.Element("head") != null)
+                    Head = new Head(Children.Element("head"));
+                if (Children.Element("body") != null)
+                    Body = new Body(Children.Element("body"));
             }
         }
 

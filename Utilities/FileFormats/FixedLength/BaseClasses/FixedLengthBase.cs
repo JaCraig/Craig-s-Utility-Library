@@ -20,9 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Utilities.FileFormats.BaseClasses;
 using Utilities.FileFormats.FixedLength.Interfaces;
+using Utilities.IO.ExtensionMethods;
 #endregion
 
 namespace Utilities.FileFormats.FixedLength.BaseClasses
@@ -30,8 +34,10 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
     /// <summary>
     /// Parses and creates a fixed length file
     /// </summary>
-    /// <typeparam name="T">Field type</typeparam>
-    public abstract class FixedLengthBase<T>
+    /// <typeparam name="ObjectType">Object Type</typeparam>
+    /// <typeparam name="FieldType">Field Type</typeparam>
+    public abstract class FixedLengthBase<ObjectType, FieldType> : StringListFormatBase<ObjectType, IRecord<FieldType>>
+        where ObjectType : FixedLengthBase<ObjectType, FieldType>, new()
     {
         #region Constructor
 
@@ -39,33 +45,20 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         /// Constructor
         /// </summary>
         protected FixedLengthBase()
+            : base()
         {
-            Records = new List<IRecord<T>>();
         }
 
         #endregion
-
-        #region Public Functions
+        
+        #region Functions
 
         /// <summary>
         /// Parses the string into fields
         /// </summary>
         /// <param name="Value">The string value</param>
         /// <param name="Length">Max length for the record</param>
-        public abstract void Parse(string Value,int Length=-1);
-
-        #endregion
-
-        #region Protected Variables
-
-        /// <summary>
-        /// List of records
-        /// </summary>
-        protected ICollection<IRecord<T>> Records { get;private set; }
-
-        #endregion
-
-        #region Public Overridden Functions
+        public abstract void Parse(string Value, int Length = -1);
 
         /// <summary>
         /// Converts the file to a string
@@ -74,9 +67,18 @@ namespace Utilities.FileFormats.FixedLength.BaseClasses
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            foreach (IRecord<T> Record in Records)
+            foreach (IRecord<FieldType> Record in Records)
                 Builder.Append(Record.ToString());
             return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Loads the data into the object
+        /// </summary>
+        /// <param name="Data">The data to load</param>
+        protected override void LoadFromData(string Data)
+        {
+            Parse(Data);
         }
 
         #endregion

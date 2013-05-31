@@ -47,7 +47,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             int[] TestObject1 = new int[] { 1, 2, 3 };
             int[] TestObject2 = new int[] { 4, 5, 6 };
             int[] TestObject3 = new int[] { 7, 8, 9 };
-            TestObject1 = TestObject1.Combine(TestObject2, TestObject3);
+            TestObject1 = TestObject1.Concat(TestObject2, TestObject3);
             for (int x = 0; x < 8; ++x)
                 Assert.Equal(x + 1, TestObject1[x]);
         }

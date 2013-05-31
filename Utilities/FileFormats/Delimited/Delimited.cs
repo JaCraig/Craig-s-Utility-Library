@@ -41,7 +41,7 @@ namespace Utilities.FileFormats.Delimited
     /// Base classs for delimited files (CSV, etc.)
     /// </summary>
     /// <typeparam name="T">Delimited</typeparam>
-    public abstract class Delimited<T> : StringFormatBase<T>
+    public abstract class Delimited<T> : StringListFormatBase<T, Row>
         where T : Delimited<T>, new()
     {
         #region Constructor
@@ -50,7 +50,9 @@ namespace Utilities.FileFormats.Delimited
         /// Constructor
         /// </summary>
         protected Delimited()
+            : base()
         {
+
         }
 
         /// <summary>
@@ -58,6 +60,7 @@ namespace Utilities.FileFormats.Delimited
         /// </summary>
         /// <param name="FileContent">File content</param>
         protected Delimited(string FileContent)
+            : base()
         {
             Parse(FileContent);
         }
@@ -66,36 +69,6 @@ namespace Utilities.FileFormats.Delimited
 
         #region Public Properties
 
-        private ICollection<Row> _Rows = new List<Row>();
-
-        /// <summary>
-        /// The list of rows
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Row> Rows
-        {
-            get { return _Rows; }
-            set { _Rows = value; }
-        }
-
-        /// <summary>
-        /// The number of rows within the file
-        /// </summary>
-        public virtual int NumberOfRows
-        {
-            get { return Rows.Count; }
-        }
-
-        /// <summary>
-        /// Individual rows
-        /// </summary>
-        /// <param name="Position">The row that you want to get</param>
-        /// <returns>The row requested</returns>
-        public virtual Row this[int Position]
-        {
-            get { return _Rows.ElementAt(Position); }
-        }
-
         /// <summary>
         /// The delimiter used to seperate values (must be overridden)
         /// </summary>
@@ -103,7 +76,7 @@ namespace Utilities.FileFormats.Delimited
 
         #endregion
 
-        #region Protected Functions
+        #region Functions
 
         /// <summary>
         /// Loads the object from the data specified
@@ -113,10 +86,6 @@ namespace Utilities.FileFormats.Delimited
         {
             Parse(Data);
         }
-
-        #endregion
-
-        #region Public Functions
 
         /// <summary>
         /// Parses file content and adds it to the delimited file
@@ -128,7 +97,7 @@ namespace Utilities.FileFormats.Delimited
             Regex TempSplitter = new Regex("[^\"\r\n]*(\r\n|\n|$)|(([^\"\r\n]*)(\"[^\"]*\")([^\"\r\n]*))*(\r\n|\n|$)");
             MatchCollection Matches = TempSplitter.Matches(FileContent);
             Matches.Where(x => !string.IsNullOrEmpty(x.Value))
-                    .ForEach(x => Rows.Add(new Row(x.Value, Delimiter)));
+                    .ForEach(x => Records.Add(new Row(x.Value, Delimiter)));
         }
 
         /// <summary>
@@ -144,29 +113,26 @@ namespace Utilities.FileFormats.Delimited
             ReturnValue.Locale = CultureInfo.CurrentCulture;
             if (FirstRowIsHeader)
             {
-                foreach (Cell Cell in Rows.FirstOrDefault().Cells)
-                    ReturnValue.Columns.Add(Cell.Value);
+                if (Records.Count > 0)
+                    foreach (Cell Cell in Records[0])
+                        ReturnValue.Columns.Add(Cell.Value);
             }
             else
             {
                 foreach (string HeaderValue in Headers)
                     ReturnValue.Columns.Add(HeaderValue);
             }
-            for (int y = FirstRowIsHeader ? 1 : 0; y < Rows.Count; ++y)
+            for (int y = FirstRowIsHeader ? 1 : 0; y < Records.Count; ++y)
             {
                 object[] TempRow = new object[ReturnValue.Columns.Count];
-                for (int x = 0; x < Rows.ElementAt(y).Cells.Count; ++x)
+                for (int x = 0; x < Records[y].Count; ++x)
                 {
-                    TempRow[x] = Rows.ElementAt(y)[x].Value;
+                    TempRow[x] = Records[y][x].Value;
                 }
                 ReturnValue.Rows.Add(TempRow);
             }
             return ReturnValue;
         }
-
-        #endregion
-
-        #region Public Overridden Function
 
         /// <summary>
         /// To string function
@@ -175,15 +141,38 @@ namespace Utilities.FileFormats.Delimited
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Rows.ForEach<Row>(x => Builder.Append(x.ToString()));
+            Records.ForEach<Row>(x => Builder.Append(x.ToString()));
             return Builder.ToString();
         }
 
-        #endregion
 
-        #region Operators
-
-
+        /// <summary>
+        /// Converts the string to the format specified
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The string as an object</returns>
+        public static implicit operator Delimited<T>(DataTable Value)
+        {
+            T ReturnValue = new T();
+            if (Value == null)
+                return ReturnValue;
+            Delimited.Row TempRow = new Delimited.Row(ReturnValue.Delimiter);
+            foreach (DataColumn Column in Value.Columns)
+            {
+                TempRow.Add(new Delimited.Cell(Column.ColumnName));
+            }
+            ReturnValue.Add(TempRow);
+            foreach (DataRow Row in Value.Rows)
+            {
+                TempRow = new Delimited.Row(ReturnValue.Delimiter);
+                for (int x = 0; x < Row.ItemArray.Length; ++x)
+                {
+                    TempRow.Add(new Delimited.Cell(Row.ItemArray[x].ToString()));
+                }
+                ReturnValue.Records.Add(TempRow);
+            }
+            return ReturnValue;
+        }
 
         #endregion
     }

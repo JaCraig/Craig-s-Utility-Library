@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 #endregion
 
 namespace Utilities.FileFormats.OPMLHelper
@@ -47,26 +48,16 @@ namespace Utilities.FileFormats.OPMLHelper
         /// Constructor
         /// </summary>
         /// <param name="Element">XmlElement containing the body information</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public Body(XmlElement Element)
+        public Body(XElement Element)
         {
-            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
             Outlines = new List<Outline>();
-            if (Element.Name.Equals("body", StringComparison.CurrentCultureIgnoreCase))
+            foreach (XElement Child in Element.Elements("outline"))
             {
-                foreach (XmlNode Child in Element.ChildNodes)
-                {
-                    try
-                    {
-                        if (Child.Name.Equals("outline", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            Outlines.Add(new Outline((XmlElement)Child));
-                        }
-                    }
-                    catch { }
-                }
+                Outlines.Add(new Outline(Child));
             }
         }
+
         #endregion
 
         #region Properties

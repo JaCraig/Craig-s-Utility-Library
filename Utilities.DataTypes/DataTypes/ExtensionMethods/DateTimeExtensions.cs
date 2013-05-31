@@ -78,6 +78,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The converted DateTime</returns>
         public static DateTime ConvertToTimeZone(this DateTime Date, TimeZoneInfo TimeZone)
         {
+            Contract.Requires<ArgumentNullException>(TimeZone != null, "TimeZone");
             return TimeZoneInfo.ConvertTime(Date, TimeZone);
         }
 

@@ -41,6 +41,37 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
+        #region Concat
+
+        /// <summary>
+        /// Combines multiple IEnumerables together and returns a new IEnumerable containing all of the values
+        /// </summary>
+        /// <typeparam name="T">Type of the data in the IEnumerable</typeparam>
+        /// <param name="Enumerable1">IEnumerable 1</param>
+        /// <param name="Additions">IEnumerables to concat onto the first item</param>
+        /// <returns>A new IEnumerable containing all values</returns>
+        /// <example>
+        /// <code>
+        ///  int[] TestObject1 = new int[] { 1, 2, 3 };
+        ///  int[] TestObject2 = new int[] { 4, 5, 6 };
+        ///  int[] TestObject3 = new int[] { 7, 8, 9 };
+        ///  TestObject1 = TestObject1.Concat(TestObject2, TestObject3).ToArray();
+        /// </code>
+        /// </example>
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> Enumerable1, params IEnumerable<T>[] Additions)
+        {
+            Contract.Requires<ArgumentNullException>(Enumerable1 != null, "Enumerable1");
+            Contract.Requires<ArgumentNullException>(Additions != null, "Additions");
+            Contract.Requires<ArgumentNullException>(Contract.ForAll(Additions, x => x != null), "Additions");
+            List<T> Results = new List<T>();
+            Results.AddRange(Enumerable1);
+            for (int x = 0; x < Additions.Length; ++x)
+                Results.AddRange(Additions[x]);
+            return Results;
+        }
+
+        #endregion
+
         #region ElementsBetween
 
         /// <summary>
@@ -66,66 +97,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-
-        #region FalseForAll
-
-        /// <summary>
-        /// Determines if the predicates are false for each item in a list
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the list</typeparam>
-        /// <param name="List">IEnumerable to look through</param>
-        /// <param name="Predicates">Predicates to use to check the IEnumerable</param>
-        /// <returns>True if they all fail all of the predicates, false otherwise</returns>
-        public static bool FalseForAll<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
-            foreach (Predicate<T> Predicate in Predicates)
-                if (List.All(x => Predicate(x)))
-                    return false;
-            return true;
-        }
-
-        #endregion
-
-        #region FalseForAny
-
-        /// <summary>
-        /// Determines if the predicates are false for any item in a list
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the list</typeparam>
-        /// <param name="List">IEnumerable to look through</param>
-        /// <param name="Predicates">Predicates to use to check the IEnumerable</param>
-        /// <returns>True if any fail any of the predicates, false otherwise</returns>
-        public static bool FalseForAny<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
-            foreach (Predicate<T> Predicate in Predicates)
-                if (List.Any(x => !Predicate(x)))
-                    return true;
-            return false;
-        }
-
-        #endregion
-
-        #region First
-
-        /// <summary>
-        /// Returns the first X number of items from the list
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="List">IEnumerable to iterate over</param>
-        /// <param name="Count">Numbers of items to return</param>
-        /// <returns>The first X items from the list</returns>
-        public static IEnumerable<T> First<T>(this IEnumerable<T> List, int Count)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            return List.ElementsBetween(0, Count);
-        }
-
-        #endregion
-
+        
         #region For
 
         /// <summary>
@@ -204,6 +176,56 @@ namespace Utilities.DataTypes.ExtensionMethods
             return ReturnValues;
         }
 
+        /// <summary>
+        /// Does an action for each item in the IEnumerable
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Action">Action to do</param>
+        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <returns>The original list</returns>
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action, Action<T,Exception> CatchAction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
+            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
+            foreach (T Item in List)
+            {
+                try
+                {
+                    Action(Item);
+                }
+                catch (Exception e) { CatchAction(Item, e); }
+            }
+            return List;
+        }
+
+        /// <summary>
+        /// Does a function for each item in the IEnumerable, returning a list of the results
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Function">Function to do</param>
+        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <returns>The resulting list</returns>
+        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> List, Func<T, R> Function, Action<T,Exception> CatchAction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
+            List<R> ReturnValues = new List<R>();
+            foreach (T Item in List)
+            {
+                try
+                {
+                    ReturnValues.Add(Function(Item));
+                }
+                catch (Exception e) { CatchAction(Item, e); }
+            }
+            return ReturnValues;
+        }
+
         #endregion
 
         #region ForParallel
@@ -278,6 +300,56 @@ namespace Utilities.DataTypes.ExtensionMethods
             return List.ForParallel(0, List.Count() - 1, Function);
         }
 
+        /// <summary>
+        /// Does an action for each item in the IEnumerable
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Action">Action to do</param>
+        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <returns>The original list</returns>
+        public static IEnumerable<T> ForEachParallel<T>(this IEnumerable<T> List, Action<T> Action, Action<T, Exception> CatchAction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
+            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
+            Parallel.ForEach<T>(List, delegate(T Item)
+            {
+                try
+                {
+                    Action(Item);
+                }
+                catch (Exception e) { CatchAction(Item, e); }
+            });
+            return List;
+        }
+
+        /// <summary>
+        /// Does a function for each item in the IEnumerable, returning a list of the results
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <param name="List">IEnumerable to iterate over</param>
+        /// <param name="Function">Function to do</param>
+        /// <param name="CatchAction">Action that occurs if an exception occurs</param>
+        /// <returns>The resulting list</returns>
+        public static IEnumerable<R> ForEachParallel<T, R>(this IEnumerable<T> List, Func<T, R> Function, Action<T, Exception> CatchAction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Contract.Requires<ArgumentNullException>(CatchAction != null, "CatchAction");
+            List<R> ReturnValues = new List<R>();
+            Parallel.ForEach<T>(List, delegate(T Item)
+            {
+                try
+                {
+                    ReturnValues.Add(Function(Item));
+                }
+                catch (Exception e) { CatchAction(Item, e); }
+            });
+            return ReturnValues;
+        }
+
         #endregion
 
         #region Last
@@ -323,109 +395,21 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region RemoveDefaults
+        #region Remove
 
         /// <summary>
-        /// Removes default values from a list
+        /// Removes values from a list that meet the criteria set forth by the predicate
         /// </summary>
         /// <typeparam name="T">Value type</typeparam>
         /// <param name="Value">List to cull items from</param>
-        /// <param name="EqualityComparer">Equality comparer used (defaults to GenericEqualityComparer)</param>
-        /// <returns>An IEnumerable with the default values removed</returns>
-        public static IEnumerable<T> RemoveDefaults<T>(this IEnumerable<T> Value, IEqualityComparer<T> EqualityComparer = null)
+        /// <param name="Predicate">Predicate that determines what items to remove</param>
+        /// <returns>An IEnumerable with the objects that meet the criteria removed</returns>
+        public static IEnumerable<T> Remove<T>(this IEnumerable<T> Value, Func<T, bool> Predicate)
         {
-            if (Value==null)
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            if (Value == null)
                 return Value;
-            EqualityComparer=EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>());
-            return Value.Where(x => !EqualityComparer.Equals(x, default(T)));
-        }
-
-        #endregion
-
-        #region ThrowIfTrueForAll
-
-        /// <summary>
-        /// Throws the specified exception if the predicates are true for all items
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <typeparam name="E">Exception type</typeparam>
-        /// <param name="Items">The list</param>
-        /// <param name="Predicates">Predicates to check</param>
-        /// <param name="Exception">Exception to throw if predicates are true</param>
-        /// <returns>the original IEnumerable</returns>
-        public static IEnumerable<T> ThrowIfTrueForAll<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
-        {
-            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            if (Items.TrueForAll(Predicates))
-                throw Exception;
-            return Items;
-        }
-
-        #endregion
-
-        #region ThrowIfFalseForAll
-
-        /// <summary>
-        /// Throws the specified exception if the predicates are false for all items
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <typeparam name="E">Exception type</typeparam>
-        /// <param name="Items">The list</param>
-        /// <param name="Predicates">Predicates to check</param>
-        /// <param name="Exception">Exception to throw if predicates are false</param>
-        /// <returns>the original list</returns>
-        public static IEnumerable<T> ThrowIfFalseForAll<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
-        {
-            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            if (Items.FalseForAll(Predicates))
-                throw Exception;
-            return Items;
-        }
-
-        #endregion
-
-        #region ThrowIfTrueForAny
-
-        /// <summary>
-        /// Throws the specified exception if the predicate is true for any items
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <typeparam name="E">Exception type</typeparam>
-        /// <param name="Items">The list</param>
-        /// <param name="Predicates">Predicates to check</param>
-        /// <param name="Exception">Exception to throw if predicate is true</param>
-        /// <returns>the original IEnumerable</returns>
-        public static IEnumerable<T> ThrowIfTrueForAny<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
-        {
-            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            if (Items.TrueForAny(Predicates))
-                throw Exception;
-            return Items;
-        }
-
-        #endregion
-
-        #region ThrowIfFalseForAny
-
-        /// <summary>
-        /// Throws the specified exception if the predicates are false for any items
-        /// </summary>
-        /// <typeparam name="T">Item type</typeparam>
-        /// <typeparam name="E">Exception type</typeparam>
-        /// <param name="Items">The list</param>
-        /// <param name="Predicates">Predicates to check</param>
-        /// <param name="Exception">Exception to throw if predicates are false</param>
-        /// <returns>the original list</returns>
-        public static IEnumerable<T> ThrowIfFalseForAny<T, E>(this IEnumerable<T> Items, E Exception, params Predicate<T>[] Predicates) where E : Exception
-        {
-            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
-            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
-            if (Items.FalseForAny(Predicates))
-                throw Exception;
-            return Items;
+            return Value.Where(x => !Predicate(x));
         }
 
         #endregion
@@ -508,108 +492,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-
-        #region TrueForAll
-
-        /// <summary>
-        /// Determines if the predicates are true for each item in a list
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the list</typeparam>
-        /// <param name="List">IEnumerable to look through</param>
-        /// <param name="Predicates">Predicates to use to check the IEnumerable</param>
-        /// <returns>True if they all pass all of the predicates, false otherwise</returns>
-        public static bool TrueForAll<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
-            foreach (Predicate<T> Predicate in Predicates)
-                if (List.Any(x => !Predicate(x)))
-                    return false;
-            return true;
-        }
-
-        #endregion
-
-        #region TrueForAny
-
-        /// <summary>
-        /// Determines if the predicates are true for any item in a list
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the list</typeparam>
-        /// <param name="List">IEnumerable to look through</param>
-        /// <param name="Predicates">Predicates to use to check the IEnumerable</param>
-        /// <returns>True if any pass any of the predicates, false otherwise</returns>
-        public static bool TrueForAny<T>(this IEnumerable<T> List, params Predicate<T>[] Predicates)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Predicates != null, "Predicates");
-            foreach (Predicate<T> Predicate in Predicates)
-                if (List.Any(x => Predicate(x)))
-                    return true;
-            return false;
-        }
-
-        #endregion
-
-        #region TryAll
-
-        /// <summary>
-        /// Tries to do the action on each item in the list. If an exception is thrown,
-        /// it does the catch action on the item (if it is not null).
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the list</typeparam>
-        /// <param name="List">IEnumerable to look through</param>
-        /// <param name="Action">Action to run on each item</param>
-        /// <param name="CatchAction">Catch action (defaults to null)</param>
-        /// <returns>The list after the action is run on everything</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static IEnumerable<T> TryAll<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            foreach (T Item in List)
-            {
-                try
-                {
-                    Action(Item);
-                }
-                catch { if (CatchAction != null) CatchAction(Item); }
-            }
-            return List;
-        }
-
-        #endregion
-
-        #region TryAllParallel
-
-        /// <summary>
-        /// Tries to do the action on each item in the list. If an exception is thrown,
-        /// it does the catch action on the item (if it is not null). This is done in
-        /// parallel.
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the list</typeparam>
-        /// <param name="List">IEnumerable to look through</param>
-        /// <param name="Action">Action to run on each item</param>
-        /// <param name="CatchAction">Catch action (defaults to null)</param>
-        /// <returns>The list after the action is run on everything</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static IEnumerable<T> TryAllParallel<T>(this IEnumerable<T> List, Action<T> Action, Action<T> CatchAction = null)
-        {
-            Contract.Requires<ArgumentNullException>(List != null, "List");
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            Parallel.ForEach<T>(List, delegate(T Item)
-            {
-                try
-                {
-                    Action(Item);
-                }
-                catch { if (CatchAction != null) CatchAction(Item); }
-            });
-            return List;
-        }
-
-        #endregion
-
+        
         #endregion
     }
 }
