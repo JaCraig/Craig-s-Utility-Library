@@ -130,7 +130,7 @@ namespace Utilities.Encryption.ExtensionMethods
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(InitialVector), "InitialVector");
             if (Data==null)
                 return null;
-            AlgorithmUsing = AlgorithmUsing.NullCheck(()=>new RijndaelManaged());
+            AlgorithmUsing = AlgorithmUsing.Check(()=>new RijndaelManaged());
             using (DeriveBytes DerivedPassword = Key)
             {
                 using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)
@@ -229,7 +229,7 @@ namespace Utilities.Encryption.ExtensionMethods
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(InitialVector), "InitialVector");
             if (Data==null)
                 return null;
-            AlgorithmUsing = AlgorithmUsing.NullCheck(()=>new RijndaelManaged());
+            AlgorithmUsing = AlgorithmUsing.Check(()=>new RijndaelManaged());
             using (DeriveBytes DerivedPassword = Key)
             {
                 using (SymmetricAlgorithm SymmetricKey = AlgorithmUsing)

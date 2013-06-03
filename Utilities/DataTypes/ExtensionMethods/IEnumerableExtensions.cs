@@ -84,7 +84,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The items between the start and end index</returns>
         public static IEnumerable<T> ElementsBetween<T>(this IEnumerable<T> List, int Start, int End)
         {
-            if (List==null)
+            if (List == null)
                 return List;
             if (End > List.Count())
                 End = List.Count();
@@ -97,7 +97,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-        
+
         #region For
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
             List<R> ReturnValues = new List<R>();
             foreach (T Item in List.ElementsBetween(Start, End + 1))
-                    ReturnValues.Add(Function(Item));
+                ReturnValues.Add(Function(Item));
             return ReturnValues;
         }
 
@@ -184,7 +184,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Action">Action to do</param>
         /// <param name="CatchAction">Action that occurs if an exception occurs</param>
         /// <returns>The original list</returns>
-        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action, Action<T,Exception> CatchAction)
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> List, Action<T> Action, Action<T, Exception> CatchAction)
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Action != null, "Action");
@@ -209,7 +209,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Function">Function to do</param>
         /// <param name="CatchAction">Action that occurs if an exception occurs</param>
         /// <returns>The resulting list</returns>
-        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> List, Func<T, R> Function, Action<T,Exception> CatchAction)
+        public static IEnumerable<R> ForEach<T, R>(this IEnumerable<T> List, Func<T, R> Function, Action<T, Exception> CatchAction)
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
@@ -382,7 +382,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static int PositionOf<T>(this IEnumerable<T> List, T Object, IEqualityComparer<T> EqualityComparer = null)
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
-            EqualityComparer = EqualityComparer.NullCheck(()=>new GenericEqualityComparer<T>());
+            EqualityComparer = EqualityComparer.Check(() => new GenericEqualityComparer<T>());
             int Count = 0;
             foreach (T Item in List)
             {
@@ -446,10 +446,10 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             DataTable ReturnValue = new DataTable();
             ReturnValue.Locale = CultureInfo.CurrentCulture;
-            if (List==null||List.Count()==0)
+            if (List == null || List.Count() == 0)
                 return ReturnValue;
             PropertyInfo[] Properties = typeof(T).GetProperties();
-            if(Columns.Length==0)
+            if (Columns.Length == 0)
                 Columns = Properties.ToArray(x => x.Name);
             Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.FirstOrDefault(z => z.Name == x).PropertyType));
             object[] Row = new object[Columns.Length];
@@ -462,6 +462,25 @@ namespace Utilities.DataTypes.ExtensionMethods
                 ReturnValue.Rows.Add(Row);
             }
             return ReturnValue;
+        }
+
+        #endregion
+
+        #region ToList
+
+        /// <summary>
+        /// Converts an IEnumerable to a list
+        /// </summary>
+        /// <typeparam name="Source">Source type</typeparam>
+        /// <typeparam name="Target">Target type</typeparam>
+        /// <param name="List">IEnumerable to convert</param>
+        /// <param name="ConvertingFunction">Function used to convert each item</param>
+        /// <returns>The list containing the items from the IEnumerable</returns>
+        public static List<Target> ToList<Source, Target>(this IEnumerable<Source> List, Func<Source, Target> ConvertingFunction)
+        {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(ConvertingFunction != null, "ConvertingFunction");
+            return List.ForEach(ConvertingFunction).ToList();
         }
 
         #endregion
@@ -479,8 +498,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string ToString<T>(this IEnumerable<T> List, Func<T, string> ItemOutput = null, string Seperator = ",")
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
-            Seperator = Seperator.NullCheck("");
-            ItemOutput = ItemOutput.NullCheck(x => x.ToString());
+            Seperator = Seperator.Check("");
+            ItemOutput = ItemOutput.Check(x => x.ToString());
             StringBuilder Builder = new StringBuilder();
             string TempSeperator = "";
             List.ForEach(x =>
@@ -492,7 +511,87 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-        
+
+        #region ThrowIfAll
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for all items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
+        {
+            foreach (T Item in List)
+            {
+                if (!Predicate(Item))
+                    return List;
+            }
+            throw Exception();
+        }
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for all items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
+        {
+            foreach (T Item in List)
+            {
+                if (!Predicate(Item))
+                    return List;
+            }
+            throw Exception;
+        }
+
+        #endregion
+
+        #region ThrowIfAny
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for any items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
+        {
+            foreach (T Item in List)
+            {
+                if (Predicate(Item))
+                    throw Exception();
+            }
+            return List;
+        }
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is true for any items
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="List">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is true</param>
+        /// <returns>the original Item</returns>
+        public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
+        {
+            foreach (T Item in List)
+            {
+                if (Predicate(Item))
+                    throw Exception;
+            }
+            return List;
+        }
+
+        #endregion
+
         #endregion
     }
 }

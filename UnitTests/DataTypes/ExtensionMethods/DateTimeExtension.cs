@@ -35,85 +35,79 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void IsInFutureTest()
         {
-            Assert.True(new DateTime(2100, 1, 1).IsInFuture());
+            Assert.True(new DateTime(2100, 1, 1).Is(DateCompare.InFuture));
         }
 
         [Fact]
         public void IsInPastTest()
         {
-            Assert.True(new DateTime(1900, 1, 1).IsInPast());
+            Assert.True(new DateTime(1900, 1, 1).Is(DateCompare.InPast));
         }
 
         [Fact]
-        public void DaysLeftInMonthTest()
+        public void DaysLeftIn()
         {
-            Assert.Equal(29, new DateTime(1999, 1, 2).DaysLeftInMonth());
-        }
-
-        [Fact]
-        public void DaysLeftInYearTest()
-        {
-            Assert.Equal(363, new DateTime(1999, 1, 2).DaysLeftInYear());
-        }
-
-        [Fact]
-        public void DaysLeftInWeekTest()
-        {
-            Assert.Equal(0, new DateTime(1999, 1, 2).DaysLeftInWeek());
+            Assert.Equal(29, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Month));
+            Assert.Equal(363, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Year));
+            Assert.Equal(0, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Week));
+            Assert.Equal(88, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Quarter));
+            Assert.Equal(1, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Day));
         }
 
         [Fact]
         public void IsWeekDayTest()
         {
-            Assert.False(new DateTime(1999, 1, 2).IsWeekDay());
+            Assert.False(new DateTime(1999, 1, 2).Is(DateCompare.WeekDay));
         }
 
         [Fact]
         public void IsWeekEndTest()
         {
-            Assert.True(new DateTime(1999, 1, 2).IsWeekEnd());
+            Assert.True(new DateTime(1999, 1, 2).Is(DateCompare.WeekEnd));
         }
 
         [Fact]
-        public void FirstDayOfMonth()
+        public void BeginningOf()
         {
-            Assert.Equal(new DateTime(1999, 1, 1), new DateTime(1999, 1, 2).FirstDayOfMonth());
+            Assert.Equal(new DateTime(1999, 1, 1), new DateTime(1999, 1, 2).BeginningOf(TimeFrame.Month));
+            Assert.Equal(new DateTime(2009, 1, 1), new DateTime(2009, 1, 15, 2, 3, 4).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 4, 1), new DateTime(2009, 4, 1, 2, 3, 4).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 1, 1), new DateTime(2009, 3, 29, 2, 3, 4).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 7, 1), new DateTime(2009, 7, 1, 2, 3, 4).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 4, 1), new DateTime(2009, 6, 29, 2, 3, 4).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 10, 1), new DateTime(2009, 10, 1, 2, 3, 4).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 7, 1), new DateTime(2009, 9, 29, 2, 3, 4).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2010, 1, 1), new DateTime(2010, 1, 1).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 10, 1), new DateTime(2009, 12, 31, 2, 3, 4).BeginningOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 1, 1, 0, 0, 0), new DateTime(2009, 1, 15, 2, 3, 4).BeginningOf(TimeFrame.Year));
+            Assert.Equal(new DateTime(1998, 12, 27), new DateTime(1999, 1, 2).BeginningOf(TimeFrame.Week));
         }
 
         [Fact]
-        public void LastDayOfMonth()
+        public void DaysIn()
         {
-            Assert.Equal(new DateTime(1999, 1, 31), new DateTime(1999, 1, 2).LastDayOfMonth());
+            Assert.Equal(31, new DateTime(1999, 1, 2).DaysIn(TimeFrame.Month));
+            Assert.Equal(365, new DateTime(1999, 1, 2).DaysIn(TimeFrame.Year));
+            Assert.Equal(7, new DateTime(1999, 1, 2).DaysIn(TimeFrame.Week));
+            Assert.Equal(89, new DateTime(1999, 1, 2).DaysIn(TimeFrame.Quarter));
+            Assert.Equal(1, new DateTime(1999, 1, 2).DaysIn(TimeFrame.Day));
         }
-
+        
         [Fact]
-        public void DaysInMonth()
+        public void EndOf()
         {
-            Assert.Equal(31, new DateTime(1999, 1, 2).DaysInMonth());
-        }
-
-        [Fact]
-        public void FirstDayOfWeek()
-        {
-            Assert.Equal(new DateTime(1998, 12, 27), new DateTime(1999, 1, 2).FirstDayOfWeek());
-        }
-
-        [Fact]
-        public void LastDayOfWeek()
-        {
-            Assert.Equal(new DateTime(1999, 1, 2), new DateTime(1999, 1, 2).LastDayOfWeek());
-        }
-
-        [Fact]
-        public void EndOfDay()
-        {
-            Assert.Equal(new DateTime(1999, 1, 2, 23, 59, 59), new DateTime(1999, 1, 2, 12, 1, 1).EndOfDay());
+            Assert.Equal(new DateTime(1999, 1, 2, 23, 59, 59), new DateTime(1999, 1, 2, 12, 1, 1).EndOf(TimeFrame.Day));
+            Assert.Equal(new DateTime(1999, 1, 2), new DateTime(1999, 1, 2).EndOf(TimeFrame.Week));
+            Assert.Equal(new DateTime(2009, 12, 31, 0, 0, 0), new DateTime(2009, 1, 15, 2, 3, 4).EndOf(TimeFrame.Year));
+            Assert.Equal(new DateTime(1999, 1, 31), new DateTime(1999, 1, 2).EndOf(TimeFrame.Month));
+            Assert.Equal(new DateTime(2009, 3, 31), new DateTime(2009, 1, 15, 2, 3, 4).EndOf(TimeFrame.Quarter));
+            Assert.Equal(new DateTime(2009, 6, 30), new DateTime(2009, 4, 1, 2, 3, 4).EndOf(TimeFrame.Quarter));
         }
 
         [Fact]
         public void ToUnix()
         {
-            Assert.Equal(915166800, new DateTime(1999, 1, 1).ToUnix());
+            Assert.Equal(915166800, new DateTime(1999, 1, 1).To());
         }
 
         [Fact]
@@ -137,7 +131,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void IsToday()
         {
-            Assert.True(DateTime.Now.IsToday());
+            Assert.True(DateTime.Now.Is(DateCompare.Today));
         }
 
         [Fact]
@@ -155,42 +149,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ConvertToTimeZone()
         {
-            Assert.Equal(new DateTime(2009, 1, 14, 23, 3, 4), new DateTime(2009, 1, 15, 2, 3, 4).ConvertToTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")));
+            Assert.Equal(new DateTime(2009, 1, 14, 23, 3, 4), new DateTime(2009, 1, 15, 2, 3, 4).To(TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")));
         }
-
-        [Fact]
-        public void FirstDayOfYear()
-        {
-            Assert.Equal(new DateTime(2009, 1, 1, 0, 0, 0), new DateTime(2009, 1, 15, 2, 3, 4).FirstDayOfYear());
-        }
-
-        [Fact]
-        public void LastDayOfYear()
-        {
-            Assert.Equal(new DateTime(2009, 12, 31, 0, 0, 0), new DateTime(2009, 1, 15, 2, 3, 4).LastDayOfYear());
-        }
-
-        [Fact]
-        public void FirstDayOfQuarter()
-        {
-            Assert.Equal(new DateTime(2009, 1, 1), new DateTime(2009, 1, 15, 2, 3, 4).FirstDayOfQuarter());
-            Assert.Equal(new DateTime(2009, 4, 1), new DateTime(2009, 4, 1, 2, 3, 4).FirstDayOfQuarter());
-            Assert.Equal(new DateTime(2009, 1, 1), new DateTime(2009, 3, 29, 2, 3, 4).FirstDayOfQuarter());
-            Assert.Equal(new DateTime(2009, 7, 1), new DateTime(2009, 7, 1, 2, 3, 4).FirstDayOfQuarter());
-            Assert.Equal(new DateTime(2009, 4, 1), new DateTime(2009, 6, 29, 2, 3, 4).FirstDayOfQuarter());
-            Assert.Equal(new DateTime(2009, 10, 1), new DateTime(2009, 10, 1, 2, 3, 4).FirstDayOfQuarter());
-            Assert.Equal(new DateTime(2009, 7, 1), new DateTime(2009, 9, 29, 2, 3, 4).FirstDayOfQuarter());
-            Assert.Equal(new DateTime(2010, 1, 1), new DateTime(2010, 1, 1).FirstDayOfQuarter());
-            Assert.Equal(new DateTime(2009, 10, 1), new DateTime(2009, 12, 31, 2, 3, 4).FirstDayOfQuarter());
-        }
-
-        [Fact]
-        public void LastDayOfQuarter()
-        {
-            Assert.Equal(new DateTime(2009, 3, 31), new DateTime(2009, 1, 15, 2, 3, 4).LastDayOfQuarter());
-            Assert.Equal(new DateTime(2009, 6, 30), new DateTime(2009, 4, 1, 2, 3, 4).LastDayOfQuarter());
-        }
-
+                
         [Fact]
         public void RelativeTime()
         {

@@ -159,7 +159,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (Data==null)
                 return new List<T>();
-            Creator = Creator.NullCheck(() => new T());
+            Creator = Creator.Check(() => new T());
             Type TType = typeof(T);
             PropertyInfo[] Properties = TType.GetProperties();
             System.Collections.Generic.List<T> Results = new System.Collections.Generic.List<T>();

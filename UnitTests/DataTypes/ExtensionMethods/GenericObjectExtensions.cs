@@ -37,16 +37,16 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void If()
         {
             MyTestClass Temp = new MyTestClass();
-            Assert.Same(Temp, Temp.If(x => x.B == 10));
-            Assert.NotSame(Temp, Temp.If(x => x.B == 1));
+            Assert.Same(Temp, Temp.Check(x => x.B == 10));
+            Assert.NotSame(Temp, Temp.Check(x => x.B == 1));
         }
 
         [Fact]
         public void NotIf()
         {
             MyTestClass Temp = new MyTestClass();
-            Assert.NotSame(Temp, Temp.NotIf(x => x.B == 10));
-            Assert.Same(Temp, Temp.NotIf(x => x.B == 1));
+            Assert.NotSame(Temp, Temp.Check(x => x.B != 10));
+            Assert.Same(Temp, Temp.Check(x => x.B != 1));
         }
 
         [Fact]
@@ -115,35 +115,36 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void NullCheck()
         {
             object TestObject = new DateTime(1999, 1, 1);
-            Assert.Equal(TestObject, TestObject.NullCheck());
-            Assert.Same(TestObject, TestObject.NullCheck());
+            Assert.Equal(TestObject, TestObject.Check());
+            Assert.Same(TestObject, TestObject.Check());
             TestObject = null;
-            Assert.Equal(new DateTime(1999, 1, 2), TestObject.NullCheck(new DateTime(1999, 1, 2)));
+            Assert.Equal(new DateTime(1999, 1, 2), TestObject.Check(new DateTime(1999, 1, 2)));
+            Assert.Equal(new DateTime(1999, 1, 2), TestObject.Check(x => x != null, new DateTime(1999, 1, 2)));
         }
 
         [Fact]
         public void IsNull()
         {
-            Assert.False(new DateTime(1999, 1, 1).IsNull());
+            Assert.False(new DateTime(1999, 1, 1).Is(default(DateTime)));
             object TestObject = null;
-            Assert.True(TestObject.IsNull());
+            Assert.True(TestObject.Is(default(object)));
         }
 
         [Fact]
         public void IsDefault()
         {
-            Assert.False(new DateTime(1999, 1, 1).IsDefault());
+            Assert.False(new DateTime(1999, 1, 1).Is(default(DateTime)));
             object TestObject = null;
-            Assert.True(TestObject.IsDefault());
+            Assert.True(TestObject.Is(default(object)));
         }
 
         [Fact]
         public void IsNullOrDBNull()
         {
-            Assert.False(new DateTime(1999, 1, 1).IsNull());
+            Assert.False(new DateTime(1999, 1, 1).Is(default(DateTime)));
             object TestObject = null;
-            Assert.True(TestObject.IsNull());
-            Assert.True(DBNull.Value.IsNull());
+            Assert.True(TestObject.Is(default(object)));
+            Assert.True(DBNull.Value.Is(Convert.DBNull));
         }
 
         [Fact]

@@ -24,7 +24,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Threading;
-
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -44,7 +44,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Date">Date input</param>
         /// <param name="NumberOfWeeks">Number of weeks to add</param>
         /// <returns>The date after the number of weeks are added</returns>
-        public static DateTime AddWeeks(this DateTime Date,int NumberOfWeeks)
+        public static DateTime AddWeeks(this DateTime Date, int NumberOfWeeks)
         {
             return Date.AddDays(NumberOfWeeks * 7);
         }
@@ -61,165 +61,190 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The total age in years</returns>
         public static int Age(this DateTime Date, DateTime CalculateFrom = default(DateTime))
         {
-            if (CalculateFrom==default(DateTime))
+            if (CalculateFrom == default(DateTime))
                 CalculateFrom = DateTime.Now;
-            return (CalculateFrom-Date).Years();
+            return (CalculateFrom - Date).Years();
         }
 
         #endregion
 
-        #region ConvertToTimeZone
+        #region BeginningOf
 
         /// <summary>
-        /// Converts a DateTime to a specific time zone
+        /// Beginning of a specific time frame
         /// </summary>
-        /// <param name="Date">DateTime to convert</param>
-        /// <param name="TimeZone">Time zone to convert to</param>
-        /// <returns>The converted DateTime</returns>
-        public static DateTime ConvertToTimeZone(this DateTime Date, TimeZoneInfo TimeZone)
+        /// <param name="Date">Date to base off of</param>
+        /// <param name="TimeFrame">Time frame to use</param>
+        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <returns>The beginning of a specific time frame</returns>
+        public static DateTime BeginningOf(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
         {
-            Contract.Requires<ArgumentNullException>(TimeZone != null, "TimeZone");
-            return TimeZoneInfo.ConvertTime(Date, TimeZone);
-        }
-
-        #endregion
-
-        #region DaysInMonth
-
-        /// <summary>
-        /// Returns the number of days in the month
-        /// </summary>
-        /// <param name="Date">Date to get the month from</param>
-        /// <returns>The number of days in the month</returns>
-        public static int DaysInMonth(this DateTime Date)
-        {
-            return Date.LastDayOfMonth().Day;
-        }
-
-        #endregion
-
-        #region DaysLeftInMonth
-
-        /// <summary>
-        /// Gets the number of days left in the month based on the date passed in
-        /// </summary>
-        /// <param name="Date">The date to check against</param>
-        /// <returns>The number of days left in a month</returns>
-        public static int DaysLeftInMonth(this DateTime Date)
-        {
-            return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInMonth(Date.Year, Date.Month) - Date.Day;
-        }
-
-        #endregion
-
-        #region DaysLeftInYear
-
-        /// <summary>
-        /// Gets the number of days left in a year based on the date passed in
-        /// </summary>
-        /// <param name="Date">The date to check against</param>
-        /// <returns>The number of days left in a year</returns>
-        public static int DaysLeftInYear(this DateTime Date)
-        {
-            return Thread.CurrentThread.CurrentCulture.Calendar.GetDaysInYear(Date.Year) - Date.DayOfYear;
-        }
-
-        #endregion
-
-        #region DaysLeftInWeek
-
-        /// <summary>
-        /// Gets the number of days left in a week
-        /// </summary>
-        /// <param name="Date">The date to check against</param>
-        /// <returns>The number of days left in a week</returns>
-        public static int DaysLeftInWeek(this DateTime Date)
-        {
-            return 7 - ((int)Date.DayOfWeek + 1);
-        }
-
-        #endregion
-
-        #region EndOfDay
-
-        /// <summary>
-        /// Returns the end of the day
-        /// </summary>
-        /// <param name="Input">Input date</param>
-        /// <returns>The end of the day</returns>
-        public static DateTime EndOfDay(this DateTime Input)
-        {
-            return new DateTime(Input.Year, Input.Month, Input.Day, 23, 59, 59);
-        }
-
-        #endregion
-
-        #region FirstDayOfMonth
-
-        /// <summary>
-        /// Returns the first day of a month based on the date sent in
-        /// </summary>
-        /// <param name="Date">Date to get the first day of the month from</param>
-        /// <returns>The first day of the month</returns>
-        public static DateTime FirstDayOfMonth(this DateTime Date)
-        {
-            return new DateTime(Date.Year, Date.Month, 1);
-        }
-
-        #endregion
-
-        #region FirstDayOfQuarter
-
-        /// <summary>
-        /// Returns the first day of a quarter based on the date sent in
-        /// </summary>
-        /// <param name="Date">Date to get the first day of the quarter from</param>
-        /// <param name="Quarter1Start">Beginning of the first quarter (defaults to the beginning of the year)</param>
-        /// <returns>The first day of the quarter</returns>
-        public static DateTime FirstDayOfQuarter(this DateTime Date, DateTime Quarter1Start = default(DateTime))
-        {
-            if (Quarter1Start==default(DateTime))
-                Quarter1Start = Date.FirstDayOfYear();
-            if (Date.Between(Quarter1Start, Quarter1Start.AddMonths(3).AddDays(-1).EndOfDay()))
-                return Quarter1Start.Date;
-            else if (Date.Between(Quarter1Start.AddMonths(3), Quarter1Start.AddMonths(6).AddDays(-1).EndOfDay()))
-                return Quarter1Start.AddMonths(3).Date;
-            else if (Date.Between(Quarter1Start.AddMonths(6), Quarter1Start.AddMonths(9).AddDays(-1).EndOfDay()))
-                return Quarter1Start.AddMonths(6).Date;
-            return Quarter1Start.AddMonths(9).Date;
-        }
-
-        #endregion
-
-        #region FirstDayOfWeek
-
-        /// <summary>
-        /// Returns the first day of a week based on the date sent in
-        /// </summary>
-        /// <param name="Date">Date to get the first day of the week from</param>
-        /// <param name="CultureInfo">The culture to use (defaults to current culture)</param>
-        /// <returns>The first day of the week</returns>
-        public static DateTime FirstDayOfWeek(this DateTime Date,CultureInfo CultureInfo=null)
-        {
-            return Date.AddDays(CultureInfo.NullCheck(CultureInfo.CurrentCulture).DateTimeFormat.FirstDayOfWeek - Date.DayOfWeek).Date;
-        }
-
-        #endregion
-
-        #region FirstDayOfYear
-
-        /// <summary>
-        /// Returns the first day of a year based on the date sent in
-        /// </summary>
-        /// <param name="Date">Date to get the first day of the year from</param>
-        /// <returns>The first day of the year</returns>
-        public static DateTime FirstDayOfYear(this DateTime Date)
-        {
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
+            if (TimeFrame == TimeFrame.Day)
+                return Date.Date;
+            if (TimeFrame == TimeFrame.Week)
+                return Date.AddDays(Culture.DateTimeFormat.FirstDayOfWeek - Date.DayOfWeek).Date;
+            if (TimeFrame == TimeFrame.Month)
+                return new DateTime(Date.Year, Date.Month, 1);
+            if (TimeFrame == TimeFrame.Quarter)
+                return Date.BeginningOf(TimeFrame.Quarter, Date.BeginningOf(TimeFrame.Year, Culture), Culture);
             return new DateTime(Date.Year, 1, 1);
         }
 
+        /// <summary>
+        /// Beginning of a specific time frame
+        /// </summary>
+        /// <param name="Date">Date to base off of</param>
+        /// <param name="TimeFrame">Time frame to use</param>
+        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="StartOfQuarter1">Start of the first quarter</param>
+        /// <returns>The beginning of a specific time frame</returns>
+        public static DateTime BeginningOf(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
+        {
+            if (TimeFrame != TimeFrame.Quarter)
+                return Date.BeginningOf(TimeFrame, Culture);
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
+            if (Date.Between(StartOfQuarter1, StartOfQuarter1.AddMonths(3).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
+                return StartOfQuarter1.Date;
+            else if (Date.Between(StartOfQuarter1.AddMonths(3), StartOfQuarter1.AddMonths(6).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
+                return StartOfQuarter1.AddMonths(3).Date;
+            else if (Date.Between(StartOfQuarter1.AddMonths(6), StartOfQuarter1.AddMonths(9).AddDays(-1).EndOf(TimeFrame.Day, CultureInfo.CurrentCulture)))
+                return StartOfQuarter1.AddMonths(6).Date;
+            return StartOfQuarter1.AddMonths(9).Date;
+        }
+
         #endregion
 
+        #region DaysIn
+
+        /// <summary>
+        /// Gets the number of days in the time frame specified based on the date
+        /// </summary>
+        /// <param name="Date">Date</param>
+        /// <param name="TimeFrame">Time frame to calculate the number of days from</param>
+        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <returns>The number of days in the time frame</returns>
+        public static int DaysIn(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
+        {
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
+            if (TimeFrame == TimeFrame.Day)
+                return 1;
+            if (TimeFrame == TimeFrame.Week)
+                return 7;
+            if (TimeFrame == TimeFrame.Month)
+                return Culture.Calendar.GetDaysInMonth(Date.Year, Date.Month);
+            if (TimeFrame == TimeFrame.Quarter)
+                return Date.EndOf(TimeFrame.Quarter, Culture).DayOfYear - Date.BeginningOf(TimeFrame.Quarter, Culture).DayOfYear;
+            return Culture.Calendar.GetDaysInYear(Date.Year);
+        }
+
+        /// <summary>
+        /// Gets the number of days in the time frame specified based on the date
+        /// </summary>
+        /// <param name="Date">Date</param>
+        /// <param name="TimeFrame">Time frame to calculate the number of days from</param>
+        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="StartOfQuarter1">Start of the first quarter</param>
+        /// <returns>The number of days in the time frame</returns>
+        public static int DaysIn(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
+        {
+            if (TimeFrame != TimeFrame.Quarter)
+                Date.DaysIn(TimeFrame, Culture);
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
+            return Date.EndOf(TimeFrame.Quarter, Culture).DayOfYear - StartOfQuarter1.DayOfYear;
+        }
+
+        #endregion
+
+        #region DaysLeftIn
+
+        /// <summary>
+        /// Gets the number of days left in the time frame specified based on the date
+        /// </summary>
+        /// <param name="Date">Date</param>
+        /// <param name="TimeFrame">Time frame to calculate the number of days left</param>
+        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <returns>The number of days left in the time frame</returns>
+        public static int DaysLeftIn(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
+        {
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
+            if (TimeFrame == TimeFrame.Day)
+                return 1;
+            if (TimeFrame == TimeFrame.Week)
+                return 7 - ((int)Date.DayOfWeek + 1);
+            if (TimeFrame == TimeFrame.Month)
+                return Date.DaysIn(TimeFrame.Month, Culture) - Date.Day;
+            if (TimeFrame == TimeFrame.Quarter)
+                return Date.DaysIn(TimeFrame.Quarter, Culture) - (Date.DayOfYear - Date.BeginningOf(TimeFrame.Quarter, Culture).DayOfYear);
+            return Date.DaysIn(TimeFrame.Year, Culture) - Date.DayOfYear;
+        }
+
+
+        /// <summary>
+        /// Gets the number of days left in the time frame specified based on the date
+        /// </summary>
+        /// <param name="Date">Date</param>
+        /// <param name="TimeFrame">Time frame to calculate the number of days left</param>
+        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="StartOfQuarter1">Start of the first quarter</param>
+        /// <returns>The number of days left in the time frame</returns>
+        public static int DaysLeftIn(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
+        {
+            if (TimeFrame != TimeFrame.Quarter)
+                return Date.DaysLeftIn(TimeFrame, Culture);
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
+            return Date.DaysIn(TimeFrame.Quarter, StartOfQuarter1, Culture) - (Date.DayOfYear - StartOfQuarter1.DayOfYear);
+        }
+
+        #endregion
+
+        #region EndOf
+
+        /// <summary>
+        /// End of a specific time frame
+        /// </summary>
+        /// <param name="Date">Date to base off of</param>
+        /// <param name="TimeFrame">Time frame to use</param>
+        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <returns>The end of a specific time frame (TimeFrame.Day is the only one that sets the time to 12:59:59 PM, all else are the beginning of the day)</returns>
+        public static DateTime EndOf(this DateTime Date, TimeFrame TimeFrame, CultureInfo Culture = null)
+        {
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
+            if (TimeFrame == TimeFrame.Day)
+                return new DateTime(Date.Year, Date.Month, Date.Day, 23, 59, 59);
+            if (TimeFrame == TimeFrame.Week)
+                return Date.BeginningOf(TimeFrame.Week, Culture).AddDays(6);
+            if (TimeFrame == TimeFrame.Month)
+                return Date.AddMonths(1).BeginningOf(TimeFrame.Month, Culture).AddDays(-1).Date;
+            if (TimeFrame == TimeFrame.Quarter)
+                return Date.EndOf(TimeFrame.Quarter, Date.BeginningOf(TimeFrame.Year, Culture), Culture);
+            return new DateTime(Date.Year, 12, 31);
+        }
+
+        /// <summary>
+        /// End of a specific time frame
+        /// </summary>
+        /// <param name="Date">Date to base off of</param>
+        /// <param name="TimeFrame">Time frame to use</param>
+        /// <param name="Culture">Culture to use for calculating (defaults to the current culture)</param>
+        /// <param name="StartOfQuarter1">Start of the first quarter</param>
+        /// <returns>The end of a specific time frame (TimeFrame.Day is the only one that sets the time to 12:59:59 PM, all else are the beginning of the day)</returns>
+        public static DateTime EndOf(this DateTime Date, TimeFrame TimeFrame, DateTime StartOfQuarter1, CultureInfo Culture = null)
+        {
+            if (TimeFrame != TimeFrame.Quarter)
+                return Date.EndOf(TimeFrame, Culture);
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
+            if (Date.Between(StartOfQuarter1, StartOfQuarter1.AddMonths(3).AddDays(-1).EndOf(TimeFrame.Day, Culture)))
+                return StartOfQuarter1.AddMonths(3).AddDays(-1).Date;
+            else if (Date.Between(StartOfQuarter1.AddMonths(3), StartOfQuarter1.AddMonths(6).AddDays(-1).EndOf(TimeFrame.Day, Culture)))
+                return StartOfQuarter1.AddMonths(6).AddDays(-1).Date;
+            else if (Date.Between(StartOfQuarter1.AddMonths(6), StartOfQuarter1.AddMonths(9).AddDays(-1).EndOf(TimeFrame.Day, Culture)))
+                return StartOfQuarter1.AddMonths(9).AddDays(-1).Date;
+            return StartOfQuarter1.AddYears(1).AddDays(-1).Date;
+        }
+
+        #endregion
+        
         #region FromUnixTime
 
         /// <summary>
@@ -244,142 +269,31 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region IsInFuture
+        #region Is
 
         /// <summary>
-        /// Determines if the date is some time in the future
+        /// Determines if the date fulfills the comparison
         /// </summary>
         /// <param name="Date">Date to check</param>
+        /// <param name="Comparison">Comparison type (can be combined, so you can do weekday in the future, etc)</param>
         /// <returns>True if it is, false otherwise</returns>
-        public static bool IsInFuture(this DateTime Date)
+        public static bool Is(this DateTime Date, DateCompare Comparison)
         {
-            return DateTime.Now < Date;
+            if (Comparison.HasFlag(DateCompare.InFuture) && DateTime.Now >= Date)
+                return false;
+            if (Comparison.HasFlag(DateCompare.InPast) && DateTime.Now <= Date)
+                return false;
+            if (Comparison.HasFlag(DateCompare.Today) && DateTime.Today != Date.Date)
+                return false;
+            if (Comparison.HasFlag(DateCompare.WeekDay) && ((int)Date.DayOfWeek == 6 || (int)Date.DayOfWeek == 0))
+                return false;
+            if (Comparison.HasFlag(DateCompare.WeekEnd) && (int)Date.DayOfWeek != 6 && (int)Date.DayOfWeek != 0)
+                return false;
+            return true;
         }
 
         #endregion
-
-        #region IsInPast
-
-        /// <summary>
-        /// Determines if the date is some time in the past
-        /// </summary>
-        /// <param name="Date">Date to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsInPast(this DateTime Date)
-        {
-            return DateTime.Now > Date;
-        }
-
-        #endregion
-
-        #region IsToday
-
-        /// <summary>
-        /// Is this today?
-        /// </summary>
-        /// <param name="Date">Date to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsToday(this DateTime Date)
-        {
-            return (Date.Date == DateTime.Today);
-        }
-
-        #endregion
-
-        #region IsWeekDay
-
-        /// <summary>
-        /// Determines if this is a week day
-        /// </summary>
-        /// <param name="Date">Date to check against</param>
-        /// <returns>Whether this is a week day or not</returns>
-        public static bool IsWeekDay(this DateTime Date)
-        {
-            return (int)Date.DayOfWeek < 6 && (int)Date.DayOfWeek > 0;
-        }
-
-        #endregion
-
-        #region IsWeekEnd
-
-        /// <summary>
-        /// Determines if this is a week end
-        /// </summary>
-        /// <param name="Date">Date to check against</param>
-        /// <returns>Whether this is a week end or not</returns>
-        public static bool IsWeekEnd(this DateTime Date)
-        {
-            return !IsWeekDay(Date);
-        }
-
-        #endregion
-
-        #region LastDayOfMonth
-
-        /// <summary>
-        /// Returns the last day of the month based on the date sent in
-        /// </summary>
-        /// <param name="Date">Date to get the last day from</param>
-        /// <returns>The last day of the month</returns>
-        public static DateTime LastDayOfMonth(this DateTime Date)
-        {
-            return Date.AddMonths(1).FirstDayOfMonth().AddDays(-1).Date;
-        }
-
-        #endregion
-
-        #region LastDayOfQuarter
-
-        /// <summary>
-        /// Returns the last day of a quarter based on the date sent in
-        /// </summary>
-        /// <param name="Date">Date to get the last day of the quarter from</param>
-        /// <param name="Quarter1Start">Beginning of the first quarter (defaults to the beginning of the year)</param>
-        /// <returns>The last day of the quarter</returns>
-        public static DateTime LastDayOfQuarter(this DateTime Date, DateTime Quarter1Start = default(DateTime))
-        {
-            if (Quarter1Start==default(DateTime))
-                Quarter1Start = Date.FirstDayOfYear();
-            if (Date.Between(Quarter1Start, Quarter1Start.AddMonths(3).AddDays(-1).EndOfDay()))
-                return Quarter1Start.AddMonths(3).AddDays(-1).Date;
-            else if (Date.Between(Quarter1Start.AddMonths(3), Quarter1Start.AddMonths(6).AddDays(-1).EndOfDay()))
-                return Quarter1Start.AddMonths(6).AddDays(-1).Date;
-            else if (Date.Between(Quarter1Start.AddMonths(6), Quarter1Start.AddMonths(9).AddDays(-1).EndOfDay()))
-                return Quarter1Start.AddMonths(9).AddDays(-1).Date;
-            return Quarter1Start.AddYears(1).AddDays(-1).Date;
-        }
-
-        #endregion
-
-        #region LastDayOfWeek
-
-        /// <summary>
-        /// Returns the last day of a week based on the date sent in
-        /// </summary>
-        /// <param name="Date">Date to get the last day of the week from</param>
-        /// <param name="CultureInfo">The culture to use (defaults to current culture)</param>
-        /// <returns>The last day of the week</returns>
-        public static DateTime LastDayOfWeek(this DateTime Date, CultureInfo CultureInfo = null)
-        {
-            return Date.FirstDayOfWeek(CultureInfo.NullCheck( CultureInfo.CurrentCulture)).AddDays(6);
-        }
-
-        #endregion
-
-        #region LastDayOfYear
-
-        /// <summary>
-        /// Returns the last day of the year based on the date sent in
-        /// </summary>
-        /// <param name="Date">Date to get the last day from</param>
-        /// <returns>The last day of the year</returns>
-        public static DateTime LastDayOfYear(this DateTime Date)
-        {
-            return new DateTime(Date.Year, 12, 31);
-        }
-
-        #endregion
-
+        
         #region LocalTimeZone
 
         /// <summary>
@@ -448,16 +362,30 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region ToUnix
+        #region To
 
         /// <summary>
-        /// Returns the date in Unix format
+        /// Converts a DateTime to a specific time zone
+        /// </summary>
+        /// <param name="Date">DateTime to convert</param>
+        /// <param name="TimeZone">Time zone to convert to</param>
+        /// <returns>The converted DateTime</returns>
+        public static DateTime To(this DateTime Date, TimeZoneInfo TimeZone)
+        {
+            Contract.Requires<ArgumentNullException>(TimeZone != null, "TimeZone");
+            return TimeZoneInfo.ConvertTime(Date, TimeZone);
+        }
+
+        /// <summary>
+        /// Returns the date in int format based on an Epoch (defaults to unix epoch of 1/1/1970)
         /// </summary>
         /// <param name="Date">Date to convert</param>
+        /// <param name="Epoch">Epoch to use (defaults to unix epoch of 1/1/1970)</param>
         /// <returns>The date in Unix format</returns>
-        public static int ToUnix(this DateTime Date)
+        public static int To(this DateTime Date, DateTime Epoch = default(DateTime))
         {
-            return (int)((Date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / TimeSpan.TicksPerSecond);
+            Epoch = Epoch.Check(x => x != default(DateTime), () => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            return (int)((Date.ToUniversalTime() - Epoch).Ticks / TimeSpan.TicksPerSecond);
         }
 
         #endregion
@@ -478,4 +406,63 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
     }
+
+    #region Enums
+
+    /// <summary>
+    /// Date comparison type
+    /// </summary>
+    [Flags]
+    public enum DateCompare
+    {
+        /// <summary>
+        /// In the future
+        /// </summary>
+        InFuture=1,
+        /// <summary>
+        /// In the past
+        /// </summary>
+        InPast=2,
+        /// <summary>
+        /// Today
+        /// </summary>
+        Today=4,
+        /// <summary>
+        /// Weekday
+        /// </summary>
+        WeekDay=8,
+        /// <summary>
+        /// Weekend
+        /// </summary>
+        WeekEnd=16
+    }
+
+    /// <summary>
+    /// Time frame
+    /// </summary>
+    public enum TimeFrame
+    {
+        /// <summary>
+        /// Day
+        /// </summary>
+        Day,
+        /// <summary>
+        /// Week
+        /// </summary>
+        Week,
+        /// <summary>
+        /// Month
+        /// </summary>
+        Month,
+        /// <summary>
+        /// Quarter
+        /// </summary>
+        Quarter,
+        /// <summary>
+        /// Year
+        /// </summary>
+        Year
+    }
+
+    #endregion
 }

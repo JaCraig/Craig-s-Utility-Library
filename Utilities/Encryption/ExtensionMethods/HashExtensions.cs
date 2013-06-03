@@ -69,7 +69,7 @@ namespace Utilities.Encryption.ExtensionMethods
         {
             if (Data==null)
                 return null;
-            using (HashAlgorithm Hasher = Algorithm.NullCheck(()=>new SHA1CryptoServiceProvider()))
+            using (HashAlgorithm Hasher = Algorithm.Check(()=>new SHA1CryptoServiceProvider()))
             {
                 byte[] HashedArray = Hasher.ComputeHash(Data);
                 Hasher.Clear();

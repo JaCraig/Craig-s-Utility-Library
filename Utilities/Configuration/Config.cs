@@ -49,8 +49,8 @@ namespace Utilities.Configuration
         /// <param name="ObjectToString">Object to string</param>
         protected Config(Func<string, ConfigClassType> StringToObject = null, Func<IConfig, string> ObjectToString = null)
         {
-            this.ObjectToString = ObjectToString.NullCheck((x) => x.Serialize(new XMLSerializer(), FileLocation: ConfigFileLocation));
-            this.StringToObject = StringToObject.NullCheck((x) => (ConfigClassType)x.Deserialize(this.GetType(), new XMLSerializer()));
+            this.ObjectToString = ObjectToString.Check((x) => x.Serialize(new XMLSerializer(), FileLocation: ConfigFileLocation));
+            this.StringToObject = StringToObject.Check((x) => (ConfigClassType)x.Deserialize(this.GetType(), new XMLSerializer()));
         }
 
         #endregion

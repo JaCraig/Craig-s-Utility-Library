@@ -202,7 +202,7 @@ namespace Utilities.Random.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
-            Generator = Generator.NullCheck(new EnumGenerator<T>());
+            Generator = Generator.Check(new EnumGenerator<T>());
             return Generator.Next(Random);
         }
 
@@ -218,7 +218,7 @@ namespace Utilities.Random.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(Random != null, "Random");
             SetupGenerators();
-            Generator = Generator.NullCheck(new EnumGenerator<T>());
+            Generator = Generator.Check(new EnumGenerator<T>());
             return Amount.Times(x => Generator.Next(Random));
         }
 

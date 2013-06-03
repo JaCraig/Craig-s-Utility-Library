@@ -114,7 +114,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             Contract.Requires<ArgumentNullException>(OrderBy != null, "OrderBy");
-            return Dictionary.OrderBy(OrderBy, Comparer.NullCheck(()=>new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
+            return Dictionary.OrderBy(OrderBy, Comparer.Check(()=>new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
         }
 
         #endregion

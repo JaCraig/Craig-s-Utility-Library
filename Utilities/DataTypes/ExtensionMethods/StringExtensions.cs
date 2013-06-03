@@ -127,8 +127,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            OriginalEncodingUsing = OriginalEncodingUsing.NullCheck(new ASCIIEncoding());
-            EncodingUsing = EncodingUsing.NullCheck(new UTF8Encoding());
+            OriginalEncodingUsing = OriginalEncodingUsing.Check(new ASCIIEncoding());
+            EncodingUsing = EncodingUsing.Check(new UTF8Encoding());
             return Encoding.Convert(OriginalEncodingUsing, EncodingUsing, Input.ToByteArray(OriginalEncodingUsing))
                            .ToEncodedString(EncodingUsing);
         }
@@ -187,7 +187,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The formatted string</returns>
         public static string FormatString(this string Input, string Format, IStringFormatter Provider = null)
         {
-            return Provider.NullCheck(new GenericStringFormatter()).Format(Input, Format);
+            return Provider.Check(new GenericStringFormatter()).Format(Input, Format);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (string.IsNullOrEmpty(Input))
                 return "";
             byte[] TempArray = Convert.FromBase64String(Input);
-            return EncodingUsing.NullCheck(()=>new UTF8Encoding()).GetString(TempArray);
+            return EncodingUsing.Check(()=>new UTF8Encoding()).GetString(TempArray);
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Word))
                 return "";
-            Culture = Culture.NullCheck(CultureInfo.CurrentCulture);
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
             return PluralizationService.CreateService(Culture).Pluralize(Word);
         }
 
@@ -583,7 +583,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Word))
                 return "";
-            Culture = Culture.NullCheck(CultureInfo.CurrentCulture);
+            Culture = Culture.Check(CultureInfo.CurrentCulture);
             return PluralizationService.CreateService(Culture).Singularize(Word);
         }
 
@@ -681,7 +681,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            byte[] TempArray = OriginalEncodingUsing.NullCheck(new UTF8Encoding()).GetBytes(Input);
+            byte[] TempArray = OriginalEncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
             return Convert.ToBase64String(TempArray);
         }
 
@@ -697,7 +697,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>the byte array representing the string</returns>
         public static byte[] ToByteArray(this string Input, Encoding EncodingUsing = null)
         {
-            return string.IsNullOrEmpty(Input) ? null : EncodingUsing.NullCheck(new UTF8Encoding()).GetBytes(Input);
+            return string.IsNullOrEmpty(Input) ? null : EncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
         }
 
         #endregion

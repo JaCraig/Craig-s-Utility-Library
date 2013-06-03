@@ -92,7 +92,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 return "";
             if (Count == -1)
                 Count = Input.Length - Index;
-            return EncodingUsing.NullCheck(new UTF8Encoding()).GetString(Input, Index, Count);
+            return EncodingUsing.Check(new UTF8Encoding()).GetString(Input, Index, Count);
         }
 
         #endregion

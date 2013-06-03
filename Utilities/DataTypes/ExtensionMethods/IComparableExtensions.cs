@@ -49,7 +49,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static bool Between<T>(this T Value, T Min, T Max, IComparer<T> Comparer = null) 
             where T : IComparable
         {
-            Comparer = Comparer.NullCheck(()=>new GenericComparer<T>());
+            Comparer = Comparer.Check(()=>new GenericComparer<T>());
             return Comparer.Compare(Max, Value) >= 0 && Comparer.Compare(Value, Min) >= 0;
         }
 
@@ -68,7 +68,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static T Clamp<T>(this T Value, T Max, T Min, IComparer<T> Comparer = null) 
             where T : IComparable
         {
-            Comparer = Comparer.NullCheck(()=>new GenericComparer<T>());
+            Comparer = Comparer.Check(()=>new GenericComparer<T>());
             if (Comparer.Compare(Max, Value) < 0)
                 return Max;
             if (Comparer.Compare(Value, Min) < 0)
@@ -90,7 +90,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static T Max<T>(this T InputA, T InputB, IComparer<T> Comparer = null)
             where T : IComparable
         {
-            Comparer = Comparer.NullCheck(()=>new GenericComparer<T>());
+            Comparer = Comparer.Check(()=>new GenericComparer<T>());
             return Comparer.Compare(InputA, InputB) < 0 ? InputB : InputA;
         }
 
@@ -108,7 +108,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static T Min<T>(this T InputA, T InputB, IComparer<T> Comparer = null)
             where T : IComparable
         {
-            Comparer = Comparer.NullCheck(()=>new GenericComparer<T>());
+            Comparer = Comparer.Check(()=>new GenericComparer<T>());
             return Comparer.Compare(InputA, InputB) > 0 ? InputB : InputA;
         }
 

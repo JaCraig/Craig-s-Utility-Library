@@ -45,7 +45,7 @@ namespace Utilities.IO.Serializers
         /// <param name="EncodingUsing">Encoding that the serializer should use (defaults to ASCII)</param>
         public SOAPSerializer(Encoding EncodingUsing = null)
         {
-            this.EncodingUsing = EncodingUsing.NullCheck(new ASCIIEncoding());
+            this.EncodingUsing = EncodingUsing.Check(new ASCIIEncoding());
         }
 
         #endregion

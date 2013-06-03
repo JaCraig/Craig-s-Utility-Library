@@ -2301,7 +2301,7 @@ namespace Utilities.Media.Image.ExtensionMethods
         /// <returns>The image in base64 string format</returns>
         public static string ToBase64(this System.Drawing.Image Image, ImageFormat DesiredFormat = null)
         {
-            DesiredFormat = DesiredFormat.NullCheck(ImageFormat.Jpeg);
+            DesiredFormat = DesiredFormat.Check(ImageFormat.Jpeg);
             using (MemoryStream Stream = new MemoryStream())
             {
                 Image.Save(Stream, DesiredFormat);

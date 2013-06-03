@@ -257,7 +257,7 @@ namespace Utilities.IO.ExtensionMethods
         public static FileInfo Save(this FileInfo File, string Content, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
         {
             Contract.Requires<ArgumentNullException>(File != null, "File");
-            return File.Save(EncodingUsing.NullCheck(new ASCIIEncoding()).GetBytes(Content), Mode);
+            return File.Save(EncodingUsing.Check(new ASCIIEncoding()).GetBytes(Content), Mode);
         }
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace Utilities.IO.ExtensionMethods
             object StateObject, FileMode Mode = FileMode.Create, Encoding EncodingUsing = null)
         {
             Contract.Requires<ArgumentNullException>(File != null, "File");
-            return File.SaveAsync(EncodingUsing.NullCheck(new ASCIIEncoding()).GetBytes(Content), CallBack, StateObject, Mode);
+            return File.SaveAsync(EncodingUsing.Check(new ASCIIEncoding()).GetBytes(Content), CallBack, StateObject, Mode);
         }
 
         /// <summary>

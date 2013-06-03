@@ -43,11 +43,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void IsNullOrEmptyTest()
         {
             List<int> Temp = new List<int>();
-            Assert.True(Temp.IsNullOrEmpty());
+            Assert.True(Temp.Is(x => x == null || x.Count == 0));
             Temp = null;
-            Assert.True(Temp.IsNullOrEmpty());
+            Assert.True(Temp.Is(x => x == null || x.Count == 0));
             Temp = new int[] { 1, 2, 3 }.ToList();
-            Assert.False(Temp.IsNullOrEmpty());
+            Assert.False(Temp.Is(x => x == null || x.Count == 0));
         }
 
         [Fact]
@@ -150,6 +150,31 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(1, Temp2[2]);
             Assert.Equal(2, Temp2[3]);
             Assert.Equal(3, Temp2[4]);
+        }
+
+        [Fact]
+        public void ToList()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList(x => x + 10);
+            Assert.Equal(10, Temp[0]);
+            Assert.Equal(10, Temp[1]);
+            Assert.Equal(11, Temp[2]);
+            Assert.Equal(12, Temp[3]);
+            Assert.Equal(13, Temp[4]);
+        }
+
+        [Fact]
+        public void ThrowIfAll()
+        {
+            Assert.Throws<Exception>(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 4, new Exception()));
+            Assert.DoesNotThrow(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAll(x => x < 3, new Exception()));
+        }
+
+        [Fact]
+        public void ThrowIfAny()
+        {
+            Assert.Throws<Exception>(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x < 3, new Exception()));
+            Assert.DoesNotThrow(() => new int[] { 0, 0, 1, 2, 3 }.ThrowIfAny(x => x > 3, new Exception()));
         }
 
         [Fact]

@@ -145,8 +145,8 @@ namespace Utilities.AI
         {
             Contract.Requires<ArgumentNullException>(SetATokens != null, "SetATokens");
             Contract.Requires<ArgumentNullException>(SetBTokens != null, "SetBTokens");
-            SetA = SetA.NullCheck(()=>new Bag<T>());
-            SetB = SetB.NullCheck(()=>new Bag<T>());
+            SetA = SetA.Check(()=>new Bag<T>());
+            SetB = SetB.Check(()=>new Bag<T>());
             SetA.Add(SetATokens);
             SetB.Add(SetBTokens);
             TotalA = SetA.Sum(x => SetA[x]);

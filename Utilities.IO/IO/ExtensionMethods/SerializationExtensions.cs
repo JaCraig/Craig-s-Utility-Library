@@ -52,7 +52,7 @@ namespace Utilities.IO.ExtensionMethods
         public static string Serialize(this object Object, ISerializer<string> Serializer = null, Encoding EncodingUsing = null, string FileLocation = "")
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
-            string Data = Serializer.NullCheck(()=>new JSONSerializer(EncodingUsing)).Serialize(Object);
+            string Data = Serializer.Check(()=>new JSONSerializer(EncodingUsing)).Serialize(Object);
             if (!string.IsNullOrEmpty(FileLocation))
                 FileLocation.Save(Data);
             return Data;
@@ -72,7 +72,7 @@ namespace Utilities.IO.ExtensionMethods
         public static byte[] SerializeBinary(this object Object, ISerializer<byte[]> Serializer = null, string FileLocation = "")
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
-            byte[] Data = Serializer.NullCheck(()=>new BinarySerializer()).Serialize(Object);
+            byte[] Data = Serializer.Check(()=>new BinarySerializer()).Serialize(Object);
             if (!string.IsNullOrEmpty(FileLocation))
                 FileLocation.Save(Data);
             return Data;
@@ -106,7 +106,7 @@ namespace Utilities.IO.ExtensionMethods
         
         public static R Deserialize<R>(this XmlDocument Data, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data == null) ? default(R) : (R)Data.InnerXml.Deserialize(typeof(R), Serializer.NullCheck(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
+            return (Data == null) ? default(R) : (R)Data.InnerXml.Deserialize(typeof(R), Serializer.Check(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static object Deserialize(this string Data,Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return Serializer.NullCheck(()=>new JSONSerializer(EncodingUsing)).Deserialize(Data, ObjectType);
+            return Serializer.Check(()=>new JSONSerializer(EncodingUsing)).Deserialize(Data, ObjectType);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Utilities.IO.ExtensionMethods
         /// <returns>The deserialized object</returns>
         public static object Deserialize(this byte[] Data, Type ObjectType, ISerializer<byte[]> Serializer = null)
         {
-            return Serializer.NullCheck(()=>new BinarySerializer()).Deserialize(Data, ObjectType);
+            return Serializer.Check(()=>new BinarySerializer()).Deserialize(Data, ObjectType);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Utilities.IO.ExtensionMethods
         
         public static object Deserialize(this XmlDocument Data, Type ObjectType, ISerializer<string> Serializer = null, Encoding EncodingUsing = null)
         {
-            return (Data == null) ? null : Data.InnerXml.Deserialize(ObjectType, Serializer.NullCheck(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
+            return (Data == null) ? null : Data.InnerXml.Deserialize(ObjectType, Serializer.Check(()=>new XMLSerializer(EncodingUsing)), EncodingUsing);
         }
 
         #endregion

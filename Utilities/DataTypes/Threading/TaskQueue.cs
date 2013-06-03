@@ -51,7 +51,7 @@ namespace Utilities.DataTypes.Threading
             : base(new ConcurrentQueue<T>())
         {
             this.ProcessItem = ProcessItem;
-            this.HandleError = HandleError.NullCheck(x => { });
+            this.HandleError = HandleError.Check(x => { });
             CancellationToken = new CancellationTokenSource();
             Tasks = new Task[Capacity];
             Capacity.Times(x => Tasks[x] = Task.Factory.StartNew(Process));
