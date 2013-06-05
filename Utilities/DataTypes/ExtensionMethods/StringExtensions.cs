@@ -41,35 +41,7 @@ namespace Utilities.DataTypes.ExtensionMethods
     public static class StringExtensions
     {
         #region Functions
-
-        #region AlphaCharactersOnly
-
-        /// <summary>
-        /// Keeps only alpha characters
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>the string only containing alpha characters</returns>
-        public static string AlphaCharactersOnly(this string Input)
-        {
-            return Input.KeepFilterText("[a-zA-Z]");
-        }
-
-        #endregion
-
-        #region AlphaNumericOnly
-
-        /// <summary>
-        /// Keeps only alphanumeric characters
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>the string only containing alphanumeric characters</returns>
-        public static string AlphaNumericOnly(this string Input)
-        {
-            return Input.KeepFilterText("[a-zA-Z0-9]");
-        }
-
-        #endregion
-
+        
         #region AppendLineFormat
 
         /// <summary>
@@ -154,24 +126,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-
-        #region FilterOutText
-
-        /// <summary>
-        /// Removes the filter text from the input.
-        /// </summary>
-        /// <param name="Input">Input text</param>
-        /// <param name="Filter">Regex expression of text to filter out</param>
-        /// <returns>The input text minus the filter text.</returns>
-        public static string FilterOutText(this string Input, string Filter)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            return string.IsNullOrEmpty(Filter) ? Input : new Regex(Filter).Replace(Input, "");
-        }
-
-        #endregion
-
+        
         #region FormatString
 
         /// <summary>
@@ -259,63 +214,57 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region IsCreditCard
+        #region Is
 
         /// <summary>
-        /// Checks if a credit card number is valid
+        /// Is this value of the specified type
         /// </summary>
-        /// <param name="CreditCardNumber">Number to check</param>
-        /// <returns>True if it is valid, false otherwise</returns>
-        public static bool IsCreditCard(this string CreditCardNumber)
+        /// <param name="Value">Value to compare</param>
+        /// <param name="ComparisonType">Comparison type</param>
+        /// <returns>True if it is of the type specified, false otherwise</returns>
+        public static bool Is(this string Value,StringCompare ComparisonType)
         {
-            long CheckSum = 0;
-            CreditCardNumber = CreditCardNumber.Replace("-", "").Reverse();
-            for (int x = 0; x < CreditCardNumber.Length; ++x)
+            if (ComparisonType == StringCompare.CreditCard)
             {
-                if (!CreditCardNumber[x].IsDigit())
-                    return false;
-                int Value = (CreditCardNumber[x] - '0') * (x % 2 == 1 ? 2 : 1);
-                while (Value > 0)
+                long CheckSum = 0;
+                Value = Value.Replace("-", "").Reverse();
+                for (int x = 0; x < Value.Length; ++x)
                 {
-                    CheckSum += Value % 10;
-                    Value /= 10;
+                    if (!Value[x].IsDigit())
+                        return false;
+                    int TempValue = (Value[x] - '0') * (x % 2 == 1 ? 2 : 1);
+                    while (TempValue > 0)
+                    {
+                        CheckSum += TempValue % 10;
+                        TempValue /= 10;
+                    }
                 }
+                return (CheckSum % 10) == 0;
             }
-            return (CheckSum % 10) == 0;
+            if (ComparisonType == StringCompare.Unicode)
+            {
+                return string.IsNullOrEmpty(Value) ? true : Regex.Replace(Value, @"[^\u0000-\u007F]", "") != Value;
+            }
+            return Value.Is("", StringCompare.Anagram);
         }
-
-        #endregion
-
-        #region IsAnagram
 
         /// <summary>
-        /// Determines if the two strings are anagrams or not
+        /// Is this value of the specified type
         /// </summary>
-        /// <param name="Input1">Input 1</param>
-        /// <param name="Input2">Input 2</param>
-        /// <returns>True if they are anagrams, false otherwise</returns>
-        public static bool IsAnagram(this string Input1, string Input2)
+        /// <param name="Value1">Value 1 to compare</param>
+        /// <param name="Value2">Value 2 to compare</param>
+        /// <param name="ComparisonType">Comparison type</param>
+        /// <returns>True if it is of the type specified, false otherwise</returns>
+        public static bool Is(this string Value1, string Value2, StringCompare ComparisonType)
         {
-            return new string(Input1.OrderBy(x => x).ToArray()) == new string(Input2.OrderBy(x => x).ToArray());
+            if (ComparisonType != StringCompare.Anagram)
+                return Value1.Is(ComparisonType);
+            return new string(Value1.OrderBy(x => x).ToArray()) == new string(Value2.OrderBy(x => x).ToArray());
         }
 
         #endregion
 
-        #region IsUnicode
-
-        /// <summary>
-        /// Determines if a string is unicode
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>True if it's unicode, false otherwise</returns>
-        public static bool IsUnicode(this string Input)
-        {
-            return string.IsNullOrEmpty(Input) ? true : Regex.Replace(Input, @"[^\u0000-\u007F]", "") != Input;
-        }
-
-        #endregion
-
-        #region KeepFilterText
+        #region Keep
 
         /// <summary>
         /// Removes everything that is not in the filter text from the input.
@@ -323,7 +272,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Input">Input text</param>
         /// <param name="Filter">Regex expression of text to keep</param>
         /// <returns>The input text minus everything not in the filter text.</returns>
-        public static string KeepFilterText(this string Input, string Filter)
+        public static string Keep(this string Input, string Filter)
         {
             if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Filter))
                 return "";
@@ -333,6 +282,29 @@ namespace Utilities.DataTypes.ExtensionMethods
             foreach (Match Match in Collection)
                 Builder.Append(Match.Value);
             return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Removes everything that is not in the filter text from the input.
+        /// </summary>
+        /// <param name="Input">Input text</param>
+        /// <param name="Filter">Predefined filter to use (can be combined as they are flags)</param>
+        /// <returns>The input text minus everything not in the filter text.</returns>
+        public static string Keep(this string Input, StringFilter Filter)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            if (Filter.HasFlag(StringFilter.Alpha) && Filter.HasFlag(StringFilter.Numeric))
+                return Input.Keep("[a-zA-Z0-9]");
+            if (Filter.HasFlag(StringFilter.Alpha) && Filter.HasFlag(StringFilter.FloatNumeric))
+                return Input.Keep(@"[a-zA-Z0-9\.]");
+            if (Filter.HasFlag(StringFilter.Alpha))
+                return Input.Keep("[a-zA-Z]");
+            if(Filter.HasFlag(StringFilter.FloatNumeric))
+                return Input.Keep(@"[0-9\.]");
+            if (Filter.HasFlag(StringFilter.Numeric))
+                return Input.Keep("[0-9]");
+            return "";
         }
 
         #endregion
@@ -459,21 +431,6 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region NumericOnly
-
-        /// <summary>
-        /// Keeps only numeric characters
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="KeepNumericPunctuation">Determines if decimal places should be kept</param>
-        /// <returns>the string only containing numeric characters</returns>
-        public static string NumericOnly(this string Input, bool KeepNumericPunctuation = true)
-        {
-            return KeepNumericPunctuation ? Input.KeepFilterText(@"[0-9\.]") : Input.KeepFilterText("[0-9]");
-        }
-
-        #endregion
-
         #region NumberTimesOccurs
 
         /// <summary>
@@ -521,6 +478,46 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
             return Regex.Replace(Input, Format, OutputFormat, Options);
+        }
+
+        #endregion
+        
+        #region Remove
+
+        /// <summary>
+        /// Removes everything that is in the filter text from the input.
+        /// </summary>
+        /// <param name="Input">Input text</param>
+        /// <param name="Filter">Regex expression of text to remove</param>
+        /// <returns>Everything not in the filter text.</returns>
+        public static string Remove(this string Input, string Filter)
+        {
+            if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Filter))
+                return Input;
+            return new Regex(Filter).Replace(Input,"");
+        }
+
+        /// <summary>
+        /// Removes everything that is in the filter text from the input.
+        /// </summary>
+        /// <param name="Input">Input text</param>
+        /// <param name="Filter">Predefined filter to use (can be combined as they are flags)</param>
+        /// <returns>Everything not in the filter text.</returns>
+        public static string Remove(this string Input, StringFilter Filter)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            if (Filter.HasFlag(StringFilter.Alpha) && Filter.HasFlag(StringFilter.Numeric))
+                return Input.Remove("[a-zA-Z0-9]");
+            if (Filter.HasFlag(StringFilter.Alpha) && Filter.HasFlag(StringFilter.FloatNumeric))
+                return Input.Remove(@"[a-zA-Z0-9\.]");
+            if (Filter.HasFlag(StringFilter.Alpha))
+                return Input.Remove("[a-zA-Z]");
+            if(Filter.HasFlag(StringFilter.FloatNumeric))
+                return Input.Remove(@"[0-9\.]");
+            if (Filter.HasFlag(StringFilter.Numeric))
+                return Input.Remove("[0-9]");
+            return "";
         }
 
         #endregion
@@ -784,4 +781,47 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
     }
+
+    #region Enums
+
+    /// <summary>
+    /// What type of string comparison are we doing?
+    /// </summary>
+    public enum StringCompare
+    {
+        /// <summary>
+        /// Is this a credit card number?
+        /// </summary>
+        CreditCard,
+        /// <summary>
+        /// Is this an anagram?
+        /// </summary>
+        Anagram,
+        /// <summary>
+        /// Is this Unicode
+        /// </summary>
+        Unicode
+    }
+
+    /// <summary>
+    /// Predefined filters
+    /// </summary>
+    [Flags]
+    public enum StringFilter
+    {
+        /// <summary>
+        /// Alpha characters
+        /// </summary>
+        Alpha=1,
+        /// <summary>
+        /// Numeric characters
+        /// </summary>
+        Numeric=2,
+        /// <summary>
+        /// Numbers with period, basically allows for decimal point
+        /// </summary>
+        FloatNumeric=4
+    }
+
+    #endregion
 }

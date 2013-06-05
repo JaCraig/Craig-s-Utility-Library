@@ -93,7 +93,7 @@ namespace Utilities.Validation.Rules
         {
             string Tempvalue = value as string;
             if(Type==Enums.IsValid.CreditCard)
-                return Tempvalue.IsCreditCard() ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                return Tempvalue.Is(StringCompare.CreditCard) ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if(Type==Enums.IsValid.Decimal)
                 return Regex.IsMatch(Tempvalue, @"^(\d+)+(\.\d+)?$|^(\d+)?(\.\d+)+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == Enums.IsValid.Domain)

@@ -121,28 +121,28 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void FilterOutText()
         {
             string Value = "The brown fox is awsome. But the blue fox is not";
-            Assert.Equal("The brown  is awsome. But the blue  is not", Value.FilterOutText("fox"));
+            Assert.Equal("The brown  is awsome. But the blue  is not", Value.Remove("fox"));
         }
 
         [Fact]
         public void KeepFilterText()
         {
             string Value = "The brown fox is awsome. But the blue fox is not";
-            Assert.Equal("foxfox", Value.KeepFilterText("fox"));
+            Assert.Equal("foxfox", Value.Keep("fox"));
         }
 
         [Fact]
         public void AlphaNumericOnly()
         {
             string Value = "The brown fox is awsome. But the blue fox is not. 2222";
-            Assert.Equal("ThebrownfoxisawsomeButthebluefoxisnot2222", Value.AlphaNumericOnly());
+            Assert.Equal("ThebrownfoxisawsomeButthebluefoxisnot2222", Value.Keep(StringFilter.Alpha|StringFilter.Numeric));
         }
 
         [Fact]
         public void AlphaCharactersOnly()
         {
             string Value = "The brown fox is awsome. But the blue fox is not. 2222";
-            Assert.Equal("ThebrownfoxisawsomeButthebluefoxisnot", Value.AlphaCharactersOnly());
+            Assert.Equal("ThebrownfoxisawsomeButthebluefoxisnot", Value.Keep(StringFilter.Alpha));
         }
 
         [Fact]
@@ -155,14 +155,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void NumericOnly()
         {
             string Value = "The brown fox is awsome. But the blue fox is not. 2222";
-            Assert.Equal("2222", Value.NumericOnly(false));
+            Assert.Equal("2222", Value.Keep(StringFilter.Numeric));
         }
 
         [Fact]
         public void IsUnicode()
         {
             string Value = "\u25EF\u25EF\u25EF";
-            Assert.True(Value.IsUnicode());
+            Assert.True(Value.Is(StringCompare.Unicode));
         }
 
         [Fact]
@@ -300,7 +300,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void IsCreditCard()
         {
-            Assert.True("4408041234567893".IsCreditCard());
+            Assert.True("4408041234567893".Is(StringCompare.CreditCard));
         }
 
         [Fact]

@@ -113,7 +113,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void FromUnix()
         {
-            Assert.Equal(new DateTime(2009, 2, 13, 23, 31, 30), 1234567890.FromUnixTime());
+            Assert.Equal(new DateTime(2009, 2, 13, 23, 31, 30), 1234567890.To());
         }
 
         [Fact]
@@ -155,8 +155,8 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RelativeTime()
         {
-            Assert.Equal("34 years, 11 months from now", new DateTime(2011, 12, 1).RelativeTime(new DateTime(1977, 1, 1)));
-            Assert.Equal("34 years, 11 months ago", new DateTime(1977, 1, 1).RelativeTime(new DateTime(2011, 12, 1)));
+            Assert.Equal("34 years, 11 months from now", new DateTime(2011, 12, 1).ToString(new DateTime(1977, 1, 1)));
+            Assert.Equal("34 years, 11 months ago", new DateTime(1977, 1, 1).ToString(new DateTime(2011, 12, 1)));
         }
     }
 }
