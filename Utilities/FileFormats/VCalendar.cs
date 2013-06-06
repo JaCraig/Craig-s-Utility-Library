@@ -138,11 +138,11 @@ namespace Utilities.FileFormats
             {
                 if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTSTART")
                 {
-                    StartTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.FormatString(@"####/##/## ##:##")));
+                    StartTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.ToString(@"####/##/## ##:##")));
                 }
                 else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "DTEND")
                 {
-                    EndTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.FormatString(@"####/##/## ##:##")));
+                    EndTime = CurrentTimeZone.ToLocalTime(DateTime.Parse(TempMatch.Groups["Value"].Value.ToString(@"####/##/## ##:##")));
                 }
                 else if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "LOCATION")
                 {

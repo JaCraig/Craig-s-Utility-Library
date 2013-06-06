@@ -146,12 +146,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void ExpandTabs()
-        {
-            Assert.Equal("The    brown    fox    is    awsome. But the blue fox is not. 2222", "The\tbrown\tfox\tis\tawsome. But the blue fox is not. 2222".ExpandTabs());
-        }
-
-        [Fact]
         public void NumericOnly()
         {
             string Value = "The brown fox is awsome. But the blue fox is not. 2222";
@@ -176,7 +170,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void FormatString()
         {
-            Assert.Equal("(555) 555-1010", "5555551010".FormatString("(###) ###-####"));
+            Assert.Equal("(555) 555-1010", "5555551010".ToString("(###) ###-####"));
             Assert.Equal("(555) 555-1010", string.Format(new GenericStringFormatter(), "{0:(###) ###-####}", "5555551010"));
         }
 
@@ -199,13 +193,13 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void FormatString2()
         {
-            Assert.Equal("<A>This is a test</A><B>10</B><C>1.5</C>", "<A>{A}</A><B>{B}</B><C>{C}</C>".FormatString(new StringFormatClass()));
+            Assert.Equal("<A>This is a test</A><B>10</B><C>1.5</C>", "<A>{A}</A><B>{B}</B><C>{C}</C>".ToString(new StringFormatClass()));
         }
 
         [Fact]
         public void FormatString3()
         {
-            Assert.Equal("<A>This is a test</A><B>10</B><C>1.5</C>", "<A>{A}</A><B>{B}</B><C>{C}</C>".FormatString(new KeyValuePair<string, string>("{A}", "This is a test"),
+            Assert.Equal("<A>This is a test</A><B>10</B><C>1.5</C>", "<A>{A}</A><B>{B}</B><C>{C}</C>".ToString(new KeyValuePair<string, string>("{A}", "This is a test"),
                 new KeyValuePair<string, string>("{B}", "10"),
                 new KeyValuePair<string, string>("{C}", "1.5")));
         }
@@ -213,7 +207,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RegexFormat()
         {
-            Assert.Equal("(555) 555-1010", "5555551010".RegexFormat(@"(\d{3})(\d{3})(\d{4})", "($1) $2-$3"));
+            Assert.Equal("(555) 555-1010", "5555551010".ToString(@"(\d{3})(\d{3})(\d{4})", "($1) $2-$3"));
         }
 
         [Fact]
@@ -306,7 +300,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void RemoveExtraSpaces()
         {
-            Assert.Equal("This is a test.", "This  is      a test.".RemoveExtraSpaces());
+            Assert.Equal("This is a test.", "This  is      a test.".Replace(StringFilter.ExtraSpaces, " "));
         }
     }
 }

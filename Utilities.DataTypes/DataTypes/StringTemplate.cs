@@ -91,7 +91,7 @@ namespace Utilities.DataTypes
         /// <returns>The resulting string</returns>
         public override string ToString()
         {
-            return Template.FormatString(this.ToArray(x => new KeyValuePair<string, string>(KeyStart + x.Key + KeyEnd, x.Value)));
+            return Template.ToString(this.ToArray(x => new KeyValuePair<string, string>(KeyStart + x.Key + KeyEnd, x.Value)));
         }
 
         /// <summary>

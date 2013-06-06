@@ -56,7 +56,7 @@ namespace Utilities.Web.ExtensionMethods
                     new KeyValuePair<string,string>("{Cookies}",Context.Request.Cookies.DumpCookies(HTMLOutput)),
                     new KeyValuePair<string,string>("{Cache}",Context.Cache.DumpCache(HTMLOutput)),
                     new KeyValuePair<string,string>("{Application}",Context.Application.DumpApplicationState(HTMLOutput))};
-            return HTMLOutput ? HTMLTemplate.FormatString(Values) : NormalTemplate.FormatString(Values);
+            return HTMLOutput ? HTMLTemplate.ToString(Values) : NormalTemplate.ToString(Values);
         }
 
         #endregion

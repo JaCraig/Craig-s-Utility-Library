@@ -107,85 +107,6 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region ExpandTabs
-
-        /// <summary>
-        /// Expands tabs and replaces them with spaces
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="TabSize">Number of spaces</param>
-        /// <returns>The input string, with the tabs replaced with spaces</returns>
-        public static string ExpandTabs(this string Input, int TabSize = 4)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return Input;
-            string Spaces = "";
-            for (int x = 0; x < TabSize; ++x)
-                Spaces += " ";
-            return Input.Replace("\t", Spaces);
-        }
-
-        #endregion
-        
-        #region FormatString
-
-        /// <summary>
-        /// Formats a string based on a format string passed in.
-        /// The default formatter uses the following format:
-        /// # = digits
-        /// @ = alpha characters
-        /// \ = escape char
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="Format">Format of the output string</param>
-        /// <param name="Provider">String formatter provider (defaults to GenericStringFormatter)</param>
-        /// <returns>The formatted string</returns>
-        public static string FormatString(this string Input, string Format, IStringFormatter Provider = null)
-        {
-            return Provider.Check(new GenericStringFormatter()).Format(Input, Format);
-        }
-
-        /// <summary>
-        /// Formats a string based on the object's properties
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="Object">Object to use to format the string</param>
-        /// <param name="StartSeperator">Seperator character/string to use to describe the start of the property name</param>
-        /// <param name="EndSeperator">Seperator character/string to use to describe the end of the property name</param>
-        /// <returns>The formatted string</returns>
-        public static string FormatString(this string Input, object Object, string StartSeperator = "{", string EndSeperator = "}")
-        {
-            if (Object==null)
-                return Input;
-            Object.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(x => x.CanRead)
-                .ForEach(x =>
-                {
-                    var Value = x.GetValue(Object, null);
-                    Input = Input.Replace(StartSeperator + x.Name + EndSeperator, Value==null ? "" : Value.ToString());
-                });
-            return Input;
-        }
-
-        /// <summary>
-        /// Formats a string based on the key/value pairs that are sent in
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="Pairs">Key/value pairs. Replaces the key with the corresponding value.</param>
-        /// <returns>The string after the changes have been made</returns>
-        public static string FormatString(this string Input, params KeyValuePair<string, string>[] Pairs)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return Input;
-            foreach (KeyValuePair<string, string> Pair in Pairs)
-            {
-                Input = Input.Replace(Pair.Key, Pair.Value);
-            }
-            return Input;
-        }
-
-        #endregion
-
         #region FromBase64
 
         /// <summary>
@@ -294,17 +215,8 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            if (Filter.HasFlag(StringFilter.Alpha) && Filter.HasFlag(StringFilter.Numeric))
-                return Input.Keep("[a-zA-Z0-9]");
-            if (Filter.HasFlag(StringFilter.Alpha) && Filter.HasFlag(StringFilter.FloatNumeric))
-                return Input.Keep(@"[a-zA-Z0-9\.]");
-            if (Filter.HasFlag(StringFilter.Alpha))
-                return Input.Keep("[a-zA-Z]");
-            if(Filter.HasFlag(StringFilter.FloatNumeric))
-                return Input.Keep(@"[0-9\.]");
-            if (Filter.HasFlag(StringFilter.Numeric))
-                return Input.Keep("[0-9]");
-            return "";
+            string Value = BuildFilter(Filter);
+            return Input.Keep(Value);
         }
 
         #endregion
@@ -463,25 +375,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-
-        #region RegexFormat
-
-        /// <summary>
-        /// Uses a regex to format the input string
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="Format">Regex string used to</param>
-        /// <param name="OutputFormat">Output format</param>
-        /// <param name="Options">Regex options</param>
-        /// <returns>The input string formatted by using the regex string</returns>
-        public static string RegexFormat(this string Input, string Format, string OutputFormat, RegexOptions Options = RegexOptions.None)
-        {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
-            return Regex.Replace(Input, Format, OutputFormat, Options);
-        }
-
-        #endregion
-        
+                
         #region Remove
 
         /// <summary>
@@ -507,31 +401,27 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            if (Filter.HasFlag(StringFilter.Alpha) && Filter.HasFlag(StringFilter.Numeric))
-                return Input.Remove("[a-zA-Z0-9]");
-            if (Filter.HasFlag(StringFilter.Alpha) && Filter.HasFlag(StringFilter.FloatNumeric))
-                return Input.Remove(@"[a-zA-Z0-9\.]");
-            if (Filter.HasFlag(StringFilter.Alpha))
-                return Input.Remove("[a-zA-Z]");
-            if(Filter.HasFlag(StringFilter.FloatNumeric))
-                return Input.Remove(@"[0-9\.]");
-            if (Filter.HasFlag(StringFilter.Numeric))
-                return Input.Remove("[0-9]");
-            return "";
+            string Value = BuildFilter(Filter);
+            return Input.Remove(Value);
         }
 
         #endregion
 
-        #region RemoveExtraSpaces
-
+        #region Replace
+        
         /// <summary>
-        /// Removes multiple spaces from a string and replaces it with a single space
+        /// Replaces everything that is in the filter text with the value specified.
         /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>The input string with multiple spaces replaced with a single space</returns>
-        public static string RemoveExtraSpaces(this string Input)
+        /// <param name="Input">Input text</param>
+        /// <param name="Value">Value to fill in</param>
+        /// <param name="Filter">Predefined filter to use (can be combined as they are flags)</param>
+        /// <returns>The input text with the various items replaced</returns>
+        public static string Replace(this string Input, StringFilter Filter, string Value = "")
         {
-            return new Regex(@"[ ]{2,}", RegexOptions.None).Replace(Input, " ");
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            string FilterValue = BuildFilter(Filter);
+            return new Regex(FilterValue).Replace(Input, Value);
         }
 
         #endregion
@@ -592,7 +482,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// Strips out any of the characters specified starting on the left side of the input string (stops when a character not in the list is found)
         /// </summary>
         /// <param name="Input">Input string</param>
-        /// <param name="Characters">Characters to string (defaults to a space)</param>
+        /// <param name="Characters">Characters to strip (defaults to a space)</param>
         /// <returns>The Input string with specified characters stripped out</returns>
         public static string StripLeft(this string Input, string Characters = " ")
         {
@@ -611,7 +501,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// Strips out any of the characters specified starting on the right side of the input string (stops when a character not in the list is found)
         /// </summary>
         /// <param name="Input">Input string</param>
-        /// <param name="Characters">Characters to string (defaults to a space)</param>
+        /// <param name="Characters">Characters to strip (defaults to a space)</param>
         /// <returns>The Input string with specified characters stripped out</returns>
         public static string StripRight(this string Input, string Characters = " ")
         {
@@ -751,6 +641,79 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
+        #region ToString
+
+        /// <summary>
+        /// Formats a string based on a format string passed in.
+        /// The default formatter uses the following format:
+        /// # = digits
+        /// @ = alpha characters
+        /// \ = escape char
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Format">Format of the output string</param>
+        /// <param name="Provider">String formatter provider (defaults to GenericStringFormatter)</param>
+        /// <returns>The formatted string</returns>
+        public static string ToString(this string Input, string Format, IStringFormatter Provider = null)
+        {
+            return Provider.Check(new GenericStringFormatter()).Format(Input, Format);
+        }
+
+        /// <summary>
+        /// Formats a string based on the object's properties
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Object">Object to use to format the string</param>
+        /// <param name="StartSeperator">Seperator character/string to use to describe the start of the property name</param>
+        /// <param name="EndSeperator">Seperator character/string to use to describe the end of the property name</param>
+        /// <returns>The formatted string</returns>
+        public static string ToString(this string Input, object Object, string StartSeperator = "{", string EndSeperator = "}")
+        {
+            if (Object == null)
+                return Input;
+            Object.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.CanRead)
+                .ForEach(x =>
+                {
+                    var Value = x.GetValue(Object, null);
+                    Input = Input.Replace(StartSeperator + x.Name + EndSeperator, Value == null ? "" : Value.ToString());
+                });
+            return Input;
+        }
+
+        /// <summary>
+        /// Formats a string based on the key/value pairs that are sent in
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Pairs">Key/value pairs. Replaces the key with the corresponding value.</param>
+        /// <returns>The string after the changes have been made</returns>
+        public static string ToString(this string Input, params KeyValuePair<string, string>[] Pairs)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return Input;
+            foreach (KeyValuePair<string, string> Pair in Pairs)
+            {
+                Input = Input.Replace(Pair.Key, Pair.Value);
+            }
+            return Input;
+        }
+
+        /// <summary>
+        /// Uses a regex to format the input string
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Format">Regex string used to</param>
+        /// <param name="OutputFormat">Output format</param>
+        /// <param name="Options">Regex options</param>
+        /// <returns>The input string formatted by using the regex string</returns>
+        public static string ToString(this string Input, string Format, string OutputFormat, RegexOptions Options = RegexOptions.None)
+        {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
+            return Regex.Replace(Input, Format, OutputFormat, Options);
+        }
+
+        #endregion
+
         #region ToTitleCase
 
         /// <summary>
@@ -778,6 +741,37 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
+
+        #endregion
+
+        #region Private Functions
+
+        private static string BuildFilter(StringFilter Filter)
+        {
+            string FilterValue = "";
+            string Separator = "";
+            if (Filter.HasFlag(StringFilter.Alpha))
+            {
+                FilterValue += Separator + "[a-zA-Z]";
+                Separator = "|";
+            }
+            if (Filter.HasFlag(StringFilter.Numeric))
+            {
+                FilterValue += Separator + "[0-9]";
+                Separator = "|";
+            }
+            if (Filter.HasFlag(StringFilter.FloatNumeric))
+            {
+                FilterValue += Separator + @"[0-9\.]";
+                Separator = "|";
+            }
+            if (Filter.HasFlag(StringFilter.ExtraSpaces))
+            {
+                FilterValue += Separator + @"[ ]{2,}";
+                Separator = "|";
+            }
+            return FilterValue;
+        }
 
         #endregion
     }
@@ -812,15 +806,19 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <summary>
         /// Alpha characters
         /// </summary>
-        Alpha=1,
+        Alpha = 1,
         /// <summary>
         /// Numeric characters
         /// </summary>
-        Numeric=2,
+        Numeric = 2,
         /// <summary>
         /// Numbers with period, basically allows for decimal point
         /// </summary>
-        FloatNumeric=4
+        FloatNumeric = 4,
+        /// <summary>
+        /// Multiple spaces
+        /// </summary>
+        ExtraSpaces = 8
     }
 
     #endregion
