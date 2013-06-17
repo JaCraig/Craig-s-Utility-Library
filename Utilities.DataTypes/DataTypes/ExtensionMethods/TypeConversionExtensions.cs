@@ -171,7 +171,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 {
                     PropertyInfo Property = Properties.FirstOrDefault(z => z.Name == Data.Columns[y].ColumnName);
                     if (Property!=null)
-                        Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]].TryTo(Property.PropertyType, null), new object[] { });
+                        Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]].To(Property.PropertyType, null), new object[] { });
                 }
                 Results.Add(RowObject);
             }
@@ -223,28 +223,7 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region ToExpando
-
-        /// <summary>
-        /// Converts the object to a dynamic object
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">The object to convert</param>
-        /// <returns>The object as an expando object</returns>
-        public static ExpandoObject ToExpando<T>(this T Object)
-        {
-            ExpandoObject ReturnValue = new ExpandoObject();
-            Type TempType = typeof(T);
-            foreach (PropertyInfo Property in TempType.GetProperties())
-            {
-                ((ICollection<KeyValuePair<String, Object>>)ReturnValue).Add(new KeyValuePair<string, object>(Property.Name, Property.GetValue(Object, null)));
-            }
-            return ReturnValue;
-        }
-
-        #endregion
-
-        #region TryTo
+        #region To
 
         /// <summary>
         /// Attempts to convert the object to another type and returns the value
@@ -254,9 +233,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Object">Object to convert</param>
         /// <param name="DefaultValue">Default value to return if there is an issue or it can't be converted</param>
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
-        public static R TryTo<T, R>(this T Object, R DefaultValue = default(R))
+        public static R To<T, R>(this T Object, R DefaultValue = default(R))
         {
-            return (R)Object.TryTo(typeof(R), DefaultValue);
+            return (R)Object.To(typeof(R), DefaultValue);
         }
 
         /// <summary>
@@ -267,7 +246,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="DefaultValue">Default value in case it can't convert the expando object</param>
         /// <returns>The object as the specified type</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static R TryTo<R>(this ExpandoObject Object, R DefaultValue = default(R))
+        public static R To<R>(this ExpandoObject Object, R DefaultValue = default(R))
             where R : class,new()
         {
             try
@@ -296,7 +275,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="DefaultValue">Default value to return if there is an issue or it can't be converted</param>
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static object TryTo<T>(this T Object, Type ResultType, object DefaultValue = null)
+        public static object To<T>(this T Object, Type ResultType, object DefaultValue = null)
         {
             try
             {
@@ -316,7 +295,17 @@ namespace Utilities.DataTypes.ExtensionMethods
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Object, ResultType);
                 if (ObjectValue!=null)
-                    return ObjectValue.TryTo<string>(ResultType, DefaultValue);
+                    return ObjectValue.To<string>(ResultType, DefaultValue);
+                if (ResultType == typeof(ExpandoObject))
+                {
+                    ExpandoObject ReturnValue = new ExpandoObject();
+                    Type TempType = typeof(T);
+                    foreach (PropertyInfo Property in TempType.GetProperties())
+                    {
+                        ((ICollection<KeyValuePair<String, Object>>)ReturnValue).Add(new KeyValuePair<string, object>(Property.Name, Property.GetValue(Object, null)));
+                    }
+                    return ReturnValue;
+                }
             }
             catch { }
             return DefaultValue;

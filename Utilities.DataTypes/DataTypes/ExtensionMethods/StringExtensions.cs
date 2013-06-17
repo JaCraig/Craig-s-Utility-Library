@@ -41,7 +41,7 @@ namespace Utilities.DataTypes.ExtensionMethods
     public static class StringExtensions
     {
         #region Functions
-        
+
         #region AppendLineFormat
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Length"></param>
         /// <param name="Padding"></param>
         /// <returns>The centered string</returns>
-        public static string Center(this string Input,int Length,string Padding=" ")
+        public static string Center(this string Input, int Length, string Padding = " ")
         {
             if (string.IsNullOrEmpty(Input))
                 Input = "";
@@ -120,7 +120,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (string.IsNullOrEmpty(Input))
                 return "";
             byte[] TempArray = Convert.FromBase64String(Input);
-            return EncodingUsing.Check(()=>new UTF8Encoding()).GetString(TempArray);
+            return EncodingUsing.Check(() => new UTF8Encoding()).GetString(TempArray);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Value">Value to compare</param>
         /// <param name="ComparisonType">Comparison type</param>
         /// <returns>True if it is of the type specified, false otherwise</returns>
-        public static bool Is(this string Value,StringCompare ComparisonType)
+        public static bool Is(this string Value, StringCompare ComparisonType)
         {
             if (ComparisonType == StringCompare.CreditCard)
             {
@@ -265,7 +265,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             }
 
             return Matrix[Value1.Length, Value2.Length];
-        }        
+        }
 
         #endregion
 
@@ -309,40 +309,6 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region NextSequence
-
-        /// <summary>
-        /// Function that is useful for generating a string in a series. so a becomes b, b becomes c, etc. 
-        /// and after hitting the max character, it goes to two characters (so ~ becomes aa, then ab, ac, etc).
-        /// </summary>
-        /// <param name="Sequence">Current sequence</param>
-        /// <param name="Min">Min character</param>
-        /// <param name="Max">Max character</param>
-        /// <returns>The next item in the sequence</returns>
-        public static string NextSequence(this string Sequence, char Min = ' ', char Max = '~')
-        {
-            byte[] Values = Sequence.ToByteArray();
-            byte MaxValue = (byte)Max;
-            byte Remainder = 1;
-            for (int x = Sequence.Length - 1; x >= 0; --x)
-            {
-                Values[x] += Remainder;
-                Remainder = 0;
-                if (Values[x] > MaxValue)
-                {
-                    Remainder = 1;
-                    Values[x] = (byte)Min;
-                }
-                else
-                    break;
-            }
-            if (Remainder == 1)
-                return Min + Values.ToEncodedString();
-            return Values.ToEncodedString();
-        }
-
-        #endregion
-
         #region NumberTimesOccurs
 
         /// <summary>
@@ -375,7 +341,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-                
+
         #region Remove
 
         /// <summary>
@@ -388,7 +354,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(Filter))
                 return Input;
-            return new Regex(Filter).Replace(Input,"");
+            return new Regex(Filter).Replace(Input, "");
         }
 
         /// <summary>
@@ -408,7 +374,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         #endregion
 
         #region Replace
-        
+
         /// <summary>
         /// Replaces everything that is in the filter text with the value specified.
         /// </summary>
@@ -482,7 +448,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// Strips out any of the characters specified starting on the left side of the input string (stops when a character not in the list is found)
         /// </summary>
         /// <param name="Input">Input string</param>
-        /// <param name="Characters">Characters to string (defaults to a space)</param>
+        /// <param name="Characters">Characters to strip (defaults to a space)</param>
         /// <returns>The Input string with specified characters stripped out</returns>
         public static string StripLeft(this string Input, string Characters = " ")
         {
@@ -501,7 +467,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// Strips out any of the characters specified starting on the right side of the input string (stops when a character not in the list is found)
         /// </summary>
         /// <param name="Input">Input string</param>
-        /// <param name="Characters">Characters to string (defaults to a space)</param>
+        /// <param name="Characters">Characters to strip (defaults to a space)</param>
         /// <returns>The Input string with specified characters stripped out</returns>
         public static string StripRight(this string Input, string Characters = " ")
         {
@@ -589,59 +555,64 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region ToFirstCharacterUpperCase
+        #region ToString
 
         /// <summary>
-        /// Takes the first character of an input string and makes it uppercase
+        /// Formats the string based on the capitalization specified
         /// </summary>
         /// <param name="Input">Input string</param>
-        /// <returns>String with the first character capitalized</returns>
-        public static string ToFirstCharacterUpperCase(this string Input)
+        /// <param name="Case">Capitalization type to use</param>
+        /// <returns>Capitalizes the string based on the case specified</returns>
+        public static string ToString(this string Input, StringCase Case)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            char[] InputChars = Input.ToCharArray();
-            for (int x = 0; x < InputChars.Length; ++x)
+            if (Case == StringCase.FirstCharacterUpperCase)
             {
-                if (InputChars[x] != ' ' && InputChars[x] != '\t')
+                char[] InputChars = Input.ToCharArray();
+                for (int x = 0; x < InputChars.Length; ++x)
                 {
-                    InputChars[x] = char.ToUpper(InputChars[x], CultureInfo.InvariantCulture);
-                    break;
+                    if (InputChars[x] != ' ' && InputChars[x] != '\t')
+                    {
+                        InputChars[x] = char.ToUpper(InputChars[x], CultureInfo.InvariantCulture);
+                        break;
+                    }
                 }
+                return new string(InputChars);
             }
-            return new string(InputChars);
-        }
-
-        #endregion
-
-        #region ToSentenceCapitalize
-
-        /// <summary>
-        /// Capitalizes each sentence within the string
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>String with each sentence capitalized</returns>
-        public static string ToSentenceCapitalize(this string Input)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            string[] Seperator = { ".", "?", "!" };
-            string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
-            for (int x = 0; x < InputStrings.Length; ++x)
+            else if (Case == StringCase.SentenceCapitalize)
             {
-                if (!string.IsNullOrEmpty(InputStrings[x]))
+                string[] Seperator = { ".", "?", "!" };
+                string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
+                for (int x = 0; x < InputStrings.Length; ++x)
                 {
-                    Regex TempRegex = new Regex(InputStrings[x]);
-                    InputStrings[x] = InputStrings[x].ToFirstCharacterUpperCase();
-                    Input = TempRegex.Replace(Input, InputStrings[x]);
+                    if (!string.IsNullOrEmpty(InputStrings[x]))
+                    {
+                        Regex TempRegex = new Regex(InputStrings[x]);
+                        InputStrings[x] = InputStrings[x].ToString(StringCase.FirstCharacterUpperCase);
+                        Input = TempRegex.Replace(Input, InputStrings[x]);
+                    }
                 }
+                return Input;
+            }
+            else if (Case == StringCase.TitleCase)
+            {
+                string[] Seperator = { " ", ".", "\t", System.Environment.NewLine, "!", "?" };
+                string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
+                for (int x = 0; x < InputStrings.Length; ++x)
+                {
+                    if (!string.IsNullOrEmpty(InputStrings[x])
+                        && InputStrings[x].Length > 3)
+                    {
+                        Regex TempRegex = new Regex(InputStrings[x].Replace(")", @"\)").Replace("(", @"\(").Replace("*", @"\*"));
+                        InputStrings[x] = InputStrings[x].ToString(StringCase.FirstCharacterUpperCase);
+                        Input = TempRegex.Replace(Input, InputStrings[x]);
+                    }
+                }
+                return Input;
             }
             return Input;
         }
-
-        #endregion
-
-        #region ToString
 
         /// <summary>
         /// Formats a string based on a format string passed in.
@@ -714,34 +685,6 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region ToTitleCase
-
-        /// <summary>
-        /// Capitalizes the first character of each word
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <returns>String with each word capitalized</returns>
-        public static string ToTitleCase(this string Input)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            string[] Seperator = { " ", ".", "\t", System.Environment.NewLine, "!", "?" };
-            string[] InputStrings = Input.Split(Seperator, StringSplitOptions.None);
-            for (int x = 0; x < InputStrings.Length; ++x)
-            {
-                if (!string.IsNullOrEmpty(InputStrings[x])
-                    && InputStrings[x].Length > 3)
-                {
-                    Regex TempRegex = new Regex(InputStrings[x].Replace(")", @"\)").Replace("(", @"\(").Replace("*", @"\*"));
-                    InputStrings[x] = InputStrings[x].ToFirstCharacterUpperCase();
-                    Input = TempRegex.Replace(Input, InputStrings[x]);
-                }
-            }
-            return Input;
-        }
-
-        #endregion
-
         #endregion
 
         #region Private Functions
@@ -777,6 +720,25 @@ namespace Utilities.DataTypes.ExtensionMethods
     }
 
     #region Enums
+
+    /// <summary>
+    /// What sort of string capitalization should be used?
+    /// </summary>
+    public enum StringCase
+    {
+        /// <summary>
+        /// Sentence capitalization
+        /// </summary>
+        SentenceCapitalize,
+        /// <summary>
+        /// First character upper case
+        /// </summary>
+        FirstCharacterUpperCase,
+        /// <summary>
+        /// Title case
+        /// </summary>
+        TitleCase
+    }
 
     /// <summary>
     /// What type of string comparison are we doing?

@@ -760,7 +760,7 @@ namespace Utilities.Reflection.ExtensionMethods
                 Value = Value.FormatToString(Format);
             //if(!Value.GetType().IsOfType(Property.PropertyType))
             //    Value=Convert.ChangeType(Value,Property.PropertyType);
-            Property.SetValue(Object, Value.TryTo(Property.PropertyType, null), null);
+            Property.SetValue(Object, Value.To(Property.PropertyType, null), null);
             return Object;
         }
 

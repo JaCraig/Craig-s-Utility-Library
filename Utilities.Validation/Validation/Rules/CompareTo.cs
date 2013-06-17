@@ -105,7 +105,7 @@ namespace Utilities.Validation.Rules
         {
             IComparable Tempvalue = value as IComparable;
             GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
-            IComparable ComparisonValue = (IComparable)validationContext.ObjectType.GetProperty(PropertyName).GetValue(validationContext.ObjectInstance, null).TryTo<object>(value.GetType());
+            IComparable ComparisonValue = (IComparable)validationContext.ObjectType.GetProperty(PropertyName).GetValue(validationContext.ObjectInstance, null).To<object>(value.GetType());
             if (Type == ComparisonType.Equal)
                 return Comparer.Compare(Tempvalue, ComparisonValue) == 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             else if (Type == ComparisonType.NotEqual)

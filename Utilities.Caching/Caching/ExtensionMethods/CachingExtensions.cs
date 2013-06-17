@@ -85,19 +85,19 @@ namespace Utilities.Caching.ExtensionMethods
 
             if (HttpContext.Current != null && Type.HasFlag(CacheType.Cache))
             {
-                return HttpContext.Current.Cache.Get(Key).TryTo(DefaultValue);
+                return HttpContext.Current.Cache.Get(Key).To(DefaultValue);
             }
             if (HttpContext.Current != null && Type.HasFlag(CacheType.Item))
             {
-                return HttpContext.Current.Items[Key].TryTo(DefaultValue);
+                return HttpContext.Current.Items[Key].To(DefaultValue);
             }
             else if (HttpContext.Current != null && Type.HasFlag(CacheType.Session))
             {
-                return HttpContext.Current.Session[Key].TryTo(DefaultValue);
+                return HttpContext.Current.Session[Key].To(DefaultValue);
             }
             else if (HttpContext.Current != null && Type.HasFlag(CacheType.Cookie))
             {
-                return HttpContext.Current.Response.Cookies[Key].Value.TryTo(DefaultValue);
+                return HttpContext.Current.Response.Cookies[Key].Value.To(DefaultValue);
             }
             else if (Type.HasFlag(CacheType.Internal))
             {

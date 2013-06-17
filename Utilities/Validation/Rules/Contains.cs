@@ -88,7 +88,7 @@ namespace Utilities.Validation.Rules
             IComparable ValueTemp=0;
             foreach (IComparable Item in ValueList)
             {
-                ValueTemp = (IComparable)Value.TryTo<object>(Item.GetType());
+                ValueTemp = (IComparable)Value.To<object>(Item.GetType());
                 break;
             }
             foreach (IComparable Item in ValueList)

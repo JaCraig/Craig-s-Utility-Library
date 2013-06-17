@@ -175,6 +175,9 @@
     <Compile Include="AI\Anagram.cs" />
     <Compile Include="Compression\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="Compression\ExtensionMethods\Enums\CompressionType.cs" />
+    <Compile Include="DataTypes\Conversion\Converter.cs" />
+    <Compile Include="DataTypes\Conversion\IConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Manager.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
     <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />

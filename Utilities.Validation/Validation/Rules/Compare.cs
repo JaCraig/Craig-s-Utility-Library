@@ -104,7 +104,7 @@ namespace Utilities.Validation.Rules
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
-            IComparable Value2 = (IComparable)Value.TryTo<object>(value.GetType());
+            IComparable Value2 = (IComparable)Value.To<object>(value.GetType());
             IComparable TempValue = value as IComparable;
             if (Type == ComparisonType.Equal)
                 return Comparer.Compare(TempValue, Value2) == 0 ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));

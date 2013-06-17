@@ -40,7 +40,7 @@ namespace Utilities.Random.DefaultClasses
         /// <returns>A randomly generated object of the specified type</returns>
         public T Next(System.Random Rand)
         {
-            return Rand.NextDouble().TryTo(default(T));
+            return Rand.NextDouble().To(default(T));
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Utilities.Random.DefaultClasses
         /// <returns>A randomly generated object of the specified type</returns>
         public T Next(System.Random Rand, T Min, T Max)
         {
-            return (Min.TryTo(default(double)) + ((Max.TryTo(default(double)) - Min.TryTo(default(double))) * Rand.NextDouble())).TryTo(default(T));
+            return (Min.To(default(double)) + ((Max.To(default(double)) - Min.To(default(double))) * Rand.NextDouble())).To(default(T));
         }
 
         /// <summary>

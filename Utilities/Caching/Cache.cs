@@ -161,7 +161,7 @@ namespace Utilities.Caching
         public virtual ValueType Get<ValueType>(KeyType Key)
         {
             object TempItem = null;
-            return InternalCache.TryGetValue(Key, out TempItem) ? TempItem.TryTo(default(ValueType)) : default(ValueType);
+            return InternalCache.TryGetValue(Key, out TempItem) ? TempItem.To(default(ValueType)) : default(ValueType);
         }
 
         #endregion

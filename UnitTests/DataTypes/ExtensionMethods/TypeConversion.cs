@@ -93,10 +93,10 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void TryConvert()
         {
-            Assert.Equal(1, (1.0f).TryTo(0));
-            Assert.Equal("2011", (2011).TryTo(""));
-            Assert.NotNull(new MyTestClass().TryTo<MyTestClass, IMyTestClass>());
-            Assert.NotNull(((object)new MyTestClass()).TryTo<object, IMyTestClass>());
+            Assert.Equal(1, (1.0f).To(0));
+            Assert.Equal("2011", (2011).To(""));
+            Assert.NotNull(new MyTestClass().To<MyTestClass, IMyTestClass>());
+            Assert.NotNull(((object)new MyTestClass()).To<object, IMyTestClass>());
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
             ExpandoObject Object = TestObject.ToExpando();
             Assert.Equal(10, ((IDictionary<string, object>)Object)["B"]);
             ((IDictionary<string, object>)Object)["B"] = 20;
-            Assert.Equal(20, Object.TryTo(new MyTestClass()).B);
+            Assert.Equal(20, Object.To(new MyTestClass()).B);
         }
     }
 

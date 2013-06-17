@@ -137,7 +137,7 @@ namespace Utilities.Random.StringGenerators
         protected virtual string NextSentence(System.Random Rand, int NumberOfWords)
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.Append(Words[Rand.Next(Words.Length)].ToFirstCharacterUpperCase());
+            Builder.Append(Words[Rand.Next(Words.Length)].ToString(StringCase.FirstCharacterUpperCase));
             for (int x = 1; x < NumberOfWords; ++x)
                 Builder.Append(" ").Append(Words[Rand.Next(Words.Length)]);
             Builder.Append(".");

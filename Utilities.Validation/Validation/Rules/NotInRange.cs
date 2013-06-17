@@ -88,8 +88,8 @@ namespace Utilities.Validation.Rules
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             GenericComparer<IComparable> Comparer = new GenericComparer<IComparable>();
-            IComparable MaxValue = (IComparable)Max.TryTo<object>(value.GetType());
-            IComparable MinValue = (IComparable)Min.TryTo<object>(value.GetType());
+            IComparable MaxValue = (IComparable)Max.To<object>(value.GetType());
+            IComparable MinValue = (IComparable)Min.To<object>(value.GetType());
             IComparable TempValue = value as IComparable;
             return (Comparer.Compare(MaxValue, TempValue) >= 0
                     && Comparer.Compare(TempValue, MinValue) >= 0) ?

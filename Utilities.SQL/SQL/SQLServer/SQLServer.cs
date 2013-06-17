@@ -686,7 +686,7 @@ namespace Utilities.SQL.SQLServer
                         if (Type == "nvarchar")
                             Length /= 2;
                         string Default = Helper.GetParameter("DEFAULT VALUE", "");
-                        Procedure.AddColumn<string>(Name, Type.TryTo<string, SqlDbType>().ToDbType(), Length, Default);
+                        Procedure.AddColumn<string>(Name, Type.To<string, SqlDbType>().ToDbType(), Length, Default);
                     }
                 }
             }
@@ -724,7 +724,7 @@ namespace Utilities.SQL.SQLServer
                         if (ColumnType == "nvarchar")
                             MaxLength /= 2;
                         bool Nullable = Helper.GetParameter("IS NULLABLE", false);
-                        View.AddColumn<string>(ColumnName, ColumnType.TryTo<string, SqlDbType>().ToDbType(), MaxLength, Nullable);
+                        View.AddColumn<string>(ColumnName, ColumnType.To<string, SqlDbType>().ToDbType(), MaxLength, Nullable);
                     }
                 }
             }
@@ -765,7 +765,7 @@ namespace Utilities.SQL.SQLServer
                         }
                         else
                         {
-                            Table.AddColumn(ColumnName, ColumnType.TryTo<string, SqlDbType>().ToDbType(), MaxLength, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue);
+                            Table.AddColumn(ColumnName, ColumnType.To<string, SqlDbType>().ToDbType(), MaxLength, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue);
                         }
                     }
                 }
@@ -779,7 +779,7 @@ namespace Utilities.SQL.SQLServer
                         string Name = Helper.GetParameter("Name", "");
                         int Type = Helper.GetParameter("Type", 0);
                         string Definition = Helper.GetParameter("Definition", "");
-                        Table.AddTrigger(Name, Definition, Type.ToString(CultureInfo.InvariantCulture).TryTo<string, TriggerType>());
+                        Table.AddTrigger(Name, Definition, Type.ToString(CultureInfo.InvariantCulture).To<string, TriggerType>());
                     }
                 }
             }

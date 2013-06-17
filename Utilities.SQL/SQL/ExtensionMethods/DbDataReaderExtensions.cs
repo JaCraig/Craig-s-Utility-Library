@@ -68,7 +68,7 @@ namespace Utilities.SQL.ExtensionMethods
             if (Reader == null)
                 return Default;
             object Value = Reader[Position];
-            return (Value == null || Convert.IsDBNull(Value)) ? Default : Value.TryTo<object, DataType>(Default);
+            return (Value == null || Convert.IsDBNull(Value)) ? Default : Value.To<object, DataType>(Default);
         }
 
         #endregion

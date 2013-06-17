@@ -36,7 +36,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ToEnumTest()
         {
-            Assert.Equal(EnumValues.Value1, "Value1".TryTo<string, EnumValues>());
+            Assert.Equal(EnumValues.Value1, "Value1".To<string, EnumValues>());
         }
 
         enum EnumValues
@@ -86,21 +86,21 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ToFirstCharacterUppercase()
         {
             string Value = " this is a test";
-            Assert.Equal(" This is a test", Value.ToFirstCharacterUpperCase());
+            Assert.Equal(" This is a test", Value.ToString(StringCase.FirstCharacterUpperCase));
         }
 
         [Fact]
         public void ToSentenceCapitalize()
         {
             string Value = " this is a test. of the sytem.";
-            Assert.Equal(" This is a test. Of the sytem.", Value.ToSentenceCapitalize());
+            Assert.Equal(" This is a test. Of the sytem.", Value.ToString(StringCase.SentenceCapitalize));
         }
 
         [Fact]
         public void ToTitleCase()
         {
             string Value = " this is a test";
-            Assert.Equal(" This is a Test", Value.ToTitleCase());
+            Assert.Equal(" This is a Test", Value.ToString(StringCase.TitleCase));
         }
 
         [Fact]
@@ -162,9 +162,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void TryTo()
         {
-            Assert.IsType<int>("123".TryTo<string,int>());
-            Assert.Equal(123, "123".TryTo<string,int>());
-            Assert.DoesNotThrow(() => "ASD".TryTo<string, int>());
+            Assert.IsType<int>("123".To<string,int>());
+            Assert.Equal(123, "123".To<string,int>());
+            Assert.DoesNotThrow(() => "ASD".To<string, int>());
         }
 
         [Fact]
@@ -221,16 +221,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             Assert.Equal("555555", "5555551010".StripRight("10"));
         }
-
-        [Fact]
-        public void NextSequence()
-        {
-            Assert.Equal("b", "a".NextSequence());
-            Assert.Equal("c", "b".NextSequence());
-            Assert.Equal("  ", "~".NextSequence());
-            Assert.Equal("!", " ".NextSequence());
-        }
-
+        
         [Fact]
         public void MaskRight()
         {

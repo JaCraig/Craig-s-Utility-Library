@@ -53,7 +53,7 @@ namespace Utilities.Random.NameGenerators
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         public virtual string Next(System.Random Rand)
         {
-            return Rand.Next(LastNames).ToLower(CultureInfo.InvariantCulture).ToFirstCharacterUpperCase();
+            return Rand.Next(LastNames).ToLower(CultureInfo.InvariantCulture).ToString(StringCase.FirstCharacterUpperCase);
         }
 
         /// <summary>

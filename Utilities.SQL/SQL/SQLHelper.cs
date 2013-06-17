@@ -919,7 +919,7 @@ namespace Utilities.SQL
             where ClassType : class,new()
         {
             Mapping<ClassType> MappingUsing = (Mapping<ClassType>)DatabaseUsing.Mappings[typeof(ClassType)];
-            PrimaryKeyType PrimaryKeyVal = MappingUsing.GetPrimaryKey(Object).TryTo(default(PrimaryKeyType));
+            PrimaryKeyType PrimaryKeyVal = MappingUsing.GetPrimaryKey(Object).To(default(PrimaryKeyType));
             GenericEqualityComparer<PrimaryKeyType> Comparer = new GenericEqualityComparer<PrimaryKeyType>();
             IParameter Param1 = null;
             ClassType TempVal = default(ClassType);

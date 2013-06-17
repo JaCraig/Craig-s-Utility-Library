@@ -239,7 +239,7 @@ namespace Utilities.SQL.ExtensionMethods
             if (Command == null)
                 return Default;
             Command.Open();
-            return Command.ExecuteScalar().TryTo<object, DataType>(Default);
+            return Command.ExecuteScalar().To<object, DataType>(Default);
         }
 
         #endregion
@@ -280,7 +280,7 @@ namespace Utilities.SQL.ExtensionMethods
         public static DataType GetOutputParameter<DataType>(this DbCommand Command, string ID, DataType Default = default(DataType))
         {
             return Command!=null && Command.Parameters[ID]!=null ?
-                Command.Parameters[ID].Value.TryTo<object, DataType>(Default) :
+                Command.Parameters[ID].Value.To<object, DataType>(Default) :
                 Default;
         }
 
