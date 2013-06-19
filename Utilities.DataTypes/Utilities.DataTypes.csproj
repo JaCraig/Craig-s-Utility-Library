@@ -153,6 +153,16 @@
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="DataTypes\Table.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\SafeDisposableBaseClass.cs" />
+    <Compile Include="DataTypes\Conversion\ConverterBase.cs" />
+    <Compile Include="DataTypes\Conversion\ConverterBaseHack.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\DbTypeTypeConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\GenericConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeToDbType.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeToType.cs" />
+    <Compile Include="DataTypes\Conversion\Interfaces\IConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Interfaces\IObjectConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Manager.cs" />
+    <Compile Include="DataTypes\Conversion\ObjectConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

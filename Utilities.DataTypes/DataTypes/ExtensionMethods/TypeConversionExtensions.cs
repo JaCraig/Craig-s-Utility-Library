@@ -29,6 +29,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Globalization;
+using Utilities.DataTypes.Conversion;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -312,6 +313,12 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
+
+        #endregion
+
+        #region Private Static Properties
+
+        private static Manager Converter = new Manager();
 
         #endregion
 

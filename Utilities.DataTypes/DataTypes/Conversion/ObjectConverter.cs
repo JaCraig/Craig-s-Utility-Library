@@ -22,15 +22,16 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities.DataTypes.Conversion.Interfaces;
 using Utilities.DataTypes.Formatters;
 using Utilities.DataTypes.Formatters.Interfaces;
+using Utilities.Reflection.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataTypes.Conversion
@@ -39,25 +40,43 @@ namespace Utilities.DataTypes.Conversion
     /// Converter class
     /// </summary>
     /// <typeparam name="T">Type of input</typeparam>
-    /// <typeparam name="R">Type of output</typeparam>
-    public class Converter<T, R> : IConverter
+    public class ObjectConverter<T> : IObjectConverter
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Function">Function that the converter uses</param>
-        public Converter(Func<T, R> Function) { Convert = Function; }
+        /// <param name="Manager">Manager object</param>
+        public ObjectConverter(Manager Manager)
+        {
+            ObjectType = typeof(T);
+            Converters = new List<IConverter<T>>();
+            this.Manager = Manager;
+            foreach (Type Converter in AppDomain.CurrentDomain.GetAssemblies().GetTypes<IConverter<T>>())
+            {
+                Converters.Add((IConverter<T>)Activator.CreateInstance(Converter, Manager));
+            }
+        }
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Converts the object from type T to R
+        /// Manager object
         /// </summary>
-        protected Func<T, R> Convert { get; private set; }
+        protected Manager Manager { get; private set; }
+
+        /// <summary>
+        /// Object type
+        /// </summary>
+        public Type ObjectType { get; private set; }
+
+        /// <summary>
+        /// Converter list
+        /// </summary>
+        public ICollection<IConverter<T>> Converters { get; private set; }
 
         #endregion
 
@@ -69,9 +88,11 @@ namespace Utilities.DataTypes.Conversion
         /// <param name="Item">Item to convert</param>
         /// <param name="DefaultValue">Default value to return if the value is not convertable</param>
         /// <returns>The object as the type specified</returns>
-        public R To(T Item, R DefaultValue = default(R))
+        public R To<R>(object Item, R DefaultValue = default(R))
         {
-            return Convert(Item);
+            IConverter<T> Converter = Converters.FirstOrDefault(x => x.CanConvert(typeof(R)));
+            R ReturnValue = Converter == null ? DefaultValue : (R)Converter.To((T)Item, typeof(R));
+            return ReturnValue == null ? DefaultValue : ReturnValue;
         }
 
         #endregion

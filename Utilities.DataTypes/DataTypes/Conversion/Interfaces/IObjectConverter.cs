@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -33,12 +32,25 @@ using Utilities.DataTypes.Formatters;
 using Utilities.DataTypes.Formatters.Interfaces;
 #endregion
 
-namespace Utilities.DataTypes.Conversion
+namespace Utilities.DataTypes.Conversion.Interfaces
 {
     /// <summary>
-    /// Converter interface
+    /// Object Converter interface
     /// </summary>
-    public interface IConverter
+    public interface IObjectConverter
     {
+        /// <summary>
+        /// Object type accepted
+        /// </summary>
+        Type ObjectType { get; }
+
+        /// <summary>
+        /// Converts the object from type T to type R
+        /// </summary>
+        /// <typeparam name="R">Object type returned</typeparam>
+        /// <param name="Item">Item to convert</param>
+        /// <param name="DefaultValue">Default value to return if the value is not convertable</param>
+        /// <returns>The object as the type specified</returns>
+        R To<R>(object Item, R DefaultValue = default(R));
     }
 }
