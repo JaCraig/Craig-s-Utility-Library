@@ -25,7 +25,7 @@ using System.Linq;
 using System.Reflection;
 using Utilities.IoC.Providers.Interfaces;
 using Utilities.IoC.Providers.Scope;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 

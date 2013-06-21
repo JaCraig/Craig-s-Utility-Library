@@ -31,7 +31,7 @@ using System.Text.RegularExpressions;
 using Utilities.DataTypes.Conversion.Interfaces;
 using Utilities.DataTypes.Formatters;
 using Utilities.DataTypes.Formatters.Interfaces;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataTypes.Conversion

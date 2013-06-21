@@ -28,16 +28,22 @@ using Xunit;
 using Utilities.DataTypes;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.StringGenerators;
+using System.Data;
 
 namespace UnitTests.DataTypes.Conversion
 {
-    public class Manager
+    public class GenericConverter
     {
         [Fact]
         public void Create()
         {
-            Utilities.DataTypes.Conversion.Manager Test = new Utilities.DataTypes.Conversion.Manager();
-            Assert.Equal(10f, Test.To<int,float>(10));
+            Utilities.DataTypes.Conversion.Converters.GenericConverter Test = new Utilities.DataTypes.Conversion.Converters.GenericConverter(new Utilities.DataTypes.Conversion.Manager());
+            Assert.Equal(true, Test.CanConvert(typeof(DbType)));
+            Assert.Equal(true, Test.CanConvert(typeof(Type)));
+            Assert.Equal(true, Test.CanConvert(typeof(object)));
+            Assert.Equal(10f, Test.To(10, typeof(float)));
+            Assert.Equal(10, Test.To(10.5f, typeof(int)));
+            Assert.Equal(new DateTime(1900, 1, 1), Test.To("1/1/1900", typeof(DateTime)));
         }
     }
 }

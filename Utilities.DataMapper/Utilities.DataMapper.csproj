@@ -124,6 +124,10 @@
     <Compile Include="DataMapper\MappingManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">
+      <Project>{5e5da221-fbd5-415d-b521-0bef59ad24a5}</Project>
+      <Name>Utilities.DataTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities.Reflection\Utilities.Reflection.csproj">
       <Project>{CB6FE6D5-5D42-4E95-A365-41304BA931C7}</Project>
       <Name>Utilities.Reflection</Name>

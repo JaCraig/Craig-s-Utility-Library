@@ -433,7 +433,7 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region ToDataTable
+        #region To
 
         /// <summary>
         /// Converts the IEnumerable to a DataTable

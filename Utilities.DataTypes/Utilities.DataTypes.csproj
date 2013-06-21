@@ -163,6 +163,7 @@
     <Compile Include="DataTypes\Conversion\Interfaces\IObjectConverter.cs" />
     <Compile Include="DataTypes\Conversion\Manager.cs" />
     <Compile Include="DataTypes\Conversion\ObjectConverter.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

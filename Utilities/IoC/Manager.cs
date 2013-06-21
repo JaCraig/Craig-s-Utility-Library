@@ -28,7 +28,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IoC.Mappings;
 using Utilities.IoC.Mappings.Interfaces;
 using Utilities.IoC.Providers;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.IoC

@@ -28,16 +28,23 @@ using Xunit;
 using Utilities.DataTypes;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.StringGenerators;
+using System.Data;
 
 namespace UnitTests.DataTypes.Conversion
 {
-    public class Manager
+    public class SqlDbTypeToDbType
     {
         [Fact]
         public void Create()
         {
-            Utilities.DataTypes.Conversion.Manager Test = new Utilities.DataTypes.Conversion.Manager();
-            Assert.Equal(10f, Test.To<int,float>(10));
+            Utilities.DataTypes.Conversion.Converters.SqlDbTypeToDbType Test = new Utilities.DataTypes.Conversion.Converters.SqlDbTypeToDbType(new Utilities.DataTypes.Conversion.Manager());
+            Assert.Equal(true, Test.CanConvert(typeof(SqlDbType)));
+            Assert.Equal(true, Test.CanConvert(typeof(DbType)));
+            Assert.Equal(DbType.Int64, Test.To(SqlDbType.BigInt, typeof(DbType)));
+            Assert.Equal(DbType.Binary, Test.To(SqlDbType.Binary, typeof(DbType)));
+            Assert.Equal(DbType.Boolean, Test.To(SqlDbType.Bit, typeof(DbType)));
+            Assert.Equal(DbType.DateTime2, Test.To(SqlDbType.DateTime2, typeof(DbType)));
+            Assert.Equal(DbType.Int32, Test.To(SqlDbType.Int, typeof(DbType)));
         }
     }
 }

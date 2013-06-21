@@ -60,7 +60,7 @@ namespace Utilities.DataTypes.Conversion.Converters
         {
             SqlParameter Parameter = new SqlParameter();
             Parameter.SqlDbType = Item;
-            return Parameter.DbType;
+            return Manager.To(Parameter.DbType, typeof(int));
         }
 
         /// <summary>

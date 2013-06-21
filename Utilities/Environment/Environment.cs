@@ -23,7 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Management;
 using System.Text;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 using System.Globalization;
 #endregion
 

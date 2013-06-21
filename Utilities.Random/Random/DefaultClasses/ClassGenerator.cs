@@ -2,7 +2,7 @@
 using System.Reflection;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 
 namespace Utilities.Random.DefaultClasses
 {

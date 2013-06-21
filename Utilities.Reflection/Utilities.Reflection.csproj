@@ -168,7 +168,6 @@
     <Compile Include="Reflection\AOP\EventArgs\Starting.cs" />
     <Compile Include="Reflection\AOP\Interfaces\IAspect.cs" />
     <Compile Include="Reflection\AOP\Interfaces\IEvents.cs" />
-    <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities.DataTypes\Utilities.DataTypes.csproj">

@@ -474,7 +474,7 @@ namespace UnitTests.SQL
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {
-                Helper.ExecuteBulkCopy(Objects.ToDataTable(),"TestTable");
+                Helper.ExecuteBulkCopy(Objects.ToDataTable(), "TestTable");
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
             {

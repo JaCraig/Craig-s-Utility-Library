@@ -26,7 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Text;
 using Utilities.Configuration.Interfaces;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Configuration

@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Utilities.Reflection.Emit.Interfaces;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
 using System.Diagnostics.Contracts;

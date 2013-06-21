@@ -111,7 +111,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ToExpando()
         {
             MyTestClass TestObject = new MyTestClass();
-            ExpandoObject Object = TestObject.ToExpando();
+            ExpandoObject Object = TestObject.To<MyTestClass, ExpandoObject>();
             Assert.Equal(10, ((IDictionary<string, object>)Object)["B"]);
             ((IDictionary<string, object>)Object)["B"] = 20;
             Assert.Equal(20, Object.To(new MyTestClass()).B);

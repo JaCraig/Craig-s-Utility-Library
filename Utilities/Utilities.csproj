@@ -291,7 +291,7 @@
     <Compile Include="Random\NameGenerators\NameSuffixGenerator.cs" />
     <Compile Include="Random\StringGenerators\PatternGenerator.cs" />
     <Compile Include="Random\StringGenerators\RegexStringGenerator.cs" />
-    <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\HashExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\ShiftExtensions.cs" />
     <Compile Include="Encryption\ExtensionMethods\SymmetricExtensions.cs" />
@@ -622,6 +622,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Math\Geometry\ExtensionMethods\" />
+    <Folder Include="Reflection\ExtensionMethods\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

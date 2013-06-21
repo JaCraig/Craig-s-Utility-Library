@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Utilities.Reflection.Emit.Interfaces;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.Reflection.Emit.BaseClasses

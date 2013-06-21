@@ -27,7 +27,7 @@ using Utilities.IoC.Mappings.BaseClasses;
 using Utilities.IoC.Mappings.Interfaces;
 using Utilities.IoC.Mappings.Internal_Classes;
 using Utilities.IoC.Providers;
-using Utilities.Reflection.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
 #endregion

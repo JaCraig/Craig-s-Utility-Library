@@ -69,6 +69,10 @@
     <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\DbTypeTypeConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\GenericConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeToDbType.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeToType.cs" />
     <Compile Include="DataTypes\Conversion\Manager.cs" />
     <Compile Include="DataTypes\Conversion\ObjectConverter.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
@@ -199,7 +203,7 @@
     <Compile Include="Reflection\Emit\ParameterBuilder.cs" />
     <Compile Include="Reflection\Emit\PropertyBuilder.cs" />
     <Compile Include="Reflection\Emit\TypeBuilder.cs" />
-    <Compile Include="Reflection\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="SQL\Command.cs" />
     <Compile Include="SQL\DataClasses\Column.cs" />
     <Compile Include="SQL\DataClasses\Database.cs" />
