@@ -25,8 +25,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Utilities.DataTypes;
-using Utilities.ORM.Mapping.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.ORM.Mapping.Interfaces;
 #endregion
 
 namespace Utilities.ORM.Mapping

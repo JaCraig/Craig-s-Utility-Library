@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Data;
 using Utilities.DataTypes.Comparison;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.DataClasses.Interfaces;
 #endregion
 

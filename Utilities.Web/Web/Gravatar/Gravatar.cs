@@ -20,9 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System.Globalization;
 using System.Security.Cryptography;
 using Utilities.Encryption.ExtensionMethods;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Gravatar

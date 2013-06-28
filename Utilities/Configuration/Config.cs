@@ -29,7 +29,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Encryption.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using Utilities.IO.Serializers;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Configuration

@@ -21,9 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Math.ExtensionMethods;
 using System.Globalization;
+using Utilities.Math.ExtensionMethods;
 #endregion
 
 namespace Utilities.Math

@@ -21,12 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Encryption.ExtensionMethods
@@ -63,7 +63,7 @@ namespace Utilities.Encryption.ExtensionMethods
                 return "";
             return Data.ToByteArray(EncodingUsing)
                        .Encrypt(Key, AlgorithmUsing, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize)
-                       .ToBase64String();
+                       .ToString(Base64FormattingOptions.None);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Utilities.Encryption.ExtensionMethods
                 return "";
             return Data.ToByteArray(EncodingUsing)
                        .Encrypt(Key, AlgorithmUsing, InitialVector, KeySize)
-                       .ToBase64String();
+                       .ToString(Base64FormattingOptions.None);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Utilities.Encryption.ExtensionMethods
                 return "";
             return Convert.FromBase64String(Data)
                           .Decrypt(Key, AlgorithmUsing, InitialVector, KeySize)
-                          .ToEncodedString(EncodingUsing);
+                          .ToString(EncodingUsing);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Utilities.Encryption.ExtensionMethods
                 return "";
             return Convert.FromBase64String(Data)
                           .Decrypt(Key, AlgorithmUsing, Salt, HashAlgorithm, PasswordIterations, InitialVector, KeySize)
-                          .ToEncodedString(EncodingUsing);
+                          .ToString(EncodingUsing);
         }
 
 

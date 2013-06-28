@@ -21,10 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.Serializers.Interfaces;
 #endregion
 

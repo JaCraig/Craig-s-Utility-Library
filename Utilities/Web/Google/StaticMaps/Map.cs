@@ -21,13 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
+using System.Globalization;
 using Utilities.Web.ExtensionMethods;
 using Utilities.Web.Google.BaseClasses;
 using Utilities.Web.Google.Enums;
 using Utilities.Web.Google.HelperClasses;
 using Utilities.Web.Google.Interfaces;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Google.StaticMaps

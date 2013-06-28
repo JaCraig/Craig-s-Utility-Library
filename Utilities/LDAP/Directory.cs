@@ -22,11 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.DirectoryServices;
+using System.Globalization;
 using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.LDAP
@@ -111,7 +111,7 @@ namespace Utilities.LDAP
                     {
                         Entry TempEntry = FindGroup(Entry.CN);
                         if (TempEntry == null)
-                            ReturnValue.Add(TempEntry);
+                            ReturnValue.Add(Entry);
                         else
                             ReturnValue.Add(FindActiveGroupMembers(TempEntry.CN, true));
                     }
@@ -240,7 +240,7 @@ namespace Utilities.LDAP
                     {
                         Entry TempEntry = FindGroup(Entry.CN);
                         if (TempEntry == null)
-                            ReturnValue.Add(TempEntry);
+                            ReturnValue.Add(Entry);
                         else
                             ReturnValue.Add(FindActiveGroupMembers(TempEntry.CN, true));
                     }

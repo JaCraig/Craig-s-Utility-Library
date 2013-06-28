@@ -21,9 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Utilities.FileFormats.Cisco.Interfaces;
-using System.Globalization;
 #endregion
 
 namespace Utilities.FileFormats.Cisco

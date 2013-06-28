@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,6 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL.DataClasses.Enums;
-using System.Collections.Generic;
 #endregion
 
 namespace Utilities.ORM.Database
@@ -114,7 +114,7 @@ namespace Utilities.ORM.Database
         {
             SQL.DataClasses.Table AuditTable = new Utilities.SQL.DataClasses.Table(Table.Name + "Audit", Table.ParentDatabase);
             AuditTable.AddColumn("ID", DbType.Int32, 0, false, true, true, true, false, "", "", 0);
-            AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.ToDbType(), 1, false, false, false, false, false, "", "", "");
+            AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.To(DbType.Int32), 1, false, false, false, false, false, "", "", "");
             foreach (SQL.DataClasses.Interfaces.IColumn Column in Table.Columns)
                 AuditTable.AddColumn(Column.Name, Column.DataType, Column.Length, Column.Nullable, false, false, false, false, "", "", "");
             return AuditTable;
@@ -184,7 +184,7 @@ namespace Utilities.ORM.Database
                     {
                         IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
                         TempDatabase[Mapping.TableName].AddColumn(Property.FieldName,
-                            MapMapping.IDProperty.Type.ToDbType(),
+                            MapMapping.IDProperty.Type.To(DbType.Int32),
                             MapMapping.IDProperty.MaxLength,
                             !Property.NotNull,
                             false,
@@ -220,7 +220,7 @@ namespace Utilities.ORM.Database
                 TempDatabase.AddTable(Property.TableName);
                 TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
                 TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
-                    Mapping.IDProperty.Type.ToDbType(),
+                    Mapping.IDProperty.Type.To(DbType.Int32),
                     Mapping.IDProperty.MaxLength,
                     false,
                     false,
@@ -234,7 +234,7 @@ namespace Utilities.ORM.Database
                     false,
                     false);
                 TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName + "2",
-                    MapMapping.IDProperty.Type.ToDbType(),
+                    MapMapping.IDProperty.Type.To(DbType.Int32),
                     MapMapping.IDProperty.MaxLength,
                     false,
                     false,
@@ -253,7 +253,7 @@ namespace Utilities.ORM.Database
                 TempDatabase.AddTable(Property.TableName);
                 TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
                 TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperty.FieldName,
-                    Mapping.IDProperty.Type.ToDbType(),
+                    Mapping.IDProperty.Type.To(DbType.Int32),
                     Mapping.IDProperty.MaxLength,
                     false,
                     false,
@@ -267,7 +267,7 @@ namespace Utilities.ORM.Database
                     false,
                     false);
                 TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperty.FieldName,
-                    MapMapping.IDProperty.Type.ToDbType(),
+                    MapMapping.IDProperty.Type.To(DbType.Int32),
                     MapMapping.IDProperty.MaxLength,
                     false,
                     false,
@@ -303,7 +303,7 @@ namespace Utilities.ORM.Database
         private static void SetupProperties(SQL.DataClasses.Table Table, IMapping Mapping)
         {
             Table.AddColumn(Mapping.IDProperty.FieldName,
-                Mapping.IDProperty.Type.ToDbType(),
+                Mapping.IDProperty.Type.To(DbType.Int32),
                 Mapping.IDProperty.MaxLength,
                 Mapping.IDProperty.NotNull,
                 Mapping.IDProperty.AutoIncrement,
@@ -318,7 +318,7 @@ namespace Utilities.ORM.Database
                 if (!(Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne))
                 {
                     Table.AddColumn(Property.FieldName,
-                    Property.Type.ToDbType(),
+                    Property.Type.To(DbType.Int32),
                     Property.MaxLength,
                     !Property.NotNull,
                     Property.AutoIncrement,

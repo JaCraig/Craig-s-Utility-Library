@@ -21,12 +21,11 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-using Xunit;
-
 using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {

@@ -20,11 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System.Globalization;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.Interfaces;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Random.NameGenerators

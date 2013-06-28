@@ -21,14 +21,13 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Globalization;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
 using Utilities.FileFormats.BaseClasses;
-using System.IO;
-using Utilities.IO.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.FileFormats

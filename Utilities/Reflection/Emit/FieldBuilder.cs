@@ -25,8 +25,8 @@ using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
-using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Reflection.Emit.BaseClasses;
 #endregion
 
 namespace Utilities.Reflection.Emit

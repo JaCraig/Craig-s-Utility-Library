@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Data;
-using Utilities.DataTypes;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using Utilities.DataTypes;
 
 namespace Utilities.SQL.MicroORM
 {

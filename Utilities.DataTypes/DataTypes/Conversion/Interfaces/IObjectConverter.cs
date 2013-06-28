@@ -21,15 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using Utilities.DataTypes.Formatters;
-using Utilities.DataTypes.Formatters.Interfaces;
+
 #endregion
 
 namespace Utilities.DataTypes.Conversion.Interfaces
@@ -52,5 +44,14 @@ namespace Utilities.DataTypes.Conversion.Interfaces
         /// <param name="DefaultValue">Default value to return if the value is not convertable</param>
         /// <returns>The object as the type specified</returns>
         R To<R>(object Item, R DefaultValue = default(R));
+
+        /// <summary>
+        /// Converts the object from type T to type R
+        /// </summary>
+        /// <param name="Item">Item to convert</param>
+        /// <param name="ReturnType">Object type returned</param>
+        /// <param name="DefaultValue">Default value to return if the value is not convertable</param>
+        /// <returns>The object as the type specified</returns>
+        object To(object Item, Type ReturnType, object DefaultValue = null);
     }
 }

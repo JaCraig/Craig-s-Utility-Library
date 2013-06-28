@@ -178,6 +178,7 @@
     <Compile Include="DataTypes\Conversion\ConverterBase.cs" />
     <Compile Include="DataTypes\Conversion\ConverterBaseHack.cs" />
     <Compile Include="DataTypes\Conversion\Converters\DbTypeTypeConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\ExpandoConverter.cs" />
     <Compile Include="DataTypes\Conversion\Converters\GenericConverter.cs" />
     <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeToDbType.cs" />
     <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeToType.cs" />

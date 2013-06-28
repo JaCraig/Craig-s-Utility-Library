@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Diagnostics.Contracts;
-using System.Xml;
 using System.Xml.Linq;
 #endregion
 

@@ -51,9 +51,9 @@ namespace Utilities.SQL.Interfaces
             this.Value = Value;
             this.Direction = Direction;
             if (Value == null)
-                this.DatabaseType = typeof(DataType).ToDbType();
+                this.DatabaseType = typeof(DataType).To(DbType.Int32);
             else
-                this.DatabaseType = Value.GetType().ToDbType();
+                this.DatabaseType = Value.GetType().To(DbType.Int32);
             this.BatchID = ID;
             this.ParameterStarter = ParameterStarter;
         }
@@ -71,7 +71,7 @@ namespace Utilities.SQL.Interfaces
         {
             this.ID = ID;
             this.Value = (DataType)Value;
-            this.DatabaseType = Type.ToDbType();
+            this.DatabaseType = Type.To(DbType.Int32);
             this.Direction = Direction;
             this.BatchID = ID;
             this.ParameterStarter = ParameterStarter;

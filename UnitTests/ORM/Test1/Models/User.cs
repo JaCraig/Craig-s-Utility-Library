@@ -21,8 +21,6 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Utilities.ORM;
 
 namespace UnitTests.ORM.Test1.Models

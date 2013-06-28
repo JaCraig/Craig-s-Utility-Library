@@ -21,11 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.FileFormats.BaseClasses;
-using Utilities.IO.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.FileFormats

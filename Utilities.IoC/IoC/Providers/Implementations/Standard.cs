@@ -29,7 +29,7 @@ using Utilities.IoC.Mappings;
 using Utilities.IoC.Mappings.Attributes;
 using Utilities.IoC.Mappings.Interfaces;
 using Utilities.IoC.Providers.BaseClasses;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.IoC.Providers.Implementations

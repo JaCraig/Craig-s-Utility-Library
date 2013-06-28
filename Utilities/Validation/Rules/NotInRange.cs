@@ -23,9 +23,9 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Validation.Rules

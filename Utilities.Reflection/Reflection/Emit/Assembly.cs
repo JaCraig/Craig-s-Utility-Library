@@ -22,14 +22,14 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Reflection.Emit.Enums;
 using Utilities.Reflection.Emit.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Reflection.Emit

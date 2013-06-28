@@ -22,20 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using Utilities.DataTypes.Formatters;
-using Utilities.DataTypes.Formatters.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
 using System.IO;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Conversion.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataTypes.Conversion
@@ -88,7 +77,8 @@ namespace Utilities.DataTypes.Conversion
         /// <summary>
         /// Adds a converter to the system
         /// </summary>
-        /// <typeparam name="T">Input type</typeparam>
+        /// <param name="ObjectConverter">Object converter</param>
+        /// <param name="ObjectType">Object type</param>
         /// <returns>This</returns>
         protected Manager AddConverter(Type ObjectType, Type ObjectConverter)
         {
@@ -110,6 +100,20 @@ namespace Utilities.DataTypes.Conversion
         /// <returns>The value converted to the specified type</returns>
         public R To<T, R>(T Item, R DefaultValue = default(R))
         {
+            return (R)To(Item, typeof(R), DefaultValue);
+        }
+
+
+        /// <summary>
+        /// Converts item from type T to R
+        /// </summary>
+        /// <typeparam name="T">Incoming type</typeparam>
+        /// <param name="Item">Incoming object</param>
+        /// <param name="ResultType">Result type</param>
+        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
+        /// <returns>The value converted to the specified type</returns>
+        public object To<T>(T Item,Type ResultType, object DefaultValue = null)
+        {
             try
             {
                 if (Item == null || Convert.IsDBNull(Item))
@@ -118,7 +122,12 @@ namespace Utilities.DataTypes.Conversion
                 while (Key != null)
                 {
                     if (Converters.ContainsKey(Key))
-                        return Converters[Key].To<R>(Item, DefaultValue);
+                        return Converters[Key].To(Item, ResultType, DefaultValue);
+                    foreach (Type Interface in Key.GetInterfaces())
+                    {
+                        if (Converters.ContainsKey(Interface))
+                            return Converters[Interface].To(Item, ResultType, DefaultValue);
+                    }
                     Key = Key.BaseType;
                 }
                 return DefaultValue;

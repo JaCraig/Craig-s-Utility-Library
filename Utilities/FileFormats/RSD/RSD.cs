@@ -22,12 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Diagnostics.Contracts;
-using System.IO;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 using Utilities.FileFormats.BaseClasses;
-using Utilities.IO.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.FileFormats.RSD

@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
 
 #endregion
 

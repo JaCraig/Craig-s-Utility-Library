@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Globalization;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Web.Email.MIME.CodeTypes

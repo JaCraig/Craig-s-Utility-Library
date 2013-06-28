@@ -21,17 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Utilities.IO.ExtensionMethods;
 using System.IO;
-using Xunit;
-using System.Reflection;
 using System.Xml;
 using UnitTests.Fixtures;
+using Utilities.IO.ExtensionMethods;
 using Utilities.IO.Serializers;
+using Xunit;
 #endregion
 
 namespace UnitTests.IO.ExtensionMethods

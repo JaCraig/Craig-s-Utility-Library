@@ -29,7 +29,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using Utilities.Compression.ExtensionMethods.Enums;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
 using Utilities.Web.ExtensionMethods.Streams;
 #endregion

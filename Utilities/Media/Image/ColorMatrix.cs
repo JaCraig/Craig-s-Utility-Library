@@ -24,7 +24,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Media.Image

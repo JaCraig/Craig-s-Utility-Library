@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;

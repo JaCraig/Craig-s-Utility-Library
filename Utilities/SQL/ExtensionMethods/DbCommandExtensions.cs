@@ -23,10 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
-using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -63,7 +63,7 @@ namespace Utilities.SQL.ExtensionMethods
             DbParameter Parameter = Command.GetOrCreateParameter(ID);
             Parameter.Value = string.IsNullOrEmpty(Value) ? System.DBNull.Value : (object)Value;
             Parameter.IsNullable = string.IsNullOrEmpty(Value);
-            Parameter.DbType = typeof(string).ToDbType();
+            Parameter.DbType = typeof(string).To(DbType.Int32);
             Parameter.Direction = Direction;
             Parameter.Size = Length;
             return Command;
@@ -83,7 +83,7 @@ namespace Utilities.SQL.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(Command!=null, "Command");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
-            return Command.AddParameter(ID, Type.ToDbType(), Value, Direction);
+            return Command.AddParameter(ID, Type.To(DbType.Int32), Value, Direction);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Utilities.SQL.ExtensionMethods
             Contract.Requires<ArgumentNullException>(Command != null, "Command");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ID), "ID");
             return Command.AddParameter(ID,
-                new GenericEqualityComparer<DataType>().Equals(Value, default(DataType)) ? typeof(DataType).ToDbType() : Value.GetType().ToDbType(),
+                new GenericEqualityComparer<DataType>().Equals(Value, default(DataType)) ? typeof(DataType).To(DbType.Int32) : Value.GetType().To(DbType.Int32),
                 Value, Direction);
         }
 

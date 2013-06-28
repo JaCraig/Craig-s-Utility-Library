@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Utilities.ORM.QueryProviders.Interfaces;
+﻿using Utilities.ORM.QueryProviders.Interfaces;
 
 namespace UnitTests.ORM.ListTest.Config
 {

@@ -21,13 +21,11 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
-
-using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
 using System.Dynamic;
+using System.Linq;
+using Utilities.DataTypes.ExtensionMethods;
+using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
@@ -36,51 +34,51 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void TypeToDbType()
         {
-            Assert.Equal(DbType.Int32, typeof(int).ToDbType());
-            Assert.Equal(DbType.String, typeof(string).ToDbType());
-            Assert.Equal(DbType.Single, typeof(float).ToDbType());
-            Assert.Equal(DbType.Int32, typeof(MyEnumTest).ToDbType());
+            Assert.Equal(DbType.Int32, typeof(int).To(DbType.Int32));
+            Assert.Equal(DbType.String, typeof(string).To(DbType.Int32));
+            Assert.Equal(DbType.Single, typeof(float).To(DbType.Int32));
+            Assert.Equal(DbType.Int32, typeof(MyEnumTest).To(DbType.Int32));
         }
 
         [Fact]
         public void TypeToSqlDbType()
         {
-            Assert.Equal(SqlDbType.Int, typeof(int).ToSQLDbType());
-            Assert.Equal(SqlDbType.NVarChar, typeof(string).ToSQLDbType());
-            Assert.Equal(SqlDbType.Real, typeof(float).ToSQLDbType());
-            Assert.Equal(SqlDbType.Int, typeof(MyEnumTest).ToSQLDbType());
+            Assert.Equal(SqlDbType.Int, typeof(int).To(SqlDbType.Int));
+            Assert.Equal(SqlDbType.NVarChar, typeof(string).To(SqlDbType.Int));
+            Assert.Equal(SqlDbType.Real, typeof(float).To(SqlDbType.Int));
+            Assert.Equal(SqlDbType.Int, typeof(MyEnumTest).To(SqlDbType.Int));
         }
 
         [Fact]
         public void DbTypeToType()
         {
-            Assert.Equal(typeof(int), DbType.Int32.ToType());
-            Assert.Equal(typeof(string), DbType.String.ToType());
-            Assert.Equal(typeof(float), DbType.Single.ToType());
+            Assert.Equal(typeof(int), DbType.Int32.To(typeof(int)));
+            Assert.Equal(typeof(string), DbType.String.To(typeof(int)));
+            Assert.Equal(typeof(float), DbType.Single.To(typeof(int)));
         }
 
         [Fact]
         public void SqlDbTypeToType()
         {
-            Assert.Equal(typeof(int), SqlDbType.Int.ToType());
-            Assert.Equal(typeof(string), SqlDbType.NVarChar.ToType());
-            Assert.Equal(typeof(float), SqlDbType.Real.ToType());
+            Assert.Equal(typeof(int), SqlDbType.Int.To(typeof(int)));
+            Assert.Equal(typeof(string), SqlDbType.NVarChar.To(typeof(int)));
+            Assert.Equal(typeof(float), SqlDbType.Real.To(typeof(int)));
         }
 
         [Fact]
         public void DbTypeToSqlDbType()
         {
-            Assert.Equal(SqlDbType.Int, DbType.Int32.ToSQLDbType());
-            Assert.Equal(SqlDbType.NVarChar, DbType.String.ToSQLDbType());
-            Assert.Equal(SqlDbType.Real, DbType.Single.ToSQLDbType());
+            Assert.Equal(SqlDbType.Int, DbType.Int32.To(SqlDbType.Int));
+            Assert.Equal(SqlDbType.NVarChar, DbType.String.To(SqlDbType.Int));
+            Assert.Equal(SqlDbType.Real, DbType.Single.To(SqlDbType.Int));
         }
 
         [Fact]
         public void SqlDbTypeToDbType()
         {
-            Assert.Equal(DbType.Int32, SqlDbType.Int.ToDbType());
-            Assert.Equal(DbType.String, SqlDbType.NVarChar.ToDbType());
-            Assert.Equal(DbType.Single, SqlDbType.Real.ToDbType());
+            Assert.Equal(DbType.Int32, SqlDbType.Int.To(DbType.Int32));
+            Assert.Equal(DbType.String, SqlDbType.NVarChar.To(DbType.Int32));
+            Assert.Equal(DbType.Single, SqlDbType.Real.To(DbType.Int32));
         }
 
         [Fact]

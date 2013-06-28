@@ -32,7 +32,7 @@ using Utilities.ORM.QueryProviders.Interfaces;
 using Utilities.SQL;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
-using System.Globalization;
+
 #endregion
 
 namespace Utilities.ORM.Mapping.PropertyTypes

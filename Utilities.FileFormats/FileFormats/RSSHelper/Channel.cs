@@ -22,11 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Text;
 using System.Xml;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Diagnostics.Contracts;
 
 #endregion
 

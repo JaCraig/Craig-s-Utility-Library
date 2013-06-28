@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 
 #endregion
 
-using System.Data;
 namespace Utilities.FileFormats.CSV
 {
     /// <summary>

@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
 using System.Globalization;
+using System.Text;
 #endregion
 
 namespace Utilities.Web.Email.MIME.CodeTypes

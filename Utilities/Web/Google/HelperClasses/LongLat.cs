@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using Utilities.Web.Google.Interfaces;
 using System.Globalization;
+using Utilities.Web.Google.Interfaces;
 #endregion
 
 namespace Utilities.Web.Google.HelperClasses

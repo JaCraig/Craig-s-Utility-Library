@@ -22,10 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.DataMapper;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.MicroORM.Enums;
 using Utilities.SQL.MicroORM.Interfaces;

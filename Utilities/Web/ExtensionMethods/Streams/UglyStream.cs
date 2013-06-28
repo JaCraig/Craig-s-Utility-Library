@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.Compression.ExtensionMethods;
 using Utilities.Compression.ExtensionMethods.Enums;
@@ -220,7 +221,7 @@ namespace Utilities.Web.ExtensionMethods.Streams
         {
             byte[] Data = new byte[count];
             Buffer.BlockCopy(buffer, offset, Data, 0, count);
-            string inputstring = Data.ToEncodedString();
+            string inputstring = Data.ToString(null);
             FinalString += inputstring;
         }
 

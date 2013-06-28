@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Web;
 using System.Globalization;
+using System.Web;
 #endregion
 
 namespace Utilities.Web.Akismet

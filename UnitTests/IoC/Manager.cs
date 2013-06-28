@@ -20,14 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
-
 using Utilities.IoC.Mappings.BaseClasses;
 using Utilities.IoC.Providers.Interfaces;
 using Utilities.IoC.Providers.Scope;
+using Xunit;
 
 namespace UnitTests.IoC
 {

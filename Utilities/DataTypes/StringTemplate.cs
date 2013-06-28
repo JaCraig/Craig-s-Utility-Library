@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Security;
-using System.Diagnostics.CodeAnalysis;
+using Utilities.DataTypes.ExtensionMethods;
 
 #endregion
 

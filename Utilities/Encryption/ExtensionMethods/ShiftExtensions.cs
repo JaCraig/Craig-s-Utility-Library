@@ -67,7 +67,7 @@ namespace Utilities.Encryption.ExtensionMethods
             Contract.Requires<ArgumentNullException>(Key != null, "Key");
             if (Data==null)
                 return "";
-            return Data.ToByteArray(EncodingUsing).Encrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToEncodedString(EncodingUsing);
+            return Data.ToByteArray(EncodingUsing).Encrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToString(EncodingUsing);
         }
 
         #endregion
@@ -103,7 +103,7 @@ namespace Utilities.Encryption.ExtensionMethods
             Contract.Requires<ArgumentNullException>(Key != null, "Key");
             if (Data==null)
                 return "";
-            return Data.ToByteArray(EncodingUsing).Decrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToEncodedString(EncodingUsing);
+            return Data.ToByteArray(EncodingUsing).Decrypt(Key.ToByteArray(EncodingUsing), OneTimePad).ToString(EncodingUsing);
         }
 
         #endregion
@@ -152,7 +152,7 @@ namespace Utilities.Encryption.ExtensionMethods
                 byte KeyByte = x < KeyArray.Length ? KeyArray[x] : (byte)0;
                 OutputArray[x] = (byte)(InputArray[x] ^ KeyByte);
             }
-            return OutputArray.ToEncodedString(EncodingUsing);
+            return OutputArray.ToString(EncodingUsing);
         }
 
         #endregion

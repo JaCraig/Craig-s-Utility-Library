@@ -26,20 +26,19 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Xml;
 using Utilities.Caching;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Patterns;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
 using Utilities.SQL.MicroORM.Interfaces;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.SQL

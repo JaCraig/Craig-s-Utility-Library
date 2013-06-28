@@ -22,11 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Environment

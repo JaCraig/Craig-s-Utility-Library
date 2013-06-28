@@ -19,20 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using Xunit;
-using System.Collections;
 using System.IO;
-using System.Reflection;
-using System.Linq.Expressions;
-using Utilities.Web.ExtensionMethods;
-using System.Net;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IO.ExtensionMethods;
+using Utilities.Web.ExtensionMethods;
+using Xunit;
 
 namespace UnitTests.Web.ExtensionMethods
 {

@@ -23,14 +23,12 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.ORM.Mapping.BaseClasses;
 using Utilities.ORM.Mapping.Interfaces;
 using Utilities.ORM.QueryProviders.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;

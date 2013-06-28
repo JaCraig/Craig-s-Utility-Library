@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Globalization;
 using System.Management;
 using System.Text;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Environment

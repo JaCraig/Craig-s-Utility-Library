@@ -20,13 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Text;
-using System.Xml;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
-using System.IO;
-using Utilities.IO.ExtensionMethods;
 using System.Collections.Generic;
 #endregion
 

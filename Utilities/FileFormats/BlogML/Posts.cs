@@ -24,9 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.FileFormats.BlogML

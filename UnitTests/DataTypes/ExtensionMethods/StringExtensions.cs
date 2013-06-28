@@ -19,15 +19,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Xunit;
-
 using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
 using Utilities.DataTypes.Formatters;
+using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
@@ -57,7 +53,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ByteArrayTest()
         {
             string Value = "ASDF";
-            Assert.Equal("ASDF", Value.ToByteArray().ToEncodedString());
+            Assert.Equal("ASDF", Value.ToByteArray().ToString(null));
         }
 
         [Fact]

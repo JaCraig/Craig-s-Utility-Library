@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Text;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.Interfaces;

@@ -20,17 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Xunit;
-using Utilities.SQL.SQLServer;
-using Utilities.SQL.DataClasses;
-using Utilities.DataTypes.ExtensionMethods;
 using System.Data;
+using System.Linq;
 using UnitTests.ORM.Test1.Models;
+using Utilities.DataTypes.ExtensionMethods;
+using Utilities.SQL.DataClasses;
 using Utilities.SQL.ParameterTypes;
+using Utilities.SQL.SQLServer;
+using Xunit;
 
 namespace UnitTests.ORM.Test1
 {

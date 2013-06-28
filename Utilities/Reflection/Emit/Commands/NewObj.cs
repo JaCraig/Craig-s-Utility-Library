@@ -20,13 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Reflection.Emit.BaseClasses;
 using Utilities.Reflection.Emit.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Reflection.Emit.Commands

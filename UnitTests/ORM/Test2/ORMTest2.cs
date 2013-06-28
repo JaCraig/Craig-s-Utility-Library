@@ -21,16 +21,13 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnitTests.ORM.Test2.Models;
-using Utilities.SQL.SQLServer;
-using Utilities.SQL.DataClasses;
-using Xunit;
-
 using System.Data;
+using System.Linq;
+using UnitTests.ORM.Test2.Models;
+using Utilities.SQL.DataClasses;
 using Utilities.SQL.ParameterTypes;
-using Utilities.DataTypes.ExtensionMethods;
+using Utilities.SQL.SQLServer;
+using Xunit;
 
 namespace UnitTests.ORM.Test2
 {

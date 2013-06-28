@@ -53,7 +53,7 @@ namespace Utilities.Encryption
                 RSA.FromXmlString(Key);
                 byte[] EncryptedBytes = RSA.Encrypt(Input.ToByteArray(EncodingUsing), true);
                 RSA.Clear();
-                return EncryptedBytes.ToBase64String();
+                return EncryptedBytes.ToString(Base64FormattingOptions.None);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Utilities.Encryption
                 RSA.FromXmlString(Key);
                 byte[] EncryptedBytes = RSA.Decrypt(Input.FromBase64(), true);
                 RSA.Clear();
-                return EncryptedBytes.ToEncodedString(EncodingUsing);
+                return EncryptedBytes.ToString(EncodingUsing);
             }
         }
 
@@ -108,8 +108,8 @@ namespace Utilities.Encryption
                 byte[] HashBytes = Input.ToByteArray(EncodingUsing).Hash();
                 byte[] SignedHash = RSA.SignHash(HashBytes, CryptoConfig.MapNameToOID("SHA1"));
                 RSA.Clear();
-                Hash = HashBytes.ToBase64String();
-                return SignedHash.ToBase64String();
+                Hash = HashBytes.ToString(Base64FormattingOptions.None);
+                return SignedHash.ToString(Base64FormattingOptions.None);
             }
         }
 

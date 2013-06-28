@@ -20,21 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Xunit;
-using Utilities.SQL;
 using System.Collections;
-using System.IO;
-using System.Reflection;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 using System.Data;
-using Utilities.SQL.MicroORM;
-using Utilities.SQL.ParameterTypes;
+using System.Linq;
 using Utilities.Random.ExtensionMethods;
 using Utilities.Random.StringGenerators;
+using Utilities.SQL.ParameterTypes;
+using Xunit;
 
 namespace UnitTests.SQL.MicroORM
 {

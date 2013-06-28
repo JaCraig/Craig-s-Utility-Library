@@ -23,13 +23,13 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes.Comparison;
-using System.Globalization;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods
@@ -433,7 +433,7 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region To
+        #region ToDataTable
 
         /// <summary>
         /// Converts the IEnumerable to a DataTable

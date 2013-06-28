@@ -78,7 +78,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>A string containing the content of the stream</returns>
         public static string ReadAll(this Stream Input, Encoding EncodingUsing = null)
         {
-            return Input.ReadAllBinary().ToEncodedString(EncodingUsing);
+            return Input.ReadAllBinary().ToString(EncodingUsing);
         }
 
         #endregion

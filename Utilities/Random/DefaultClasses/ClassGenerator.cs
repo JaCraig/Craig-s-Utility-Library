@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-using Utilities.DataTypes.ExtensionMethods;
 
 namespace Utilities.Random.DefaultClasses
 {

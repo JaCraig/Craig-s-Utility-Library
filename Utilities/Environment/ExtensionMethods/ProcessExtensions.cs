@@ -27,7 +27,7 @@ using System.Diagnostics.Contracts;
 using System.Text;
 using System.Threading;
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Environment.ExtensionMethods

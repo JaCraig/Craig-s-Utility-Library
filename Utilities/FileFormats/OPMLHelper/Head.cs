@@ -21,10 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
-using System.Xml;
-using System.Globalization;
 using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Text;
 using System.Xml.Linq;
 #endregion
 

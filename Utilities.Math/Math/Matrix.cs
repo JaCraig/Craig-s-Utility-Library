@@ -24,7 +24,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml.Serialization;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Math

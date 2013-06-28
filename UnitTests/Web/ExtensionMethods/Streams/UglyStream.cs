@@ -19,21 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using Xunit;
-using System.Collections;
+using System;
 using System.IO;
-using System.Reflection;
-using System.Linq.Expressions;
-using Utilities.Web.ExtensionMethods;
-using System.Net;
-using System.Collections.Specialized;
-using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Compression.ExtensionMethods;
+using Utilities.DataTypes.ExtensionMethods;
+using Xunit;
 
 namespace UnitTests.Web.ExtensionMethods.Streams
 {
@@ -49,7 +40,7 @@ namespace UnitTests.Web.ExtensionMethods.Streams
                     StreamUsing.Write("This is a test".ToByteArray(), 0, "This is a test".ToByteArray().Length);
                     StreamUsing.Flush();
                 }
-                Assert.Equal("This is a test", Stream1.ReadAllBinary().ToBase64String().Decompress(CompressionType: Utilities.Compression.ExtensionMethods.Enums.CompressionType.GZip));
+                Assert.Equal("This is a test", Stream1.ReadAllBinary().ToString(Base64FormattingOptions.None).Decompress(CompressionType: Utilities.Compression.ExtensionMethods.Enums.CompressionType.GZip));
             }
         }
     }

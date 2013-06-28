@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 using System;
 using System.Diagnostics.Contracts;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 using Utilities.FileFormats.BaseClasses;
 #endregion

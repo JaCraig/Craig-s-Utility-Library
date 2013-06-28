@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
 using System.IO;
-using Utilities.IO.ExtensionMethods;
 using System.Text.RegularExpressions;
-using System.Text;
+using System.Xml;
+using Utilities.IO.ExtensionMethods;
 
 namespace UtilitiesSplitter
 {

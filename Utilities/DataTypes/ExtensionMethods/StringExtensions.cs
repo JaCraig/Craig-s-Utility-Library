@@ -102,7 +102,7 @@ namespace Utilities.DataTypes.ExtensionMethods
             OriginalEncodingUsing = OriginalEncodingUsing.Check(new ASCIIEncoding());
             EncodingUsing = EncodingUsing.Check(new UTF8Encoding());
             return Encoding.Convert(OriginalEncodingUsing, EncodingUsing, Input.ToByteArray(OriginalEncodingUsing))
-                           .ToEncodedString(EncodingUsing);
+                           .ToString(EncodingUsing);
         }
 
         #endregion
@@ -151,7 +151,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 Value = Value.Replace("-", "").Reverse();
                 for (int x = 0; x < Value.Length; ++x)
                 {
-                    if (!Value[x].IsDigit())
+                    if (!Value[x].Is(CharIs.Digit))
                         return false;
                     int TempValue = (Value[x] - '0') * (x % 2 == 1 ? 2 : 1);
                     while (TempValue > 0)

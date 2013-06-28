@@ -23,8 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Threading;
-using System.Linq;
+
 #endregion
 
 namespace Utilities.DataTypes.ExtensionMethods

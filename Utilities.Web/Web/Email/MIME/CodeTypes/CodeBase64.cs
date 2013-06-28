@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Diagnostics.Contracts;
 using System.Text;
 #endregion
 

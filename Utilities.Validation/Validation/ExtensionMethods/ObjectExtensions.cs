@@ -22,7 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.Validation.ExtensionMethods

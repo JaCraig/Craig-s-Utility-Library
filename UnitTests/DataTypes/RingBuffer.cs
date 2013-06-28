@@ -20,15 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Utilities.DataTypes;
 using Xunit;
 
-using Utilities.DataTypes;
-using System.Data;
-
-using Utilities.Random;
 
 namespace UnitTests.DataTypes
 {

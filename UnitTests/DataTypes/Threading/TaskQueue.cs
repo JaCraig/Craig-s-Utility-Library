@@ -20,14 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
-
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Random.ExtensionMethods;
-using Utilities.Random.StringGenerators;
+using Xunit;
 
 namespace UnitTests.DataTypes.Threading
 {

@@ -21,15 +21,9 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Xunit;
-using System.Collections;
 using System.IO;
-using System.Reflection;
-using System.Linq.Expressions;
 using Utilities.Reflection.AOP.Interfaces;
+using Xunit;
 
 namespace UnitTests.Reflection.AOP
 {

@@ -21,9 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Globalization;
 using Utilities.IO.Logging.BaseClasses;
 using Utilities.IO.Logging.Enums;
-using System.Globalization;
 #endregion
 
 namespace Utilities.IO.Logging

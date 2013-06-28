@@ -20,19 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
+using System;
 using System.Data;
-using System.IO;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.IO.ExtensionMethods;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Globalization;
 using Utilities.FileFormats.BaseClasses;
-using System.Diagnostics.Contracts;
-using System;
 #endregion
 
 namespace Utilities.FileFormats.Delimited

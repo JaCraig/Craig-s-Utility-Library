@@ -22,13 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Globalization;
 using Utilities.DataTypes.Conversion;
 #endregion
 
@@ -51,97 +47,9 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The formatted string</returns>
         public static string FormatToString(this object Input, string Format)
         {
-            if (Input==null)
+            if (Input == null)
                 return "";
-            return !string.IsNullOrEmpty(Format) ? (string)CallMethod("ToString", Input, Format) : Input.ToString();
-        }
-
-        #endregion
-
-        #region ToSQLDbType
-
-        /// <summary>
-        /// Converts a .Net type to SQLDbType value
-        /// </summary>
-        /// <param name="Type">.Net Type</param>
-        /// <returns>The corresponding SQLDbType</returns>
-        public static SqlDbType ToSQLDbType(this Type Type)
-        {
-            return Type.ToDbType().ToSQLDbType();
-        }
-
-        /// <summary>
-        /// Converts a DbType to a SqlDbType
-        /// </summary>
-        /// <param name="Type">Type to convert</param>
-        /// <returns>The corresponding SqlDbType (if it exists)</returns>
-        public static SqlDbType ToSQLDbType(this DbType Type)
-        {
-            SqlParameter Parameter = new SqlParameter();
-            Parameter.DbType = Type;
-            return Parameter.SqlDbType;
-        }
-
-        #endregion
-
-        #region ToDbType
-
-        /// <summary>
-        /// Converts a .Net type to DbType value
-        /// </summary>
-        /// <param name="Type">.Net Type</param>
-        /// <returns>The corresponding DbType</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        public static DbType ToDbType(this Type Type)
-        {
-            if (Type.IsEnum) return Enum.GetUnderlyingType(Type).ToDbType();
-            else if (Type == typeof(byte)) return DbType.Byte;
-            else if (Type == typeof(sbyte)) return DbType.SByte;
-            else if (Type == typeof(short)) return DbType.Int16;
-            else if (Type == typeof(ushort)) return DbType.UInt16;
-            else if (Type == typeof(int)) return DbType.Int32;
-            else if (Type == typeof(uint)) return DbType.UInt32;
-            else if (Type == typeof(long)) return DbType.Int64;
-            else if (Type == typeof(ulong)) return DbType.UInt64;
-            else if (Type == typeof(float)) return DbType.Single;
-            else if (Type == typeof(double)) return DbType.Double;
-            else if (Type == typeof(decimal)) return DbType.Decimal;
-            else if (Type == typeof(bool)) return DbType.Boolean;
-            else if (Type == typeof(string)) return DbType.String;
-            else if (Type == typeof(char)) return DbType.StringFixedLength;
-            else if (Type == typeof(Guid)) return DbType.Guid;
-            else if (Type == typeof(DateTime)) return DbType.DateTime2;
-            else if (Type == typeof(DateTimeOffset)) return DbType.DateTimeOffset;
-            else if (Type == typeof(byte[])) return DbType.Binary;
-            else if (Type == typeof(byte?)) return DbType.Byte;
-            else if (Type == typeof(sbyte?)) return DbType.SByte;
-            else if (Type == typeof(short?)) return DbType.Int16;
-            else if (Type == typeof(ushort?)) return DbType.UInt16;
-            else if (Type == typeof(int?)) return DbType.Int32;
-            else if (Type == typeof(uint?)) return DbType.UInt32;
-            else if (Type == typeof(long?)) return DbType.Int64;
-            else if (Type == typeof(ulong?)) return DbType.UInt64;
-            else if (Type == typeof(float?)) return DbType.Single;
-            else if (Type == typeof(double?)) return DbType.Double;
-            else if (Type == typeof(decimal?)) return DbType.Decimal;
-            else if (Type == typeof(bool?)) return DbType.Boolean;
-            else if (Type == typeof(char?)) return DbType.StringFixedLength;
-            else if (Type == typeof(Guid?)) return DbType.Guid;
-            else if (Type == typeof(DateTime?)) return DbType.DateTime2;
-            else if (Type == typeof(DateTimeOffset?)) return DbType.DateTimeOffset;
-            return DbType.Int32;
-        }
-
-        /// <summary>
-        /// Converts SqlDbType to DbType
-        /// </summary>
-        /// <param name="Type">Type to convert</param>
-        /// <returns>The corresponding DbType (if it exists)</returns>
-        public static DbType ToDbType(this SqlDbType Type)
-        {
-            SqlParameter Parameter = new SqlParameter();
-            Parameter.SqlDbType = Type;
-            return Parameter.DbType;
+            return !string.IsNullOrEmpty(Format) ? Input.CallMethod<string>("ToString", Format) : Input.ToString();
         }
 
         #endregion
@@ -158,7 +66,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static System.Collections.Generic.List<T> ToList<T>(this DataTable Data, Func<T> Creator = null) where T : new()
         {
-            if (Data==null)
+            if (Data == null)
                 return new List<T>();
             Creator = Creator.Check(() => new T());
             Type TType = typeof(T);
@@ -171,7 +79,7 @@ namespace Utilities.DataTypes.ExtensionMethods
                 for (int y = 0; y < Data.Columns.Count; ++y)
                 {
                     PropertyInfo Property = Properties.FirstOrDefault(z => z.Name == Data.Columns[y].ColumnName);
-                    if (Property!=null)
+                    if (Property != null)
                         Property.SetValue(RowObject, Data.Rows[x][Data.Columns[y]].To(Property.PropertyType, null), new object[] { });
                 }
                 Results.Add(RowObject);
@@ -180,50 +88,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         }
 
         #endregion
-
-        #region ToType
-
-        /// <summary>
-        /// Converts a SQLDbType value to .Net type
-        /// </summary>
-        /// <param name="Type">SqlDbType Type</param>
-        /// <returns>The corresponding .Net type</returns>
-        public static Type ToType(this SqlDbType Type)
-        {
-            return Type.ToDbType().ToType();
-        }
-
-        /// <summary>
-        /// Converts a DbType value to .Net type
-        /// </summary>
-        /// <param name="Type">DbType</param>
-        /// <returns>The corresponding .Net type</returns>
-        public static Type ToType(this DbType Type)
-        {
-            if (Type == DbType.Byte) return typeof(byte);
-            else if (Type == DbType.SByte) return typeof(sbyte);
-            else if (Type == DbType.Int16) return typeof(short);
-            else if (Type == DbType.UInt16) return typeof(ushort);
-            else if (Type == DbType.Int32) return typeof(int);
-            else if (Type == DbType.UInt32) return typeof(uint);
-            else if (Type == DbType.Int64) return typeof(long);
-            else if (Type == DbType.UInt64) return typeof(ulong);
-            else if (Type == DbType.Single) return typeof(float);
-            else if (Type == DbType.Double) return typeof(double);
-            else if (Type == DbType.Decimal) return typeof(decimal);
-            else if (Type == DbType.Boolean) return typeof(bool);
-            else if (Type == DbType.String) return typeof(string);
-            else if (Type == DbType.StringFixedLength) return typeof(char);
-            else if (Type == DbType.Guid) return typeof(Guid);
-            else if (Type == DbType.DateTime2) return typeof(DateTime);
-            else if (Type == DbType.DateTime) return typeof(DateTime);
-            else if (Type == DbType.DateTimeOffset) return typeof(DateTimeOffset);
-            else if (Type == DbType.Binary) return typeof(byte[]);
-            return typeof(int);
-        }
-
-        #endregion
-
+        
         #region To
 
         /// <summary>
@@ -236,35 +101,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
         public static R To<T, R>(this T Object, R DefaultValue = default(R))
         {
-            return (R)Object.To(typeof(R), DefaultValue);
-        }
-
-        /// <summary>
-        /// Converts an expando object to the specified type
-        /// </summary>
-        /// <typeparam name="R">Type to convert to</typeparam>
-        /// <param name="Object">Object to convert</param>
-        /// <param name="DefaultValue">Default value in case it can't convert the expando object</param>
-        /// <returns>The object as the specified type</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static R To<R>(this ExpandoObject Object, R DefaultValue = default(R))
-            where R : class,new()
-        {
-            try
-            {
-                R ReturnValue = new R();
-                Type TempType = typeof(R);
-                foreach (PropertyInfo Property in TempType.GetProperties())
-                {
-                    if (((IDictionary<String, Object>)Object).ContainsKey(Property.Name))
-                    {
-                        Property.SetValue(ReturnValue, ((IDictionary<String, Object>)Object)[Property.Name], null);
-                    }
-                }
-                return ReturnValue;
-            }
-            catch { }
-            return DefaultValue;
+            return Converter.To(Object, DefaultValue);
         }
 
         /// <summary>
@@ -278,38 +115,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static object To<T>(this T Object, Type ResultType, object DefaultValue = null)
         {
-            try
-            {
-                if (Object==null||Convert.IsDBNull(Object))
-                    return DefaultValue;
-                string ObjectValue = Object as string;
-                if (ObjectValue!=null && ObjectValue.Length == 0)
-                    return DefaultValue;
-                Type ObjectType = Object.GetType();
-                if (ResultType.IsAssignableFrom(ObjectType))
-                    return Object;
-                if(ResultType.IsEnum)
-                    return System.Enum.Parse(ResultType, ObjectValue, true);
-                if ((Object as IConvertible)!=null)
-                    return Convert.ChangeType(Object, ResultType, CultureInfo.InvariantCulture);
-                TypeConverter Converter = TypeDescriptor.GetConverter(ObjectType);
-                if (Converter.CanConvertTo(ResultType))
-                    return Converter.ConvertTo(Object, ResultType);
-                if (ObjectValue!=null)
-                    return ObjectValue.To<string>(ResultType, DefaultValue);
-                if (ResultType == typeof(ExpandoObject))
-                {
-                    ExpandoObject ReturnValue = new ExpandoObject();
-                    Type TempType = typeof(T);
-                    foreach (PropertyInfo Property in TempType.GetProperties())
-                    {
-                        ((ICollection<KeyValuePair<String, Object>>)ReturnValue).Add(new KeyValuePair<string, object>(Property.Name, Property.GetValue(Object, null)));
-                    }
-                    return ReturnValue;
-                }
-            }
-            catch { }
-            return DefaultValue;
+            return Converter.To(Object, ResultType, DefaultValue);
         }
 
         #endregion
@@ -319,36 +125,6 @@ namespace Utilities.DataTypes.ExtensionMethods
         #region Private Static Properties
 
         private static Manager Converter = new Manager();
-
-        #endregion
-
-        #region Private Static Functions
-
-        /// <summary>
-        /// Calls a method on an object
-        /// </summary>
-        /// <param name="MethodName">Method name</param>
-        /// <param name="Object">Object to call the method on</param>
-        /// <param name="InputVariables">(Optional)input variables for the method</param>
-        /// <returns>The returned value of the method</returns>
-        private static object CallMethod(string MethodName, object Object, params object[] InputVariables)
-        {
-            if (string.IsNullOrEmpty(MethodName) || Object==null)
-                return null;
-            Type ObjectType = Object.GetType();
-            MethodInfo Method = null;
-            if (InputVariables!=null)
-            {
-                Type[] MethodInputTypes = new Type[InputVariables.Length];
-                for (int x = 0; x < InputVariables.Length; ++x)
-                    MethodInputTypes[x] = InputVariables[x].GetType();
-                Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
-                if (Method != null)
-                    return Method.Invoke(Object, InputVariables);
-            }
-            Method = ObjectType.GetMethod(MethodName);
-            return Method==null ? null : Method.Invoke(Object, null);
-        }
 
         #endregion
     }

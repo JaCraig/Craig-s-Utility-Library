@@ -19,32 +19,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Xunit;
-
 using Utilities.DataTypes.ExtensionMethods;
-using System.Data;
+using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class ValueType
     {
         [Fact]
-        public void BoolTest()
-        {
-            int Value=1;
-            Assert.True(Value.ToBool());
-            Assert.Equal(1, Value.ToBool().ToInt());
-        }
-
-        [Fact]
         public void UnicodeTest()
         {
             string Value = "\u25EF\u25EF\u25EF";
             Assert.True(Value.ToByteArray(new UnicodeEncoding()).IsUnicode());
+        }
+
+        [Fact]
+        public void Is()
+        {
+            Assert.True('a'.Is(CharIs.Lower));
+            Assert.True('A'.Is(CharIs.Upper));
+            Assert.True(' '.Is(CharIs.WhiteSpace));
         }
     }
 }

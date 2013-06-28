@@ -23,10 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.Threading

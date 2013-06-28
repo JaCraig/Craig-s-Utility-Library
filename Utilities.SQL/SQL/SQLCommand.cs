@@ -23,12 +23,11 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Patterns;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
-using System.Linq;
-using System.Globalization;
 #endregion
 
 namespace Utilities.SQL

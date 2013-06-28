@@ -20,13 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using Utilities.FileFormats.BaseClasses;
 using Utilities.FileFormats.FixedLength.Interfaces;
-using Utilities.IO.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.FileFormats.FixedLength.BaseClasses

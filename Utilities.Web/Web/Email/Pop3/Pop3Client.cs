@@ -22,11 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Web.Email.Pop3

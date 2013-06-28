@@ -22,10 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections;
-using System.Data;
-using System.Linq;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.Contracts;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes

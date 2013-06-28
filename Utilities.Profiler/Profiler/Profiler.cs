@@ -23,13 +23,13 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using Utilities.Caching.ExtensionMethods;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Environment.ExtensionMethods;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Profiler

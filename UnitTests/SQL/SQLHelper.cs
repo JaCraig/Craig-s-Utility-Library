@@ -21,17 +21,9 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Xunit;
-using Utilities.SQL;
-using System.Collections;
-using System.IO;
-using System.Reflection;
-using System.Linq.Expressions;
 using System.Data;
 using Utilities.DataTypes.ExtensionMethods;
+using Xunit;
 
 namespace UnitTests.SQL
 {

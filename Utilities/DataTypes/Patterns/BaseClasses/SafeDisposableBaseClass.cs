@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Reflection;
+
 #endregion
 
 namespace Utilities.DataTypes.Patterns.BaseClasses

@@ -22,15 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using Utilities.DataTypes.Conversion.Interfaces;
-using Utilities.DataTypes.Formatters;
-using Utilities.DataTypes.Formatters.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
@@ -85,13 +78,26 @@ namespace Utilities.DataTypes.Conversion
         /// <summary>
         /// Converts the object from type T to type R
         /// </summary>
+        /// <typeparam name="R">Return type</typeparam>
         /// <param name="Item">Item to convert</param>
         /// <param name="DefaultValue">Default value to return if the value is not convertable</param>
         /// <returns>The object as the type specified</returns>
         public R To<R>(object Item, R DefaultValue = default(R))
         {
-            IConverter<T> Converter = Converters.FirstOrDefault(x => x.CanConvert(typeof(R)));
-            R ReturnValue = Converter == null ? DefaultValue : (R)Converter.To((T)Item, typeof(R));
+            return (R)To(Item, typeof(R), DefaultValue);
+        }
+
+        /// <summary>
+        /// Converts the object from type T to type ReturnType
+        /// </summary>
+        /// <param name="Item">Item to convert</param>
+        /// <param name="DefaultValue">Default value to return if the value is not convertable</param>
+        /// <param name="ReturnType">Return type</param>
+        /// <returns>The object as the type specified</returns>
+        public object To(object Item, Type ReturnType, object DefaultValue = null)
+        {
+            IConverter<T> Converter = Converters.FirstOrDefault(x => x.CanConvert(ReturnType));
+            object ReturnValue = Converter == null ? DefaultValue : Converter.To((T)Item, ReturnType);
             return ReturnValue == null ? DefaultValue : ReturnValue;
         }
 

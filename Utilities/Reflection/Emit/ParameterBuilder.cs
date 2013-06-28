@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Reflection.Emit;
 using Utilities.Reflection.Emit.BaseClasses;
-using System.Globalization;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.Reflection.Emit

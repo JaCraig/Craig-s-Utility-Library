@@ -23,10 +23,10 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Utilities.DataTypes.ExtensionMethods;
 using Utilities.IoC.Providers.Interfaces;
 using Utilities.IoC.Providers.Scope;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.DataTypes.ExtensionMethods;
+
 #endregion
 
 namespace Utilities.IoC.Providers

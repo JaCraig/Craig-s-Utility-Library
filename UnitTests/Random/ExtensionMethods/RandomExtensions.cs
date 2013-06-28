@@ -20,20 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Xunit;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using Utilities.Random.ExtensionMethods;
 using System.Drawing;
-using Utilities.Random.StringGenerators;
-using Utilities.Random.NameGenerators;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Random.ContactInfoGenerators;
 using Utilities.Random.DefaultClasses;
+using Utilities.Random.ExtensionMethods;
+using Utilities.Random.NameGenerators;
+using Utilities.Random.StringGenerators;
+using Xunit;
 
 namespace UnitTests.Random.ExtensionMethods
 {

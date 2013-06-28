@@ -20,14 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
 using Utilities.Compression.ExtensionMethods.Enums;
 using Utilities.DataTypes.ExtensionMethods;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
-using System;
 #endregion
 
 namespace Utilities.Compression.ExtensionMethods
@@ -72,7 +72,7 @@ namespace Utilities.Compression.ExtensionMethods
         public static string Compress(this string Data, Encoding EncodingUsing = null, CompressionType CompressionType = CompressionType.Deflate)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Data), "Data");
-            return Data.ToByteArray(EncodingUsing).Compress(CompressionType).ToBase64String();
+            return Data.ToByteArray(EncodingUsing).Compress(CompressionType).ToString(Base64FormattingOptions.None);
         }
 
         #endregion
@@ -119,7 +119,7 @@ namespace Utilities.Compression.ExtensionMethods
         public static string Decompress(this string Data, Encoding EncodingUsing = null, CompressionType CompressionType = CompressionType.Deflate)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Data), "Data");
-            return Data.FromBase64().Decompress(CompressionType).ToEncodedString(EncodingUsing);
+            return Data.FromBase64().Decompress(CompressionType).ToString(EncodingUsing);
         }
 
         #endregion

@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.ORM.Mapping.Interfaces;

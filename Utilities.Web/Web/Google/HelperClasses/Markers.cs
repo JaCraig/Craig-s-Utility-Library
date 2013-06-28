@@ -22,11 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Web.Google.Enums;
-using Utilities.Web.ExtensionMethods;
-using Utilities.Web.Google.Interfaces;
 using System.Globalization;
+using Utilities.Web.ExtensionMethods;
+using Utilities.Web.Google.Enums;
+using Utilities.Web.Google.Interfaces;
 #endregion
 
 namespace Utilities.Web.Google.HelperClasses

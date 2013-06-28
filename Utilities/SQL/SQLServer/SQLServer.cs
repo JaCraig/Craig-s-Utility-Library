@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Data;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.ExtensionMethods;
@@ -29,7 +30,6 @@ using Utilities.SQL.DataClasses;
 using Utilities.SQL.DataClasses.Enums;
 using Utilities.SQL.DataClasses.Interfaces;
 using Utilities.SQL.MicroORM.Interfaces;
-using System.Globalization;
 #endregion
 
 namespace Utilities.SQL.SQLServer
@@ -396,8 +396,8 @@ namespace Utilities.SQL.SQLServer
                 if (CurrentColumn == null)
                 {
                     Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ").Append(DesiredTable.Name)
-                        .Append(" ADD ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSQLDbType().ToString());
-                    if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
+                        .Append(" ADD ").Append(Column.Name).Append(" ").Append(Column.DataType.To(SqlDbType.Int).ToString());
+                    if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
                     {
                         if (Column.Length < 0 || Column.Length >= 4000)
                         {
@@ -425,13 +425,13 @@ namespace Utilities.SQL.SQLServer
                 }
                 else if (CurrentColumn.DataType != Column.DataType
                     || (CurrentColumn.DataType == Column.DataType
-                        && CurrentColumn.DataType == SqlDbType.NVarChar.ToDbType()
+                        && CurrentColumn.DataType == SqlDbType.NVarChar.To(DbType.Int32)
                         && CurrentColumn.Length != Column.Length * 2
                         && (CurrentColumn.Length != -1 && Column.Length != -1)))
                 {
                     Builder.Append("EXEC dbo.sp_executesql @statement = N'ALTER TABLE ").Append(DesiredTable.Name)
-                        .Append(" ALTER COLUMN ").Append(Column.Name).Append(" ").Append(Column.DataType.ToSQLDbType().ToString());
-                    if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
+                        .Append(" ALTER COLUMN ").Append(Column.Name).Append(" ").Append(Column.DataType.To(SqlDbType.Int).ToString());
+                    if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
                     {
                         if (Column.Length < 0 || Column.Length >= 4000)
                         {
@@ -576,8 +576,8 @@ namespace Utilities.SQL.SQLServer
             string Splitter = "";
             foreach (IColumn Column in Table.Columns)
             {
-                Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.ToSQLDbType().ToString());
-                if (Column.DataType == SqlDbType.VarChar.ToDbType() || Column.DataType == SqlDbType.NVarChar.ToDbType())
+                Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.To(SqlDbType.Int).ToString());
+                if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
                 {
                     if (Column.Length < 0 || Column.Length >= 4000)
                     {
@@ -686,7 +686,7 @@ namespace Utilities.SQL.SQLServer
                         if (Type == "nvarchar")
                             Length /= 2;
                         string Default = Helper.GetParameter("DEFAULT VALUE", "");
-                        Procedure.AddColumn<string>(Name, Type.To<string, SqlDbType>().ToDbType(), Length, Default);
+                        Procedure.AddColumn<string>(Name, Type.To<string, SqlDbType>().To(DbType.Int32), Length, Default);
                     }
                 }
             }
@@ -724,7 +724,7 @@ namespace Utilities.SQL.SQLServer
                         if (ColumnType == "nvarchar")
                             MaxLength /= 2;
                         bool Nullable = Helper.GetParameter("IS NULLABLE", false);
-                        View.AddColumn<string>(ColumnName, ColumnType.To<string, SqlDbType>().ToDbType(), MaxLength, Nullable);
+                        View.AddColumn<string>(ColumnName, ColumnType.To<string, SqlDbType>().To(DbType.Int32), MaxLength, Nullable);
                     }
                 }
             }
@@ -765,7 +765,7 @@ namespace Utilities.SQL.SQLServer
                         }
                         else
                         {
-                            Table.AddColumn(ColumnName, ColumnType.To<string, SqlDbType>().ToDbType(), MaxLength, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue);
+                            Table.AddColumn(ColumnName, ColumnType.To<string, SqlDbType>().To(DbType.Int32), MaxLength, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue);
                         }
                     }
                 }

@@ -2305,7 +2305,7 @@ namespace Utilities.Media.Image.ExtensionMethods
             using (MemoryStream Stream = new MemoryStream())
             {
                 Image.Save(Stream, DesiredFormat);
-                return Stream.ToArray().ToBase64String();
+                return Stream.ToArray().ToString(Base64FormattingOptions.None);
             }
         }
 

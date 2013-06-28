@@ -20,14 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using Xunit;
-
-using Utilities.IO.ExtensionMethods;
 using UnitTests.Fixtures;
+using Utilities.IO.ExtensionMethods;
+using Xunit;
 
 namespace UnitTests.IO.ExtensionMethods
 {

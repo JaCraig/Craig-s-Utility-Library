@@ -20,12 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
-
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Xunit;
 
 namespace UnitTests.DataTypes.Patterns.BaseClasses
 {

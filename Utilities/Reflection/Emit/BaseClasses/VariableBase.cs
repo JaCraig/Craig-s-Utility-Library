@@ -23,8 +23,8 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using Utilities.Reflection.Emit.Interfaces;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.Reflection.Emit.Interfaces;
 #endregion
 
 namespace Utilities.Reflection.Emit.BaseClasses

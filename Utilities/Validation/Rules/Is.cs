@@ -23,11 +23,11 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Validation.Rules.Enums;
-using System.Globalization;
 #endregion
 
 namespace Utilities.Validation.Rules

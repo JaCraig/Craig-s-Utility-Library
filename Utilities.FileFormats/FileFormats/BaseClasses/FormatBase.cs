@@ -21,13 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Text;
-using System.Xml;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Globalization;
-using System.IO;
-using Utilities.IO.ExtensionMethods;
-using System.Diagnostics.Contracts;
+
 #endregion
 
 namespace Utilities.FileFormats.BaseClasses

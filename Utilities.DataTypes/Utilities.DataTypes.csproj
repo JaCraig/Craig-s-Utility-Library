@@ -164,6 +164,7 @@
     <Compile Include="DataTypes\Conversion\Manager.cs" />
     <Compile Include="DataTypes\Conversion\ObjectConverter.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="DataTypes\Conversion\Converters\ExpandoConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

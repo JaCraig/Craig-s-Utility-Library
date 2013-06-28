@@ -34,50 +34,23 @@ namespace Utilities.DataTypes.ExtensionMethods
     {
         #region Functions
 
-        #region ToBool
-
-        /// <summary>
-        /// Turns an int into a bool
-        /// </summary>
-        /// <param name="Input">Int value</param>
-        /// <returns>bool equivalent</returns>
-        public static bool ToBool(this int Input)
-        {
-            return Input > 0 ? true : false;
-        }
-
-        #endregion
-
-        #region ToInt
-
-        /// <summary>
-        /// Converts the bool to an integer
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The integer equivalent</returns>
-        public static int ToInt(this bool Value)
-        {
-            return Value ? 1 : 0;
-        }
-
-        #endregion
-
-        #region ToBase64String
+        #region ToString
 
         /// <summary>
         /// Converts a byte array into a base 64 string
         /// </summary>
         /// <param name="Input">Input array</param>
+        /// <param name="Count">Number of bytes starting at the index to convert (use -1 for the entire array starting at the index)</param>
+        /// <param name="Index">Index to start at</param>
+        /// <param name="Options">Base 64 formatting options</param>
         /// <returns>The equivalent byte array in a base 64 string</returns>
-        public static string ToBase64String(this byte[] Input)
+        public static string ToString(this byte[] Input, Base64FormattingOptions Options, int Index = 0, int Count = -1)
         {
-            return Input==null ? "" : Convert.ToBase64String(Input);
+            if (Count == -1)
+                Count = Input.Length - Index;
+            return Input == null ? "" : Convert.ToBase64String(Input, Index, Count, Options);
         }
-
-        #endregion
-
-        #region ToEncodedString
-
+        
         /// <summary>
         /// Converts a byte array to a string
         /// </summary>
@@ -86,7 +59,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <param name="Count">Number of bytes starting at the index to convert (use -1 for the entire array starting at the index)</param>
         /// <param name="Index">Index to start at</param>
         /// <returns>string of the byte array</returns>
-        public static string ToEncodedString(this byte[] Input, Encoding EncodingUsing = null, int Index = 0, int Count = -1)
+        public static string ToString(this byte[] Input, Encoding EncodingUsing, int Index = 0, int Count = -1)
         {
             if (Input==null)
                 return "";
@@ -97,184 +70,43 @@ namespace Utilities.DataTypes.ExtensionMethods
 
         #endregion
 
-        #region IsControl
+        #region Is
 
         /// <summary>
-        /// Is the character a control character
+        /// Is the character of a specific type
         /// </summary>
         /// <param name="Value">Value to check</param>
+        /// <param name="CharacterType">Character type</param>
         /// <returns>True if it is, false otherwise</returns>
-        public static bool IsControl(this char Value)
+        public static bool Is(this char Value,CharIs CharacterType)
         {
-            return char.IsControl(Value);
-        }
-
-        #endregion
-
-        #region IsDigit
-
-        /// <summary>
-        /// Is the character a digit character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsDigit(this char Value)
-        {
-            return char.IsDigit(Value);
-        }
-
-        #endregion
-
-        #region IsHighSurrogate
-
-        /// <summary>
-        /// Is the character a high surrogate character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsHighSurrogate(this char Value)
-        {
-            return char.IsHighSurrogate(Value);
-        }
-
-        #endregion
-
-        #region IsLetter
-
-        /// <summary>
-        /// Is the character a letter character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsLetter(this char Value)
-        {
-            return char.IsLetter(Value);
-        }
-
-        #endregion
-
-        #region IsLetterOrDigit
-
-        /// <summary>
-        /// Is the character a letter or digit character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsLetterOrDigit(this char Value)
-        {
-            return char.IsLetterOrDigit(Value);
-        }
-
-        #endregion
-
-        #region IsLower
-
-        /// <summary>
-        /// Is the character a lower case character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsLower(this char Value)
-        {
-            return char.IsLower(Value);
-        }
-
-        #endregion
-
-        #region IsLowSurrogate
-
-        /// <summary>
-        /// Is the character a low surrogate character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsLowSurrogate(this char Value)
-        {
-            return char.IsLowSurrogate(Value);
-        }
-
-        #endregion
-
-        #region IsNumber
-
-        /// <summary>
-        /// Is the character a number character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsNumber(this char Value)
-        {
-            return char.IsNumber(Value);
-        }
-
-        #endregion
-
-        #region IsPunctuation
-
-        /// <summary>
-        /// Is the character a punctuation character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsPunctuation(this char Value)
-        {
-            return char.IsPunctuation(Value);
-        }
-
-        #endregion
-
-        #region IsSurrogate
-
-        /// <summary>
-        /// Is the character a surrogate character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsSurrogate(this char Value)
-        {
-            return char.IsSurrogate(Value);
-        }
-
-        #endregion
-
-        #region IsSymbol
-
-        /// <summary>
-        /// Is the character a symbol character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsSymbol(this char Value)
-        {
-            return char.IsSymbol(Value);
-        }
-
-        #endregion
-
-        #region IsUpper
-
-        /// <summary>
-        /// Is the character an upper case character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsUpper(this char Value)
-        {
-            return char.IsUpper(Value);
-        }
-
-        #endregion
-
-        #region IsWhiteSpace
-
-        /// <summary>
-        /// Is the character a whitespace character
-        /// </summary>
-        /// <param name="Value">Value to check</param>
-        /// <returns>True if it is, false otherwise</returns>
-        public static bool IsWhiteSpace(this char Value)
-        {
-            return char.IsWhiteSpace(Value);
+            if (CharacterType.HasFlag(CharIs.WhiteSpace))
+                return char.IsWhiteSpace(Value);
+            if (CharacterType.HasFlag(CharIs.Upper))
+                return char.IsUpper(Value);
+            if (CharacterType.HasFlag(CharIs.Symbol))
+                return char.IsSymbol(Value);
+            if (CharacterType.HasFlag(CharIs.Surrogate))
+                return char.IsSurrogate(Value);
+            if (CharacterType.HasFlag(CharIs.Punctuation))
+                return char.IsPunctuation(Value);
+            if (CharacterType.HasFlag(CharIs.Number))
+                return char.IsNumber(Value);
+            if (CharacterType.HasFlag(CharIs.LowSurrogate))
+                return char.IsLowSurrogate(Value);
+            if (CharacterType.HasFlag(CharIs.Lower))
+                return char.IsLower(Value);
+            if (CharacterType.HasFlag(CharIs.LetterOrDigit))
+                return char.IsLetterOrDigit(Value);
+            if (CharacterType.HasFlag(CharIs.Letter))
+                return char.IsLetter(Value);
+            if (CharacterType.HasFlag(CharIs.HighSurrogate))
+                return char.IsHighSurrogate(Value);
+            if (CharacterType.HasFlag(CharIs.Digit))
+                return char.IsDigit(Value);
+            if (CharacterType.HasFlag(CharIs.Control))
+                return char.IsControl(Value);
+            return false;
         }
 
         #endregion
@@ -288,11 +120,75 @@ namespace Utilities.DataTypes.ExtensionMethods
         /// <returns>True if it's unicode, false otherwise</returns>
         public static bool IsUnicode(this byte[] Input)
         {
-            return Input == null ? true : Input.ToEncodedString(new UnicodeEncoding()).Is(StringCompare.Unicode);
+            return Input == null ? true : Input.ToString(new UnicodeEncoding()).Is(StringCompare.Unicode);
         }
 
         #endregion
 
         #endregion
     }
+
+    #region Enums
+
+    /// <summary>
+    /// What type of character is this
+    /// </summary>
+    [Flags]
+    public enum CharIs
+    {
+        /// <summary>
+        /// White space
+        /// </summary>
+        WhiteSpace = 1,
+        /// <summary>
+        /// Upper case
+        /// </summary>
+        Upper = 2,
+        /// <summary>
+        /// Symbol
+        /// </summary>
+        Symbol = 4,
+        /// <summary>
+        /// Surrogate
+        /// </summary>
+        Surrogate = 8,
+        /// <summary>
+        /// Punctuation
+        /// </summary>
+        Punctuation = 16,
+        /// <summary>
+        /// Number
+        /// </summary>
+        Number = 32,
+        /// <summary>
+        /// Low surrogate
+        /// </summary>
+        LowSurrogate = 64,
+        /// <summary>
+        /// Lower
+        /// </summary>
+        Lower = 128,
+        /// <summary>
+        /// letter or digit
+        /// </summary>
+        LetterOrDigit = 256,
+        /// <summary>
+        /// Letter
+        /// </summary>
+        Letter = 512,
+        /// <summary>
+        /// High surrogate
+        /// </summary>
+        HighSurrogate = 1024,
+        /// <summary>
+        /// Digit
+        /// </summary>
+        Digit = 2048,
+        /// <summary>
+        /// Control
+        /// </summary>
+        Control = 4096
+    }
+
+    #endregion
 }

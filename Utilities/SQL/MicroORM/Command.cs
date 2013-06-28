@@ -23,11 +23,11 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM.Interfaces;
-using System.Globalization;
 #endregion
 
 namespace Utilities.SQL.MicroORM
@@ -150,7 +150,7 @@ namespace Utilities.SQL.MicroORM
         /// <param name="ParameterStarter">Parameter starter</param>
         public virtual void AddParameter(string ID, SqlDbType Type, object Value = null, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
         {
-            AddParameter(ID, Type.ToDbType(), Value, Direction, ParameterStarter);
+            AddParameter(ID, Type.To(DbType.Int32), Value, Direction, ParameterStarter);
         }
 
         /// <summary>
