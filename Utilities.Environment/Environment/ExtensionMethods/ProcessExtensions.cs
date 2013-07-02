@@ -80,7 +80,7 @@ namespace Utilities.Environment.ExtensionMethods
                    .Append(Process.ProcessName)
                    .Append(" Information")
                    .Append(HTMLFormat ? "</strong><br />" : "\n")
-                   .Append(Process.DumpProperties(HTMLFormat))
+                   .Append(Process.ToString(HTMLFormat))
                    .Append(HTMLFormat ? "<br />" : "\n")
                    .ToString();
         }

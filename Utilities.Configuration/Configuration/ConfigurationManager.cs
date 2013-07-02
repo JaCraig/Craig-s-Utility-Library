@@ -91,7 +91,7 @@ namespace Utilities.Configuration
         public static void RegisterConfigFile(Assembly AssemblyContainingConfig)
         {
             Contract.Requires<ArgumentNullException>(AssemblyContainingConfig != null, "AssemblyContainingConfig");
-            RegisterConfigFile(AssemblyContainingConfig.GetObjects<IConfig>());
+            RegisterConfigFile(AssemblyContainingConfig.Objects<IConfig>());
         }
 
         #endregion

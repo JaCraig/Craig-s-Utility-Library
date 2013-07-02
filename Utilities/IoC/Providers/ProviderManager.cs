@@ -44,7 +44,7 @@ namespace Utilities.IoC.Providers
         public ProviderManager()
         {
             Providers = new List<IProvider>();
-            Providers.Add(typeof(ProviderManager).Assembly.GetObjects<IProvider>());
+            Providers.Add(typeof(ProviderManager).Assembly.Objects<IProvider>());
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace Utilities.IoC.Providers
         /// <param name="Assembly">Assembly to scan</param>
         public void Setup(Assembly Assembly)
         {
-            Providers.Add(Assembly.GetObjects<IProvider>());
+            Providers.Add(Assembly.Objects<IProvider>());
         }
 
         /// <summary>

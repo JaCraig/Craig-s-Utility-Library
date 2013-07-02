@@ -60,7 +60,7 @@ namespace Utilities.IoC.Mappings
         /// <param name="ModuleAssembly"></param>
         public void Setup(Assembly ModuleAssembly)
         {
-            IEnumerable<Type> Modules = ModuleAssembly.GetTypes(typeof(IModule));
+            IEnumerable<Type> Modules = ModuleAssembly.Types(typeof(IModule));
             List<IModule> TempModules = new List<IModule>();
             foreach (Type Module in Modules)
             {

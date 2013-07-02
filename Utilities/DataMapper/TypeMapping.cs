@@ -69,10 +69,10 @@ namespace Utilities.DataMapper
                 PropertyInfo DestinationProperty=DestinationType.GetProperty(Properties[x].Name);
                 if (DestinationProperty != null)
                 {
-                    Expression<Func<Left, object>> LeftGet = Properties[x].GetPropertyGetter<Left>();
-                    Expression<Action<Left, object>> LeftSet = LeftGet.GetPropertySetter();
-                    Expression<Func<Right, object>> RightGet = DestinationProperty.GetPropertyGetter<Right>();
-                    Expression<Action<Right, object>> RightSet = RightGet.GetPropertySetter();
+                    Expression<Func<Left, object>> LeftGet = Properties[x].PropertyGetter<Left>();
+                    Expression<Action<Left, object>> LeftSet = LeftGet.PropertySetter();
+                    Expression<Func<Right, object>> RightGet = DestinationProperty.PropertyGetter<Right>();
+                    Expression<Action<Right, object>> RightSet = RightGet.PropertySetter();
                     this.AddMapping(LeftGet.Compile(), LeftSet.Compile(), RightGet.Compile(), RightSet.Compile());
                 }
             }

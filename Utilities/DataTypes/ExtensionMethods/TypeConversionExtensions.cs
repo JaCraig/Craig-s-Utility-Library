@@ -49,7 +49,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             if (Input == null)
                 return "";
-            return !string.IsNullOrEmpty(Format) ? Input.CallMethod<string>("ToString", Format) : Input.ToString();
+            return !string.IsNullOrEmpty(Format) ? Input.Call<string>("ToString", Format) : Input.ToString();
         }
 
         #endregion

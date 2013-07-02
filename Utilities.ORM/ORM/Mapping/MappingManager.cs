@@ -71,7 +71,7 @@ namespace Utilities.ORM.Mapping
         {
             if (Mappings == null)
                 Mappings = new ListMapping<Type, IMapping>();
-            IEnumerable<Type> Types = AssemblyUsing.GetTypes(typeof(IMapping));
+            IEnumerable<Type> Types = AssemblyUsing.Types(typeof(IMapping));
             foreach (Type Type in Types)
             {
                 Type BaseType = Type.BaseType;

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         public void CallMethodTest()
         {
             int Value = 10;
-            Assert.Equal("10", Value.CallMethod<string>("ToString"));
+            Assert.Equal("10", Value.Call<string>("ToString"));
         }
 
         [Fact]
@@ -45,21 +46,21 @@ namespace UnitTests.Reflection.ExtensionMethods
             List<int> TestObject = new List<int>();
             for (int x = 0; x < 10; ++x)
                 TestObject.Add(x);
-            Assert.Equal("<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody><tr><td>Capacity</td><td>16</td></tr><tr><td>Count</td><td>10</td></tr><tr><td>Item</td><td></td></tr></tbody></table>", TestObject.DumpProperties());
+            Assert.Equal("<table><thead><tr><th>Property Name</th><th>Property Value</th></tr></thead><tbody><tr><td>Capacity</td><td>16</td></tr><tr><td>Count</td><td>10</td></tr><tr><td>Item</td><td></td></tr></tbody></table>", TestObject.ToString(true));
         }
 
         [Fact]
         public void IsIEnumerableTest()
         {
             List<int> TestObject = new List<int>();
-            Assert.True(TestObject.GetType().IsIEnumerable());
+            Assert.True(TestObject.GetType().Is(typeof(IEnumerable)));
         }
 
         [Fact]
         public void IsOfTypeTest()
         {
             List<int> TestObject = new List<int>();
-            Assert.True(TestObject.IsOfType(typeof(List<int>)));
+            Assert.True(TestObject.Is(typeof(List<int>)));
         }
 
         [Fact]
@@ -79,10 +80,10 @@ namespace UnitTests.Reflection.ExtensionMethods
         {
             Assert.Equal(3, AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
                                         .Load()
-                                        .GetTypes<TestInterface>()
+                                        .Types<TestInterface>()
                                         .Count());
             Assert.Equal(6, new DirectoryInfo(@".\").LoadAssemblies()
-                                                    .GetTypes<TestInterface>()
+                                                    .Types<TestInterface>()
                                                     .Count());
         }
 
@@ -91,14 +92,14 @@ namespace UnitTests.Reflection.ExtensionMethods
         {
             Assert.NotNull(AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
                                        .Load()
-                                       .GetTypes<TestClass>()
+                                       .Types<TestClass>()
                                        .First()
-                                       .CreateInstance());
+                                       .Create());
             Assert.IsType<TestClass>(AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
                                        .Load()
-                                       .GetTypes<TestClass>()
+                                       .Types<TestClass>()
                                        .First()
-                                       .CreateInstance<TestInterface>());
+                                       .Create<TestInterface>());
         }
 
         [Fact]
@@ -110,7 +111,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetObjectsTest()
         {
-            Assert.Equal(4, new DirectoryInfo(@".\").GetObjects<TestInterface>()
+            Assert.Equal(4, new DirectoryInfo(@".\").Objects<TestInterface>()
                                                     .Count());
         }
 
@@ -140,7 +141,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         public void SetPropertyTest()
         {
             TestClass TestObject1 = new TestClass();
-            TestObject1.SetProperty("Value", 3);
+            TestObject1.Property("Value", 3);
             Assert.Equal(3, TestObject1.Value);
         }
 
@@ -155,31 +156,31 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetPropertyTypeTest()
         {
-            Assert.Equal(typeof(int), new TestClass().GetPropertyType("Value"));
-            Assert.Equal(typeof(int), new TestClass().GetPropertyType("Value2"));
+            Assert.Equal(typeof(int), new TestClass().PropertyType("Value"));
+            Assert.Equal(typeof(int), new TestClass().PropertyType("Value2"));
         }
 
         [Fact]
         public void GetPropertyTest()
         {
-            Assert.Equal(1, new TestClass().GetProperty("Value"));
-            Assert.Equal(2, new TestClass().GetProperty("Value2"));
+            Assert.Equal(1, new TestClass().Property("Value"));
+            Assert.Equal(2, new TestClass().Property("Value2"));
         }
 
         [Fact]
         public void GetPropertyNameTest()
         {
             Expression<Func<TestClass, int>> TestObject = x => x.Value;
-            Assert.Equal("Value", TestObject.GetPropertyName());
+            Assert.Equal("Value", TestObject.PropertyName());
             Expression<Func<TestClass, int>> TestObject2 = x => x.Value2;
-            Assert.Equal("Value2", TestObject2.GetPropertyName());
+            Assert.Equal("Value2", TestObject2.PropertyName());
         }
 
         [Fact]
         public void GetPropertySetterTest()
         {
             Expression<Func<TestClass, int>> TestObject = x => x.Value;
-            Expression<Action<TestClass, int>> TestObject2 = TestObject.GetPropertySetter();
+            Expression<Action<TestClass, int>> TestObject2 = TestObject.PropertySetter();
             TestClass TestObject3=new TestClass();
             TestObject2.Compile()(TestObject3, 10);
             Assert.Equal(10, TestObject3.Value);
@@ -189,7 +190,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         public void GetPropertySetterTest2()
         {
             Expression<Func<TestClass4, int>> TestObject = x => x.Temp.Value;
-            Expression<Action<TestClass4, int>> TestObject2 = TestObject.GetPropertySetter();
+            Expression<Action<TestClass4, int>> TestObject2 = TestObject.PropertySetter();
             TestClass4 TestObject3 = new TestClass4();
             TestObject2.Compile()(TestObject3, 10);
             Assert.Equal(10, TestObject3.Temp.Value);
@@ -198,7 +199,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetPropertyGetterTest()
         {
-            Expression<Func<TestClass, int>> TestObject = typeof(TestClass).GetProperty("Value").GetPropertyGetter<TestClass, int>();
+            Expression<Func<TestClass, int>> TestObject = typeof(TestClass).GetProperty("Value").PropertyGetter<TestClass, int>();
             TestClass TestObject2 = new TestClass();
             TestObject2.Value = 10;
             Assert.Equal(10, TestObject.Compile()(TestObject2));
@@ -207,25 +208,25 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void ToLongVersionString()
         {
-            Assert.Equal("1.0.0.0", typeof(TestClass).Assembly.ToLongVersionString());
+            Assert.Equal("1.0.0.0", typeof(TestClass).Assembly.ToString(VersionInfo.LongVersion));
         }
 
         [Fact]
         public void ToShortVersionString()
         {
-            Assert.Equal("1.0", typeof(TestClass).Assembly.ToShortVersionString());
+            Assert.Equal("1.0", typeof(TestClass).Assembly.ToString(VersionInfo.ShortVersion));
         }
 
         [Fact]
         public void GetAttributes()
         {
-            Assert.Equal(1, typeof(TestClass).GetAttributes<TestingAttribute>().Length);
+            Assert.Equal(1, typeof(TestClass).Attributes<TestingAttribute>().Length);
         }
 
         [Fact]
         public void GetAttribute()
         {
-            TestingAttribute TestObject = typeof(TestClass).GetAttribute<TestingAttribute>();
+            TestingAttribute TestObject = typeof(TestClass).Attribute<TestingAttribute>();
             Assert.NotNull(TestObject);
         }
 
@@ -234,9 +235,15 @@ namespace UnitTests.Reflection.ExtensionMethods
         {
             Assert.Equal(1, AssemblyName.GetAssemblyName(new FileInfo(@".\UnitTests.dll").FullName)
                                         .Load()
-                                        .GetTypes<TestInterface>()
+                                        .Types<TestInterface>()
                                         .MarkedWith<TestingAttribute>()
                                         .Count());
+        }
+
+        [Fact]
+        public void VersionInfo2()
+        {
+            Assert.Equal("UnitTests: 1.0\r\nUnitTests: 1.0\r\nUtilities: 1.0\r\nxunit: 1.9\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
         }
     }
 

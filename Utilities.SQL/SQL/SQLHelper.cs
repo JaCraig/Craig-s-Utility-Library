@@ -933,7 +933,7 @@ namespace Utilities.SQL
                 Update<ClassType>(Object, Parameters);
                 return;
             }
-            if (typeof(PrimaryKeyType).IsOfType(typeof(string)))
+            if (typeof(PrimaryKeyType).Is(typeof(string)))
                 Param1 = new StringParameter(MappingUsing.PrimaryKey, PrimaryKeyVal.ToString(), ParameterDirection.Input, DatabaseUsing.ParameterPrefix);
             else
                 Param1 = new Parameter<PrimaryKeyType>(MappingUsing.PrimaryKey, PrimaryKeyVal, ParameterDirection.Input, DatabaseUsing.ParameterPrefix);

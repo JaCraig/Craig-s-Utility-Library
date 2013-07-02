@@ -24,9 +24,9 @@ namespace Utilities.Random.DefaultClasses
             System.Type ObjectType = typeof(T);
             foreach (PropertyInfo Property in ObjectType.GetProperties())
             {
-                GeneratorAttributeBase Attribute = Property.GetAttribute<GeneratorAttributeBase>();
+                GeneratorAttributeBase Attribute = Property.Attribute<GeneratorAttributeBase>();
                 if(Attribute!=null)
-                    ReturnItem.SetProperty(Property, Attribute.NextObj(Rand));
+                    ReturnItem.Property(Property, Attribute.NextObj(Rand));
             }
             return ReturnItem;
         }

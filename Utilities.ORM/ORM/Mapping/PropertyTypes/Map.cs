@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace Utilities.ORM.Mapping.PropertyTypes
         public Map(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {
-            if (typeof(DataType).IsIEnumerable())
+            if (typeof(DataType).Is(typeof(IEnumerable)))
                 throw new ArgumentException("Expression is an IEnumerable, use ManyToOne or ManyToMany instead");
             SetDefaultValue(() => default(DataType));
             SetFieldName(typeof(DataType).Name + "_" + Name + "_ID");

@@ -44,9 +44,9 @@ namespace Utilities.DataMapper
         public Mapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
         {
             LeftGet = LeftExpression.Compile();
-            LeftSet = LeftExpression.GetPropertySetter().Compile();
+            LeftSet = LeftExpression.PropertySetter().Compile();
             RightGet = RightExpression.Compile();
-            RightSet = RightExpression.GetPropertySetter().Compile();
+            RightSet = RightExpression.PropertySetter().Compile();
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Utilities.DataMapper
             this.LeftGet = LeftGet;
             this.LeftSet = LeftSet;
             RightGet = RightExpression.Compile();
-            RightSet = RightExpression.GetPropertySetter().Compile();
+            RightSet = RightExpression.PropertySetter().Compile();
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Utilities.DataMapper
         public Mapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
         {
             LeftGet = LeftExpression.Compile();
-            LeftSet = LeftExpression.GetPropertySetter().Compile();
+            LeftSet = LeftExpression.PropertySetter().Compile();
             this.RightGet = RightGet;
             this.RightSet = RightSet;
         }

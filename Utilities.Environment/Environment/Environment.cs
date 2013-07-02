@@ -152,7 +152,7 @@ namespace Utilities.Environment
         {
             StringBuilder Builder = new StringBuilder();
             Builder.Append(HTMLOutput ? "<strong>System Information</strong><br />" : "System Information\r\n");
-            Builder.Append(typeof(Utilities.Environment.Environment).DumpProperties(HTMLOutput));
+            Builder.Append(typeof(Utilities.Environment.Environment).ToString(HTMLOutput));
             return Builder.ToString();
         }
 

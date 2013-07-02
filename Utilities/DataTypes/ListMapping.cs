@@ -273,7 +273,7 @@ namespace Utilities.DataTypes
         /// <returns>The enumerator for this object</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            foreach(T1 Key in Keys)
+            foreach (T1 Key in Keys)
                 yield return this[Key];
         }
 
@@ -288,7 +288,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public ICollection<ICollection<T2>> Values
         {
-            get 
+            get
             {
                 List<ICollection<T2>> Lists = new List<ICollection<T2>>();
                 foreach (T1 Key in Keys)

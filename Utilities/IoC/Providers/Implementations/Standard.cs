@@ -94,7 +94,7 @@ namespace Utilities.IoC.Providers.Implementations
             Instance.GetType()
                 .GetProperties()
                 .Where(x => IsInjectable(x))
-                .ForEach<PropertyInfo>(x => Instance.SetProperty(x, CreateInstance(x)));
+                .ForEach<PropertyInfo>(x => Instance.Property(x, CreateInstance(x)));
         }
 
         #endregion

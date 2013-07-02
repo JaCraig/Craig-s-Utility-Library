@@ -46,7 +46,7 @@ namespace Utilities.DataTypes.Conversion
             ObjectType = typeof(T);
             Converters = new List<IConverter<T>>();
             this.Manager = Manager;
-            foreach (Type Converter in AppDomain.CurrentDomain.GetAssemblies().GetTypes<IConverter<T>>())
+            foreach (Type Converter in AppDomain.CurrentDomain.GetAssemblies().Types<IConverter<T>>())
             {
                 Converters.Add((IConverter<T>)Activator.CreateInstance(Converter, Manager));
             }

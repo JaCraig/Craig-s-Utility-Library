@@ -72,7 +72,7 @@ namespace Utilities.ORM.QueryProviders
         {
             if (Databases == null)
                 Databases = new System.Collections.Generic.List<IDatabase>();
-            IEnumerable<Type> Types = AssemblyUsing.GetTypes(typeof(IDatabase));
+            IEnumerable<Type> Types = AssemblyUsing.Types(typeof(IDatabase));
             foreach (Type Type in Types)
             {
                 IDatabase TempObject = (IDatabase)Activator.CreateInstance(Type);
@@ -97,7 +97,7 @@ namespace Utilities.ORM.QueryProviders
         {
             if (Mappings == null)
                 Mappings = new ListMapping<IDatabase, IMapping>();
-            IEnumerable<IDatabase> Databases = this.Databases.Where(x => x.IsOfType(Mapping.DatabaseConfigType)
+            IEnumerable<IDatabase> Databases = this.Databases.Where(x => x.Is(Mapping.DatabaseConfigType)
                                                         && !string.IsNullOrEmpty(x.ConnectionString));
             foreach (IDatabase Database in Databases)
             {

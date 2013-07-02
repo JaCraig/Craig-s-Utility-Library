@@ -88,7 +88,7 @@ namespace Utilities.Web.ExtensionMethods
                 String.Append(Key).Append(": ")
                     .Append(Input[Key].ToString())
                     .Append(HTMLOutput ? "<br />Properties<br />" : "\r\nProperties\r\n")
-                    .Append(Input[Key].DumpProperties(HTMLOutput))
+                    .Append(Input[Key].ToString(HTMLOutput))
                     .Append(HTMLOutput ? "<br />" : "\r\n");
             }
             return String.ToString();
@@ -123,7 +123,7 @@ namespace Utilities.Web.ExtensionMethods
                 String.Append(Entry.Key).Append(": ")
                     .Append(Entry.Value.ToString())
                     .Append(HTMLOutput ? "<br />Properties<br />" : "\r\nProperties\r\n")
-                    .Append(Entry.Value.DumpProperties(HTMLOutput))
+                    .Append(Entry.Value.ToString(HTMLOutput))
                     .Append(HTMLOutput ? "<br />" : "\r\n");
             }
             return String.ToString();
@@ -193,7 +193,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>a string containing the information</returns>
         public static string DumpRequestVariable(this HttpRequest Request, bool HTMLOutput = false)
         {
-            return Request.DumpProperties(HTMLOutput);
+            return Request.ToString(HTMLOutput);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>a string containing the information</returns>
         public static string DumpRequestVariable(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
-            return Page.Request.DumpRequestVariable(HTMLOutput);
+            return Page.Request.ToString(HTMLOutput);
         }
 
         #endregion
@@ -219,7 +219,7 @@ namespace Utilities.Web.ExtensionMethods
         /// <returns>a string containing the information</returns>
         public static string DumpResponseVariable(this HttpResponse Response, bool HTMLOutput = false)
         {
-            return Response.DumpProperties(HTMLOutput);
+            return Response.ToString(HTMLOutput);
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace Utilities.Web.ExtensionMethods
                 String.Append(Key).Append(": ")
                     .Append(Input[Key].ToString())
                     .Append(HTMLOutput ? "<br />Properties<br />" : "\r\nProperties\r\n")
-                    .Append(Input[Key].DumpProperties(HTMLOutput))
+                    .Append(Input[Key].ToString(HTMLOutput))
                     .Append(HTMLOutput ? "<br />" : "\r\n");
             }
             return String.ToString();

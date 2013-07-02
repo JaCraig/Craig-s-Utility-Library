@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-ORM</id>
-		<version>3.3.0344</version>
+		<version>3.3.0354</version>
 		<title>Craig's Utility Library ORM Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

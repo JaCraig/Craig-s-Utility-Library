@@ -43,9 +43,9 @@ namespace Utilities.DataTypes.Conversion
         {
             Converters = new Dictionary<Type, IObjectConverter>();
             new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).LoadAssemblies(false).ForEach(x => x);
-            foreach (Type ObjectConverter in AppDomain.CurrentDomain.GetAssemblies().GetTypes<IObjectConverter>())
+            foreach (Type ObjectConverter in AppDomain.CurrentDomain.GetAssemblies().Types<IObjectConverter>())
             {
-                foreach (Type Converter in AppDomain.CurrentDomain.GetAssemblies().GetTypes<IConverter>())
+                foreach (Type Converter in AppDomain.CurrentDomain.GetAssemblies().Types<IConverter>())
                 {
                     Type Key = Converter;
                     while (Key != null)

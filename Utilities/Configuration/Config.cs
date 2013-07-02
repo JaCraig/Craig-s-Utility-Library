@@ -125,7 +125,7 @@ namespace Utilities.Configuration
             if (Temp==null)
                 return;
             foreach (PropertyInfo Property in Temp.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead))
-                this.SetProperty(Property, Temp.GetProperty(Property));
+                this.Property(Property, Temp.Property(Property));
         }
 
         private void Encrypt()
@@ -133,7 +133,7 @@ namespace Utilities.Configuration
             if (string.IsNullOrEmpty(EncryptionPassword))
                 return;
             foreach (PropertyInfo Property in this.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead && x.PropertyType == typeof(string)))
-                this.SetProperty(Property, ((string)this.GetProperty(Property)).Encrypt(EncryptionPassword));
+                this.Property(Property, ((string)this.Property(Property)).Encrypt(EncryptionPassword));
         }
 
         private void Decrypt()
@@ -141,7 +141,7 @@ namespace Utilities.Configuration
             if (string.IsNullOrEmpty(EncryptionPassword))
                 return;
             foreach (PropertyInfo Property in this.GetType().GetProperties().Where(x => x.CanWrite && x.CanRead && x.PropertyType == typeof(string)))
-                this.SetProperty(Property, ((string)this.GetProperty(Property)).Decrypt(EncryptionPassword));
+                this.Property(Property, ((string)this.Property(Property)).Decrypt(EncryptionPassword));
         }
 
         #endregion

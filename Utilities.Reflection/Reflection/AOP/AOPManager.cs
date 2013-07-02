@@ -58,11 +58,11 @@ namespace Utilities.Reflection.AOP
             if (!string.IsNullOrEmpty(AspectLocation))
             {
                 if (AspectLocation.EndsWith(".dll", StringComparison.CurrentCultureIgnoreCase))
-                    Aspects.AddRange(new AssemblyName(AspectLocation).Load().GetObjects<IAspect>());
+                    Aspects.AddRange(new AssemblyName(AspectLocation).Load().Objects<IAspect>());
                 else if (new DirectoryInfo(AspectLocation).Exists)
-                    Aspects.AddRange(new DirectoryInfo(AspectLocation).GetObjects<IAspect>());
+                    Aspects.AddRange(new DirectoryInfo(AspectLocation).Objects<IAspect>());
                 else
-                    Aspects.AddRange(new AssemblyName(AspectLocation).Load().GetObjects<IAspect>());
+                    Aspects.AddRange(new AssemblyName(AspectLocation).Load().Objects<IAspect>());
             }
             if (AssemblyBuilder != null)
                 return;

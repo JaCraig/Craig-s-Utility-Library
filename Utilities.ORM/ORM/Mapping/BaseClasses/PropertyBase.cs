@@ -49,7 +49,7 @@ namespace Utilities.ORM.Mapping.BaseClasses
         protected PropertyBase(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
         {
             this.Expression = Expression;
-            this.Name = Expression.GetPropertyName();
+            this.Name = Expression.PropertyName();
             this.Type = typeof(DataType);
             this.DerivedFieldName = "_" + Name + "Derived";
             this.Mapping = (IMapping)Mapping;
