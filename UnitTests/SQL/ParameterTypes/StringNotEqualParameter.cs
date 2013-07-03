@@ -36,7 +36,7 @@ namespace UnitTests.SQL.ParameterTypes
             Assert.Equal("@", TestObject.ParameterStarter);
             Assert.Equal("ID<>@ID", TestObject.ToString());
             Assert.Equal(100, TestObject.Length);
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Integrated Security=SSPI;Pooling=false"))
             {
                 Assert.DoesNotThrow(() => Helper.AddParameter(TestObject));
             }

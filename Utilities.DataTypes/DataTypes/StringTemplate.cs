@@ -100,10 +100,20 @@ namespace Utilities.DataTypes
         /// <param name="info">Serialization info</param>
         /// <param name="context">Streaming context</param>
         [SecurityCritical]
-        [SuppressMessage("Microsoft.Security","CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
+        [SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
+        }
+
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(StringTemplate Value)
+        {
+            return Value.ToString();
         }
 
         #endregion

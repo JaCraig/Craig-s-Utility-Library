@@ -161,7 +161,7 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Actual internal container
         /// </summary>
-        protected Dictionary<T, int> Items { get;private set; }
+        protected Dictionary<T, int> Items { get; private set; }
 
         #endregion
     }

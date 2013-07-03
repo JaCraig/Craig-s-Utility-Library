@@ -55,18 +55,28 @@ namespace Utilities.SQL.MicroORM
                 this.Connection = ConfigurationManager.ConnectionStrings[this.Name].ConnectionString;
                 this.DbType = ConfigurationManager.ConnectionStrings[this.Name].ProviderName;
             }
+            else if(string.IsNullOrEmpty(Connection))
+            {
+                this.Connection = Name;
+                this.DbType = DbType;
+            }
             else
             {
                 this.Connection = Connection;
                 this.DbType = DbType;
             }
+            if (string.IsNullOrEmpty(this.DbType))
+            {
+                this.DbType = "System.Data.SqlClient";
+            }
             if (string.IsNullOrEmpty(ParameterPrefix))
             {
-                this.ParameterPrefix = "@";
                 if (DbType.Contains("MySql"))
                     this.ParameterPrefix = "?";
                 else if (DbType.Contains("Oracle"))
                     this.ParameterPrefix = ":";
+                else
+                    this.ParameterPrefix = "@";
             }
             else
                 this.ParameterPrefix = ParameterPrefix;

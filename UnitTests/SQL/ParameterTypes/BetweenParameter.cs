@@ -37,7 +37,7 @@ namespace UnitTests.SQL.ParameterTypes
             Assert.Equal(12, TestObject.Max);
             Assert.Equal("@", TestObject.ParameterStarter);
             Assert.Equal("ID BETWEEN @IDMin AND @IDMax", TestObject.ToString());
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Integrated Security=SSPI;Pooling=false"))
             {
                 Assert.DoesNotThrow(() => Helper.AddParameter(TestObject));
             }

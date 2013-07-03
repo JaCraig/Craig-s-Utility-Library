@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
@@ -43,6 +44,8 @@ namespace Utilities.DataMapper
         /// <param name="RightExpression">Right expression</param>
         public Mapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
         {
+            Contract.Requires(LeftExpression != null, "LeftExpression");
+            Contract.Requires(RightExpression != null, "RightExpression");
             LeftGet = LeftExpression.Compile();
             LeftSet = LeftExpression.PropertySetter().Compile();
             RightGet = RightExpression.Compile();
@@ -57,6 +60,9 @@ namespace Utilities.DataMapper
         /// <param name="RightExpression">Right expression</param>
         public Mapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression)
         {
+            Contract.Requires(LeftGet != null, "LeftGet");
+            Contract.Requires(LeftSet != null, "LeftSet");
+            Contract.Requires(RightExpression != null, "RightExpression");
             this.LeftGet = LeftGet;
             this.LeftSet = LeftSet;
             RightGet = RightExpression.Compile();
@@ -71,6 +77,9 @@ namespace Utilities.DataMapper
         /// <param name="RightSet">Right set function</param>
         public Mapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
         {
+            Contract.Requires(LeftExpression != null, "LeftExpression");
+            Contract.Requires(RightGet != null, "RightGet");
+            Contract.Requires(RightSet != null, "RightSet");
             LeftGet = LeftExpression.Compile();
             LeftSet = LeftExpression.PropertySetter().Compile();
             this.RightGet = RightGet;
@@ -86,6 +95,10 @@ namespace Utilities.DataMapper
         /// <param name="RightSet">Right set function</param>
         public Mapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet)
         {
+            Contract.Requires(LeftGet != null, "LeftGet");
+            Contract.Requires(LeftSet != null, "LeftSet");
+            Contract.Requires(RightGet != null, "RightGet");
+            Contract.Requires(RightSet != null, "RightSet");
             this.LeftGet = LeftGet;
             this.LeftSet = LeftSet;
             this.RightGet = RightGet;
@@ -127,7 +140,6 @@ namespace Utilities.DataMapper
         /// <param name="Destination">Destination object</param>
         public virtual void Copy(Left Source, Right Destination)
         {
-            if (RightSet == null || LeftGet == null || Source == null || Destination == null) return;
             RightSet(Destination, LeftGet(Source));
         }
 
@@ -138,7 +150,6 @@ namespace Utilities.DataMapper
         /// <param name="Destination">Destination object</param>
         public virtual void Copy(Right Source, Left Destination)
         {
-            if (LeftSet == null || RightGet == null || Source == null || Destination == null) return;
             LeftSet(Destination, RightGet(Source));
         }
 
@@ -151,7 +162,6 @@ namespace Utilities.DataMapper
         /// <param name="Destination">Destination object</param>
         public virtual void CopyLeftToRight(Left Source, Right Destination)
         {
-            if (RightSet == null || LeftGet == null || Source == null || Destination == null) return;
             RightSet(Destination, LeftGet(Source));
         }
 
@@ -164,7 +174,6 @@ namespace Utilities.DataMapper
         /// <param name="Destination">Destination object</param>
         public virtual void CopyRightToLeft(Right Source, Left Destination)
         {
-            if (LeftSet == null || RightGet == null || Source == null || Destination == null) return;
             LeftSet(Destination, RightGet(Source));
         }
 

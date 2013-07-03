@@ -23,12 +23,13 @@ THE SOFTWARE.*/
 
 #endregion
 
+using Utilities.DataTypes.Patterns.BaseClasses;
 namespace Utilities.Web.Email
 {
     /// <summary>
     /// Base message class used for emails
     /// </summary>
-    public class Message
+    public abstract class Message : SafeDisposableBaseClass
     {
         #region Constructor
         /// <summary>
@@ -37,6 +38,7 @@ namespace Utilities.Web.Email
         public Message()
         {
         }
+
         #endregion
 
         #region Properties

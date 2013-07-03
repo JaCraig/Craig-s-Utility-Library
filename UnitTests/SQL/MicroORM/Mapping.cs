@@ -36,12 +36,12 @@ namespace UnitTests.SQL.MicroORM
     {
         public Mapping()
         {
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Database TestDatabase", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Database TestDatabase", CommandType.Text, "Data Source=localhost;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteNonQuery();
 
             }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Table TestTable(ID_ INT PRIMARY KEY IDENTITY,StringValue_ NVARCHAR(100),LongValue_ BIGINT,BoolValue_ BIT,FloatValue_ FLOAT,StringMaxValue_ NVARCHAR(MAX))", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Table TestTable(ID_ INT PRIMARY KEY IDENTITY,StringValue_ NVARCHAR(100),LongValue_ BIGINT,BoolValue_ BIT,FloatValue_ FLOAT,StringMaxValue_ NVARCHAR(MAX))", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteNonQuery();
             }
@@ -53,7 +53,7 @@ namespace UnitTests.SQL.MicroORM
             Assert.DoesNotThrow(() =>
             {
                 Mapping<ObjectClass1> TestObject = new Mapping<ObjectClass1>("TestTable", "ID_");
-                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
                 {
                     Mapping<ObjectClass1> TestObject2 = new Mapping<ObjectClass1>(TestObject);
                 }
@@ -64,7 +64,7 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Map()
         {
-            Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+            Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             TestObject.Map(x => x.ID, "ID_")
                 .Map(x => x.StringValue, "StringValue_")
                 .Map(x => x.FloatValue, "FloatValue_")
@@ -78,9 +78,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Insert()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -95,7 +95,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.LongValue=12345;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 TempObject.ID = Helper2.Insert<ObjectClass1, int>(TempObject);
-                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
                 {
                     Helper.ExecuteReader();
                     if (Helper.Read())
@@ -118,9 +118,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Update()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -142,7 +142,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.LongValue = 12345;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 Helper2.Update(TempObject);
-                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
                 {
                     Helper.ExecuteReader();
                     if (Helper.Read())
@@ -165,9 +165,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Save()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -189,7 +189,7 @@ namespace UnitTests.SQL.MicroORM
                 TempObject.LongValue = 12345;
                 TempObject.StringMaxValue = Rand.Next<string>(new RegexStringGenerator(6000));
                 Helper2.Save<ObjectClass1, int>(TempObject);
-                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
                 {
                     Helper.ExecuteReader();
                     if (Helper.Read())
@@ -212,9 +212,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Any()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -243,9 +243,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Scalar()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -274,9 +274,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void All()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -323,9 +323,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Paged()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -362,9 +362,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Paged2()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -409,9 +409,9 @@ namespace UnitTests.SQL.MicroORM
         [Fact]
         public void Delete()
         {
-            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("","Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false",CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper2 = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
-                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_");
+                Mapping<ObjectClass1> TestObject = Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", true, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
                 TestObject.Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -428,7 +428,7 @@ namespace UnitTests.SQL.MicroORM
                 Helper2.Save<ObjectClass1, int>(TempObject);
                 Assert.Equal(1, Helper2.Delete<ObjectClass1>(TempObject));
                 
-                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) AS ItemCount FROM TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+                using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) AS ItemCount FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
                 {
                     Helper.ExecuteReader();
                     if (Helper.Read())
@@ -445,7 +445,7 @@ namespace UnitTests.SQL.MicroORM
 
         public void Dispose()
         {
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.Batch().AddCommand("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
                     .AddCommand("ALTER DATABASE TestDatabase SET ONLINE", CommandType.Text)

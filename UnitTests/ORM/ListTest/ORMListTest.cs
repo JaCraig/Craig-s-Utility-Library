@@ -69,7 +69,7 @@ namespace UnitTests.ORM.ListTest
             }
             Tasks.Save<Task2, long>();
             
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteReader();
                 int Counter = 0;
@@ -116,7 +116,7 @@ namespace UnitTests.ORM.ListTest
             Tasks2.Add(TempTask);
             TestProject.Tasks = Tasks2;
             TestProject.Save();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Project2_", "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Project2_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteReader();
                 if (Helper.Read())
@@ -129,7 +129,7 @@ namespace UnitTests.ORM.ListTest
                     Assert.False(true,"Nothing was inserted");
                 }
             }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteReader();
                 while (Helper.Read())
@@ -175,7 +175,7 @@ namespace UnitTests.ORM.ListTest
             TestProject.Save();
             TestProject.Description = "Test description2";
             TestProject.Save();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Project2_", "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Project2_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteReader();
                 if (Helper.Read())
@@ -188,7 +188,7 @@ namespace UnitTests.ORM.ListTest
                     Assert.False(true,"Nothing was inserted");
                 }
             }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM Task2_", CommandType.Text, "Data Source=localhost;Initial Catalog=ORMTestDatabase3;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteReader();
                 while (Helper.Read())
@@ -369,7 +369,7 @@ namespace UnitTests.ORM.ListTest
         public void Dispose()
         {
             Utilities.ORM.ORM.Destroy();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase3 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
                     .AddCommand("ALTER DATABASE ORMTestDatabase3 SET ONLINE", CommandType.Text)

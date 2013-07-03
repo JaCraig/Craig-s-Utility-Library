@@ -26,6 +26,7 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading;
 using Utilities.DataTypes.ExtensionMethods;
+using Utilities.DataTypes.Patterns.BaseClasses;
 #endregion
 
 namespace Utilities.Web.Email.SMTP
@@ -33,7 +34,7 @@ namespace Utilities.Web.Email.SMTP
     /// <summary>
     /// Utility for sending an email
     /// </summary>
-    public class EmailSender : Message, IDisposable
+    public class EmailSender : Message
     {
         #region Constructors
 
@@ -132,19 +133,10 @@ namespace Utilities.Web.Email.SMTP
         }
 
         /// <summary>
-        /// Disposes the object
+        /// Disposes of the object
         /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the objects
-        /// </summary>
-        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
-        protected virtual void Dispose(bool Disposing)
+        /// <param name="Managed">Ignored in this object</param>
+        protected override void Dispose(bool Managed)
         {
             if (Attachments != null)
             {
@@ -156,14 +148,6 @@ namespace Utilities.Web.Email.SMTP
                 EmbeddedResources.ForEach(x => x.Dispose());
                 EmbeddedResources = null;
             }
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~EmailSender()
-        {
-            Dispose(false);
         }
 
         #endregion

@@ -43,7 +43,7 @@ namespace UnitTests.SQL.SQLServer
             TestTable.AddColumn<string>("Value1", DbType.String, 100);
             TestTable.AddColumn<string>("Value2", DbType.Double);
             Utilities.SQL.SQLServer.SQLServer.CreateDatabase(Database, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(ID_,Value1,Value2) VALUES (@ID_,@Value1,@Value2)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(ID_,Value1,Value2) VALUES (@ID_,@Value1,@Value2)", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.AddParameter<int>("@ID_", 1);
                 Helper.AddParameter<string>("@Value1", "Test String");
@@ -68,7 +68,7 @@ namespace UnitTests.SQL.SQLServer
             TestTable.AddColumn<string>("Value2", DbType.Double);
             TestTable.AddColumn<string>("Value3", DbType.Boolean);
             Utilities.SQL.SQLServer.SQLServer.UpdateDatabase(Database2, Database, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(ID_,Value1,Value2,Value3) VALUES (@ID_,@Value1,@Value2,@Value3)", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(ID_,Value1,Value2,Value3) VALUES (@ID_,@Value1,@Value2,@Value3)", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.AddParameter<int>("@ID_", 1);
                 Helper.AddParameter<string>("@Value1", "Test String");
@@ -109,7 +109,7 @@ namespace UnitTests.SQL.SQLServer
 
         public void Dispose()
         {
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.Batch().AddCommand("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
                     .AddCommand("ALTER DATABASE TestDatabase SET ONLINE", CommandType.Text)

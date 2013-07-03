@@ -108,11 +108,11 @@ namespace Utilities.SQL.SQLServer
             string[] Commands = Command.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
             ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
             string DatabaseConnectionString = Regex.Replace(ConnectionString, "Initial Catalog=(.*?;)", "", RegexOptions.IgnoreCase);
-            using (SQLHelper Helper = new SQLHelper(Commands[0], DatabaseConnectionString, CommandType.Text))
+            using (SQLHelper Helper = new SQLHelper(Commands[0], CommandType.Text, DatabaseConnectionString))
             {
                 Helper.ExecuteNonQuery();
             }
-            using (SQLHelper Helper = new SQLHelper("", ConnectionString, CommandType.Text))
+            using (SQLHelper Helper = new SQLHelper("", CommandType.Text, ConnectionString))
             {
                 IBatchCommand Batcher = Helper.Batch();
                 for (int x = 1; x < Commands.Length; ++x)
@@ -157,7 +157,7 @@ namespace Utilities.SQL.SQLServer
             string[] Splitter = { "\n" };
             string[] Commands = Command.Split(Splitter, StringSplitOptions.RemoveEmptyEntries);
             ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
-            using (SQLHelper Helper = new SQLHelper("", ConnectionString, CommandType.Text))
+            using (SQLHelper Helper = new SQLHelper("", CommandType.Text,ConnectionString))
             {
                 IBatchCommand Batcher = Helper.Batch();
                 for (int x = 0; x < Commands.Length; ++x)
@@ -641,7 +641,7 @@ namespace Utilities.SQL.SQLServer
         private static void SetupFunctions(string ConnectionString, Database Temp)
         {
             string Command = "SELECT SPECIFIC_NAME as NAME,ROUTINE_DEFINITION as DEFINITION FROM INFORMATION_SCHEMA.ROUTINES WHERE INFORMATION_SCHEMA.ROUTINES.ROUTINE_TYPE='FUNCTION'";
-            using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+            using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text, ConnectionString))
             {
                 Helper.ExecuteReader();
                 while (Helper.Read())
@@ -661,7 +661,7 @@ namespace Utilities.SQL.SQLServer
         private static void SetupStoredProcedures(string ConnectionString, Database Temp)
         {
             string Command = "SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures";
-            using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+            using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text,ConnectionString))
             {
                 Helper.ExecuteReader();
                 while (Helper.Read())
@@ -674,7 +674,7 @@ namespace Utilities.SQL.SQLServer
             foreach (StoredProcedure Procedure in Temp.StoredProcedures)
             {
                 Command = "SELECT sys.systypes.name as TYPE,sys.parameters.name as NAME,sys.parameters.max_length as LENGTH,sys.parameters.default_value as [DEFAULT VALUE] FROM sys.procedures INNER JOIN sys.parameters on sys.procedures.object_id=sys.parameters.object_id INNER JOIN sys.systypes on sys.systypes.xusertype=sys.parameters.system_type_id WHERE sys.procedures.name=@ProcedureName AND (sys.systypes.xusertype <> 256)";
-                using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+                using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text,ConnectionString))
                 {
                     Helper.AddParameter("@ProcedureName", Procedure.Name)
                           .ExecuteReader();
@@ -702,7 +702,7 @@ namespace Utilities.SQL.SQLServer
             foreach (View View in Temp.Views)
             {
                 string Command = "SELECT OBJECT_DEFINITION(sys.views.object_id) as Definition FROM sys.views WHERE sys.views.name=@ViewName";
-                using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+                using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text,ConnectionString))
                 {
                     Helper.AddParameter("@ViewName", View.Name)
                     .ExecuteReader();
@@ -712,7 +712,7 @@ namespace Utilities.SQL.SQLServer
                     }
                 }
                 Command = "SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN TYPE], sys.columns.max_length as [MAX LENGTH], sys.columns.is_nullable as [IS NULLABLE] FROM sys.views INNER JOIN sys.columns on sys.columns.object_id=sys.views.object_id INNER JOIN sys.systypes ON sys.systypes.xtype = sys.columns.system_type_id WHERE (sys.views.name = @ViewName) AND (sys.systypes.xusertype <> 256)";
-                using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+                using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text,ConnectionString))
                 {
                     Helper.AddParameter("@ViewName", View.Name)
                           .ExecuteReader();
@@ -740,7 +740,7 @@ namespace Utilities.SQL.SQLServer
             foreach (Table Table in Temp.Tables)
             {
                 string Command = "SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN TYPE], sys.columns.max_length as [MAX LENGTH], sys.columns.is_nullable as [IS NULLABLE], sys.columns.is_identity as [IS IDENTITY], sys.index_columns.index_id as [IS INDEX], key_constraints.name as [PRIMARY KEY], key_constraints_1.name as [UNIQUE], tables_1.name as [FOREIGN KEY TABLE], columns_1.name as [FOREIGN KEY COLUMN], sys.default_constraints.definition as [DEFAULT VALUE] FROM sys.tables INNER JOIN sys.columns on sys.columns.object_id=sys.tables.object_id INNER JOIN sys.systypes ON sys.systypes.xtype = sys.columns.system_type_id LEFT OUTER JOIN sys.index_columns on sys.index_columns.object_id=sys.tables.object_id and sys.index_columns.column_id=sys.columns.column_id LEFT OUTER JOIN sys.key_constraints on sys.key_constraints.parent_object_id=sys.tables.object_id and sys.key_constraints.parent_object_id=sys.index_columns.object_id and sys.index_columns.index_id=sys.key_constraints.unique_index_id and sys.key_constraints.type='PK' LEFT OUTER JOIN sys.foreign_key_columns on sys.foreign_key_columns.parent_object_id=sys.tables.object_id and sys.foreign_key_columns.parent_column_id=sys.columns.column_id LEFT OUTER JOIN sys.tables as tables_1 on tables_1.object_id=sys.foreign_key_columns.referenced_object_id LEFT OUTER JOIN sys.columns as columns_1 on columns_1.column_id=sys.foreign_key_columns.referenced_column_id and columns_1.object_id=tables_1.object_id LEFT OUTER JOIN sys.key_constraints as key_constraints_1 on key_constraints_1.parent_object_id=sys.tables.object_id and key_constraints_1.parent_object_id=sys.index_columns.object_id and sys.index_columns.index_id=key_constraints_1.unique_index_id and key_constraints_1.type='UQ' LEFT OUTER JOIN sys.default_constraints on sys.default_constraints.object_id=sys.columns.default_object_id WHERE (sys.tables.name = @TableName) AND (sys.systypes.xusertype <> 256)";
-                using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+                using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text,ConnectionString))
                 {
                     Helper.AddParameter("@TableName", Table.Name)
                     .ExecuteReader();
@@ -770,7 +770,7 @@ namespace Utilities.SQL.SQLServer
                     }
                 }
                 Command = "SELECT sys.triggers.name as Name,sys.trigger_events.type as Type,OBJECT_DEFINITION(sys.triggers.object_id) as Definition FROM sys.triggers INNER JOIN sys.trigger_events ON sys.triggers.object_id=sys.trigger_events.object_id INNER JOIN sys.tables on sys.triggers.parent_id=sys.tables.object_id where sys.tables.name=@TableName";
-                using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+                using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text,ConnectionString))
                 {
                     Helper.AddParameter("@TableName", Table.Name)
                         .ExecuteReader();
@@ -797,7 +797,7 @@ namespace Utilities.SQL.SQLServer
         private static void GetTables(string ConnectionString, Database Temp)
         {
             string Command = "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES";
-            using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+            using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text,ConnectionString))
             {
                 Helper.ExecuteReader();
                 while (Helper.Read())
@@ -826,7 +826,7 @@ namespace Utilities.SQL.SQLServer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private static bool CheckExists(string Command, string Name, string ConnectionString)
         {
-            using (SQLHelper Helper = new SQLHelper(Command, ConnectionString, CommandType.Text))
+            using (SQLHelper Helper = new SQLHelper(Command, CommandType.Text,ConnectionString))
             {
                 try
                 {

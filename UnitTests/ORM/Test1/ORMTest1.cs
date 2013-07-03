@@ -93,14 +93,14 @@ namespace UnitTests.ORM.Test1
         public void Dispose()
         {
             Utilities.ORM.ORM.Destroy();
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
                     .AddCommand("ALTER DATABASE ORMTestDatabase2 SET ONLINE", CommandType.Text)
                     .AddCommand("DROP DATABASE ORMTestDatabase2", CommandType.Text);
                 Helper.ExecuteNonQuery();
             }
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("",  CommandType.Text, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.Batch().AddCommand("ALTER DATABASE ORMTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE", CommandType.Text)
                     .AddCommand("ALTER DATABASE ORMTestDatabase SET ONLINE", CommandType.Text)

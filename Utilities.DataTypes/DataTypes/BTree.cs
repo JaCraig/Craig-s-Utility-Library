@@ -34,7 +34,8 @@ namespace Utilities.DataTypes
     /// Binary tree
     /// </summary>
     /// <typeparam name="T">The type held by the nodes</typeparam>
-    public class BinaryTree<T> : ICollection<T> where T : IComparable<T>
+    public class BinaryTree<T> : ICollection<T>
+        where T : IComparable<T>
     {
         #region Constructor
 
@@ -42,7 +43,7 @@ namespace Utilities.DataTypes
         /// Constructor
         /// </summary>
         /// <param name="Root">Root of the binary tree</param>
-        public BinaryTree(TreeNode<T> Root=null)
+        public BinaryTree(TreeNode<T> Root = null)
         {
             if (Root == null)
             {
@@ -348,6 +349,16 @@ namespace Utilities.DataTypes
         public override string ToString()
         {
             return this.ToString(x => x.ToString(), " ");
+        }
+
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(BinaryTree<T> Value)
+        {
+            return Value.ToString();
         }
 
         #endregion

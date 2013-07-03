@@ -35,7 +35,7 @@ namespace Utilities.DataMapper
     /// </summary>
     /// <typeparam name="Left">Left type</typeparam>
     /// <typeparam name="Right">Right type</typeparam>
-    public class TypeMapping<Left, Right>:ITypeMapping
+    public class TypeMapping<Left, Right> : ITypeMapping
     {
         #region Constructor
 
@@ -60,13 +60,13 @@ namespace Utilities.DataMapper
         /// <summary>
         /// Automatically maps properties that are named the same thing
         /// </summary>
-        public virtual TypeMapping<Left,Right> AutoMap()
+        public virtual TypeMapping<Left, Right> AutoMap()
         {
             PropertyInfo[] Properties = typeof(Left).GetProperties();
             Type DestinationType = typeof(Right);
             for (int x = 0; x < Properties.Length; ++x)
             {
-                PropertyInfo DestinationProperty=DestinationType.GetProperty(Properties[x].Name);
+                PropertyInfo DestinationProperty = DestinationType.GetProperty(Properties[x].Name);
                 if (DestinationProperty != null)
                 {
                     Expression<Func<Left, object>> LeftGet = Properties[x].PropertyGetter<Left>();

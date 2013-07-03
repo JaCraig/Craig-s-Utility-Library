@@ -174,6 +174,16 @@ namespace Utilities.DataTypes
             return !(Span1 == Span2);
         }
 
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(DateSpan Value)
+        {
+            return Value.ToString();
+        }
+
         #endregion
 
         #region Overridden Functions

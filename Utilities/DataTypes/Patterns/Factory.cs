@@ -22,7 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataTypes.Patterns
@@ -51,7 +51,7 @@ namespace Utilities.DataTypes.Patterns
         /// <summary>
         /// List of constructors/initializers
         /// </summary>
-        protected Dictionary<Key, Func<T>> Constructors { get;private set; }
+        protected Dictionary<Key, Func<T>> Constructors { get; private set; }
 
         #endregion
 
@@ -64,10 +64,7 @@ namespace Utilities.DataTypes.Patterns
         /// <param name="Result">The object to be returned</param>
         public virtual void Register(Key Key, T Result)
         {
-            if (Exists(Key))
-                Constructors[Key] = new Func<T>(() => Result);
-            else
-                Constructors.Add(Key, new Func<T>(() => Result));
+            Register(Key, () => Result);
         }
 
         /// <summary>
@@ -77,10 +74,7 @@ namespace Utilities.DataTypes.Patterns
         /// <param name="Constructor">The function to call when creating the item</param>
         public virtual void Register(Key Key, Func<T> Constructor)
         {
-            if (Exists(Key))
-                Constructors[Key] = Constructor;
-            else
-                Constructors.Add(Key, Constructor);
+            Constructors.SetValue(Key, Constructor);
         }
 
         /// <summary>
@@ -90,9 +84,7 @@ namespace Utilities.DataTypes.Patterns
         /// <returns>The type returned by the initializer</returns>
         public virtual T Create(Key Key)
         {
-            if (Exists(Key))
-                return Constructors[Key]();
-            return default(T);
+            return Constructors.GetValue(Key, () => default(T))();
         }
 
         /// <summary>

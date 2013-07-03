@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataMapper.Interfaces;
+using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
 namespace Utilities.DataMapper
@@ -37,7 +39,7 @@ namespace Utilities.DataMapper
         /// <summary>
         /// Constructor
         /// </summary>
-        public MappingManager() { Mappings = new List<ITypeMapping>(); }
+        public MappingManager() { Mappings = new Dictionary<Tuple<Type, Type>, ITypeMapping>(); }
 
         #endregion
 
@@ -46,7 +48,7 @@ namespace Utilities.DataMapper
         /// <summary>
         /// Mappings
         /// </summary>
-        protected virtual ICollection<ITypeMapping> Mappings { get;private set; }
+        protected virtual IDictionary<Tuple<Type,Type>, ITypeMapping> Mappings { get; private set; }
 
         #endregion
 
@@ -60,12 +62,9 @@ namespace Utilities.DataMapper
         /// <returns>A mapping object for the two types specified</returns>
         public virtual TypeMapping<Left, Right> Map<Left, Right>()
         {
-            IEnumerable<TypeMapping<Left, Right>> MappingsList = Mappings.OfType<TypeMapping<Left, Right>>();
-            if (MappingsList.Count() > 0)
-                return MappingsList.ElementAt(0);
-            TypeMapping<Left, Right> Mapping = new TypeMapping<Left, Right>();
-            Mappings.Add(Mapping);
-            return Mapping;
+            Tuple<Type,Type> Key=new Tuple<Type,Type>(typeof(Left),typeof(Right));
+            return Mappings.ContainsKey(Key) ? (TypeMapping<Left, Right>)Mappings[Key]
+                                             : (TypeMapping<Left, Right>)Mappings.AddAndReturn(new KeyValuePair<Tuple<Type, Type>, ITypeMapping>(Key, new TypeMapping<Left, Right>())).Value;
         }
 
         #endregion

@@ -418,6 +418,16 @@ namespace Utilities.DataTypes
             return Buffer.ToString<T>();
         }
 
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(RingBuffer<T> Value)
+        {
+            return Value.ToString();
+        }
+
         #endregion
 
         #endregion

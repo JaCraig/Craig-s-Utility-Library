@@ -33,7 +33,7 @@ namespace UnitTests.SQL.ParameterTypes
         {
             Utilities.SQL.ParameterTypes.OrParameter TestObject = new Utilities.SQL.ParameterTypes.OrParameter(new EqualParameter<int>(1, "Left"), new EqualParameter<int>(2, "Right"));
             Assert.Equal("(Left=@Left OR Right=@Right)", TestObject.ToString());
-            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", "Data Source=localhost;Integrated Security=SSPI;Pooling=false", CommandType.Text))
+            using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("", CommandType.Text, "Data Source=localhost;Integrated Security=SSPI;Pooling=false"))
             {
                 Assert.DoesNotThrow(() => Helper.AddParameter(TestObject));
             }

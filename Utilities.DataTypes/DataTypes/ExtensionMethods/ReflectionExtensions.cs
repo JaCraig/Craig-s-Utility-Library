@@ -685,7 +685,7 @@ namespace Utilities.DataTypes.ExtensionMethods
         public static string ToString(this IEnumerable<Assembly> Assemblies, VersionInfo InfoType)
         {
             StringBuilder Builder = new StringBuilder();
-            Assemblies.ForEach<Assembly>(x => Builder.AppendLine(x.GetName().Name + ": " + x.ToString(InfoType)));
+            Assemblies.OrderBy(x => x.FullName).ForEach<Assembly>(x => Builder.AppendLine(x.GetName().Name + ": " + x.ToString(InfoType)));
             return Builder.ToString();
         }
 
@@ -792,7 +792,11 @@ namespace Utilities.DataTypes.ExtensionMethods
         {
             Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
             Contract.Requires<ArgumentNullException>(BaseType != null, "BaseType");
-            return Assembly.GetTypes().Where(x => x.Is(BaseType) && x.IsClass && !x.IsAbstract);
+            try
+            {
+                return Assembly.GetTypes().Where(x => x.Is(BaseType) && x.IsClass && !x.IsAbstract);
+            }
+            catch { return new List<Type>(); }
         }
 
         /// <summary>

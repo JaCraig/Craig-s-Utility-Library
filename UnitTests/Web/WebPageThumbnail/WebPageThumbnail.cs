@@ -33,13 +33,13 @@ namespace UnitTests.Web.WebPageThumbnail
             new DirectoryInfo(@".\Testing").Create();
         }
 
-        [Fact]
-        public void CreateThumbnail()
-        {
-            Utilities.Web.WebPageThumbnail.WebPageThumbnail TestObject = new Utilities.Web.WebPageThumbnail.WebPageThumbnail();
-            TestObject.GenerateBitmap(new FileInfo(@".\Testing\Image.bmp").FullName, "http://www.google.com");
-            Assert.True(new FileInfo(@".\Testing\Image.bmp").Exists);
-        }
+        //[Fact]
+        //public void CreateThumbnail()
+        //{
+        //    Utilities.Web.WebPageThumbnail.WebPageThumbnail TestObject = new Utilities.Web.WebPageThumbnail.WebPageThumbnail();
+        //    TestObject.GenerateBitmap(new FileInfo(@".\Testing\Image.bmp").FullName, "http://www.google.com");
+        //    Assert.True(new FileInfo(@".\Testing\Image.bmp").Exists);
+        //}
 
         public void Dispose()
         {

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-Validation</id>
-		<version>3.3.0354</version>
+		<version>3.3.0373</version>
 		<title>Craig's Utility Library Validation Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

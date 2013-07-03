@@ -28,6 +28,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Xml;
@@ -35,6 +36,7 @@ using Utilities.Caching;
 using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.DataTypes.Patterns;
+using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.SQL.ExtensionMethods;
 using Utilities.SQL.Interfaces;
 using Utilities.SQL.MicroORM;
@@ -46,59 +48,18 @@ namespace Utilities.SQL
     /// <summary>
     /// SQL Helper class
     /// </summary>
-    public class SQLHelper : IDisposable, IFluentInterface
+    public class SQLHelper : SafeDisposableBaseClass, IFluentInterface
     {
         #region Constructors
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Command">Stored procedure/SQL Text to use</param>
-        /// <param name="ConnectionUsing">The connection string to use</param>
-        /// <param name="CommandType">The command type of the command sent in</param>
-        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
-        /// <param name="Profile">Determines if the commands should be profiled</param>
-        /// <param name="ParameterPrefix">Parameter prefix</param>
-        /// <param name="DatabaseName">Database name (can be used later to pull connection information)</param>
-        public SQLHelper(string Command, string ConnectionUsing, CommandType CommandType, string DatabaseName = "Default",
-            string DbType = "System.Data.SqlClient", string ParameterPrefix = "@", bool Profile = false)
+        /// <param name="Database">Database name (can be used later to pull connection information)</param>
+        public SQLHelper(string Database = "Default")
         {
-            DatabaseUsing = SQLHelper.Database(ConnectionUsing, DatabaseName, DbType, ParameterPrefix, Profile);
-            this.Command = new Command(Command, CommandType, ParameterPrefix);
-            Factory = DbProviderFactories.GetFactory(DatabaseUsing.DbType);
-            Connection = Factory.CreateConnection();
-            Connection.ConnectionString = DatabaseUsing.Connection;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Command">Command to use</param>
-        /// <param name="ConnectionUsing">The connection string to use</param>
-        /// <param name="DbType">Database type, based on ADO.Net provider name</param>
-        /// <param name="Profile">Determines if the calls should be profiled</param>
-        /// <param name="ParameterPrefix">Parameter prefix</param>
-        /// <param name="DatabaseName">Database name (can be used later to pull connection information)</param>
-        public SQLHelper(ICommand Command, string ConnectionUsing, string DatabaseName,
-            string DbType = "System.Data.SqlClient", string ParameterPrefix = "@", bool Profile = false)
-        {
-            this.Command = Command;
-            DatabaseUsing = SQLHelper.Database(ConnectionUsing, DatabaseName, DbType, ParameterPrefix, Profile);
-            Factory = DbProviderFactories.GetFactory(DatabaseUsing.DbType);
-            Connection = Factory.CreateConnection();
-            Connection.ConnectionString = DatabaseUsing.Connection;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Command">Stored procedure/SQL Text to use</param>
-        /// <param name="CommandType">The command type of the command sent in</param>
-        /// <param name="Database">Database to use</param>
-        public SQLHelper(string Command, CommandType CommandType, string Database = "Default")
-        {
+            this.Command = new Command("", CommandType.Text);
             DatabaseUsing = GetDatabase(Database);
-            this.Command = new Command(Command, CommandType, DatabaseUsing.ParameterPrefix);
             Factory = DbProviderFactories.GetFactory(DatabaseUsing.DbType);
             Connection = Factory.CreateConnection();
             Connection.ConnectionString = DatabaseUsing.Connection;
@@ -121,11 +82,13 @@ namespace Utilities.SQL
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Database">Database name (can be used later to pull connection information)</param>
-        public SQLHelper(string Database = "Default")
+        /// <param name="Command">Stored procedure/SQL Text to use</param>
+        /// <param name="CommandType">The command type of the command sent in</param>
+        /// <param name="Database">Database to use</param>
+        public SQLHelper(string Command, CommandType CommandType, string Database = "Default")
         {
-            this.Command = new Command("", CommandType.Text);
             DatabaseUsing = GetDatabase(Database);
+            this.Command = new Command(Command, CommandType, DatabaseUsing.ParameterPrefix);
             Factory = DbProviderFactories.GetFactory(DatabaseUsing.DbType);
             Connection = Factory.CreateConnection();
             Connection.ConnectionString = DatabaseUsing.Connection;
@@ -176,12 +139,6 @@ namespace Utilities.SQL
         /// Command using
         /// </summary>
         protected virtual ICommand Command { get; set; }
-
-        #endregion
-
-        #region Events
-
-
 
         #endregion
 
@@ -1057,6 +1014,39 @@ namespace Utilities.SQL
 
         #endregion
 
+        #region Execute
+
+        public IEnumerable<dynamic> Execute(bool Cache = false)
+        {
+            try
+            {
+                Setup(true);
+                if (Cache && SQLHelper.Cache.Exists(Command.GetHashCode()))
+                    return SQLHelper.Cache.Get<List<ExpandoObject>>(Command.GetHashCode());
+                else if (ExecutableCommand != null)
+                {
+                    Reader = ExecutableCommand.ExecuteReader();
+                    List<ExpandoObject> ReturnValues = new List<ExpandoObject>();
+                    while (Reader.Read())
+                    {
+                        IDictionary<string, object> Temp = new ExpandoObject();
+                        for (int x = 0; x < Reader.FieldCount; ++x)
+                        {
+                            Temp.Add(Reader.GetName(x), Reader[x]);
+                        }
+                        ReturnValues.Add((ExpandoObject)Temp);
+                    }
+                    if (Cache)
+                        SQLHelper.Cache.Add(Command.GetHashCode(), ReturnValues);
+                    return ReturnValues;
+                }
+            }
+            catch { Rollback(); throw; }
+            return new List<ExpandoObject>();
+        }
+
+        #endregion
+
         #region ClearParameters
 
         /// <summary>
@@ -1264,10 +1254,7 @@ namespace Utilities.SQL
                     Reader = new CacheTables(SQLHelper.Cache.Get<IDataReader>(Command.GetHashCode()));
                 else if (ExecutableCommand!=null)
                 {
-                    using (DbDataReader TempReader = ExecutableCommand.ExecuteReader())
-                    {
-                        Reader = new CacheTables(TempReader);
-                    }
+                    Reader = ExecutableCommand.ExecuteReader();
                     if (Cache)
                         SQLHelper.Cache.Add(Command.GetHashCode(), new CacheTables(Reader));
                     Commit();
@@ -1564,49 +1551,33 @@ namespace Utilities.SQL
         #region IDisposable Members
 
         /// <summary>
-        /// Disposes the object
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Disposes of the objects
         /// </summary>
         /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
-        protected virtual void Dispose(bool Disposing)
+        protected override void Dispose(bool Disposing)
         {
             Close();
-            if (Connection != null)
+            if (Reader != null)
             {
-                Connection.Dispose();
-                Connection = null;
+                Reader.Dispose();
+                Reader = null;
             }
             if (ExecutableCommand != null)
             {
                 if (ExecutableCommand.Transaction != null)
                 {
+                    ExecutableCommand.Transaction.Commit();
                     ExecutableCommand.Transaction.Dispose();
                     ExecutableCommand.Transaction = null;
                 }
                 ExecutableCommand.Dispose();
                 ExecutableCommand = null;
             }
-            if (Reader != null)
+            if (Connection != null)
             {
-                Reader.Dispose();
-                Reader = null;
+                Connection.Dispose();
+                Connection = null;
             }
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~SQLHelper()
-        {
-            Dispose(false);
         }
 
         #endregion

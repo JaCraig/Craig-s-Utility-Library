@@ -63,10 +63,6 @@ namespace Utilities.Web.Email.Pop3
         /// </summary>
         public MIME.MIMEMessage MessageBody { get; set; }
 
-        #endregion
-
-        #region Public Overridden Properties
-
         /// <summary>
         /// Body of the text
         /// </summary>
@@ -117,6 +113,18 @@ namespace Utilities.Web.Email.Pop3
                 return MessageBody.Subject;
             }
         }
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Does nothing in this instance
+        /// </summary>
+        /// <param name="Managed"></param>
+        protected override void Dispose(bool Managed)
+        {
+        }
+
         #endregion
     }
 }
