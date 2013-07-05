@@ -68,14 +68,14 @@ namespace UnitTests.SQL.MicroORM
         public void Save()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable","ID_")
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
                     .Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
             ObjectClass1 TempObject = new ObjectClass1();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 TempObject.StringValue = "Test";
                 TempObject.BoolValue = false;
@@ -110,14 +110,14 @@ namespace UnitTests.SQL.MicroORM
         public void Insert()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
                     .Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
             ObjectClass1 TempObject = new ObjectClass1();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
@@ -147,7 +147,7 @@ namespace UnitTests.SQL.MicroORM
         public void AnyDifferentParameterTypes()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
                     .Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -155,7 +155,7 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.LongValue, "LongValue_");
             for (int x = 0; x < 30; ++x)
             {
-                using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+                using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
                 {
                     ObjectClass1 TempObject = new ObjectClass1();
                     TempObject.StringValue = "Test String";
@@ -165,7 +165,7 @@ namespace UnitTests.SQL.MicroORM
                     TempObject.ID = ORM.Insert<ObjectClass1, int>(TempObject);
                 }
             }
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 ObjectClass1 TempObject = ORM.Any<ObjectClass1>("*", null, null, false, new EqualParameter<long>(20, "LongValue_"));
                 Assert.Equal(21, TempObject.ID);
@@ -193,14 +193,14 @@ namespace UnitTests.SQL.MicroORM
         public void Update()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
                     .Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
             ObjectClass1 TempObject = new ObjectClass1();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 TempObject.StringValue = "Test";
                 TempObject.BoolValue = false;
@@ -235,14 +235,14 @@ namespace UnitTests.SQL.MicroORM
         public void Any()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_",Database:"Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
                     .Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
                     .Map(x => x.BoolValue, "BoolValue_")
                     .Map(x => x.LongValue, "LongValue_");
             ObjectClass1 TempObject = new ObjectClass1();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 TempObject.StringValue = "Test String";
                 TempObject.BoolValue = true;
@@ -263,7 +263,7 @@ namespace UnitTests.SQL.MicroORM
         public void All()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
                     .Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -271,7 +271,7 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.LongValue, "LongValue_");
             ObjectClass1 TempObject = null;
             Utilities.Random.Random Rand = new Utilities.Random.Random();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 for (int x = 0; x < 100; ++x)
                 {
@@ -292,7 +292,7 @@ namespace UnitTests.SQL.MicroORM
         public void Paged()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
                     .Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -300,7 +300,7 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.LongValue, "LongValue_");
             ObjectClass1 TempObject = null;
             Utilities.Random.Random Rand = new Utilities.Random.Random();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 for (int x = 0; x < 115; ++x)
                 {
@@ -330,7 +330,7 @@ namespace UnitTests.SQL.MicroORM
         public void Delete()
         {
             Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_")
+            Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
                     .Map(x => x.ID, "ID_")
                     .Map(x => x.StringValue, "StringValue_")
                     .Map(x => x.FloatValue, "FloatValue_")
@@ -338,7 +338,7 @@ namespace UnitTests.SQL.MicroORM
                     .Map(x => x.LongValue, "LongValue_");
             ObjectClass1 TempObject = null;
             Utilities.Random.Random Rand = new Utilities.Random.Random();
-            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper())
+            using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
             {
                 for (int x = 0; x < 100; ++x)
                 {

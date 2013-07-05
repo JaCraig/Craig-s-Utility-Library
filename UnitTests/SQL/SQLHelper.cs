@@ -132,7 +132,7 @@ namespace UnitTests.SQL
                 {
                     Inserted=true;
                     Assert.Equal("Test String", Object.StringValue1);
-                    Assert.Equal("", Object.StringValue2);
+                    Assert.Equal<string>(null, (string)Object.StringValue2);
                     Assert.Equal(12345, Object.BigIntValue);
                     Assert.Equal(true, Object.BitValue);
                     Assert.Equal(1234.5678m, Object.DecimalValue);
@@ -179,7 +179,7 @@ namespace UnitTests.SQL
                     Assert.Equal(true, Helper.GetParameter<bool>("BitValue", false));
                     Assert.Equal(1234.5678m, Helper.GetParameter<decimal>("DecimalValue", 0));
                     Assert.Equal(12345.6534f, Helper.GetParameter<float>("FloatValue", 0));
-                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", Guid.Empty));
+                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", TempGuid));
                     Assert.Equal(new DateTime(1999, 12, 31), Helper.GetParameter<DateTime>("DateTimeValue", DateTime.Now));
                 }
                 Assert.Equal(100, Count);
@@ -197,7 +197,7 @@ namespace UnitTests.SQL
                     Assert.Equal(true, Helper.GetParameter<bool>("BitValue", false));
                     Assert.Equal(1234.5678m, Helper.GetParameter<decimal>("DecimalValue", 0));
                     Assert.Equal(12345.6534f, Helper.GetParameter<float>("FloatValue", 0));
-                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", Guid.Empty));
+                    Assert.Equal(TempGuid, Helper.GetParameter<Guid>("GUIDValue", TempGuid));
                     Assert.Equal(new DateTime(1999, 12, 31), Helper.GetParameter<DateTime>("DateTimeValue", DateTime.Now));
                 }
                 Assert.Equal(100, Count);

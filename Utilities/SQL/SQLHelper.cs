@@ -1032,7 +1032,7 @@ namespace Utilities.SQL
                         IDictionary<string, object> Temp = new ExpandoObject();
                         for (int x = 0; x < Reader.FieldCount; ++x)
                         {
-                            Temp.Add(Reader.GetName(x), Reader[x]);
+                            Temp.Add(Reader.GetName(x), Reader[x] == DBNull.Value ? null : Reader[x]);
                         }
                         ReturnValues.Add((ExpandoObject)Temp);
                     }

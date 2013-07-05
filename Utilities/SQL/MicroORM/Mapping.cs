@@ -133,6 +133,8 @@ namespace Utilities.SQL.MicroORM
                 throw new ArgumentNullException("Mappings");
             if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.PropertyName();
+            if (ParameterNames.Contains(DatabasePropertyName))
+                return this;
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
@@ -166,6 +168,8 @@ namespace Utilities.SQL.MicroORM
                 throw new ArgumentNullException("Mappings");
             if (string.IsNullOrEmpty(DatabasePropertyName))
                 DatabasePropertyName = Property.PropertyName();
+            if (ParameterNames.Contains(DatabasePropertyName))
+                return this;
             Expression Convert = Expression.Convert(Property.Body, typeof(object));
             Expression<Func<ClassType, object>> PropertyExpression = Expression.Lambda<Func<ClassType, object>>(Convert, Property.Parameters);
             Mappings.AddMapping(PropertyExpression,
