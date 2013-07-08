@@ -35,6 +35,7 @@ namespace UnitTests.SQL.MicroORM
     {
         public MicroORM()
         {
+            Utilities.SQL.SQLHelper.ClearAllMappings();
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("Create Database TestDatabase", CommandType.Text, "Data Source=localhost;Integrated Security=SSPI;Pooling=false"))
             {
                 Helper.ExecuteNonQuery();

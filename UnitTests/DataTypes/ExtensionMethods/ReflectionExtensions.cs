@@ -66,7 +66,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void LoadAssembliesTest()
         {
-            Assert.Equal(4, new DirectoryInfo(@".\").LoadAssemblies().Count());
+            Assert.Equal(3, new DirectoryInfo(@".\").LoadAssemblies().Count());
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace UnitTests.Reflection.ExtensionMethods
                                         .Load()
                                         .Types<TestInterface>()
                                         .Count());
-            Assert.Equal(6, new DirectoryInfo(@".\").LoadAssemblies()
+            Assert.Equal(3, new DirectoryInfo(@".\").LoadAssemblies()
                                                     .Types<TestInterface>()
                                                     .Count());
         }
@@ -111,7 +111,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetObjectsTest()
         {
-            Assert.Equal(4, new DirectoryInfo(@".\").Objects<TestInterface>()
+            Assert.Equal(2, new DirectoryInfo(@".\").Objects<TestInterface>()
                                                     .Count());
         }
 
@@ -243,7 +243,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void VersionInfo2()
         {
-            Assert.Equal("UnitTests: 1.0\r\nUnitTests: 1.0\r\nUtilities: 1.0\r\nxunit: 1.9\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
+            Assert.Equal("UnitTests: 1.0\r\nUtilities: 1.0\r\nxunit: 1.9\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
         }
     }
 

@@ -150,12 +150,13 @@ namespace UnitTests.SQL
         [Fact]
         public void CachedQuery()
         {
+            Utilities.SQL.SQLHelper.ClearCache();
             Guid TempGuid = Guid.NewGuid();
             for (int x = 0; x < 100; ++x)
             {
                 using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@StringValue1,@StringValue2,@BigIntValue,@BitValue,@DecimalValue,@FloatValue,@DateTimeValue,@GUIDValue)", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
                 {
-                    Helper.AddParameter<string>("@StringValue1", "Test String")
+                    Assert.Equal(1, Helper.AddParameter<string>("@StringValue1", "Test String")
                         .AddParameter<string>("@StringValue2", "Test String")
                         .AddParameter<long>("@BigIntValue", 12345)
                         .AddParameter<bool>("@BitValue", true)
@@ -163,7 +164,7 @@ namespace UnitTests.SQL
                         .AddParameter<float>("@FloatValue", 12345.6534f)
                         .AddParameter<Guid>("@GUIDValue", TempGuid)
                         .AddParameter<DateTime>("@DateTimeValue", new DateTime(1999, 12, 31))
-                        .ExecuteNonQuery();
+                        .ExecuteNonQuery());
                 }
             }
             using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))

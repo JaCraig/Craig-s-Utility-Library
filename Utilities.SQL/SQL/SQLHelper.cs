@@ -1254,7 +1254,10 @@ namespace Utilities.SQL
                     Reader = new CacheTables(SQLHelper.Cache.Get<IDataReader>(Command.GetHashCode()));
                 else if (ExecutableCommand!=null)
                 {
-                    Reader = ExecutableCommand.ExecuteReader();
+                    using (DbDataReader TempReader = ExecutableCommand.ExecuteReader())
+                    {
+                        Reader = new CacheTables(TempReader);
+                    }
                     if (Cache)
                         SQLHelper.Cache.Add(Command.GetHashCode(), new CacheTables(Reader));
                     Commit();
