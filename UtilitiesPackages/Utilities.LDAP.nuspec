@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>CraigsUtilityLibrary-IoC</id>
-		<version>3.3.0381</version>
-		<title>Craig's Utility Library IoC Namespace</title>
+		<id>CraigsUtilityLibrary-LDAP</id>
+		<version>3.3.0385</version>
+		<title>Craig's Utility Library LDAP Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
 		<licenseUrl>http://cul.codeplex.com/license</licenseUrl>
@@ -14,9 +14,7 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.3" />
-			<dependency id="CraigsUtilityLibrary-IO" version="3.3" />
-			<dependency id="CraigsUtilityLibrary-Reflection" version="3.3" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.3.0385]" />
 		</dependencies>
 	</metadata>
 	<files>

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>CraigsUtilityLibrary-Compression</id>
-		<version>3.3.0381</version>
-		<title>Craig's Utility Library Compression Namespace</title>
+		<id>CraigsUtilityLibrary-SQL</id>
+		<version>3.3.0385</version>
+		<title>Craig's Utility Library SQL Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
 		<licenseUrl>http://cul.codeplex.com/license</licenseUrl>
@@ -14,7 +14,11 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="3.3" />
+			<dependency id="CraigsUtilityLibrary-Caching" version="[3.3.0385]" />
+			<dependency id="CraigsUtilityLibrary-DataMapper" version="[3.3.0385]" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.3.0385]" />
+			<dependency id="CraigsUtilityLibrary-Profiler" version="[3.3.0385]" />
+			<dependency id="CraigsUtilityLibrary-Reflection" version="[3.3.0385]" />
 		</dependencies>
 	</metadata>
 	<files>

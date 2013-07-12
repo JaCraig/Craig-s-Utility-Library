@@ -11,6 +11,35 @@ namespace UtilitiesSplitter
     {
         static void Main(string[] args)
         {
+            UpdateProjects();
+            ReversionPackages();
+            SetupDependencies();
+            SetupInternalDependencies();
+            CreatePackages();
+        }
+
+        private static void CreatePackages()
+        {
+            new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages").Create();
+
+            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories))
+            {
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Create();
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Create();
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Create();
+
+                new DirectoryInfo("..\\..\\..\\" + File.Name.Replace(".nuspec", "") + "\\bin\\Release").CopyTo("..\\..\\..\\UtilitiesPackages\\lib");
+                //new FileInfo("..\\..\\..\\.nuget\\nuget")
+
+
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").DeleteAll();
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").DeleteAll();
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").DeleteAll();
+            }
+        }
+
+        private static void UpdateProjects()
+        {
             string Text = new FileInfo(@"..\..\..\Utilities\Utilities.csproj").Read();
             XmlDocument Doc = new XmlDocument();
 
@@ -85,12 +114,11 @@ namespace UtilitiesSplitter
                     }
                 }
             }
-            SetupNuSpecFiles();
         }
 
-        private static void SetupNuSpecFiles()
+        private static void ReversionPackages()
         {
-            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories))
+            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories))
             {
                 string FileContents = File.Read();
                 Match VersionMatch = Regex.Match(FileContents, "<version>(?<VersionNumber>.*)</version>");
@@ -101,6 +129,41 @@ namespace UtilitiesSplitter
                 else
                     NewVersion += "0001";
                 File.Save(Regex.Replace(FileContents, "<version>(?<VersionNumber>.*)</version>", "<version>" + NewVersion + "</version>"));
+            }
+        }
+
+        private static void SetupDependencies()
+        {
+            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories))
+            {
+                FileInfo PackagesFile = new FileInfo("..\\..\\..\\" + File.Name.Replace(".nuspec", "") + "\\packages.config");
+                if (PackagesFile.Exists)
+                {
+                    string PackagesContent = PackagesFile.Read();
+                    string FileContent = File.Read();
+                    foreach (Match Package in Regex.Matches(PackagesContent, @"<package id=""(?<Package>[^""]*)"" version=""(?<Version>[^""]*)"""))
+                    {
+                        if (Regex.IsMatch(FileContent, @"<dependency id=""" + Package.Groups["Package"].Value + @""" version=""(?<VersionNumber>[^""]*)"" />"))
+                        {
+                            Match TempMatch = Regex.Match(FileContent, @"<dependency id=""" + Package.Groups["Package"].Value + @""" version=""(?<VersionNumber>[^""]*)"" />");
+                            FileContent = FileContent.Replace(TempMatch.Value, @"<dependency id=""" + Package.Groups["Package"].Value + @""" version=""[" + Package.Groups["Version"].Value + @"]"" />");
+                        }
+                    }
+                    File.Save(FileContent);
+                }
+            }
+        }
+
+        private static void SetupInternalDependencies()
+        {
+            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories))
+            {
+                string FileContent = File.Read();
+                string CurrentVersion = Regex.Match(FileContent, "<version>(?<VersionNumber>.*)</version>").Groups["VersionNumber"].Value;
+                FileContent = Regex.Replace(FileContent,
+                                @"<dependency id=""CraigsUtilityLibrary-(?<Project>[^""]*)"" version=""(?<VersionNumber>[^""]*)"" />",
+                                x => @"<dependency id=""CraigsUtilityLibrary-" + x.Groups["Project"].Value + @""" version=""[" + CurrentVersion + @"]"" />");
+                File.Save(FileContent);
             }
         }
     }

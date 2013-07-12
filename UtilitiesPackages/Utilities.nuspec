@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>CraigsUtilityLibrary-DataMapper</id>
-		<version>3.3.0381</version>
-		<title>Craig's Utility Library DataMapper Namespace</title>
+		<id>CraigsUtilityLibrary</id>
+		<version>3.3.0385</version>
+		<title>Craig's Utility Library</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
 		<licenseUrl>http://cul.codeplex.com/license</licenseUrl>
@@ -13,9 +13,6 @@
 		<releaseNotes>This includes code from the nightly build once all unit tests are passed (as such it should contain the latest code)</releaseNotes>
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
-		<dependencies>
-			<dependency id="CraigsUtilityLibrary-Reflection" version="3.3" />
-		</dependencies>
 	</metadata>
 	<files>
 		<file src="bin\Release\*.dll" target="lib\net40" />
