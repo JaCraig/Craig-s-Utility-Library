@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using Utilities.IO.ExtensionMethods;
+using System.Linq;
 
 namespace UtilitiesSplitter
 {
@@ -15,7 +16,7 @@ namespace UtilitiesSplitter
         {
             UpdateProjects();
             ReversionPackages();
-            if (args.Length > 0 && args[1] == "Push")
+            if (args.Length > 0 && args[0] == "Push")
             {
                 SetupDependencies();
                 SetupInternalDependencies();
@@ -37,9 +38,9 @@ namespace UtilitiesSplitter
         {
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages").Create();
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages").DeleteFiles();
-            new FileInfo("..\\..\\..\\README.md").CopyTo("..\\..\\..\\UtilitiesPackages\\readme.md");
+            new FileInfo("..\\..\\..\\README.md").CopyTo("..\\..\\..\\UtilitiesPackages\\readme.txt");
 
-            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories))
+            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories).Where(x => !x.Name.Contains("Documentation")))
             {
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Create();
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Create();
@@ -53,7 +54,22 @@ namespace UtilitiesSplitter
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").DeleteAll();
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").DeleteAll();
             }
-            new FileInfo("..\\..\\..\\UtilitiesPackages\\readme.md").Delete();
+            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories).Where(x => x.Name.Contains("Documentation")))
+            {
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Create();
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Create();
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Create();
+
+                Process DoxygenProcess = "doxygen.exe".Execute("\"" + File.FullName.Replace(".nuspec", ".doxy") + "\"", WorkingDirectory: "..\\..\\..\\UtilitiesPackages");
+                DoxygenProcess.WaitForExit();
+                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute("pack \"" + File.FullName + "\"", WorkingDirectory: "..\\..\\..\\UtilitiesPackages\\Packages");
+                NugetProcess.WaitForExit();
+
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").DeleteAll();
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").DeleteAll();
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").DeleteAll();
+            }
+            new FileInfo("..\\..\\..\\UtilitiesPackages\\readme.txt").Delete();
         }
 
         private static void UpdateProjects()
