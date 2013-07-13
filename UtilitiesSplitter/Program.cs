@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Xml;
 using Utilities.IO.ExtensionMethods;
 
@@ -13,14 +15,29 @@ namespace UtilitiesSplitter
         {
             UpdateProjects();
             ReversionPackages();
-            SetupDependencies();
-            SetupInternalDependencies();
-            CreatePackages();
+            if (args.Length > 0 && args[1] == "Push")
+            {
+                SetupDependencies();
+                SetupInternalDependencies();
+                CreatePackages();
+                PushPackages();
+            }
+        }
+
+        private static void PushPackages()
+        {
+            foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nupkg", SearchOption.AllDirectories))
+            {
+                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute("push \"" + File.FullName + "\"");
+                NugetProcess.WaitForExit();
+            }
         }
 
         private static void CreatePackages()
         {
             new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages").Create();
+            new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages").DeleteFiles();
+            new FileInfo("..\\..\\..\\README.md").CopyTo("..\\..\\..\\UtilitiesPackages\\readme.md");
 
             foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", SearchOption.AllDirectories))
             {
@@ -29,13 +46,14 @@ namespace UtilitiesSplitter
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Create();
 
                 new DirectoryInfo("..\\..\\..\\" + File.Name.Replace(".nuspec", "") + "\\bin\\Release").CopyTo("..\\..\\..\\UtilitiesPackages\\lib");
-                //new FileInfo("..\\..\\..\\.nuget\\nuget")
-
+                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute("pack \"" + File.FullName + "\"", WorkingDirectory: "..\\..\\..\\UtilitiesPackages\\Packages");
+                NugetProcess.WaitForExit();
 
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").DeleteAll();
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").DeleteAll();
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").DeleteAll();
             }
+            new FileInfo("..\\..\\..\\UtilitiesPackages\\readme.md").Delete();
         }
 
         private static void UpdateProjects()

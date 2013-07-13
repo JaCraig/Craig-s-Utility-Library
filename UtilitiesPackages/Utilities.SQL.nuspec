@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-SQL</id>
-		<version>3.3.0385</version>
+		<version>3.4</version>
 		<title>Craig's Utility Library SQL Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -14,16 +14,22 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-Caching" version="[3.3.0385]" />
-			<dependency id="CraigsUtilityLibrary-DataMapper" version="[3.3.0385]" />
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.3.0385]" />
-			<dependency id="CraigsUtilityLibrary-Profiler" version="[3.3.0385]" />
-			<dependency id="CraigsUtilityLibrary-Reflection" version="[3.3.0385]" />
+			<dependency id="CraigsUtilityLibrary-Caching" version="[3.4]" />
+			<dependency id="CraigsUtilityLibrary-DataMapper" version="[3.4]" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[3.4]" />
+			<dependency id="CraigsUtilityLibrary-Profiler" version="[3.4]" />
+			<dependency id="CraigsUtilityLibrary-Reflection" version="[3.4]" />
 		</dependencies>
+		<references>
+			<reference file="Utilities.SQL.dll" />
+		</references>
 	</metadata>
 	<files>
-		<file src="bin\Release\*.dll" target="lib\net40" />
-		<file src="bin\Release\*.pdb" target="lib\net40" />
-		<file src="bin\Release\*.xml" target="lib\net40" />
+		<file src="lib\Utilities.SQL.dll" target="lib\net40" />
+		<file src="lib\Utilities.SQL.pdb" target="lib\net40" />
+		<file src="lib\Utilities.SQL.xml" target="lib\net40" />
+		<file src="lib\CodeContracts\Utilities.SQL.Contracts.dll" target="lib\net40\CodeContracts" />
+		<file src="lib\CodeContracts\Utilities.SQL.Contracts.pdb" target="lib\net40\CodeContracts" />
+		<file src="readme.txt" target="readme.txt" />
 	</files>
 </package>
