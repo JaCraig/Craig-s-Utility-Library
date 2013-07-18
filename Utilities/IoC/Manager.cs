@@ -23,18 +23,18 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.IoC.Mappings;
-using Utilities.IoC.Mappings.Interfaces;
-using Utilities.IoC.Providers;
-
+using System.Text;
+using System.Threading.Tasks;
+using Utilities.IoC.Default;
+using Utilities.IoC.Interfaces;
 #endregion
 
 namespace Utilities.IoC
 {
     /// <summary>
-    /// Manager class
+    /// IoC manager class
     /// </summary>
     public class Manager
     {
@@ -43,96 +43,39 @@ namespace Utilities.IoC
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        protected Manager()
         {
-            if (ProviderManager==null)
-                ProviderManager = new ProviderManager();
-            if (MappingManager==null)
-                MappingManager = new MappingManager(ProviderManager);
-        }
+            foreach (FileInfo File in new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly))
+            {
+                AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(File.FullName));
+            }
+            List<Type> Bootstrappers = new List<Type>();
+            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
+                                                                        && x.IsClass
+                                                                        && !x.IsAbstract
+                                                                        && !x.ContainsGenericParameters
+                                                                        && !x.Namespace.ToUpperInvariant().StartsWith("UTILITIES")));
+            }
+            if (Bootstrappers.Count == 0)
+            {
+                Bootstrappers.Add(typeof(DefaultBootstrapper));
+            }
+            Bootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0]);
 
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Loads all mapping modules found within the assembly
-        /// </summary>
-        /// <param name="ModuleAssembly">Module assembly</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public void Setup(Assembly ModuleAssembly)
-        {
-            ProviderManager.Setup(ModuleAssembly);
-            MappingManager.Setup(ModuleAssembly);
-        }
-
-        /// <summary>
-        /// Loads all mapping modules found within the assemblies
-        /// </summary>
-        /// <param name="ModuleAssemblies">Module assemblies</param>
-        public void Setup(IEnumerable<Assembly> ModuleAssemblies)
-        {
-            ModuleAssemblies.ForEach(x => Setup(x));
-        }
-
-        /// <summary>
-        /// Loads all mapping modules found within a specific directory
-        /// </summary>
-        /// <param name="Directory">Directory to scan for modules</param>
-        /// <param name="ScanSubDirectories">Determines if sub directories should be scanned</param>
-        public void Setup(string Directory, bool ScanSubDirectories = true)
-        {
-            Setup(new DirectoryInfo(Directory).LoadAssemblies(ScanSubDirectories));
-        }
-
-        /// <summary>
-        /// Creates an object of the specified type
-        /// </summary>
-        /// <typeparam name="ServiceType">Service type</typeparam>
-        /// <returns>An object of the specified type</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public ServiceType Get<ServiceType>()
-        {
-            return (ServiceType)Get(typeof(ServiceType));
-        }
-
-        /// <summary>
-        /// Creates an object of the specified type associated with the attribute type
-        /// </summary>
-        /// <typeparam name="ServiceType">Service type</typeparam>
-        /// <typeparam name="AttributeType">Attribute type</typeparam>
-        /// <returns>An object of the specified type</returns>
-        public ServiceType Get<ServiceType, AttributeType>()
-        {
-            return (ServiceType)Get(typeof(ServiceType), typeof(AttributeType));
-        }
-
-        /// <summary>
-        /// Creates an object of the specified type
-        /// </summary>
-        /// <param name="ServiceType">Service type</param>
-        /// <returns>An object of the specified type</returns>
-        public static object Get(Type ServiceType)
-        {
-            IMapping Mapping = MappingManager.GetMapping(ServiceType);
-            if (Mapping==null)
-                throw new ArgumentException("ServiceType not found in mappings");
-            return Mapping.Implementation.Create();
-        }
-
-        /// <summary>
-        /// Creates an object of the specified type associated with the attribute type
-        /// </summary>
-        /// <param name="ServiceType">Service type</param>
-        /// <param name="AttributeType">Attribute type</param>
-        /// <returns>An object of the specified type</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public object Get(Type ServiceType, Type AttributeType)
-        {
-            IMapping Mapping = MappingManager.GetMapping(ServiceType, AttributeType);
-            if (Mapping==null)
-                throw new ArgumentException("ServiceType not found in mappings");
-            return Mapping.Implementation.Create();
+            List<Type> Modules = new List<Type>();
+            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
+                                                                        && x.IsClass
+                                                                        && !x.IsAbstract
+                                                                        && !x.ContainsGenericParameters));
+            }
+            foreach (Type Module in Modules)
+            {
+                ((IModule)Activator.CreateInstance(Module)).Load(Bootstrapper);
+            }
         }
 
         #endregion
@@ -140,14 +83,33 @@ namespace Utilities.IoC
         #region Properties
 
         /// <summary>
-        /// Provider manager
+        /// Bootstrapper object
         /// </summary>
-        protected static ProviderManager ProviderManager { get; set; }
+        public IBootstrapper Bootstrapper { get; private set; }
+
+        private static Manager _Instance = null;
+        private static object Temp = 1;
 
         /// <summary>
-        /// Mapping manager
+        /// Gets the instance of the manager
         /// </summary>
-        protected static MappingManager MappingManager { get; set; }
+        public static Manager Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    lock (Temp)
+                    {
+                        if (_Instance == null)
+                        {
+                            _Instance = new Manager();
+                        }
+                    }
+                }
+                return _Instance;
+            }
+        }
 
         #endregion
     }

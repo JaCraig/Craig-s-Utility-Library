@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>xunit</id>
     <version>1.9.1</version>
@@ -11,5 +11,11 @@
     <iconUrl>http://download.codeplex.com/Download?ProjectName=xunit&amp;DownloadId=365445</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>xUnit.net is a developer testing framework, built to support Test Driven Development, with a design goal of extreme simplicity and alignment with framework features.</description>
+    <releaseNotes />
+    <copyright />
+    <language />
+    <references>
+      <reference file="xunit.dll" />
+    </references>
   </metadata>
 </package>
