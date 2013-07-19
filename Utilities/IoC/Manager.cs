@@ -56,7 +56,7 @@ namespace Utilities.IoC
                                                                         && x.IsClass
                                                                         && !x.IsAbstract
                                                                         && !x.ContainsGenericParameters
-                                                                        && !x.Namespace.ToUpperInvariant().StartsWith("UTILITIES")));
+                                                                        && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
             }
             if (Bootstrappers.Count == 0)
             {

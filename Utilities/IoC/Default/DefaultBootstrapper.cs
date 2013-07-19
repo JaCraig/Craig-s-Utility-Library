@@ -329,13 +329,14 @@ namespace Utilities.IoC.Default
         /// Disposes of the object
         /// </summary>
         /// <param name="Managed">Not used</param>
-        public override void Dispose(bool Managed)
+        protected override void Dispose(bool Managed)
         {
             if (_AppContainer != null)
             {
                 _AppContainer.Clear();
                 _AppContainer = null;
             }
+            base.Dispose(Managed);
         }
 
         #endregion

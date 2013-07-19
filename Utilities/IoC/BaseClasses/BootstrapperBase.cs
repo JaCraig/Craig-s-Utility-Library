@@ -195,7 +195,7 @@ namespace Utilities.IoC.BaseClasses
         /// Disposes of the object
         /// </summary>
         /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
-        public abstract void Dispose(bool Managed);
+        protected virtual void Dispose(bool Managed) { }
 
         /// <summary>
         /// Destructor
