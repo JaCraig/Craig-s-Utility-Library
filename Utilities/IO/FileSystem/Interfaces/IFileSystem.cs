@@ -21,62 +21,46 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities.IoC.BaseClasses;
-using Utilities.IoC.Default.Interfaces;
-using Utilities.IoC.Interfaces;
 #endregion
 
-namespace Utilities.IoC.Default
+namespace Utilities.IO.FileSystem.Interfaces
 {
     /// <summary>
-    /// Type builder
+    /// Interface for the file system
     /// </summary>
-    /// <typeparam name="T">Type this builder creates</typeparam>
-    public class TypeBuilder<T> : ITypeBuilder
+    public interface IFileSystem : IDisposable
     {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public TypeBuilder(Func<T> Implementation)
-        {
-            this.Implementation = Implementation;
-            this.ReturnType = typeof(T);
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// Implementation used to create the type
+        /// Name of the file system
         /// </summary>
-        protected Func<T> Implementation { get; set; }
-
-        /// <summary>
-        /// Return type of the implementation
-        /// </summary>
-        public Type ReturnType { get; set; }
+        string Name { get; }
 
         #endregion
 
         #region Functions
 
         /// <summary>
-        /// Creates the object
+        /// Gets the class representation for the file
         /// </summary>
-        /// <returns>The created object</returns>
-        public object Create()
-        {
-            return Implementation();
-        }
+        /// <param name="Path">Path to the file</param>
+        /// <returns>The file object</returns>
+        IFile File(string Path);
+
+        /// <summary>
+        /// Gets the directory representation for the directory
+        /// </summary>
+        /// <param name="Path">Path to the directory</param>
+        /// <returns>The directory object</returns>
+        IDirectory Directory(string Path);
+
+        /// <summary>
+        /// Returns true if it can handle the path, false otherwise
+        /// </summary>
+        /// <param name="Path">The path to check against</param>
+        /// <returns>True if it can handle the path, false otherwise</returns>
+        bool CanHandle(string Path);
 
         #endregion
     }

@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{412A2B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{20C0B5E0-DF36-477F-9E5B-81077A7A2B47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities.IoC", "Utilities.IoC\Utilities.IoC.csproj", "{55B9E604-6C35-410D-80D8-86ECA3BD20FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,8 +32,15 @@ Global
 		{8DAE7D5D-741C-42A2-94B3-D241412F060D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DAE7D5D-741C-42A2-94B3-D241412F060D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DAE7D5D-741C-42A2-94B3-D241412F060D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55B9E604-6C35-410D-80D8-86ECA3BD20FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55B9E604-6C35-410D-80D8-86ECA3BD20FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55B9E604-6C35-410D-80D8-86ECA3BD20FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55B9E604-6C35-410D-80D8-86ECA3BD20FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{55B9E604-6C35-410D-80D8-86ECA3BD20FB} = {C46A73AB-E02B-4197-A54F-B12E5C1453D8}
 	EndGlobalSection
 EndGlobal

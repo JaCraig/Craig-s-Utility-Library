@@ -22,60 +22,52 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using Utilities.IoC.BaseClasses;
-using Utilities.IoC.Default.Interfaces;
-using Utilities.IoC.Interfaces;
+using System.Web;
+using Utilities.IO.FileSystem.BaseClasses;
 #endregion
 
-namespace Utilities.IoC.Default
+namespace Utilities.IO.FileSystem.Default
 {
     /// <summary>
-    /// Type builder
+    /// Network file system
     /// </summary>
-    /// <typeparam name="T">Type this builder creates</typeparam>
-    public class TypeBuilder<T> : ITypeBuilder
+    public class NetworkFileSystem : LocalFileSystemBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public TypeBuilder(Func<T> Implementation)
-        {
-            this.Implementation = Implementation;
-            this.ReturnType = typeof(T);
-        }
+        public NetworkFileSystem() : base() { }
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Implementation used to create the type
+        /// Relative starter
         /// </summary>
-        protected Func<T> Implementation { get; set; }
+        protected override string HandleRegexString { get { return @"^\\"; } }
 
         /// <summary>
-        /// Return type of the implementation
+        /// Name of the file system
         /// </summary>
-        public Type ReturnType { get; set; }
+        public override string Name { get { return "Network"; } }
 
         #endregion
 
         #region Functions
 
         /// <summary>
-        /// Creates the object
+        /// Gets the absolute path of the variable passed in
         /// </summary>
-        /// <returns>The created object</returns>
-        public object Create()
+        /// <param name="Path">Path to convert to absolute</param>
+        /// <returns>The absolute path of the path passed in</returns>
+        protected override string AbsolutePath(string Path)
         {
-            return Implementation();
+            return Path;
         }
 
         #endregion

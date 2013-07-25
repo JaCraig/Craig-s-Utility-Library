@@ -27,57 +27,33 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Utilities.IoC.BaseClasses;
-using Utilities.IoC.Default.Interfaces;
+using Utilities.IO.FileSystem.Interfaces;
+using Utilities.IoC.Default;
 using Utilities.IoC.Interfaces;
 #endregion
 
-namespace Utilities.IoC.Default
+namespace Utilities.IO.FileSystem.Module
 {
     /// <summary>
-    /// Type builder
+    /// File system module
     /// </summary>
-    /// <typeparam name="T">Type this builder creates</typeparam>
-    public class TypeBuilder<T> : ITypeBuilder
+    public class FileSystemModule : IModule
     {
-        #region Constructor
-
         /// <summary>
-        /// Constructor
+        /// Order to run it in
         /// </summary>
-        public TypeBuilder(Func<T> Implementation)
+        public int Order
         {
-            this.Implementation = Implementation;
-            this.ReturnType = typeof(T);
+            get { return 0; }
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Implementation used to create the type
+        /// Loads the module
         /// </summary>
-        protected Func<T> Implementation { get; set; }
-
-        /// <summary>
-        /// Return type of the implementation
-        /// </summary>
-        public Type ReturnType { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Creates the object
-        /// </summary>
-        /// <returns>The created object</returns>
-        public object Create()
+        /// <param name="Bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper Bootstrapper)
         {
-            return Implementation();
+            Bootstrapper.Register(new Manager());
         }
-
-        #endregion
     }
 }

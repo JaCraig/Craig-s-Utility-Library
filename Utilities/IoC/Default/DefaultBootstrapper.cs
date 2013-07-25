@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -79,93 +79,14 @@ namespace Utilities.IoC.Default
         #region Register
 
         /// <summary>
-        /// Registers the object
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to return</param>
-        public override void Register<T>(T Object)
-        {
-            Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), "");
-            if (AppContainer.ContainsKey(Key))
-            {
-                AppContainer[Key] = new TypeBuilder<T>(() => Object);
-            }
-            else
-            {
-                AppContainer.Add(Key, new TypeBuilder<T>(() => Object));
-            }
-        }
-
-        /// <summary>
-        /// Registers the type
-        /// </summary>
-        /// <typeparam name="T">Type to register</typeparam>
-        public override void Register<T>()
-        {
-            Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), "");
-            if (AppContainer.ContainsKey(Key))
-            {
-                AppContainer[Key] = new TypeBuilder<T>(() => new T());
-            }
-            else
-            {
-                AppContainer.Add(Key, new TypeBuilder<T>(() => new T()));
-            }
-        }
-
-        /// <summary>
-        /// Registers a type
-        /// </summary>
-        /// <typeparam name="T1">Interface or base class</typeparam>
-        /// <typeparam name="T2">Implementation type</typeparam>
-        public override void Register<T1, T2>()
-        {
-            Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T1), "");
-            if (AppContainer.ContainsKey(Key))
-            {
-                AppContainer[Key] = new TypeBuilder<T1>(() => new T2());
-            }
-            else
-            {
-                AppContainer.Add(Key, new TypeBuilder<T1>(() => new T2()));
-            }
-        }
-
-        /// <summary>
-        /// Registers a function with a type
-        /// </summary>
-        /// <typeparam name="T">Type to register</typeparam>
-        /// <param name="Function">Function to use to create the type</param>
-        public override void Register<T>(Func<T> Function)
-        {
-            Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), "");
-            if (AppContainer.ContainsKey(Key))
-            {
-                AppContainer[Key] = new TypeBuilder<T>(Function);
-            }
-            else
-            {
-                AppContainer.Add(Key, new TypeBuilder<T>(Function));
-            }
-        }
-
-        /// <summary>
         /// Registers an object
         /// </summary>
         /// <typeparam name="T">Type to register</typeparam>
         /// <param name="Object">Object to return</param>
         /// <param name="Name">Name to associate with it</param>
-        public override void Register<T>(T Object, string Name)
+        public override void Register<T>(T Object, string Name="")
         {
-            Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), Name);
-            if (AppContainer.ContainsKey(Key))
-            {
-                AppContainer[Key] = new TypeBuilder<T>(() => Object);
-            }
-            else
-            {
-                AppContainer.Add(Key, new TypeBuilder<T>(() => Object));
-            }
+            Register(() => Object, Name);
         }
 
         /// <summary>
@@ -173,17 +94,9 @@ namespace Utilities.IoC.Default
         /// </summary>
         /// <typeparam name="T">Type to register</typeparam>
         /// <param name="Name">Name to associate with it</param>
-        public override void Register<T>(string Name)
+        public override void Register<T>(string Name="")
         {
-            Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), Name);
-            if (AppContainer.ContainsKey(Key))
-            {
-                AppContainer[Key] = new TypeBuilder<T>(() => new T());
-            }
-            else
-            {
-                AppContainer.Add(Key, new TypeBuilder<T>(() => new T()));
-            }
+            Register(() => new T(), Name);
         }
 
         /// <summary>
@@ -192,17 +105,9 @@ namespace Utilities.IoC.Default
         /// <typeparam name="T1">Interface/base class</typeparam>
         /// <typeparam name="T2">Implementation</typeparam>
         /// <param name="Name">Name to associate with it</param>
-        public override void Register<T1, T2>(string Name)
+        public override void Register<T1, T2>(string Name="")
         {
-            Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T1), Name);
-            if (AppContainer.ContainsKey(Key))
-            {
-                AppContainer[Key] = new TypeBuilder<T1>(() => new T2());
-            }
-            else
-            {
-                AppContainer.Add(Key, new TypeBuilder<T1>(() => new T2()));
-            }
+            Register<T1>(() => new T2(), Name);
         }
 
         /// <summary>
@@ -211,7 +116,7 @@ namespace Utilities.IoC.Default
         /// <typeparam name="T">Type to register</typeparam>
         /// <param name="Function">Function used to create the type</param>
         /// <param name="Name">Name to associate with the function</param>
-        public override void Register<T>(Func<T> Function, string Name)
+        public override void Register<T>(Func<T> Function, string Name="")
         {
             Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), Name);
             if (AppContainer.ContainsKey(Key))

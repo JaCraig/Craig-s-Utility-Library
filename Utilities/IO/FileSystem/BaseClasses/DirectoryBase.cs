@@ -1,0 +1,342 @@
+﻿/*
+Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.*/
+
+#region Usings
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using Utilities.IO.FileSystem.Interfaces;
+using Utilities.IoC.Default;
+using Utilities.IoC.Interfaces;
+#endregion
+
+namespace Utilities.IO.FileSystem.BaseClasses
+{
+    /// <summary>
+    /// Directory base class
+    /// </summary>
+    /// <typeparam name="InternalDirectoryType">Data type internally to hold true directory info</typeparam>
+    /// <typeparam name="DirectoryType">Directory type</typeparam>
+    public abstract class DirectoryBase<InternalDirectoryType, DirectoryType> : IDirectory
+        where DirectoryType : DirectoryBase<InternalDirectoryType, DirectoryType>, new()
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        protected DirectoryBase()
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="InternalDirectory">Internal directory object</param>
+        protected DirectoryBase(InternalDirectoryType InternalDirectory)
+        {
+            this.InternalDirectory = InternalDirectory;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Internal directory
+        /// </summary>
+        protected InternalDirectoryType InternalDirectory { get; set; }
+
+        /// <summary>
+        /// Last time accessed (UTC time)
+        /// </summary>
+        public abstract DateTime Accessed { get; }
+
+        /// <summary>
+        /// Date created (UTC time)
+        /// </summary>
+        public abstract DateTime Created { get; }
+
+        /// <summary>
+        /// Date modified (UTC time)
+        /// </summary>
+        public abstract DateTime Modified { get; }
+
+        /// <summary>
+        /// Does it exist?
+        /// </summary>
+        public abstract bool Exists { get; }
+
+        /// <summary>
+        /// Full path
+        /// </summary>
+        public abstract string FullName { get; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        public abstract string Name { get; }
+
+        /// <summary>
+        /// Parent directory
+        /// </summary>
+        public abstract IDirectory Parent { get; }
+
+        /// <summary>
+        /// Root directory
+        /// </summary>
+        public abstract IDirectory Root { get; }
+
+        /// <summary>
+        /// Size of the directory
+        /// </summary>
+        public abstract long Size { get; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Creates the directory
+        /// </summary>
+        public abstract void Create();
+
+        /// <summary>
+        /// Deletes the directory
+        /// </summary>
+        public abstract void Delete();
+
+        /// <summary>
+        /// Enumerates directories under this directory
+        /// </summary>
+        /// <param name="SearchPattern">Search pattern</param>
+        /// <param name="Options">Search options</param>
+        /// <returns>List of directories under this directory</returns>
+        public abstract IEnumerable<IDirectory> EnumerateDirectories(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly);
+
+        /// <summary>
+        /// Enumerates files under this directory
+        /// </summary>
+        /// <param name="SearchPattern">Search pattern</param>
+        /// <param name="Options">Search options</param>
+        /// <returns>List of files under this directory</returns>
+        public abstract IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly);
+
+        /// <summary>
+        /// Moves this directory under another directory
+        /// </summary>
+        /// <param name="Directory">Directory to move to</param>
+        public abstract void MoveTo(IDirectory Directory);
+
+        /// <summary>
+        /// Renames the directory
+        /// </summary>
+        /// <param name="Name">Name of the new directory</param>
+        public abstract void Rename(string Name);
+
+        /// <summary>
+        /// Determines if the two directories are the same
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>True if they're the same, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            DirectoryBase<InternalDirectoryType, DirectoryType> Other = obj as DirectoryBase<InternalDirectoryType, DirectoryType>;
+            return Other != null && Other == this;
+        }
+
+        /// <summary>
+        /// Returns the hash code for the directory
+        /// </summary>
+        /// <returns>The hash code for the directory</returns>
+        public override int GetHashCode()
+        {
+            return InternalDirectory.GetHashCode();
+        }
+
+        /// <summary>
+        /// Gets info for the directory
+        /// </summary>
+        /// <returns>The full path to the directory</returns>
+        public override string ToString()
+        {
+            return FullName;
+        }
+
+        /// <summary>
+        /// Compares this to another directory
+        /// </summary>
+        /// <param name="other">Directory to compare to</param>
+        /// <returns>-1 if this is smaller, 0 if they are the same, 1 if it is larger</returns>
+        public int CompareTo(IDirectory other)
+        {
+            if (other == null)
+                return 1;
+            return string.Compare(FullName, other.FullName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Enumerates the files in the directory
+        /// </summary>
+        /// <returns>The files in the directory</returns>
+        public IEnumerator<IFile> GetEnumerator()
+        {
+            foreach (IFile File in EnumerateFiles())
+                yield return File;
+        }
+
+        /// <summary>
+        /// Enumerates the files and directories in the directory
+        /// </summary>
+        /// <returns>The files and directories</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            foreach (IDirectory Directory in EnumerateDirectories())
+                yield return Directory;
+            foreach (IFile File in EnumerateFiles())
+                yield return File;
+        }
+
+        /// <summary>
+        /// Compares this object to another object
+        /// </summary>
+        /// <param name="obj">Object to compare it to</param>
+        /// <returns>-1 if this is smaller, 0 if they are the same, 1 if it is larger</returns>
+        public int CompareTo(object obj)
+        {
+            IDirectory Temp = obj as IDirectory;
+            if (Temp == null)
+                return 1;
+            return CompareTo(Temp);
+        }
+
+        /// <summary>
+        /// Determines if the directories are equal
+        /// </summary>
+        /// <param name="other">Other directory</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public bool Equals(IDirectory other)
+        {
+            if (other == null)
+                return false;
+            return FullName == other.FullName;
+        }
+
+        /// <summary>
+        /// Clones the directory object
+        /// </summary>
+        /// <returns>The cloned object</returns>
+        public object Clone()
+        {
+            DirectoryBase<InternalDirectoryType, DirectoryType> Temp = new DirectoryType();
+            Temp.InternalDirectory = InternalDirectory;
+            return Temp;
+        }
+
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        /// Determines if two directories are equal
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>True if they are, false otherwise</returns>
+        public static bool operator ==(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if ((object)Directory1 == null && (object)Directory2 == null)
+                return true;
+            if ((object)Directory1 == null || (object)Directory2 == null)
+                return false;
+            return Directory1.FullName == Directory2.FullName;
+        }
+
+        /// <summary>
+        /// Determines if two directories are not equal
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>True if they are not equal, false otherwise</returns>
+        public static bool operator !=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            return !(Directory1 == Directory2);
+        }
+
+        /// <summary>
+        /// Less than
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>The result</returns>
+        public static bool operator <(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if (Directory1 == null || Directory2 == null)
+                return false;
+            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) < 0;
+        }
+
+        /// <summary>
+        /// Less than or equal
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>The result</returns>
+        public static bool operator <=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if (Directory1 == null || Directory2 == null)
+                return false;
+            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) <= 0;
+        }
+
+        /// <summary>
+        /// Greater than
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>The result</returns>
+        public static bool operator >(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if (Directory1 == null || Directory2 == null)
+                return false;
+            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) > 0;
+        }
+
+        /// <summary>
+        /// Greater than or equal
+        /// </summary>
+        /// <param name="Directory1">Directory 1</param>
+        /// <param name="Directory2">Directory 2</param>
+        /// <returns>The result</returns>
+        public static bool operator >=(DirectoryBase<InternalDirectoryType, DirectoryType> Directory1, IDirectory Directory2)
+        {
+            if (Directory1 == null || Directory2 == null)
+                return false;
+            return string.Compare(Directory1.FullName, Directory2.FullName, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        #endregion
+    }
+}

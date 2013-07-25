@@ -19,65 +19,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Utilities.IoC.BaseClasses;
-using Utilities.IoC.Default.Interfaces;
-using Utilities.IoC.Interfaces;
-#endregion
+using Utilities.IoC.Default;
+using Xunit;
 
-namespace Utilities.IoC.Default
+namespace UnitTests.IoC
 {
-    /// <summary>
-    /// Type builder
-    /// </summary>
-    /// <typeparam name="T">Type this builder creates</typeparam>
-    public class TypeBuilder<T> : ITypeBuilder
+    public class Manager
     {
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public TypeBuilder(Func<T> Implementation)
+        [Fact]
+        public void Creation()
         {
-            this.Implementation = Implementation;
-            this.ReturnType = typeof(T);
+            Utilities.IoC.Interfaces.IBootstrapper Temp = Utilities.IoC.Manager.Bootstrapper;
+            Assert.NotNull(Temp);
+            Assert.IsType(typeof(DefaultBootstrapper), Temp);
+            Assert.Equal("Default bootstrapper", Temp.Name);
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Implementation used to create the type
-        /// </summary>
-        protected Func<T> Implementation { get; set; }
-
-        /// <summary>
-        /// Return type of the implementation
-        /// </summary>
-        public Type ReturnType { get; set; }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Creates the object
-        /// </summary>
-        /// <returns>The created object</returns>
-        public object Create()
-        {
-            return Implementation();
-        }
-
-        #endregion
     }
 }

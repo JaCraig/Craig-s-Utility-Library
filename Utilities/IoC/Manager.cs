@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace Utilities.IoC
     /// <summary>
     /// IoC manager class
     /// </summary>
-    public class Manager
+    public class Manager : IDisposable
     {
         #region Constructor
 
@@ -62,7 +62,7 @@ namespace Utilities.IoC
             {
                 Bootstrappers.Add(typeof(DefaultBootstrapper));
             }
-            Bootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0]);
+            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0]);
 
             List<Type> Modules = new List<Type>();
             foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -74,7 +74,7 @@ namespace Utilities.IoC
             }
             foreach (Type Module in Modules)
             {
-                ((IModule)Activator.CreateInstance(Module)).Load(Bootstrapper);
+                ((IModule)Activator.CreateInstance(Module)).Load(InternalBootstrapper);
             }
         }
 
@@ -85,15 +85,15 @@ namespace Utilities.IoC
         /// <summary>
         /// Bootstrapper object
         /// </summary>
-        public IBootstrapper Bootstrapper { get; private set; }
+        protected IBootstrapper InternalBootstrapper { get; private set; }
 
-        private static Manager _Instance = null;
+        private static Manager _Instance = new Manager();
         private static object Temp = 1;
 
         /// <summary>
         /// Gets the instance of the manager
         /// </summary>
-        public static Manager Instance
+        public static IBootstrapper Bootstrapper
         {
             get
             {
@@ -107,8 +107,51 @@ namespace Utilities.IoC
                         }
                     }
                 }
-                return _Instance;
+                return _Instance.InternalBootstrapper;
             }
+        }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Displays information about the IoC container in string form
+        /// </summary>
+        /// <returns>Information about the IoC container</returns>
+        public override string ToString()
+        {
+            return Bootstrapper.Name;
+        }
+
+        /// <summary>
+        /// Disposes of the object
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes of the object
+        /// </summary>
+        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
+        protected virtual void Dispose(bool Managed)
+        {
+            if (InternalBootstrapper != null)
+            {
+                InternalBootstrapper.Dispose();
+                InternalBootstrapper = null;
+            }
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~Manager()
+        {
+            Dispose(false);
         }
 
         #endregion
