@@ -30,15 +30,15 @@ using Xunit;
 
 namespace UnitTests.IO.FileSystem.Default
 {
-    public class LocalDirectory
+    public class WebDirectory
     {
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
             Assert.NotNull(Temp);
             Assert.True(Temp.Exists);
-            Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(new System.IO.DirectoryInfo("."));
+            Temp = new Utilities.IO.FileSystem.Default.WebDirectory(new Uri("http://www.google.com"));
             Assert.NotNull(Temp);
             Assert.True(Temp.Exists);
         }
@@ -46,15 +46,15 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Enumeration()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
             Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
         }
 
         [Fact]
         public void Equality()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp2 = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -68,8 +68,8 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Clone()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = (Utilities.IO.FileSystem.Default.LocalDirectory)Temp.Clone();
+            Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp2 = (Utilities.IO.FileSystem.Default.WebDirectory)Temp.Clone();
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -83,27 +83,26 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void CreateAndDelete()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
             Temp.Create();
             Assert.True(Temp.Exists);
             Temp.Delete();
-            Assert.False(Temp.Exists);
+            Assert.True(Temp.Exists);
         }
 
 
         [Fact]
         public void Move()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp2 = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
             Temp.Create();
             Temp2.Create();
             Temp2.MoveTo(Temp);
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
-            Assert.Equal(Temp, Temp2.Parent);
             Temp.Delete();
-            Assert.False(Temp.Exists);
+            Assert.True(Temp.Exists);
         }
     }
 }

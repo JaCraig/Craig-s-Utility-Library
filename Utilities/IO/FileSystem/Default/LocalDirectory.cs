@@ -38,7 +38,7 @@ namespace Utilities.IO.FileSystem.Default
     /// <summary>
     /// Local directory class
     /// </summary>
-    public class LocalDirectory : DirectoryBase<DirectoryInfo,LocalDirectory>
+    public class LocalDirectory : DirectoryBase<System.IO.DirectoryInfo, LocalDirectory>
     {
         #region Constructor
 
@@ -55,7 +55,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Path">Path to the directory</param>
         public LocalDirectory(string Path)
-            : base(new DirectoryInfo(Path))
+            : base(new System.IO.DirectoryInfo(Path))
         {
         }
 
@@ -63,7 +63,7 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="Directory">Internal directory</param>
-        public LocalDirectory(DirectoryInfo Directory)
+        public LocalDirectory(System.IO.DirectoryInfo Directory)
             :base(Directory)
         {
         }
@@ -184,7 +184,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>List of directories under this directory</returns>
         public override IEnumerable<IDirectory> EnumerateDirectories(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            foreach (DirectoryInfo SubDirectory in InternalDirectory.EnumerateDirectories(SearchPattern, Options))
+            foreach (System.IO.DirectoryInfo SubDirectory in InternalDirectory.EnumerateDirectories(SearchPattern, Options))
             {
                 yield return new LocalDirectory(SubDirectory);
             }
@@ -198,7 +198,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>List of files under this directory</returns>
         public override IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            foreach (FileInfo File in InternalDirectory.EnumerateFiles(SearchPattern, Options))
+            foreach (System.IO.FileInfo File in InternalDirectory.EnumerateFiles(SearchPattern, Options))
             {
                 yield return new LocalFile(File);
             }
@@ -211,7 +211,7 @@ namespace Utilities.IO.FileSystem.Default
         public override void MoveTo(IDirectory Directory)
         {
             InternalDirectory.MoveTo(Directory.FullName + "\\" + Name);
-            InternalDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name);
+            InternalDirectory = new System.IO.DirectoryInfo(Directory.FullName + "\\" + Name);
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Utilities.IO.FileSystem.Default
         public override void Rename(string Name)
         {
             InternalDirectory.MoveTo(Parent.FullName + "\\" + Name);
-            InternalDirectory = new DirectoryInfo(Parent.FullName + "\\" + Name);
+            InternalDirectory = new System.IO.DirectoryInfo(Parent.FullName + "\\" + Name);
         }
 
         #endregion

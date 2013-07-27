@@ -28,17 +28,17 @@ using System.Threading.Tasks;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
 
-namespace UnitTests.IO.FileSystem.Default
+namespace UnitTests.IO
 {
-    public class LocalDirectory
+    public class DirectoryInfo
     {
         [Fact]
         public void Creation()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
             Assert.NotNull(Temp);
             Assert.True(Temp.Exists);
-            Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(new System.IO.DirectoryInfo("."));
+            Temp = new Utilities.IO.DirectoryInfo(new Utilities.IO.DirectoryInfo("."));
             Assert.NotNull(Temp);
             Assert.True(Temp.Exists);
         }
@@ -46,15 +46,15 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Enumeration()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
             Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
         }
 
         [Fact]
         public void Equality()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
+            Utilities.IO.DirectoryInfo Temp2 = new Utilities.IO.DirectoryInfo(".");
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -68,8 +68,8 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Clone()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = (Utilities.IO.FileSystem.Default.LocalDirectory)Temp.Clone();
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
+            Utilities.IO.DirectoryInfo Temp2 = (Utilities.IO.DirectoryInfo)Temp.Clone();
             Assert.True(Temp == Temp2);
             Assert.True(Temp.Equals(Temp2));
             Assert.Equal(0, Temp.CompareTo(Temp2));
@@ -83,7 +83,7 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void CreateAndDelete()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
             Temp.Create();
             Assert.True(Temp.Exists);
             Temp.Delete();
@@ -94,8 +94,8 @@ namespace UnitTests.IO.FileSystem.Default
         [Fact]
         public void Move()
         {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
+            Utilities.IO.DirectoryInfo Temp2 = new Utilities.IO.DirectoryInfo("./Test2");
             Temp.Create();
             Temp2.Create();
             Temp2.MoveTo(Temp);

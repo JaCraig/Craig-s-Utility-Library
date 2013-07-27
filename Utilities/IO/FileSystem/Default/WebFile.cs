@@ -22,30 +22,28 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using System.Web;
+using System.IO;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-using Utilities.IoC.Default;
-using Utilities.IoC.Interfaces;
+using System.Net;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
 {
     /// <summary>
-    /// Basic local file class
+    /// Basic web file class
     /// </summary>
-    public class LocalFile : FileBase<System.IO.FileInfo,LocalFile>
+    public class WebFile : FileBase<Uri,WebFile>
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public LocalFile()
+        public WebFile()
             : base()
         {
         }
@@ -54,8 +52,8 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="Path">Path to the file</param>
-        public LocalFile(string Path)
-            : base(new System.IO.FileInfo(Path))
+        public WebFile(string Path)
+            : base(new Uri(Path))
         {
         }
 
@@ -63,8 +61,8 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="File">File to use</param>
-        public LocalFile(System.IO.FileInfo File)
-            : base(File)
+        public WebFile(Uri File)
+            :base(File)
         {
         }
 
@@ -73,51 +71,51 @@ namespace Utilities.IO.FileSystem.Default
         #region Properties
 
         /// <summary>
-        /// Last time accessed (UTC time)
+        /// Time accessed (Just returns now)
         /// </summary>
         public override DateTime Accessed
         {
-            get { return InternalFile.LastAccessTimeUtc; }
+            get { return DateTime.Now; }
         }
 
         /// <summary>
-        /// Time created (UTC time)
+        /// Time created (Just returns now)
         /// </summary>
         public override DateTime Created
         {
-            get { return InternalFile.CreationTimeUtc; }
+            get { return DateTime.Now; }
         }
 
         /// <summary>
-        /// Time modified (UTC time)
+        /// Time modified (just returns now)
         /// </summary>
         public override DateTime Modified
         {
-            get { return InternalFile.LastWriteTimeUtc; }
+            get { return DateTime.Now; }
         }
 
         /// <summary>
-        /// Directory the file is within
+        /// Directory base path
         /// </summary>
         public override IDirectory Directory
         {
-            get { return new LocalDirectory(InternalFile.Directory); }
+            get { return new WebDirectory((string)InternalFile.AbsolutePath.Take(InternalFile.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
         }
 
         /// <summary>
-        /// Does the file exist?
+        /// Does it exist? Always true.
         /// </summary>
         public override bool Exists
         {
-            get { return InternalFile.Exists; }
+            get { return true; }
         }
 
         /// <summary>
-        /// File extension
+        /// Extension (always empty)
         /// </summary>
         public override string Extension
         {
-            get { return InternalFile.Extension; }
+            get { return ""; }
         }
 
         /// <summary>
@@ -125,23 +123,23 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string FullName
         {
-            get { return InternalFile.FullName; }
+            get { return InternalFile.AbsolutePath; }
         }
 
         /// <summary>
-        /// Size of the file
+        /// Size of the file (always 0)
         /// </summary>
         public override long Length
         {
-            get { return InternalFile.Exists ? InternalFile.Length : 0; }
+            get { return 0; }
         }
 
         /// <summary>
-        /// Name of the file
+        /// Absolute path of the file (same as FullName)
         /// </summary>
         public override string Name
         {
-            get { return InternalFile.Name; }
+            get { return InternalFile.AbsolutePath; }
         }
 
         #endregion
@@ -149,106 +147,86 @@ namespace Utilities.IO.FileSystem.Default
         #region Functions
 
         /// <summary>
-        /// Deletes the file
+        /// Delete (does nothing)
         /// </summary>
         public override void Delete()
         {
-            if (!Exists)
-                return;
-            InternalFile.Delete();
-            InternalFile.Refresh();
         }
 
         /// <summary>
-        /// Reads the file in as a string
+        /// Reads the web page
         /// </summary>
-        /// <returns>The file contents as a string</returns>
+        /// <returns>The content as a string</returns>
         public override string Read()
         {
-            if (!InternalFile.Exists)
-                return "";
-            using (StreamReader Reader = InternalFile.OpenText())
+            using (WebClient Client = new WebClient())
             {
-                string Contents = Reader.ReadToEnd();
-                return Contents;
+                using (StreamReader Reader = new StreamReader(Client.OpenRead(InternalFile)))
+                {
+                    return Reader.ReadToEnd();
+                }
             }
         }
 
         /// <summary>
-        /// Reads a file as binary
+        /// Reads the web page
         /// </summary>
-        /// <returns>The file contents as a byte array</returns>
+        /// <returns>The content as a byte array</returns>
         public override byte[] ReadBinary()
         {
-            if (!InternalFile.Exists)
-                return new byte[0];
-            using (FileStream Reader = InternalFile.OpenRead())
+            using (WebClient Client = new WebClient())
             {
-                byte[] Buffer = new byte[1024];
-                byte[] Output = null;
-                using (MemoryStream Temp = new MemoryStream())
+                using (Stream Reader = Client.OpenRead(InternalFile))
                 {
-                    while (true)
+                    using (MemoryStream FinalStream = new MemoryStream())
                     {
-                        int Count = Reader.Read(Buffer, 0, Buffer.Length);
-                        if (Count <= 0)
+                        while (true)
                         {
-                            Output = Temp.ToArray();
-                            break;
+                            byte[] Buffer = new byte[1024];
+                            int Count = Reader.Read(Buffer, 0, Buffer.Length);
+                            if (Count == 0)
+                                break;
+                            FinalStream.Write(Buffer, 0, Count);
                         }
-                        Temp.Write(Buffer, 0, Count);
+                        return FinalStream.ToArray();
                     }
                 }
-                return Output;
             }
         }
 
         /// <summary>
-        /// Renames the file
+        /// Renames the file (not used)
         /// </summary>
-        /// <param name="NewName">New name for the file</param>
+        /// <param name="NewName">Not used</param>
         public override void Rename(string NewName)
         {
-            InternalFile.MoveTo(InternalFile.DirectoryName + "\\" + NewName);
-            InternalFile = new System.IO.FileInfo(InternalFile.DirectoryName + "\\" + NewName);
         }
 
         /// <summary>
-        /// Moves the file to a new directory
+        /// Moves the file (not used)
         /// </summary>
-        /// <param name="Directory">Directory to move to</param>
+        /// <param name="Directory">Not used</param>
         public override void MoveTo(IDirectory Directory)
         {
-            InternalFile.MoveTo(Directory.FullName + "\\" + Name);
-            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
         }
 
         /// <summary>
-        /// Writes content to the file
+        /// Not used
         /// </summary>
-        /// <param name="Content">Content to write</param>
-        /// <param name="Mode">Mode to open the file as</param>
-        /// <param name="Encoding">Encoding to use for the content</param>
+        /// <param name="Content">Not used</param>
+        /// <param name="Mode">Not used</param>
+        /// <param name="Encoding">Not used</param>
         public override void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
-            if (Encoding == null)
-                Encoding = new ASCIIEncoding();
-            Write(Encoding.GetBytes(Content), Mode);
         }
 
         /// <summary>
-        /// Writes content to the file
+        /// Not used
         /// </summary>
-        /// <param name="Content">Content to write</param>
-        /// <param name="Mode">Mode to open the file as</param>
+        /// <param name="Content">Not used</param>
+        /// <param name="Mode">Not used</param>
         public override void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
-            Directory.Create();
-            using (FileStream Writer = InternalFile.Open(Mode, FileAccess.Write))
-            {
-                Writer.Write(Content, 0, Content.Length);
-            }
-            InternalFile.Refresh();
         }
 
         #endregion

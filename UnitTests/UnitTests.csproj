@@ -47,11 +47,16 @@
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IoC\Manager.cs" />
+    <Compile Include="IO\DirectoryInfo.cs" />
+    <Compile Include="IO\FileInfo.cs" />
     <Compile Include="IO\FileSystem\Default\AbsoluteFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Default\HttpFileSystem.cs" />
     <Compile Include="IO\FileSystem\Default\LocalDirectory.cs" />
     <Compile Include="IO\FileSystem\Default\LocalFile.cs" />
     <Compile Include="IO\FileSystem\Default\NetworkFileSystem.cs" />
     <Compile Include="IO\FileSystem\Default\RelativeLocalFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Default\WebDirectory.cs" />
+    <Compile Include="IO\FileSystem\Default\WebFile.cs" />
     <Compile Include="IO\FileSystem\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
