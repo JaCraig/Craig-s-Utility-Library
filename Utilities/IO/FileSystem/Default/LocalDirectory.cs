@@ -151,26 +151,29 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Creates the directory
         /// </summary>
-        public override void Create()
+        public override async Task Create()
         {
-            InternalDirectory.Create();
-            InternalDirectory.Refresh();
+            await Task.Run(() =>
+            {
+                InternalDirectory.Create();
+                InternalDirectory.Refresh();
+            });
         }
 
         /// <summary>
         /// Deletes the directory
         /// </summary>
-        public override void Delete()
+        public override async Task Delete()
         {
             if (!Exists)
                 return;
             foreach (IFile File in EnumerateFiles())
             {
-                File.Delete();
+                await File.Delete();
             }
             foreach (IDirectory Directory in EnumerateDirectories())
             {
-                Directory.Delete();
+                await Directory.Delete();
             }
             InternalDirectory.Delete(true);
             InternalDirectory.Refresh();
@@ -208,20 +211,26 @@ namespace Utilities.IO.FileSystem.Default
         /// Moves this directory under another directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public override void MoveTo(IDirectory Directory)
+        public override async Task MoveTo(IDirectory Directory)
         {
-            InternalDirectory.MoveTo(Directory.FullName + "\\" + Name);
-            InternalDirectory = new System.IO.DirectoryInfo(Directory.FullName + "\\" + Name);
+            await Task.Run(() =>
+            {
+                InternalDirectory.MoveTo(Directory.FullName + "\\" + Name);
+                InternalDirectory = new System.IO.DirectoryInfo(Directory.FullName + "\\" + Name);
+            });
         }
 
         /// <summary>
         /// Renames the directory
         /// </summary>
         /// <param name="Name">Name of the new directory</param>
-        public override void Rename(string Name)
+        public override async Task Rename(string Name)
         {
-            InternalDirectory.MoveTo(Parent.FullName + "\\" + Name);
-            InternalDirectory = new System.IO.DirectoryInfo(Parent.FullName + "\\" + Name);
+            await Task.Run(() =>
+            {
+                InternalDirectory.MoveTo(Parent.FullName + "\\" + Name);
+                InternalDirectory = new System.IO.DirectoryInfo(Parent.FullName + "\\" + Name);
+            });
         }
 
         #endregion

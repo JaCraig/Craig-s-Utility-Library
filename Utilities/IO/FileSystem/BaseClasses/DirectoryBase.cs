@@ -121,12 +121,12 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <summary>
         /// Creates the directory
         /// </summary>
-        public abstract void Create();
+        public abstract Task Create();
 
         /// <summary>
         /// Deletes the directory
         /// </summary>
-        public abstract void Delete();
+        public abstract Task Delete();
 
         /// <summary>
         /// Enumerates directories under this directory
@@ -143,18 +143,40 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <param name="Options">Search options</param>
         /// <returns>List of files under this directory</returns>
         public abstract IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly);
+        
+        /// <summary>
+        /// Enumerates sub directories (defaults to top level sub directories)
+        /// </summary>
+        /// <param name="Predicate">Predicate used to filter directories</param>
+        /// <param name="Options">Search options to use</param>
+        /// <returns>The list of directories</returns>
+        public IEnumerable<IDirectory> EnumerateDirectories(Predicate<IDirectory> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly)
+        {
+            return EnumerateDirectories("*", Options).Where(x => Predicate(x));
+        }
+
+        /// <summary>
+        /// Enumerates files within the directory (defaults to top level directory and not the sub directories)
+        /// </summary>
+        /// <param name="Predicate">Predicate used to filter files</param>
+        /// <param name="Options">Search options to use</param>
+        /// <returns>The list of files</returns>
+        public IEnumerable<IFile> EnumerateFiles(Predicate<IFile> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly)
+        {
+            return EnumerateFiles("*", Options).Where(x => Predicate(x));
+        }
 
         /// <summary>
         /// Moves this directory under another directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public abstract void MoveTo(IDirectory Directory);
+        public abstract Task MoveTo(IDirectory Directory);
 
         /// <summary>
         /// Renames the directory
         /// </summary>
         /// <param name="Name">Name of the new directory</param>
-        public abstract void Rename(string Name);
+        public abstract Task Rename(string Name);
 
         /// <summary>
         /// Determines if the two directories are the same

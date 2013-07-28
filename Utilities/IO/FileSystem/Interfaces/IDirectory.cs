@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.IO.FileSystem.Interfaces
@@ -86,12 +87,12 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <summary>
         /// Creates the directory if it does not currently exist
         /// </summary>
-        void Create();
+        Task Create();
 
         /// <summary>
         /// Deletes the directory
         /// </summary>
-        void Delete();
+        Task Delete();
 
         /// <summary>
         /// Enumerates sub directories (defaults to top level sub directories)
@@ -102,6 +103,14 @@ namespace Utilities.IO.FileSystem.Interfaces
         IEnumerable<IDirectory> EnumerateDirectories(string SearchPattern="*", SearchOption Options = SearchOption.TopDirectoryOnly);
 
         /// <summary>
+        /// Enumerates sub directories (defaults to top level sub directories)
+        /// </summary>
+        /// <param name="Predicate">Predicate used to filter directories</param>
+        /// <param name="Options">Search options to use</param>
+        /// <returns>The list of directories</returns>
+        IEnumerable<IDirectory> EnumerateDirectories(Predicate<IDirectory> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly);
+
+        /// <summary>
         /// Enumerates files within the directory (defaults to top level directory and not the sub directories)
         /// </summary>
         /// <param name="SearchPattern">Search pattern to use</param>
@@ -110,16 +119,24 @@ namespace Utilities.IO.FileSystem.Interfaces
         IEnumerable<IFile> EnumerateFiles(string SearchPattern="*", SearchOption Options = SearchOption.TopDirectoryOnly);
 
         /// <summary>
+        /// Enumerates files within the directory (defaults to top level directory and not the sub directories)
+        /// </summary>
+        /// <param name="Predicate">Predicate used to filter files</param>
+        /// <param name="Options">Search options to use</param>
+        /// <returns>The list of files</returns>
+        IEnumerable<IFile> EnumerateFiles(Predicate<IFile> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly);
+
+        /// <summary>
         /// Moves the directory to the specified parent directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        void MoveTo(IDirectory Directory);
+        Task MoveTo(IDirectory Directory);
 
         /// <summary>
         /// Renames the directory
         /// </summary>
         /// <param name="Name">The new name of the directory</param>
-        void Rename(string Name);
+        Task Rename(string Name);
 
         #endregion
     }

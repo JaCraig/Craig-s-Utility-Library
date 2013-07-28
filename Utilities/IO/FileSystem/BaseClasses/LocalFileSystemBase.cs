@@ -77,7 +77,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The file object</returns>
         public IFile File(string Path)
         {
-            Path = AbsolutePath(Path);
+            Path = AbsolutePath(Path).RemoveIllegalFileNameCharacters();
             return new LocalFile(Path);
         }
 
@@ -88,7 +88,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The directory object</returns>
         public IDirectory Directory(string Path)
         {
-            Path = AbsolutePath(Path);
+            Path = AbsolutePath(Path).RemoveIllegalDirectoryNameCharacters();
             return new LocalDirectory(Path);
         }
 

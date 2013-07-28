@@ -25,6 +25,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Utilities.IO;
+using System.Threading;
 
 namespace UnitTests.IO
 {
@@ -42,13 +44,26 @@ namespace UnitTests.IO
         public void ReadWrite()
         {
             Utilities.IO.FileInfo File = new Utilities.IO.FileInfo("./Test.txt");
-            File.Write("Testing this out");
+            File.Write("Testing this out").Wait();
             Assert.True(File.Exists);
             Assert.Equal("Testing this out", File.Read());
             Assert.Equal("Testing this out", File);
             Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
             Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File);
-            File.Delete();
+            File.Delete().Wait();
+        }
+
+        [Fact]
+        public void DeleteExtension()
+        {
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
+            Temp.Create().Wait();
+            for (int x = 0; x < 10; ++x)
+            {
+                new Utilities.IO.FileInfo("./Test/" + x + ".txt").Write("Testing this out").Wait();
+            }
+            Temp.EnumerateFiles().Delete().Wait();
+            Temp.Delete().Wait();
         }
 
         [Fact]

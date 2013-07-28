@@ -22,6 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -121,9 +123,9 @@ namespace Utilities.IO
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public void Delete()
+        public Task Delete()
         {
-            InternalFile.Delete();
+            return InternalFile.Delete();
         }
 
         /// <summary>
@@ -148,18 +150,18 @@ namespace Utilities.IO
         /// Renames the file
         /// </summary>
         /// <param name="NewName">New name for the file</param>
-        public void Rename(string NewName)
+        public Task Rename(string NewName)
         {
-            InternalFile.Rename(NewName);
+            return InternalFile.Rename(NewName);
         }
 
         /// <summary>
         /// Moves the file to a new directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public void MoveTo(IDirectory Directory)
+        public Task MoveTo(IDirectory Directory)
         {
-            InternalFile.MoveTo(Directory);
+            return InternalFile.MoveTo(Directory);
         }
 
         /// <summary>
@@ -168,9 +170,9 @@ namespace Utilities.IO
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        public void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        public Task Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
-            InternalFile.Write(Content, Mode, Encoding);
+            return InternalFile.Write(Content, Mode, Encoding);
         }
 
         /// <summary>
@@ -178,9 +180,21 @@ namespace Utilities.IO
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        public void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        public Task Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
-            InternalFile.Write(Content, Mode);
+            return InternalFile.Write(Content, Mode);
+        }
+
+        /// <summary>
+        /// Executes the file
+        /// </summary>
+        /// <param name="Info">Info used to execute the file</param>
+        /// <returns>The process object created when the executable is started</returns>
+        public Process Execute(ProcessStartInfo Info = null)
+        {
+            Info = Info == null ? new ProcessStartInfo() : Info;
+            Info.FileName = FullName;
+            return Process.Start(Info);
         }
 
         /// <summary>

@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.IO.FileSystem.Interfaces
@@ -86,7 +87,7 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <summary>
         /// Deletes the file
         /// </summary>
-        void Delete();
+        Task Delete();
 
         /// <summary>
         /// Reads the file to the end as a string
@@ -104,13 +105,13 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// Renames the file
         /// </summary>
         /// <param name="NewName">New file name</param>
-        void Rename(string NewName);
+        Task Rename(string NewName);
 
         /// <summary>
         /// Moves the file to another directory
         /// </summary>
         /// <param name="Directory">Directory to move the file to</param>
-        void MoveTo(IDirectory Directory);
+        Task MoveTo(IDirectory Directory);
 
         /// <summary>
         /// Writes content to the file
@@ -118,14 +119,14 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">File mode</param>
         /// <param name="Encoding">Encoding that the content should be saved as (default is UTF8)</param>
-        void Write(string Content, FileMode Mode = FileMode.Create, Encoding Encoding = null);
+        Task Write(string Content, FileMode Mode = FileMode.Create, Encoding Encoding = null);
 
         /// <summary>
         /// Writes content to the file
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">File mode</param>
-        void Write(byte[] Content, FileMode Mode = FileMode.Create);
+        Task Write(byte[] Content, FileMode Mode = FileMode.Create);
 
         #endregion
     }

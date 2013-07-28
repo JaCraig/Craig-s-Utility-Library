@@ -22,55 +22,27 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Web;
-using Utilities.IO.FileSystem.BaseClasses;
-using Utilities.IO;
+using System.Threading.Tasks;
+using Utilities.IO.FileSystem.Interfaces;
 #endregion
 
-namespace Utilities.IO.FileSystem.Default
+namespace Utilities.IO
 {
     /// <summary>
-    /// Absolute local file system
+    /// File extensions
     /// </summary>
-    public class AbsoluteLocalFileSystem : LocalFileSystemBase
+    public static class IFileExtensions
     {
-        #region Constructor
-
         /// <summary>
-        /// Constructor
+        /// Deletes a list of files
         /// </summary>
-        public AbsoluteLocalFileSystem() : base() { }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Relative starter
-        /// </summary>
-        protected override string HandleRegexString { get { return @"^\w:"; } }
-
-        /// <summary>
-        /// Name of the file system
-        /// </summary>
-        public override string Name { get { return "Absolute Local"; } }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Gets the absolute path of the variable passed in
-        /// </summary>
-        /// <param name="Path">Path to convert to absolute</param>
-        /// <returns>The absolute path of the path passed in</returns>
-        protected override string AbsolutePath(string Path)
+        /// <param name="Files">List of files</param>
+        public static async Task Delete(this IEnumerable<IFile> Files)
         {
-            return Path;
+            foreach (IFile File in Files)
+                await File.Delete();
         }
-
-        #endregion
     }
 }

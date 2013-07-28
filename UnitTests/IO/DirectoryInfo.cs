@@ -27,6 +27,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
+using Utilities.IO;
 
 namespace UnitTests.IO
 {
@@ -48,6 +49,10 @@ namespace UnitTests.IO
         {
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
             Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
+            Assert.Equal(0, Temp.EnumerateDirectories().Count());
+            Assert.Equal(7, Temp.EnumerateFiles().Count());
+            Assert.Equal(0, Temp.EnumerateDirectories(x => x.Created < DateTime.Now).Count());
+            Assert.Equal(7, Temp.EnumerateFiles(x => x.Created < DateTime.Now).Count());
         }
 
         [Fact]
@@ -84,25 +89,38 @@ namespace UnitTests.IO
         public void CreateAndDelete()
         {
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
-            Temp.Create();
+            Temp.Create().Wait();
             Assert.True(Temp.Exists);
-            Temp.Delete();
+            Temp.Delete().Wait();
             Assert.False(Temp.Exists);
         }
 
+
+        [Fact]
+        public void DeleteExtension()
+        {
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
+            Temp.Create().Wait();
+            for (int x = 0; x < 10; ++x)
+            {
+                new Utilities.IO.DirectoryInfo("./Test/" + x).Create().Wait();
+            }
+            Temp.EnumerateDirectories().Delete().Wait();
+            Temp.Delete().Wait();
+        }
 
         [Fact]
         public void Move()
         {
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
             Utilities.IO.DirectoryInfo Temp2 = new Utilities.IO.DirectoryInfo("./Test2");
-            Temp.Create();
-            Temp2.Create();
-            Temp2.MoveTo(Temp);
+            Temp.Create().Wait();
+            Temp2.Create().Wait();
+            Temp2.MoveTo(Temp).Wait();
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
             Assert.Equal(Temp, Temp2.Parent);
-            Temp.Delete();
+            Temp.Delete().Wait();
             Assert.False(Temp.Exists);
         }
     }

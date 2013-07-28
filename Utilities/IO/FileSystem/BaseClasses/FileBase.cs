@@ -121,7 +121,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public abstract void Delete();
+        public abstract Task Delete();
 
         /// <summary>
         /// Reads the file in as a string
@@ -139,13 +139,13 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Renames the file
         /// </summary>
         /// <param name="NewName">New name for the file</param>
-        public abstract void Rename(string NewName);
+        public abstract Task Rename(string NewName);
 
         /// <summary>
         /// Moves the file to a new directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public abstract void MoveTo(IDirectory Directory);
+        public abstract Task MoveTo(IDirectory Directory);
 
         /// <summary>
         /// Writes content to the file
@@ -153,14 +153,14 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        public abstract void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null);
+        public abstract Task Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null);
 
         /// <summary>
         /// Writes content to the file
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        public abstract void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create);
+        public abstract Task Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create);
 
         /// <summary>
         /// Returns the name of the file

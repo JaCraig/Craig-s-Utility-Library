@@ -121,17 +121,17 @@ namespace Utilities.IO
         /// <summary>
         /// Creates the directory if it does not currently exist
         /// </summary>
-        public void Create()
+        public Task Create()
         {
-            InternalDirectory.Create();
+            return InternalDirectory.Create();
         }
 
         /// <summary>
         /// Deletes the directory
         /// </summary>
-        public void Delete()
+        public Task Delete()
         {
-            InternalDirectory.Delete();
+            return InternalDirectory.Delete();
         }
 
         /// <summary>
@@ -163,21 +163,43 @@ namespace Utilities.IO
         }
 
         /// <summary>
+        /// Enumerates sub directories (defaults to top level sub directories)
+        /// </summary>
+        /// <param name="Predicate">Predicate used to filter directories</param>
+        /// <param name="Options">Search options to use</param>
+        /// <returns>The list of directories</returns>
+        public IEnumerable<IDirectory> EnumerateDirectories(Predicate<IDirectory> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly)
+        {
+            return InternalDirectory.EnumerateDirectories("*", Options).Where(x => Predicate(x)).Select(x => new DirectoryInfo(x));
+        }
+
+        /// <summary>
+        /// Enumerates files within the directory (defaults to top level directory and not the sub directories)
+        /// </summary>
+        /// <param name="Predicate">Predicate used to filter files</param>
+        /// <param name="Options">Search options to use</param>
+        /// <returns>The list of files</returns>
+        public IEnumerable<IFile> EnumerateFiles(Predicate<IFile> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly)
+        {
+            return InternalDirectory.EnumerateFiles("*", Options).Where(x => Predicate(x)).Select(x => new FileInfo(x));
+        }
+
+        /// <summary>
         /// Moves the directory to the specified parent directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public void MoveTo(IDirectory Directory)
+        public Task MoveTo(IDirectory Directory)
         {
-            InternalDirectory.MoveTo(Directory);
+            return InternalDirectory.MoveTo(Directory);
         }
 
         /// <summary>
         /// Renames the directory
         /// </summary>
         /// <param name="Name">The new name of the directory</param>
-        public void Rename(string Name)
+        public Task Rename(string Name)
         {
-            InternalDirectory.Rename(Name);
+            return InternalDirectory.Rename(Name);
         }
 
         /// <summary>

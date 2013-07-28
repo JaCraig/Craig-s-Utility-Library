@@ -29,6 +29,7 @@ using System.IO;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 using System.Net;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -149,8 +150,9 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Delete (does nothing)
         /// </summary>
-        public override void Delete()
+        public override async Task Delete()
         {
+            await Task.Run(() => { });
         }
 
         /// <summary>
@@ -198,16 +200,18 @@ namespace Utilities.IO.FileSystem.Default
         /// Renames the file (not used)
         /// </summary>
         /// <param name="NewName">Not used</param>
-        public override void Rename(string NewName)
+        public override async Task Rename(string NewName)
         {
+            await Task.Run(() => { });
         }
 
         /// <summary>
         /// Moves the file (not used)
         /// </summary>
         /// <param name="Directory">Not used</param>
-        public override void MoveTo(IDirectory Directory)
+        public override async Task MoveTo(IDirectory Directory)
         {
+            await Task.Run(() => { });
         }
 
         /// <summary>
@@ -216,8 +220,9 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Content">Not used</param>
         /// <param name="Mode">Not used</param>
         /// <param name="Encoding">Not used</param>
-        public override void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        public override async Task Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
+            await Task.Run(() => { });
         }
 
         /// <summary>
@@ -225,8 +230,9 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Content">Not used</param>
         /// <param name="Mode">Not used</param>
-        public override void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        public override async Task Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
+            await Task.Run(() => { });
         }
 
         #endregion

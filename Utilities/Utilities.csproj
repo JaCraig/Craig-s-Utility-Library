@@ -156,6 +156,9 @@
     <Compile Include="IoC\Manager.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IO\DirectoryInfo.cs" />
+    <Compile Include="IO\ExtensionMethods\IDirectoryExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\IFileExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="IO\FileInfo.cs" />
     <Compile Include="IO\FileSystem\BaseClasses\DirectoryBase.cs" />
     <Compile Include="IO\FileSystem\BaseClasses\FileBase.cs" />

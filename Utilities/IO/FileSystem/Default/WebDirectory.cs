@@ -28,6 +28,7 @@ using System.Web;
 using System.IO;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
+using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -148,17 +149,17 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Not used
         /// </summary>
-        public override void Create()
+        public override async Task Create()
         {
-
+            await Task.Run(() => { });
         }
 
         /// <summary>
         /// Not used
         /// </summary>
-        public override void Delete()
+        public override async Task Delete()
         {
-
+            await Task.Run(() => { });
         }
 
         /// <summary>
@@ -187,16 +188,18 @@ namespace Utilities.IO.FileSystem.Default
         /// Not used
         /// </summary>
         /// <param name="Directory"></param>
-        public override void MoveTo(IDirectory Directory)
+        public override async Task MoveTo(IDirectory Directory)
         {
+            await Task.Run(() => { });
         }
 
         /// <summary>
         /// Not used
         /// </summary>
         /// <param name="Name"></param>
-        public override void Rename(string Name)
+        public override async Task Rename(string Name)
         {
+            await Task.Run(() => { });
         }
 
         #endregion

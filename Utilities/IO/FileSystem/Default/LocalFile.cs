@@ -38,7 +38,7 @@ namespace Utilities.IO.FileSystem.Default
     /// <summary>
     /// Basic local file class
     /// </summary>
-    public class LocalFile : FileBase<System.IO.FileInfo,LocalFile>
+    public class LocalFile : FileBase<System.IO.FileInfo, LocalFile>
     {
         #region Constructor
 
@@ -151,12 +151,15 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public override void Delete()
+        public override async Task Delete()
         {
             if (!Exists)
                 return;
-            InternalFile.Delete();
-            InternalFile.Refresh();
+            await Task.Run(() =>
+            {
+                InternalFile.Delete();
+                InternalFile.Refresh();
+            });
         }
 
         /// <summary>
@@ -169,8 +172,7 @@ namespace Utilities.IO.FileSystem.Default
                 return "";
             using (StreamReader Reader = InternalFile.OpenText())
             {
-                string Contents = Reader.ReadToEnd();
-                return Contents;
+                return Reader.ReadToEnd();
             }
         }
 
@@ -185,7 +187,6 @@ namespace Utilities.IO.FileSystem.Default
             using (FileStream Reader = InternalFile.OpenRead())
             {
                 byte[] Buffer = new byte[1024];
-                byte[] Output = null;
                 using (MemoryStream Temp = new MemoryStream())
                 {
                     while (true)
@@ -193,13 +194,11 @@ namespace Utilities.IO.FileSystem.Default
                         int Count = Reader.Read(Buffer, 0, Buffer.Length);
                         if (Count <= 0)
                         {
-                            Output = Temp.ToArray();
-                            break;
+                            return Temp.ToArray();
                         }
                         Temp.Write(Buffer, 0, Count);
                     }
                 }
-                return Output;
             }
         }
 
@@ -207,20 +206,26 @@ namespace Utilities.IO.FileSystem.Default
         /// Renames the file
         /// </summary>
         /// <param name="NewName">New name for the file</param>
-        public override void Rename(string NewName)
+        public override async Task Rename(string NewName)
         {
-            InternalFile.MoveTo(InternalFile.DirectoryName + "\\" + NewName);
-            InternalFile = new System.IO.FileInfo(InternalFile.DirectoryName + "\\" + NewName);
+            await Task.Run(() =>
+            {
+                InternalFile.MoveTo(InternalFile.DirectoryName + "\\" + NewName);
+                InternalFile = new System.IO.FileInfo(InternalFile.DirectoryName + "\\" + NewName);
+            });
         }
 
         /// <summary>
         /// Moves the file to a new directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public override void MoveTo(IDirectory Directory)
+        public override async Task MoveTo(IDirectory Directory)
         {
-            InternalFile.MoveTo(Directory.FullName + "\\" + Name);
-            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
+            await Task.Run(() =>
+            {
+                InternalFile.MoveTo(Directory.FullName + "\\" + Name);
+                InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
+            });
         }
 
         /// <summary>
@@ -229,11 +234,11 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        public override void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        public override Task Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
             if (Encoding == null)
                 Encoding = new ASCIIEncoding();
-            Write(Encoding.GetBytes(Content), Mode);
+            return Write(Encoding.GetBytes(Content), Mode);
         }
 
         /// <summary>
@@ -241,12 +246,12 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        public override void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        public override async Task Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
-            Directory.Create();
+            await Directory.Create();
             using (FileStream Writer = InternalFile.Open(Mode, FileAccess.Write))
             {
-                Writer.Write(Content, 0, Content.Length);
+                await Writer.WriteAsync(Content, 0, Content.Length);
             }
             InternalFile.Refresh();
         }
