@@ -121,7 +121,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public abstract Task Delete();
+        public abstract void Delete();
 
         /// <summary>
         /// Reads the file in as a string
@@ -139,13 +139,13 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Renames the file
         /// </summary>
         /// <param name="NewName">New name for the file</param>
-        public abstract Task Rename(string NewName);
+        public abstract void Rename(string NewName);
 
         /// <summary>
         /// Moves the file to a new directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public abstract Task MoveTo(IDirectory Directory);
+        public abstract void MoveTo(IDirectory Directory);
 
         /// <summary>
         /// Writes content to the file
@@ -153,14 +153,16 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        public abstract Task Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null);
+        /// <returns>Task associated with the write process</returns>
+        public abstract void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null);
 
         /// <summary>
         /// Writes content to the file
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        public abstract Task Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create);
+        /// <returns>Task associated with the write process</returns>
+        public abstract void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create);
 
         /// <summary>
         /// Returns the name of the file
@@ -328,6 +330,8 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The file as a string</returns>
         public static implicit operator string(FileBase<InternalFileType, FileType> File)
         {
+            if (File == null)
+                return "";
             return File.Read();
         }
 
@@ -338,6 +342,8 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The file as a byte array</returns>
         public static implicit operator byte[](FileBase<InternalFileType, FileType> File)
         {
+            if (File == null)
+                return new byte[0];
             return File.ReadBinary();
         }
 

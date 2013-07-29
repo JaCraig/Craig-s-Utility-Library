@@ -54,7 +54,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Path">Path to the file</param>
         public WebFile(string Path)
-            : base(new Uri(Path))
+            : base(string.IsNullOrEmpty(Path) ? null : new Uri(Path))
         {
         }
 
@@ -100,7 +100,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Directory
         {
-            get { return new WebDirectory((string)InternalFile.AbsolutePath.Take(InternalFile.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
+            get { return InternalFile == null ? null : new WebDirectory((string)InternalFile.AbsolutePath.Take(InternalFile.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string FullName
         {
-            get { return InternalFile.AbsolutePath; }
+            get { return InternalFile == null ? "" : InternalFile.AbsolutePath; }
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string Name
         {
-            get { return InternalFile.AbsolutePath; }
+            get { return InternalFile == null ? "" : InternalFile.AbsolutePath; }
         }
 
         #endregion
@@ -150,9 +150,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Delete (does nothing)
         /// </summary>
-        public override async Task Delete()
+        public override void Delete()
         {
-            await Task.Run(() => { });
         }
 
         /// <summary>
@@ -161,6 +160,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The content as a string</returns>
         public override string Read()
         {
+            if (InternalFile == null)
+                return "";
             using (WebClient Client = new WebClient())
             {
                 using (StreamReader Reader = new StreamReader(Client.OpenRead(InternalFile)))
@@ -176,6 +177,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The content as a byte array</returns>
         public override byte[] ReadBinary()
         {
+            if (InternalFile == null)
+                return new byte[0];
             using (WebClient Client = new WebClient())
             {
                 using (Stream Reader = Client.OpenRead(InternalFile))
@@ -200,18 +203,16 @@ namespace Utilities.IO.FileSystem.Default
         /// Renames the file (not used)
         /// </summary>
         /// <param name="NewName">Not used</param>
-        public override async Task Rename(string NewName)
+        public override void Rename(string NewName)
         {
-            await Task.Run(() => { });
         }
 
         /// <summary>
         /// Moves the file (not used)
         /// </summary>
         /// <param name="Directory">Not used</param>
-        public override async Task MoveTo(IDirectory Directory)
+        public override void MoveTo(IDirectory Directory)
         {
-            await Task.Run(() => { });
         }
 
         /// <summary>
@@ -220,9 +221,9 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Content">Not used</param>
         /// <param name="Mode">Not used</param>
         /// <param name="Encoding">Not used</param>
-        public override async Task Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        /// <returns>Task associated with the write process</returns>
+        public override void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
-            await Task.Run(() => { });
         }
 
         /// <summary>
@@ -230,9 +231,9 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Content">Not used</param>
         /// <param name="Mode">Not used</param>
-        public override async Task Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        /// <returns>Task associated with the write process</returns>
+        public override void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
-            await Task.Run(() => { });
         }
 
         #endregion

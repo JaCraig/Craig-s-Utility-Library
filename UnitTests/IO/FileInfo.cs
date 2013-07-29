@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Utilities.IO;
 using System.Threading;
+using Utilities.IO.FileSystem.Interfaces;
 
 namespace UnitTests.IO
 {
@@ -43,27 +44,27 @@ namespace UnitTests.IO
         [Fact]
         public void ReadWrite()
         {
-            Utilities.IO.FileInfo File = new Utilities.IO.FileInfo("./Test.txt");
-            File.Write("Testing this out").Wait();
+            Utilities.IO.FileInfo File = new Utilities.IO.FileInfo("./Test2.txt");
+            File.Write("Testing this out");
             Assert.True(File.Exists);
             Assert.Equal("Testing this out", File.Read());
             Assert.Equal("Testing this out", File);
             Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
             Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File);
-            File.Delete().Wait();
+            File.Delete();
         }
 
         [Fact]
         public void DeleteExtension()
         {
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
-            Temp.Create().Wait();
+            Temp.Create();
             for (int x = 0; x < 10; ++x)
             {
-                new Utilities.IO.FileInfo("./Test/" + x + ".txt").Write("Testing this out").Wait();
+                new Utilities.IO.FileInfo("./Test/" + x + ".txt").Write("Testing this out");
             }
-            Temp.EnumerateFiles().Delete().Wait();
-            Temp.Delete().Wait();
+            Temp.EnumerateFiles().Delete();
+            Temp.Delete();
         }
 
         [Fact]

@@ -72,47 +72,47 @@ namespace Utilities.IO
         /// <summary>
         /// Last time it was accessed
         /// </summary>
-        public DateTime Accessed { get { return InternalDirectory.Accessed; } }
+        public DateTime Accessed { get { return InternalDirectory == null ? DateTime.Now : InternalDirectory.Accessed; } }
 
         /// <summary>
         /// When it was created
         /// </summary>
-        public DateTime Created { get { return InternalDirectory.Created; } }
+        public DateTime Created { get { return InternalDirectory == null ? DateTime.Now : InternalDirectory.Created; } }
 
         /// <summary>
         /// When it was last modified
         /// </summary>
-        public DateTime Modified { get { return InternalDirectory.Modified; } }
+        public DateTime Modified { get { return InternalDirectory == null ? DateTime.Now : InternalDirectory.Modified; } }
 
         /// <summary>
         /// Does the directory exist
         /// </summary>
-        public bool Exists { get { return InternalDirectory.Exists; } }
+        public bool Exists { get { return InternalDirectory == null ? false : InternalDirectory.Exists; } }
 
         /// <summary>
         /// Full path to the directory
         /// </summary>
-        public string FullName { get { return InternalDirectory.FullName; } }
+        public string FullName { get { return InternalDirectory == null ? "" : InternalDirectory.FullName; } }
 
         /// <summary>
         /// Name of the directory
         /// </summary>
-        public string Name { get { return InternalDirectory.Name; } }
+        public string Name { get { return InternalDirectory == null ? "" : InternalDirectory.Name; } }
 
         /// <summary>
         /// Parent directory
         /// </summary>
-        public IDirectory Parent { get { return new DirectoryInfo(InternalDirectory.Parent); } }
+        public IDirectory Parent { get { return InternalDirectory == null ? null : new DirectoryInfo(InternalDirectory.Parent); } }
 
         /// <summary>
         /// Root directory
         /// </summary>
-        public IDirectory Root { get { return new DirectoryInfo(InternalDirectory.Root); } }
+        public IDirectory Root { get { return InternalDirectory == null ? null : new DirectoryInfo(InternalDirectory.Root); } }
 
         /// <summary>
         /// Size of the contents of the directory in bytes
         /// </summary>
-        public long Size { get { return InternalDirectory.Size; } }
+        public long Size { get { return InternalDirectory == null ? 0 : InternalDirectory.Size; } }
 
         #endregion
 
@@ -121,17 +121,21 @@ namespace Utilities.IO
         /// <summary>
         /// Creates the directory if it does not currently exist
         /// </summary>
-        public Task Create()
+        public void Create()
         {
-            return InternalDirectory.Create();
+            if (InternalDirectory == null)
+                return;
+            InternalDirectory.Create();
         }
 
         /// <summary>
         /// Deletes the directory
         /// </summary>
-        public Task Delete()
+        public void Delete()
         {
-            return InternalDirectory.Delete();
+            if (InternalDirectory == null)
+                return;
+            InternalDirectory.Delete();
         }
 
         /// <summary>
@@ -142,9 +146,12 @@ namespace Utilities.IO
         /// <returns>The list of directories</returns>
         public IEnumerable<IDirectory> EnumerateDirectories(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            foreach (IDirectory Directory in InternalDirectory.EnumerateDirectories(SearchPattern, Options))
+            if (InternalDirectory != null)
             {
-                yield return new DirectoryInfo(Directory);
+                foreach (IDirectory Directory in InternalDirectory.EnumerateDirectories(SearchPattern, Options))
+                {
+                    yield return new DirectoryInfo(Directory);
+                }
             }
         }
 
@@ -156,9 +163,12 @@ namespace Utilities.IO
         /// <returns>The list of files</returns>
         public IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            foreach (IFile File in InternalDirectory.EnumerateFiles(SearchPattern, Options))
+            if (InternalDirectory != null)
             {
-                yield return new Utilities.IO.FileInfo(File);
+                foreach (IFile File in InternalDirectory.EnumerateFiles(SearchPattern, Options))
+                {
+                    yield return new Utilities.IO.FileInfo(File);
+                }
             }
         }
 
@@ -170,7 +180,11 @@ namespace Utilities.IO
         /// <returns>The list of directories</returns>
         public IEnumerable<IDirectory> EnumerateDirectories(Predicate<IDirectory> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            return InternalDirectory.EnumerateDirectories("*", Options).Where(x => Predicate(x)).Select(x => new DirectoryInfo(x));
+            if (InternalDirectory != null)
+            {
+                return InternalDirectory.EnumerateDirectories("*", Options).Where(x => Predicate(x)).Select(x => new DirectoryInfo(x));
+            }
+            return new List<IDirectory>();
         }
 
         /// <summary>
@@ -181,25 +195,33 @@ namespace Utilities.IO
         /// <returns>The list of files</returns>
         public IEnumerable<IFile> EnumerateFiles(Predicate<IFile> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            return InternalDirectory.EnumerateFiles("*", Options).Where(x => Predicate(x)).Select(x => new FileInfo(x));
+            if (InternalDirectory != null)
+            {
+                return InternalDirectory.EnumerateFiles("*", Options).Where(x => Predicate(x)).Select(x => new FileInfo(x));
+            }
+            return new List<IFile>();
         }
 
         /// <summary>
         /// Moves the directory to the specified parent directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public Task MoveTo(IDirectory Directory)
+        public void MoveTo(IDirectory Directory)
         {
-            return InternalDirectory.MoveTo(Directory);
+            if (InternalDirectory == null || Directory == null)
+                return;
+            InternalDirectory.MoveTo(Directory);
         }
 
         /// <summary>
         /// Renames the directory
         /// </summary>
         /// <param name="Name">The new name of the directory</param>
-        public Task Rename(string Name)
+        public void Rename(string Name)
         {
-            return InternalDirectory.Rename(Name);
+            if (InternalDirectory == null || string.IsNullOrEmpty(Name))
+                return;
+            InternalDirectory.Rename(Name);
         }
 
         /// <summary>
@@ -219,7 +241,7 @@ namespace Utilities.IO
         /// <returns>The hash code for the directory</returns>
         public override int GetHashCode()
         {
-            return InternalDirectory.GetHashCode();
+            return FullName.GetHashCode();
         }
 
         /// <summary>
@@ -240,6 +262,8 @@ namespace Utilities.IO
         {
             if (other == null)
                 return 1;
+            if (InternalDirectory == null)
+                return -1;
             return string.Compare(FullName, other.FullName, StringComparison.OrdinalIgnoreCase);
         }
 

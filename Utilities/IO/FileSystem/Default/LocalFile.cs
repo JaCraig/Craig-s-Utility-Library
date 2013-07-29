@@ -38,7 +38,7 @@ namespace Utilities.IO.FileSystem.Default
     /// <summary>
     /// Basic local file class
     /// </summary>
-    public class LocalFile : FileBase<System.IO.FileInfo, LocalFile>
+    public class LocalFile : FileBase<System.IO.FileInfo,LocalFile>
     {
         #region Constructor
 
@@ -55,7 +55,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Path">Path to the file</param>
         public LocalFile(string Path)
-            : base(new System.IO.FileInfo(Path))
+            : base(string.IsNullOrEmpty(Path) ? null : new System.IO.FileInfo(Path))
         {
         }
 
@@ -77,7 +77,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override DateTime Accessed
         {
-            get { return InternalFile.LastAccessTimeUtc; }
+            get { return InternalFile == null ? DateTime.Now : InternalFile.LastAccessTimeUtc; }
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override DateTime Created
         {
-            get { return InternalFile.CreationTimeUtc; }
+            get { return InternalFile == null ? DateTime.Now : InternalFile.CreationTimeUtc; }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override DateTime Modified
         {
-            get { return InternalFile.LastWriteTimeUtc; }
+            get { return InternalFile == null ? DateTime.Now : InternalFile.LastWriteTimeUtc; }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Directory
         {
-            get { return new LocalDirectory(InternalFile.Directory); }
+            get { return InternalFile == null ? null : new LocalDirectory(InternalFile.Directory); }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override bool Exists
         {
-            get { return InternalFile.Exists; }
+            get { return InternalFile == null ? false : InternalFile.Exists; }
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string Extension
         {
-            get { return InternalFile.Extension; }
+            get { return InternalFile == null ? "" : InternalFile.Extension; }
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string FullName
         {
-            get { return InternalFile.FullName; }
+            get { return InternalFile == null ? "" : InternalFile.FullName; }
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override long Length
         {
-            get { return InternalFile.Exists ? InternalFile.Length : 0; }
+            get { return InternalFile == null || !InternalFile.Exists ? 0 : InternalFile.Length; }
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string Name
         {
-            get { return InternalFile.Name; }
+            get { return InternalFile == null ? "" : InternalFile.Name; }
         }
 
         #endregion
@@ -151,15 +151,12 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public override async Task Delete()
+        public override void Delete()
         {
             if (!Exists)
                 return;
-            await Task.Run(() =>
-            {
-                InternalFile.Delete();
-                InternalFile.Refresh();
-            });
+            InternalFile.Delete();
+            InternalFile.Refresh();
         }
 
         /// <summary>
@@ -168,7 +165,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The file contents as a string</returns>
         public override string Read()
         {
-            if (!InternalFile.Exists)
+            if (!Exists)
                 return "";
             using (StreamReader Reader = InternalFile.OpenText())
             {
@@ -182,7 +179,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The file contents as a byte array</returns>
         public override byte[] ReadBinary()
         {
-            if (!InternalFile.Exists)
+            if (!Exists)
                 return new byte[0];
             using (FileStream Reader = InternalFile.OpenRead())
             {
@@ -193,9 +190,7 @@ namespace Utilities.IO.FileSystem.Default
                     {
                         int Count = Reader.Read(Buffer, 0, Buffer.Length);
                         if (Count <= 0)
-                        {
                             return Temp.ToArray();
-                        }
                         Temp.Write(Buffer, 0, Count);
                     }
                 }
@@ -206,26 +201,24 @@ namespace Utilities.IO.FileSystem.Default
         /// Renames the file
         /// </summary>
         /// <param name="NewName">New name for the file</param>
-        public override async Task Rename(string NewName)
+        public override void Rename(string NewName)
         {
-            await Task.Run(() =>
-            {
-                InternalFile.MoveTo(InternalFile.DirectoryName + "\\" + NewName);
-                InternalFile = new System.IO.FileInfo(InternalFile.DirectoryName + "\\" + NewName);
-            });
+            if (string.IsNullOrEmpty(NewName)||!Exists)
+                return;
+            InternalFile.MoveTo(InternalFile.DirectoryName + "\\" + NewName);
+            InternalFile = new System.IO.FileInfo(InternalFile.DirectoryName + "\\" + NewName);
         }
 
         /// <summary>
         /// Moves the file to a new directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public override async Task MoveTo(IDirectory Directory)
+        public override void MoveTo(IDirectory Directory)
         {
-            await Task.Run(() =>
-            {
-                InternalFile.MoveTo(Directory.FullName + "\\" + Name);
-                InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
-            });
+            if (Directory == null || !Exists)
+                return;
+            InternalFile.MoveTo(Directory.FullName + "\\" + Name);
+            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
         }
 
         /// <summary>
@@ -234,11 +227,14 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        public override Task Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        /// <returns>Task associated with the write process</returns>
+        public override void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
+            if (Content == null)
+                Content = "";
             if (Encoding == null)
                 Encoding = new ASCIIEncoding();
-            return Write(Encoding.GetBytes(Content), Mode);
+            Write(Encoding.GetBytes(Content), Mode);
         }
 
         /// <summary>
@@ -246,12 +242,15 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        public override async Task Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        /// <returns>Task associated with the write process</returns>
+        public override void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
-            await Directory.Create();
+            if (Content == null)
+                Content = new byte[0];
+            Directory.Create();
             using (FileStream Writer = InternalFile.Open(Mode, FileAccess.Write))
             {
-                await Writer.WriteAsync(Content, 0, Content.Length);
+                Writer.Write(Content, 0, Content.Length);
             }
             InternalFile.Refresh();
         }

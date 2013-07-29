@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -42,13 +43,13 @@ namespace UnitTests.IO.FileSystem.Default
         public void ReadWrite()
         {
             Utilities.IO.FileSystem.Default.LocalFile File = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
-            File.Write("Testing this out").Wait();
+            File.Write("Testing this out");
             Assert.True(File.Exists);
             Assert.Equal("Testing this out", File.Read());
             Assert.Equal("Testing this out", File);
             Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
             Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File);
-            File.Delete().Wait();
+            File.Delete();
         }
 
         [Fact]

@@ -121,12 +121,12 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <summary>
         /// Creates the directory
         /// </summary>
-        public abstract Task Create();
+        public abstract void Create();
 
         /// <summary>
         /// Deletes the directory
         /// </summary>
-        public abstract Task Delete();
+        public abstract void Delete();
 
         /// <summary>
         /// Enumerates directories under this directory
@@ -143,7 +143,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <param name="Options">Search options</param>
         /// <returns>List of files under this directory</returns>
         public abstract IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly);
-        
+
         /// <summary>
         /// Enumerates sub directories (defaults to top level sub directories)
         /// </summary>
@@ -170,13 +170,13 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Moves this directory under another directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public abstract Task MoveTo(IDirectory Directory);
+        public abstract void MoveTo(IDirectory Directory);
 
         /// <summary>
         /// Renames the directory
         /// </summary>
         /// <param name="Name">Name of the new directory</param>
-        public abstract Task Rename(string Name);
+        public abstract void Rename(string Name);
 
         /// <summary>
         /// Determines if the two directories are the same
@@ -195,7 +195,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The hash code for the directory</returns>
         public override int GetHashCode()
         {
-            return InternalDirectory.GetHashCode();
+            return FullName.GetHashCode();
         }
 
         /// <summary>
@@ -216,6 +216,8 @@ namespace Utilities.IO.FileSystem.BaseClasses
         {
             if (other == null)
                 return 1;
+            if (InternalDirectory == null)
+                return -1;
             return string.Compare(FullName, other.FullName, StringComparison.OrdinalIgnoreCase);
         }
 
@@ -235,8 +237,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The files and directories</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            foreach (IDirectory Directory in EnumerateDirectories())
-                yield return Directory;
             foreach (IFile File in EnumerateFiles())
                 yield return File;
         }

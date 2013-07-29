@@ -28,7 +28,6 @@ using System.Web;
 using System.IO;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-using System.Threading.Tasks;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -53,7 +52,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Path">Path to the directory</param>
         public WebDirectory(string Path)
-            : base(new Uri(Path))
+            : base(string.IsNullOrEmpty(Path) ? null : new Uri(Path))
         {
         }
 
@@ -107,7 +106,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string FullName
         {
-            get { return InternalDirectory.AbsolutePath; }
+            get { return InternalDirectory==null?"": InternalDirectory.AbsolutePath; }
         }
 
         /// <summary>
@@ -115,7 +114,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string Name
         {
-            get { return InternalDirectory.AbsolutePath; }
+            get { return InternalDirectory == null ? "" : InternalDirectory.AbsolutePath; }
         }
 
         /// <summary>
@@ -123,7 +122,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Parent
         {
-            get { return new WebDirectory((string)InternalDirectory.AbsolutePath.Take(InternalDirectory.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
+            get { return InternalDirectory == null ? null : new WebDirectory((string)InternalDirectory.AbsolutePath.Take(InternalDirectory.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
         }
 
         /// <summary>
@@ -131,7 +130,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Root
         {
-            get { return new WebDirectory(InternalDirectory.Scheme + "://" + InternalDirectory.Host); }
+            get { return InternalDirectory == null ? null : new WebDirectory(InternalDirectory.Scheme + "://" + InternalDirectory.Host); }
         }
 
         /// <summary>
@@ -149,17 +148,17 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Not used
         /// </summary>
-        public override async Task Create()
+        public override void Create()
         {
-            await Task.Run(() => { });
+
         }
 
         /// <summary>
         /// Not used
         /// </summary>
-        public override async Task Delete()
+        public override void Delete()
         {
-            await Task.Run(() => { });
+
         }
 
         /// <summary>
@@ -188,18 +187,16 @@ namespace Utilities.IO.FileSystem.Default
         /// Not used
         /// </summary>
         /// <param name="Directory"></param>
-        public override async Task MoveTo(IDirectory Directory)
+        public override void MoveTo(IDirectory Directory)
         {
-            await Task.Run(() => { });
         }
 
         /// <summary>
         /// Not used
         /// </summary>
         /// <param name="Name"></param>
-        public override async Task Rename(string Name)
+        public override void Rename(string Name)
         {
-            await Task.Run(() => { });
         }
 
         #endregion

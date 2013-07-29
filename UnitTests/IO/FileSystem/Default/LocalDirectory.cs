@@ -84,9 +84,9 @@ namespace UnitTests.IO.FileSystem.Default
         public void CreateAndDelete()
         {
             Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
-            Temp.Create().Wait();
+            Temp.Create();
             Assert.True(Temp.Exists);
-            Temp.Delete().Wait();
+            Temp.Delete();
             Assert.False(Temp.Exists);
         }
 
@@ -96,13 +96,13 @@ namespace UnitTests.IO.FileSystem.Default
         {
             Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
             Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
-            Temp.Create().Wait();
-            Temp2.Create().Wait();
-            Temp2.MoveTo(Temp).Wait();
+            Temp.Create();
+            Temp2.Create();
+            Temp2.MoveTo(Temp);
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
             Assert.Equal(Temp, Temp2.Parent);
-            Temp.Delete().Wait();
+            Temp.Delete();
             Assert.False(Temp.Exists);
         }
     }

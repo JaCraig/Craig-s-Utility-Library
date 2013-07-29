@@ -28,6 +28,7 @@ using System.Web;
 using System.Text.RegularExpressions;
 using Utilities.IO.FileSystem.Interfaces;
 using Utilities.IO.FileSystem.Default;
+using Utilities.IO;
 #endregion
 
 namespace Utilities.IO.FileSystem.BaseClasses
@@ -77,7 +78,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The file object</returns>
         public IFile File(string Path)
         {
-            Path = AbsolutePath(Path).RemoveIllegalFileNameCharacters();
+            Path = AbsolutePath(Path);
             return new LocalFile(Path);
         }
 
@@ -88,8 +89,8 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <returns>The directory object</returns>
         public IDirectory Directory(string Path)
         {
-            Path = AbsolutePath(Path).RemoveIllegalDirectoryNameCharacters();
-            return new LocalDirectory(Path);
+            Path = AbsolutePath(Path);
+            return new LocalDirectory(Path.RemoveIllegalDirectoryNameCharacters());
         }
 
         /// <summary>

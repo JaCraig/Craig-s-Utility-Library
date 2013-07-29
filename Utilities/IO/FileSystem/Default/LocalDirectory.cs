@@ -55,7 +55,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Path">Path to the directory</param>
         public LocalDirectory(string Path)
-            : base(new System.IO.DirectoryInfo(Path))
+            : base(string.IsNullOrEmpty(Path) ? null : new System.IO.DirectoryInfo(Path))
         {
         }
 
@@ -77,7 +77,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override DateTime Accessed
         {
-            get { return InternalDirectory.LastAccessTimeUtc; }
+            get { return InternalDirectory == null ? DateTime.Now : InternalDirectory.LastAccessTimeUtc; }
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override DateTime Created
         {
-            get { return InternalDirectory.CreationTimeUtc; }
+            get { return InternalDirectory == null ? DateTime.Now : InternalDirectory.CreationTimeUtc; }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override DateTime Modified
         {
-            get { return InternalDirectory.LastWriteTimeUtc; }
+            get { return InternalDirectory == null ? DateTime.Now : InternalDirectory.LastWriteTimeUtc; }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override bool Exists
         {
-            get { return InternalDirectory.Exists; }
+            get { return InternalDirectory == null ? false : InternalDirectory.Exists; }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string FullName
         {
-            get { return InternalDirectory.FullName; }
+            get { return InternalDirectory == null ? "" : InternalDirectory.FullName; }
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string Name
         {
-            get { return InternalDirectory.Name; }
+            get { return InternalDirectory == null ? "": InternalDirectory.Name; }
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Parent
         {
-            get { return new LocalDirectory(InternalDirectory.Parent); }
+            get { return InternalDirectory == null ? null : new LocalDirectory(InternalDirectory.Parent); }
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Root
         {
-            get { return new LocalDirectory(InternalDirectory.Root); }
+            get { return InternalDirectory == null ? null : new LocalDirectory(InternalDirectory.Root); }
         }
 
         /// <summary>
@@ -151,29 +151,28 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Creates the directory
         /// </summary>
-        public override async Task Create()
+        public override void Create()
         {
-            await Task.Run(() =>
-            {
-                InternalDirectory.Create();
-                InternalDirectory.Refresh();
-            });
+            if (InternalDirectory == null)
+                return;
+            InternalDirectory.Create();
+            InternalDirectory.Refresh();
         }
 
         /// <summary>
         /// Deletes the directory
         /// </summary>
-        public override async Task Delete()
+        public override void Delete()
         {
             if (!Exists)
                 return;
             foreach (IFile File in EnumerateFiles())
             {
-                await File.Delete();
+                File.Delete();
             }
             foreach (IDirectory Directory in EnumerateDirectories())
             {
-                await Directory.Delete();
+                Directory.Delete();
             }
             InternalDirectory.Delete(true);
             InternalDirectory.Refresh();
@@ -187,9 +186,12 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>List of directories under this directory</returns>
         public override IEnumerable<IDirectory> EnumerateDirectories(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            foreach (System.IO.DirectoryInfo SubDirectory in InternalDirectory.EnumerateDirectories(SearchPattern, Options))
+            if (InternalDirectory != null)
             {
-                yield return new LocalDirectory(SubDirectory);
+                foreach (System.IO.DirectoryInfo SubDirectory in InternalDirectory.EnumerateDirectories(SearchPattern, Options))
+                {
+                    yield return new LocalDirectory(SubDirectory);
+                }
             }
         }
 
@@ -201,9 +203,12 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>List of files under this directory</returns>
         public override IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly)
         {
-            foreach (System.IO.FileInfo File in InternalDirectory.EnumerateFiles(SearchPattern, Options))
+            if (InternalDirectory != null)
             {
-                yield return new LocalFile(File);
+                foreach (System.IO.FileInfo File in InternalDirectory.EnumerateFiles(SearchPattern, Options))
+                {
+                    yield return new LocalFile(File);
+                }
             }
         }
 
@@ -211,26 +216,24 @@ namespace Utilities.IO.FileSystem.Default
         /// Moves this directory under another directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public override async Task MoveTo(IDirectory Directory)
+        public override void MoveTo(IDirectory Directory)
         {
-            await Task.Run(() =>
-            {
-                InternalDirectory.MoveTo(Directory.FullName + "\\" + Name);
-                InternalDirectory = new System.IO.DirectoryInfo(Directory.FullName + "\\" + Name);
-            });
+            if (InternalDirectory == null || Directory == null)
+                return;
+            InternalDirectory.MoveTo(Directory.FullName + "\\" + Name);
+            InternalDirectory = new System.IO.DirectoryInfo(Directory.FullName + "\\" + Name);
         }
 
         /// <summary>
         /// Renames the directory
         /// </summary>
         /// <param name="Name">Name of the new directory</param>
-        public override async Task Rename(string Name)
+        public override void Rename(string Name)
         {
-            await Task.Run(() =>
-            {
-                InternalDirectory.MoveTo(Parent.FullName + "\\" + Name);
-                InternalDirectory = new System.IO.DirectoryInfo(Parent.FullName + "\\" + Name);
-            });
+            if (InternalDirectory == null || string.IsNullOrEmpty(Name))
+                return;
+            InternalDirectory.MoveTo(Parent.FullName + "\\" + Name);
+            InternalDirectory = new System.IO.DirectoryInfo(Parent.FullName + "\\" + Name);
         }
 
         #endregion

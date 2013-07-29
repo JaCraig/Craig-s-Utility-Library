@@ -39,10 +39,11 @@ namespace Utilities.IO
         /// Deletes a list of directories
         /// </summary>
         /// <param name="Directories">Directories to delete</param>
-        public static async Task Delete(this IEnumerable<IDirectory> Directories)
+        public static void Delete(this IEnumerable<IDirectory> Directories)
         {
-            foreach (IDirectory Directory in Directories)
-                await Directory.Delete();
+            if (Directories == null)
+                return;
+            Parallel.ForEach(Directories, x => x.Delete());
         }
     }
 }

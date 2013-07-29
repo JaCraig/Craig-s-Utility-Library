@@ -39,10 +39,11 @@ namespace Utilities.IO
         /// Deletes a list of files
         /// </summary>
         /// <param name="Files">List of files</param>
-        public static async Task Delete(this IEnumerable<IFile> Files)
+        public static void Delete(this IEnumerable<IFile> Files)
         {
-            foreach (IFile File in Files)
-                await File.Delete();
+            if (Files == null)
+                return;
+            Parallel.ForEach(Files, x => x.Delete());
         }
     }
 }

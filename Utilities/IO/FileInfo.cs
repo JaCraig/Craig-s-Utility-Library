@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -74,47 +73,47 @@ namespace Utilities.IO
         /// <summary>
         /// Last time accessed (UTC time)
         /// </summary>
-        public DateTime Accessed { get { return InternalFile.Accessed; } }
+        public DateTime Accessed { get { return InternalFile == null ? DateTime.Now : InternalFile.Accessed; } }
 
         /// <summary>
         /// Time created (UTC time)
         /// </summary>
-        public DateTime Created { get { return InternalFile.Created; } }
+        public DateTime Created { get { return InternalFile == null ? DateTime.Now : InternalFile.Created; } }
 
         /// <summary>
         /// Time modified (UTC time)
         /// </summary>
-        public DateTime Modified { get { return InternalFile.Modified; } }
+        public DateTime Modified { get { return InternalFile == null ? DateTime.Now : InternalFile.Modified; } }
 
         /// <summary>
         /// Directory the file is within
         /// </summary>
-        public IDirectory Directory { get { return InternalFile.Directory; } }
+        public IDirectory Directory { get { return InternalFile == null ? null : InternalFile.Directory; } }
 
         /// <summary>
         /// Does the file exist?
         /// </summary>
-        public bool Exists { get { return InternalFile.Exists; } }
+        public bool Exists { get { return InternalFile == null ? false : InternalFile.Exists; } }
 
         /// <summary>
         /// File extension
         /// </summary>
-        public string Extension { get { return InternalFile.Extension; } }
+        public string Extension { get { return InternalFile == null ? "" : InternalFile.Extension; } }
 
         /// <summary>
         /// Full path
         /// </summary>
-        public string FullName { get { return InternalFile.FullName; } }
+        public string FullName { get { return InternalFile == null ? "" : InternalFile.FullName; } }
 
         /// <summary>
         /// Size of the file
         /// </summary>
-        public long Length { get { return InternalFile.Length; } }
+        public long Length { get { return InternalFile == null ? 0 : InternalFile.Length; } }
 
         /// <summary>
         /// Name of the file
         /// </summary>
-        public string Name { get { return InternalFile.Name; } }
+        public string Name { get { return InternalFile == null ? "" : InternalFile.Name; } }
 
         #endregion
 
@@ -123,9 +122,11 @@ namespace Utilities.IO
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public Task Delete()
+        public void Delete()
         {
-            return InternalFile.Delete();
+            if (InternalFile == null)
+                return;
+            InternalFile.Delete();
         }
 
         /// <summary>
@@ -134,6 +135,8 @@ namespace Utilities.IO
         /// <returns>The file contents as a string</returns>
         public string Read()
         {
+            if (InternalFile == null)
+                return "";
             return InternalFile.Read();
         }
 
@@ -143,6 +146,8 @@ namespace Utilities.IO
         /// <returns>The file contents as a byte array</returns>
         public byte[] ReadBinary()
         {
+            if (InternalFile == null)
+                return new byte[0];
             return InternalFile.ReadBinary();
         }
 
@@ -150,18 +155,22 @@ namespace Utilities.IO
         /// Renames the file
         /// </summary>
         /// <param name="NewName">New name for the file</param>
-        public Task Rename(string NewName)
+        public void Rename(string NewName)
         {
-            return InternalFile.Rename(NewName);
+            if (InternalFile == null || string.IsNullOrEmpty(NewName))
+                return;
+            InternalFile.Rename(NewName);
         }
 
         /// <summary>
         /// Moves the file to a new directory
         /// </summary>
         /// <param name="Directory">Directory to move to</param>
-        public Task MoveTo(IDirectory Directory)
+        public void MoveTo(IDirectory Directory)
         {
-            return InternalFile.MoveTo(Directory);
+            if (InternalFile == null || Directory == null)
+                return;
+            InternalFile.MoveTo(Directory);
         }
 
         /// <summary>
@@ -170,9 +179,12 @@ namespace Utilities.IO
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        public Task Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        /// <returns>Task associated with the write process</returns>
+        public void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
-            return InternalFile.Write(Content, Mode, Encoding);
+            if (InternalFile == null)
+                return;
+            InternalFile.Write(Content, Mode, Encoding);
         }
 
         /// <summary>
@@ -180,9 +192,12 @@ namespace Utilities.IO
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        public Task Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        /// <returns>Task associated with the write process</returns>
+        public void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
-            return InternalFile.Write(Content, Mode);
+            if (InternalFile == null)
+                return;
+            InternalFile.Write(Content, Mode);
         }
 
         /// <summary>
@@ -192,6 +207,8 @@ namespace Utilities.IO
         /// <returns>The process object created when the executable is started</returns>
         public Process Execute(ProcessStartInfo Info = null)
         {
+            if (InternalFile == null)
+                return null;
             Info = Info == null ? new ProcessStartInfo() : Info;
             Info.FileName = FullName;
             return Process.Start(Info);
@@ -235,6 +252,8 @@ namespace Utilities.IO
         {
             if (other == null)
                 return 1;
+            if (InternalFile == null)
+                return -1;
             return string.Compare(FullName, other.FullName, StringComparison.OrdinalIgnoreCase);
         }
 
@@ -362,6 +381,8 @@ namespace Utilities.IO
         /// <returns>The file as a string</returns>
         public static implicit operator string(FileInfo File)
         {
+            if (File == null)
+                return "";
             return File.Read();
         }
 
@@ -372,6 +393,8 @@ namespace Utilities.IO
         /// <returns>The file as a byte array</returns>
         public static implicit operator byte[](FileInfo File)
         {
+            if (File == null)
+                return new byte[0];
             return File.ReadBinary();
         }
 

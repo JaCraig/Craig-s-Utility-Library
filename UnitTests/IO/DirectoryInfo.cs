@@ -89,9 +89,9 @@ namespace UnitTests.IO
         public void CreateAndDelete()
         {
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
-            Temp.Create().Wait();
+            Temp.Create();
             Assert.True(Temp.Exists);
-            Temp.Delete().Wait();
+            Temp.Delete();
             Assert.False(Temp.Exists);
         }
 
@@ -100,13 +100,13 @@ namespace UnitTests.IO
         public void DeleteExtension()
         {
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
-            Temp.Create().Wait();
+            Temp.Create();
             for (int x = 0; x < 10; ++x)
             {
-                new Utilities.IO.DirectoryInfo("./Test/" + x).Create().Wait();
+                new Utilities.IO.DirectoryInfo("./Test/" + x).Create();
             }
-            Temp.EnumerateDirectories().Delete().Wait();
-            Temp.Delete().Wait();
+            Temp.EnumerateDirectories().Delete();
+            Temp.Delete();
         }
 
         [Fact]
@@ -114,13 +114,13 @@ namespace UnitTests.IO
         {
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
             Utilities.IO.DirectoryInfo Temp2 = new Utilities.IO.DirectoryInfo("./Test2");
-            Temp.Create().Wait();
-            Temp2.Create().Wait();
-            Temp2.MoveTo(Temp).Wait();
+            Temp.Create();
+            Temp2.Create();
+            Temp2.MoveTo(Temp);
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
             Assert.Equal(Temp, Temp2.Parent);
-            Temp.Delete().Wait();
+            Temp.Delete();
             Assert.False(Temp.Exists);
         }
     }
