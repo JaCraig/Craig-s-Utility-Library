@@ -139,6 +139,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -177,6 +179,13 @@
     <Compile Include="IO\FileSystem\Interfaces\IFileSystem.cs" />
     <Compile Include="IO\FileSystem\Manager.cs" />
     <Compile Include="IO\FileSystem\Module\FileSystemModule.cs" />
+    <Compile Include="IO\Serializers\BaseClasses\SerializerBase.cs" />
+    <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />
+    <Compile Include="IO\Serializers\Default\JSONSerializer.cs" />
+    <Compile Include="IO\Serializers\Default\SOAPSerializer.cs" />
+    <Compile Include="IO\Serializers\Default\XMLSerializer.cs" />
+    <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
+    <Compile Include="IO\Serializers\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
