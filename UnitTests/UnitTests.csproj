@@ -51,6 +51,7 @@
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IoC\Manager.cs" />
     <Compile Include="IO\DirectoryInfo.cs" />
+    <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />
     <Compile Include="IO\FileInfo.cs" />
     <Compile Include="IO\FileSystem\Default\AbsoluteFileSystem.cs" />
     <Compile Include="IO\FileSystem\Default\HttpFileSystem.cs" />

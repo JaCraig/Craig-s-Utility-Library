@@ -160,6 +160,7 @@
     <Compile Include="IO\DirectoryInfo.cs" />
     <Compile Include="IO\ExtensionMethods\IDirectoryExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\IFileExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="IO\FileInfo.cs" />
     <Compile Include="IO\FileSystem\BaseClasses\DirectoryBase.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="IO\Serializers\Default\XMLSerializer.cs" />
     <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
     <Compile Include="IO\Serializers\Manager.cs" />
+    <Compile Include="IO\Serializers\Module\SerializationModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

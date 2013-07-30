@@ -51,8 +51,8 @@ namespace UnitTests.IO
             Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
             Assert.Equal(0, Temp.EnumerateDirectories().Count());
             Assert.Equal(7, Temp.EnumerateFiles().Count());
-            Assert.Equal(0, Temp.EnumerateDirectories(x => x.Created < DateTime.Now).Count());
-            Assert.Equal(6, Temp.EnumerateFiles(x => x.Created < DateTime.Now).Count());
+            Assert.Equal(0, Temp.EnumerateDirectories(x => x.Created < DateTime.UtcNow).Count());
+            Assert.Equal(7, Temp.EnumerateFiles(x => x.Created < DateTime.UtcNow).Count());
         }
 
         [Fact]
