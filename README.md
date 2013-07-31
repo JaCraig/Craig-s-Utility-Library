@@ -1,3 +1,9 @@
+### Be the Batman of Programmers
+
+Have you ever thought about why Batman is as effective as he is? I mean sure he's rich, in better shape than any of us will ever be, and is a master at martial arts, but what almost always wins the day for him is that utility belt. It's the never ending supply of gadgets and utilities that he can use in the appropriate situation that really saves the day. And Craig's Utility Library is the same for programmers.
+
+With .Net we have a number of built in classes and functions to help make a programmer's life easier, but let's face facts, they didn't think of everything. Craig's Utility Library tries to fill in some of those gaps (or at least the ones that I've run into). It comes with a couple hundred extension methods, built in data types such as a BTree, priority queue, ring buffer, etc. And that's just the DataTypes namespace. When you add it all up, Craig's Utility Library is one of the largest set of utilities for .Net out there.
+
 ### IoC container
 At the heart of the latest version of Craig's Utility Library is the IoC container. Unlike versions past, the system is designed to allow 3rd party libraries to be used instead of the built in components. This includes the IoC container itself which can be replaced with any container you prefer.
 
@@ -57,3 +63,90 @@ string Content=new FileInfo("http://www.google.com").Read();
 And it will read the content from the website specified. The FileInfo and DirectoryInfo classes will attempt to parse anything passed in but note that complex paths may confuse it at present but it works for most paths. There are also currently some limitations for websites but this is currently being expanded on along with FTP, etc.
 
 If you wish to add your own file system as an extension, all you need to do is create a class that inherits from Utilities.IO.FileSystem.Interfaces.IFileSystem. This interface has only 1 property and 3 functions that need to be implemented. You may, however, have to also implement both a file implementation (which would inherit from Utilities.IO.FileSystem.Interfaces.IFile) and a directory implementation (Utilities.IO.FileSystem.Interfaces.IDirectory). There are implementations of these under Utilities.IO.FileSystem.Default and base classes under Utilities.IO.FileSystem.BaseClasses that may help with this process. Note that the base classes have a great deal of extra functionality built in, so definitely give them a look.
+
+### IO - Serialization
+The serialization portion of the IO namespace, from a user standpoint is rather simple. By including Utilities.IO, the extension methods Serialize and Deserialize will be added. These extension methods allow you to access the various back end serializers registered with the system by either using the appropriate MIME type or the built in SerializationType class. Using the methods would look like this:
+
+```
+string SerializedData=new ExampleClass(){A=100,B="Hello world"}.Serialize<string,ExampleClass>();
+```
+
+The example above would serialize the class as JSON using the default DataContractJsonSerializer built into .Net. You can also specify the MIME type of the object, the built in serializers use the following MIME types:
+* JSON: application/json
+* SOAP: application/soap+xml
+* XML: text/xml
+* Binary: application/octet-stream
+
+JSON is simply the default that the system uses. These all use the built in serializers from .Net. If you would like to use your own (such as JSON.Net or ServiceStack.Text) you can easily do so by simply making a class that implements the Utilities.IO.Serializers.Interfaces.ISerializer<T> interface. So if you write a JSON replacement, the system will pick that up and use that instead. You can also write serializers of other types not covered by the library (custom file format, etc) and it will find those as well.
+
+### IO - Logging
+The logging code is extremely simple from the end user's standpoint but a little more complicated from the implementor's standpoint. From an end user standpoint there is only one class/function that they need to worry about:
+
+```
+Utilities.IO.Log.Get("LogName");
+```
+
+The function simply gets a log object based on a name. If one does not exist, it creates it on the fly. This function returns an ILog object. This object has one function that matters, LogMessage:
+
+```
+void LogMessage(string Message, MessageType Type, params object[] args);
+```
+
+This method takes the message text, type of message (Info, General, Debug, etc), and a number of args which are combined with the text using string.Format (at least in the built in logger it is, custom implementations can treat those values differently). The default logger built in to the library is very basic and is not customizable. It simply defaults to writing a file at either ~/Logs or ~/App_Data/Logs depending on whether it is a web application or not. The name of the file will be of the format LogName+"-"+DateTime.Now.ToString("yyyyMMddhhmmss").
+
+In order to implement your own logger of choice, simply implement both the Utilities.IO.Logging.Interfaces.ILogger and Utilities.IO.Logging.Interfaces.ILog interfaces. The ILogger interface is the actual logging engine while ILog is the object used by the system to actually log the info.
+
+### Documentation
+The library itself is documented and comes with the XML generated docs. There is also a download available on Nuget that contains the documentation generated using doxygen (http://www.stack.nl/~dimitri/doxygen/). With version 4.0, the basic info to get you started can be in the document above. Feel free to ask specific questions on the CodePlex (http://cul.codeplex.com) or Github (https://github.com/JaCraig/Craig-s-Utility-Library) pages also.
+
+### Where To Get It
+The library is available on NuGet in both a single DLL as well as each individual namespace.
+
+**Entire library (with command from package manager console):**
+* Craig's Utility Library: Install-Package CraigsUtilityLibrary
+
+**Individual namespaces (with command from package manager console):**
+* DataTypes: Install-Package CraigsUtilityLibrary-DataTypes
+* LDAP: Install-Package CraigsUtilityLibrary-LDAP
+* SQL: Install-Package CraigsUtilityLibrary-SQL
+* Encryption: Install-Package CraigsUtilityLibrary-Encryption 
+* Caching: Install-Package CraigsUtilityLibrary-Caching
+* Math: Install-Package CraigsUtilityLibrary-Math
+* Validation: Install-Package CraigsUtilityLibrary-Validation 
+* Environment: Install-Package CraigsUtilityLibrary-Environment
+* Media: Install-Package CraigsUtilityLibrary-Media 
+* Web: Install-Package CraigsUtilityLibrary-Web 
+* ORM: Install-Package CraigsUtilityLibrary-ORM 
+* Compression: Install-Package CraigsUtilityLibrary-Compression 
+* Profiler: Install-Package CraigsUtilityLibrary-Profiler 
+* FileFormats: Install-Package CraigsUtilityLibrary-FileFormats 
+* Configuration: Install-Package CraigsUtilityLibrary-Configuration 
+* Random: Install-Package CraigsUtilityLibrary-Random 
+* DataMapper: Install-Package CraigsUtilityLibrary-DataMapper 
+* IO: Install-Package CraigsUtilityLibrary-IO 
+* Reflection: Install-Package CraigsUtilityLibrary-Reflection
+* AI: Install-Package CraigsUtilityLibrary-AI 
+* IoC: Install-Package CraigsUtilityLibrary-IoC 
+
+**Old namespaces (with command from package manager console):**
+* Cisco: Install-Package CraigsUtilityLibrary-Cisco
+* Error: Install-Package CraigsUtilityLibrary-Error 
+* Classifier: Install-Package CraigsUtilityLibrary-Classifier 
+* Multithreading: Install-Package CraigsUtilityLibrary-Multithreading 
+* Events: Install-Package CraigsUtilityLibrary-Events 
+* CodeGen: Install-Package CraigsUtilityLibrary-CodeGen 
+* Exchange: Install-Package CraigsUtilityLibrary-Exchange 
+
+### Contributors/Contributing
+Maintained by [James Craig](https://github.com/JaCraig)
+
+If you have a method, fix, or change that you would like added the best option is to: 
+* Fork the codebase 
+* Create a branch 
+* Commit your changes 
+* Push to the branch 
+* Open a pull request.
+
+### License
+
+Uses MIT license

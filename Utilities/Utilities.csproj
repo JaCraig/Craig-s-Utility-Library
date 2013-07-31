@@ -180,6 +180,16 @@
     <Compile Include="IO\FileSystem\Interfaces\IFileSystem.cs" />
     <Compile Include="IO\FileSystem\Manager.cs" />
     <Compile Include="IO\FileSystem\Module\FileSystemModule.cs" />
+    <Compile Include="IO\Log.cs" />
+    <Compile Include="IO\Logging\BaseClasses\LogBase.cs" />
+    <Compile Include="IO\Logging\BaseClasses\LoggerBase.cs" />
+    <Compile Include="IO\Logging\Default\DefaultLog.cs" />
+    <Compile Include="IO\Logging\Default\DefaultLogger.cs" />
+    <Compile Include="IO\Logging\Enums\MessageType.cs" />
+    <Compile Include="IO\Logging\Interfaces\ILog.cs" />
+    <Compile Include="IO\Logging\Interfaces\ILogger.cs" />
+    <Compile Include="IO\Logging\Manager.cs" />
+    <Compile Include="IO\Logging\Module\LoggingModule.cs" />
     <Compile Include="IO\Serializers\BaseClasses\SerializerBase.cs" />
     <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />
     <Compile Include="IO\Serializers\Default\JSONSerializer.cs" />

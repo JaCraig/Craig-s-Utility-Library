@@ -96,41 +96,38 @@ namespace Utilities.IO
     /// <summary>
     /// Serialization enum like class
     /// </summary>
-    public sealed class SerializationType
+    public class SerializationType
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Value">Value</param>
         /// <param name="Name">Name</param>
-        public SerializationType(int Value, string Name)
+        protected SerializationType(string Name)
         {
-            this.Value = Value;
             this.Name = Name;
         }
 
-        private string Name;
-        private int Value;
+        private string Name { get; set; }
 
         /// <summary>
         /// JSON
         /// </summary>
-        public static readonly SerializationType JSON = new SerializationType(1, "application/json");
+        public static SerializationType JSON { get { return new SerializationType("application/json"); } }
 
         /// <summary>
         /// SOAP
         /// </summary>
-        public static readonly SerializationType SOAP = new SerializationType(2, "application/soap+xml");
+        public static SerializationType SOAP { get { return new SerializationType("application/soap+xml"); } }
 
         /// <summary>
         /// XML
         /// </summary>
-        public static readonly SerializationType XML = new SerializationType(3, "text/xml");
+        public static SerializationType XML{ get { return new SerializationType("text/xml"); } }
 
         /// <summary>
         /// Binary
         /// </summary>
-        public static readonly SerializationType Binary = new SerializationType(4, "application/octet-stream");
+        public static SerializationType Binary { get { return new SerializationType("application/octet-stream"); } }
 
         /// <summary>
         /// Returns the name of the serialization type

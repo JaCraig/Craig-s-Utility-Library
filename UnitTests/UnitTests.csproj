@@ -62,6 +62,10 @@
     <Compile Include="IO\FileSystem\Default\WebDirectory.cs" />
     <Compile Include="IO\FileSystem\Default\WebFile.cs" />
     <Compile Include="IO\FileSystem\Manager.cs" />
+    <Compile Include="IO\Log.cs" />
+    <Compile Include="IO\Logging\Default\DefaultLog.cs" />
+    <Compile Include="IO\Logging\Default\DefaultLogger.cs" />
+    <Compile Include="IO\Logging\Manager.cs" />
     <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />
     <Compile Include="IO\Serializers\Default\JSONSerializer.cs" />
     <Compile Include="IO\Serializers\Default\SOAPSerializer.cs" />
