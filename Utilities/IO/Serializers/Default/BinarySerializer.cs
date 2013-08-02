@@ -21,18 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities.IO.FileSystem.Interfaces;
 using Utilities.IO.Serializers.BaseClasses;
-using Utilities.IO.Serializers.Interfaces;
-using Utilities.IoC.Default;
-using Utilities.IoC.Interfaces;
+
 #endregion
 
 namespace Utilities.IO.Serializers.Default
@@ -73,7 +65,7 @@ namespace Utilities.IO.Serializers.Default
         /// <returns>The serialized data</returns>
         public override byte[] Serialize(Type ObjectType, object Data)
         {
-            if (Data == null)
+            if (Data == null || ObjectType == null)
                 return new byte[0];
             using (MemoryStream Stream = new MemoryStream())
             {
@@ -91,7 +83,7 @@ namespace Utilities.IO.Serializers.Default
         /// <returns>The deserialized data</returns>
         public override object Deserialize(Type ObjectType, byte[] Data)
         {
-            if (Data == null || Data.Length == 0)
+            if (Data == null || Data.Length == 0 || ObjectType == null)
                 return null;
             using (MemoryStream Stream = new MemoryStream(Data))
             {

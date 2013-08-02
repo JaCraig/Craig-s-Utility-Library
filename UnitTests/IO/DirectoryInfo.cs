@@ -20,14 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Utilities.IO;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
-using Utilities.IO;
 
 namespace UnitTests.IO
 {
@@ -47,6 +43,7 @@ namespace UnitTests.IO
         [Fact]
         public void Enumeration()
         {
+            new Utilities.IO.DirectoryInfo("~/Logs/").Delete();
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
             Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
             Assert.Equal(0, Temp.EnumerateDirectories().Count());

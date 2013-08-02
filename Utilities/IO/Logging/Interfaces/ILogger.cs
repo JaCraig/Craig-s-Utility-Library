@@ -22,7 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using Utilities.IO.Logging.Enums;
+
 #endregion
 
 namespace Utilities.IO.Logging.Interfaces

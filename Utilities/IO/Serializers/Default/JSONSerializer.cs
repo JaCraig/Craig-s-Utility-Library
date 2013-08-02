@@ -21,22 +21,14 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
-using Utilities.IO.FileSystem.Interfaces;
 using Utilities.IO.Serializers.BaseClasses;
-using Utilities.IO.Serializers.Interfaces;
-using Utilities.IoC.Default;
-using Utilities.IoC.Interfaces;
+
 #endregion
 
 namespace Utilities.IO.Serializers.Default
@@ -82,7 +74,7 @@ namespace Utilities.IO.Serializers.Default
         /// <returns>The serialized data</returns>
         public override string Serialize(Type ObjectType, object Data)
         {
-            if (Data == null)
+            if (Data == null || ObjectType == null)
                 return null;
             string ReturnValue = "";
             using (MemoryStream Stream = new MemoryStream())
@@ -112,7 +104,7 @@ namespace Utilities.IO.Serializers.Default
         /// <returns>The deserialized data</returns>
         public override object Deserialize(Type ObjectType, string Data)
         {
-            if (string.IsNullOrEmpty(Data))
+            if (string.IsNullOrEmpty(Data) || ObjectType == null)
                 return null;
             Data = JsonPRegex.Replace(Data, "$1");
             using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))

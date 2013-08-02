@@ -20,11 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Globalization;
-using System.IO;
 using Utilities.IO.Logging.BaseClasses;
-using Utilities.IO.Logging.Enums;
+
 #endregion
 
 namespace Utilities.IO.Logging.Default

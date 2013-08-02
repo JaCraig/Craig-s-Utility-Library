@@ -23,7 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
+
 #endregion
 
 namespace Utilities.IO.FileSystem.Interfaces

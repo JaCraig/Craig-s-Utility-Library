@@ -21,14 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
 using System.Text.RegularExpressions;
-using Utilities.IO.FileSystem.Interfaces;
 using Utilities.IO.FileSystem.Default;
-using Utilities.IO;
+using Utilities.IO.FileSystem.Interfaces;
+
 #endregion
 
 namespace Utilities.IO.FileSystem.BaseClasses

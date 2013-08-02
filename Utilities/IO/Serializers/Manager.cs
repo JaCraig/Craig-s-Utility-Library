@@ -22,15 +22,12 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using Utilities.IO.FileSystem.Interfaces;
 using Utilities.IO.Serializers.Interfaces;
-using Utilities.IoC.Default;
-using Utilities.IoC.Interfaces;
+
 #endregion
 
 namespace Utilities.IO.Serializers
@@ -112,6 +109,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The serialized object as a string</returns>
         public T Serialize<T>(object Object, Type ObjectType, string ContentType = "application/json")
         {
+            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             if (!Serializers.ContainsKey(ContentType) || Serializers[ContentType].ReturnType != typeof(T))
                 return default(T);
             return ((ISerializer<T>)Serializers[ContentType]).Serialize(ObjectType, Object);
@@ -140,6 +138,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The deserialized object</returns>
         public object Deserialize<T>(T Data, Type ObjectType, string ContentType = "application/json")
         {
+            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
             if (!Serializers.ContainsKey(ContentType) || Serializers[ContentType].ReturnType != typeof(T))
                 return null;
             return ((ISerializer<T>)Serializers[ContentType]).Deserialize(ObjectType, Data);

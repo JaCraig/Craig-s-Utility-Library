@@ -21,11 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
 using System.IO;
+using System.Web;
 using Utilities.IO.FileSystem.BaseClasses;
 #endregion
 

@@ -66,6 +66,7 @@
     <Compile Include="IO\Logging\Default\DefaultLog.cs" />
     <Compile Include="IO\Logging\Default\DefaultLogger.cs" />
     <Compile Include="IO\Logging\Manager.cs" />
+    <Compile Include="IO\Messaging\Manager.cs" />
     <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />
     <Compile Include="IO\Serializers\Default\JSONSerializer.cs" />
     <Compile Include="IO\Serializers\Default\SOAPSerializer.cs" />
@@ -82,7 +83,9 @@
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="IO\Messaging\Default\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,19 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities.IO.Logging;
-using Utilities.IO.Logging.Enums;
 using Utilities.IO.Logging.Interfaces;
-using Utilities.IoC.Default;
-using Utilities.IoC.Interfaces;
+
 #endregion
 
 namespace Utilities.IO

@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -190,6 +190,15 @@
     <Compile Include="IO\Logging\Interfaces\ILogger.cs" />
     <Compile Include="IO\Logging\Manager.cs" />
     <Compile Include="IO\Logging\Module\LoggingModule.cs" />
+    <Compile Include="IO\Messaging\BaseClasses\MessageBase.cs" />
+    <Compile Include="IO\Messaging\BaseClasses\MessagingSystemBase.cs" />
+    <Compile Include="IO\EmailMessage.cs" />
+    <Compile Include="IO\Messaging\Default\SMTPSystem.cs" />
+    <Compile Include="IO\Messaging\Interfaces\IFormatter.cs" />
+    <Compile Include="IO\Messaging\Interfaces\IMessage.cs" />
+    <Compile Include="IO\Messaging\Interfaces\IMessagingSystem.cs" />
+    <Compile Include="IO\Messaging\Manager.cs" />
+    <Compile Include="IO\Messaging\Module\MessagingModule.cs" />
     <Compile Include="IO\Serializers\BaseClasses\SerializerBase.cs" />
     <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />
     <Compile Include="IO\Serializers\Default\JSONSerializer.cs" />
@@ -204,7 +213,19 @@
     <None Include="Key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Caching\" />
+    <Folder Include="Compression\" />
+    <Folder Include="Configuration\" />
+    <Folder Include="DataMapper\" />
+    <Folder Include="DataTypes\CodeGen\" />
+    <Folder Include="Encryption\" />
+    <Folder Include="Media\" />
+    <Folder Include="ORM\" />
+    <Folder Include="Profiler\" />
+    <Folder Include="Random\" />
+    <Folder Include="Validation\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -21,17 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Utilities.IO.FileSystem;
 using Utilities.IO.FileSystem.Interfaces;
-using Utilities.IoC.Default;
-using Utilities.IoC.Interfaces;
+
 #endregion
 
 namespace Utilities.IO

@@ -21,14 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities.IoC.BaseClasses;
-using Utilities.IoC.Interfaces;
+
 #endregion
 
 namespace Utilities.IoC.Default.Interfaces
