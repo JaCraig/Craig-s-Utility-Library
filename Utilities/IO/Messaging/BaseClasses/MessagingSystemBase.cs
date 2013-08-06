@@ -39,6 +39,7 @@ namespace Utilities.IO.Messaging.BaseClasses
         /// </summary>
         protected MessagingSystemBase()
         {
+            Formatters = new List<IFormatter>();
         }
 
         /// <summary>
@@ -87,6 +88,21 @@ namespace Utilities.IO.Messaging.BaseClasses
                         Formatter.Format(Message, Model);
                     }
                 }
+                InternalSend(Message);
+            });
+        }
+
+        /// <summary>
+        /// Sends a message asynchronously
+        /// </summary>
+        /// <param name="Message">Message to send</param>
+        /// <returns>The async task</returns>
+        public async Task Send(IMessage Message)
+        {
+            if (Message == null)
+                return;
+            await Task.Run(() =>
+            {
                 InternalSend(Message);
             });
         }

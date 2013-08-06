@@ -76,5 +76,14 @@ namespace Utilities.IO.Messaging.BaseClasses
         {
             return MessagingSystem.Send(this, Model);
         }
+
+        /// <summary>
+        /// Send a message
+        /// </summary>
+        /// <returns>The async task object</returns>
+        public Task Send()
+        {
+            return MessagingSystem.Send(this);
+        }
     }
 }

@@ -49,6 +49,7 @@ namespace Utilities.IO
             Attachments = new List<Attachment>();
             EmbeddedResources = new List<LinkedResource>();
             Priority = MailPriority.Normal;
+            Port = 25;
         }
 
         #endregion

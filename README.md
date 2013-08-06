@@ -96,6 +96,22 @@ This method takes the message text, type of message (Info, General, Debug, etc),
 
 In order to implement your own logger of choice, simply implement both the Utilities.IO.Logging.Interfaces.ILogger and Utilities.IO.Logging.Interfaces.ILog interfaces. The ILogger interface is the actual logging engine while ILog is the object used by the system to actually log the info.
 
+### IO - Messaging
+By messaging, I mean things like email, etc. This system is the most in flux at the moment but is still rather simple. Generally the system consists of a message type, a message system, and formatters. The basic message type that comes with the IO namespace is EmailMessage. By itself it does very little. It holds data and that's about it. The system also comes with a message system that handles EmailMessage classes, SMTPSystem. This system actually sends the email. From an end user standpoint though, they only ever see the EmailMessage class:
+
+```
+using(EmailMessage Message=new EmailMessage())
+{
+    Message.To="Example@gmail.com";
+	Message.From="MyEmail@companyname.com";
+	Message.Subject="Subject";
+	Message.Body="Body text";
+	Message.Send();
+}
+```
+
+At present there is only the ability to send messages. I would like to change this so that they can be received as well. So it's a bit in flux but it works for now. In order to implement a message/messaging system the key interfaces are Utilities.IO.Messaging.Interfaces.IMessage and Utilities.IO.Messaging.Interfaces.IMessagingSystem. I also mentioned formatters. Formatters are currently not implemented within the system itself but it allows you to specify how a message should be formatted before it is sent out. For instance if you wanted to use Razor to format the email message, you could. However I'm still playing with this so I'm not going to show any code currently.
+
 ### Documentation
 The library itself is documented and comes with the XML generated docs. There is also a download available on Nuget that contains the documentation generated using doxygen (http://www.stack.nl/~dimitri/doxygen/). With version 4.0, the basic info to get you started can be in the document above. Feel free to ask specific questions on the CodePlex (http://cul.codeplex.com) or Github (https://github.com/JaCraig/Craig-s-Utility-Library) pages also.
 

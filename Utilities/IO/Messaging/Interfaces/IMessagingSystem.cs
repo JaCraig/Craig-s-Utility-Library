@@ -52,5 +52,12 @@ namespace Utilities.IO.Messaging.Interfaces
         /// <returns>The async task</returns>
         Task Send<T>(IMessage Message, T Model = default(T))
             where T : class;
+
+        /// <summary>
+        /// Sends a message asynchronously
+        /// </summary>
+        /// <param name="Message">Message to send</param>
+        /// <returns>The async task</returns>
+        Task Send(IMessage Message);
     }
 }
