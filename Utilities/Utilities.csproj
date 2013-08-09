@@ -149,6 +149,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IoC\BaseClasses\BootstrapperBase.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
@@ -162,6 +163,20 @@
     <Compile Include="IO\ExtensionMethods\IFileExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="IO\FileFormats\BaseClasses\FormatBase.cs" />
+    <Compile Include="IO\FileFormats\BaseClasses\StringFormatBase.cs" />
+    <Compile Include="IO\FileFormats\BaseClasses\StringListFormatBase.cs" />
+    <Compile Include="IO\FileFormats\CSS.cs" />
+    <Compile Include="IO\FileFormats\Delimited.cs" />
+    <Compile Include="IO\FileFormats\Excel.cs" />
+    <Compile Include="IO\FileFormats\FixedLength.cs" />
+    <Compile Include="IO\FileFormats\HTML.cs" />
+    <Compile Include="IO\FileFormats\INI.cs" />
+    <Compile Include="IO\FileFormats\Interfaces\IFormat.cs" />
+    <Compile Include="IO\FileFormats\JavaScript.cs" />
+    <Compile Include="IO\FileFormats\RSS.cs" />
+    <Compile Include="IO\FileFormats\VCalendar.cs" />
+    <Compile Include="IO\FileFormats\VCard.cs" />
     <Compile Include="IO\FileInfo.cs" />
     <Compile Include="IO\FileSystem\BaseClasses\DirectoryBase.cs" />
     <Compile Include="IO\FileSystem\BaseClasses\FileBase.cs" />
