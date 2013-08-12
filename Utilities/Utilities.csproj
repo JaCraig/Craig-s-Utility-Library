@@ -149,7 +149,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\CodeGen\BaseClasses\CompilerBase.cs" />
+    <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
+    <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
     <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DelegateExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IoC\BaseClasses\BootstrapperBase.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
@@ -233,7 +241,6 @@
     <Folder Include="Compression\" />
     <Folder Include="Configuration\" />
     <Folder Include="DataMapper\" />
-    <Folder Include="DataTypes\CodeGen\" />
     <Folder Include="Encryption\" />
     <Folder Include="Media\" />
     <Folder Include="ORM\" />

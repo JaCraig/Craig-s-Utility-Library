@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,42 +25,37 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace Utilities.IO.Logging.Interfaces
+namespace Utilities.DataTypes.Comparison
 {
     /// <summary>
-    /// Logger interface
+    /// Generic IComparable class
     /// </summary>
-    public interface ILogger : IDisposable
+    /// <typeparam name="T">Data type</typeparam>
+    public class GenericComparer<T> : IComparer<T> where T : IComparable
     {
-        #region Properties
-
         /// <summary>
-        /// Name of the logger
+        /// Compares the two objects
         /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Logs held by the logger
-        /// </summary>
-        IDictionary<string, ILog> Logs { get; }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Gets a specified log
-        /// </summary>
-        /// <param name="Name">The name of the log file</param>
-        /// <returns>The log file specified</returns>
-        ILog GetLog(string Name = "Default");
-
-        /// <summary>
-        /// Adds a log object or replaces one already in use
-        /// </summary>
-        /// <param name="Name">The name of the log file</param>
-        void AddLog(string Name = "Default");
-        
-        #endregion
+        /// <param name="x">Object 1</param>
+        /// <param name="y">Object 2</param>
+        /// <returns>0 if they're equal, any other value they are not</returns>
+        public int Compare(T x, T y)
+        {
+            if (!typeof(T).IsValueType
+                || (typeof(T).IsGenericType
+                && typeof(T).GetGenericTypeDefinition().IsAssignableFrom(typeof(Nullable<>))))
+            {
+                if (Object.Equals(x, default(T)))
+                    return Object.Equals(y, default(T)) ? 0 : -1;
+                if (Object.Equals(y, default(T)))
+                    return -1;
+            }
+            if (x.GetType() != y.GetType())
+                return -1;
+            IComparable<T> TempComparable = x as IComparable<T>;
+            if (TempComparable != null)
+                return TempComparable.CompareTo(y);
+            return x.CompareTo(y);
+        }
     }
 }
