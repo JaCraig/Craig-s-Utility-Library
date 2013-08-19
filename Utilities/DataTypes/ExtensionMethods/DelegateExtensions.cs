@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Diagnostics.Contracts;
 using System.Threading;
 
 
@@ -34,6 +33,10 @@ namespace Utilities.DataTypes
     /// </summary>
     public static class DelegateExtensions
     {
+        #region Functions
+
+        #region Async
+
         /// <summary>
         /// Runs an action async
         /// </summary>
@@ -43,64 +46,9 @@ namespace Utilities.DataTypes
             new Thread(Action.Invoke).Start();
         }
 
-        /// <summary>
-        /// Executes a function, repeating it a number of times in case it fails
-        /// </summary>
-        /// <typeparam name="T">Return type</typeparam>
-        /// <param name="Function">Function to run</param>
-        /// <param name="Attempts">Number of times to attempt it</param>
-        /// <param name="RetryDelay">The amount of milliseconds to wait between tries</param>
-        /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
-        /// <returns>The returned value from the function</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static T Execute<T>(this Func<T> Function, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
-        {
-            Contract.Requires<ArgumentNullException>(Function != null, "Function");
-            Exception Holder = null;
-            long Start = System.Environment.TickCount;
-            while (Attempts > 0)
-            {
-                try
-                {
-                    return Function();
-                }
-                catch (Exception e) { Holder = e; }
-                if (System.Environment.TickCount - Start > TimeOut)
-                    break;
-                Thread.Sleep(RetryDelay);
-                --Attempts;
-            }
-            throw Holder;
-        }
+        #endregion
 
-        /// <summary>
-        /// Executes an action, repeating it a number of times in case it fails
-        /// </summary>
-        /// <param name="Action">Action to run</param>
-        /// <param name="Attempts">Number of times to attempt it</param>
-        /// <param name="RetryDelay">The amount of milliseconds to wait between tries</param>
-        /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static void Execute(this Action Action, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
-        {
-            Contract.Requires<ArgumentNullException>(Action != null, "Action");
-            Exception Holder = null;
-            long Start = System.Environment.TickCount;
-            while (Attempts > 0)
-            {
-                try
-                {
-                    Action();
-                }
-                catch (Exception e) { Holder = e; }
-                if (System.Environment.TickCount - Start > TimeOut)
-                    break;
-                Thread.Sleep(RetryDelay);
-                --Attempts;
-            }
-            if (Holder != null)
-                throw Holder;
-        }
+        #region Raise
 
         /// <summary>
         /// Safely calls the specified action
@@ -142,5 +90,9 @@ namespace Utilities.DataTypes
                 return Delegate(EventArgs);
             return default(T2);
         }
+
+        #endregion
+
+        #endregion
     }
 }

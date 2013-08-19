@@ -36,6 +36,8 @@ namespace Utilities.DataTypes
     /// </summary>
     public static class GenericObjectExtensions
     {
+        #region Functions
+
         #region Chain
 
         /// <summary>
@@ -51,7 +53,7 @@ namespace Utilities.DataTypes
         public static T Chain<T>(this T Object, Action<T> Action, T DefaultObjectValue = default(T))
         {
             Object = Object.Check(DefaultObjectValue);
-            if (Action == null || Object == null)
+            if (Action==null || Object==null)
                 return Object;
             Action(Object);
             return Object;
@@ -74,9 +76,72 @@ namespace Utilities.DataTypes
         public static R Chain<T, R>(this T Object, Func<T, R> Function, R DefaultReturnValue = default(R), T DefaultObjectValue = default(T))
         {
             Object = Object.Check(DefaultObjectValue);
-            if (Function == null || Object == null)
+            if (Function==null || Object==null)
                 return DefaultReturnValue;
             return Function(Object).Check(DefaultReturnValue);
+        }
+
+        #endregion
+
+        #region Execute
+
+        /// <summary>
+        /// Executes a function, repeating it a number of times in case it fails
+        /// </summary>
+        /// <typeparam name="T">Return type</typeparam>
+        /// <param name="Function">Function to run</param>
+        /// <param name="Attempts">Number of times to attempt it</param>
+        /// <param name="RetryDelay">The amount of milliseconds to wait between tries</param>
+        /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
+        /// <returns>The returned value from the function</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        public static T Execute<T>(this Func<T> Function, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
+        {
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Exception Holder = null;
+            long Start = System.Environment.TickCount;
+            while (Attempts > 0)
+            {
+                try
+                {
+                    return Function();
+                }
+                catch (Exception e) { Holder = e; }
+                if (System.Environment.TickCount - Start > TimeOut)
+                    break;
+                Thread.Sleep(RetryDelay);
+                --Attempts;
+            }
+            throw Holder;
+        }
+
+        /// <summary>
+        /// Executes an action, repeating it a number of times in case it fails
+        /// </summary>
+        /// <param name="Action">Action to run</param>
+        /// <param name="Attempts">Number of times to attempt it</param>
+        /// <param name="RetryDelay">The amount of milliseconds to wait between tries</param>
+        /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        public static void Execute(this Action Action, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
+        {
+            Contract.Requires<ArgumentNullException>(Action!=null, "Action");
+            Exception Holder = null;
+            long Start = System.Environment.TickCount;
+            while (Attempts > 0)
+            {
+                try
+                {
+                    Action();
+                }
+                catch (Exception e) { Holder = e; }
+                if (System.Environment.TickCount - Start > TimeOut)
+                    break;
+                Thread.Sleep(RetryDelay);
+                --Attempts;
+            }
+            if (Holder!=null)
+                throw Holder;
         }
 
         #endregion
@@ -204,6 +269,187 @@ namespace Utilities.DataTypes
 
         #endregion
 
+        #region ThrowIfDefault
+
+        /// <summary>
+        /// Determines if the object is equal to default value and throws an ArgumentNullException if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="Name">Name of the argument</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
+        {
+            return Item.ThrowIfDefault(new ArgumentNullException(Name), EqualityComparer);
+        }
+
+        /// <summary>
+        /// Determines if the object is equal to default value and throws the exception that is passed in if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
+        {
+            return Item.ThrowIf(x => EqualityComparer.Check(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
+        }
+
+        #endregion
+
+        #region ThrowIfNotDefault
+
+        /// <summary>
+        /// Determines if the object is not equal to default value and throws an ArgumentException if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="Name">Name of the argument</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNotDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
+        {
+            return Item.ThrowIfNotDefault(new ArgumentException(Name), EqualityComparer);
+        }
+
+        /// <summary>
+        /// Determines if the object is not equal to default value and throws the exception that is passed in if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNotDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
+        {
+            return Item.ThrowIf(x => !EqualityComparer.Check(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
+        }
+
+        #endregion
+
+        #region ThrowIfNot
+
+        /// <summary>
+        /// Throws the specified exception if the predicate is false for the item
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The item</param>
+        /// <param name="Predicate">Predicate to check</param>
+        /// <param name="Exception">Exception to throw if predicate is false</param>
+        /// <returns>the original Item</returns>
+        public static T ThrowIfNot<T>(this T Item, Predicate<T> Predicate, Exception Exception)
+        {
+            return Item.ThrowIf(x => !Predicate(x), Exception);
+        }
+
+        #endregion
+
+        #region ThrowIfNotNull
+
+        /// <summary>
+        /// Determines if the object is not null and throws an ArgumentException if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Name">Name of the argument</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNotNull<T>(this T Item, string Name)
+        {
+            return Item.ThrowIfNotNull(new ArgumentException(Name));
+        }
+
+        /// <summary>
+        /// Determines if the object is not null and throws the exception passed in if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNotNull<T>(this T Item, Exception Exception)
+        {
+            return Item.ThrowIf(x => x != null && !Convert.IsDBNull(x), Exception);
+        }
+
+        #endregion
+
+        #region ThrowIfNull
+
+        /// <summary>
+        /// Determines if the object is null and throws an ArgumentNullException if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Name">Name of the argument</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNull<T>(this T Item, string Name)
+        {
+            return Item.ThrowIfNull(new ArgumentNullException(Name));
+        }
+
+        /// <summary>
+        /// Determines if the object is null and throws the exception passed in if it is
+        /// </summary>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static T ThrowIfNull<T>(this T Item, Exception Exception)
+        {
+            return Item.ThrowIf(x => x == null || Convert.IsDBNull(x), Exception);
+        }
+
+        #endregion
+
+        #region ThrowIfNotNullOrEmpty
+
+        /// <summary>
+        /// Determines if the IEnumerable is not null or empty and throws an ArgumentException if it is
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Name">Name of the argument</param>
+        /// <returns>Returns Item</returns>
+        public static IEnumerable<T> ThrowIfNotNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
+        {
+            return Item.ThrowIfNotNullOrEmpty(new ArgumentException(Name));
+        }
+
+        /// <summary>
+        /// Determines if the IEnumerable is not null or empty and throws the exception passed in if it is
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static IEnumerable<T> ThrowIfNotNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
+        {
+            return Item.ThrowIf(x => x != null && x.Count() > 0, Exception);
+        }
+
+        #endregion
+
+        #region ThrowIfNullOrEmpty
+
+        /// <summary>
+        /// Determines if the IEnumerable is null or empty and throws an ArgumentNullException if it is
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Name">Name of the argument</param>
+        /// <returns>Returns Item</returns>
+        public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, string Name)
+        {
+            return Item.ThrowIfNullOrEmpty(new ArgumentNullException(Name));
+        }
+
+        /// <summary>
+        /// Determines if the IEnumerable is null or empty and throws the exception passed in if it is
+        /// </summary>
+        /// <typeparam name="T">Item type</typeparam>
+        /// <param name="Item">The object to check</param>
+        /// <param name="Exception">Exception to throw</param>
+        /// <returns>Returns Item</returns>
+        public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> Item, Exception Exception)
+        {
+            return Item.ThrowIf(x => x == null || x.Count() == 0, Exception);
+        }
+
+        #endregion
+
         #region Times
 
         /// <summary>
@@ -231,6 +477,8 @@ namespace Utilities.DataTypes
             for (int x = 0; x < Count; ++x)
                 Action(x);
         }
+
+        #endregion
 
         #endregion
     }

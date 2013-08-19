@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,8 @@ namespace Utilities.DataTypes
     /// </summary>
     public static class DateTimeExtensions
     {
+        #region Extension Methods
+
         #region AddWeeks
 
         /// <summary>
@@ -241,7 +243,7 @@ namespace Utilities.DataTypes
         }
 
         #endregion
-
+        
         #region Is
 
         /// <summary>
@@ -266,7 +268,7 @@ namespace Utilities.DataTypes
         }
 
         #endregion
-
+        
         #region LocalTimeZone
 
         /// <summary>
@@ -400,6 +402,8 @@ namespace Utilities.DataTypes
         }
 
         #endregion
+
+        #endregion
     }
 
     #region Enums
@@ -413,23 +417,23 @@ namespace Utilities.DataTypes
         /// <summary>
         /// In the future
         /// </summary>
-        InFuture = 1,
+        InFuture=1,
         /// <summary>
         /// In the past
         /// </summary>
-        InPast = 2,
+        InPast=2,
         /// <summary>
         /// Today
         /// </summary>
-        Today = 4,
+        Today=4,
         /// <summary>
         /// Weekday
         /// </summary>
-        WeekDay = 8,
+        WeekDay=8,
         /// <summary>
         /// Weekend
         /// </summary>
-        WeekEnd = 16
+        WeekEnd=16
     }
 
     /// <summary>

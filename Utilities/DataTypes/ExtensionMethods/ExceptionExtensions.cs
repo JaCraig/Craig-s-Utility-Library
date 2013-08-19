@@ -32,6 +32,8 @@ namespace Utilities.DataTypes
     /// </summary>
     public static class ExceptionExtensions
     {
+        #region ToString
+
         /// <summary>
         /// Converts the exception to a string and appends the specified prefix/suffix (used for logging)
         /// </summary>
@@ -64,5 +66,7 @@ namespace Utilities.DataTypes
             Builder.AppendLine(Suffix);
             return Builder.ToString();
         }
+
+        #endregion
     }
 }

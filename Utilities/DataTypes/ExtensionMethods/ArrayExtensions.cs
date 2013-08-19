@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,14 +32,24 @@ namespace Utilities.DataTypes
     /// </summary>
     public static class ArrayExtensions
     {
+        #region Functions
+
+        #region Clear
+
         /// <summary>
         /// Clears the array completely
         /// </summary>
         /// <param name="Array">Array to clear</param>
         /// <returns>The final array</returns>
+        /// <example>
+        /// <code>
+        ///  int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+        ///  TestObject.Clear();
+        /// </code>
+        /// </example>
         public static Array Clear(this Array Array)
         {
-            if (Array == null)
+            if (Array==null)
                 return null;
             System.Array.Clear(Array, 0, Array.Length);
             return Array;
@@ -51,10 +61,20 @@ namespace Utilities.DataTypes
         /// <param name="Array">Array to clear</param>
         /// <typeparam name="ArrayType">Array type</typeparam>
         /// <returns>The final array</returns>
+        /// <example>
+        /// <code>
+        ///  int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+        ///  TestObject.Clear();
+        /// </code>
+        /// </example>
         public static ArrayType[] Clear<ArrayType>(this ArrayType[] Array)
         {
             return (ArrayType[])((Array)Array).Clear();
         }
+
+        #endregion
+
+        #region Concat
 
         /// <summary>
         /// Combines two arrays and returns a new array containing both values
@@ -63,6 +83,14 @@ namespace Utilities.DataTypes
         /// <param name="Array1">Array 1</param>
         /// <param name="Additions">Arrays to concat onto the first item</param>
         /// <returns>A new array containing both arrays' values</returns>
+        /// <example>
+        /// <code>
+        ///  int[] TestObject1 = new int[] { 1, 2, 3 };
+        ///  int[] TestObject2 = new int[] { 4, 5, 6 };
+        ///  int[] TestObject3 = new int[] { 7, 8, 9 };
+        ///  TestObject1 = TestObject1.Combine(TestObject2, TestObject3);
+        /// </code>
+        /// </example>
         public static ArrayType[] Concat<ArrayType>(this ArrayType[] Array1, params ArrayType[][] Additions)
         {
             Contract.Requires<ArgumentNullException>(Array1 != null, "Array1");
@@ -78,5 +106,9 @@ namespace Utilities.DataTypes
             }
             return Result;
         }
+
+        #endregion
+
+        #endregion
     }
 }
