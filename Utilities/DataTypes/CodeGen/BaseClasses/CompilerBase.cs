@@ -31,6 +31,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Patterns.BaseClasses;
 #endregion
 
 namespace Utilities.DataTypes.CodeGen.BaseClasses
@@ -38,7 +39,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
     /// <summary>
     /// Compiler base class
     /// </summary>
-    public abstract class CompilerBase
+    public abstract class CompilerBase : SafeDisposableBaseClass
     {
         #region Constructor
 
@@ -47,19 +48,20 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// </summary>
         /// <param name="AssemblyDirectory">Directory to save the generated types (optional)</param>
         /// <param name="AssemblyName">Assembly name to save the generated types as</param>
-        public CompilerBase(string AssemblyName, string AssemblyDirectory = "")
+        /// <param name="Optimize">Should this be optimized (defaults to true)</param>
+        protected CompilerBase(string AssemblyName, string AssemblyDirectory = "", bool Optimize = true)
         {
             this.AssemblyDirectory = string.IsNullOrEmpty(AssemblyDirectory) ?
                 typeof(CompilerBase).Assembly.Location.Left(typeof(CompilerBase).Assembly.Location.LastIndexOf('\\')) :
                 AssemblyDirectory;
             this.AssemblyName = AssemblyName;
-            this.RegenerateAssembly = true;
+            this.Optimize = Optimize;
             this.Classes = new List<Type>();
             FileInfo CurrentFile = new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll");
-            this.RegenerateAssembly &= (!CurrentFile.Exists
-                                        || AppDomain.CurrentDomain.GetAssemblies()
-                                                                  .Where(x => !x.FullName.Contains("vshost32"))
-                                                                  .Any(x => new FileInfo(x.Location).LastWriteTime > CurrentFile.LastWriteTime));
+            this.RegenerateAssembly = (!CurrentFile.Exists
+                                      || AppDomain.CurrentDomain.GetAssemblies()
+                                                                .Where(x => !x.FullName.Contains("vshost32"))
+                                                                .Any(x => new FileInfo(x.Location).LastWriteTime > CurrentFile.LastWriteTime));
             if (string.IsNullOrEmpty(AssemblyDirectory)
                 || !new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").Exists
                 || this.RegenerateAssembly)
@@ -98,7 +100,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <summary>
         /// Dictionary containing generated types and associates it with original type
         /// </summary>
-        protected ICollection<Type> Classes { get; private set; }
+        public ICollection<Type> Classes { get; private set; }
 
         /// <summary>
         /// Assembly directory
@@ -114,6 +116,11 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// Determines if the assembly needs to be regenerated
         /// </summary>
         protected bool RegenerateAssembly { get; private set; }
+
+        /// <summary>
+        /// Should this be optimized?
+        /// </summary>
+        protected bool Optimize { get; private set; }
 
         #endregion
 
@@ -136,10 +143,9 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// </summary>
         /// <param name="Code">Code to compile</param>
         /// <param name="Usings">Usings for the code</param>
-        /// <param name="Optimize">Should this be optimized?</param>
         /// <param name="References">References to add for the compiler</param>
         /// <returns>This</returns>
-        protected Type Add(string ClassName, string Code, IEnumerable<string> Usings, bool Optimize, params Assembly[] References)
+        protected Type Add(string ClassName, string Code, IEnumerable<string> Usings, params Assembly[] References)
         {
             if (Module == null)
                 return null;
@@ -158,24 +164,13 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <summary>
         /// Compiles and adds the item to the module
         /// </summary>
-        /// <param name="Code">Code to compile</param>
-        /// <param name="Usings">Usings for the code</param>
-        /// <param name="References">References to add for the compiler</param>
-        /// <returns>This</returns>
-        protected Type Add(string ClassName, string Code, IEnumerable<string> Usings, params Assembly[] References)
-        {
-            return Add(ClassName, Code, Usings, false, References);
-        }
-
-        /// <summary>
-        /// Compiles and adds the item to the module
-        /// </summary>
+        /// <param name="ClassName">Class name</param>
         /// <param name="Code">Code to compile</param>
         /// <param name="References">References to add for the compiler</param>
         /// <returns>This</returns>
         protected Type Add(string ClassName, string Code, params Assembly[] References)
         {
-            return Add(ClassName, Code, null, false, References);
+            return Add(ClassName, Code, null, References);
         }
 
         /// <summary>
@@ -183,20 +178,22 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// </summary>
         protected void Save()
         {
-            if (!string.IsNullOrEmpty(AssemblyDirectory)
+            if (Assembly != null
+                && !string.IsNullOrEmpty(AssemblyDirectory)
                 && (!new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").Exists
                 || RegenerateAssembly))
             {
                 Assembly.Save(AssemblyName + ".dll");
             }
-            Assembly = null;
         }
 
         /// <summary>
-        /// Clears out the data
+        /// Disposes of the object
         /// </summary>
-        protected void Destroy()
+        /// <param name="Managed">Destroy managed</param>
+        protected override void Dispose(bool Managed)
         {
+            Save();
             Assembly = null;
             Module = null;
             Classes = new List<Type>();

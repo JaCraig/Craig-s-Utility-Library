@@ -149,9 +149,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\AOP\Interfaces\IAspect.cs" />
+    <Compile Include="DataTypes\AOP\Interfaces\IEvents.cs" />
+    <Compile Include="DataTypes\AOP\Manager.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\CodeGen\BaseClasses\CompilerBase.cs" />
+    <Compile Include="DataTypes\CodeGen\Compiler.cs" />
+    <Compile Include="DataTypes\CodeGen\Module\CompilerModule.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
     <Compile Include="DataTypes\Conversion\ConverterBase.cs" />

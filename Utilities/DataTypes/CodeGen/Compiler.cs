@@ -47,7 +47,7 @@ namespace Utilities.DataTypes.CodeGen
         /// Constructor
         /// </summary>
         public Compiler()
-            : base("GeneratedTypes")
+            : base("CULGeneratedTypes")
         {
         }
 
