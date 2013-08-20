@@ -105,12 +105,12 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <summary>
         /// Assembly directory
         /// </summary>
-        protected string AssemblyDirectory { get; private set; }
+        public string AssemblyDirectory { get; private set; }
 
         /// <summary>
         /// Assembly name
         /// </summary>
-        protected string AssemblyName { get; private set; }
+        public string AssemblyName { get; private set; }
 
         /// <summary>
         /// Determines if the assembly needs to be regenerated

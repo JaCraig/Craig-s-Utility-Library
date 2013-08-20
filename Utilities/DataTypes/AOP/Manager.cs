@@ -25,14 +25,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Reflection.AOP.EventArgs;
-using Utilities.Reflection.AOP.Interfaces;
-using Utilities.Reflection.Emit;
-using Utilities.Reflection.Emit.BaseClasses;
-using Utilities.Reflection.Emit.Interfaces;
-
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.DataTypes.AOP
@@ -87,17 +83,14 @@ namespace Utilities.DataTypes.AOP
             
             List<Type> Interfaces = new List<Type>();
             Aspects.ForEach(x => Interfaces.AddRange(x.InterfacesUsing == null ? new List<Type>() : x.InterfacesUsing));
-            Interfaces.Add(typeof(IEvents));
-            Utilities.Reflection.Emit.TypeBuilder Builder = AssemblyBuilder.CreateType(AssemblyName + "." + Type.Name + "Derived",
-                            System.Reflection.TypeAttributes.Class | System.Reflection.TypeAttributes.Public,
-                            Type,
-                            Interfaces);
-            {
-                IPropertyBuilder AspectusStarting = Builder.CreateDefaultProperty("Aspectus_Starting", typeof(EventHandler<Starting>));
-                IPropertyBuilder AspectusEnding = Builder.CreateDefaultProperty("Aspectus_Ending", typeof(EventHandler<Ending>));
-                IPropertyBuilder AspectusException = Builder.CreateDefaultProperty("Aspectus_Exception", typeof(EventHandler<Utilities.Reflection.AOP.EventArgs.Exception>));
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat(@"namespace {0}
+{{
+    public class {1} : {2}{3} {4}
+    {{
+", "CULGeneratedTypes", Type.Name + "Derived", Type.Name, Interfaces.Count > 0 ? "," : "", Interfaces.ToString(x => x.Name));
 
-                Aspects.ForEach(x => x.SetupInterfaces(Builder));
+                Aspects.ForEach(x => Builder.AppendLine(x.SetupInterfaces(Type)));
 
                 Type TempType = Type;
                 List<string> MethodsAlreadyDone = new List<string>();
@@ -106,55 +99,56 @@ namespace Utilities.DataTypes.AOP
                     foreach (PropertyInfo Property in TempType.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
                     {
                         MethodInfo GetMethodInfo = Property.GetGetMethod();
+                        MethodInfo SetMethodInfo = Property.GetSetMethod();
                         if (!MethodsAlreadyDone.Contains("get_" + Property.Name)
                             && !MethodsAlreadyDone.Contains("set_" + Property.Name)
                             && GetMethodInfo != null
                             && GetMethodInfo.IsVirtual
                             && !GetMethodInfo.IsFinal)
                         {
-                            IPropertyBuilder OverrideProperty = Builder.CreateProperty(Property.Name, Property.PropertyType,
-                                System.Reflection.PropertyAttributes.SpecialName,
-                                MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Virtual,
-                                MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Virtual);
-                            {
-                                IMethodBuilder Get = OverrideProperty.GetMethod;
-                                {
-                                    SetupMethod(Type, Get, AspectusStarting, AspectusEnding, AspectusException, null);
-                                    MethodsAlreadyDone.Add(Get.Name);
-                                }
-                                IMethodBuilder Set = OverrideProperty.SetMethod;
-                                {
-                                    SetupMethod(Type, Set, AspectusStarting, AspectusEnding, AspectusException, null);
-                                    MethodsAlreadyDone.Add(Set.Name);
-                                }
-                            }
+                            Builder.AppendLineFormat(@"             public override {0} {1} 
+                            {{ 
+                                get 
+                                {{ 
+                                    {2} 
+                                }} 
+                                set 
+                                {{ 
+                                    {3} 
+                                }}
+                            }}",
+                                                        Property.PropertyType.GetName(),
+                                                        Property.Name,
+                                                        SetupMethod(Type, GetMethodInfo),
+                                                        SetupMethod(Type, SetMethodInfo));
+                            MethodsAlreadyDone.Add(GetMethodInfo.Name);
+                            MethodsAlreadyDone.Add(SetMethodInfo.Name);
                         }
                     }
-                    foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
-                    {
-                        if (!MethodsAlreadyDone.Contains(Method.Name) && Method.IsVirtual && !Method.IsFinal)
-                        {
-                            MethodAttributes MethodAttribute = MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.Public;
-                            if (Method.IsStatic)
-                                MethodAttribute |= MethodAttributes.Static;
-                            List<Type> ParameterTypes = new List<Type>();
-                            Method.GetParameters().ForEach(x => ParameterTypes.Add(x.ParameterType));
-                            IMethodBuilder OverrideMethod = Builder.CreateMethod(Method.Name,
-                                MethodAttribute,
-                                Method.ReturnType,
-                                ParameterTypes);
-                            SetupMethod(Type, OverrideMethod, AspectusStarting, AspectusEnding, AspectusException, Method);
-                            MethodsAlreadyDone.Add(Method.Name);
-                        }
-                    }
+                    //foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
+                    //{
+                    //    if (!MethodsAlreadyDone.Contains(Method.Name) && Method.IsVirtual && !Method.IsFinal)
+                    //    {
+                    //        MethodAttributes MethodAttribute = MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.Public;
+                    //        if (Method.IsStatic)
+                    //            MethodAttribute |= MethodAttributes.Static;
+                    //        List<Type> ParameterTypes = new List<Type>();
+                    //        Method.GetParameters().ForEach(x => ParameterTypes.Add(x.ParameterType));
+                    //        IMethodBuilder OverrideMethod = Builder.CreateMethod(Method.Name,
+                    //            MethodAttribute,
+                    //            Method.ReturnType,
+                    //            ParameterTypes);
+                    //        SetupMethod(Type, OverrideMethod, AspectusStarting, AspectusEnding, AspectusException, Method);
+                    //        MethodsAlreadyDone.Add(Method.Name);
+                    //    }
+                    //}
 
-                    TempType = TempType.BaseType;
-                    if (TempType == typeof(object))
-                        break;
+                    //TempType = TempType.BaseType;
+                    //if (TempType == typeof(object))
+                    //    break;
                 }
 
                 Classes.Add(Type, Builder.Create());
-            }
         }
 
         /// <summary>
@@ -181,129 +175,34 @@ namespace Utilities.DataTypes.AOP
             return ReturnObject;
         }
 
-        private static void SetupMethod(Type BaseType, IMethodBuilder Method, IPropertyBuilder AspectusStarting,
-            IPropertyBuilder AspectusEnding, IPropertyBuilder AspectusException, MethodInfo BaseMethod)
+
+        private static string SetupMethod(Type Type, MethodInfo MethodInfo)
         {
-            if (BaseMethod == null)
-                BaseMethod = BaseType.GetMethod(Method.Name);
-            Method.SetCurrentMethod();
-            System.Reflection.Emit.Label EndLabel = Method.Generator.DefineLabel();
-            VariableBase ReturnValue = Method.ReturnType != typeof(void) ? Method.CreateLocal("FinalReturnValue", Method.ReturnType) : null;
-            Utilities.Reflection.Emit.Commands.Try Try = Method.Try();
-            {
-                SetupStart(Method, EndLabel, ReturnValue, AspectusStarting);
-                Aspects.ForEach(x => x.SetupStartMethod(Method, BaseType));
-                List<ParameterBuilder> Parameters = new List<ParameterBuilder>();
-                Method.Parameters.For(1, Method.Parameters.Count - 1, x => Parameters.Add(x));
-                if (Method.ReturnType != typeof(void) && BaseMethod != null)
-                    ReturnValue.Assign(Method.This.Call(BaseMethod, Parameters.ToArray()));
-                else if (BaseMethod != null)
-                    Method.This.Call(BaseMethod, Parameters.ToArray());
-                SetupEnd(Method, ReturnValue, AspectusEnding);
-                Aspects.ForEach(x => x.SetupEndMethod(Method, BaseType, ReturnValue));
-                Method.Generator.MarkLabel(EndLabel);
-            }
-            Utilities.Reflection.Emit.Commands.Catch Catch = Try.StartCatchBlock(typeof(System.Exception));
-            {
-                SetupException(Method, Catch, AspectusException);
-                Aspects.ForEach(x => x.SetupExceptionMethod(Method, BaseType));
-                Catch.Rethrow();
-            }
-            Try.EndTryBlock();
-
-            if (Method.ReturnType != typeof(void))
-                Method.Return(ReturnValue);
-            else
-                Method.Return();
-        }
-
-        private static void SetupException(IMethodBuilder Method, Utilities.Reflection.Emit.Commands.Catch Catch, IPropertyBuilder AspectusException)
-        {
-            VariableBase ExceptionArgs = Method.NewObj(typeof(Utilities.Reflection.AOP.EventArgs.Exception).GetConstructor(new Type[0]));
-            ExceptionArgs.Call(typeof(Utilities.Reflection.AOP.EventArgs.Exception).GetProperty("InternalException").GetSetMethod(), new object[] { Catch.Exception });
-            VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
-            Type EventHelperType = typeof(Utilities.DataTypes.ExtensionMethods.DelegateExtensions);
-            MethodInfo[] Methods = EventHelperType.GetMethods()
-                                                  .Where<MethodInfo>(x => x.GetParameters().Length == 3)
-                                                  .ToArray();
-            MethodInfo TempMethod = Methods.Length > 0 ? Methods[0] : null;
-            TempMethod = TempMethod.MakeGenericMethod(new Type[] { typeof(Utilities.Reflection.AOP.EventArgs.Exception) });
-            Method.Call(null, TempMethod, new object[] { AspectusException, IEventsThis, ExceptionArgs });
-        }
-
-        private static void SetupEnd(IMethodBuilder Method, VariableBase ReturnValue, IPropertyBuilder AspectusEnding)
-        {
-            VariableBase EndingArgs = Method.NewObj(typeof(Ending).GetConstructor(new Type[0]));
-            EndingArgs.Call(typeof(Ending).GetProperty("MethodName").GetSetMethod(), new object[] { Method.Name });
-            if (Method.ReturnType != typeof(void) && ReturnValue.DataType != null && ReturnValue.DataType.IsValueType)
-                EndingArgs.Call(typeof(Ending).GetProperty("ReturnValue").GetSetMethod(), new object[] { Method.Box(ReturnValue) });
-            else if (Method.ReturnType != typeof(void))
-                EndingArgs.Call(typeof(Ending).GetProperty("ReturnValue").GetSetMethod(), new object[] { ReturnValue });
-            VariableBase ParameterList = EndingArgs.Call(typeof(Ending).GetProperty("Parameters").GetGetMethod());
-            for (int x = 1; x < Method.Parameters.Count; ++x)
-            {
-                if (Method.Parameters.ElementAt(x).DataType != null && Method.Parameters.ElementAt(x).DataType.IsValueType)
-                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Box(Method.Parameters.ElementAt(x)) });
-                else
-                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Parameters.ElementAt(x) });
-            }
-
-            VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
-            Type EventHelperType = typeof(Utilities.DataTypes.ExtensionMethods.DelegateExtensions);
-            MethodInfo[] Methods = EventHelperType.GetMethods()
-                                                  .Where<MethodInfo>(x => x.GetParameters().Length == 3)
-                                                  .ToArray();
-            MethodInfo TempMethod = Methods.Length > 0 ? Methods[0] : null;
-            TempMethod = TempMethod.MakeGenericMethod(new Type[] { typeof(Ending) });
-            Method.Call(null, TempMethod, new object[] { AspectusEnding, IEventsThis, EndingArgs });
-            if (Method.ReturnType != typeof(void))
-            {
-                VariableBase TempReturnValue = EndingArgs.Call(typeof(Ending).GetProperty("ReturnValue").GetGetMethod());
-                VariableBase TempNull = Method.CreateLocal("TempNull", typeof(object));
-                Utilities.Reflection.Emit.Commands.If If = Method.If(TempReturnValue, Utilities.Reflection.Emit.Enums.Comparison.NotEqual, TempNull);
-                {
-                    ReturnValue.Assign(TempReturnValue);
-                }
-                Method.SetCurrentMethod();
-                If.EndIf();
-            }
-        }
-
-        private static void SetupStart(IMethodBuilder Method, System.Reflection.Emit.Label EndLabel,
-            VariableBase ReturnValue, IPropertyBuilder AspectusStarting)
-        {
-            VariableBase StartingArgs = Method.NewObj(typeof(Starting).GetConstructor(new Type[0]));
-            StartingArgs.Call(typeof(Starting).GetProperty("MethodName").GetSetMethod(), new object[] { Method.Name });
-
-            VariableBase ParameterList = StartingArgs.Call(typeof(Starting).GetProperty("Parameters").GetGetMethod());
-            for (int x = 1; x < Method.Parameters.Count; ++x)
-            {
-                if (Method.Parameters.ElementAt(x).DataType != null && Method.Parameters.ElementAt(x).DataType.IsValueType)
-                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Box(Method.Parameters.ElementAt(x)) });
-                else
-                    ParameterList.Call(typeof(List<object>).GetMethod("Add"), new object[] { Method.Parameters.ElementAt(x) });
-            }
-
-            VariableBase IEventsThis = Method.Cast(Method.This, typeof(IEvents));
-            Type EventHelperType = typeof(Utilities.DataTypes.ExtensionMethods.DelegateExtensions);
-            MethodInfo[] Methods = EventHelperType.GetMethods()
-                                                  .Where<MethodInfo>(x => x.GetParameters().Length == 3)
-                                                  .ToArray();
-            MethodInfo TempMethod = Methods.Length > 0 ? Methods[0] : null;
-            TempMethod = TempMethod.MakeGenericMethod(new Type[] { typeof(Starting) });
-            Method.Call(null, TempMethod, new object[] { AspectusStarting, IEventsThis, StartingArgs });
-            if (Method.ReturnType != typeof(void))
-            {
-                VariableBase TempReturnValue = StartingArgs.Call(typeof(Starting).GetProperty("ReturnValue").GetGetMethod());
-                VariableBase TempNull = Method.CreateLocal("TempNull", typeof(object));
-                Utilities.Reflection.Emit.Commands.If If = Method.If(TempReturnValue, Utilities.Reflection.Emit.Enums.Comparison.NotEqual, TempNull);
-                {
-                    ReturnValue.Assign(TempReturnValue);
-                    Method.Generator.Emit(System.Reflection.Emit.OpCodes.Br, EndLabel);
-                }
-                Method.SetCurrentMethod();
-                If.EndIf();
-            }
+            StringBuilder Builder = new StringBuilder();
+            MethodInfo BaseMethod = Type.GetMethod(MethodInfo.Name);
+            string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";
+            string BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base(" : "ReturnValue=base(";
+            ParameterInfo[] Parameters = MethodInfo.GetParameters();
+            BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => x.Name) : "";
+            BaseCall += ")\r\n";
+            Builder.AppendLineFormat(@"try
+            {{
+                {0}
+                {1}
+                {2}
+                {3}
+            }}
+            catch(Exception CaughtException)
+            {{
+                {4}
+                rethrow;
+            }}",
+                Aspects.ForEach(x => x.SetupStartMethod(MethodInfo, Type)).ToString(x => x, "\r\n"),
+                BaseCall,
+                Aspects.ForEach(x => x.SetupEndMethod(MethodInfo, Type, ReturnValue)).ToString(x => x, "\r\n"),
+                string.IsNullOrEmpty(ReturnValue) ? "" : "return " + ReturnValue + ";",
+                Aspects.ForEach(x => x.SetupExceptionMethod(MethodInfo, Type)).ToString(x => x, "\r\n"));
+            return Builder.ToString();
         }
 
         #endregion

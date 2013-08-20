@@ -22,11 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using Utilities.Reflection.Emit.BaseClasses;
-using Utilities.Reflection.Emit.Interfaces;
+using System.Reflection;
 #endregion
 
-namespace Utilities.Reflection.AOP.Interfaces
+namespace Utilities.DataTypes.AOP.Interfaces
 {
     /// <summary>
     /// Aspect interface
@@ -36,26 +35,26 @@ namespace Utilities.Reflection.AOP.Interfaces
         #region Functions
 
         /// <summary>
-        /// Used to insert IL code at the beginning of the method
+        /// Used to insert code at the beginning of the method
         /// </summary>
         /// <param name="Method">Overridding Method</param>
         /// <param name="BaseType">Base type</param>
-        void SetupStartMethod(IMethodBuilder Method, Type BaseType);
+        string SetupStartMethod(MethodInfo Method, Type BaseType);
 
         /// <summary>
-        /// Used to insert IL code at the end of the method
+        /// Used to insert code at the end of the method
         /// </summary>
         /// <param name="Method">Overridding Method</param>
         /// <param name="BaseType">Base type</param>
-        /// <param name="ReturnValue">Local holder for the value returned by the function</param>
-        void SetupEndMethod(IMethodBuilder Method, Type BaseType, VariableBase ReturnValue);
+        /// <param name="ReturnValueName">Local holder for the value returned by the function</param>
+        string SetupEndMethod(MethodInfo Method, Type BaseType, string ReturnValueName);
 
         /// <summary>
-        /// Used to insert IL code within the catch portion of the try/catch portion of the method
+        /// Used to insert code within the catch portion of the try/catch portion of the method
         /// </summary>
         /// <param name="Method">Overridding Method</param>
         /// <param name="BaseType">Base type</param>
-        void SetupExceptionMethod(IMethodBuilder Method, Type BaseType);
+        string SetupExceptionMethod(MethodInfo Method, Type BaseType);
 
         /// <summary>
         /// Used to hook into the object once it has been created
@@ -66,8 +65,8 @@ namespace Utilities.Reflection.AOP.Interfaces
         /// <summary>
         /// Used to set up any interfaces, extra fields, methods, etc. prior to overridding any methods.
         /// </summary>
-        /// <param name="TypeBuilder">Type builder object</param>
-        void SetupInterfaces(Utilities.Reflection.Emit.TypeBuilder TypeBuilder);
+        /// <param name="Type">Type of the object</param>
+        string SetupInterfaces(Type Type);
 
         #endregion
 

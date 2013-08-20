@@ -47,6 +47,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\CodeGen\Compiler.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IoC\Manager.cs" />

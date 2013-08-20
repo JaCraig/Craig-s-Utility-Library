@@ -150,7 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTypes\AOP\Interfaces\IAspect.cs" />
-    <Compile Include="DataTypes\AOP\Interfaces\IEvents.cs" />
     <Compile Include="DataTypes\AOP\Manager.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
