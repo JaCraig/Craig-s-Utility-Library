@@ -298,8 +298,8 @@ namespace Utilities.DataTypes.Dynamic
             if (binder.Type.Is(typeof(IDictionary<string, object>)))
             {
                 IDictionary<string, object> Temp = (IDictionary<string, object>)Activator.CreateInstance(binder.Type);
-                foreach (string Key in Values.Keys)
-                    Temp.Add(Key, Values[Key]);
+                foreach (string Key in InternalValues.Keys)
+                    Temp.Add(Key, InternalValues[Key]);
                 result = Temp;
                 return true;
             }

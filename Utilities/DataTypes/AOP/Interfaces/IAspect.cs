@@ -77,6 +77,16 @@ namespace Utilities.DataTypes.AOP.Interfaces
         /// </summary>
         ICollection<Type> InterfacesUsing { get; }
 
+        /// <summary>
+        /// Using statements that the aspect requires
+        /// </summary>
+        ICollection<string> Usings { get; }
+
+        /// <summary>
+        /// Set of assemblies that the aspect requires
+        /// </summary>
+        ICollection<Assembly> AssembliesUsing { get; }
+
         #endregion
     }
 }

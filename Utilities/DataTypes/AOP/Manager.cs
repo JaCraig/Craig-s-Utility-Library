@@ -80,18 +80,35 @@ namespace Utilities.DataTypes.AOP
         {
             if (Classes.ContainsKey(Type))
                 return;
+
+            List<Assembly> AssembliesUsing = new List<Assembly>();
+            List<string> Usings = new List<string>();
+            AssembliesUsing.Add(typeof(object).Assembly, typeof(System.Linq.Enumerable).Assembly);
+            AssembliesUsing.AddIfUnique(Type.Assembly);
+            Aspects.ForEach(x => AssembliesUsing.AddIfUnique(x.AssembliesUsing));
+            Usings.Add("System");
+            Usings.Add("System.Collections.Generic");
+            Usings.Add("System.Linq");
+
             
+            Aspects.ForEach(x => Usings.AddIfUnique(x.Usings));
+
             List<Type> Interfaces = new List<Type>();
             Aspects.ForEach(x => Interfaces.AddRange(x.InterfacesUsing == null ? new List<Type>() : x.InterfacesUsing));
             StringBuilder Builder = new StringBuilder();
-            Builder.AppendLineFormat(@"namespace {0}
+            Builder.AppendLineFormat(@"{0}
+namespace {1}
 {{
-    public class {1} : {2}{3} {4}
+    public class {2} : {3}{4} {5}
     {{
-", "CULGeneratedTypes", Type.Name + "Derived", Type.Name, Interfaces.Count > 0 ? "," : "", Interfaces.ToString(x => x.Name));
+", Usings.ToString(x => "using " + x + ";", "\r\n"),
+ "CULGeneratedTypes", 
+ Type.Name + "Derived", 
+ Type.Namespace + "." + Type.Name, 
+ Interfaces.Count > 0 ? "," : "", Interfaces.ToString(x => x.Name));
 
                 Aspects.ForEach(x => Builder.AppendLine(x.SetupInterfaces(Type)));
-
+            
                 Type TempType = Type;
                 List<string> MethodsAlreadyDone = new List<string>();
                 while (TempType != null)
@@ -106,17 +123,18 @@ namespace Utilities.DataTypes.AOP
                             && GetMethodInfo.IsVirtual
                             && !GetMethodInfo.IsFinal)
                         {
-                            Builder.AppendLineFormat(@"             public override {0} {1} 
-                            {{ 
-                                get 
-                                {{ 
-                                    {2} 
-                                }} 
-                                set 
-                                {{ 
-                                    {3} 
-                                }}
-                            }}",
+                            Builder.AppendLineFormat(@"
+        public override {0} {1} 
+        {{ 
+            get 
+            {{ 
+                {2} 
+            }} 
+            set 
+            {{ 
+                {3} 
+            }}
+        }}",
                                                         Property.PropertyType.GetName(),
                                                         Property.Name,
                                                         SetupMethod(Type, GetMethodInfo),
@@ -125,30 +143,31 @@ namespace Utilities.DataTypes.AOP
                             MethodsAlreadyDone.Add(SetMethodInfo.Name);
                         }
                     }
-                    //foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
-                    //{
-                    //    if (!MethodsAlreadyDone.Contains(Method.Name) && Method.IsVirtual && !Method.IsFinal)
-                    //    {
-                    //        MethodAttributes MethodAttribute = MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.Public;
-                    //        if (Method.IsStatic)
-                    //            MethodAttribute |= MethodAttributes.Static;
-                    //        List<Type> ParameterTypes = new List<Type>();
-                    //        Method.GetParameters().ForEach(x => ParameterTypes.Add(x.ParameterType));
-                    //        IMethodBuilder OverrideMethod = Builder.CreateMethod(Method.Name,
-                    //            MethodAttribute,
-                    //            Method.ReturnType,
-                    //            ParameterTypes);
-                    //        SetupMethod(Type, OverrideMethod, AspectusStarting, AspectusEnding, AspectusException, Method);
-                    //        MethodsAlreadyDone.Add(Method.Name);
-                    //    }
-                    //}
-
-                    //TempType = TempType.BaseType;
-                    //if (TempType == typeof(object))
-                    //    break;
+                    foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
+                    {
+                        if (!MethodsAlreadyDone.Contains(Method.Name) && Method.IsVirtual && !Method.IsFinal)
+                        {
+                            string Static = Method.IsStatic ? "static " : "";
+                            Builder.AppendLineFormat(@"
+        public override {0} {1}({2})
+        {{ 
+            {3}
+        }}",
+                                                        Static + Method.ReturnType.GetName(),
+                                                        Method.Name,
+                                                        Method.GetParameters().ToString(x => x.ParameterType.GetName() + " " + x.Name),
+                                                        SetupMethod(Type, Method));
+                            MethodsAlreadyDone.Add(Method.Name);
+                        }
+                    }
+                    TempType = TempType.BaseType;
+                    if (TempType == typeof(object))
+                        break;
                 }
+                Builder.AppendLine(@"   }
+}");
 
-                Classes.Add(Type, Builder.Create());
+                AOPManager.Classes.Add(Type, AOPManager.Compiler.CreateClass(Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
         }
 
         /// <summary>
@@ -180,23 +199,27 @@ namespace Utilities.DataTypes.AOP
         {
             StringBuilder Builder = new StringBuilder();
             MethodInfo BaseMethod = Type.GetMethod(MethodInfo.Name);
+            string BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";
-            string BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base(" : "ReturnValue=base(";
+            string BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName + "(" : ReturnValue + "=base." + BaseMethodName + "(";
             ParameterInfo[] Parameters = MethodInfo.GetParameters();
             BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => x.Name) : "";
-            BaseCall += ")\r\n";
-            Builder.AppendLineFormat(@"try
-            {{
-                {0}
-                {1}
-                {2}
-                {3}
-            }}
-            catch(Exception CaughtException)
-            {{
-                {4}
-                rethrow;
-            }}",
+            BaseCall += ");\r\n";
+            Builder.AppendLineFormat(@"
+                try
+                {{
+                    {0}
+                    {1}
+                    {2}
+                    {3}
+                    {4}
+                }}
+                catch(Exception CaughtException)
+                {{
+                    {5}
+                    throw;
+                }}",
+                MethodInfo.ReturnType != typeof(void) ? MethodInfo.ReturnType.GetName() + " " + ReturnValue + ";" : "",
                 Aspects.ForEach(x => x.SetupStartMethod(MethodInfo, Type)).ToString(x => x, "\r\n"),
                 BaseCall,
                 Aspects.ForEach(x => x.SetupEndMethod(MethodInfo, Type, ReturnValue)).ToString(x => x, "\r\n"),

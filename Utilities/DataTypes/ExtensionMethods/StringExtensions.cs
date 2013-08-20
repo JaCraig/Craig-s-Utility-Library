@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
+//using System.Data.Entity.Design.PluralizationServices;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;

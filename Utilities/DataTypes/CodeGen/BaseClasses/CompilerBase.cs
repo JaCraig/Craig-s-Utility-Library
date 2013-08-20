@@ -57,29 +57,21 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             this.AssemblyName = AssemblyName;
             this.Optimize = Optimize;
             this.Classes = new List<Type>();
-            FileInfo CurrentFile = new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll");
+            System.IO.FileInfo CurrentFile = new System.IO.FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll");
             this.RegenerateAssembly = (!CurrentFile.Exists
                                       || AppDomain.CurrentDomain.GetAssemblies()
                                                                 .Where(x => !x.FullName.Contains("vshost32"))
-                                                                .Any(x => new FileInfo(x.Location).LastWriteTime > CurrentFile.LastWriteTime));
-            if (string.IsNullOrEmpty(AssemblyDirectory)
-                || !new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").Exists
+                                                                .Any(x => new System.IO.FileInfo(x.Location).LastWriteTime > CurrentFile.LastWriteTime));
+            if (string.IsNullOrEmpty(this.AssemblyDirectory)
+                || !new System.IO.FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").Exists
                 || this.RegenerateAssembly)
             {
-                if (!string.IsNullOrEmpty(AssemblyDirectory))
-                {
-                    Assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(AssemblyName), AssemblyBuilderAccess.RunAndSave, AssemblyDirectory);
-                    Module = Assembly.DefineDynamicModule(AssemblyName, AssemblyName + ".dll", true);
-                }
-                else
-                {
-                    Assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(AssemblyName), AssemblyBuilderAccess.Run);
-                    Module = Assembly.DefineDynamicModule(AssemblyName);
-                }
+                this.Assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(this.AssemblyName), AssemblyBuilderAccess.RunAndSave, this.AssemblyDirectory);
+                this.Module = Assembly.DefineDynamicModule(this.AssemblyName, this.AssemblyName + ".dll", true);
             }
             else
             {
-                System.Reflection.Assembly.LoadFile(new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").FullName).GetTypes().ForEach(x => Classes.Add(x));
+                System.Reflection.Assembly.Load(new AssemblyName(new FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").FullName)).GetTypes().ForEach(x => this.Classes.Add(x));
             }
         }
 
@@ -141,6 +133,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <summary>
         /// Compiles and adds the item to the module
         /// </summary>
+        /// <param name="ClassName">Class name</param>
         /// <param name="Code">Code to compile</param>
         /// <param name="Usings">Usings for the code</param>
         /// <param name="References">References to add for the compiler</param>

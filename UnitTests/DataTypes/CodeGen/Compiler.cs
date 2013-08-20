@@ -21,9 +21,11 @@ THE SOFTWARE.*/
 
 using System;
 using System.Linq;
+using Utilities.DataTypes.CodeGen.BaseClasses;
 using Utilities.IO;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
+using Utilities.DataTypes;
 
 namespace UnitTests.DataTypes.CodeGen
 {
@@ -32,26 +34,30 @@ namespace UnitTests.DataTypes.CodeGen
         [Fact]
         public void Creation()
         {
-            using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler())
+            string File = "";
+            using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler("Somewhere", typeof(CompilerBase).Assembly.Location.Left(typeof(CompilerBase).Assembly.Location.LastIndexOf('\\')), true))
             {
                 Assert.Equal(0, Test.Classes.Count);
-                Assert.Equal(new Utilities.IO.FileInfo(".").FullName, Test.AssemblyDirectory);
-                Assert.Equal("CULGeneratedTypes", Test.AssemblyName);
+                Assert.Equal(typeof(CompilerBase).Assembly.Location.Left(typeof(CompilerBase).Assembly.Location.LastIndexOf('\\')), Test.AssemblyDirectory);
+                Assert.Equal("Somewhere", Test.AssemblyName);
+                File = Test.AssemblyDirectory + "/" + Test.AssemblyName + ".dll";
             }
-            Assert.True(new Utilities.IO.FileInfo("~/CULGeneratedTypes.dll").Exists);
-            new Utilities.IO.FileInfo("~/CULGeneratedTypes.dll").Delete();
+            Assert.True(new Utilities.IO.FileInfo(File).Exists);
+            new Utilities.IO.FileInfo(File).Delete();
         }
 
         [Fact]
         public void CreateType()
         {
+            string File = "";
             using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler("Test", ".", true))
             {
-                Type Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null);
-                Assert.Equal("Test.dll", Object.Assembly.FullName);
+                Type Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
+                Assert.Equal("Test, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", Object.Assembly.FullName);
                 Assert.Equal("A", Object.FullName);
+                File = Test.AssemblyDirectory + "/" + Test.AssemblyName + ".dll";
             }
-            new Utilities.IO.FileInfo("~/Test.dll").Delete();
+            new Utilities.IO.FileInfo(File).Delete();
         }
     }
 }
