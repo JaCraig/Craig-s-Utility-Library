@@ -137,8 +137,8 @@ namespace {1}
         }}",
                                                         Property.PropertyType.GetName(),
                                                         Property.Name,
-                                                        SetupMethod(Type, GetMethodInfo),
-                                                        SetupMethod(Type, SetMethodInfo));
+                                                        SetupMethod(Type, GetMethodInfo,true),
+                                                        SetupMethod(Type, SetMethodInfo,true));
                             MethodsAlreadyDone.Add(GetMethodInfo.Name);
                             MethodsAlreadyDone.Add(SetMethodInfo.Name);
                         }
@@ -156,7 +156,7 @@ namespace {1}
                                                         Static + Method.ReturnType.GetName(),
                                                         Method.Name,
                                                         Method.GetParameters().ToString(x => x.ParameterType.GetName() + " " + x.Name),
-                                                        SetupMethod(Type, Method));
+                                                        SetupMethod(Type, Method,false));
                             MethodsAlreadyDone.Add(Method.Name);
                         }
                     }
@@ -195,16 +195,27 @@ namespace {1}
         }
 
 
-        private static string SetupMethod(Type Type, MethodInfo MethodInfo)
+        private static string SetupMethod(Type Type, MethodInfo MethodInfo,bool IsProperty)
         {
             StringBuilder Builder = new StringBuilder();
             MethodInfo BaseMethod = Type.GetMethod(MethodInfo.Name);
             string BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";
-            string BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName + "(" : ReturnValue + "=base." + BaseMethodName + "(";
+            string BaseCall = "";
+            if (IsProperty)
+                BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName : ReturnValue + "=base." + BaseMethodName;
+            else
+                BaseCall = string.IsNullOrEmpty(ReturnValue) ? "base." + BaseMethodName + "(" : ReturnValue + "=base." + BaseMethodName + "(";
             ParameterInfo[] Parameters = MethodInfo.GetParameters();
-            BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => x.Name) : "";
-            BaseCall += ");\r\n";
+            if (IsProperty)
+            {
+                BaseCall += Parameters.Length > 0 ? "=" + Parameters.ToString(x => x.Name) + ";" : ";";
+            }
+            else
+            {
+                BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => x.Name) : "";
+                BaseCall += ");\r\n";
+            }
             Builder.AppendLineFormat(@"
                 try
                 {{
