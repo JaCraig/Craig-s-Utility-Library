@@ -21,44 +21,19 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Utilities.DataTypes.Conversion.Interfaces;
 
 #endregion
 
-namespace Utilities.DataTypes.Conversion
+namespace Utilities.DataTypes.Conversion.Converters.Interfaces
 {
     /// <summary>
-    /// Hack class needed since you can't inherit from interfaces twice
+    /// Converter interface
     /// </summary>
-    /// <typeparam name="T">Object type</typeparam>
-    public abstract class ConverterBaseHack<T> : IConverter<T>
+    public interface IConverter
     {
-        #region Constructor
-
         /// <summary>
-        /// Constructor
+        /// Type that the converter is associated with
         /// </summary>
-        protected ConverterBaseHack() { }
-
-        #endregion
-
-        #region Functions
-
-        /// <summary>
-        /// Can the converter convert to the type specified
-        /// </summary>
-        /// <param name="type">Type to convert to</param>
-        /// <returns>True if it can, false otherwise</returns>
-        public abstract bool CanConvert(Type type);
-
-        /// <summary>
-        /// Converts the object to the specified type
-        /// </summary>
-        /// <param name="Item">Object to convert</param>
-        /// <param name="ReturnType">Return type</param>
-        /// <returns>The object as the type specified</returns>
-        public abstract object To(T Item, Type ReturnType);
-
-        #endregion
+        Type AssociatedType { get; }
     }
 }

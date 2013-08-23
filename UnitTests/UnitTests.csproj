@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="DataTypes\AOP\Manager.cs" />
     <Compile Include="DataTypes\CodeGen\Compiler.cs" />
+    <Compile Include="DataTypes\Conversion\Converter\DbTypeTypeConverter.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IoC\Manager.cs" />

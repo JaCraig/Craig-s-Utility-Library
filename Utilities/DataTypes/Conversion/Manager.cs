@@ -23,8 +23,12 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Utilities.DataTypes.Conversion.Interfaces;
 using Utilities.DataTypes;
+using System.ComponentModel;
+using Utilities.DataTypes.Conversion.Converters.Interfaces;
+using System.Globalization;
+using System.Dynamic;
+using System.Reflection;
 #endregion
 
 namespace Utilities.DataTypes.Conversion
@@ -41,54 +45,15 @@ namespace Utilities.DataTypes.Conversion
         /// </summary>
         public Manager()
         {
-            Converters = new Dictionary<Type, IObjectConverter>();
-            new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).LoadAssemblies(false).ForEach(x => x);
-            foreach (Type ObjectConverter in AppDomain.CurrentDomain.GetAssemblies().Types<IObjectConverter>())
+            foreach (IConverter TypeConverter in AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>())
             {
-                foreach (Type Converter in AppDomain.CurrentDomain.GetAssemblies().Types<IConverter>())
-                {
-                    Type Key = Converter;
-                    while (Key != null)
-                    {
-                        foreach (Type Interface in Converter.GetInterfaces())
-                        {
-                            if (Interface.GetGenericArguments().Length > 0)
-                                AddConverter(Interface.GetGenericArguments()[0], ObjectConverter);
-                        }
-                        Key = Key.BaseType;
-                    }
-                }
+                TypeDescriptor.AddAttributes(TypeConverter.AssociatedType, new TypeConverterAttribute(TypeConverter.GetType()));
             }
         }
 
         #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Converters
-        /// </summary>
-        protected Dictionary<Type, IObjectConverter> Converters { get; private set; }
-
-        #endregion
-
+        
         #region Functions
-
-        /// <summary>
-        /// Adds a converter to the system
-        /// </summary>
-        /// <param name="ObjectConverter">Object converter</param>
-        /// <param name="ObjectType">Object type</param>
-        /// <returns>This</returns>
-        protected Manager AddConverter(Type ObjectType, Type ObjectConverter)
-        {
-            if (!Converters.ContainsKey(ObjectType))
-            {
-                Type FinalType = ObjectConverter.MakeGenericType(ObjectType);
-                Converters.Add(ObjectType, (IObjectConverter)Activator.CreateInstance(FinalType, this));
-            }
-            return this;
-        }
 
         /// <summary>
         /// Converts item from type T to R
@@ -114,25 +79,25 @@ namespace Utilities.DataTypes.Conversion
         /// <returns>The value converted to the specified type</returns>
         public object To<T>(T Item,Type ResultType, object DefaultValue = null)
         {
-            try
-            {
-                if (Item == null || Convert.IsDBNull(Item))
-                    return DefaultValue;
-                Type Key = typeof(T);
-                while (Key != null)
-                {
-                    if (Converters.ContainsKey(Key))
-                        return Converters[Key].To(Item, ResultType, DefaultValue);
-                    foreach (Type Interface in Key.GetInterfaces())
-                    {
-                        if (Converters.ContainsKey(Interface))
-                            return Converters[Interface].To(Item, ResultType, DefaultValue);
-                    }
-                    Key = Key.BaseType;
-                }
+            if (Item == null)
                 return DefaultValue;
-            }
-            catch { return DefaultValue; }
+            Type ObjectType = Item.GetType();
+            if (ResultType.IsAssignableFrom(ObjectType))
+                return Item;
+            if (Item as IConvertible != null)
+                return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
+            TypeConverter Converter = TypeDescriptor.GetConverter(Item);
+            if (Converter.CanConvertTo(ResultType))
+                return Converter.ConvertTo(Item, ResultType);
+            Converter = TypeDescriptor.GetConverter(ResultType);
+            if (Converter.CanConvertFrom(ObjectType))
+                return Converter.ConvertFrom(Item);
+            string ObjectValue = Item as string;
+            if (string.IsNullOrEmpty(ObjectValue))
+                return null;
+            if (ResultType.IsEnum)
+                return System.Enum.Parse(ResultType, ObjectValue, true);
+            return null;
         }
 
         #endregion
