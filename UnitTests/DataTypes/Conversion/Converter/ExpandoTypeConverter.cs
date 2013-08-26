@@ -27,39 +27,47 @@ using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
 using Utilities.DataTypes;
 using System.Data;
-using System.Globalization;
+using System.Dynamic;
+using System.Collections.Generic;
 
 namespace UnitTests.DataTypes.Conversion.Converter
 {
-    public class DbTypeTypeConverter
+    public class ExpandoTypeConverter
     {
         [Fact]
         public void CanConvertTo()
         {
-            Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
-            Assert.Equal(typeof(DbType), Temp.AssociatedType);
-            Assert.True(Temp.CanConvertTo(typeof(SqlDbType)));
-            Assert.True(Temp.CanConvertTo(typeof(Type)));
+            Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter();
+            Assert.Equal(typeof(ExpandoObject), Temp.AssociatedType);
+            Assert.True(Temp.CanConvertTo(typeof(ExpandoObject)));
+            Assert.True(Temp.CanConvertFrom(typeof(ExpandoTypeConverter)));
         }
 
         [Fact]
         public void ConvertTo()
         {
-            Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
-            Assert.Equal(SqlDbType.SmallInt, Temp.ConvertTo(DbType.Int16,typeof(SqlDbType)));
-            Assert.Equal(SqlDbType.Int, Temp.ConvertTo(DbType.Int32, typeof(SqlDbType)));
-            Assert.Equal(typeof(int), Temp.ConvertTo(DbType.Int32, typeof(Type)));
-            Assert.Equal(typeof(short), Temp.ConvertTo(DbType.Int16, typeof(Type)));
+            Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter();
+            IDictionary<string,object> TestObject=new ExpandoObject();
+            TestObject.Add("A","This is a test");
+            TestObject.Add("B",10);
+            TestClass Result = (TestClass)Temp.ConvertTo(TestObject, typeof(TestClass));
+            Assert.Equal(10, Result.B);
+            Assert.Equal("This is a test", Result.A);
         }
-
+        
         [Fact]
         public void ConvertFrom()
         {
-            Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
-            Assert.Equal(DbType.Int16, Temp.ConvertFrom(SqlDbType.SmallInt));
-            Assert.Equal(DbType.Int32, Temp.ConvertFrom(SqlDbType.Int));
-            Assert.Equal(DbType.Int16, Temp.ConvertFrom(typeof(Int16)));
-            Assert.Equal(DbType.Int32, Temp.ConvertFrom(typeof(Int32)));
+            Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter();
+            IDictionary<string,object> Result=(ExpandoObject)Temp.ConvertFrom(new TestClass(){A="This is a test",B=10});
+            Assert.Equal(10, Result["B"]);
+            Assert.Equal("This is a test", Result["A"]);
+        }
+
+        public class TestClass
+        {
+            public string A { get; set; }
+            public int B { get; set; }
         }
     }
 }

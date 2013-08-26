@@ -46,7 +46,7 @@ namespace Utilities.DataTypes.Conversion.Converters
         {
             ConvertToTypes.Add(typeof(Type), SqlDbTypeToType);
             ConvertToTypes.Add(typeof(DbType), SqlDbTypeToDbType);
-            ConvertFromTypes.Add(typeof(Type), TypeToSqlDbType);
+            ConvertFromTypes.Add(typeof(Type).GetType(), TypeToSqlDbType);
             ConvertFromTypes.Add(typeof(DbType), DbTypeToSqlDbType);
         }
 
@@ -105,7 +105,6 @@ namespace Utilities.DataTypes.Conversion.Converters
             else if (TempValue == typeof(Guid?)) Item = DbType.Guid;
             else if (TempValue == typeof(DateTime?)) Item = DbType.DateTime2;
             else if (TempValue == typeof(DateTimeOffset?)) Item = DbType.DateTimeOffset;
-            Item = DbType.Int32;
             SqlParameter Parameter = new SqlParameter();
             Parameter.DbType = Item;
             return Parameter.SqlDbType;

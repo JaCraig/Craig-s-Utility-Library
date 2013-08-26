@@ -49,7 +49,12 @@
   <ItemGroup>
     <Compile Include="DataTypes\AOP\Manager.cs" />
     <Compile Include="DataTypes\CodeGen\Compiler.cs" />
+    <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
+    <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
     <Compile Include="DataTypes\Conversion\Converter\DbTypeTypeConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converter\ExpandoTypeConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Converter\SqlDbTypeConverter.cs" />
+    <Compile Include="DataTypes\Conversion\Manager.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IoC\Manager.cs" />

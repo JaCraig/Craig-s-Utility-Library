@@ -125,7 +125,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <param name="TypeToCreate">Type to create</param>
         /// <param name="Args">Args to pass to the constructor</param>
         /// <returns>The created object</returns>
-        protected T Create<T>(Type TypeToCreate, params object[] Args)
+        protected static T Create<T>(Type TypeToCreate, params object[] Args)
         {
             return (T)Activator.CreateInstance(TypeToCreate, Args);
         }

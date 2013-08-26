@@ -31,35 +31,35 @@ using System.Globalization;
 
 namespace UnitTests.DataTypes.Conversion.Converter
 {
-    public class DbTypeTypeConverter
+    public class SqlDbTypeTypeConverter
     {
         [Fact]
         public void CanConvertTo()
         {
-            Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
-            Assert.Equal(typeof(DbType), Temp.AssociatedType);
-            Assert.True(Temp.CanConvertTo(typeof(SqlDbType)));
+            Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter();
+            Assert.Equal(typeof(SqlDbType), Temp.AssociatedType);
+            Assert.True(Temp.CanConvertTo(typeof(DbType)));
             Assert.True(Temp.CanConvertTo(typeof(Type)));
         }
 
         [Fact]
         public void ConvertTo()
         {
-            Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
-            Assert.Equal(SqlDbType.SmallInt, Temp.ConvertTo(DbType.Int16,typeof(SqlDbType)));
-            Assert.Equal(SqlDbType.Int, Temp.ConvertTo(DbType.Int32, typeof(SqlDbType)));
-            Assert.Equal(typeof(int), Temp.ConvertTo(DbType.Int32, typeof(Type)));
-            Assert.Equal(typeof(short), Temp.ConvertTo(DbType.Int16, typeof(Type)));
+            Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter();
+            Assert.Equal(DbType.Int16, Temp.ConvertTo(SqlDbType.SmallInt, typeof(DbType)));
+            Assert.Equal(DbType.Int32, Temp.ConvertTo(SqlDbType.Int, typeof(DbType)));
+            Assert.Equal(typeof(int), Temp.ConvertTo(SqlDbType.Int, typeof(Type)));
+            Assert.Equal(typeof(short), Temp.ConvertTo(SqlDbType.SmallInt, typeof(Type)));
         }
 
         [Fact]
         public void ConvertFrom()
         {
-            Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
-            Assert.Equal(DbType.Int16, Temp.ConvertFrom(SqlDbType.SmallInt));
-            Assert.Equal(DbType.Int32, Temp.ConvertFrom(SqlDbType.Int));
-            Assert.Equal(DbType.Int16, Temp.ConvertFrom(typeof(Int16)));
-            Assert.Equal(DbType.Int32, Temp.ConvertFrom(typeof(Int32)));
+            Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter();
+            Assert.Equal(SqlDbType.SmallInt, Temp.ConvertFrom(DbType.Int16));
+            Assert.Equal(SqlDbType.Int, Temp.ConvertFrom(DbType.Int32));
+            Assert.Equal(SqlDbType.SmallInt, Temp.ConvertFrom(typeof(Int16)));
+            Assert.Equal(SqlDbType.Int, Temp.ConvertFrom(typeof(Int32)));
         }
     }
 }

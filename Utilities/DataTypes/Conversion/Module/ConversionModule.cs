@@ -19,34 +19,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Linq;
-using Utilities.DataTypes.CodeGen.BaseClasses;
-using Utilities.IO;
-using Utilities.IO.FileSystem.Interfaces;
-using Xunit;
-using Utilities.DataTypes;
-using System.Collections.Generic;
-using Utilities.DataTypes.CodeGen;
+#region Usings
+using Utilities.IoC.Interfaces;
+#endregion
 
-namespace UnitTests.DataTypes.AOP
+namespace Utilities.DataTypes.Conversion.Module
 {
-    public class Manager
+    /// <summary>
+    /// Conversion module
+    /// </summary>
+    public class ConversionModule : IModule
     {
-        [Fact]
-        public void Create()
+        /// <summary>
+        /// Order to run it in
+        /// </summary>
+        public int Order
         {
-            Utilities.DataTypes.AOP.Manager Test = new Utilities.DataTypes.AOP.Manager(new Compiler());
-            AOPTestClass Item = ((AOPTestClass)Test.Create(typeof(AOPTestClass)));
-            Assert.NotNull(Item);
+            get { return 0; }
         }
-    }
 
-    public class AOPTestClass
-    {
-        public virtual string A { get; set; }
-        public virtual int B { get; set; }
-        public virtual float C { get; set; }
-        public virtual List<string> D { get; set; }
+        /// <summary>
+        /// Loads the module
+        /// </summary>
+        /// <param name="Bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper Bootstrapper)
+        {
+            Bootstrapper.Register(new Manager());
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Utilities.DataTypes.Conversion.Converters
         /// <summary>
         /// Constructor
         /// </summary>
-        protected ExpandoTypeConverter()
+        public ExpandoTypeConverter()
             : base()
         {
             AssociatedType = typeof(ExpandoObject);

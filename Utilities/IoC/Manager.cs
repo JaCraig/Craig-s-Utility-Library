@@ -70,9 +70,14 @@ namespace Utilities.IoC
                                                                         && !x.IsAbstract
                                                                         && !x.ContainsGenericParameters));
             }
+            List<IModule> ModuleObjects = new List<IModule>();
             foreach (Type Module in Modules)
             {
-                ((IModule)Activator.CreateInstance(Module)).Load(InternalBootstrapper);
+                ModuleObjects.Add(((IModule)Activator.CreateInstance(Module)));
+            }
+            foreach (IModule Module in ModuleObjects.OrderBy(x => x.Order))
+            {
+                Module.Load(InternalBootstrapper);
             }
         }
 

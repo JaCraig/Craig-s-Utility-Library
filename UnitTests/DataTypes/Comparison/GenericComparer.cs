@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,34 +19,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Linq;
-using Utilities.DataTypes.CodeGen.BaseClasses;
-using Utilities.IO;
-using Utilities.IO.FileSystem.Interfaces;
-using Xunit;
-using Utilities.DataTypes;
-using System.Collections.Generic;
-using Utilities.DataTypes.CodeGen;
 
-namespace UnitTests.DataTypes.AOP
+using Utilities.DataTypes.Comparison;
+using Xunit;
+
+namespace UnitTests.DataTypes.Comparison
 {
-    public class Manager
+    public class GenericComparer
     {
         [Fact]
-        public void Create()
+        public void Compare()
         {
-            Utilities.DataTypes.AOP.Manager Test = new Utilities.DataTypes.AOP.Manager(new Compiler());
-            AOPTestClass Item = ((AOPTestClass)Test.Create(typeof(AOPTestClass)));
-            Assert.NotNull(Item);
+            GenericComparer<string> Comparer = new GenericComparer<string>();
+            Assert.Equal(0, Comparer.Compare("A", "A"));
+            Assert.Equal(-1, Comparer.Compare("A", "B"));
+            Assert.Equal(1, Comparer.Compare("B", "A"));
         }
-    }
-
-    public class AOPTestClass
-    {
-        public virtual string A { get; set; }
-        public virtual int B { get; set; }
-        public virtual float C { get; set; }
-        public virtual List<string> D { get; set; }
     }
 }

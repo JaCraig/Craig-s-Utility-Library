@@ -26,27 +26,27 @@ using Utilities.IO;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
 using Utilities.DataTypes;
-using System.Collections.Generic;
-using Utilities.DataTypes.CodeGen;
+using System.Data;
+using System.Globalization;
 
-namespace UnitTests.DataTypes.AOP
+namespace UnitTests.DataTypes.Conversion
 {
     public class Manager
     {
         [Fact]
         public void Create()
         {
-            Utilities.DataTypes.AOP.Manager Test = new Utilities.DataTypes.AOP.Manager(new Compiler());
-            AOPTestClass Item = ((AOPTestClass)Test.Create(typeof(AOPTestClass)));
-            Assert.NotNull(Item);
+            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager();
+            Assert.NotNull(TestObject);
         }
-    }
 
-    public class AOPTestClass
-    {
-        public virtual string A { get; set; }
-        public virtual int B { get; set; }
-        public virtual float C { get; set; }
-        public virtual List<string> D { get; set; }
+        [Fact]
+        public void To()
+        {
+            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager();
+            Assert.Equal(10, TestObject.To(10.0f, 5));
+            Assert.Equal(5.0f, TestObject.To(5, 10.0f));
+            Assert.Equal(DbType.Guid, TestObject.To(typeof(Guid), DbType.Int32));
+        }
     }
 }

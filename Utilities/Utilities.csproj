@@ -152,6 +152,7 @@
   <ItemGroup>
     <Compile Include="DataTypes\AOP\Interfaces\IAspect.cs" />
     <Compile Include="DataTypes\AOP\Manager.cs" />
+    <Compile Include="DataTypes\AOP\Module\AOPModule.cs" />
     <Compile Include="DataTypes\Bag.cs" />
     <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\CodeGen\BaseClasses\CompilerBase.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="DataTypes\Conversion\Converters\Interfaces\IConverter.cs" />
     <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Manager.cs" />
+    <Compile Include="DataTypes\Conversion\Module\ConversionModule.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />

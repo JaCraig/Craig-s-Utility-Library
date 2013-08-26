@@ -36,15 +36,16 @@ namespace Utilities.DataTypes.AOP
     /// <summary>
     /// AOP interface manager
     /// </summary>
-    public class AOPManager
+    public class Manager
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public AOPManager()
+        public Manager(Compiler Compiler)
         {
+            Manager.Compiler = Compiler;
             Aspects.Add(AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>());
             Compiler.Classes.ForEach(x => Classes.Add(x.BaseType, x));
         }
@@ -56,7 +57,7 @@ namespace Utilities.DataTypes.AOP
         /// <summary>
         /// Gets the system's compiler
         /// </summary>
-        protected static Compiler Compiler { get { return IoC.Manager.Bootstrapper.Resolve<Compiler>(); } }
+        protected static Compiler Compiler { get; private set; }
 
         /// <summary>
         /// Dictionary containing generated types and associates it with original type
@@ -167,7 +168,7 @@ namespace {1}
                 Builder.AppendLine(@"   }
 }");
 
-                AOPManager.Classes.Add(Type, AOPManager.Compiler.CreateClass(Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
+                Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
         }
 
         /// <summary>

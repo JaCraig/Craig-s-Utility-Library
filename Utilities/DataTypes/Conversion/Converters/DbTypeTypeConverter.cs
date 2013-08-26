@@ -46,7 +46,7 @@ namespace Utilities.DataTypes.Conversion.Converters
         {
             ConvertToTypes.Add(typeof(Type), DbTypeToType);
             ConvertToTypes.Add(typeof(SqlDbType), DbTypeToSqlDbType);
-            ConvertFromTypes.Add(typeof(Type), TypeToDbType);
+            ConvertFromTypes.Add(typeof(Type).GetType(), TypeToDbType);
             ConvertFromTypes.Add(typeof(SqlDbType), SqlDbTypeToDbType);
         }
 
