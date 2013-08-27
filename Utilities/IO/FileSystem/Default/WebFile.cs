@@ -212,6 +212,17 @@ namespace Utilities.IO.FileSystem.Default
         public override void MoveTo(IDirectory Directory)
         {
         }
+        
+        /// <summary>
+        /// Copies the file to another directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy the file to</param>
+        /// <param name="Overwrite">Should the file overwrite another file if found</param>
+        /// <returns>The newly created file</returns>
+        public override IFile CopyTo(IDirectory Directory, bool Overwrite)
+        {
+            return null;
+        }
 
         /// <summary>
         /// Not used

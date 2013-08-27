@@ -54,7 +54,7 @@ namespace Utilities.DataTypes
 
         #endregion
 
-        #region ToList
+        #region To
 
         /// <summary>
         /// Attempts to convert the DataTable to a list of objects
@@ -63,19 +63,18 @@ namespace Utilities.DataTypes
         /// <param name="Data">DataTable to convert</param>
         /// <param name="Creator">Function used to create each object</param>
         /// <returns>The DataTable converted to a list of objects</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        public static System.Collections.Generic.List<T> ToList<T>(this DataTable Data, Func<T> Creator = null) where T : new()
+        public static List<T> To<T>(this DataTable Data, Func<T> Creator)
+            where T : class,new()
         {
             if (Data == null)
                 return new List<T>();
             Creator = Creator.Check(() => new T());
             Type TType = typeof(T);
             PropertyInfo[] Properties = TType.GetProperties();
-            System.Collections.Generic.List<T> Results = new System.Collections.Generic.List<T>();
+            List<T> Results = new List<T>();
             for (int x = 0; x < Data.Rows.Count; ++x)
             {
                 T RowObject = Creator();
-
                 for (int y = 0; y < Data.Columns.Count; ++y)
                 {
                     PropertyInfo Property = Properties.FirstOrDefault(z => z.Name == Data.Columns[y].ColumnName);
@@ -87,10 +86,6 @@ namespace Utilities.DataTypes
             return Results;
         }
 
-        #endregion
-        
-        #region To
-
         /// <summary>
         /// Attempts to convert the object to another type and returns the value
         /// </summary>
@@ -101,7 +96,7 @@ namespace Utilities.DataTypes
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
         public static R To<T, R>(this T Object, R DefaultValue = default(R))
         {
-            return Converter.To(Object, DefaultValue);
+            return Utilities.IoC.Manager.Bootstrapper.Resolve<Manager>().To(Object, DefaultValue);
         }
 
         /// <summary>
@@ -112,19 +107,12 @@ namespace Utilities.DataTypes
         /// <param name="Object">Object to convert</param>
         /// <param name="DefaultValue">Default value to return if there is an issue or it can't be converted</param>
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static object To<T>(this T Object, Type ResultType, object DefaultValue = null)
         {
-            return Converter.To(Object, ResultType, DefaultValue);
+            return Utilities.IoC.Manager.Bootstrapper.Resolve<Manager>().To(Object, ResultType, DefaultValue);
         }
 
         #endregion
-
-        #endregion
-
-        #region Private Static Properties
-
-        private static Manager Converter = new Manager();
 
         #endregion
     }

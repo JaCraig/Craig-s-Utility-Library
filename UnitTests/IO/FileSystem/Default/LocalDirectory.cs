@@ -99,5 +99,24 @@ namespace UnitTests.IO.FileSystem.Default
             Temp.Delete();
             Assert.False(Temp.Exists);
         }
+
+        [Fact]
+        public void Copy()
+        {
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
+            Temp.Create();
+            Temp2.Create();
+            IDirectory Temp3 = Temp2.CopyTo(Temp);
+            Assert.True(Temp.Exists);
+            Assert.True(Temp2.Exists);
+            Assert.True(Temp3.Exists);
+            Assert.Equal(Temp, Temp3);
+            Assert.NotEqual(Temp, Temp2);
+            Assert.NotEqual(Temp2, Temp3);
+            Temp.Delete();
+            Temp2.Delete();
+            Assert.False(Temp.Exists);
+        }
     }
 }

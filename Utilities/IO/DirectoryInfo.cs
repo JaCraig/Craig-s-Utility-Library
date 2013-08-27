@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Utilities.IO.Enums;
 using Utilities.IO.FileSystem;
 using Utilities.IO.FileSystem.Interfaces;
 
@@ -207,6 +208,19 @@ namespace Utilities.IO
             if (InternalDirectory == null || Directory == null)
                 return;
             InternalDirectory.MoveTo(Directory);
+        }
+
+        /// <summary>
+        /// Copies the directory to the specified parent directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy to</param>
+        /// <param name="Options">Copy options</param>
+        /// <returns>Returns the new directory</returns>
+        public IDirectory CopyTo(IDirectory Directory, Enums.CopyOptions Options = CopyOptions.CopyAlways)
+        {
+            if (InternalDirectory == null || Directory == null)
+                return null;
+            return InternalDirectory.CopyTo(Directory, Options);
         }
 
         /// <summary>
@@ -401,5 +415,6 @@ namespace Utilities.IO
         }
 
         #endregion
+
     }
 }

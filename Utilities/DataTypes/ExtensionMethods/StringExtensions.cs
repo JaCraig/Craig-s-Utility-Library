@@ -23,7 +23,6 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
-//using System.Data.Entity.Design.PluralizationServices;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -523,24 +522,6 @@ namespace Utilities.DataTypes
 
         #endregion
 
-        #region ToBase64
-
-        /// <summary>
-        /// Converts from the specified encoding to a base 64 string
-        /// </summary>
-        /// <param name="Input">Input string</param>
-        /// <param name="OriginalEncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
-        /// <returns>Bas64 string</returns>
-        public static string ToBase64(this string Input, Encoding OriginalEncodingUsing = null)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            byte[] TempArray = OriginalEncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
-            return Convert.ToBase64String(TempArray);
-        }
-
-        #endregion
-
         #region ToByteArray
 
         /// <summary>
@@ -557,6 +538,21 @@ namespace Utilities.DataTypes
         #endregion
 
         #region ToString
+
+        /// <summary>
+        /// Converts from the specified encoding to a base 64 string
+        /// </summary>
+        /// <param name="Input">Input string</param>
+        /// <param name="Options">Base 64 formatting options</param>
+        /// <param name="OriginalEncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <returns>Bas64 string</returns>
+        public static string ToString(this string Input, Base64FormattingOptions Options, Encoding OriginalEncodingUsing = null)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            byte[] TempArray = OriginalEncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
+            return Convert.ToBase64String(TempArray, Options);
+        }
 
         /// <summary>
         /// Formats the string based on the capitalization specified

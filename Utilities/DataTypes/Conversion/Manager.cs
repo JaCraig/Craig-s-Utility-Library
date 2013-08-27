@@ -79,25 +79,29 @@ namespace Utilities.DataTypes.Conversion
         /// <returns>The value converted to the specified type</returns>
         public object To<T>(T Item,Type ResultType, object DefaultValue = null)
         {
-            if (Item == null)
-                return DefaultValue;
-            Type ObjectType = Item.GetType();
-            if (ResultType.IsAssignableFrom(ObjectType))
-                return Item;
-            if (Item as IConvertible != null)
-                return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
-            TypeConverter Converter = TypeDescriptor.GetConverter(Item);
-            if (Converter.CanConvertTo(ResultType))
-                return Converter.ConvertTo(Item, ResultType);
-            Converter = TypeDescriptor.GetConverter(ResultType);
-            if (Converter.CanConvertFrom(ObjectType))
-                return Converter.ConvertFrom(Item);
-            string ObjectValue = Item as string;
-            if (string.IsNullOrEmpty(ObjectValue))
+            try
+            {
+                if (Item == null)
+                    return DefaultValue;
+                Type ObjectType = Item.GetType();
+                if (ResultType.IsAssignableFrom(ObjectType))
+                    return Item;
+                TypeConverter Converter = TypeDescriptor.GetConverter(Item);
+                if (Converter.CanConvertTo(ResultType))
+                    return Converter.ConvertTo(Item, ResultType);
+                if (Item as IConvertible != null)
+                    return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
+                Converter = TypeDescriptor.GetConverter(ResultType);
+                if (Converter.CanConvertFrom(ObjectType))
+                    return Converter.ConvertFrom(Item);
+                string ObjectValue = Item as string;
+                if (string.IsNullOrEmpty(ObjectValue))
+                    return null;
+                if (ResultType.IsEnum)
+                    return System.Enum.Parse(ResultType, ObjectValue, true);
                 return null;
-            if (ResultType.IsEnum)
-                return System.Enum.Parse(ResultType, ObjectValue, true);
-            return null;
+            }
+            catch { return DefaultValue; }
         }
 
         #endregion

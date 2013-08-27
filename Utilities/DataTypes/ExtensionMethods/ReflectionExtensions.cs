@@ -176,7 +176,7 @@ namespace Utilities.DataTypes
                 if (ObjectType.Name.Contains("`"))
                 {
                     Type[] GenericTypes = ObjectType.GetGenericArguments();
-                    Output.Append(ObjectType.Name.Remove(ObjectType.Name.IndexOf("`", StringComparison.InvariantCulture)))
+                    Output.Append(ObjectType.Name.Remove(ObjectType.Name.IndexOf("`", StringComparison.OrdinalIgnoreCase)))
                         .Append("<");
                     string Seperator = "";
                     foreach (Type GenericType in GenericTypes)
@@ -564,7 +564,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="DataType">Data type expecting</typeparam>
         /// <param name="Property">Property</param>
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
-        public static Expression<Action<ClassType, DataType>> PropertySetter<ClassType, DataType>(this Expression<Func<ClassType, DataType>> Property)
+        public static Expression<Action<ClassType, DataType>> PropertySetter<ClassType, DataType>(this LambdaExpression Property)//Expression<Func<ClassType, DataType>> Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             string PropertyName = Property.PropertyName();
@@ -606,7 +606,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="ClassType">Class type</typeparam>
         /// <param name="Property">Property</param>
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
-        public static Expression<Action<ClassType, object>> PropertySetter<ClassType>(this Expression<Func<ClassType, object>> Property)
+        public static Expression<Action<ClassType, object>> PropertySetter<ClassType>(this LambdaExpression Property)
         {
             return Property.PropertySetter<ClassType, object>();
         }

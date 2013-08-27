@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 #endregion
@@ -187,6 +188,17 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory"></param>
         public override void MoveTo(IDirectory Directory)
         {
+        }
+        
+        /// <summary>
+        /// Copies the directory to the specified parent directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy to</param>
+        /// <param name="Options">Options</param>
+        /// <returns>Newly created directory</returns>
+        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
+        {
+            return null;
         }
 
         /// <summary>

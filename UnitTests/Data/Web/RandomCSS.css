@@ -1,0 +1,70 @@
+﻿.HeaderRight .Search
+{
+    position:absolute;
+    right:5px;
+    margin: 15px auto;
+}
+
+
+.HeaderRight .Search a
+{
+    color: #333399;
+	text-decoration: none;
+	font-size: .9em;
+}
+
+.HeaderRight .Search a:visited
+{
+    color: #333399;
+	text-decoration: none;
+	font-size: .9em;
+}
+
+.HeaderRight .Search a:hover
+{
+    color: #7070CF;
+    font-size: .9em;
+}
+
+.HeaderRight .Search .SearchBox
+{
+    position:absolute;
+    right:55px;
+    top:30px;
+    width:330px;
+    /*width:75%;*/
+    margin-right:5px;
+    font-size:.8em;
+}
+
+.HeaderRight .Search .SearchType
+{
+    margin-bottom:2px;
+    position:absolute;
+    right:170px;
+    top:5px;
+    width:220px;
+    font: Arial 9pt;
+    font-weight:bold;
+}
+
+.HeaderRight .Search .Button
+{
+    position:absolute;
+    top:30px;
+    right:5px;
+	/*width:70px;*/
+	font-size:.8em;
+}
+
+.HeaderRight .Search .Watermark
+{
+    position:absolute;
+	color:#C0C0C0;
+	font-style:italic;
+	right:55px;
+	top:30px;
+    width:330px;
+	margin-right:5px;
+	font-size:.8em;
+}

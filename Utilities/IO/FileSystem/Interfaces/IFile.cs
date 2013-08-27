@@ -114,6 +114,14 @@ namespace Utilities.IO.FileSystem.Interfaces
         void MoveTo(IDirectory Directory);
 
         /// <summary>
+        /// Copies the file to another directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy the file to</param>
+        /// <param name="Overwrite">Should the file overwrite another file if found</param>
+        /// <returns>The newly created file</returns>
+        IFile CopyTo(IDirectory Directory, bool Overwrite);
+
+        /// <summary>
         /// Writes content to the file
         /// </summary>
         /// <param name="Content">Content to write</param>

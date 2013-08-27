@@ -199,7 +199,6 @@ namespace {1}
         private static string SetupMethod(Type Type, MethodInfo MethodInfo,bool IsProperty)
         {
             StringBuilder Builder = new StringBuilder();
-            MethodInfo BaseMethod = Type.GetMethod(MethodInfo.Name);
             string BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";
             string BaseCall = "";

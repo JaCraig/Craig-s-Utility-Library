@@ -433,7 +433,7 @@ namespace Utilities.DataTypes
 
         #endregion
 
-        #region ToDataTable
+        #region To
 
         /// <summary>
         /// Converts the IEnumerable to a DataTable
@@ -442,7 +442,7 @@ namespace Utilities.DataTypes
         /// <param name="List">List to convert</param>
         /// <param name="Columns">Column names (if empty, uses property names)</param>
         /// <returns>The list as a DataTable</returns>
-        public static DataTable ToDataTable<T>(this IEnumerable<T> List, params string[] Columns)
+        public static DataTable To<T>(this IEnumerable<T> List, params string[] Columns)
         {
             DataTable ReturnValue = new DataTable();
             ReturnValue.Locale = CultureInfo.CurrentCulture;

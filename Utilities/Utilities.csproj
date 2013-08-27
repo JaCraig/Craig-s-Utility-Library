@@ -208,6 +208,7 @@
     <Compile Include="IoC\Manager.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IO\DirectoryInfo.cs" />
+    <Compile Include="IO\Enums\CopyOptions.cs" />
     <Compile Include="IO\ExtensionMethods\IDirectoryExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\IFileExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />

@@ -55,6 +55,25 @@
     <Compile Include="DataTypes\Conversion\Converter\ExpandoTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Converter\SqlDbTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Manager.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\GenericObjectExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ICollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IComparableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\TypeConversion.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ValueType.cs" />
+    <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
+    <Compile Include="DataTypes\Patterns\Factory.cs" />
+    <Compile Include="DataTypes\Threading\TaskQueue.cs" />
+    <Compile Include="Fixtures\TestingDirectoryFixture.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IoC\Manager.cs" />
@@ -93,9 +112,7 @@
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataTypes\ExtensionMethods\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

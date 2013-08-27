@@ -99,5 +99,19 @@ namespace UnitTests.IO.FileSystem.Default
             Temp.Delete();
             Assert.True(Temp.Exists);
         }
+
+        [Fact]
+        public void Copy()
+        {
+            Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
+            Utilities.IO.FileSystem.Default.WebDirectory Temp2 = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
+            Temp.Create();
+            Temp2.Create();
+            Temp2.CopyTo(Temp);
+            Assert.True(Temp.Exists);
+            Assert.True(Temp2.Exists);
+            Temp.Delete();
+            Assert.True(Temp.Exists);
+        }
     }
 }

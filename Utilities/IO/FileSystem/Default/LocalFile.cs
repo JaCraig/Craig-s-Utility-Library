@@ -217,6 +217,21 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
+        /// Copies the file to another directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy the file to</param>
+        /// <param name="Overwrite">Should the file overwrite another file if found</param>
+        /// <returns>The newly created file</returns>
+        public override IFile CopyTo(IDirectory Directory, bool Overwrite)
+        {
+            if (Directory == null || !Exists)
+                return null;
+            InternalFile.CopyTo(Directory.FullName + "\\" + Name, Overwrite);
+            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
+            return new FileInfo(InternalFile.FullName);
+        }
+
+        /// <summary>
         /// Writes content to the file
         /// </summary>
         /// <param name="Content">Content to write</param>

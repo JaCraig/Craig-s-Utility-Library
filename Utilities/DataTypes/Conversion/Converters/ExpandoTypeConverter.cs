@@ -82,11 +82,11 @@ namespace Utilities.DataTypes.Conversion.Converters
         /// <returns>True if it can convert from it, false otherwise</returns>
         public override bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, Type destinationType)
         {
-            return destinationType == typeof(ExpandoObject) || base.CanConvertTo(context, destinationType);
+            return destinationType.IsClass || base.CanConvertTo(context, destinationType);
         }
 
         /// <summary>
-        /// Convert from an object to a DbType
+        /// Convert from an object to a ExpandoObject
         /// </summary>
         /// <param name="context">Context object</param>
         /// <param name="culture">Culture info</param>
@@ -108,7 +108,7 @@ namespace Utilities.DataTypes.Conversion.Converters
         }
 
         /// <summary>
-        /// Converts the DbType object to another type
+        /// Converts the ExpandoObject object to another type
         /// </summary>
         /// <param name="context">Context type</param>
         /// <param name="culture">Culture info</param>
@@ -119,12 +119,13 @@ namespace Utilities.DataTypes.Conversion.Converters
         {
             try
             {
+                IDictionary<String, Object> TempValue = value as IDictionary<String, Object>;
                 object ReturnValue = Activator.CreateInstance(destinationType);
                 foreach (PropertyInfo Property in destinationType.GetProperties())
                 {
-                    if (((IDictionary<String, Object>)value).ContainsKey(Property.Name))
+                    if (TempValue.ContainsKey(Property.Name))
                     {
-                        Property.SetValue(ReturnValue, ((IDictionary<String, Object>)value)[Property.Name], null);
+                        Property.SetValue(ReturnValue, TempValue[Property.Name], null);
                     }
                 }
                 return ReturnValue;

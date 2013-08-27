@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Utilities.IO.Enums;
 #endregion
 
 namespace Utilities.IO.FileSystem.Interfaces
@@ -136,6 +137,13 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// </summary>
         /// <param name="Name">The new name of the directory</param>
         void Rename(string Name);
+
+        /// <summary>
+        /// Copies the directory to the specified parent directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy to</param>
+        /// <param name="Options">Copy options</param>
+        IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways);
 
         #endregion
     }
