@@ -45,6 +45,15 @@ Ex:
 
 Above is the basic file system registration module. In the case above the Manager object that is created will be returned every time an object of that type is requested. If a new object was desired, using the generic versions of the Register function would accomplish this.
 
+### DataTypes
+The DataTypes namespace contains a number of helpful data types (such as a BTree, Bag, RingBuffer, etc.) that are used internally by the system but are also available to anyone using the library. It also contains a number of sub systems that are used by various namespaces. For instance it comes with a simple AOP system that uses Roslyn. It in turn is used by the ORM to implement lazy loading, change tracking, etc. It comes with a simple conversion system that will convert most types built in to .Net into another. And if it can't, it allows you to build your own converter. There are dynamic type base classes that are used in various systems, items to help with threading, etc. The big stuff is the extension methods. There are over 100 extension methods for things like IEnumerable<T>, string, DateTime, TimeSpan, byte[], Exception, arrays, Func, Action, ICollection, IComparable, Stream, etc. Just add:
+
+```
+using Utilities.DataTypes
+```
+
+And you're good to go. This namespace is probably the most generally helpful.
+
 ### IO - File System
 The IO namespace is divided into a couple different items. The first is the file system. One of the many issues with .Net is the fact that there are 20 different ways to do the same (or similar) thing. IO falls under that category sadly. FileInfo, VirtualFile, StorageFile, etc. Why can't anyone make up their minds on this stuff? Anyway, the system has a extendable wrapper around the file system that can access not just local files but any sort of file system that you build a plugin for. For instance, it comes with a local file system, relative, and web. It can access C:\ and www.google.com in the same manner. Plus it's extensible so if you want to Sky Drive, Dropbox, Google Drive, etc. then you can fairly easily.
 
@@ -111,6 +120,9 @@ using(EmailMessage Message=new EmailMessage())
 ```
 
 At present there is only the ability to send messages. I would like to change this so that they can be received as well. So it's a bit in flux but it works for now. In order to implement a message/messaging system the key interfaces are Utilities.IO.Messaging.Interfaces.IMessage and Utilities.IO.Messaging.Interfaces.IMessagingSystem. I also mentioned formatters. Formatters are currently not implemented within the system itself but it allows you to specify how a message should be formatted before it is sent out. For instance if you wanted to use Razor to format the email message, you could. However I'm still playing with this so I'm not going to show any code currently.
+
+### IO - File Formats
+Currently working on
 
 ### Documentation
 The library itself is documented and comes with the XML generated docs. There is also a download available on Nuget that contains the documentation generated using doxygen (http://www.stack.nl/~dimitri/doxygen/). With version 4.0, the basic info to get you started can be in the document above. Feel free to ask specific questions on the CodePlex (http://cul.codeplex.com) or Github (https://github.com/JaCraig/Craig-s-Utility-Library) pages also.
