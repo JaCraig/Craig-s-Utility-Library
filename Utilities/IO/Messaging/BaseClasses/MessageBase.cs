@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Threading.Tasks;
+using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Messaging.Interfaces;
 #endregion
 
@@ -29,7 +30,7 @@ namespace Utilities.IO.Messaging.BaseClasses
     /// <summary>
     /// Message base
     /// </summary>
-    public abstract class MessageBase : IMessage
+    public abstract class MessageBase : SafeDisposableBaseClass,IMessage
     {
         /// <summary>
         /// Constructor

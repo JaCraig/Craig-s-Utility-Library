@@ -27,6 +27,7 @@ using System.Reflection;
 using System.Text;
 using Utilities.IO.Messaging.BaseClasses;
 using Utilities.IO.Messaging.Interfaces;
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.IO.Messaging
@@ -41,30 +42,13 @@ namespace Utilities.IO.Messaging
         /// </summary>
         public Manager()
         {
-            Formatters = new List<IFormatter>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type Formatter in Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IFormatter))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters))
-                {
-                    Formatters.Add((IFormatter)Activator.CreateInstance(Formatter));
-                }
-            }
+            Formatters = AppDomain.CurrentDomain.GetAssemblies().Objects<IFormatter>().ToList();
             MessagingSystems = new Dictionary<Type, IMessagingSystem>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type MessagingSystem in Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IMessagingSystem))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters))
-                {
-                    MessagingSystemBase Temp = (MessagingSystemBase)Activator.CreateInstance(MessagingSystem);
-                    Temp.Initialize(Formatters);
-                    MessagingSystems.Add(Temp.MessageType, Temp);
-                }
-            }
+            IEnumerable<IMessagingSystem> TempSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IMessagingSystem>();
+            TempSystems.ForEach(x =>{
+                ((MessagingSystemBase)x).Initialize(Formatters);
+                MessagingSystems.Add(x.MessageType, x);
+            });
         }
 
         /// <summary>
@@ -84,19 +68,7 @@ namespace Utilities.IO.Messaging
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.Append("Formatters: ");
-            string Splitter = "";
-            foreach (IFormatter Formatter in Formatters)
-            {
-                Builder.Append(Splitter).Append(Formatter.Name);
-                Splitter = ",";
-            }
-            Splitter = "";
-            foreach (Type MessagingSystem in MessagingSystems.Keys)
-            {
-                Builder.Append(Splitter).Append(MessagingSystems[MessagingSystem].Name);
-                Splitter = ",";
-            }
+            Builder.AppendFormat("Formatters: {0}\r\nMessaging Systems: {1}", Formatters.ToString(x => x.Name), MessagingSystems.ToString(x => x.Value.Name));
             return Builder.ToString();
         }
     }

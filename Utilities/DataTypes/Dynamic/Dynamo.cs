@@ -43,6 +43,7 @@ namespace Utilities.DataTypes.Dynamic
         /// Constructor
         /// </summary>
         public Dynamo()
+            : base()
         {
             InternalValues = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         }
@@ -52,6 +53,7 @@ namespace Utilities.DataTypes.Dynamic
         /// </summary>
         /// <param name="Dictionary">Dictionary to copy</param>
         public Dynamo(IDictionary<string, object> Dictionary)
+            :base()
         {
             InternalValues = new Dictionary<string, object>(Dictionary, StringComparer.OrdinalIgnoreCase);
         }
@@ -321,7 +323,13 @@ namespace Utilities.DataTypes.Dynamic
         /// <returns>The returned value</returns>
         protected object GetValue(string Name, Type ReturnType)
         {
-            return ContainsKey(Name) ? this[Name].To(ReturnType, null) : ((object)null).To(ReturnType, null);
+            if (ContainsKey(Name))
+                return this[Name].To(ReturnType, null);
+            Type ObjectType = GetType();
+            PropertyInfo Property = ObjectType.GetProperty(Name);
+            if (Property != null)
+                return Property.GetValue(this).To(ReturnType, null);
+            return ((object)null).To(ReturnType, null);
         }
 
         #endregion

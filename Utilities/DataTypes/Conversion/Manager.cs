@@ -82,7 +82,11 @@ namespace Utilities.DataTypes.Conversion
             try
             {
                 if (Item == null)
+                {
+                    if (DefaultValue == null && ResultType.IsValueType)
+                        return Activator.CreateInstance(ResultType);
                     return DefaultValue;
+                }
                 Type ObjectType = Item.GetType();
                 if (ResultType.IsAssignableFrom(ObjectType))
                     return Item;
@@ -99,7 +103,9 @@ namespace Utilities.DataTypes.Conversion
                     return null;
                 if (ResultType.IsEnum)
                     return System.Enum.Parse(ResultType, ObjectValue, true);
-                return null;
+                if (DefaultValue == null && ResultType.IsValueType)
+                    return Activator.CreateInstance(ResultType);
+                return DefaultValue;
             }
             catch { return DefaultValue; }
         }

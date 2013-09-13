@@ -36,7 +36,7 @@ namespace Utilities.IO
     /// <summary>
     /// Email message class
     /// </summary>
-    public class EmailMessage : MessageBase, IMessage,IDisposable
+    public class EmailMessage : MessageBase, IMessage
     {
         #region Constructor
 
@@ -111,19 +111,10 @@ namespace Utilities.IO
         #region Functions
 
         /// <summary>
-        /// Disposes the object
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Disposes of the objects
         /// </summary>
         /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
-        protected virtual void Dispose(bool Disposing)
+        protected override void Dispose(bool Disposing)
         {
             if (Attachments != null)
             {
@@ -141,14 +132,6 @@ namespace Utilities.IO
                 }
                 EmbeddedResources = null;
             }
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~EmailMessage()
-        {
-            Dispose(false);
         }
 
         #endregion

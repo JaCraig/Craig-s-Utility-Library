@@ -26,7 +26,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Utilities.IO.FileSystem.Interfaces;
-
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.IO.FileSystem
@@ -43,18 +43,7 @@ namespace Utilities.IO.FileSystem
         /// </summary>
         public Manager()
         {
-            List<IFileSystem> Temp = new List<IFileSystem>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type FileSystem in Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IFileSystem))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters))
-                {
-                    Temp.Add((IFileSystem)Activator.CreateInstance(FileSystem));
-                }
-            }
-            FileSystems = Temp;
+            FileSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>();
         }
 
         #endregion
@@ -115,12 +104,7 @@ namespace Utilities.IO.FileSystem
         /// <returns>The list of file systems that are available</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
-            foreach (IFileSystem FileSystem in FileSystems)
-            {
-                Builder.AppendLine(FileSystem.Name);
-            }
-            return Builder.ToString();
+            return FileSystems.ToString(x => x.Name, System.Environment.NewLine);
         }
 
         /// <summary>

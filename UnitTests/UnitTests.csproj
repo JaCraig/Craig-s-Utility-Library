@@ -55,6 +55,7 @@
     <Compile Include="DataTypes\Conversion\Converter\ExpandoTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Converter\SqlDbTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Manager.cs" />
+    <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ExceptionExtensions.cs" />

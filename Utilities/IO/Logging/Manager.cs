@@ -26,7 +26,7 @@ using System.Linq;
 using System.Reflection;
 using Utilities.IO.Logging.Default;
 using Utilities.IO.Logging.Interfaces;
-
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.IO.Logging
@@ -43,20 +43,8 @@ namespace Utilities.IO.Logging
         /// </summary>
         public Manager()
         {
-            List<Type> Loggers = new List<Type>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Loggers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(ILogger))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters
-                                                                        && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
-            }
-            if (Loggers.Count == 0)
-            {
-                Loggers.Add(typeof(DefaultLogger));
-            }
-            LoggerUsing = (ILogger)Activator.CreateInstance(Loggers[0]);
+            IEnumerable<Type> Loggers = AppDomain.CurrentDomain.GetAssemblies().Types<ILogger>().Where(x=>!x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            LoggerUsing = Loggers.Count() == 0 ? (ILogger)Activator.CreateInstance(typeof(DefaultLogger)) : (ILogger)Activator.CreateInstance(Loggers.First());
         }
 
         #endregion

@@ -27,7 +27,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Utilities.IO.Serializers.Interfaces;
-
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.IO.Serializers
@@ -45,32 +45,24 @@ namespace Utilities.IO.Serializers
         public Manager()
         {
             Serializers = new Dictionary<string, ISerializer>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type FileSystem in Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(ISerializer))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters
-                                                                        && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)))
-                {
-                    ISerializer Serializer = (ISerializer)Activator.CreateInstance(FileSystem);
-                    if (!Serializers.ContainsKey(Serializer.ContentType))
-                        Serializers.Add(Serializer.ContentType, Serializer);
-                }
-            }
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type FileSystem in Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(ISerializer))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters
-                                                                        && x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)))
-                {
-                    ISerializer Serializer = (ISerializer)Activator.CreateInstance(FileSystem);
-                    if (!Serializers.ContainsKey(Serializer.ContentType))
-                        Serializers.Add(Serializer.ContentType, Serializer);
-                }
-            }
+            AppDomain.CurrentDomain.GetAssemblies()
+                                   .Types<ISerializer>()
+                                   .Where(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+                                   .Create<ISerializer>()
+                                   .ForEach(x =>
+                                   {
+                                       if (!Serializers.ContainsKey(x.ContentType))
+                                           Serializers.Add(x.ContentType, x);
+                                   });
+            AppDomain.CurrentDomain.GetAssemblies()
+                                   .Types<ISerializer>()
+                                   .Where(x => x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+                                   .Create<ISerializer>()
+                                   .ForEach(x =>
+                                   {
+                                       if (!Serializers.ContainsKey(x.ContentType))
+                                           Serializers.Add(x.ContentType, x);
+                                   });
         }
 
         #endregion
