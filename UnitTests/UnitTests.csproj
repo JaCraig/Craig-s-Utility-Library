@@ -80,7 +80,14 @@
     <Compile Include="IoC\Manager.cs" />
     <Compile Include="IO\DirectoryInfo.cs" />
     <Compile Include="IO\EmailMessage.cs" />
+    <Compile Include="IO\ExtensionMethods\DelimitedExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />
+    <Compile Include="IO\FileFormats\Delimited.cs" />
+    <Compile Include="IO\FileFormats\Excel.cs" />
+    <Compile Include="IO\FileFormats\FixedLength.cs" />
+    <Compile Include="IO\FileFormats\INI.cs" />
+    <Compile Include="IO\FileFormats\VCalendar.cs" />
     <Compile Include="IO\FileInfo.cs" />
     <Compile Include="IO\FileSystem\Default\AbsoluteFileSystem.cs" />
     <Compile Include="IO\FileSystem\Default\HttpFileSystem.cs" />

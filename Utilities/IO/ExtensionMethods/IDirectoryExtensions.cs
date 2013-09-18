@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Utilities.IO.FileSystem.Interfaces;
 using Utilities.DataTypes;
+using System.ComponentModel;
 #endregion
 
 namespace Utilities.IO
@@ -31,6 +32,7 @@ namespace Utilities.IO
     /// <summary>
     /// Directory extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IDirectoryExtensions
     {
         /// <summary>

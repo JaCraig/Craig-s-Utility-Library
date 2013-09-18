@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,32 +20,41 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using Utilities.IO.FileFormats;
-using Utilities.IO.FileFormats.BaseClasses;
-using Utilities.IO.FileFormats.Interfaces;
-using Utilities.IO.FileSystem.Interfaces;
+
 #endregion
 
-namespace Utilities.IO
+namespace Utilities.IO.FileFormats.FixedLength.Interfaces
 {
     /// <summary>
-    /// File extensions
+    /// Field interface
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class IFileExtensions
+    public interface IField<T>
     {
+        #region Functions
+
         /// <summary>
-        /// Deletes a list of files
+        /// Parses the string into fields
         /// </summary>
-        /// <param name="Files">List of files</param>
-        public static void Delete(this IEnumerable<IFile> Files)
-        {
-            if (Files == null)
-                return;
-            Parallel.ForEach(Files, x => x.Delete());
-        }
+        /// <param name="Value">The string value</param>
+        /// <param name="Length">Max length of the value</param>
+        /// <param name="FillerCharacter">Filler character used to fill
+        /// the rest of the field</param>
+        void Parse(string Value, int Length=-1, string FillerCharacter=" ");
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Field length
+        /// </summary>
+        int Length { get; set; }
+
+        /// <summary>
+        /// Field value
+        /// </summary>
+        T Value { get; set; }
+
+        #endregion
     }
 }

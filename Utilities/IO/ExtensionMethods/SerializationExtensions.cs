@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 using Utilities.IO.Serializers;
 #endregion
 
@@ -29,6 +30,7 @@ namespace Utilities.IO
     /// <summary>
     /// Extension methods dealing with serialization
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class SerializationExtensions
     {
         /// <summary>

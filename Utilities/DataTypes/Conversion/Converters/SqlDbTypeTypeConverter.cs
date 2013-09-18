@@ -48,6 +48,41 @@ namespace Utilities.DataTypes.Conversion.Converters
             ConvertToTypes.Add(typeof(DbType), SqlDbTypeToDbType);
             ConvertFromTypes.Add(typeof(Type).GetType(), TypeToSqlDbType);
             ConvertFromTypes.Add(typeof(DbType), DbTypeToSqlDbType);
+            Conversions = new Dictionary<Type, DbType>();
+            Conversions.Add(typeof(byte),DbType.Byte);
+            Conversions.Add(typeof(byte?),DbType.Byte);
+            Conversions.Add(typeof(sbyte),DbType.SByte);
+            Conversions.Add(typeof(sbyte?),DbType.SByte);
+            Conversions.Add(typeof(short),DbType.Int16);
+            Conversions.Add(typeof(short?),DbType.Int16);
+            Conversions.Add(typeof(ushort),DbType.UInt16);
+            Conversions.Add(typeof(ushort?),DbType.UInt16);
+            Conversions.Add(typeof(int),DbType.Int32);
+            Conversions.Add(typeof(int?),DbType.Int32);
+            Conversions.Add(typeof(uint),DbType.UInt32);
+            Conversions.Add(typeof(uint?),DbType.UInt32);
+            Conversions.Add(typeof(long),DbType.Int64);
+            Conversions.Add(typeof(long?),DbType.Int64);
+            Conversions.Add(typeof(ulong),DbType.UInt64);
+            Conversions.Add(typeof(ulong?),DbType.UInt64);
+            Conversions.Add(typeof(float),DbType.Single);
+            Conversions.Add(typeof(float?),DbType.Single);
+            Conversions.Add(typeof(double),DbType.Double);
+            Conversions.Add(typeof(double?),DbType.Double);
+            Conversions.Add(typeof(decimal),DbType.Decimal);
+            Conversions.Add(typeof(decimal?),DbType.Decimal);
+            Conversions.Add(typeof(bool),DbType.Boolean);
+            Conversions.Add(typeof(bool?),DbType.Boolean);
+            Conversions.Add(typeof(string),DbType.String);
+            Conversions.Add(typeof(char),DbType.StringFixedLength);
+            Conversions.Add(typeof(char?),DbType.StringFixedLength);
+            Conversions.Add(typeof(Guid),DbType.Guid);
+            Conversions.Add(typeof(Guid?),DbType.Guid);
+            Conversions.Add(typeof(DateTime),DbType.DateTime2);
+            Conversions.Add(typeof(DateTime?),DbType.DateTime2);
+            Conversions.Add(typeof(DateTimeOffset),DbType.DateTimeOffset);
+            Conversions.Add(typeof(DateTimeOffset?),DbType.DateTimeOffset);
+            Conversions.Add(typeof(byte[]),DbType.Binary);
         }
 
         #endregion
@@ -58,6 +93,11 @@ namespace Utilities.DataTypes.Conversion.Converters
         /// Internal converter
         /// </summary>
         protected override TypeConverter InternalConverter { get { return new EnumConverter(typeof(SqlDbType)); } }
+
+        /// <summary>
+        /// Conversions
+        /// </summary>
+        protected static Dictionary<Type, DbType> Conversions { get; private set; }
 
         #endregion
 
@@ -71,40 +111,7 @@ namespace Utilities.DataTypes.Conversion.Converters
             DbType Item = DbType.Int32;
             if (TempValue.IsEnum)
                 TempValue = Enum.GetUnderlyingType(TempValue);
-            if (TempValue == typeof(byte)) Item = DbType.Byte;
-            else if (TempValue == typeof(sbyte)) Item = DbType.SByte;
-            else if (TempValue == typeof(short)) Item = DbType.Int16;
-            else if (TempValue == typeof(ushort)) Item = DbType.UInt16;
-            else if (TempValue == typeof(int)) Item = DbType.Int32;
-            else if (TempValue == typeof(uint)) Item = DbType.UInt32;
-            else if (TempValue == typeof(long)) Item = DbType.Int64;
-            else if (TempValue == typeof(ulong)) Item = DbType.UInt64;
-            else if (TempValue == typeof(float)) Item = DbType.Single;
-            else if (TempValue == typeof(double)) Item = DbType.Double;
-            else if (TempValue == typeof(decimal)) Item = DbType.Decimal;
-            else if (TempValue == typeof(bool)) Item = DbType.Boolean;
-            else if (TempValue == typeof(string)) Item = DbType.String;
-            else if (TempValue == typeof(char)) Item = DbType.StringFixedLength;
-            else if (TempValue == typeof(Guid)) Item = DbType.Guid;
-            else if (TempValue == typeof(DateTime)) Item = DbType.DateTime2;
-            else if (TempValue == typeof(DateTimeOffset)) Item = DbType.DateTimeOffset;
-            else if (TempValue == typeof(byte[])) Item = DbType.Binary;
-            else if (TempValue == typeof(byte?)) Item = DbType.Byte;
-            else if (TempValue == typeof(sbyte?)) Item = DbType.SByte;
-            else if (TempValue == typeof(short?)) Item = DbType.Int16;
-            else if (TempValue == typeof(ushort?)) Item = DbType.UInt16;
-            else if (TempValue == typeof(int?)) Item = DbType.Int32;
-            else if (TempValue == typeof(uint?)) Item = DbType.UInt32;
-            else if (TempValue == typeof(long?)) Item = DbType.Int64;
-            else if (TempValue == typeof(ulong?)) Item = DbType.UInt64;
-            else if (TempValue == typeof(float?)) Item = DbType.Single;
-            else if (TempValue == typeof(double?)) Item = DbType.Double;
-            else if (TempValue == typeof(decimal?)) Item = DbType.Decimal;
-            else if (TempValue == typeof(bool?)) Item = DbType.Boolean;
-            else if (TempValue == typeof(char?)) Item = DbType.StringFixedLength;
-            else if (TempValue == typeof(Guid?)) Item = DbType.Guid;
-            else if (TempValue == typeof(DateTime?)) Item = DbType.DateTime2;
-            else if (TempValue == typeof(DateTimeOffset?)) Item = DbType.DateTimeOffset;
+            Item = Conversions.GetValue(TempValue, DbType.Int32);
             SqlParameter Parameter = new SqlParameter();
             Parameter.DbType = Item;
             return Parameter.SqlDbType;

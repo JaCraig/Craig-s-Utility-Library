@@ -75,5 +75,25 @@ namespace UnitTests.IO
             Assert.True(Temp >= Temp2);
             Assert.False(Temp != Temp2);
         }
+
+        [Fact]
+        public void ToFileFormat()
+        {
+            Utilities.IO.FileFormats.Excel Docs = new Utilities.IO.FileInfo("../../Data/Testing/Test.xlsx").To();
+            Assert.Equal(4, Docs.Count);
+            Assert.Equal(3, Docs.ColumnNames.Count);
+            Assert.Equal("Header 1", Docs.ColumnNames[0]);
+            Assert.Equal("Header 2", Docs.ColumnNames[1]);
+            Assert.Equal("Header 3", Docs.ColumnNames[2]);
+            Assert.Equal("This", Docs[0, "Header 1"]);
+            Assert.Equal("is", Docs[0, "Header 2"]);
+            Assert.Equal("a", Docs[0, "Header 3"]);
+            Assert.Equal("simple", Docs[1, "Header 1"]);
+            Assert.Equal("test", Docs[1, "Header 2"]);
+            Assert.Equal("of", Docs[1, "Header 3"]);
+            Assert.Equal("the", Docs[2, "Header 2"]);
+            Assert.Equal("system", Docs[3, "Header 2"]);
+            Assert.Equal("Header 1\tHeader 2\tHeader 3\r\nThis\tis\ta\r\nsimple\ttest\tof\r\n\tthe\t\r\n\tsystem\t", Docs.ToString());
+        }
     }
 }

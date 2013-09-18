@@ -24,6 +24,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Utilities.IO.FileFormats;
+using Utilities.IO.FileFormats.BaseClasses;
 using Utilities.IO.FileSystem;
 using Utilities.IO.FileSystem.Interfaces;
 
@@ -298,6 +300,38 @@ namespace Utilities.IO
         {
             FileInfo Temp = new FileInfo(InternalFile);
             return Temp;
+        }
+
+        /// <summary>
+        /// Converts the file to the specified file format
+        /// </summary>
+        /// <typeparam name="T">File format</typeparam>
+        /// <returns>The file as the file format object</returns>
+        public T To<T>()
+            where T : FormatBase<T, string>, new()
+        {
+            return FormatBase<T, string>.Load(FullName);
+        }
+
+        /// <summary>
+        /// Converts the file to the specified file format
+        /// </summary>
+        /// <typeparam name="T">File format</typeparam>
+        /// <typeparam name="R">Record type</typeparam>
+        /// <returns>The file as the file format object</returns>
+        public T To<T, R>()
+            where T : StringListFormatBase<T, R>, new()
+        {
+            return StringListFormatBase<T, R>.Load(FullName);
+        }
+
+        /// <summary>
+        /// Converts the file to the specified file format
+        /// </summary>
+        /// <returns>The file as the file format object</returns>
+        public Excel To()
+        {
+            return Excel.Load(FullName);
         }
 
         #endregion

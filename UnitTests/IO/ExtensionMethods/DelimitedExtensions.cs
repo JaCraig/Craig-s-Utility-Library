@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,33 +19,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using Utilities.IO.FileFormats;
-using Utilities.IO.FileFormats.BaseClasses;
-using Utilities.IO.FileFormats.Interfaces;
-using Utilities.IO.FileSystem.Interfaces;
-#endregion
+using System.Linq;
+using Utilities.IO;
+using Xunit;
 
-namespace Utilities.IO
+namespace UnitTests.IO.FileFormats.ExtensionMethods
 {
-    /// <summary>
-    /// File extensions
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class IFileExtensions
+    public class ExtensionMethods
     {
-        /// <summary>
-        /// Deletes a list of files
-        /// </summary>
-        /// <param name="Files">List of files</param>
-        public static void Delete(this IEnumerable<IFile> Files)
+        [Fact]
+        public void ToDelimitedFile()
         {
-            if (Files == null)
-                return;
-            Parallel.ForEach(Files, x => x.Delete());
+            List<ExportClass> Temp = new ExportClass[] { new ExportClass { ID = 1, Value = "A" }, new ExportClass { ID = 2, Value = "B" }, new ExportClass { ID = 3, Value = "C" } }.ToList();
+            Assert.DoesNotThrow(() => Temp.ToDelimitedFile());
+            Utilities.IO.FileFormats.Delimited.Delimited TestObject = Temp.ToDelimitedFile();
+            Assert.Equal(4, TestObject.Count);
+            Assert.Equal("\"ID\"\t\"Value\"\r\n\"1\"\t\"A\"\r\n\"2\"\t\"B\"\r\n\"3\"\t\"C\"\r\n", TestObject.ToString());
+        }
+
+        public class ExportClass
+        {
+            public virtual int ID { get; set; }
+            public virtual string Value { get; set; }
         }
     }
 }

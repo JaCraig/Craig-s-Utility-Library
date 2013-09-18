@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace Utilities.IO.FileFormats
     /// <summary>
     /// VCard class
     /// </summary>
-    public class VCard:StringFormatBase<VCard>
+    public class VCard : StringFormatBase<VCard>
     {
         #region Constructor
 
@@ -142,21 +143,21 @@ namespace Utilities.IO.FileFormats
         {
             get
             {
-                return new StringBuilder().AppendFormat("{0};{1};{2};{3};{4}", LastName, FirstName, MiddleName, Prefix, Suffix).ToString();
+                return new StringBuilder().AppendFormat(CultureInfo.CurrentCulture,"{0};{1};{2};{3};{4}", LastName, FirstName, MiddleName, Prefix, Suffix).ToString();
             }
         }
 
         #endregion
 
         #region Public Functions
-        
+
         /// <summary>
         /// Gets the hCard version of the vCard
         /// </summary>
         /// <returns>A hCard in string format</returns>
         public string HCard()
         {
-            StringBuilder Builder= new StringBuilder();
+            StringBuilder Builder = new StringBuilder();
             Builder.Append("<div class=\"vcard\">");
             if (string.IsNullOrEmpty(Url))
             {
@@ -204,13 +205,13 @@ namespace Utilities.IO.FileFormats
         public override string ToString()
         {
             return new StringBuilder().Append("BEGIN:VCARD\r\nVERSION:2.1\r\n")
-                .AppendFormat("FN:{0}\r\n", FullName)
-                .AppendFormat("N:{0}\r\n", Name)
-                .AppendFormat("TEL;WORK:{0}\r\n", DirectDial)
-                .AppendFormat("EMAIL;INTERNET:{0}\r\n", StripHTML(Email))
-                .AppendFormat("TITLE:{0}\r\n", Title)
-                .AppendFormat("ORG:{0}\r\n", Organization)
-                .AppendFormat("END:VCARD\r\n")
+                .AppendFormat(CultureInfo.CurrentCulture, "FN:{0}\r\n", FullName)
+                .AppendFormat(CultureInfo.CurrentCulture, "N:{0}\r\n", Name)
+                .AppendFormat(CultureInfo.CurrentCulture, "TEL;WORK:{0}\r\n", DirectDial)
+                .AppendFormat(CultureInfo.CurrentCulture, "EMAIL;INTERNET:{0}\r\n", StripHTML(Email))
+                .AppendFormat(CultureInfo.CurrentCulture, "TITLE:{0}\r\n", Title)
+                .AppendFormat(CultureInfo.CurrentCulture, "ORG:{0}\r\n", Organization)
+                .AppendFormat(CultureInfo.CurrentCulture, "END:VCARD\r\n")
                 .ToString();
         }
 
@@ -233,7 +234,7 @@ namespace Utilities.IO.FileFormats
         protected override void LoadFromData(string Data)
         {
             string Content = Data;
-            foreach (Match TempMatch in Regex.Matches(Content,"(?<Title>[^:]+):(?<Value>.*)"))
+            foreach (Match TempMatch in Regex.Matches(Content, "(?<Title>[^:]+):(?<Value>.*)"))
             {
                 if (TempMatch.Groups["Title"].Value.ToUpperInvariant() == "N")
                 {

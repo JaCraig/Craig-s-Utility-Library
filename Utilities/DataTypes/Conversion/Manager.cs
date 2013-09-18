@@ -63,7 +63,7 @@ namespace Utilities.DataTypes.Conversion
         /// <param name="Item">Incoming object</param>
         /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
         /// <returns>The value converted to the specified type</returns>
-        public R To<T, R>(T Item, R DefaultValue = default(R))
+        public static R To<T, R>(T Item, R DefaultValue = default(R))
         {
             return (R)To(Item, typeof(R), DefaultValue);
         }
@@ -77,7 +77,7 @@ namespace Utilities.DataTypes.Conversion
         /// <param name="ResultType">Result type</param>
         /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
         /// <returns>The value converted to the specified type</returns>
-        public object To<T>(T Item,Type ResultType, object DefaultValue = null)
+        public static object To<T>(T Item,Type ResultType, object DefaultValue = null)
         {
             try
             {
@@ -107,7 +107,11 @@ namespace Utilities.DataTypes.Conversion
                     return Activator.CreateInstance(ResultType);
                 return DefaultValue;
             }
-            catch { return DefaultValue; }
+            catch {
+                if (DefaultValue == null && ResultType.IsValueType)
+                    return Activator.CreateInstance(ResultType);
+                return DefaultValue;
+            }
         }
 
         #endregion

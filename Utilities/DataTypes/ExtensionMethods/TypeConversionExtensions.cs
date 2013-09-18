@@ -96,7 +96,7 @@ namespace Utilities.DataTypes
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
         public static R To<T, R>(this T Object, R DefaultValue = default(R))
         {
-            return Utilities.IoC.Manager.Bootstrapper.Resolve<Manager>().To(Object, DefaultValue);
+            return Manager.To(Object, DefaultValue);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Utilities.DataTypes
         /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
         public static object To<T>(this T Object, Type ResultType, object DefaultValue = null)
         {
-            return Utilities.IoC.Manager.Bootstrapper.Resolve<Manager>().To(Object, ResultType, DefaultValue);
+            return Manager.To(Object, ResultType, DefaultValue);
         }
 
         #endregion

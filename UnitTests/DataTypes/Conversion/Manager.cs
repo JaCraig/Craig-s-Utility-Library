@@ -44,9 +44,9 @@ namespace UnitTests.DataTypes.Conversion
         public void To()
         {
             Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager();
-            Assert.Equal(10, TestObject.To(10.0f, 5));
-            Assert.Equal(5.0f, TestObject.To(5, 10.0f));
-            Assert.Equal(DbType.Guid, TestObject.To(typeof(Guid), DbType.Int32));
+            Assert.Equal(10, Utilities.DataTypes.Conversion.Manager.To(10.0f, 5));
+            Assert.Equal(5.0f, Utilities.DataTypes.Conversion.Manager.To(5, 10.0f));
+            Assert.Equal(DbType.Guid, Utilities.DataTypes.Conversion.Manager.To(typeof(Guid), DbType.Int32));
         }
     }
 }

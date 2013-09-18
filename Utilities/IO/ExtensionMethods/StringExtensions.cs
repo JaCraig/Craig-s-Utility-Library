@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System.ComponentModel;
 using System.IO;
 
 #endregion
@@ -29,6 +30,7 @@ namespace Utilities.IO
     /// <summary>
     /// Extension methods for strings
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class StringExtensions
     {
         /// <summary>
