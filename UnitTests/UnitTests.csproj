@@ -78,8 +78,12 @@
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
     <Compile Include="IoC\Manager.cs" />
+    <Compile Include="IO\Compression\Default\DeflateCompressor.cs" />
+    <Compile Include="IO\Compression\Default\GZipCompressor.cs" />
+    <Compile Include="IO\Compression\Manager.cs" />
     <Compile Include="IO\DirectoryInfo.cs" />
     <Compile Include="IO\EmailMessage.cs" />
+    <Compile Include="IO\ExtensionMethods\CompressionExtension.cs" />
     <Compile Include="IO\ExtensionMethods\DelimitedExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />

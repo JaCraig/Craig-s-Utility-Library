@@ -207,8 +207,22 @@
     <Compile Include="IoC\Interfaces\IModule.cs" />
     <Compile Include="IoC\Manager.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />
+    <Compile Include="IO\Compression\BaseClasses\CompressorBase.cs" />
+    <Compile Include="IO\Compression\Default\DeflateCompressor.cs" />
+    <Compile Include="IO\Compression\Default\GZipCompressor.cs" />
+    <Compile Include="IO\Compression\Interfaces\ICompressor.cs" />
+    <Compile Include="IO\Compression\Manager.cs" />
+    <Compile Include="IO\Compression\Module\CompressionModule.cs" />
     <Compile Include="IO\DirectoryInfo.cs" />
+    <Compile Include="IO\Encryption\BaseClasses\AsymmetricBase.cs" />
+    <Compile Include="IO\Encryption\Interfaces\IAsymmetric.cs" />
+    <Compile Include="IO\Encryption\Interfaces\IHasher.cs" />
+    <Compile Include="IO\Encryption\Interfaces\IShift.cs" />
+    <Compile Include="IO\Encryption\Interfaces\ISymmetric.cs" />
+    <Compile Include="IO\Encryption\Manager.cs" />
+    <Compile Include="IO\Encryption\Module\EncryptionModule.cs" />
     <Compile Include="IO\Enums\CopyOptions.cs" />
+    <Compile Include="IO\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\DelimitedExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\IDirectoryExtensions.cs" />
@@ -292,10 +306,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Caching\" />
-    <Folder Include="Compression\" />
     <Folder Include="Configuration\" />
     <Folder Include="DataMapper\" />
-    <Folder Include="Encryption\" />
     <Folder Include="Media\" />
     <Folder Include="ORM\" />
     <Folder Include="Profiler\" />
