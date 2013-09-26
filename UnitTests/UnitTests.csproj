@@ -85,6 +85,7 @@
     <Compile Include="IO\EmailMessage.cs" />
     <Compile Include="IO\ExtensionMethods\CompressionExtension.cs" />
     <Compile Include="IO\ExtensionMethods\DelimitedExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\EncryptionExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\SerializationExtensions.cs" />
     <Compile Include="IO\FileFormats\Delimited.cs" />

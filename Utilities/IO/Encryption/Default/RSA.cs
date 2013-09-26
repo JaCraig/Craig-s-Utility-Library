@@ -21,42 +21,34 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.IO.Encryption.Interfaces;
 using Utilities.IoC.Interfaces;
+using Utilities.DataTypes;
+using Utilities.IO.Encryption.BaseClasses;
 #endregion
 
-namespace Utilities.IO.Encryption.BaseClasses
+namespace Utilities.IO.Encryption.Default
 {
     /// <summary>
-    /// Asymmetric base class
+    /// RSA Encryptor
     /// </summary>
-    public abstract class AsymmetricBase : IAsymmetric
+    public class RSA : AsymmetricBase
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        protected AsymmetricBase()
+        public RSA()
+            : base()
         {
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Name of the encryptor
+        /// Name
         /// </summary>
-        public abstract string Name { get; }
-
-        #endregion
-
-        #region Functions
+        public override string Name { get { return "RSA"; } }
 
         /// <summary>
         /// Encrypts a string using RSA
@@ -64,13 +56,27 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <param name="Input">Input byte array (should be small as anything over 128 bytes can not be decrypted)</param>
         /// <param name="Key">Key to use for encryption</param>
         /// <returns>An encrypted byte array (64bit string)</returns>
-        public abstract byte[] Encrypt(byte[] Input, string Key);
+        public override byte[] Encrypt(byte[] Input, string Key)
+        {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
+            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+            {
+                RSA.FromXmlString(Key);
+                byte[] EncryptedBytes = RSA.Encrypt(Input, true);
+                RSA.Clear();
+                return EncryptedBytes;
+            }
+        }
 
         /// <summary>
         /// Gets the provider used
         /// </summary>
         /// <returns>Asymmetric algorithm</returns>
-        protected abstract AsymmetricAlgorithm GetProvider();
+        protected override System.Security.Cryptography.AsymmetricAlgorithm GetProvider()
+        {
+            return new RSACryptoServiceProvider();
+        }
 
         /// <summary>
         /// Decrypts a byte array using RSA
@@ -78,18 +84,16 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <param name="Input">Input byte array (should be small as anything over 128 bytes can not be decrypted)</param>
         /// <param name="Key">Key to use for decryption</param>
         /// <returns>A decrypted byte array</returns>
-        public abstract byte[] Decrypt(byte[] Input, string Key);
-
-        /// <summary>
-        /// Creates a new set of keys
-        /// </summary>
-        /// <param name="PrivatePublic">True if private key should be included, false otherwise</param>
-        /// <returns>XML representation of the key information</returns>
-        public string CreateKey(bool PrivatePublic)
+        public override byte[] Decrypt(byte[] Input, string Key)
         {
-            using (AsymmetricAlgorithm Provider = GetProvider())
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
+            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
-                return Provider.ToXmlString(PrivatePublic);
+                RSA.FromXmlString(Key);
+                byte[] EncryptedBytes = RSA.Decrypt(Input, true);
+                RSA.Clear();
+                return EncryptedBytes;
             }
         }
 
@@ -101,7 +105,20 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <param name="Hash">This will be filled with the unsigned hash</param>
         /// <param name="EncodingUsing">Encoding that the input is using (defaults to UTF8)</param>
         /// <returns>A signed hash of the input (64bit string)</returns>
-        public abstract string SignHash(string Input, string Key, out string Hash, Encoding EncodingUsing = null);
+        public override string SignHash(string Input, string Key, out string Hash, Encoding EncodingUsing = null)
+        {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
+            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+            {
+                RSA.FromXmlString(Key);
+                byte[] HashBytes = Input.ToByteArray(EncodingUsing).Hash();
+                byte[] SignedHash = RSA.SignHash(HashBytes, CryptoConfig.MapNameToOID("SHA1"));
+                RSA.Clear();
+                Hash = HashBytes.ToString(Base64FormattingOptions.None);
+                return SignedHash.ToString(Base64FormattingOptions.None);
+            }
+        }
 
         /// <summary>
         /// Verifies a signed hash against the unsigned version
@@ -110,8 +127,20 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <param name="SignedHash">The signed hash (should be 64bit string)</param>
         /// <param name="Key">The key to use in decryption</param>
         /// <returns>True if it is verified, false otherwise</returns>
-        public abstract bool VerifyHash(string Hash, string SignedHash, string Key);
-
-        #endregion
+        public override bool VerifyHash(string Hash, string SignedHash, string Key)
+        {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Hash), "Hash");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(SignedHash), "SignedHash");
+            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+            {
+                RSA.FromXmlString(Key);
+                byte[] InputArray = SignedHash.FromBase64();
+                byte[] HashArray = Hash.FromBase64();
+                bool Result = RSA.VerifyHash(HashArray, CryptoConfig.MapNameToOID("SHA1"), InputArray);
+                RSA.Clear();
+                return Result;
+            }
+        }
     }
 }

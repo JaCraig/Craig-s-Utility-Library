@@ -20,20 +20,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
+using System.Text;
+using Utilities.IO.Encryption.Interfaces;
 using Utilities.IoC.Interfaces;
 #endregion
 
-namespace Utilities.IO.Encryption.Interfaces
+namespace Utilities.IO.Encryption.BaseClasses
 {
     /// <summary>
-    /// Shift based encryption interface
+    /// Shift based encryption base class
     /// </summary>
-    public interface IShift
+    public abstract class ShiftBase:IShift
     {
         /// <summary>
-        /// Name of the shift encryptor
+        /// Constructor
         /// </summary>
-        string Name { get; }
+        protected ShiftBase()
+        {
+        }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        public abstract string Name { get; }
+
 
         /// <summary>
         /// Encrypts the data based on the key
@@ -41,7 +54,30 @@ namespace Utilities.IO.Encryption.Interfaces
         /// <param name="Data">Data to encrypt</param>
         /// <param name="Key">Key to use</param>
         /// <returns>The encrypted data</returns>
-        byte[] Encrypt(byte[] Data, byte[] Key);
+        public byte[] Encrypt(byte[] Data, byte[] Key)
+        {
+            Contract.Requires<ArgumentNullException>(Key != null, "Key");
+            if (Data == null)
+                return null;
+            return Process(Data, Key);
+        }
+
+        /// <summary>
+        /// Actually does the encryption/decryption
+        /// </summary>
+        private static byte[] Process(byte[] Input, byte[] Key)
+        {
+            byte[] OutputArray = new byte[Input.Length];
+            int Position = 0;
+            for (int x = 0; x < Input.Length; ++x)
+            {
+                OutputArray[x] = (byte)(Input[x] ^ Key[Position]);
+                ++Position;
+                if (Position >= Key.Length)
+                    Position = 0;
+            }
+            return OutputArray;
+        }
 
         /// <summary>
         /// Decrypt the data based on the key
@@ -49,6 +85,12 @@ namespace Utilities.IO.Encryption.Interfaces
         /// <param name="Data">Data to encrypt</param>
         /// <param name="Key">Key to use</param>
         /// <returns>The decrypted data</returns>
-        byte[] Decrypt(byte[] Data, byte[] Key);
+        public byte[] Decrypt(byte[] Data, byte[] Key)
+        {
+            Contract.Requires<ArgumentNullException>(Key != null, "Key");
+            if (Data == null)
+                return null;
+            return Process(Data, Key);
+        }
     }
 }

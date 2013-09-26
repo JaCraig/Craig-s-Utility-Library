@@ -215,6 +215,13 @@
     <Compile Include="IO\Compression\Module\CompressionModule.cs" />
     <Compile Include="IO\DirectoryInfo.cs" />
     <Compile Include="IO\Encryption\BaseClasses\AsymmetricBase.cs" />
+    <Compile Include="IO\Encryption\BaseClasses\HasherBase.cs" />
+    <Compile Include="IO\Encryption\BaseClasses\ShiftBase.cs" />
+    <Compile Include="IO\Encryption\BaseClasses\SymmetricBase.cs" />
+    <Compile Include="IO\Encryption\Default\RSA.cs" />
+    <Compile Include="IO\Encryption\Default\Hash.cs" />
+    <Compile Include="IO\Encryption\Default\Shift.cs" />
+    <Compile Include="IO\Encryption\Default\Symmetric.cs" />
     <Compile Include="IO\Encryption\Interfaces\IAsymmetric.cs" />
     <Compile Include="IO\Encryption\Interfaces\IHasher.cs" />
     <Compile Include="IO\Encryption\Interfaces\IShift.cs" />
@@ -224,6 +231,7 @@
     <Compile Include="IO\Enums\CopyOptions.cs" />
     <Compile Include="IO\ExtensionMethods\CompressionExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\DelimitedExtensions.cs" />
+    <Compile Include="IO\ExtensionMethods\EncryptionExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\HTMLExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\IDirectoryExtensions.cs" />
     <Compile Include="IO\ExtensionMethods\IFileExtensions.cs" />
@@ -306,8 +314,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Caching\" />
+    <Folder Include="Compression\" />
     <Folder Include="Configuration\" />
     <Folder Include="DataMapper\" />
+    <Folder Include="Encryption\" />
     <Folder Include="Media\" />
     <Folder Include="ORM\" />
     <Folder Include="Profiler\" />

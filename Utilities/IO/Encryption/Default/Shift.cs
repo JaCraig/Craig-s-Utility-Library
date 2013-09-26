@@ -20,34 +20,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
+using System.Text;
+using Utilities.IO.Encryption.Interfaces;
 using Utilities.IoC.Interfaces;
+using Utilities.DataTypes;
+using Utilities.IO.Encryption.BaseClasses;
 #endregion
 
-namespace Utilities.IO.Encryption.Interfaces
+namespace Utilities.IO.Encryption.Default
 {
     /// <summary>
-    /// Hasher interface
+    /// Shift default class
     /// </summary>
-    public interface IHasher
+    public class Shift:ShiftBase
     {
         /// <summary>
-        /// Hasher name
+        /// Constructor
         /// </summary>
-        string Name { get; }
+        public Shift()
+            : base()
+        {
+            
+        }
 
         /// <summary>
-        /// Can this handle the algorithm specified
+        /// Name
         /// </summary>
-        /// <param name="Algorithm">The algorithm name</param>
-        /// <returns>True if it can, false otherwise</returns>
-        bool CanHandle(string Algorithm);
-
-        /// <summary>
-        /// Hashes the data
-        /// </summary>
-        /// <param name="Data">Data to hash</param>
-        /// <param name="Algorithm">Algorithm</param>
-        /// <returns>The hashed data</returns>
-        byte[] Hash(byte[] Data,string Algorithm);
+        public override string Name
+        {
+            get { return "Caesar"; }
+        }
     }
 }
