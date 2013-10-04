@@ -49,6 +49,7 @@ namespace Utilities.IO
         /// <returns>A minified/packed string</returns>
         public static string Minify(this IEnumerable<string> Input, MinificationType Type = MinificationType.HTML)
         {
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             return Minify(Input.ToString(x => x, System.Environment.NewLine), Type);
         }
 
@@ -60,6 +61,7 @@ namespace Utilities.IO
         /// <returns>A minified/packed string</returns>
         public static string Minify(this IEnumerable<FileInfo> Input, MinificationType Type = MinificationType.HTML)
         {
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             return Minify(Input.Where(x => x.Exists).ToString(x => x.Read(), System.Environment.NewLine), Type);
         }
 

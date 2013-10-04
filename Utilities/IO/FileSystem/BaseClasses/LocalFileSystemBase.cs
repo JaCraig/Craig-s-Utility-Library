@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Text.RegularExpressions;
+using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.FileSystem.Default;
 using Utilities.IO.FileSystem.Interfaces;
 
@@ -32,7 +33,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
     /// <summary>
     /// Local file system base class
     /// </summary>
-    public abstract class LocalFileSystemBase : IFileSystem
+    public abstract class LocalFileSystemBase : FileSystemBase, IFileSystem
     {
         #region Constructor
 
@@ -40,28 +41,9 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Constructor
         /// </summary>
         protected LocalFileSystemBase()
+            : base()
         {
-            HandleRegex = new Regex(HandleRegexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Regex string used to determine if the file system can handle the path
-        /// </summary>
-        protected abstract string HandleRegexString { get; }
-
-        /// <summary>
-        /// Regex used to determine if the file system can handle the path
-        /// </summary>
-        protected Regex HandleRegex { get; private set; }
-
-        /// <summary>
-        /// Name of the file system
-        /// </summary>
-        public abstract string Name { get; }
 
         #endregion
 
@@ -72,7 +54,7 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// </summary>
         /// <param name="Path">Path to the file</param>
         /// <returns>The file object</returns>
-        public IFile File(string Path)
+        public override IFile File(string Path)
         {
             Path = AbsolutePath(Path);
             return new LocalFile(Path);
@@ -83,53 +65,19 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// </summary>
         /// <param name="Path">Path to the directory</param>
         /// <returns>The directory object</returns>
-        public IDirectory Directory(string Path)
+        public override IDirectory Directory(string Path)
         {
             Path = AbsolutePath(Path);
             return new LocalDirectory(Path.RemoveIllegalDirectoryNameCharacters());
         }
 
         /// <summary>
-        /// Gets the absolute path of the variable passed in
+        /// Function to override in order to dispose objects
         /// </summary>
-        /// <param name="Path">Path to convert to absolute</param>
-        /// <returns>The absolute path of the path passed in</returns>
-        protected abstract string AbsolutePath(string Path);
+        /// <param name="Managed">If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.</param>
+        protected override void Dispose(bool Managed)
+        {
 
-        /// <summary>
-        /// Returns true if it can handle the path, false otherwise
-        /// </summary>
-        /// <param name="Path">The path to check against</param>
-        /// <returns>True if it can handle the path, false otherwise</returns>
-        public bool CanHandle(string Path)
-        {
-            return HandleRegex.IsMatch(Path);
-        }
-               
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
-        protected virtual void Dispose(bool Managed)
-        {
-            
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~LocalFileSystemBase()
-        {
-            Dispose(false);
         }
 
         #endregion

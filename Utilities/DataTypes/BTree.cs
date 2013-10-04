@@ -358,6 +358,7 @@ namespace Utilities.DataTypes
         /// <returns>The value as a string</returns>
         public static implicit operator string(BinaryTree<T> Value)
         {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             return Value.ToString();
         }
 

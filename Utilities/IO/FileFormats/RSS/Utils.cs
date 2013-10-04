@@ -19,6 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
+using System.Diagnostics.Contracts;
 namespace Utilities.IO.FileFormats.RSS
 {
     /// <summary>
@@ -34,6 +36,7 @@ namespace Utilities.IO.FileFormats.RSS
         /// <returns>string stripped of certain characters.</returns>
         public static string StripIllegalCharacters(string Original)
         {
+            Contract.Requires<ArgumentNullException>(Original != null, "Original");
             Original = Original.Replace("&nbsp;", " ");
             Original = Original.Replace("&#160;", string.Empty);
             Original = Original.Trim().Replace("&", "and");

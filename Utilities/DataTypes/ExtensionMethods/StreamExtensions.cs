@@ -78,6 +78,7 @@ namespace Utilities.DataTypes
         /// <returns>A string containing the content of the stream</returns>
         public static string ReadAll(this Stream Input, Encoding EncodingUsing = null)
         {
+            Contract.Requires<ArgumentNullException>(Input!=null, "Input");
             return Input.ReadAllBinary().ToString(EncodingUsing);
         }
 

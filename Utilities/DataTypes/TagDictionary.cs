@@ -20,8 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 #endregion
@@ -131,6 +133,7 @@ namespace Utilities.DataTypes
         /// <param name="Keys">Keys to associate the value with</param>
         public void Add(Value Value, params Key[] Keys)
         {
+            Contract.Requires<ArgumentNullException>(Keys != null, "Keys");
             Items.Add(new TaggedItem<Key, Value>(Keys, Value));
             Keys.ForEach(x => KeyList.AddIfUnique(x));
         }

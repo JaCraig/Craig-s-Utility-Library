@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using Utilities.IO.FileFormats.Interfaces;
@@ -111,10 +112,10 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            FormatType TempItem = obj as FormatType;
+            object TempItem = obj as FormatType;
             if (TempItem == null)
                 return false;
-            return Equals(TempItem);
+            return Equals((FormatType)TempItem);
         }
 
         /// <summary>
@@ -160,6 +161,7 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <returns>True if it is greater than, false otherwise</returns>
         public static bool operator >(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
         {
+            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
             return Value1.CompareTo(Value2) > 0;
         }
 
@@ -182,6 +184,7 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <returns>True if it is greater than or equal, false otherwise</returns>
         public static bool operator >=(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
         {
+            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
             return Value1.CompareTo(Value2) >= 0;
         }
 

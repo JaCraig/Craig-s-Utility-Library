@@ -52,6 +52,7 @@ namespace Utilities.DataTypes
         /// <returns>Attribute specified if it exists</returns>
         public static T Attribute<T>(this ICustomAttributeProvider Provider, bool Inherit = true) where T : Attribute
         {
+            Contract.Requires<ArgumentNullException>(Provider != null, "Provider");
             return Provider.IsDefined(typeof(T), Inherit) ? Provider.Attributes<T>(Inherit)[0] : default(T);
         }
 
@@ -68,6 +69,7 @@ namespace Utilities.DataTypes
         /// <returns>Array of attributes</returns>
         public static T[] Attributes<T>(this ICustomAttributeProvider Provider, bool Inherit = true) where T : Attribute
         {
+            Contract.Requires<ArgumentNullException>(Provider != null, "Provider");
             return Provider.IsDefined(typeof(T), Inherit) ? Provider.GetCustomAttributes(typeof(T), Inherit).ToArray(x => (T)x) : new T[0];
         }
 
@@ -257,7 +259,11 @@ namespace Utilities.DataTypes
         public static System.Reflection.Assembly Load(this AssemblyName Name)
         {
             Contract.Requires<ArgumentNullException>(Name != null, "Name");
-            return AppDomain.CurrentDomain.Load(Name);
+            try
+            {
+                return AppDomain.CurrentDomain.Load(Name);
+            }
+            catch (BadImageFormatException) { return null; }
         }
 
         #endregion
@@ -272,8 +278,17 @@ namespace Utilities.DataTypes
         /// <returns>Array of assemblies in the directory</returns>
         public static IEnumerable<Assembly> LoadAssemblies(this DirectoryInfo Directory, bool Recursive = false)
         {
+            Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
+            List<Assembly> Assemblies = new List<Assembly>();
             foreach (FileInfo File in Directory.GetFiles("*.dll", Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-                yield return AssemblyName.GetAssemblyName(File.FullName).Load();
+            {
+                try
+                {
+                    Assemblies.Add(AssemblyName.GetAssemblyName(File.FullName).Load());
+                }
+                catch (BadImageFormatException) { }
+            }
+            return Assemblies;
         }
 
         #endregion
@@ -494,6 +509,7 @@ namespace Utilities.DataTypes
         /// <returns>A lambda expression that calls a specific property's getter function</returns>
         public static Expression<Func<ClassType, DataType>> PropertyGetter<ClassType, DataType>(this PropertyInfo Property)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             if (!Property.PropertyType.Is(typeof(DataType)))
                 throw new ArgumentException("Property is not of the type specified");
             if (!Property.DeclaringType.Is(typeof(ClassType)) && !typeof(ClassType).Is(Property.DeclaringType))
@@ -516,6 +532,7 @@ namespace Utilities.DataTypes
         /// <returns>A lambda expression that calls a specific property's getter function</returns>
         public static Expression<Func<ClassType, object>> PropertyGetter<ClassType>(this PropertyInfo Property)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             return Property.PropertyGetter<ClassType, object>();
         }
 
@@ -530,6 +547,7 @@ namespace Utilities.DataTypes
         /// <returns>The name of the property</returns>
         public static string PropertyName(this LambdaExpression Expression)
         {
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             if (Expression.Body is UnaryExpression && Expression.Body.NodeType == ExpressionType.Convert)
             {
                 MemberExpression Temp = (MemberExpression)((UnaryExpression)Expression.Body).Operand;
@@ -608,6 +626,7 @@ namespace Utilities.DataTypes
         /// <returns>A lambda expression that calls a specific property's setter function</returns>
         public static Expression<Action<ClassType, object>> PropertySetter<ClassType>(this LambdaExpression Property)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             return Property.PropertySetter<ClassType, object>();
         }
 
@@ -684,6 +703,7 @@ namespace Utilities.DataTypes
         /// <returns>The version information as a string</returns>
         public static string ToString(this IEnumerable<Assembly> Assemblies, VersionInfo InfoType)
         {
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             StringBuilder Builder = new StringBuilder();
             Assemblies.OrderBy(x => x.FullName).ForEach<Assembly>(x => Builder.AppendLine(x.GetName().Name + ": " + x.ToString(InfoType)));
             return Builder.ToString();
@@ -697,6 +717,7 @@ namespace Utilities.DataTypes
         /// <returns>An HTML formatted string containing the assembly information</returns>
         public static string ToString(this IEnumerable<Assembly> Assemblies, bool HTMLOutput)
         {
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             StringBuilder Builder = new StringBuilder();
             Builder.Append(HTMLOutput ? "<strong>Assembly Information</strong><br />" : "Assembly Information\r\n");
             Assemblies.ForEach<Assembly>(x => Builder.Append(x.ToString(HTMLOutput)));

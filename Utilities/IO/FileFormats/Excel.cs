@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using Utilities.IO.FileFormats.BaseClasses;
 using Utilities.DataTypes;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.FileFormats
@@ -76,7 +77,14 @@ namespace Utilities.IO.FileFormats
         /// <param name="Value">Row to get</param>
         /// <param name="Name">Column name to look for</param>
         /// <returns>The value</returns>
-        public string this[int Value, string Name] { get { return Records[Value][ColumnNames.IndexOf(Name)]; } }
+        public string this[int Value, string Name] 
+        { 
+            get 
+            {
+                Contract.Requires<ArgumentException>(Value >= 0, "Value must be greater than or equal to 0");
+                return Records[Value][ColumnNames.IndexOf(Name)]; 
+            } 
+        }
 
         #endregion
 

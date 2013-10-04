@@ -264,9 +264,12 @@
     <Compile Include="IO\FileInfo.cs" />
     <Compile Include="IO\FileSystem\BaseClasses\DirectoryBase.cs" />
     <Compile Include="IO\FileSystem\BaseClasses\FileBase.cs" />
+    <Compile Include="IO\FileSystem\BaseClasses\FileSystemBase.cs" />
     <Compile Include="IO\FileSystem\BaseClasses\LocalFileSystemBase.cs" />
-    <Compile Include="IO\FileSystem\BaseClasses\WebFileSystemBase.cs" />
     <Compile Include="IO\FileSystem\Default\AbsoluteFileSystem.cs" />
+    <Compile Include="IO\FileSystem\Default\FtpDirectory.cs" />
+    <Compile Include="IO\FileSystem\Default\FtpFile.cs" />
+    <Compile Include="IO\FileSystem\Default\FtpFileSystem.cs" />
     <Compile Include="IO\FileSystem\Default\HttpFileSystem.cs" />
     <Compile Include="IO\FileSystem\Default\LocalDirectory.cs" />
     <Compile Include="IO\FileSystem\Default\LocalFile.cs" />

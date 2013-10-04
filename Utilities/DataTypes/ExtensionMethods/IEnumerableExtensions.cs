@@ -524,6 +524,9 @@ namespace Utilities.DataTypes
         /// <returns>the original Item</returns>
         public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
         {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
             foreach (T Item in List)
             {
                 if (!Predicate(Item))
@@ -542,6 +545,9 @@ namespace Utilities.DataTypes
         /// <returns>the original Item</returns>
         public static IEnumerable<T> ThrowIfAll<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
         {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
             foreach (T Item in List)
             {
                 if (!Predicate(Item))
@@ -564,6 +570,9 @@ namespace Utilities.DataTypes
         /// <returns>the original Item</returns>
         public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Func<Exception> Exception)
         {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
             foreach (T Item in List)
             {
                 if (Predicate(Item))
@@ -582,6 +591,9 @@ namespace Utilities.DataTypes
         /// <returns>the original Item</returns>
         public static IEnumerable<T> ThrowIfAny<T>(this IEnumerable<T> List, Predicate<T> Predicate, Exception Exception)
         {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Exception != null, "Exception");
             foreach (T Item in List)
             {
                 if (Predicate(Item))

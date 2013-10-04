@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using Utilities.IO.Serializers;
 #endregion
 
@@ -142,6 +143,7 @@ namespace Utilities.IO
         /// <returns>The string version of the serialization type</returns>
         public static implicit operator string(SerializationType Object)
         {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             return Object.ToString();
         }
     }

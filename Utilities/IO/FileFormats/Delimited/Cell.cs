@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 
 #endregion
 
+using System;
+using System.Diagnostics.Contracts;
 namespace Utilities.IO.FileFormats.Delimited
 {
     /// <summary>
@@ -46,6 +48,7 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <param name="Content">Value within the cell</param>
         public Cell(string Content)
         {
+            Contract.Requires<ArgumentNullException>(Content != null, "Content");
             Value = Content.Replace("\"", "");
         }
 
@@ -69,6 +72,7 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <returns>The value as a string</returns>
         public static implicit operator string(Cell Value)
         {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             return Value.ToString();
         }
 
@@ -79,6 +83,7 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <returns>The string as a cell</returns>
         public static implicit operator Cell(string Value)
         {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             return new Cell(Value);
         }
 

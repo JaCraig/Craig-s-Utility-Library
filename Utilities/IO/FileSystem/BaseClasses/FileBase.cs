@@ -51,13 +51,44 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// </summary>
         /// <param name="InternalFile">Internal file</param>
         protected FileBase(InternalFileType InternalFile)
+            : this()
         {
             this.InternalFile = InternalFile;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="InternalFile">Internal file</param>
+        /// <param name="UserName">User name</param>
+        /// <param name="Password">Password</param>
+        /// <param name="Domain">User's domain</param>
+        protected FileBase(InternalFileType InternalFile, string UserName, string Password, string Domain)
+            : this(InternalFile)
+        {
+            this.UserName = UserName;
+            this.Password = Password;
+            this.Domain = Domain;
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// User name used
+        /// </summary>
+        protected string UserName { get; set; }
+
+        /// <summary>
+        /// Password
+        /// </summary>
+        protected string Password { get; set; }
+
+        /// <summary>
+        /// Domain of the user
+        /// </summary>
+        protected string Domain { get; set; }
 
         /// <summary>
         /// Internal directory
@@ -116,7 +147,8 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public abstract void Delete();
+        /// <returns>Any response for deleting the resource (usually FTP, HTTP, etc)</returns>
+        public abstract string Delete();
 
         /// <summary>
         /// Reads the file in as a string
@@ -156,16 +188,16 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        /// <returns>Task associated with the write process</returns>
-        public abstract void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null);
+        /// <returns>The result of the write or original content</returns>
+        public abstract string Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null);
 
         /// <summary>
         /// Writes content to the file
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        /// <returns>Task associated with the write process</returns>
-        public abstract void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create);
+        /// <returns>The result of the write or original content</returns>
+        public abstract byte[] Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create);
 
         /// <summary>
         /// Returns the name of the file

@@ -104,6 +104,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
             bool ReturnValue = false;
             foreach (T Item in Items)
             {
@@ -128,6 +129,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
             return Collection.AddIf(Predicate, Items.ToArray());
         }
 

@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 #endregion
@@ -46,6 +47,7 @@ namespace Utilities.DataTypes
         /// <returns>The equivalent byte array in a base 64 string</returns>
         public static string ToString(this byte[] Input, Base64FormattingOptions Options, int Index = 0, int Count = -1)
         {
+            Contract.Requires<ArgumentException>(Index >= 0, "Index");
             if (Count == -1)
                 Count = Input.Length - Index;
             return Input == null ? "" : Convert.ToBase64String(Input, Index, Count, Options);

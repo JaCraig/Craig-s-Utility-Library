@@ -196,7 +196,9 @@ namespace Utilities.IO.FileFormats
                 Dictionary<string, string> SectionValues = new Dictionary<string, string>();
                 foreach (string Item in Items)
                 {
-                    SectionValues.Add(Item.Split(Splitter2, StringSplitOptions.None)[0], Item.Split(Splitter2, StringSplitOptions.None)[1]);
+                    string[] ItemSplit = Item.Split(Splitter2, StringSplitOptions.None);
+                    if (ItemSplit.Length >= 2)
+                        SectionValues.Add(ItemSplit[0], ItemSplit[1]);
                 }
                 FileContents.Add(SectionHeader.Value.Replace("[", "").Replace("]\r\n", ""), SectionValues);
                 ++Counter;

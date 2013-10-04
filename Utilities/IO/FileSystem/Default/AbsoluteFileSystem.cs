@@ -65,6 +65,15 @@ namespace Utilities.IO.FileSystem.Default
             return Path;
         }
 
+        /// <summary>
+        /// Function to override in order to dispose objects
+        /// </summary>
+        /// <param name="Managed">If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.</param>
+        protected override void Dispose(bool Managed)
+        {
+            base.Dispose(Managed);
+        }
+
         #endregion
     }
 }

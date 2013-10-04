@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using System.Security;
 using Utilities.DataTypes;
@@ -113,6 +114,7 @@ namespace Utilities.DataTypes
         /// <returns>The value as a string</returns>
         public static implicit operator string(StringTemplate Value)
         {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             return Value.ToString();
         }
 

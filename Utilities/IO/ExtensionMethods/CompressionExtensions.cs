@@ -75,6 +75,7 @@ namespace Utilities.IO
         /// <returns>The compressed data</returns>
         public static byte[] Compress(this byte[] Data, string CompressionType)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(CompressionType), "CompressionType");
             return IoC.Manager.Bootstrapper.Resolve<Manager>().Compress(Data, CompressionType.ToString());
         }
 
@@ -88,6 +89,7 @@ namespace Utilities.IO
         public static string Compress(this string Data, Encoding EncodingUsing, string CompressionType)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Data), "Data");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(CompressionType), "CompressionType");
             return Data.ToByteArray(EncodingUsing).Compress(CompressionType).ToString(Base64FormattingOptions.None);
         }
 
@@ -127,6 +129,7 @@ namespace Utilities.IO
         /// <returns>The data decompressed</returns>
         public static byte[] Decompress(this byte[] Data, string CompressionType)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(CompressionType), "CompressionType");
             return IoC.Manager.Bootstrapper.Resolve<Manager>().Decompress(Data, CompressionType.ToString());
         }
 
@@ -140,6 +143,7 @@ namespace Utilities.IO
         public static string Decompress(this string Data, Encoding EncodingUsing, string CompressionType)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Data), "Data");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(CompressionType), "CompressionType");
             return Data.FromBase64().Decompress(CompressionType).ToString(EncodingUsing);
         }
 

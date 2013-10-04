@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes.CodeGen.BaseClasses
@@ -127,6 +128,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <returns>The created object</returns>
         protected static T Create<T>(Type TypeToCreate, params object[] Args)
         {
+            Contract.Requires<ArgumentNullException>(TypeToCreate != null, "TypeToCreate");
             return (T)Activator.CreateInstance(TypeToCreate, Args);
         }
 

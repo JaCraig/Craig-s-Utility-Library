@@ -97,7 +97,8 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <returns>The encrypted byte array</returns>
         public byte[] Encrypt(byte[] Data, DeriveBytes Key, string Algorithm = "AES", string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(InitialVector), "InitialVector");
+            if (string.IsNullOrEmpty(InitialVector))
+                throw new ArgumentNullException("InitialVector");
             if (Data == null)
                 return null;
             using (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))
@@ -132,7 +133,8 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <returns>A decrypted byte array</returns>
         public byte[] Decrypt(byte[] Data, DeriveBytes Key, string Algorithm = "AES", string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(InitialVector), "InitialVector");
+            if (string.IsNullOrEmpty(InitialVector))
+                throw new ArgumentNullException("InitialVector");
             if (Data == null)
                 return null;
             using (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))
@@ -180,6 +182,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <returns>The symmetric algorithm</returns>
         protected SymmetricAlgorithm GetProvider(string Algorithm)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Algorithm), "Algorithm");
             return ImplementedAlgorithms[Algorithm.ToUpperInvariant()]();
         }
     }

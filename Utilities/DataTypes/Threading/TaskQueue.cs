@@ -50,6 +50,7 @@ namespace Utilities.DataTypes.Threading
         public TaskQueue(int Capacity, Action<T> ProcessItem, Action<Exception> HandleError = null)
             : base(new ConcurrentQueue<T>())
         {
+            Contract.Requires<ArgumentException>(Capacity > 0, "Capacity must be greater than 0");
             this.ProcessItem = ProcessItem;
             this.HandleError = HandleError.Check(x => { });
             CancellationToken = new CancellationTokenSource();

@@ -56,7 +56,8 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <returns>The encrypted data</returns>
         public byte[] Encrypt(byte[] Data, byte[] Key)
         {
-            Contract.Requires<ArgumentNullException>(Key != null, "Key");
+            if (Key == null)
+                throw new ArgumentNullException("Key");
             if (Data == null)
                 return null;
             return Process(Data, Key);
@@ -67,6 +68,10 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// </summary>
         private static byte[] Process(byte[] Input, byte[] Key)
         {
+            if (Input == null)
+                return null;
+            if (Key == null)
+                return Input;
             byte[] OutputArray = new byte[Input.Length];
             int Position = 0;
             for (int x = 0; x < Input.Length; ++x)
@@ -87,7 +92,8 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <returns>The decrypted data</returns>
         public byte[] Decrypt(byte[] Data, byte[] Key)
         {
-            Contract.Requires<ArgumentNullException>(Key != null, "Key");
+            if (Key == null)
+                throw new ArgumentNullException("Key");
             if (Data == null)
                 return null;
             return Process(Data, Key);

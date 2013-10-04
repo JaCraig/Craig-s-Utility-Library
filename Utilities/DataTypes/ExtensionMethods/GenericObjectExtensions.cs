@@ -247,6 +247,7 @@ namespace Utilities.DataTypes
         /// <returns>the original Item</returns>
         public static T ThrowIf<T>(this T Item, Predicate<T> Predicate, Func<Exception> Exception)
         {
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
             if (Predicate(Item))
                 throw Exception();
             return Item;
@@ -262,6 +263,7 @@ namespace Utilities.DataTypes
         /// <returns>the original Item</returns>
         public static T ThrowIf<T>(this T Item, Predicate<T> Predicate, Exception Exception)
         {
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
             if (Predicate(Item))
                 throw Exception;
             return Item;

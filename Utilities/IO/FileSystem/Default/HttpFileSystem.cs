@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using Utilities.IO.FileSystem.BaseClasses;
+using Utilities.IO.FileSystem.Interfaces;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -28,7 +29,7 @@ namespace Utilities.IO.FileSystem.Default
     /// <summary>
     /// HTTP file system
     /// </summary>
-    public class HttpFileSystem : WebFileSystemBase
+    public class HttpFileSystem : FileSystemBase
     {
         #region Constructor
 
@@ -56,6 +57,28 @@ namespace Utilities.IO.FileSystem.Default
         #region Functions
 
         /// <summary>
+        /// Gets the class representation for the file
+        /// </summary>
+        /// <param name="Path">Path to the file</param>
+        /// <returns>The file object</returns>
+        public override IFile File(string Path)
+        {
+            Path = AbsolutePath(Path);
+            return new WebFile(Path);
+        }
+
+        /// <summary>
+        /// Gets the directory representation for the directory
+        /// </summary>
+        /// <param name="Path">Path to the directory</param>
+        /// <returns>The directory object</returns>
+        public override IDirectory Directory(string Path)
+        {
+            Path = AbsolutePath(Path);
+            return new WebDirectory(Path);
+        }
+
+        /// <summary>
         /// Gets the absolute path of the variable passed in
         /// </summary>
         /// <param name="Path">Path to convert to absolute</param>
@@ -63,6 +86,15 @@ namespace Utilities.IO.FileSystem.Default
         protected override string AbsolutePath(string Path)
         {
             return Path;
+        }
+
+        /// <summary>
+        /// Used to dispose of any resources
+        /// </summary>
+        /// <param name="Managed">Should managed resources be disposed</param>
+        protected override void Dispose(bool Managed)
+        {
+
         }
 
         #endregion

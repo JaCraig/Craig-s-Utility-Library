@@ -28,7 +28,7 @@ namespace Utilities.IO.FileSystem.Interfaces
     /// <summary>
     /// Interface for the file system
     /// </summary>
-    public interface IFileSystem : IDisposable
+    public interface IFileSystem
     {
         #region Properties
 

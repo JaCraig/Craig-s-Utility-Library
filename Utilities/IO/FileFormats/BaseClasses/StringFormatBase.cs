@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using Utilities.IO;
@@ -116,6 +117,7 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <returns>The value as a string</returns>
         public static implicit operator string(StringFormatBase<FormatType> Value)
         {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             return Value.ToString();
         }
 

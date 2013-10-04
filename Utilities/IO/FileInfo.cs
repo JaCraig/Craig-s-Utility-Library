@@ -119,11 +119,12 @@ namespace Utilities.IO
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public void Delete()
+        /// <returns>Any response for deleting the resource (usually FTP, HTTP, etc)</returns>
+        public string Delete()
         {
             if (InternalFile == null)
-                return;
-            InternalFile.Delete();
+                return "";
+            return InternalFile.Delete();
         }
 
         /// <summary>
@@ -189,12 +190,12 @@ namespace Utilities.IO
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        /// <returns>Task associated with the write process</returns>
-        public void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        /// <returns>The result of the write or original content</returns>
+        public string Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
             if (InternalFile == null)
-                return;
-            InternalFile.Write(Content, Mode, Encoding);
+                return Content;
+            return InternalFile.Write(Content, Mode, Encoding);
         }
 
         /// <summary>
@@ -202,12 +203,12 @@ namespace Utilities.IO
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        /// <returns>Task associated with the write process</returns>
-        public void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        /// <returns>The result of the write or original content</returns>
+        public byte[] Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
             if (InternalFile == null)
-                return;
-            InternalFile.Write(Content, Mode);
+                return Content;
+            return InternalFile.Write(Content, Mode);
         }
 
         /// <summary>

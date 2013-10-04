@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes.Formatters.Interfaces;
 
@@ -155,6 +156,7 @@ namespace Utilities.DataTypes.Formatters
         /// <returns>Returns true if it's valid, otherwise false</returns>
         protected virtual bool IsValid(string FormatPattern)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(FormatPattern), "FormatPattern");
             bool EscapeCharFound = false;
             for (int x = 0; x < FormatPattern.Length; ++x)
             {

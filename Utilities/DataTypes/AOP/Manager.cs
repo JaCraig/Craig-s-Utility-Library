@@ -29,6 +29,7 @@ using System.Text;
 using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
 using Utilities.DataTypes;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes.AOP
@@ -45,6 +46,7 @@ namespace Utilities.DataTypes.AOP
         /// </summary>
         public Manager(Compiler Compiler)
         {
+            Contract.Requires<ArgumentNullException>(Compiler != null, "Compiler");
             Manager.Compiler = Compiler;
             Aspects.Add(AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>());
             Compiler.Classes.ForEach(x => Classes.Add(x.BaseType, x));
@@ -198,6 +200,7 @@ namespace {1}
 
         private static string SetupMethod(Type Type, MethodInfo MethodInfo,bool IsProperty)
         {
+            Contract.Requires<ArgumentNullException>(MethodInfo != null, "MethodInfo");
             StringBuilder Builder = new StringBuilder();
             string BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";

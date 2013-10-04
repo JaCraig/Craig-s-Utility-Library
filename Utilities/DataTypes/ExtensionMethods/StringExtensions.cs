@@ -53,6 +53,9 @@ namespace Utilities.DataTypes
         /// <returns>The StringBuilder passed in</returns>
         public static StringBuilder AppendLineFormat(this StringBuilder Builder, string Format, params object[] Objects)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Format), "Format");
+            Contract.Requires<ArgumentNullException>(Builder != null, "Builder");
+            Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
             return Builder.AppendFormat(CultureInfo.InvariantCulture, Format, Objects).AppendLine();
         }
 
@@ -247,6 +250,8 @@ namespace Utilities.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body")]
         public static int LevenshteinDistance(this string Value1, string Value2)
         {
+            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
+            Contract.Requires<ArgumentNullException>(Value2 != null, "Value2");
             int[,] Matrix = new int[Value1.Length + 1, Value2.Length + 1];
             for (int x = 0; x <= Value1.Length; ++x)
                 Matrix[x, 0] = x;
@@ -299,6 +304,7 @@ namespace Utilities.DataTypes
         /// <returns>The masked string</returns>
         public static string MaskRight(this string Input, int StartPosition = 4, char Mask = '#')
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
             if (StartPosition > Input.Length)
                 return Input;
             string Appending = "";
@@ -401,6 +407,7 @@ namespace Utilities.DataTypes
         /// <returns>The reverse of the input string</returns>
         public static string Reverse(this string Input)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
             return new string(Input.Reverse<char>().ToArray());
         }
 
@@ -677,6 +684,8 @@ namespace Utilities.DataTypes
         public static string ToString(this string Input, string Format, string OutputFormat, RegexOptions Options = RegexOptions.None)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Input), "Input");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Format), "Format");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(OutputFormat), "OutputFormat");
             return Regex.Replace(Input, Format, OutputFormat, Options);
         }
 

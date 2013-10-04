@@ -20,7 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -59,6 +61,8 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <param name="Delimiter">Delimiter to parse the individual cells</param>
         public Row(string Content, string Delimiter)
         {
+            Contract.Requires<ArgumentNullException>(Content != null, "Content");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Delimiter), "Delimiter");
             this.Cells = new List<Cell>();
             this.Delimiter = Delimiter;
             Regex TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(Delimiter)));

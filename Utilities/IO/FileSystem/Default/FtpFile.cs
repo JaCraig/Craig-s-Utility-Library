@@ -33,16 +33,16 @@ using Utilities.DataTypes;
 namespace Utilities.IO.FileSystem.Default
 {
     /// <summary>
-    /// Basic web file class
+    /// Basic ftp file class
     /// </summary>
-    public class WebFile : FileBase<Uri,WebFile>
+    public class FtpFile : FileBase<Uri, FtpFile>
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public WebFile()
+        public FtpFile()
             : base()
         {
         }
@@ -51,8 +51,8 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="Path">Path to the file</param>
-        public WebFile(string Path)
-            : base(string.IsNullOrEmpty(Path) ? null : new Uri(Path))
+        public FtpFile(string Path)
+            : this(string.IsNullOrEmpty(Path) ? null : new Uri(Path))
         {
         }
 
@@ -60,8 +60,8 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="File">File to use</param>
-        public WebFile(Uri File)
-            :base(File)
+        public FtpFile(Uri File)
+            : base(File)
         {
         }
 
@@ -98,7 +98,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Directory
         {
-            get { return InternalFile == null ? null : new WebDirectory((string)InternalFile.AbsolutePath.Take(InternalFile.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
+            get { return InternalFile == null ? null : new FtpDirectory((string)InternalFile.AbsolutePath.Take(InternalFile.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
         }
 
         /// <summary>
@@ -151,12 +151,9 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>Any response for deleting the resource (usually FTP, HTTP, etc)</returns>
         public override string Delete()
         {
-            if (InternalFile == null)
-                return "";
-            HttpWebRequest Request = WebRequest.Create(InternalFile) as HttpWebRequest;
-            Request.Method = "DELETE";
-            Request.ContentType = "text/xml";
-            SetupData(Request, "");
+            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;
+            Request.Method = WebRequestMethods.Ftp.DeleteFile;
+            SetupData(Request, null);
             SetupCredentials(Request);
             return SendRequest(Request);
         }
@@ -167,12 +164,9 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The content as a string</returns>
         public override string Read()
         {
-            if (InternalFile == null)
-                return "";
-            HttpWebRequest Request = WebRequest.Create(InternalFile) as HttpWebRequest;
-            Request.Method = "GET";
-            Request.ContentType = "text/xml";
-            SetupData(Request, "");
+            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;
+            Request.Method = WebRequestMethods.Ftp.DownloadFile;
+            SetupData(Request, null);
             SetupCredentials(Request);
             return SendRequest(Request);
         }
@@ -183,8 +177,6 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The content as a byte array</returns>
         public override byte[] ReadBinary()
         {
-            if (InternalFile == null)
-                return new byte[0];
             return Read().ToByteArray();
         }
 
@@ -194,6 +186,13 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="NewName">Not used</param>
         public override void Rename(string NewName)
         {
+            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;
+            Request.Method = WebRequestMethods.Ftp.Rename;
+            Request.RenameTo = NewName;
+            SetupData(Request, null);
+            SetupCredentials(Request);
+            SendRequest(Request);
+            InternalFile = new Uri(Directory.FullName + "/" + NewName);
         }
 
         /// <summary>
@@ -202,8 +201,10 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory">Not used</param>
         public override void MoveTo(IDirectory Directory)
         {
+            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1))).Write(ReadBinary());
+            Delete();
         }
-        
+
         /// <summary>
         /// Copies the file to another directory
         /// </summary>
@@ -212,7 +213,13 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The newly created file</returns>
         public override IFile CopyTo(IDirectory Directory, bool Overwrite)
         {
-            return null;
+            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)));
+            if (!File.Exists || Overwrite)
+            {
+                File.Write(ReadBinary());
+                return File;
+            }
+            return this;
         }
 
         /// <summary>
@@ -224,15 +231,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The result of the write or original content</returns>
         public override string Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
-            HttpWebRequest Request = WebRequest.Create(InternalFile) as HttpWebRequest;
-            if (Mode.HasFlag(FileMode.Append) || Mode.HasFlag(FileMode.Open))
-                Request.Method = "PUT";
-            else if (Mode.HasFlag(FileMode.Create) || Mode.HasFlag(FileMode.CreateNew))
-                Request.Method = "POST";
-            Request.ContentType = "text/xml";
-            SetupData(Request, Content);
-            SetupCredentials(Request);
-            return SendRequest(Request);
+            return Write(Content.ToByteArray(Encoding), Mode).ToString(Encoding.UTF8);
         }
 
         /// <summary>
@@ -243,26 +242,34 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The result of the write or original content</returns>
         public override byte[] Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
-            return Write(Content.ToString(Encoding.UTF8), Mode).ToByteArray();
+            FtpWebRequest Request = WebRequest.Create(InternalFile) as FtpWebRequest;
+            Request.Method = WebRequestMethods.Ftp.UploadFile;
+            SetupData(Request, Content);
+            SetupCredentials(Request);
+            return SendRequest(Request).ToByteArray();
         }
+
 
         /// <summary>
         /// Sets up any data that needs to be sent
         /// </summary>
         /// <param name="Request">The web request object</param>
         /// <param name="Data">Data to send with the request</param>
-        private static void SetupData(HttpWebRequest Request, string Data)
+        private void SetupData(FtpWebRequest Request, byte[] Data)
         {
-            if (string.IsNullOrEmpty(Data))
+            Request.UsePassive = true;
+            Request.KeepAlive = false;
+            Request.UseBinary = true;
+            Request.EnableSsl = Name.ToLowerInvariant().StartsWith("ftps");
+            if (Data==null)
             {
                 Request.ContentLength = 0;
                 return;
             }
-            byte[] ByteData = Data.ToByteArray();
-            Request.ContentLength = ByteData.Length;
+            Request.ContentLength = Data.Length;
             using (Stream RequestStream = Request.GetRequestStream())
             {
-                RequestStream.Write(ByteData, 0, ByteData.Length);
+                RequestStream.Write(Data, 0, Data.Length);
             }
         }
 
@@ -272,7 +279,7 @@ namespace Utilities.IO.FileSystem.Default
         /// URL)
         /// </summary>
         /// <param name="Request">The web request object</param>
-        private void SetupCredentials(HttpWebRequest Request)
+        private void SetupCredentials(FtpWebRequest Request)
         {
             if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
             {
@@ -285,19 +292,16 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Request">The web request object</param>
         /// <returns>The string returned by the service</returns>
-        private static string SendRequest(HttpWebRequest Request)
+        private static string SendRequest(FtpWebRequest Request)
         {
-            using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
+            using (FtpWebResponse Response = Request.GetResponse() as FtpWebResponse)
             {
-                if (Response.StatusCode != HttpStatusCode.OK)
-                    return "";
                 using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
                 {
                     return Reader.ReadToEnd();
                 }
             }
         }
-
 
         #endregion
     }

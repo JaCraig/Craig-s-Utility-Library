@@ -20,25 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.IO;
-using System.Web;
 using Utilities.IO.FileSystem.BaseClasses;
+using Utilities.IO.FileSystem.Interfaces;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
 {
     /// <summary>
-    /// Relative local file system
+    /// FTP file system
     /// </summary>
-    public class RelativeLocalFileSystem : LocalFileSystemBase
+    public class FtpFileSystem : FileSystemBase
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public RelativeLocalFileSystem() : base() { }
+        public FtpFileSystem() : base() { }
 
         #endregion
 
@@ -47,16 +45,38 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Relative starter
         /// </summary>
-        protected override string HandleRegexString { get { return @"^[~|\.]"; } }
+        protected override string HandleRegexString { get { return @"^ftps?://"; } }
 
         /// <summary>
         /// Name of the file system
         /// </summary>
-        public override string Name { get { return "Relative Local"; } }
+        public override string Name { get { return "FTP"; } }
 
         #endregion
 
         #region Functions
+
+        /// <summary>
+        /// Gets the class representation for the file
+        /// </summary>
+        /// <param name="Path">Path to the file</param>
+        /// <returns>The file object</returns>
+        public override IFile File(string Path)
+        {
+            Path = AbsolutePath(Path);
+            return new FtpFile(Path);
+        }
+
+        /// <summary>
+        /// Gets the directory representation for the directory
+        /// </summary>
+        /// <param name="Path">Path to the directory</param>
+        /// <returns>The directory object</returns>
+        public override IDirectory Directory(string Path)
+        {
+            Path = AbsolutePath(Path);
+            return new FtpDirectory(Path);
+        }
 
         /// <summary>
         /// Gets the absolute path of the variable passed in
@@ -65,41 +85,16 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The absolute path of the path passed in</returns>
         protected override string AbsolutePath(string Path)
         {
-            Path = Path.Replace("/", "\\");
-            string BaseDirectory = "";
-            string ParentDirectory = "";
-            if (HttpContext.Current == null)
-            {
-                BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                ParentDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName;
-            }
-            else
-            {
-                BaseDirectory = HttpContext.Current.Server.MapPath("~/");
-                ParentDirectory = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/")).Parent.FullName;
-            }
-            if (Path.StartsWith("..\\", StringComparison.OrdinalIgnoreCase))
-            {
-                Path = ParentDirectory + Path.Remove(0, 2);
-            }
-            else if (Path.StartsWith(".\\", StringComparison.OrdinalIgnoreCase))
-            {
-                Path = BaseDirectory + Path.Remove(0, 1);
-            }
-            else if (Path.StartsWith("~\\", StringComparison.OrdinalIgnoreCase))
-            {
-                Path = BaseDirectory + Path.Remove(0, 1);
-            }
             return Path;
         }
 
         /// <summary>
-        /// Function to override in order to dispose objects
+        /// Used to dispose of any resources
         /// </summary>
-        /// <param name="Managed">If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.</param>
+        /// <param name="Managed">Should managed resources be disposed</param>
         protected override void Dispose(bool Managed)
         {
-            base.Dispose(Managed);
+
         }
 
         #endregion

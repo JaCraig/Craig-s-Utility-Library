@@ -124,7 +124,7 @@ namespace Utilities.IO.FileSystem
         {
             if (FileSystems != null)
             {
-                foreach (IFileSystem FileSystem in FileSystems)
+                foreach (IDisposable FileSystem in FileSystems)
                 {
                     FileSystem.Dispose();
                 }

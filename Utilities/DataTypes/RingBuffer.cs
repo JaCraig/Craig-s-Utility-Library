@@ -54,6 +54,7 @@ namespace Utilities.DataTypes
         /// <param name="AllowOverflow">Is overflow allowed (defaults to false)</param>
         public RingBuffer(int MaxCapacity, bool AllowOverflow = false)
         {
+            Contract.Requires<ArgumentException>(MaxCapacity > 0, "Max capacity must be above 0");
             Count = 0;
             IsReadOnly = false;
             this.AllowOverflow = AllowOverflow;
@@ -173,6 +174,7 @@ namespace Utilities.DataTypes
         /// <param name="Items">Items to add</param>
         public virtual void Add(IEnumerable<T> Items)
         {
+            Contract.Requires<ArgumentNullException>(Items != null, "Items");
             Items.ForEach(x => Add(x));
         }
 
@@ -184,6 +186,7 @@ namespace Utilities.DataTypes
         /// <param name="offset">Offset to start at</param>
         public virtual void Add(T[] buffer, int offset, int count)
         {
+            Contract.Requires<ArgumentNullException>(buffer != null, "buffer");
             Contract.Requires<ArgumentOutOfRangeException>(count <= buffer.Length - offset, "buffer");
             for (int x = offset; x < offset + count; ++x)
                 Add(buffer[x]);
@@ -369,6 +372,7 @@ namespace Utilities.DataTypes
         /// <returns>The number of items that were read</returns>
         public virtual int Remove(T[] array, int offset, int count)
         {
+            Contract.Requires<ArgumentException>(array != null, "array");
             Contract.Requires<ArgumentOutOfRangeException>(Count <= array.Length - offset, "array");
             if (Count == 0)
                 return 0;
@@ -425,6 +429,7 @@ namespace Utilities.DataTypes
         /// <returns>The value as a string</returns>
         public static implicit operator string(RingBuffer<T> Value)
         {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             return Value.ToString();
         }
 

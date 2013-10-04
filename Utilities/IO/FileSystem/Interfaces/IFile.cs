@@ -87,7 +87,8 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <summary>
         /// Deletes the file
         /// </summary>
-        void Delete();
+        /// <returns>Any response for deleting the resource (usually FTP, HTTP, etc)</returns>
+        string Delete();
 
         /// <summary>
         /// Reads the file to the end as a string
@@ -127,16 +128,16 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">File mode</param>
         /// <param name="Encoding">Encoding that the content should be saved as (default is UTF8)</param>
-        /// <returns>Task associated with the write process</returns>
-        void Write(string Content, FileMode Mode = FileMode.Create, Encoding Encoding = null);
+        /// <returns>The result of the write or original content</returns>
+        string Write(string Content, FileMode Mode = FileMode.Create, Encoding Encoding = null);
 
         /// <summary>
         /// Writes content to the file
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">File mode</param>
-        /// <returns>Task associated with the write process</returns>
-        void Write(byte[] Content, FileMode Mode = FileMode.Create);
+        /// <returns>The result of the write or original content</returns>
+        byte[] Write(byte[] Content, FileMode Mode = FileMode.Create);
 
         #endregion
     }

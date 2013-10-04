@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Text.RegularExpressions;
+using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.FileSystem.Default;
 using Utilities.IO.FileSystem.Interfaces;
 #endregion
@@ -29,16 +30,17 @@ using Utilities.IO.FileSystem.Interfaces;
 namespace Utilities.IO.FileSystem.BaseClasses
 {
     /// <summary>
-    /// Web file system base class
+    /// File system base class
     /// </summary>
-    public abstract class WebFileSystemBase : IFileSystem
+    public abstract class FileSystemBase : SafeDisposableBaseClass, IFileSystem
     {
         #region Constructor
 
         /// <summary>
         /// Constructor
         /// </summary>
-        protected WebFileSystemBase()
+        protected FileSystemBase()
+            : base()
         {
             HandleRegex = new Regex(HandleRegexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
@@ -71,22 +73,14 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// </summary>
         /// <param name="Path">Path to the file</param>
         /// <returns>The file object</returns>
-        public IFile File(string Path)
-        {
-            Path = AbsolutePath(Path);
-            return new WebFile(Path);
-        }
+        public abstract IFile File(string Path);
 
         /// <summary>
         /// Gets the directory representation for the directory
         /// </summary>
         /// <param name="Path">Path to the directory</param>
         /// <returns>The directory object</returns>
-        public IDirectory Directory(string Path)
-        {
-            Path = AbsolutePath(Path);
-            return new WebDirectory(Path);
-        }
+        public abstract IDirectory Directory(string Path);
 
         /// <summary>
         /// Gets the absolute path of the variable passed in
@@ -103,32 +97,6 @@ namespace Utilities.IO.FileSystem.BaseClasses
         public bool CanHandle(string Path)
         {
             return HandleRegex.IsMatch(Path);
-        }
-        
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
-        protected virtual void Dispose(bool Managed)
-        {
-            
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~WebFileSystemBase()
-        {
-            Dispose(false);
         }
 
         #endregion

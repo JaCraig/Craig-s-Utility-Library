@@ -122,6 +122,7 @@ namespace Utilities.DataTypes
         /// <returns>True if they overlap, false otherwise</returns>
         public bool Overlap(DateSpan Span)
         {
+            Contract.Requires<ArgumentNullException>(Span != null, "Span");
             return ((Start >= Span.Start && Start < Span.End) || (End <= Span.End && End > Span.Start) || (Start <= Span.Start && End >= Span.End));
         }
 
@@ -181,6 +182,7 @@ namespace Utilities.DataTypes
         /// <returns>The value as a string</returns>
         public static implicit operator string(DateSpan Value)
         {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
             return Value.ToString();
         }
 

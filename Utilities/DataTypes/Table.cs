@@ -43,6 +43,7 @@ namespace Utilities.DataTypes
         /// <param name="ColumnNames">Column names</param>
         public Table(params string[] ColumnNames)
         {
+            Contract.Requires<ArgumentNullException>(ColumnNames != null, "ColumnNames");
             this.ColumnNames = (string[])ColumnNames.Clone();
             this.Rows = new List<Row>();
             this.ColumnNameHash = new Hashtable();
@@ -60,6 +61,7 @@ namespace Utilities.DataTypes
         /// <param name="Reader">Data reader to get the data from</param>
         public Table(IDataReader Reader)
         {
+            Contract.Requires<ArgumentNullException>(Reader != null, "Reader");
             this.ColumnNames = new string[Reader.FieldCount];
             for (int x = 0; x < Reader.FieldCount; ++x)
             {
@@ -128,6 +130,7 @@ namespace Utilities.DataTypes
         /// <returns>This</returns>
         public virtual Table AddRow(params object[] Objects)
         {
+            Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
             this.Rows.Add(new Row(ColumnNameHash, ColumnNames, Objects));
             return this;
         }
@@ -150,6 +153,7 @@ namespace Utilities.DataTypes
         /// <param name="ColumnNameHash">Column name hash</param>
         public Row(Hashtable ColumnNameHash, string[] ColumnNames, params object[] ColumnValues)
         {
+            Contract.Requires<ArgumentNullException>(ColumnValues != null, "ColumnValues");
             this.ColumnNameHash = ColumnNameHash;
             this.ColumnNames = ColumnNames;
             this.ColumnValues = (object[])ColumnValues.Clone();
@@ -185,8 +189,9 @@ namespace Utilities.DataTypes
         {
             get
             {
+                Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ColumnName), "ColumnName");
                 int Column = (int)ColumnNameHash[ColumnName];//.PositionOf(ColumnName);
-                if (Column == -1)
+                if (Column <= -1)
                     throw new ArgumentOutOfRangeException(ColumnName + " is not present in the row");
                 return this[Column];
             }

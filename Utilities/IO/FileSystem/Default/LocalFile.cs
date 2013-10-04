@@ -25,7 +25,7 @@ using System.IO;
 using System.Text;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -146,12 +146,14 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Deletes the file
         /// </summary>
-        public override void Delete()
+        /// <returns>Any response for deleting the resource (usually FTP, HTTP, etc)</returns>
+        public override string Delete()
         {
             if (!Exists)
-                return;
+                return "";
             InternalFile.Delete();
             InternalFile.Refresh();
+            return "";
         }
 
         /// <summary>
@@ -237,14 +239,14 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
         /// <param name="Encoding">Encoding to use for the content</param>
-        /// <returns>Task associated with the write process</returns>
-        public override void Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        /// <returns>The result of the write or original content</returns>
+        public override string Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
             if (Content == null)
                 Content = "";
             if (Encoding == null)
                 Encoding = new ASCIIEncoding();
-            Write(Encoding.GetBytes(Content), Mode);
+            return Write(Encoding.GetBytes(Content), Mode).ToString(Encoding);
         }
 
         /// <summary>
@@ -252,8 +254,8 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">Mode to open the file as</param>
-        /// <returns>Task associated with the write process</returns>
-        public override void Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        /// <returns>The result of the write or original content</returns>
+        public override byte[] Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
         {
             if (Content == null)
                 Content = new byte[0];
@@ -263,6 +265,7 @@ namespace Utilities.IO.FileSystem.Default
                 Writer.Write(Content, 0, Content.Length);
             }
             InternalFile.Refresh();
+            return Content;
         }
 
         #endregion

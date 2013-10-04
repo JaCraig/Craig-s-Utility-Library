@@ -71,7 +71,8 @@ namespace Utilities.IO.Compression.BaseClasses
         /// <returns>Compressed data</returns>
         public byte[] Compress(byte[] Data)
         {
-            Contract.Requires<ArgumentNullException>(Data != null, "Data");
+            if (Data == null)
+                throw new ArgumentNullException("Data");
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (Stream ZipStream = GetStream(Stream, CompressionMode.Compress))
@@ -98,7 +99,8 @@ namespace Utilities.IO.Compression.BaseClasses
         /// <returns>The decompressed data</returns>
         public byte[] Decompress(byte[] Data)
         {
-            Contract.Requires<ArgumentNullException>(Data != null, "Data");
+            if (Data == null)
+                throw new ArgumentNullException("Data");
             using (MemoryStream Stream = new MemoryStream())
             {
                 using (MemoryStream DataStream = new MemoryStream(Data))

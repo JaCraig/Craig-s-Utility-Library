@@ -100,6 +100,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <returns>The hash algorithm</returns>
         protected HashAlgorithm GetAlgorithm(string Algorithm)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Algorithm), "Algorithm");
             return ImplementedAlgorithms[Algorithm.ToUpperInvariant()]();
         }
 

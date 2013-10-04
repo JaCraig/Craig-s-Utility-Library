@@ -52,6 +52,7 @@ namespace Utilities.IO
         /// <returns>A byte array as salt</returns>
         public static byte[] GenerateSalt(this System.Random Random, int Size)
         {
+            Contract.Requires<ArgumentException>(Size > 0, "Size must be greater than 0");
             byte[] Salt = new byte[Size];
             using (RNGCryptoServiceProvider CryptoProvider = new RNGCryptoServiceProvider())
             {
