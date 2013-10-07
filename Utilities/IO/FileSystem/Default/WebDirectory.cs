@@ -24,9 +24,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
+using Utilities.IO;
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -45,13 +48,16 @@ namespace Utilities.IO.FileSystem.Default
             : base()
         {
         }
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Path">Path to the directory</param>
-        public WebDirectory(string Path)
-            : base(string.IsNullOrEmpty(Path) ? null : new Uri(Path))
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the directory (optional)</param>
+        /// <param name="UserName">User name to be used to access the directory (optional)</param>
+        public WebDirectory(string Path, string UserName = "", string Password = "", string Domain = "")
+            : this(string.IsNullOrEmpty(Path) ? null : new Uri(Path), UserName, Password, Domain)
         {
         }
 
@@ -59,8 +65,11 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="Directory">Internal directory</param>
-        public WebDirectory(Uri Directory)
-            : base(Directory)
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the directory (optional)</param>
+        /// <param name="UserName">User name to be used to access the directory (optional)</param>
+        public WebDirectory(Uri Directory, string UserName = "", string Password = "", string Domain = "")
+            : base(Directory, UserName, Password, Domain)
         {
         }
 
@@ -121,7 +130,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Parent
         {
-            get { return InternalDirectory == null ? null : new WebDirectory((string)InternalDirectory.AbsolutePath.Take(InternalDirectory.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
+            get { return InternalDirectory == null ? null : new WebDirectory((string)InternalDirectory.AbsolutePath.Take(InternalDirectory.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1), UserName, Password, Domain); }
         }
 
         /// <summary>
@@ -129,7 +138,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Root
         {
-            get { return InternalDirectory == null ? null : new WebDirectory(InternalDirectory.Scheme + "://" + InternalDirectory.Host); }
+            get { return InternalDirectory == null ? null : new WebDirectory(InternalDirectory.Scheme + "://" + InternalDirectory.Host, UserName, Password, Domain); }
         }
 
         /// <summary>
@@ -149,7 +158,12 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override void Create()
         {
-
+            HttpWebRequest Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;
+            Request.Method = "POST";
+            Request.ContentType = "text/xml";
+            SetupData(Request, "");
+            SetupCredentials(Request);
+            SendRequest(Request);
         }
 
         /// <summary>
@@ -157,7 +171,14 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override void Delete()
         {
-
+            if (InternalDirectory == null)
+                return;
+            HttpWebRequest Request = WebRequest.Create(InternalDirectory) as HttpWebRequest;
+            Request.Method = "DELETE";
+            Request.ContentType = "text/xml";
+            SetupData(Request, "");
+            SetupCredentials(Request);
+            SendRequest(Request);
         }
 
         /// <summary>
@@ -188,6 +209,13 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory"></param>
         public override void MoveTo(IDirectory Directory)
         {
+            string TempName = Name;
+            if (TempName == "/")
+                TempName = "index.html";
+            FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            FileInfo OldFile = new FileInfo(TempName, UserName, Password, Domain);
+            NewDirectory.Write(OldFile.Read(), FileMode.Create);
+            Delete();
         }
         
         /// <summary>
@@ -198,7 +226,13 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>Newly created directory</returns>
         public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
         {
-            return null;
+            string TempName=Name;
+            if (TempName == "/")
+                TempName = "index.html";
+            FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            FileInfo OldFile = new FileInfo(TempName, UserName, Password, Domain);
+            NewDirectory.Write(OldFile.Read(), FileMode.Create);
+            return Directory;
         }
 
         /// <summary>
@@ -207,6 +241,58 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Name"></param>
         public override void Rename(string Name)
         {
+        }
+
+        /// <summary>
+        /// Sets up any data that needs to be sent
+        /// </summary>
+        /// <param name="Request">The web request object</param>
+        /// <param name="Data">Data to send with the request</param>
+        private static void SetupData(HttpWebRequest Request, string Data)
+        {
+            if (string.IsNullOrEmpty(Data))
+            {
+                Request.ContentLength = 0;
+                return;
+            }
+            byte[] ByteData = Data.ToByteArray();
+            Request.ContentLength = ByteData.Length;
+            using (Stream RequestStream = Request.GetRequestStream())
+            {
+                RequestStream.Write(ByteData, 0, ByteData.Length);
+            }
+        }
+
+        /// <summary>
+        /// Sets up any credentials (basic authentication,
+        /// for OAuth, please use the OAuth class to create the
+        /// URL)
+        /// </summary>
+        /// <param name="Request">The web request object</param>
+        private void SetupCredentials(HttpWebRequest Request)
+        {
+            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+            {
+                Request.Credentials = new NetworkCredential(UserName, Password);
+            }
+        }
+
+        /// <summary>
+        /// Sends the request to the URL specified
+        /// </summary>
+        /// <param name="Request">The web request object</param>
+        /// <returns>The string returned by the service</returns>
+        private static string SendRequest(HttpWebRequest Request)
+        {
+            using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
+            {
+                if (Response.StatusCode != HttpStatusCode.OK)
+                    return "";
+                using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
+                {
+                    return Reader.ReadToEnd();
+                }
+            }
         }
 
         #endregion

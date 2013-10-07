@@ -53,8 +53,11 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Gets the class representation for the file
         /// </summary>
         /// <param name="Path">Path to the file</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
         /// <returns>The file object</returns>
-        public override IFile File(string Path)
+        public override IFile File(string Path, string UserName = "", string Password = "", string Domain = "")
         {
             Path = AbsolutePath(Path);
             return new LocalFile(Path);
@@ -64,8 +67,11 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Gets the directory representation for the directory
         /// </summary>
         /// <param name="Path">Path to the directory</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the directory (optional)</param>
+        /// <param name="UserName">User name to be used to access the directory (optional)</param>
         /// <returns>The directory object</returns>
-        public override IDirectory Directory(string Path)
+        public override IDirectory Directory(string Path, string UserName = "", string Password = "", string Domain = "")
         {
             Path = AbsolutePath(Path);
             return new LocalDirectory(Path.RemoveIllegalDirectoryNameCharacters());

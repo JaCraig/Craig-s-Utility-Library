@@ -66,7 +66,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void LoadAssembliesTest()
         {
-            Assert.Equal(6, new DirectoryInfo(@".\").LoadAssemblies().Count());
+            Assert.Equal(5, new DirectoryInfo(@".\").LoadAssemblies().Count());
         }
 
         [Fact]
@@ -243,7 +243,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void VersionInfo2()
         {
-            Assert.Equal("Roslyn.Compilers: 1.2\r\nRoslyn.Compilers.CSharp: 1.2\r\nSomewhere: 0.0\r\nUnitTests: 1.0\r\nUtilities: 4.0\r\nxunit: 1.9\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
+            Assert.Equal("Roslyn.Compilers: 1.2\r\nRoslyn.Compilers.CSharp: 1.2\r\nUnitTests: 1.0\r\nUtilities: 4.0\r\nxunit: 1.9\r\n", new DirectoryInfo(@".\").LoadAssemblies().ToString(VersionInfo.ShortVersion));
         }
     }
 

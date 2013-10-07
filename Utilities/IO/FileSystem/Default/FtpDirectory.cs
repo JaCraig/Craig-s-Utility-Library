@@ -28,6 +28,7 @@ using System.Net;
 using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -51,8 +52,11 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="Path">Path to the directory</param>
-        public FtpDirectory(string Path)
-            : this(string.IsNullOrEmpty(Path) ? null : new Uri(Path))
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the directory (optional)</param>
+        /// <param name="UserName">User name to be used to access the directory (optional)</param>
+        public FtpDirectory(string Path, string UserName = "", string Password = "", string Domain = "")
+            : this(string.IsNullOrEmpty(Path) ? null : new Uri(Path), UserName, Password, Domain)
         {
         }
 
@@ -60,8 +64,11 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="Directory">Internal directory</param>
-        public FtpDirectory(Uri Directory)
-            : base(Directory)
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the directory (optional)</param>
+        /// <param name="UserName">User name to be used to access the directory (optional)</param>
+        public FtpDirectory(Uri Directory, string UserName = "", string Password = "", string Domain = "")
+            : base(Directory, UserName, Password, Domain)
         {
         }
 
@@ -122,7 +129,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Parent
         {
-            get { return InternalDirectory == null ? null : new FtpDirectory((string)InternalDirectory.AbsolutePath.Take(InternalDirectory.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
+            get { return InternalDirectory == null ? null : new FtpDirectory((string)InternalDirectory.AbsolutePath.Take(InternalDirectory.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1),UserName,Password,Domain); }
         }
 
         /// <summary>
@@ -130,7 +137,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Root
         {
-            get { return InternalDirectory == null ? null : new FtpDirectory(InternalDirectory.Scheme + "://" + InternalDirectory.Host); }
+            get { return InternalDirectory == null ? null : new FtpDirectory(InternalDirectory.Scheme + "://" + InternalDirectory.Host, UserName, Password, Domain); }
         }
 
         /// <summary>
@@ -198,7 +205,7 @@ namespace Utilities.IO.FileSystem.Default
                 {
                     if (DetailedFolder.StartsWith("d") && !DetailedFolder.EndsWith("."))
                     {
-                        Directories.Add(new DirectoryInfo(FullName + "/" + Folder));
+                        Directories.Add(new DirectoryInfo(FullName + "/" + Folder, UserName, Password, Domain));
                     }
                 }
             }
@@ -234,7 +241,7 @@ namespace Utilities.IO.FileSystem.Default
                 {
                     if (!DetailedFolder.StartsWith("d"))
                     {
-                        Directories.Add(new FileInfo(FullName + "/" + Folder));
+                        Directories.Add(new FileInfo(FullName + "/" + Folder, UserName, Password, Domain));
                     }
                 }
             }
@@ -247,6 +254,17 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory"></param>
         public override void MoveTo(IDirectory Directory)
         {
+            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            NewDirectory.Create();
+            foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
+            {
+                Temp.MoveTo(NewDirectory);
+            }
+            foreach (FileInfo Temp in EnumerateFiles("*"))
+            {
+                Temp.MoveTo(NewDirectory);
+            }
+            Delete();
         }
 
         /// <summary>
@@ -257,7 +275,17 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>Newly created directory</returns>
         public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
         {
-            return null;
+            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            NewDirectory.Create();
+            foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
+            {
+                Temp.CopyTo(NewDirectory);
+            }
+            foreach (FileInfo Temp in EnumerateFiles("*"))
+            {
+                Temp.CopyTo(NewDirectory, true);
+            }
+            return NewDirectory;
         }
 
         /// <summary>
@@ -266,6 +294,13 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Name"></param>
         public override void Rename(string Name)
         {
+            FtpWebRequest Request = WebRequest.Create(InternalDirectory) as FtpWebRequest;
+            Request.Method = WebRequestMethods.Ftp.Rename;
+            Request.RenameTo = Name;
+            SetupData(Request, null);
+            SetupCredentials(Request);
+            SendRequest(Request);
+            InternalDirectory = new Uri(FullName + "/" + Name);
         }
 
         /// <summary>

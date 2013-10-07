@@ -45,15 +45,21 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// Gets the class representation for the file
         /// </summary>
         /// <param name="Path">Path to the file</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
         /// <returns>The file object</returns>
-        IFile File(string Path);
+        IFile File(string Path, string UserName = "", string Password = "", string Domain = "");
 
         /// <summary>
         /// Gets the directory representation for the directory
         /// </summary>
         /// <param name="Path">Path to the directory</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the directory (optional)</param>
+        /// <param name="UserName">User name to be used to access the directory (optional)</param>
         /// <returns>The directory object</returns>
-        IDirectory Directory(string Path);
+        IDirectory Directory(string Path, string UserName = "", string Password = "", string Domain = "");
 
         /// <summary>
         /// Returns true if it can handle the path, false otherwise

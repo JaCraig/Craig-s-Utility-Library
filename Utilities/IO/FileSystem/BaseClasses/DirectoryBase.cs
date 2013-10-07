@@ -53,14 +53,35 @@ namespace Utilities.IO.FileSystem.BaseClasses
         /// Constructor
         /// </summary>
         /// <param name="InternalDirectory">Internal directory object</param>
-        protected DirectoryBase(InternalDirectoryType InternalDirectory)
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
+        protected DirectoryBase(InternalDirectoryType InternalDirectory, string UserName = "", string Password = "", string Domain = "")
         {
             this.InternalDirectory = InternalDirectory;
+            this.UserName = UserName;
+            this.Password = Password;
+            this.Domain = Domain;
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// User name
+        /// </summary>
+        protected string UserName { get; set; }
+
+        /// <summary>
+        /// Password
+        /// </summary>
+        protected string Password { get; set; }
+
+        /// <summary>
+        /// Domain
+        /// </summary>
+        protected string Domain { get; set; }
 
         /// <summary>
         /// Internal directory
@@ -280,6 +301,9 @@ namespace Utilities.IO.FileSystem.BaseClasses
         {
             DirectoryBase<InternalDirectoryType, DirectoryType> Temp = new DirectoryType();
             Temp.InternalDirectory = InternalDirectory;
+            Temp.UserName = UserName;
+            Temp.Password = Password;
+            Temp.Domain = Domain;
             return Temp;
         }
 

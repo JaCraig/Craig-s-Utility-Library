@@ -51,8 +51,11 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="Path">Path to the file</param>
-        public WebFile(string Path)
-            : base(string.IsNullOrEmpty(Path) ? null : new Uri(Path))
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the directory (optional)</param>
+        /// <param name="UserName">User name to be used to access the directory (optional)</param>
+        public WebFile(string Path,string UserName="",string Password="",string Domain="")
+            : base(string.IsNullOrEmpty(Path) ? null : new Uri(Path),UserName,Password,Domain)
         {
         }
 
@@ -60,8 +63,11 @@ namespace Utilities.IO.FileSystem.Default
         /// Constructor
         /// </summary>
         /// <param name="File">File to use</param>
-        public WebFile(Uri File)
-            :base(File)
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
+        public WebFile(Uri File, string UserName = "", string Password = "", string Domain = "")
+            : base(File, UserName, Password, Domain)
         {
         }
 
@@ -98,7 +104,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Directory
         {
-            get { return InternalFile == null ? null : new WebDirectory((string)InternalFile.AbsolutePath.Take(InternalFile.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1)); }
+            get { return InternalFile == null ? null : new WebDirectory((string)InternalFile.AbsolutePath.Take(InternalFile.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1), UserName, Password, Domain); }
         }
 
         /// <summary>
@@ -202,7 +208,10 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory">Not used</param>
         public override void MoveTo(IDirectory Directory)
         {
+            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain).Write(ReadBinary());
+            Delete();
         }
+
         
         /// <summary>
         /// Copies the file to another directory
@@ -212,7 +221,13 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The newly created file</returns>
         public override IFile CopyTo(IDirectory Directory, bool Overwrite)
         {
-            return null;
+            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            if (!File.Exists || Overwrite)
+            {
+                File.Write(ReadBinary());
+                return File;
+            }
+            return this;
         }
 
         /// <summary>
@@ -297,7 +312,6 @@ namespace Utilities.IO.FileSystem.Default
                 }
             }
         }
-
 
         #endregion
     }

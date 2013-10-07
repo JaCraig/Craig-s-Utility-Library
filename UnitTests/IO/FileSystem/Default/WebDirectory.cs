@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Net;
 using Utilities.IO.FileSystem.Interfaces;
 using Xunit;
 
@@ -79,9 +80,9 @@ namespace UnitTests.IO.FileSystem.Default
         public void CreateAndDelete()
         {
             Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
-            Temp.Create();
+            Assert.Throws<WebException>(() => Temp.Create());
             Assert.True(Temp.Exists);
-            Temp.Delete();
+            Assert.Throws<WebException>(() => Temp.Delete());
             Assert.True(Temp.Exists);
         }
 
@@ -90,28 +91,26 @@ namespace UnitTests.IO.FileSystem.Default
         public void Move()
         {
             Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
-            Utilities.IO.FileSystem.Default.WebDirectory Temp2 = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
-            Temp.Create();
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test/");
             Temp2.Create();
-            Temp2.MoveTo(Temp);
+            while (!Temp2.Exists) { }
+            Assert.Throws<WebException>(() => Temp.MoveTo(Temp2));
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
-            Temp.Delete();
-            Assert.True(Temp.Exists);
+            Temp2.Delete();
         }
 
         [Fact]
         public void Copy()
         {
             Utilities.IO.FileSystem.Default.WebDirectory Temp = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
-            Utilities.IO.FileSystem.Default.WebDirectory Temp2 = new Utilities.IO.FileSystem.Default.WebDirectory("http://www.google.com");
-            Temp.Create();
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test/");
             Temp2.Create();
-            Temp2.CopyTo(Temp);
+            while (!Temp2.Exists) { }
+            Temp.CopyTo(Temp2);
             Assert.True(Temp.Exists);
             Assert.True(Temp2.Exists);
-            Temp.Delete();
-            Assert.True(Temp.Exists);
+            Temp2.Delete();
         }
     }
 }

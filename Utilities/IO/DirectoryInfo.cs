@@ -43,9 +43,12 @@ namespace Utilities.IO
         /// Constructor
         /// </summary>
         /// <param name="Path">Path to the directory</param>
-        public DirectoryInfo(string Path)
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the directory (optional)</param>
+        /// <param name="UserName">User name to be used to access the directory (optional)</param>
+        public DirectoryInfo(string Path, string UserName = "", string Password = "", string Domain = "")
+            : this(IoC.Manager.Bootstrapper.Resolve<Manager>().Directory(Path, UserName, Password, Domain))
         {
-            InternalDirectory = IoC.Manager.Bootstrapper.Resolve<Manager>().Directory(Path);
         }
 
         /// <summary>
@@ -415,6 +418,5 @@ namespace Utilities.IO
         }
 
         #endregion
-
     }
 }

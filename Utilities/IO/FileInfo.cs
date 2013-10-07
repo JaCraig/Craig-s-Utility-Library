@@ -44,9 +44,12 @@ namespace Utilities.IO
         /// Constructor
         /// </summary>
         /// <param name="Path">Path to the file</param>
-        public FileInfo(string Path)
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
+        public FileInfo(string Path, string UserName = "", string Password = "", string Domain = "")
+            : this(IoC.Manager.Bootstrapper.Resolve<Manager>().File(Path, UserName, Password, Domain))
         {
-            this.InternalFile = IoC.Manager.Bootstrapper.Resolve<Manager>().File(Path);
         }
 
         /// <summary>

@@ -273,6 +273,9 @@ namespace Utilities.IO.FileSystem.BaseClasses
         {
             FileBase<InternalFileType, FileType> Temp = new FileType();
             Temp.InternalFile = InternalFile;
+            Temp.Password = Password;
+            Temp.UserName = UserName;
+            Temp.Domain = Domain;
             return Temp;
         }
 
