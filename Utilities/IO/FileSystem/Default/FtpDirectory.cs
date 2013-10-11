@@ -200,10 +200,10 @@ namespace Utilities.IO.FileSystem.Default
             List<IDirectory> Directories = new List<IDirectory>();
             foreach (string Folder in Folders)
             {
-                string DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder));
+                string DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder, StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrEmpty(DetailedFolder))
                 {
-                    if (DetailedFolder.StartsWith("d") && !DetailedFolder.EndsWith("."))
+                    if (DetailedFolder.StartsWith("d", StringComparison.OrdinalIgnoreCase) && !DetailedFolder.EndsWith(".", StringComparison.OrdinalIgnoreCase))
                     {
                         Directories.Add(new DirectoryInfo(FullName + "/" + Folder, UserName, Password, Domain));
                     }
@@ -236,10 +236,10 @@ namespace Utilities.IO.FileSystem.Default
             List<IFile> Directories = new List<IFile>();
             foreach (string Folder in Folders)
             {
-                string DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder));
+                string DetailedFolder = DetailedFolders.FirstOrDefault(x => x.EndsWith(Folder, StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrEmpty(DetailedFolder))
                 {
-                    if (!DetailedFolder.StartsWith("d"))
+                    if (!DetailedFolder.StartsWith("d", StringComparison.OrdinalIgnoreCase))
                     {
                         Directories.Add(new FileInfo(FullName + "/" + Folder, UserName, Password, Domain));
                     }
@@ -254,7 +254,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory"></param>
         public override void MoveTo(IDirectory Directory)
         {
-            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             NewDirectory.Create();
             foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
             {
@@ -275,7 +275,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>Newly created directory</returns>
         public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
         {
-            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             NewDirectory.Create();
             foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
             {
@@ -313,7 +313,7 @@ namespace Utilities.IO.FileSystem.Default
             Request.UsePassive = true;
             Request.KeepAlive = false;
             Request.UseBinary = true;
-            Request.EnableSsl = Name.ToLowerInvariant().StartsWith("ftps");
+            Request.EnableSsl = Name.ToUpperInvariant().StartsWith("FTPS", StringComparison.OrdinalIgnoreCase);
             if (Data == null)
             {
                 Request.ContentLength = 0;

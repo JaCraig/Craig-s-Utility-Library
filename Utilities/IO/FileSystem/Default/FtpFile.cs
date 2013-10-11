@@ -207,7 +207,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory">Not used</param>
         public override void MoveTo(IDirectory Directory)
         {
-            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain).Write(ReadBinary());
+            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain).Write(ReadBinary());
             Delete();
         }
 
@@ -219,7 +219,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The newly created file</returns>
         public override IFile CopyTo(IDirectory Directory, bool Overwrite)
         {
-            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             if (!File.Exists || Overwrite)
             {
                 File.Write(ReadBinary());
@@ -266,7 +266,7 @@ namespace Utilities.IO.FileSystem.Default
             Request.UsePassive = true;
             Request.KeepAlive = false;
             Request.UseBinary = true;
-            Request.EnableSsl = Name.ToLowerInvariant().StartsWith("ftps");
+            Request.EnableSsl = Name.ToUpperInvariant().StartsWith("FTPS", StringComparison.OrdinalIgnoreCase);
             if (Data==null)
             {
                 Request.ContentLength = 0;

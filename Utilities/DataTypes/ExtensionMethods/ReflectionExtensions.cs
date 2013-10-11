@@ -101,6 +101,104 @@ namespace Utilities.DataTypes
             return (ReturnType)Method.Invoke(Object, InputVariables);
         }
 
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <typeparam name="ReturnType">Return type expected</typeparam>
+        /// <typeparam name="GenericType1">Generic method type 1</typeparam>
+        /// <returns>The returned value of the method</returns>
+        public static ReturnType Call<GenericType1, ReturnType>(this object Object, string MethodName, params object[] InputVariables)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
+            if (InputVariables == null)
+                InputVariables = new object[0];
+            Type ObjectType = Object.GetType();
+            Type[] MethodInputTypes = new Type[InputVariables.Length];
+            for (int x = 0; x < InputVariables.Length; ++x)
+                MethodInputTypes[x] = InputVariables[x].GetType();
+            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            if (Method == null)
+                throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
+            Method = Method.MakeGenericMethod(typeof(GenericType1));
+            return Object.Call<ReturnType>(Method, InputVariables);
+        }
+
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <typeparam name="ReturnType">Return type expected</typeparam>
+        /// <typeparam name="GenericType1">Generic method type 1</typeparam>
+        /// <typeparam name="GenericType2">Generic method type 2</typeparam>
+        /// <returns>The returned value of the method</returns>
+        public static ReturnType Call<GenericType1,GenericType2, ReturnType>(this object Object, string MethodName, params object[] InputVariables)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
+            if (InputVariables == null)
+                InputVariables = new object[0];
+            Type ObjectType = Object.GetType();
+            Type[] MethodInputTypes = new Type[InputVariables.Length];
+            for (int x = 0; x < InputVariables.Length; ++x)
+                MethodInputTypes[x] = InputVariables[x].GetType();
+            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            if (Method == null)
+                throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
+            Method = Method.MakeGenericMethod(typeof(GenericType1), typeof(GenericType2));
+            return Object.Call<ReturnType>(Method, InputVariables);
+        }
+
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="MethodName">Method name</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <typeparam name="ReturnType">Return type expected</typeparam>
+        /// <typeparam name="GenericType1">Generic method type 1</typeparam>
+        /// <typeparam name="GenericType2">Generic method type 2</typeparam>
+        /// <typeparam name="GenericType3">Generic method type 3</typeparam>
+        /// <returns>The returned value of the method</returns>
+        public static ReturnType Call<GenericType1, GenericType2, GenericType3, ReturnType>(this object Object, string MethodName, params object[] InputVariables)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
+            if (InputVariables == null)
+                InputVariables = new object[0];
+            Type ObjectType = Object.GetType();
+            Type[] MethodInputTypes = new Type[InputVariables.Length];
+            for (int x = 0; x < InputVariables.Length; ++x)
+                MethodInputTypes[x] = InputVariables[x].GetType();
+            MethodInfo Method = ObjectType.GetMethod(MethodName, MethodInputTypes);
+            if (Method == null)
+                throw new InvalidOperationException("Could not find method " + MethodName + " with the appropriate input variables.");
+            Method = Method.MakeGenericMethod(typeof(GenericType1), typeof(GenericType2), typeof(GenericType3));
+            return Object.Call<ReturnType>(Method, InputVariables);
+        }
+
+        /// <summary>
+        /// Calls a method on an object
+        /// </summary>
+        /// <param name="Method">Method</param>
+        /// <param name="Object">Object to call the method on</param>
+        /// <param name="InputVariables">(Optional)input variables for the method</param>
+        /// <typeparam name="ReturnType">Return type expected</typeparam>
+        /// <returns>The returned value of the method</returns>
+        public static ReturnType Call<ReturnType>(this object Object, MethodInfo Method, params object[] InputVariables)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            Contract.Requires<ArgumentNullException>(Method != null, "Method");
+            if (InputVariables == null)
+                InputVariables = new object[0];
+            return (ReturnType)Method.Invoke(Object, InputVariables);
+        }
+
         #endregion
 
         #region Create

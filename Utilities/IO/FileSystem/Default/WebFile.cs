@@ -54,8 +54,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Domain">Domain of the user (optional)</param>
         /// <param name="Password">Password to be used to access the directory (optional)</param>
         /// <param name="UserName">User name to be used to access the directory (optional)</param>
-        public WebFile(string Path,string UserName="",string Password="",string Domain="")
-            : base(string.IsNullOrEmpty(Path) ? null : new Uri(Path),UserName,Password,Domain)
+        public WebFile(string Path, string UserName = "", string Password = "", string Domain = "")
+            : this(string.IsNullOrEmpty(Path) ? null : new Uri(Path), UserName, Password, Domain)
         {
         }
 
@@ -208,7 +208,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Directory">Not used</param>
         public override void MoveTo(IDirectory Directory)
         {
-            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain).Write(ReadBinary());
+            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain).Write(ReadBinary());
             Delete();
         }
 
@@ -221,7 +221,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The newly created file</returns>
         public override IFile CopyTo(IDirectory Directory, bool Overwrite)
         {
-            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/") + 1)), UserName, Password, Domain);
+            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
             if (!File.Exists || Overwrite)
             {
                 File.Write(ReadBinary());
