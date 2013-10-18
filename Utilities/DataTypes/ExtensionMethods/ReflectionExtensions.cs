@@ -345,6 +345,31 @@ namespace Utilities.DataTypes
             return ObjectType.BaseType.Is(Type);
         }
 
+
+        /// <summary>
+        /// Determines if an object is of a specific type
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <typeparam name="BaseObjectType">Base object type</typeparam>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool Is<BaseObjectType>(this object Object)
+        {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
+            return Object.Is(typeof(BaseObjectType));
+        }
+
+        /// <summary>
+        /// Determines if an object is of a specific type
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <typeparam name="BaseObjectType">Base object type</typeparam>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool Is<BaseObjectType>(this Type ObjectType)
+        {
+            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
+            return ObjectType.Is(typeof(BaseObjectType));
+        }
+
         #endregion
 
         #region Load
@@ -688,6 +713,7 @@ namespace Utilities.DataTypes
             PropertyInfo PropertyInfo = typeof(ClassType).GetProperty(SplitName[0]);
             ParameterExpression ObjectInstance = Expression.Parameter(PropertyInfo.DeclaringType, "x");
             ParameterExpression PropertySet = Expression.Parameter(typeof(DataType), "y");
+            ConstantExpression DefaultConstant = Expression.Constant(((object)null).To(PropertyInfo.PropertyType, null), PropertyInfo.PropertyType);
             MethodCallExpression SetterCall = null;
             MemberExpression PropertyGet = null;
             if (SplitName.Length > 1)
@@ -702,7 +728,12 @@ namespace Utilities.DataTypes
             }
             if (PropertyInfo.PropertyType != typeof(DataType))
             {
-                UnaryExpression Convert = Expression.Convert(PropertySet, PropertyInfo.PropertyType);
+                MethodInfo ConversionMethod = typeof(TypeConversionExtensions).GetMethods().FirstOrDefault(x => x.ContainsGenericParameters
+                    && x.GetGenericArguments().Length == 2
+                    && x.Name == "To"
+                    && x.GetParameters().Length == 2);
+                ConversionMethod = ConversionMethod.MakeGenericMethod(typeof(DataType), PropertyInfo.PropertyType);
+                MethodCallExpression Convert = Expression.Call(ConversionMethod, PropertySet, DefaultConstant);
                 if (PropertyGet == null)
                     SetterCall = Expression.Call(ObjectInstance, PropertyInfo.GetSetMethod(), Convert);
                 else

@@ -30,9 +30,10 @@ using System.Threading.Tasks;
 using Utilities.DataTypes.CodeGen;
 using Utilities.DataTypes.DataMapper.Interfaces;
 using Utilities.DataTypes.DataMapper.Default;
+using Utilities.DataTypes.DataMapper.BaseClasses;
 #endregion
 
-namespace Utilities.DataTypes.DataMapper.BaseClasses
+namespace Utilities.DataTypes.DataMapper.Default
 {
     /// <summary>
     /// Type mapping default class
@@ -42,9 +43,8 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Compiler">Compiler object</param>
-        public TypeMapping(Compiler Compiler)
-            : base(Compiler)
+        public TypeMapping()
+            : base()
         {
         }
 
@@ -56,7 +56,8 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <returns>This</returns>
         public override ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
         {
-            this.Mappings.Add(new Mapping(LeftExpression, RightExpression));
+            this.Mappings.Add(new Mapping<Left, Right>(LeftExpression, RightExpression));
+            return this;
         }
 
         /// <summary>
@@ -68,6 +69,8 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <returns>This</returns>
         public override ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression)
         {
+            this.Mappings.Add(new Mapping<Left, Right>(LeftGet, LeftSet, RightExpression));
+            return this;
         }
 
         /// <summary>
@@ -79,6 +82,8 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <returns>This</returns>
         public override ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
         {
+            this.Mappings.Add(new Mapping<Left, Right>(LeftExpression, RightGet, RightSet));
+            return this;
         }
 
         /// <summary>
@@ -91,6 +96,8 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <returns>This</returns>
         public override ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet)
         {
+            this.Mappings.Add(new Mapping<Left, Right>(LeftGet, LeftSet, RightGet, RightSet));
+            return this;
         }
 
         /// <summary>
@@ -100,6 +107,10 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <param name="Destination">Destination object</param>
         public override void Copy(Left Source, Right Destination)
         {
+            foreach (Mapping<Left, Right> Mapping in Mappings)
+            {
+                Mapping.Copy(Source, Destination);
+            }
         }
 
         /// <summary>
@@ -109,6 +120,10 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <param name="Destination">Destination object</param>
         public override void Copy(Right Source, Left Destination)
         {
+            foreach (Mapping<Left, Right> Mapping in Mappings)
+            {
+                Mapping.Copy(Source, Destination);
+            }
         }
 
         /// <summary>
@@ -120,6 +135,10 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <param name="Destination">Destination</param>
         public override void CopyLeftToRight(Left Source, Right Destination)
         {
+            foreach (Mapping<Left, Right> Mapping in Mappings)
+            {
+                Mapping.CopyLeftToRight(Source, Destination);
+            }
         }
 
         /// <summary>
@@ -131,6 +150,11 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <param name="Destination">Destination</param>
         public override void CopyRightToLeft(Right Source, Left Destination)
         {
+            foreach (Mapping<Left, Right> Mapping in Mappings)
+            {
+                Mapping.CopyRightToLeft(Source, Destination);
+            }
         }
+
     }
 }

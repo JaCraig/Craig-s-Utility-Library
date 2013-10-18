@@ -19,35 +19,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-using System;
-using System.Collections.Generic;
+
+using System.Reflection;
+using Utilities.DataTypes;
+using Utilities.DataTypes.DataMapper.Default;
+using Xunit;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-#endregion
+using UnitTests.DataTypes.DataMapper.Default;
 
-namespace Utilities.DataTypes.DataMapper.Interfaces
+namespace UnitTests.DataTypes.DataMapper
 {
-    /// <summary>
-    /// Data mapper interface
-    /// </summary>
-    public interface IDataMapper
+    public class Manager
     {
-        /// <summary>
-        /// Adds or returns a mapping between two types
-        /// </summary>
-        /// <typeparam name="Left">Left type</typeparam>
-        /// <typeparam name="Right">Right type</typeparam>
-        /// <returns>A mapping object for the two types specified</returns>
-        ITypeMapping<Left, Right> Map<Left, Right>();
+        [Fact]
+        public void CreationTest()
+        {
+            Utilities.DataTypes.DataMapper.Manager TestObject = null;
+            Assert.DoesNotThrow(() => TestObject = new Utilities.DataTypes.DataMapper.Manager());
+            Assert.NotNull(TestObject);
+        }
 
-        /// <summary>
-        /// Adds or returns a mapping between two types
-        /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
-        /// <returns>A mapping object for the two types specified</returns>
-        ITypeMapping Map(Type Left, Type Right);
+        [Fact]
+        public void TypeMappingTest()
+        {
+            Utilities.DataTypes.DataMapper.Manager TestObject = new Utilities.DataTypes.DataMapper.Manager();
+            Assert.NotNull(TestObject.Map<MappingA, MappingB>());
+            Assert.IsType<Utilities.DataTypes.DataMapper.Default.TypeMapping<MappingA, MappingB>>(TestObject.Map<MappingA, MappingB>());
+        }
     }
 }

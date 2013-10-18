@@ -41,21 +41,14 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Compiler">Compiler</param>
-        protected DataMapperBase(Compiler Compiler)
+        protected DataMapperBase()
         {
-            this.Compiler = Compiler;
             this.Mappings = new Dictionary<Tuple<Type, Type>, ITypeMapping>();
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Compiler that is potentially used
-        /// </summary>
-        protected Compiler Compiler { get; private set; }
 
         /// <summary>
         /// Mappings
@@ -88,6 +81,28 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <typeparam name="Right">Right type</typeparam>
         /// <returns>A mapping object for the two types specified</returns>
         protected abstract ITypeMapping<Left, Right> CreateTypeMapping<Left, Right>();
+
+        /// <summary>
+        /// Used internally to create type mappings
+        /// </summary>
+        /// <param name="Left">Left type</param>
+        /// <param name="Right">Right type</param>
+        /// <returns>A mapping object for the two types specified</returns>
+        protected abstract ITypeMapping CreateTypeMapping(Type Left, Type Right);
+
+        /// <summary>
+        /// Adds or returns a mapping between two types
+        /// </summary>
+        /// <param name="Left">Left type</param>
+        /// <param name="Right">Right type</param>
+        /// <returns>A mapping object for the two types specified</returns>
+        public ITypeMapping Map(Type Left, Type Right)
+        {
+            Tuple<Type, Type> Key = new Tuple<Type, Type>(Left, Right);
+            return Mappings.ContainsKey(Key) ? Mappings[Key]
+                                             : Mappings.AddAndReturn(new KeyValuePair<Tuple<Type, Type>, ITypeMapping>(Key, CreateTypeMapping(Left, Right)))
+                                                                                  .Value;
+        }
 
         #endregion
     }

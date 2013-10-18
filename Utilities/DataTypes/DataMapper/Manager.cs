@@ -47,25 +47,19 @@ namespace Utilities.DataTypes.DataMapper
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager(Compiler Compiler)
+        public Manager()
         {
-            Contract.Requires<ArgumentNullException>(Compiler != null, "Compiler");
-            this.Compiler = Compiler;
             IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().Types<IDataMapper>();
             Type Type = Types.FirstOrDefault(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
             if (Type == null)
                 Type = Types.FirstOrDefault(x => x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
-            DataMapper = Type.Create<IDataMapper>(Compiler);
+            DataMapper = Type.Create<IDataMapper>();
+            AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>().ForEach(x => x.Map(this));
         }
 
         #endregion
 
         #region Properties
-        
-        /// <summary>
-        /// Gets the system's compiler
-        /// </summary>
-        private Compiler Compiler { get; set; }
 
         /// <summary>
         /// Data mapper
@@ -85,6 +79,17 @@ namespace Utilities.DataTypes.DataMapper
         public ITypeMapping<Left, Right> Map<Left, Right>()
         {
             return DataMapper.Map<Left, Right>();
+        }
+
+        /// <summary>
+        /// Adds or returns a mapping between two types
+        /// </summary>
+        /// <param name="Left">Left type</param>
+        /// <param name="Right">Right type</param>
+        /// <returns>A mapping object for the two types specified</returns>
+        public ITypeMapping Map(Type Left, Type Right)
+        {
+            return DataMapper.Map(Left, Right);
         }
 
         #endregion

@@ -174,6 +174,7 @@
     <Compile Include="DataTypes\DataMapper\Default\Mapping.cs" />
     <Compile Include="DataTypes\DataMapper\Default\TypeMapping.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\IDataMapper.cs" />
+    <Compile Include="DataTypes\DataMapper\Interfaces\IMapperModule.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\IMapping.cs" />
     <Compile Include="DataTypes\DataMapper\Interfaces\ITypeMapping.cs" />
     <Compile Include="DataTypes\DataMapper\Manager.cs" />

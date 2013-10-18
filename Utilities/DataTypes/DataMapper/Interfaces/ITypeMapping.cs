@@ -31,6 +31,17 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
     /// </summary>
     public interface ITypeMapping
     {
+        /// <summary>
+        /// Automatically maps properties that are named the same thing
+        /// </summary>
+        ITypeMapping AutoMap();
+
+        /// <summary>
+        /// Copies from the source to the destination
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        void Copy(object Source, object Destination);
     }
 
     /// <summary>
@@ -40,11 +51,6 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
     /// <typeparam name="Right">Right type</typeparam>
     public interface ITypeMapping<Left, Right> : ITypeMapping
     {
-        /// <summary>
-        /// Automatically maps properties that are named the same thing
-        /// </summary>
-        ITypeMapping<Left, Right> AutoMap();
-
         /// <summary>
         /// Adds a mapping
         /// </summary>

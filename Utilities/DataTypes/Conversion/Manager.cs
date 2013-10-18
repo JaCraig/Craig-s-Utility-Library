@@ -100,7 +100,13 @@ namespace Utilities.DataTypes.Conversion
                     return Converter.ConvertFrom(Item);
                 string ObjectValue = Item as string;
                 if (string.IsNullOrEmpty(ObjectValue))
-                    return null;
+                {
+                    object ReturnValue = Activator.CreateInstance(ResultType);
+                    IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map(ObjectType, ResultType)
+                        .AutoMap()
+                        .Copy(Item, ReturnValue);
+                    return ReturnValue;
+                }
                 if (ResultType.IsEnum)
                     return System.Enum.Parse(ResultType, ObjectValue, true);
                 if (DefaultValue == null && ResultType.IsValueType)

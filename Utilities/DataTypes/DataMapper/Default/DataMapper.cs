@@ -26,6 +26,7 @@ using System.Linq.Expressions;
 using Utilities.DataTypes.CodeGen;
 using Utilities.DataTypes.DataMapper.BaseClasses;
 using Utilities.DataTypes.DataMapper.Interfaces;
+using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.DataMapper.Default
@@ -38,9 +39,8 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Compiler">Compiler</param>
-        public DataMapper(Compiler Compiler)
-            : base(Compiler)
+        public DataMapper()
+            : base()
         {
         }
 
@@ -52,7 +52,18 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <returns>A mapping object for the two types specified</returns>
         protected override ITypeMapping<Left, Right> CreateTypeMapping<Left, Right>()
         {
-            return new TypeMapping<Left, Right>(Compiler);
+            return new TypeMapping<Left, Right>();
+        }
+
+        /// <summary>
+        /// Used internally to create type mappings
+        /// </summary>
+        /// <param name="Left">Left type</param>
+        /// <param name="Right">Right type</param>
+        /// <returns>A mapping object for the two types specified</returns>
+        protected override ITypeMapping CreateTypeMapping(Type Left, Type Right)
+        {
+            return (ITypeMapping)AppDomain.CurrentDomain.GetAssemblies().Types<ITypeMapping>().First().MakeGenericType(Left, Right).Create();
         }
     }
 }

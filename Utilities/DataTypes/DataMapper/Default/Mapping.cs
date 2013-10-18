@@ -30,41 +30,155 @@ using System.Threading.Tasks;
 using Utilities.DataTypes.CodeGen;
 using Utilities.DataTypes.DataMapper.Interfaces;
 using Utilities.DataTypes.DataMapper.Default;
+using System.Text.RegularExpressions;
+using System.Diagnostics.Contracts;
+using Utilities.DataTypes.DataMapper.BaseClasses;
 #endregion
 
-namespace Utilities.DataTypes.DataMapper.BaseClasses
+namespace Utilities.DataTypes.DataMapper.Default
 {
     /// <summary>
-    /// Mapping default class
+    /// Mapping class
     /// </summary>
+    /// <typeparam name="Left">Left type</typeparam>
+    /// <typeparam name="Right">Right type</typeparam>
     public class Mapping<Left, Right> : MappingBase<Left, Right>
     {
+        #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="LeftExpression">Left expression</param>
+        /// <param name="RightExpression">Right expression</param>
         public Mapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression)
+            : this(LeftExpression == null ? null : LeftExpression.Compile(),
+                    LeftExpression == null ? null : LeftExpression.PropertySetter<Left>().Compile(),
+                    RightExpression == null ? null : RightExpression.Compile(),
+                    RightExpression == null ? null : RightExpression.PropertySetter<Right>().Compile())
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="LeftGet">Left get function</param>
+        /// <param name="LeftSet">Left set action</param>
+        /// <param name="RightExpression">Right expression</param>
+        public Mapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression)
+            : this(LeftGet,
+                    LeftSet,
+                    RightExpression == null ? null : RightExpression.Compile(),
+                    RightExpression == null ? null : RightExpression.PropertySetter<Right>().Compile())
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="LeftExpression">Left expression</param>
+        /// <param name="RightGet">Right get function</param>
+        /// <param name="RightSet">Right set function</param>
+        public Mapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet)
+            : this(LeftExpression == null ? null : LeftExpression.Compile(),
+                    LeftExpression == null ? null : LeftExpression.PropertySetter<Left>().Compile(),
+                    RightGet,
+                    RightSet)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="LeftGet">Left get function</param>
+        /// <param name="LeftSet">Left set function</param>
+        /// <param name="RightGet">Right get function</param>
+        /// <param name="RightSet">Right set function</param>
+        public Mapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet)
             : base()
         {
-            string LeftParameter = LeftExpression.Parameters[0].ToString();
-            string RightParameter = RightExpression.Parameters[0].ToString();
-            string Left = LeftExpression.Body.ToString().Replace(LeftParameter, "Left");
-            string Right = RightExpression.Body.ToString().Replace(RightParameter, "Right");
-            CreateLeftToRight(Left, Right);
-            CreateRightToLeft(Left, Right);
+            this.LeftGet = LeftGet;
+            this.LeftSet = LeftSet.Check((x, y) => { });
+            this.RightGet = RightGet;
+            this.RightSet = RightSet.Check((x, y) => { });
         }
 
-        protected string LeftToRight { get; set; }
+        #endregion
 
-        protected string RightToLeft { get; set; }
+        #region Properties
 
-        private void CreateRightToLeft(string Left, string Right)
+        /// <summary>
+        /// Left get function
+        /// </summary>
+        protected Func<Left, object> LeftGet { get; set; }
+
+        /// <summary>
+        /// Right get function
+        /// </summary>
+        protected Func<Right, object> RightGet { get; set; }
+
+        /// <summary>
+        /// Left set function
+        /// </summary>
+        protected Action<Left, object> LeftSet { get; set; }
+
+        /// <summary>
+        /// Right set function
+        /// </summary>
+        protected Action<Right, object> RightSet { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Copies the source to the destination
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        public virtual void Copy(Left Source, Right Destination)
         {
-            RightToLeft = Left + "=" + Right;
+            if (LeftGet == null) return;
+            RightSet(Destination, LeftGet(Source));
         }
 
-        private void CreateLeftToRight(string Left, string Right)
+        /// <summary>
+        /// Copies the source to the destination
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        public virtual void Copy(Right Source, Left Destination)
         {
-            LeftToRight = Right + "=" + Left;
+            if (RightGet == null) return;
+            LeftSet(Destination, RightGet(Source));
         }
+
+        /// <summary>
+        /// Copies from the source to the destination (used in 
+        /// instances when both Left and Right are the same type
+        /// and thus Copy is ambiguous)
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        public virtual void CopyLeftToRight(Left Source, Right Destination)
+        {
+            if (LeftGet == null) return;
+            RightSet(Destination, LeftGet(Source));
+        }
+
+        /// <summary>
+        /// Copies from the source to the destination (used in 
+        /// instances when both Left and Right are the same type
+        /// and thus Copy is ambiguous)
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        public virtual void CopyRightToLeft(Right Source, Left Destination)
+        {
+            if (RightGet == null) return;
+            LeftSet(Destination, RightGet(Source));
+        }
+
+        #endregion
     }
 }

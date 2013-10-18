@@ -26,8 +26,10 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Utilities.DataTypes;
+using Utilities.DataTypes.DataMapper;
 #endregion
 
 namespace Utilities.DataTypes.Dynamic
@@ -46,6 +48,7 @@ namespace Utilities.DataTypes.Dynamic
             : base()
         {
             InternalValues = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -53,9 +56,10 @@ namespace Utilities.DataTypes.Dynamic
         /// </summary>
         /// <param name="Dictionary">Dictionary to copy</param>
         public Dynamo(IDictionary<string, object> Dictionary)
-            :base()
+            : base()
         {
             InternalValues = new Dictionary<string, object>(Dictionary, StringComparer.OrdinalIgnoreCase);
+            ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
         }
 
         #endregion
@@ -66,6 +70,11 @@ namespace Utilities.DataTypes.Dynamic
         /// Internal key/value dictionary
         /// </summary>
         private IDictionary<string, object> InternalValues { get; set; }
+
+        /// <summary>
+        /// Child class key/value dictionary
+        /// </summary>
+        private IDictionary<string, Func<object>> ChildValues { get; set; }
 
         /// <summary>
         /// Keys
@@ -307,11 +316,9 @@ namespace Utilities.DataTypes.Dynamic
             }
 
             result = Activator.CreateInstance(binder.Type);
-            PropertyInfo[] Properties = binder.Type.GetProperties();
-            for (int x = 0; x < Properties.Length; ++x)
-            {
-                Properties[x].SetValue(result, GetValue(Properties[x].Name, Properties[x].PropertyType));
-            }
+            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), binder.Type)
+                .AutoMap()
+                .Copy(this, result);
             return true;
         }
 
@@ -325,11 +332,18 @@ namespace Utilities.DataTypes.Dynamic
         {
             if (ContainsKey(Name))
                 return this[Name].To(ReturnType, null);
-            Type ObjectType = GetType();
-            PropertyInfo Property = ObjectType.GetProperty(Name);
-            if (Property != null)
-                return Property.GetValue(this).To(ReturnType, null);
-            return ((object)null).To(ReturnType, null);
+            if (!ChildValues.ContainsKey(Name))
+            {
+                Type ObjectType = GetType();
+                PropertyInfo Property = ObjectType.GetProperty(Name);
+                if (Property != null)
+                {
+                    Func<Dynamo, object> Temp = Property.PropertyGetter<Dynamo>().Compile();
+                    ChildValues.Add(Name, () => Temp(this));
+                }
+                ChildValues.Add(Name, () => null);
+            }
+            return ChildValues[Name]().To(ReturnType, null);
         }
 
         #endregion

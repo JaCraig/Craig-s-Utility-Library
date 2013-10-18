@@ -19,35 +19,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-#endregion
+using Xunit;
 
-namespace Utilities.DataTypes.DataMapper.Interfaces
+
+namespace UnitTests.DataTypes.DataMapper.Default
 {
-    /// <summary>
-    /// Data mapper interface
-    /// </summary>
-    public interface IDataMapper
+    public class DataMapper
     {
-        /// <summary>
-        /// Adds or returns a mapping between two types
-        /// </summary>
-        /// <typeparam name="Left">Left type</typeparam>
-        /// <typeparam name="Right">Right type</typeparam>
-        /// <returns>A mapping object for the two types specified</returns>
-        ITypeMapping<Left, Right> Map<Left, Right>();
-
-        /// <summary>
-        /// Adds or returns a mapping between two types
-        /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
-        /// <returns>A mapping object for the two types specified</returns>
-        ITypeMapping Map(Type Left, Type Right);
+        [Fact]
+        public void Creation()
+        {
+            Utilities.DataTypes.DataMapper.Default.DataMapper Manager = new Utilities.DataTypes.DataMapper.Default.DataMapper();
+            Manager.Map<MappingA, MappingB>()
+                .AddMapping(x => x.Item1, x => x.Item1)
+                .AddMapping(x => x.Item2, x => x.Item2);
+            MappingA A = new MappingA();
+            A.Item1 = 12;
+            A.Item2 = "ASDF";
+            MappingB B = new MappingB();
+            B.Item1 = 13;
+            B.Item2 = "ZXCV";
+            Manager.Map<MappingA, MappingB>().CopyLeftToRight(A, B);
+            Assert.Equal(B.Item1, 12);
+            Assert.Equal(B.Item2, "ASDF");
+        }
     }
 }

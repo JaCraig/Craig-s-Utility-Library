@@ -21,33 +21,20 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 #endregion
 
 namespace Utilities.DataTypes.DataMapper.Interfaces
 {
     /// <summary>
-    /// Data mapper interface
+    /// Mapping interface
     /// </summary>
-    public interface IDataMapper
+    public interface IMapperModule
     {
         /// <summary>
-        /// Adds or returns a mapping between two types
+        /// Called when mapping various classes to one another
         /// </summary>
-        /// <typeparam name="Left">Left type</typeparam>
-        /// <typeparam name="Right">Right type</typeparam>
-        /// <returns>A mapping object for the two types specified</returns>
-        ITypeMapping<Left, Right> Map<Left, Right>();
-
-        /// <summary>
-        /// Adds or returns a mapping between two types
-        /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
-        /// <returns>A mapping object for the two types specified</returns>
-        ITypeMapping Map(Type Left, Type Right);
+        /// <param name="Manager">Mapping manager class</param>
+        void Map(Manager Manager);
     }
 }

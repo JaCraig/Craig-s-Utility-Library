@@ -121,13 +121,9 @@ namespace Utilities.DataTypes.Conversion.Converters
             {
                 IDictionary<String, Object> TempValue = value as IDictionary<String, Object>;
                 object ReturnValue = Activator.CreateInstance(destinationType);
-                foreach (PropertyInfo Property in destinationType.GetProperties())
-                {
-                    if (TempValue.ContainsKey(Property.Name))
-                    {
-                        Property.SetValue(ReturnValue, TempValue[Property.Name], null);
-                    }
-                }
+                IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map(typeof(IDictionary<String, Object>), destinationType)
+                        .AutoMap()
+                        .Copy(TempValue, ReturnValue);
                 return ReturnValue;
             }
             catch { }

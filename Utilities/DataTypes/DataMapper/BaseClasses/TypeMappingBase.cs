@@ -29,6 +29,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes.CodeGen;
 using Utilities.DataTypes.DataMapper.Interfaces;
+using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.DataTypes.DataMapper.BaseClasses
@@ -43,10 +44,8 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Compiler">Compiler</param>
-        protected TypeMappingBase(Compiler Compiler)
+        protected TypeMappingBase()
         {
-            this.Compiler = Compiler;
             this.Mappings = new List<IMapping<Left, Right>>();
         }
 
@@ -55,14 +54,14 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         #region Properties
 
         /// <summary>
-        /// Compiler that is potentially used
-        /// </summary>
-        protected Compiler Compiler { get; private set; }
-
-        /// <summary>
         /// List of mappings
         /// </summary>
         protected ICollection<IMapping<Left, Right>> Mappings { get; private set; }
+
+        /// <summary>
+        /// Automapped already
+        /// </summary>
+        private bool AutoMapped { get; set; }
 
         #endregion
 
@@ -72,21 +71,150 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// Automatically maps properties that are named the same thing
         /// </summary>
         /// <returns>This</returns>
-        public virtual ITypeMapping<Left, Right> AutoMap()
+        public virtual ITypeMapping AutoMap()
         {
-            PropertyInfo[] Properties = typeof(Left).GetProperties();
-            Type DestinationType = typeof(Right);
-            for (int x = 0; x < Properties.Length; ++x)
+            if (AutoMapped)
+                return this;
+            Type LeftType = typeof(Left);
+            Type RightType = typeof(Right);
+            if (RightType.Is<IDictionary<string, object>>() && LeftType.Is<IDictionary<string, object>>())
             {
-                PropertyInfo DestinationProperty = DestinationType.GetProperty(Properties[x].Name);
-                if (DestinationProperty != null)
+                AddIDictionaryMappings();
+            }
+            else if (RightType.Is<IDictionary<string, object>>())
+            {
+                AddRightIDictionaryMapping(LeftType, RightType);
+            }
+            else if (LeftType.Is<IDictionary<string, object>>())
+            {
+                AddLeftIDictionaryMapping(LeftType, RightType);
+            }
+            else
+            {
+                PropertyInfo[] Properties = typeof(Left).GetProperties();
+                for (int x = 0; x < Properties.Length; ++x)
                 {
-                    Expression<Func<Left, object>> LeftGet = Properties[x].PropertyGetter<Left>();
-                    Expression<Func<Right, object>> RightGet = DestinationProperty.PropertyGetter<Right>();
-                    this.AddMapping(LeftGet, RightGet);
+                    PropertyInfo DestinationProperty = RightType.GetProperty(Properties[x].Name);
+                    if (DestinationProperty != null)
+                    {
+                        Expression<Func<Left, object>> LeftGet = Properties[x].PropertyGetter<Left>();
+                        Expression<Func<Right, object>> RightGet = DestinationProperty.PropertyGetter<Right>();
+                        this.AddMapping(LeftGet, RightGet);
+                    }
                 }
             }
+            AutoMapped = true;
             return this;
+        }
+
+        /// <summary>
+        /// Copies from the source to the destination
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        public void Copy(object Source, object Destination)
+        {
+            Copy((Left)Source, (Right)Destination);
+        }
+
+        private void AddLeftIDictionaryMapping(Type LeftType, Type RightType)
+        {
+            PropertyInfo[] Properties = RightType.GetProperties();
+            for (int x = 0; x < Properties.Length; ++x)
+            {
+                PropertyInfo Property = Properties[x];
+                Expression<Func<Right, object>> RightGet = Properties[x].PropertyGetter<Right>();
+                PropertyInfo LeftProperty = LeftType.GetProperty(Property.Name);
+                if (LeftProperty != null)
+                {
+                    Expression<Func<Left, object>> LeftGet = LeftProperty.PropertyGetter<Left>();
+                    this.AddMapping(LeftGet, RightGet);
+                }
+                else
+                {
+                    this.AddMapping(new Func<Left, object>(y =>
+                    {
+                        IDictionary<string, object> Temp = (IDictionary<string, object>)y;
+                        if (Temp.ContainsKey(Property.Name))
+                            return Temp[Property.Name];
+                        return null;
+                    }),
+                    new Action<Left, object>((y, z) =>
+                    {
+                        IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
+                        if (LeftSide.ContainsKey(Property.Name))
+                            LeftSide[Property.Name] = z;
+                        else
+                            LeftSide.Add(Property.Name, z);
+                    }),
+                    RightGet);
+                }
+            }
+        }
+
+        private void AddRightIDictionaryMapping(Type LeftType, Type RightType)
+        {
+            PropertyInfo[] Properties = LeftType.GetProperties();
+            for (int x = 0; x < Properties.Length; ++x)
+            {
+                PropertyInfo Property = Properties[x];
+                Expression<Func<Left, object>> LeftGet = Property.PropertyGetter<Left>();
+                PropertyInfo RightProperty = RightType.GetProperty(Property.Name);
+                if (RightProperty != null)
+                {
+                    Expression<Func<Right, object>> RightGet = RightProperty.PropertyGetter<Right>();
+                    this.AddMapping(LeftGet, RightGet);
+                }
+                else
+                {
+                    this.AddMapping(LeftGet,
+                    new Func<Right, object>(y =>
+                    {
+                        IDictionary<string, object> Temp = (IDictionary<string, object>)y;
+                        if (Temp.ContainsKey(Property.Name))
+                            return Temp[Property.Name];
+                        return null;
+                    }),
+                    new Action<Right, object>((y, z) =>
+                    {
+                        IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
+                        if (LeftSide.ContainsKey(Property.Name))
+                            LeftSide[Property.Name] = z;
+                        else
+                            LeftSide.Add(Property.Name, z);
+                    }));
+                }
+            }
+        }
+
+        private void AddIDictionaryMappings()
+        {
+            this.AddMapping(x => x,
+            new Action<Left, object>((x, y) =>
+            {
+                IDictionary<string, object> LeftSide = (IDictionary<string, object>)x;
+                IDictionary<string, object> RightSide = (IDictionary<string, object>)y;
+                foreach (string Key in RightSide.Keys)
+                {
+                    if (LeftSide.ContainsKey(Key))
+                        LeftSide[Key] = RightSide[Key];
+                    else
+                        LeftSide.Add(Key, RightSide[Key]);
+                }
+            }),
+            x => x,
+            new Action<Right, object>((x, y) =>
+            {
+                IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
+                IDictionary<string, object> RightSide = (IDictionary<string, object>)x;
+                foreach (string Key in LeftSide.Keys)
+                {
+                    if (RightSide.ContainsKey(Key))
+                        RightSide[Key] = LeftSide[Key];
+                    else
+                        RightSide.Add(Key, LeftSide[Key]);
+                }
+            }));
         }
 
         /// <summary>
