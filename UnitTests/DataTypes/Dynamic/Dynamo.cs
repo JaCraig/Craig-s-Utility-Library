@@ -49,12 +49,31 @@ namespace UnitTests.DataTypes.Dynamic
             Assert.Equal("Testing", Temp2.A);
             Assert.Equal(1, Temp2.B);
 
-            Temp = new Utilities.DataTypes.Dynamic.Dynamo();
+            Temp = new Utilities.DataTypes.Dynamo();
             Temp.A = "Testing";
             Temp.B = 1;
             Temp2 = Temp;
             Assert.Equal("Testing", Temp2.A);
             Assert.Equal(1, Temp2.B);
+        }
+
+
+        [Fact]
+        public void CopyBetweenItems()
+        {
+            dynamic Temp = new TestClass();
+            Temp.A = "Testing";
+            Temp.B = 1;
+            Utilities.DataTypes.Dynamo Temp2 = Temp;
+            Assert.Equal("Testing", Temp2["A"]);
+            Assert.Equal(1, Temp2["B"]);
+
+            Temp = new Utilities.DataTypes.Dynamo();
+            Temp.A = "Testing2";
+            Temp.B = 2;
+            Temp2 = Temp;
+            Assert.Equal("Testing2", Temp2["A"]);
+            Assert.Equal(2, Temp2["B"]);
         }
 
         [Fact]
@@ -67,7 +86,7 @@ namespace UnitTests.DataTypes.Dynamic
             Assert.Equal("Testing", Temp.A);
         }
 
-        public class TestClass : Utilities.DataTypes.Dynamic.Dynamo
+        public class TestClass : Utilities.DataTypes.Dynamo<TestClass>
         {
             public string A { get; set; }
         }

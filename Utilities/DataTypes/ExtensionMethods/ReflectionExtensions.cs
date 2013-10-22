@@ -443,7 +443,6 @@ namespace Utilities.DataTypes
         /// <param name="Object">Object to copy</param>
         /// <param name="SimpleTypesOnly">If true, it only copies simple types (no classes, only items like int, string, etc.), false copies everything.</param>
         /// <returns>A copy of the object</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static T MakeShallowCopy<T>(this T Object, bool SimpleTypesOnly=false)
         {
             if (Object == null)
@@ -859,7 +858,6 @@ namespace Utilities.DataTypes
         /// <param name="Object">Object to dunp</param>
         /// <param name="HTMLOutput">Determines if the output should be HTML or not</param>
         /// <returns>An HTML formatted table containing the information about the object</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string ToString(this object Object, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
@@ -892,7 +890,6 @@ namespace Utilities.DataTypes
         /// <param name="ObjectType">Object type to dunp</param>
         /// <param name="HTMLOutput">Should this be output as an HTML string</param>
         /// <returns>An HTML formatted table containing the information about the object type</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static string ToString(this Type ObjectType, bool HTMLOutput)
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");

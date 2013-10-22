@@ -48,7 +48,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\AI\NaiveBayes.cs" />
     <Compile Include="DataTypes\AOP\Manager.cs" />
+    <Compile Include="DataTypes\Bag.cs" />
+    <Compile Include="DataTypes\BTree.cs" />
     <Compile Include="DataTypes\CodeGen\Compiler.cs" />
     <Compile Include="DataTypes\Comparison\GenericComparer.cs" />
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
@@ -60,6 +63,7 @@
     <Compile Include="DataTypes\DataMapper\Default\Mapping.cs" />
     <Compile Include="DataTypes\DataMapper\Default\TypeMapping.cs" />
     <Compile Include="DataTypes\DataMapper\Manager.cs" />
+    <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />
@@ -70,15 +74,28 @@
     <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\MathExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\PermutationExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\PredicateExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TypeConversion.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ValueType.cs" />
+    <Compile Include="DataTypes\Fraction.cs" />
+    <Compile Include="DataTypes\ListMapping.cs" />
+    <Compile Include="DataTypes\Matrix.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
     <Compile Include="DataTypes\Patterns\Factory.cs" />
+    <Compile Include="DataTypes\PriorityQueue.cs" />
+    <Compile Include="DataTypes\RingBuffer.cs" />
+    <Compile Include="DataTypes\Set.cs" />
+    <Compile Include="DataTypes\StringTemplate.cs" />
+    <Compile Include="DataTypes\Table.cs" />
+    <Compile Include="DataTypes\TagDictionary.cs" />
     <Compile Include="DataTypes\Threading\TaskQueue.cs" />
+    <Compile Include="DataTypes\Vector3.cs" />
     <Compile Include="Fixtures\TestingDirectoryFixture.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />
     <Compile Include="IoC\Default\TypeBuilder.cs" />

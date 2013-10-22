@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Compression;
@@ -149,7 +148,6 @@ namespace Utilities.IO
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
         /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
         /// <returns>An encrypted byte array</returns>
-        [SuppressMessage("Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes")]
         public static byte[] Encrypt(this byte[] Data,
             DeriveBytes Key,
             string AlgorithmUsing = "AES",

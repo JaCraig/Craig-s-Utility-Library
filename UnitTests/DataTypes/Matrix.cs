@@ -19,21 +19,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using Utilities.DataTypes;
+
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class Matrix
     {
         [Fact]
-        public void BasicTasks()
+        public void BasicTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
-            {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
-            }
+            Utilities.DataTypes.Matrix TestObject = new Utilities.DataTypes.Matrix(3, 3, new double[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
+            Utilities.DataTypes.Matrix TestObject2 = new Utilities.DataTypes.Matrix(3, 3, new double[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
+            Assert.Equal(4, TestObject[1, 0]);
+            Assert.Equal(8, (TestObject + TestObject2)[1, 0]);
+            Assert.Equal(8, (TestObject * 2)[1, 0]);
         }
     }
 }

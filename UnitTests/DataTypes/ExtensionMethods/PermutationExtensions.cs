@@ -19,21 +19,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
+
 using Utilities.DataTypes;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+namespace UnitTests.Math.ExtensionMethods
 {
-    public class TaskQueue
+    /// <summary>
+    /// Permutation extensions
+    /// </summary>
+    public class PermutationExtensions
     {
         [Fact]
-        public void BasicTasks()
+        public void BasicTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
-            {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
-            }
+            System.Collections.Generic.List<string> TestObject = new System.Collections.Generic.List<string>();
+            TestObject.AddRange(new string[] { "this", "is", "a", "test" });
+            ListMapping<int, string> Results = TestObject.Permute();
+            Assert.Equal(24, Results.Keys.Count);
+            foreach (int Key in Results.Keys)
+                foreach (string Item in Results[Key])
+                    Assert.True(Item == "this" || Item == "is" || Item == "a" || Item == "test");
         }
     }
 }

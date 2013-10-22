@@ -58,11 +58,6 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// </summary>
         protected ICollection<IMapping<Left, Right>> Mappings { get; private set; }
 
-        /// <summary>
-        /// Automapped already
-        /// </summary>
-        private bool AutoMapped { get; set; }
-
         #endregion
 
         #region Functions
@@ -73,7 +68,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <returns>This</returns>
         public virtual ITypeMapping AutoMap()
         {
-            if (AutoMapped)
+            if (Mappings.Count > 0)
                 return this;
             Type LeftType = typeof(Left);
             Type RightType = typeof(Right);
@@ -103,7 +98,6 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                     }
                 }
             }
-            AutoMapped = true;
             return this;
         }
 

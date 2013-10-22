@@ -20,19 +20,41 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Linq;
 using Utilities.DataTypes;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class RingBuffer
     {
         [Fact]
-        public void BasicTasks()
+        public void RandomTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
+            RingBuffer<int> TestObject = new RingBuffer<int>(10);
+            System.Random Rand = new System.Random();
+            int Value = 0;
+            for (int x = 0; x < 10; ++x)
             {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
+                Value = Rand.Next();
+                TestObject.Add(Value);
+                Assert.Equal(1, TestObject.Count);
+                Assert.Equal(Value, TestObject.Remove());
+            }
+            Assert.Equal(0, TestObject.Count);
+            System.Collections.Generic.List<int> Values=new System.Collections.Generic.List<int>();
+            for (int x = 0; x < 10; ++x)
+            {
+                Values.Add(Rand.Next());
+            }
+            TestObject.Add(Values);
+            Assert.Equal(Values.ToArray(), TestObject.ToArray());
+
+            for (int x = 0; x < 10; ++x)
+            {
+                Assert.Throws<InvalidOperationException>(() => TestObject.Add(Rand.Next()));
+                Assert.Equal(10, TestObject.Count);
             }
         }
     }

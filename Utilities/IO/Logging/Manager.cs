@@ -27,6 +27,7 @@ using System.Reflection;
 using Utilities.IO.Logging.Default;
 using Utilities.IO.Logging.Interfaces;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Patterns.BaseClasses;
 #endregion
 
 namespace Utilities.IO.Logging
@@ -34,7 +35,7 @@ namespace Utilities.IO.Logging
     /// <summary>
     /// Logging manager
     /// </summary>
-    public class Manager : IDisposable
+    public class Manager : SafeDisposableBaseClass
     {
         #region Constructor
 
@@ -82,31 +83,14 @@ namespace Utilities.IO.Logging
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
         /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
-        protected virtual void Dispose(bool Managed)
+        protected override void Dispose(bool Managed)
         {
             if (LoggerUsing != null)
             {
                 LoggerUsing.Dispose();
                 LoggerUsing = null;
             }
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~Manager()
-        {
-            Dispose(false);
         }
 
         #endregion

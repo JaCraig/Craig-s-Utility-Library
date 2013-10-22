@@ -60,7 +60,7 @@ namespace Utilities.DataTypes.Patterns
         /// Hides GetType
         /// </summary>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate"), EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         Type GetType();
 
         #endregion

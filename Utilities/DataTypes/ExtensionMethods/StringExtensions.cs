@@ -247,7 +247,6 @@ namespace Utilities.DataTypes
         /// <param name="Value1">Value 1</param>
         /// <param name="Value2">Value 2</param>
         /// <returns>The Levenshtein distance</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body")]
         public static int LevenshteinDistance(this string Value1, string Value2)
         {
             Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");

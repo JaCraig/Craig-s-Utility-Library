@@ -111,7 +111,6 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Buffer that the circular buffer uses
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         protected T[] Buffer { get; set; }
 
         /// <summary>

@@ -19,21 +19,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using Utilities.DataTypes;
+using System.Linq;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+
+namespace UnitTests.DataTypes.AI
 {
-    public class TaskQueue
+    public class NaiveBayes
     {
         [Fact]
-        public void BasicTasks()
+        public void BasicTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
-            {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
-            }
+            Utilities.DataTypes.AI.NaiveBayes<string> TestingObject = new Utilities.DataTypes.AI.NaiveBayes<string>();
+            TestingObject.LoadTokens(new string[] { "this", "is", "a", "test" }.ToList(), new string[] { "not", "a", "test" }.ToList());
+            Assert.Equal(0.999, TestingObject.CalculateProbabilityOfTokens(new string[] { "this" }.ToList()));
+            Assert.Equal(0.999, TestingObject.CalculateProbabilityOfTokens(new string[] { "is" }.ToList()));
+            Assert.Equal(0.01, TestingObject.CalculateProbabilityOfTokens(new string[] { "not" }.ToList()));
+            Assert.InRange(TestingObject.CalculateProbabilityOfTokens(new string[] { "a" }.ToList()), 0.42, 0.43);
+            Assert.InRange(TestingObject.CalculateProbabilityOfTokens(new string[] { "test" }.ToList()), 0.42, 0.43);
         }
     }
 }

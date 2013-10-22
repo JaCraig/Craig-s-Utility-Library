@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Compression;

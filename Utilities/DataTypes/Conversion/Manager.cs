@@ -102,7 +102,8 @@ namespace Utilities.DataTypes.Conversion
                 if (string.IsNullOrEmpty(ObjectValue))
                 {
                     object ReturnValue = Activator.CreateInstance(ResultType);
-                    IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map(ObjectType, ResultType)
+
+                    ObjectType.MapTo(ResultType)
                         .AutoMap()
                         .Copy(Item, ReturnValue);
                     return ReturnValue;

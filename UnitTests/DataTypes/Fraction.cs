@@ -19,21 +19,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using Utilities.DataTypes;
+
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class Fraction
     {
         [Fact]
-        public void BasicTasks()
+        public void BasicTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
-            {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
-            }
+            Utilities.DataTypes.Fraction TestObject = new Utilities.DataTypes.Fraction(9, 27);
+            Utilities.DataTypes.Fraction TestObject2 = new Utilities.DataTypes.Fraction(3, 4);
+            TestObject.Reduce();
+            Assert.Equal(3, TestObject.Denominator);
+            Assert.Equal(1, TestObject.Numerator);
+            Assert.Equal(new Utilities.DataTypes.Fraction(1, 4), TestObject * TestObject2);
+            Assert.Equal(new Utilities.DataTypes.Fraction(13, 12), TestObject + TestObject2);
+            Assert.Equal(new Utilities.DataTypes.Fraction(-5, 12), TestObject - TestObject2);
+            Assert.Equal(new Utilities.DataTypes.Fraction(4, 9), TestObject / TestObject2);
+            Assert.Equal(new Utilities.DataTypes.Fraction(-1, 3), -TestObject);
+            Assert.Equal(new Utilities.DataTypes.Fraction(9, 27), TestObject);
         }
     }
 }

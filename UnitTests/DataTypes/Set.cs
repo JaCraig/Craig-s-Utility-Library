@@ -19,21 +19,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
+
 using Utilities.DataTypes;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class Set
     {
         [Fact]
-        public void BasicTasks()
+        public void BasicTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
-            {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
-            }
+            Set<int> TestObject = new Set<int>();
+            Set<int> TestObject2 = new Set<int>();
+            for (int x = 0; x < 10; ++x)
+                TestObject.Add(x);
+            for (int x = 9; x >= 0; --x)
+                TestObject2.Add(x);
+            Assert.True(TestObject.IsSubset(TestObject2));
+            Assert.True(TestObject.Contains(TestObject2));
+            Assert.True(TestObject.Intersect(TestObject2));
         }
     }
 }

@@ -32,8 +32,66 @@ using Utilities.DataTypes;
 using Utilities.DataTypes.DataMapper;
 #endregion
 
-namespace Utilities.DataTypes.Dynamic
+namespace Utilities.DataTypes
 {
+    /// <summary>
+    /// Dynamic object implementation (used when inheriting
+    /// </summary>
+    /// <typeparam name="T">Child object type</typeparam>
+    public class Dynamo<T> : Dynamo
+        where T : Dynamo<T>
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Dynamo()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Dictionary">Dictionary to copy</param>
+        public Dynamo(IDictionary<string, object> Dictionary)
+            : base(Dictionary)
+        {
+        }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Gets a value
+        /// </summary>
+        /// <param name="Name">Name of the item</param>
+        /// <param name="ReturnType">Return value type</param>
+        /// <returns>The returned value</returns>
+        protected override object GetValue(string Name, Type ReturnType)
+        {
+            if (ContainsKey(Name))
+                return InternalValues[Name].To(ReturnType, null);
+            if (!ChildValues.ContainsKey(Name))
+            {
+                Type ObjectType = GetType();
+                PropertyInfo Property = ObjectType.GetProperty(Name);
+                if (Property != null)
+                {
+                    Func<T, object> Temp = Property.PropertyGetter<T>().Compile();
+                    ChildValues.Add(Name, () => Temp((T)this));
+                }
+                else
+                    ChildValues.Add(Name, () => null);
+            }
+            return ChildValues[Name]().To(ReturnType, null);
+        }
+
+        #endregion
+    }
+
     /// <summary>
     /// Dynamic object implementation
     /// </summary>
@@ -69,12 +127,12 @@ namespace Utilities.DataTypes.Dynamic
         /// <summary>
         /// Internal key/value dictionary
         /// </summary>
-        private IDictionary<string, object> InternalValues { get; set; }
+        internal IDictionary<string, object> InternalValues { get; set; }
 
         /// <summary>
         /// Child class key/value dictionary
         /// </summary>
-        private IDictionary<string, Func<object>> ChildValues { get; set; }
+        internal IDictionary<string, Func<object>> ChildValues { get; set; }
 
         /// <summary>
         /// Keys
@@ -105,16 +163,11 @@ namespace Utilities.DataTypes.Dynamic
         {
             get
             {
-                return InternalValues.ContainsKey(key) ? InternalValues[key] : null;
+                return GetValue(key, typeof(object));
             }
             set
             {
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs(key));
-                if (InternalValues.ContainsKey(key))
-                    InternalValues[key] = value;
-                else
-                    InternalValues.Add(key, value);
+                SetValue(key, value);
             }
         }
 
@@ -129,9 +182,7 @@ namespace Utilities.DataTypes.Dynamic
         /// <param name="value">value</param>
         public void Add(string key, object value)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(key));
-            InternalValues.Add(key, value);
+            SetValue(key, value);
         }
 
         /// <summary>
@@ -173,9 +224,7 @@ namespace Utilities.DataTypes.Dynamic
         /// <param name="item">Item to add</param>
         public void Add(KeyValuePair<string, object> item)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(item.Key));
-            InternalValues.Add(item);
+            SetValue(item.Key, item.Value);
         }
 
         /// <summary>
@@ -291,10 +340,7 @@ namespace Utilities.DataTypes.Dynamic
         /// <returns>True if it is set, false otherwise</returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            if (ContainsKey(binder.Name))
-                this[binder.Name] = value;
-            else
-                Add(binder.Name, value);
+            SetValue(binder.Name, value);
             return true;
         }
 
@@ -306,15 +352,6 @@ namespace Utilities.DataTypes.Dynamic
         /// <returns>True if it is converted, false otherwise</returns>
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
-            if (binder.Type.Is(typeof(IDictionary<string, object>)))
-            {
-                IDictionary<string, object> Temp = (IDictionary<string, object>)Activator.CreateInstance(binder.Type);
-                foreach (string Key in InternalValues.Keys)
-                    Temp.Add(Key, InternalValues[Key]);
-                result = Temp;
-                return true;
-            }
-
             result = Activator.CreateInstance(binder.Type);
             IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), binder.Type)
                 .AutoMap()
@@ -328,10 +365,10 @@ namespace Utilities.DataTypes.Dynamic
         /// <param name="Name">Name of the item</param>
         /// <param name="ReturnType">Return value type</param>
         /// <returns>The returned value</returns>
-        protected object GetValue(string Name, Type ReturnType)
+        protected virtual object GetValue(string Name, Type ReturnType)
         {
             if (ContainsKey(Name))
-                return this[Name].To(ReturnType, null);
+                return InternalValues[Name].To(ReturnType, null);
             if (!ChildValues.ContainsKey(Name))
             {
                 Type ObjectType = GetType();
@@ -341,9 +378,25 @@ namespace Utilities.DataTypes.Dynamic
                     Func<Dynamo, object> Temp = Property.PropertyGetter<Dynamo>().Compile();
                     ChildValues.Add(Name, () => Temp(this));
                 }
-                ChildValues.Add(Name, () => null);
+                else
+                    ChildValues.Add(Name, () => null);
             }
             return ChildValues[Name]().To(ReturnType, null);
+        }
+
+        /// <summary>
+        /// Sets a value
+        /// </summary>
+        /// <param name="key">Name of the item</param>
+        /// <param name="value">Value to set</param>
+        protected virtual void SetValue(string key, object value)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(key));
+            if (InternalValues.ContainsKey(key))
+                InternalValues[key] = value;
+            else
+                InternalValues.Add(key, value);
         }
 
         #endregion

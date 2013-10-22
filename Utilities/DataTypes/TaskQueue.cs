@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 using Utilities.DataTypes;
 #endregion
 
-namespace Utilities.DataTypes.Threading
+namespace Utilities.DataTypes
 {
     /// <summary>
     /// Class that helps with running tasks in parallel
@@ -46,14 +46,13 @@ namespace Utilities.DataTypes.Threading
         /// <param name="Capacity">Number of items that are allowed to be processed in the queue at one time</param>
         /// <param name="ProcessItem">Action that is used to process each item</param>
         /// <param name="HandleError">Handles an exception if it occurs (defaults to eating the error)</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public TaskQueue(int Capacity, Action<T> ProcessItem, Action<Exception> HandleError = null)
             : base(new ConcurrentQueue<T>())
         {
             Contract.Requires<ArgumentException>(Capacity > 0, "Capacity must be greater than 0");
             this.ProcessItem = ProcessItem;
             this.HandleError = HandleError.Check(x => { });
-            CancellationToken = new CancellationTokenSource();
+            this.CancellationToken = new CancellationTokenSource();
             Tasks = new Task[Capacity];
             Capacity.Times(x => Tasks[x] = Task.Factory.StartNew(Process));
         }
@@ -128,7 +127,6 @@ namespace Utilities.DataTypes.Threading
         /// <summary>
         /// Processes the queue
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private void Process()
         {
             while (true)

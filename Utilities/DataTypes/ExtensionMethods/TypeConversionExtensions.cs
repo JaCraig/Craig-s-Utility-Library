@@ -26,6 +26,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using Utilities.DataTypes.Conversion;
+using Utilities.DataTypes.DataMapper.Interfaces;
 #endregion
 
 namespace Utilities.DataTypes
@@ -50,6 +51,45 @@ namespace Utilities.DataTypes
             if (Input == null)
                 return "";
             return !string.IsNullOrEmpty(Format) ? Input.Call<string>("ToString", Format) : Input.ToString();
+        }
+
+        #endregion
+
+        #region MapTo
+
+        /// <summary>
+        /// Sets up a mapping between two types
+        /// </summary>
+        /// <param name="LeftType">Left type</param>
+        /// <param name="RightType">Right type</param>
+        /// <returns>The type mapping</returns>
+        public static ITypeMapping MapTo(this Type LeftType,Type RightType)
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map(LeftType, RightType);
+        }
+
+        /// <summary>
+        /// Sets up a mapping between two types
+        /// </summary>
+        /// <typeparam name="Left">Left type</typeparam>
+        /// <typeparam name="Right">Right type</typeparam>
+        /// <param name="Object">Object to set up mapping for</param>
+        /// <returns>The type mapping</returns>
+        public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Left Object)
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map<Left,Right>();
+        }
+
+        /// <summary>
+        /// Sets up a mapping between two types
+        /// </summary>
+        /// <typeparam name="Left">Left type</typeparam>
+        /// <typeparam name="Right">Right type</typeparam>
+        /// <param name="ObjectType">Object type to set up mapping for</param>
+        /// <returns>The type mapping</returns>
+        public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Type ObjectType)
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map<Left, Right>();
         }
 
         #endregion

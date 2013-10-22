@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
-
+using System.Linq;
 #endregion
 
 namespace Utilities.IoC.Default
@@ -233,6 +233,10 @@ namespace Utilities.IoC.Default
         {
             if (_AppContainer != null)
             {
+                foreach (IDisposable Item in _AppContainer.Values.OfType<IDisposable>())
+                {
+                    Item.Dispose();
+                }
                 _AppContainer.Clear();
                 _AppContainer = null;
             }

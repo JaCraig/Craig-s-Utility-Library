@@ -133,7 +133,6 @@ namespace Utilities.IO.FileFormats.Delimited
         /// <param name="FirstRowIsHeader">Determines if the first row should be treated as a header or not</param>
         /// <param name="Headers">Headers for the columns if the first row is not a header</param>
         /// <returns>The delimited file as a DataTable</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public DataTable ToDataTable(bool FirstRowIsHeader = true, params string[] Headers)
         {
             DataTable ReturnValue = new DataTable();

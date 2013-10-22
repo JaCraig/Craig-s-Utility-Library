@@ -19,21 +19,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
+using System.Linq;
 using Utilities.DataTypes;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class TagDictionary
     {
         [Fact]
-        public void BasicTasks()
+        public void BasicTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
-            {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
-            }
+            TagDictionary<string, string> TestObject = new TagDictionary<string, string>();
+            10.Times(x => TestObject.Add("Object" + x, (x + 1).Times(y => "Key" + y).ToArray()));
+            11.Times(x => Assert.Equal(10 - x, TestObject["Key" + x].Count()));
+            Assert.Equal(10, TestObject["Key0"].Count());
+            TestObject.Remove("Key0");
+            Assert.Equal(0, TestObject["Key0"].Count());
+            11.Times(x => Assert.Equal(0, TestObject["Key" + x].Count()));
         }
     }
 }

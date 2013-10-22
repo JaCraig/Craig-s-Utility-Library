@@ -19,21 +19,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using Utilities.DataTypes;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+
+
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class StringTemplate
     {
         [Fact]
-        public void BasicTasks()
+        public void BasicTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
-            {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
-            }
+            Utilities.DataTypes.StringTemplate Template = new Utilities.DataTypes.StringTemplate("{AccessModifier} {Type} {Name} { get; set; }");
+            Template.Add("AccessModifier", "public");
+            Template.Add("Type", "string");
+            Template.Add("Name", "TestProperty");
+            Assert.Equal("public string TestProperty { get; set; }", Template.ToString());
         }
     }
 }

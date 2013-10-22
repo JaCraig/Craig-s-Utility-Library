@@ -93,7 +93,6 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Column names for the table
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public string[] ColumnNames { get; protected set; }
 
         /// <summary>
@@ -171,13 +170,11 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Column names
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public string[] ColumnNames { get; protected set; }
 
         /// <summary>
         /// Column values
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public object[] ColumnValues { get; protected set; }
 
         /// <summary>

@@ -19,21 +19,42 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using Utilities.DataTypes;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class PriorityQueue
     {
         [Fact]
-        public void BasicTasks()
+        public void RandomTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
+            PriorityQueue<int> TestObject = new PriorityQueue<int>();
+            System.Random Rand = new System.Random();
+            int Value=0;
+            for (int x = 0; x < 10; ++x)
             {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
+                Value=Rand.Next();
+                TestObject.Add(x, Value);
+                Assert.Equal(Value, TestObject.Peek());
             }
+            int HighestValue = TestObject.Peek();
+            for (int x = 9; x >= 0; --x)
+            {
+                Value = Rand.Next();
+                TestObject.Add(x, Value);
+                Assert.Equal(HighestValue, TestObject.Peek());
+            }
+            int Count=0;
+            foreach(int Priority in TestObject.Keys)
+            {
+                foreach(int Item in TestObject[Priority])
+                {
+                    ++Count;
+                }
+            }
+            Assert.Equal(20, Count);
         }
     }
 }

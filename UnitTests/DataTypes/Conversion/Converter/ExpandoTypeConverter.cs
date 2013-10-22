@@ -35,22 +35,12 @@ namespace UnitTests.DataTypes.Conversion.Converter
     public class ExpandoTypeConverter
     {
         [Fact]
-        public void CanConvertTo()
-        {
-            Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter();
-            Assert.Equal(typeof(ExpandoObject), Temp.AssociatedType);
-            Assert.True(Temp.CanConvertTo(typeof(ExpandoObject)));
-            Assert.True(Temp.CanConvertFrom(typeof(ExpandoTypeConverter)));
-        }
-
-        [Fact]
         public void ConvertTo()
         {
-            Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter();
             IDictionary<string,object> TestObject=new ExpandoObject();
             TestObject.Add("A","This is a test");
             TestObject.Add("B",10);
-            TestClass Result = (TestClass)Temp.ConvertTo(TestObject, typeof(TestClass));
+            TestClass Result = TestObject.To<IDictionary<string, object>, TestClass>();
             Assert.Equal(10, Result.B);
             Assert.Equal("This is a test", Result.A);
         }
@@ -58,8 +48,7 @@ namespace UnitTests.DataTypes.Conversion.Converter
         [Fact]
         public void ConvertFrom()
         {
-            Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.ExpandoTypeConverter();
-            IDictionary<string,object> Result=(ExpandoObject)Temp.ConvertFrom(new TestClass(){A="This is a test",B=10});
+            IDictionary<string, object> Result = new TestClass() { A = "This is a test", B = 10 }.To<TestClass, ExpandoObject>();
             Assert.Equal(10, Result["B"]);
             Assert.Equal("This is a test", Result["A"]);
         }

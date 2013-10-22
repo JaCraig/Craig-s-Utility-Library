@@ -150,6 +150,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\AI\NaiveBayes.cs" />
     <Compile Include="DataTypes\AOP\Interfaces\IAspect.cs" />
     <Compile Include="DataTypes\AOP\Manager.cs" />
     <Compile Include="DataTypes\AOP\Module\AOPModule.cs" />
@@ -162,7 +163,6 @@
     <Compile Include="DataTypes\Comparison\GenericEqualityComparer.cs" />
     <Compile Include="DataTypes\Conversion\Converters\BaseClasses\TypeConverterBase.cs" />
     <Compile Include="DataTypes\Conversion\Converters\DbTypeTypeConverter.cs" />
-    <Compile Include="DataTypes\Conversion\Converters\ExpandoTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Converters\Interfaces\IConverter.cs" />
     <Compile Include="DataTypes\Conversion\Converters\SqlDbTypeTypeConverter.cs" />
     <Compile Include="DataTypes\Conversion\Manager.cs" />
@@ -180,7 +180,7 @@
     <Compile Include="DataTypes\DataMapper\Manager.cs" />
     <Compile Include="DataTypes\DataMapper\Module\DataMapperModule.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
-    <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
+    <Compile Include="DataTypes\Dynamo.cs" />
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtensions.cs" />
@@ -201,6 +201,13 @@
     <Compile Include="DataTypes\Formatters\GenericStringFormatter.cs" />
     <Compile Include="DataTypes\Formatters\Interfaces\IStringFormatter.cs" />
     <Compile Include="DataTypes\ListMapping.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\MathExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\PermutationExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\PredicateExtensions.cs" />
+    <Compile Include="DataTypes\Fraction.cs" />
+    <Compile Include="DataTypes\Matrix.cs" />
+    <Compile Include="DataTypes\Set.cs" />
+    <Compile Include="DataTypes\Vector3.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\SafeDisposableBaseClass.cs" />
     <Compile Include="DataTypes\Patterns\BaseClasses\Singleton.cs" />
     <Compile Include="DataTypes\Patterns\Factory.cs" />
@@ -210,7 +217,7 @@
     <Compile Include="DataTypes\StringTemplate.cs" />
     <Compile Include="DataTypes\Table.cs" />
     <Compile Include="DataTypes\TagDictionary.cs" />
-    <Compile Include="DataTypes\Threading\TaskQueue.cs" />
+    <Compile Include="DataTypes\TaskQueue.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IoC\BaseClasses\BootstrapperBase.cs" />
     <Compile Include="IoC\Default\DefaultBootstrapper.cs" />

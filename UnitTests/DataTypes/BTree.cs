@@ -19,21 +19,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using Utilities.DataTypes;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class BTree
     {
         [Fact]
-        public void BasicTasks()
+        public void Creation()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
+            BinaryTree<int> Tree = new BinaryTree<int>();
+            Tree.Add(1);
+            Tree.Add(2);
+            Tree.Add(0);
+            Tree.Add(-1);
+            Assert.Equal(-1, Tree.MinValue);
+            Assert.Equal(2, Tree.MaxValue);
+        }
+
+        [Fact]
+        public void Random()
+        {
+            BinaryTree<int> Tree = new BinaryTree<int>();
+            System.Collections.Generic.List<int> Values = new System.Collections.Generic.List<int>();
+            System.Random Rand = new System.Random();
+            for (int x = 0; x < 10; ++x)
             {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
+                int Value = Rand.Next();
+                Values.Add(Value);
+                Tree.Add(Value);
             }
+            for (int x = 0; x < 10; ++x)
+            {
+                Assert.Contains(Values[x], Tree);
+            }
+            Values.Sort();
+            Assert.Equal(Values.ToString(x => x.ToString(), " "), Tree.ToString());
         }
     }
 }

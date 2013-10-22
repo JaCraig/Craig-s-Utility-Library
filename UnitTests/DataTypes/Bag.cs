@@ -19,21 +19,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
 using Utilities.DataTypes;
 using Xunit;
 
-namespace UnitTests.DataTypes.Threading
+namespace UnitTests.DataTypes
 {
-    public class TaskQueue
+    public class Bag
     {
         [Fact]
-        public void BasicTasks()
+        public void RandomTest()
         {
-            using (Utilities.DataTypes.TaskQueue<string> Tasks = new Utilities.DataTypes.TaskQueue<string>(3, x => Console.WriteLine(x)))
+            Bag<string> BagObject = new Bag<string>();
+            System.Random Rand = new System.Random();
+            for (int x = 0; x < 10; ++x)
             {
-                10.Times(x => Assert.DoesNotThrow(() => Tasks.Enqueue("This is a test #" + x)));
+                string Value = x.ToString();
+                int Count = Rand.Next(1, 10);
+                for(int y=0;y<Count;++y)
+                    BagObject.Add(Value);
+                Assert.Equal(Count, BagObject[Value]);
             }
+            Assert.Equal(10, BagObject.Count);
         }
     }
 }
