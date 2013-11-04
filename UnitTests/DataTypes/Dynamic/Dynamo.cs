@@ -86,6 +86,27 @@ namespace UnitTests.DataTypes.Dynamic
             Assert.Equal("Testing", Temp.A);
         }
 
+        [Fact]
+        public void Keys()
+        {
+            dynamic Temp = new TestClass();
+            Temp.A = "Testing";
+            Temp.B = new Func<string>(() => Temp.A);
+            Assert.Equal(2, Temp.Keys.Count);
+            Assert.Contains("A", Temp.Keys);
+            Assert.Contains("B", Temp.Keys);
+        }
+
+        [Fact]
+        public void Values()
+        {
+            dynamic Temp = new TestClass();
+            Temp.A = "Testing";
+            Temp.B = new Func<string>(() => Temp.A);
+            Assert.Equal(2, Temp.Values.Count);
+            Assert.Contains("Testing", Temp.Values);
+        }
+
         public class TestClass : Utilities.DataTypes.Dynamo<TestClass>
         {
             public string A { get; set; }

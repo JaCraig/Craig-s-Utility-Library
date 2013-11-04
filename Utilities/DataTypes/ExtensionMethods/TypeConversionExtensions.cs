@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -34,6 +35,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Extensions converting between types, checking if something is null, etc.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TypeConversionExtensions
     {
         #region Functions

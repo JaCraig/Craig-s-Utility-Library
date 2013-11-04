@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
@@ -31,6 +32,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Extension methods for Streams
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class StreamExtensions
     {
         #region Functions

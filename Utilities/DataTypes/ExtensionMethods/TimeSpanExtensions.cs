@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 
 #endregion
 
@@ -29,6 +30,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// TimeSpan extension methods
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TimeSpanExtensions
     {
         #region Extension Methods

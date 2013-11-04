@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Utilities.DataTypes;
 
@@ -33,6 +34,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Extension methods that add basic math functions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class MathExtensions
     {
         #region Public Static Functions

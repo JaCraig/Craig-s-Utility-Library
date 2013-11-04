@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Utilities.DataTypes.Comparison;
 #endregion
 
@@ -31,6 +32,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// IComparable extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IComparableExtensions
     {
         #region Functions

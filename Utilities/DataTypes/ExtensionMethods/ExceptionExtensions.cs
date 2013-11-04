@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 using System.Text;
 
 #endregion
@@ -30,6 +31,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Class for housing exception specific extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ExceptionExtensions
     {
         #region ToString

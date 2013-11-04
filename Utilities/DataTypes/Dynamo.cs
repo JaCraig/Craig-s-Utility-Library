@@ -28,6 +28,9 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Security;
+using System.Xml.Serialization;
 using Utilities.DataTypes;
 using Utilities.DataTypes.DataMapper;
 #endregion
@@ -38,7 +41,8 @@ namespace Utilities.DataTypes
     /// Dynamic object implementation (used when inheriting
     /// </summary>
     /// <typeparam name="T">Child object type</typeparam>
-    public class Dynamo<T> : Dynamo
+    [Serializable]
+    public abstract class Dynamo<T> : Dynamo
         where T : Dynamo<T>
     {
         #region Constructor
@@ -46,8 +50,8 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        public Dynamo()
-            : base()
+        protected Dynamo()
+            : this(new Dictionary<string, object>())
         {
         }
 
@@ -55,9 +59,57 @@ namespace Utilities.DataTypes
         /// Constructor
         /// </summary>
         /// <param name="Dictionary">Dictionary to copy</param>
-        public Dynamo(IDictionary<string, object> Dictionary)
+        protected Dynamo(IDictionary<string, object> Dictionary)
             : base(Dictionary)
         {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="info">Serialization info</param>
+        /// <param name="context">Streaming context</param>
+        protected Dynamo(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Keys to the dynamic type
+        /// </summary>
+        public override ICollection<string> Keys
+        {
+            get
+            {
+                List<string> Temp = new List<string>();
+                Temp.Add(base.Keys);
+                Type ObjectType = GetType();
+                foreach (PropertyInfo Property in ObjectType.GetProperties().Where(x => x.DeclaringType != typeof(Dynamo<T>) && x.DeclaringType != typeof(Dynamo)))
+                {
+                    Temp.Add(Property.Name);
+                }
+                return Temp;
+            }
+        }
+
+        /// <summary>
+        /// Gets the Values 
+        /// </summary>
+        public override ICollection<object> Values
+        {
+            get
+            {
+                List<object> Temp = new List<object>();
+                foreach (string Key in Keys)
+                {
+                    Temp.Add(GetValue(Key, typeof(object)));
+                }
+                return Temp;
+            }
         }
 
         #endregion
@@ -89,13 +141,32 @@ namespace Utilities.DataTypes
             return ChildValues[Name]().To(ReturnType, null);
         }
 
+        /// <summary>
+        /// Sets a value
+        /// </summary>
+        /// <param name="key">Name of the item</param>
+        /// <param name="value">Value associated with the key</param>
+        protected override void SetValue(string key, object value)
+        {
+            Type ObjectType = GetType();
+            PropertyInfo Property = ObjectType.GetProperty(key);
+            if (Property != null && Property.CanWrite)
+            {
+                RaisePropertyChanged(key);
+                Property.SetValue(this, value);
+            }
+            else if (Property == null)
+                base.SetValue(key, value);
+        }
+
         #endregion
     }
 
     /// <summary>
     /// Dynamic object implementation
     /// </summary>
-    public class Dynamo : DynamicObject, IDictionary<string, object>, INotifyPropertyChanged
+    [Serializable]
+    public class Dynamo : DynamicObject, IDictionary<string, object>, INotifyPropertyChanged, ISerializable, IXmlSerializable
     {
         #region Constructor
 
@@ -120,6 +191,20 @@ namespace Utilities.DataTypes
             ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="info">Serialization info</param>
+        /// <param name="context">Streaming context</param>
+        protected Dynamo(SerializationInfo info, StreamingContext context)
+            : base()
+        {
+            foreach (SerializationEntry Item in info)
+            {
+                SetValue(Item.Name, Item.Value);
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -137,12 +222,12 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Keys
         /// </summary>
-        public ICollection<string> Keys { get { return InternalValues.Keys; } }
+        public virtual ICollection<string> Keys { get { return InternalValues.Keys; } }
 
         /// <summary>
         /// Values
         /// </summary>
-        public ICollection<object> Values { get { return InternalValues.Values; } }
+        public virtual ICollection<object> Values { get { return InternalValues.Values; } }
 
         /// <summary>
         /// Number of items
@@ -202,8 +287,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it is removed, false otherwise</returns>
         public bool Remove(string key)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(key));
+            RaisePropertyChanged(key);
             return InternalValues.Remove(key);
         }
 
@@ -232,8 +316,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public void Clear()
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(""));
+            RaisePropertyChanged("");
             InternalValues.Clear();
         }
 
@@ -264,8 +347,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it is removed, false otherwise</returns>
         public bool Remove(KeyValuePair<string, object> item)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(item.Key));
+            RaisePropertyChanged(item.Key);
             return InternalValues.Remove(item);
         }
 
@@ -275,7 +357,10 @@ namespace Utilities.DataTypes
         /// <returns>The enumerator</returns>
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
-            return InternalValues.GetEnumerator();
+            foreach (string Key in Keys)
+            {
+                yield return new KeyValuePair<string, object>(Key, this[Key]);
+            }
         }
 
         /// <summary>
@@ -391,12 +476,59 @@ namespace Utilities.DataTypes
         /// <param name="value">Value to set</param>
         protected virtual void SetValue(string key, object value)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(key));
+            RaisePropertyChanged(key);
             if (InternalValues.ContainsKey(key))
                 InternalValues[key] = value;
             else
                 InternalValues.Add(key, value);
+        }
+
+        /// <summary>
+        /// Gets the object data and serializes it
+        /// </summary>
+        /// <param name="info">Serialization info object</param>
+        /// <param name="context">Streaming context object</param>
+        [SecurityCritical]
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            foreach (string Key in Keys)
+            {
+                info.AddValue(Key, GetValue(Key, typeof(object)));
+            }
+        }
+
+        /// <summary>
+        /// Not used
+        /// </summary>
+        /// <returns>Null</returns>
+        public System.Xml.Schema.XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Reads the data from an XML doc
+        /// </summary>
+        /// <param name="reader">XML reader</param>
+        public virtual void ReadXml(System.Xml.XmlReader reader)
+        {
+            SetValue(reader.Name, reader.Value);
+            while (reader.Read())
+            {
+                SetValue(reader.Name, reader.Value);
+            }
+        }
+
+        /// <summary>
+        /// Writes the data to an XML doc
+        /// </summary>
+        /// <param name="writer">XML writer</param>
+        public virtual void WriteXml(System.Xml.XmlWriter writer)
+        {
+            foreach (string Key in Keys)
+            {
+                writer.WriteElementString(Key, (string)GetValue(Key, typeof(string)));
+            }
         }
 
         #endregion
@@ -407,6 +539,16 @@ namespace Utilities.DataTypes
         /// Property changed event
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Raises the property changed event
+        /// </summary>
+        /// <param name="PropertyName">Property name</param>
+        protected void RaisePropertyChanged(string PropertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
+        }
 
         #endregion
     }

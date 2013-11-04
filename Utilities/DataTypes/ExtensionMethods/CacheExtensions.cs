@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 #endregion
 
 namespace Utilities.DataTypes
@@ -28,6 +29,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Extension methods relating to caching of data
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class CacheExtensions
     {
         /// <summary>

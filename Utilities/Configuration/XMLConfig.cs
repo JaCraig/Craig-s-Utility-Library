@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,44 +22,35 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using Utilities.IO.FileSystem.Interfaces;
+using Utilities.DataTypes;
+using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.Configuration.Manager.Interfaces;
 using System.Diagnostics.Contracts;
-using System.Text.RegularExpressions;
-
+using Utilities.Configuration.Manager.Default;
+using Utilities.Configuration.Manager.BaseClasses;
+using System.Xml.Serialization;
 #endregion
 
-namespace Utilities.DataTypes
+namespace Utilities.Configuration
 {
     /// <summary>
-    /// MatchCollection extensions
+    /// XML config base class
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class MatchCollectionExtensions
+    /// <typeparam name="ClassType">Class type</typeparam>
+    [Serializable]
+    public abstract class XMLConfig<ClassType> : Config<ClassType>
+        where ClassType : XMLConfig<ClassType>, new()
     {
-        #region Functions
-
-        #region Where
-
         /// <summary>
-        /// Gets a list of items that satisfy the predicate from the collection
+        /// Constructor
         /// </summary>
-        /// <param name="Collection">Collection to search through</param>
-        /// <param name="Predicate">Predicate that the items must satisfy</param>
-        /// <returns>The matches that satisfy the predicate</returns>
-        public static IEnumerable<Match> Where(this MatchCollection Collection, Predicate<Match> Predicate)
+        protected XMLConfig()
+            : base()
         {
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            if (Collection==null)
-                return null;
-            List<Match> Matches = new List<Match>();
-            foreach (Match Item in Collection)
-                if (Predicate(Item))
-                    Matches.Add(Item);
-            return Matches;
         }
-
-        #endregion
-
-        #endregion
     }
 }

@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes.Comparison;
@@ -33,6 +34,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// IDictionary extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IDictionaryExtensions
     {
         #region Functions

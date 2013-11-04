@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 using System.Linq;
 
 #endregion
@@ -30,6 +31,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Predicate extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class PredicateExtensions
     {
         #region Functions

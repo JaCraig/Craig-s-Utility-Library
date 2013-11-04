@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -38,6 +39,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// String and StringBuilder extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class StringExtensions
     {
         #region Functions

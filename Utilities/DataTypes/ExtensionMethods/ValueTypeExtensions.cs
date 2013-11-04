@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text;
 
@@ -31,6 +32,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Value type extension methods
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ValueTypeExtensions
     {
         #region Functions

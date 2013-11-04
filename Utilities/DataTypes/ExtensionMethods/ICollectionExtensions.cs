@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 #endregion
@@ -31,6 +32,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// ICollection extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ICollectionExtensions
     {
         #region Functions

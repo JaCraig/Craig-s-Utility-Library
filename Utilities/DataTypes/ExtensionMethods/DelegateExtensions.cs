@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 using System.Threading;
 
 
@@ -31,6 +32,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Extensions for Func, Action, and EventHandler
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DelegateExtensions
     {
         #region Functions

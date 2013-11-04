@@ -138,6 +138,7 @@
       <HintPath>..\packages\Roslyn.Services.Common.1.2.20906.2\lib\net45\Roslyn.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Runtime.Serialization" />
@@ -150,6 +151,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ConfigurationManager.cs" />
+    <Compile Include="Configuration\JSONConfig.cs" />
+    <Compile Include="Configuration\Manager\BaseClasses\Config.cs" />
+    <Compile Include="Configuration\Manager\Default\ConfigSystem.cs" />
+    <Compile Include="Configuration\Manager\Default\SystemConfig.cs" />
+    <Compile Include="Configuration\Manager\Interfaces\IConfig.cs" />
+    <Compile Include="Configuration\Manager\Interfaces\IConfigSystem.cs" />
+    <Compile Include="Configuration\Manager\Manager.cs" />
+    <Compile Include="Configuration\Manager\Module\ConfigModule.cs" />
+    <Compile Include="Configuration\XMLConfig.cs" />
     <Compile Include="DataTypes\Caching\Default\Cache.cs" />
     <Compile Include="DataTypes\Caching\Interfaces\ICache.cs" />
     <Compile Include="DataTypes\Caching\Manager.cs" />
@@ -340,7 +351,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Configuration\" />
     <Folder Include="Media\" />
     <Folder Include="ORM\" />
     <Folder Include="Profiler\" />

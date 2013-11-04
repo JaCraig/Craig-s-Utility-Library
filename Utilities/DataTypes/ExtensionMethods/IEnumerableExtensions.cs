@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -37,6 +38,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// IEnumerable extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class IEnumerableExtensions
     {
         #region Functions

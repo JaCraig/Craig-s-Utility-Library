@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 
@@ -31,6 +32,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// DateTime extension methods
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DateTimeExtensions
     {
         #region Extension Methods

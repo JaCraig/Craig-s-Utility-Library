@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
@@ -34,6 +35,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Generic extensions dealing with objects
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class GenericObjectExtensions
     {
         #region Functions

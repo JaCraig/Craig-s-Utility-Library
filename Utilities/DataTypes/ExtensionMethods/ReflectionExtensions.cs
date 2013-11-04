@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Reflection oriented extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ReflectionExtensions
     {
         #region Functions

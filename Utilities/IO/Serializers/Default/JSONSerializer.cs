@@ -79,7 +79,7 @@ namespace Utilities.IO.Serializers.Default
             string ReturnValue = "";
             using (MemoryStream Stream = new MemoryStream())
             {
-                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(ObjectType);
+                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(Data.GetType());
                 Serializer.WriteObject(Stream, Data);
                 Stream.Flush();
                 ReturnValue = Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
