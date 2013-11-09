@@ -208,7 +208,9 @@
     <Compile Include="DataTypes\ExtensionMethods\IDictionaryExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\IEnumerableExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\MatchCollectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\StackTraceExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\TimeSpanExtensions.cs" />
@@ -344,6 +346,10 @@
     <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
     <Compile Include="IO\Serializers\Manager.cs" />
     <Compile Include="IO\Serializers\Module\SerializationModule.cs" />
+    <Compile Include="Profiler\Manager\Default\Profiler.cs" />
+    <Compile Include="Profiler\Manager\Default\StopWatch.cs" />
+    <Compile Include="Profiler\Manager\Interfaces\IProfiler.cs" />
+    <Compile Include="Profiler\Manager\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -353,7 +359,9 @@
   <ItemGroup>
     <Folder Include="Media\" />
     <Folder Include="ORM\" />
-    <Folder Include="Profiler\" />
+    <Folder Include="Profiler\ExtensionMethods\" />
+    <Folder Include="Profiler\Manager\BaseClasses\" />
+    <Folder Include="Profiler\Manager\Module\" />
     <Folder Include="Random\" />
     <Folder Include="Validation\" />
   </ItemGroup>

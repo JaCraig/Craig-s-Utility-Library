@@ -85,6 +85,7 @@
     <Compile Include="DataTypes\ExtensionMethods\MathExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\PermutationExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\PredicateExtensions.cs" />
+    <Compile Include="DataTypes\ExtensionMethods\ProcessExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StreamExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\StringExtensions.cs" />
@@ -144,6 +145,10 @@
     <Compile Include="IO\Serializers\Default\SOAPSerializer.cs" />
     <Compile Include="IO\Serializers\Default\XMLSerializer.cs" />
     <Compile Include="IO\Serializers\Manager.cs" />
+    <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
+    <Compile Include="Profiler\Manager\Default\Profiler.cs" />
+    <Compile Include="Profiler\Manager\Default\StopWatch.cs" />
+    <Compile Include="Profiler\Manager\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
