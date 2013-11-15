@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Threading;
-using Utilities.Profiler.ExtensionMethods;
+using Utilities.Profiler;
 using Xunit;
 
 namespace UnitTests.Profiler.ExtensionMethods

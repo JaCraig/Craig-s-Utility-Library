@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,22 +19,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+#region Usings
+using Utilities.IoC.Interfaces;
+#endregion
 
-using System.Threading;
-using Xunit;
-
-namespace UnitTests.Profiler
+namespace Utilities.Profiler.Manager.Module
 {
-    public class StopWatch
+    /// <summary>
+    /// Profiler module
+    /// </summary>
+    public class ProfilerModule : IModule
     {
-        [Fact]
-        public void BasicTest()
+        /// <summary>
+        /// Order to run it in
+        /// </summary>
+        public int Order
         {
-            Utilities.Profiler.Manager.Default.StopWatch TestObject = new Utilities.Profiler.Manager.Default.StopWatch();
-            TestObject.Start();
-            Thread.Sleep(100);
-            TestObject.Stop();
-            Assert.InRange(TestObject.ElapsedTime, 80, 120);
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Loads the module
+        /// </summary>
+        /// <param name="Bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper Bootstrapper)
+        {
+            Bootstrapper.Register(new Manager());
         }
     }
 }

@@ -162,6 +162,9 @@
     <Compile Include="Configuration\Manager\Module\ConfigModule.cs" />
     <Compile Include="Configuration\XMLConfig.cs" />
     <Compile Include="DataTypes\Caching\Default\Cache.cs" />
+    <Compile Include="DataTypes\Caching\Default\CacheCache.cs" />
+    <Compile Include="DataTypes\Caching\Default\ItemCache.cs" />
+    <Compile Include="DataTypes\Caching\Default\SessionCache.cs" />
     <Compile Include="DataTypes\Caching\Interfaces\ICache.cs" />
     <Compile Include="DataTypes\Caching\Manager.cs" />
     <Compile Include="DataTypes\Caching\Module\CachingModule.cs" />
@@ -346,10 +349,13 @@
     <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
     <Compile Include="IO\Serializers\Manager.cs" />
     <Compile Include="IO\Serializers\Module\SerializationModule.cs" />
+    <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
     <Compile Include="Profiler\Manager\Default\Profiler.cs" />
     <Compile Include="Profiler\Manager\Default\StopWatch.cs" />
     <Compile Include="Profiler\Manager\Interfaces\IProfiler.cs" />
     <Compile Include="Profiler\Manager\Manager.cs" />
+    <Compile Include="Profiler\Manager\Module\ProfilerModule.cs" />
+    <Compile Include="Profiler\Profiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -359,9 +365,6 @@
   <ItemGroup>
     <Folder Include="Media\" />
     <Folder Include="ORM\" />
-    <Folder Include="Profiler\ExtensionMethods\" />
-    <Folder Include="Profiler\Manager\BaseClasses\" />
-    <Folder Include="Profiler\Manager\Module\" />
     <Folder Include="Random\" />
     <Folder Include="Validation\" />
   </ItemGroup>

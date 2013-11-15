@@ -30,9 +30,9 @@ namespace UnitTests.Profiler
         [Fact]
         public void BasicTest()
         {
-            Utilities.Profiler.Profiler TestObject = new Utilities.Profiler.Profiler("Func1");
+            Utilities.Profiler.Manager.Default.Profiler TestObject = new Utilities.Profiler.Manager.Default.Profiler("Func1");
             Thread.Sleep(600);
-            Utilities.Profiler.Profiler A = new Utilities.Profiler.Profiler("A");
+            Utilities.Profiler.Manager.Default.Profiler A = new Utilities.Profiler.Manager.Default.Profiler("A");
             Thread.Sleep(600);
             A.Stop();
             TestObject.Stop();

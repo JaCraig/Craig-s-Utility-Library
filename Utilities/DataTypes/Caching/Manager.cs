@@ -31,6 +31,7 @@ using Utilities.IoC.Interfaces;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.DataTypes.Caching.Default;
+using System.Web;
 #endregion
 
 namespace Utilities.DataTypes.Caching
@@ -53,11 +54,16 @@ namespace Utilities.DataTypes.Caching
                                             .Create<ICache>()
                                             .ToDictionary(x => x.Name);
             if (!Caches.ContainsKey("Default"))
-                Caches.Add(AppDomain.CurrentDomain.GetAssemblies()
-                                            .Types<ICache>()
-                                            .Where(x => x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
-                                            .Create<ICache>()
-                                            .ToDictionary(x => x.Name));
+                Caches.Add("Default", new Cache());
+            if (HttpContext.Current != null)
+            {
+                if (!Caches.ContainsKey("Cache"))
+                    Caches.Add("Cache", new CacheCache());
+                if (!Caches.ContainsKey("Session"))
+                    Caches.Add("Session", new SessionCache());
+                if (!Caches.ContainsKey("Item"))
+                    Caches.Add("Item", new ItemCache());
+            }
         }
 
         #endregion
