@@ -45,5 +45,17 @@ namespace Utilities.Profiler.Manager.Interfaces
         /// <param name="Name">Name of the profiler</param>
         /// <returns>IDisposable that will stop the profiler when disposed of</returns>
         IDisposable Profile(string Name);
+
+        /// <summary>
+        /// Starts profiling
+        /// </summary>
+        /// <returns>Starts profiling</returns>
+        IDisposable StartProfiling();
+
+        /// <summary>
+        /// Stops profiling and returns the information captured
+        /// </summary>
+        /// <returns>The results from the profiling</returns>
+        IResult StopProfiling();
     }
 }

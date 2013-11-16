@@ -38,7 +38,7 @@ namespace Utilities.Profiler.Manager.Default
     /// Create at the beginning of a function in a using statement and it will automatically record the time.
     /// Note that this isn't exact and is based on when the object is destroyed
     /// </summary>
-    public class Profiler : IProfiler
+    public class Profiler : IProfiler,IResult
     {
         #region Constructors
 
@@ -46,7 +46,6 @@ namespace Utilities.Profiler.Manager.Default
         /// Constructor
         /// </summary>
         public Profiler()
-            : this("")
         {
         }
 
@@ -57,13 +56,13 @@ namespace Utilities.Profiler.Manager.Default
         public Profiler(string FunctionName)
         {
             this.Parent = Current;
-            Profiler Child = Parent != null && Parent.Children.ContainsKey(FunctionName) ? Parent.Children[FunctionName] : null;
+            Profiler Child = Parent != null && Parent.InternalChildren.ContainsKey(FunctionName) ? Parent.InternalChildren[FunctionName] : null;
             if (Child == null)
             {
                 if (Parent != null)
-                    Parent.Children.Add(FunctionName, this);
+                    Parent.InternalChildren.Add(FunctionName, this);
                 this.Function = FunctionName;
-                this.Children = new Dictionary<string, Profiler>();
+                this.InternalChildren = new Dictionary<string, Profiler>();
                 this.Times = new List<long>();
                 this.StopWatch = new StopWatch();
                 this.Level = Parent == null ? 0 : Parent.Level + 1;
@@ -91,7 +90,12 @@ namespace Utilities.Profiler.Manager.Default
         /// <summary>
         /// Children profiler items
         /// </summary>
-        public IDictionary<string, Profiler> Children { get; private set; }
+        public IDictionary<string, Profiler> InternalChildren { get; private set; }
+
+        /// <summary>
+        /// Children result items
+        /// </summary>
+        public IDictionary<string, IResult> Children { get { return InternalChildren.ToDictionary(x => x.Key, x => (IResult)x.Value); } }
 
         /// <summary>
         /// Parent profiler item
@@ -116,7 +120,7 @@ namespace Utilities.Profiler.Manager.Default
         /// <summary>
         /// Where the profiler was started at
         /// </summary>
-        protected string CalledFrom { get; set; }
+        public string CalledFrom { get; set; }
 
         /// <summary>
         /// Stop watch
@@ -239,7 +243,7 @@ namespace Utilities.Profiler.Manager.Default
         /// Starts profiling
         /// </summary>
         /// <returns>The root profiler</returns>
-        public static Profiler StartProfiling()
+        public IDisposable StartProfiling()
         {
             return Root;
         }
@@ -248,7 +252,7 @@ namespace Utilities.Profiler.Manager.Default
         /// Stops profiling
         /// </summary>
         /// <returns>The root profiler</returns>
-        public static Profiler StopProfiling()
+        public IResult StopProfiling()
         {
             Root.Stop();
             return Root;
@@ -319,29 +323,6 @@ namespace Utilities.Profiler.Manager.Default
         public override int GetHashCode()
         {
             return Function.GetHashCode();
-        }
-
-        /// <summary>
-        /// Outputs the profiler information as an HTML table
-        /// </summary>
-        /// <returns>Table containing profiler information</returns>
-        public virtual string ToHTML()
-        {
-            StringBuilder Builder = new StringBuilder();
-            if (Level == 0)
-                Builder.Append("<table><tr><th>Called From</th><th>Function Name</th><th>Total Time</th><th>Max Time</th><th>Min Time</th><th>Average Time</th><th>Times Called</th></tr>");
-            Builder.AppendFormat(CultureInfo.InvariantCulture, "<tr><td>{0}</td><td>", CalledFrom);
-            if (Level == 0)
-                Builder.AppendFormat(CultureInfo.InvariantCulture, "{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, 0, 0, 0, 0, Times.Count);
-            else
-                Builder.AppendFormat(CultureInfo.InvariantCulture, "{0}</td><td>{1}ms</td><td>{2}ms</td><td>{3}ms</td><td>{4}ms</td><td>{5}</td></tr>", Function, Times.Sum(), Times.Max(), Times.Min(), string.Format(CultureInfo.InvariantCulture, "{0:0.##}", Times.Average()), Times.Count);
-            foreach (string Key in Children.Keys)
-            {
-                Builder.AppendLineFormat(Children[Key].ToHTML());
-            }
-            if (Level == 0)
-                Builder.Append("</table>");
-            return Builder.ToString();
         }
 
         #endregion

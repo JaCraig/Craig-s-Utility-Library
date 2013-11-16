@@ -27,6 +27,7 @@ using System.Linq;
 using Utilities.DataTypes.Caching.Interfaces;
 using System.Web;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Patterns.BaseClasses;
 #endregion
 
 namespace Utilities.DataTypes.Caching.Default
@@ -34,7 +35,7 @@ namespace Utilities.DataTypes.Caching.Default
     /// <summary>
     /// Cache used in ASP.Net for session level cache
     /// </summary>
-    public class SessionCache : ICache
+    public class SessionCache : SafeDisposableBaseClass, ICache
     {
         #region Constructor
 
@@ -265,9 +266,10 @@ namespace Utilities.DataTypes.Caching.Default
         }
 
         /// <summary>
-        /// Disposes the cache
+        /// Disposes of the cache
         /// </summary>
-        public void Dispose()
+        /// <param name="Managed">Managed or not</param>
+        protected override void Dispose(bool Managed)
         {
             if (HttpContext.Current == null)
                 return;

@@ -353,6 +353,7 @@
     <Compile Include="Profiler\Manager\Default\Profiler.cs" />
     <Compile Include="Profiler\Manager\Default\StopWatch.cs" />
     <Compile Include="Profiler\Manager\Interfaces\IProfiler.cs" />
+    <Compile Include="Profiler\Manager\Interfaces\IResult.cs" />
     <Compile Include="Profiler\Manager\Manager.cs" />
     <Compile Include="Profiler\Manager\Module\ProfilerModule.cs" />
     <Compile Include="Profiler\Profiler.cs" />
