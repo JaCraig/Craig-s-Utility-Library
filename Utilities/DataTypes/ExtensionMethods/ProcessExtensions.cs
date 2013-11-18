@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Text;
@@ -33,6 +34,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Process extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ProcessExtensions
     {
         #region Functions

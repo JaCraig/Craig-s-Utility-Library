@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -32,6 +33,7 @@ namespace Utilities.DataTypes
     /// <summary>
     /// Extension methods related to the stack trace
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class StackTraceExtensions
     {
         #region Functions

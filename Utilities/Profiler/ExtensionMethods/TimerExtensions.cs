@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.ComponentModel;
 #endregion
 
 namespace Utilities.Profiler
@@ -28,6 +29,7 @@ namespace Utilities.Profiler
     /// <summary>
     /// Holds timing/profiling related extensions
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TimerExtensions
     {
         #region Functions
