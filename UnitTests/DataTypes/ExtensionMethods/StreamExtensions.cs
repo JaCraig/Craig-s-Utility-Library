@@ -26,7 +26,7 @@ using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
-    public class StreamExtensions: IUseFixture<TestingDirectoryFixture>
+    public class StreamExtensions : IUseFixture<TestingDirectoryFixture>
     {
         public StreamExtensions() { new DirectoryInfo(@"..\..\Data\Testing").CopyTo(new DirectoryInfo(@".\Testing")); }
 
