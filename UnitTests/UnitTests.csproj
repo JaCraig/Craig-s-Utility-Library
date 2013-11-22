@@ -66,6 +66,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -174,6 +175,11 @@
     <Compile Include="IO\Serializers\Default\SOAPSerializer.cs" />
     <Compile Include="IO\Serializers\Default\XMLSerializer.cs" />
     <Compile Include="IO\Serializers\Manager.cs" />
+    <Compile Include="Media\ExtensionMethods\BitmapExtensions.cs" />
+    <Compile Include="Media\ExtensionMethods\ScreenshotExtensions.cs" />
+    <Compile Include="Media\Procedural\CellularTexture.cs" />
+    <Compile Include="Media\Procedural\FaultFormation.cs" />
+    <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
     <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
     <Compile Include="Profiler\Manager\Default\Profiler.cs" />
     <Compile Include="Profiler\Manager\Default\StopWatch.cs" />

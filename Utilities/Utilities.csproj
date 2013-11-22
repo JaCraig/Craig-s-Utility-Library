@@ -174,6 +174,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -379,6 +380,16 @@
     <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
     <Compile Include="IO\Serializers\Manager.cs" />
     <Compile Include="IO\Serializers\Module\SerializationModule.cs" />
+    <Compile Include="Media\ColorMatrix.cs" />
+    <Compile Include="Media\ExtensionMethods\BitmapExtensions.cs" />
+    <Compile Include="Media\ExtensionMethods\ScreenExtensions.cs" />
+    <Compile Include="Media\Filter.cs" />
+    <Compile Include="Media\Procedural\CellularMap.cs" />
+    <Compile Include="Media\Procedural\CellularTexture.cs" />
+    <Compile Include="Media\Procedural\FaultFormation.cs" />
+    <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
+    <Compile Include="Media\Procedural\PerlinNoise.cs" />
+    <Compile Include="Media\RGBHistogram.cs" />
     <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
     <Compile Include="Profiler\Manager\Default\Profiler.cs" />
     <Compile Include="Profiler\Manager\Default\StopWatch.cs" />
@@ -445,8 +456,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Media\" />
-    <Folder Include="ORM\" />
+    <Folder Include="ORM\ExtensionMethods\" />
+    <Folder Include="ORM\Manager\Aspect\" />
+    <Folder Include="ORM\Manager\Mapper\" />
+    <Folder Include="ORM\Manager\Module\" />
+    <Folder Include="ORM\Manager\QueryProvider\BaseClasses\" />
+    <Folder Include="ORM\Manager\QueryProvider\Default\" />
+    <Folder Include="ORM\Manager\QueryProvider\Interfaces\" />
+    <Folder Include="ORM\Manager\Schema\BaseClasses\" />
+    <Folder Include="ORM\Manager\Schema\Default\" />
+    <Folder Include="ORM\Manager\Schema\Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
