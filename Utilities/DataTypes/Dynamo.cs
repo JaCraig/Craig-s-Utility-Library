@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
@@ -30,6 +31,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security;
+using System.Text;
 using System.Xml.Serialization;
 using Utilities.DataTypes;
 using Utilities.DataTypes.DataMapper;
@@ -52,6 +54,15 @@ namespace Utilities.DataTypes
         /// </summary>
         protected Dynamo()
             : this(new Dictionary<string, object>())
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Item">Item to copy values from</param>
+        protected Dynamo(object Item)
+            : base(Item)
         {
         }
 
@@ -174,10 +185,32 @@ namespace Utilities.DataTypes
         /// Constructor
         /// </summary>
         public Dynamo()
+            : this(new { })
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Item">Item to copy values from</param>
+        public Dynamo(object Item)
             : base()
         {
             InternalValues = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+            IDictionary<string, object> DictItem = Item as IDictionary<string, object>;
+            if (Item == null)
+                return;
+            if (Item is string || Item.GetType().IsValueType)
+                SetValue("Value", Item);
+            else if (DictItem!=null)
+                InternalValues = new Dictionary<string, object>(DictItem, StringComparer.OrdinalIgnoreCase);
+            else if (Item is IEnumerable)
+                SetValue("Items", Item);
+            else
+                IoC.Manager.Bootstrapper.Resolve<Manager>().Map(Item.GetType(), this.GetType())
+                                                           .AutoMap()
+                                                           .Copy(Item, this);
         }
 
         /// <summary>
@@ -529,6 +562,65 @@ namespace Utilities.DataTypes
             {
                 writer.WriteElementString(Key, (string)GetValue(Key, typeof(string)));
             }
+        }
+
+        /// <summary>
+        /// Outputs the object graph
+        /// </summary>
+        /// <returns>The string version of the object</returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("this ({0})", GetType().Name);
+            foreach (string Key in Keys)
+            {
+                Builder.AppendLineFormat("\t{0} : {1}", Key, (string)GetValue(Key, typeof(string)));
+            }
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Gets the hash code 
+        /// </summary>
+        /// <returns>The hash code</returns>
+        public override int GetHashCode()
+        {
+            int Value=1;
+            foreach (string Key in Keys)
+            {
+                Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
+            }
+            return Value;
+        }
+
+        /// <summary>
+        /// Determines if two objects are equal
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>True if they're equal, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            Dynamo TempObj = obj as Dynamo;
+            if (TempObj == null)
+                return false;
+            return TempObj.GetHashCode() == GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns a subset of the current Dynamo object
+        /// </summary>
+        /// <param name="Keys">Property keys to return</param>
+        /// <returns>A new Dynamo object containing only the keys specified</returns>
+        public dynamic SubSet(params string[] Keys)
+        {
+            if(Keys==null)
+                return new Dynamo();
+            Dynamo ReturnValue = new Dynamo();
+            foreach (string Key in Keys)
+            {
+                ReturnValue.Add(Key, this[Key]);
+            }
+            return ReturnValue;
         }
 
         #endregion

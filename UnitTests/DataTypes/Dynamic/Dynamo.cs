@@ -37,6 +37,21 @@ namespace UnitTests.DataTypes.Dynamic
             int B = Temp.B;
             Assert.Equal<string>("Testing", Temp.A);
             Assert.Equal<int>(1, B);
+            Assert.Equal<string>("this (TestClass)\r\n\tB : 1\r\n\tA : Testing\r\n", Temp.ToString());
+        }
+
+        [Fact]
+        public void EqualValues()
+        {
+            dynamic Temp = new TestClass();
+            dynamic Temp2 = new TestClass();
+            Temp.A = "Testing";
+            Temp.B = 1;
+            Temp2.A = "Testing";
+            Temp2.B = 1;
+            Assert.True(Temp.Equals(Temp2));
+            Assert.Equal(255206625, Temp.GetHashCode());
+            Assert.Equal(255206625, Temp2.GetHashCode());
         }
 
         [Fact]
@@ -74,6 +89,27 @@ namespace UnitTests.DataTypes.Dynamic
             Temp2 = Temp;
             Assert.Equal("Testing2", Temp2["A"]);
             Assert.Equal(2, Temp2["B"]);
+        }
+
+        [Fact]
+        public void SubSet()
+        {
+            dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });
+            Assert.Equal("Testing", Temp.A);
+            Assert.Equal(1, Temp.B);
+            Temp = Temp.SubSet("A");
+            Assert.Equal("Testing", Temp.A);
+            Assert.False(Temp.ContainsKey("B"));
+            Temp.Remove("A");
+            Assert.False(Temp.ContainsKey("A"));
+        }
+
+        [Fact]
+        public void Initialization()
+        {
+            dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });
+            Assert.Equal("Testing", Temp.A);
+            Assert.Equal(1, Temp.B);
         }
 
         [Fact]

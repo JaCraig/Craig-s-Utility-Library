@@ -727,24 +727,30 @@ namespace Utilities.DataTypes
                 }
                 PropertyInfo = PropertyInfo.PropertyType.GetProperty(SplitName[SplitName.Length - 1]);
             }
-            if (PropertyInfo.PropertyType != typeof(DataType))
+            MethodInfo SetMethod = PropertyInfo.GetSetMethod();
+            if (SetMethod != null)
             {
-                MethodInfo ConversionMethod = typeof(TypeConversionExtensions).GetMethods().FirstOrDefault(x => x.ContainsGenericParameters
-                    && x.GetGenericArguments().Length == 2
-                    && x.Name == "To"
-                    && x.GetParameters().Length == 2);
-                ConversionMethod = ConversionMethod.MakeGenericMethod(typeof(DataType), PropertyInfo.PropertyType);
-                MethodCallExpression Convert = Expression.Call(ConversionMethod, PropertySet, DefaultConstant);
+                if (PropertyInfo.PropertyType != typeof(DataType))
+                {
+                    MethodInfo ConversionMethod = typeof(TypeConversionExtensions).GetMethods().FirstOrDefault(x => x.ContainsGenericParameters
+                        && x.GetGenericArguments().Length == 2
+                        && x.Name == "To"
+                        && x.GetParameters().Length == 2);
+                    ConversionMethod = ConversionMethod.MakeGenericMethod(typeof(DataType), PropertyInfo.PropertyType);
+                    MethodCallExpression Convert = Expression.Call(ConversionMethod, PropertySet, DefaultConstant);
+                    if (PropertyGet == null)
+                        SetterCall = Expression.Call(ObjectInstance, SetMethod, Convert);
+                    else
+                        SetterCall = Expression.Call(PropertyGet, SetMethod, Convert);
+                    return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
+                }
                 if (PropertyGet == null)
-                    SetterCall = Expression.Call(ObjectInstance, PropertyInfo.GetSetMethod(), Convert);
+                    SetterCall = Expression.Call(ObjectInstance, SetMethod, PropertySet);
                 else
-                    SetterCall = Expression.Call(PropertyGet, PropertyInfo.GetSetMethod(), Convert);
-                return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
+                    SetterCall = Expression.Call(PropertyGet, SetMethod, PropertySet);
             }
-            if (PropertyGet == null)
-                SetterCall = Expression.Call(ObjectInstance, PropertyInfo.GetSetMethod(), PropertySet);
             else
-                SetterCall = Expression.Call(PropertyGet, PropertyInfo.GetSetMethod(), PropertySet);
+                return Expression.Lambda<Action<ClassType, DataType>>(Expression.Empty(), ObjectInstance, PropertySet);
             return Expression.Lambda<Action<ClassType, DataType>>(SetterCall, ObjectInstance, PropertySet);
         }
 
