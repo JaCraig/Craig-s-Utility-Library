@@ -203,7 +203,7 @@ namespace Utilities.DataTypes
                 return;
             if (Item is string || Item.GetType().IsValueType)
                 SetValue("Value", Item);
-            else if (DictItem!=null)
+            else if (DictItem != null)
                 InternalValues = new Dictionary<string, object>(DictItem, StringComparer.OrdinalIgnoreCase);
             else if (Item is IEnumerable)
                 SetValue("Items", Item);
@@ -571,10 +571,11 @@ namespace Utilities.DataTypes
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.AppendLineFormat("this ({0})", GetType().Name);
+            Builder.AppendLineFormat("{0} this", GetType().Name);
             foreach (string Key in Keys)
             {
-                Builder.AppendLineFormat("\t{0} : {1}", Key, (string)GetValue(Key, typeof(string)));
+                object Item = GetValue(Key, typeof(object));
+                Builder.AppendLineFormat("\t{0} {1} = {2}", Item.GetType().GetName(), Key, Item.ToString());
             }
             return Builder.ToString();
         }
@@ -585,7 +586,7 @@ namespace Utilities.DataTypes
         /// <returns>The hash code</returns>
         public override int GetHashCode()
         {
-            int Value=1;
+            int Value = 1;
             foreach (string Key in Keys)
             {
                 Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
@@ -613,7 +614,7 @@ namespace Utilities.DataTypes
         /// <returns>A new Dynamo object containing only the keys specified</returns>
         public dynamic SubSet(params string[] Keys)
         {
-            if(Keys==null)
+            if (Keys == null)
                 return new Dynamo();
             Dynamo ReturnValue = new Dynamo();
             foreach (string Key in Keys)
