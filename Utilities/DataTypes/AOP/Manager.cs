@@ -50,6 +50,24 @@ namespace Utilities.DataTypes.AOP
             Manager.Compiler = Compiler;
             Aspects.Add(AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>());
             Compiler.Classes.ForEach(x => Classes.Add(x.BaseType, x));
+            if (Classes.Count == 0)
+            {
+                foreach (Type TempType in AppDomain.CurrentDomain.GetAssemblies()
+                                                                 .Types()
+                                                                 .Where(x => !x.ContainsGenericParameters
+                                                                             && !x.IsAbstract
+                                                                             && x.IsClass
+                                                                             && x.IsPublic
+                                                                             && !x.IsSealed
+                                                                             && x.IsVisible
+                                                                             && x.HasDefaultConstructor()
+                                                                             && !string.IsNullOrEmpty(x.Namespace)
+                                                                             && !x.Namespace.StartsWith("system", StringComparison.CurrentCultureIgnoreCase)
+                                                                             && !x.Namespace.StartsWith("utilities", StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    Setup(TempType);
+                }
+            }
         }
 
         #endregion
@@ -88,12 +106,14 @@ namespace Utilities.DataTypes.AOP
             List<string> Usings = new List<string>();
             AssembliesUsing.Add(typeof(object).Assembly, typeof(System.Linq.Enumerable).Assembly);
             AssembliesUsing.AddIfUnique(Type.Assembly);
+            AssembliesUsing.AddIfUnique(GetAssemblies(Type));
             Aspects.ForEach(x => AssembliesUsing.AddIfUnique(x.AssembliesUsing));
             Usings.Add("System");
             Usings.Add("System.Collections.Generic");
             Usings.Add("System.Linq");
+            Usings.Add("System.Text");
+            Usings.Add("System.Threading.Tasks");
 
-            
             Aspects.ForEach(x => Usings.AddIfUnique(x.Usings));
 
             List<Type> Interfaces = new List<Type>();
@@ -105,28 +125,31 @@ namespace {1}
     public class {2} : {3}{4} {5}
     {{
 ", Usings.ToString(x => "using " + x + ";", "\r\n"),
- "CULGeneratedTypes", 
- Type.Name + "Derived", 
- Type.Namespace + "." + Type.Name, 
+ "CULGeneratedTypes.C" + Guid.NewGuid().ToString("N"),
+ Type.Name + "Derived",
+ Type.FullName.Replace("+", "."),
  Interfaces.Count > 0 ? "," : "", Interfaces.ToString(x => x.Name));
 
-                Aspects.ForEach(x => Builder.AppendLine(x.SetupInterfaces(Type)));
-            
-                Type TempType = Type;
-                List<string> MethodsAlreadyDone = new List<string>();
-                while (TempType != null)
+            Aspects.ForEach(x => Builder.AppendLine(x.SetupInterfaces(Type)));
+
+            Type TempType = Type;
+            List<string> MethodsAlreadyDone = new List<string>();
+            while (TempType != null)
+            {
+                foreach (PropertyInfo Property in TempType.GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
                 {
-                    foreach (PropertyInfo Property in TempType.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
+                    MethodInfo GetMethodInfo = Property.GetGetMethod();
+                    MethodInfo SetMethodInfo = Property.GetSetMethod();
+                    if (!MethodsAlreadyDone.Contains("get_" + Property.Name)
+                        && !MethodsAlreadyDone.Contains("set_" + Property.Name)
+                        && GetMethodInfo != null
+                        && GetMethodInfo.IsVirtual
+                        && SetMethodInfo != null
+                        && SetMethodInfo.IsPublic
+                        && !GetMethodInfo.IsFinal)
                     {
-                        MethodInfo GetMethodInfo = Property.GetGetMethod();
-                        MethodInfo SetMethodInfo = Property.GetSetMethod();
-                        if (!MethodsAlreadyDone.Contains("get_" + Property.Name)
-                            && !MethodsAlreadyDone.Contains("set_" + Property.Name)
-                            && GetMethodInfo != null
-                            && GetMethodInfo.IsVirtual
-                            && !GetMethodInfo.IsFinal)
-                        {
-                            Builder.AppendLineFormat(@"
+                        AssembliesUsing.AddIfUnique(GetAssemblies(Property.PropertyType));
+                        Builder.AppendLineFormat(@"
         public override {0} {1} 
         {{ 
             get 
@@ -138,39 +161,78 @@ namespace {1}
                 {3} 
             }}
         }}",
-                                                        Property.PropertyType.GetName(),
-                                                        Property.Name,
-                                                        SetupMethod(Type, GetMethodInfo,true),
-                                                        SetupMethod(Type, SetMethodInfo,true));
-                            MethodsAlreadyDone.Add(GetMethodInfo.Name);
-                            MethodsAlreadyDone.Add(SetMethodInfo.Name);
-                        }
+                                                    Property.PropertyType.GetName(),
+                                                    Property.Name,
+                                                    SetupMethod(Type, GetMethodInfo, true),
+                                                    SetupMethod(Type, SetMethodInfo, true));
+                        MethodsAlreadyDone.Add(GetMethodInfo.Name);
+                        MethodsAlreadyDone.Add(SetMethodInfo.Name);
                     }
-                    foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
+                    else if (!MethodsAlreadyDone.Contains("get_" + Property.Name)
+                        && GetMethodInfo != null
+                        && GetMethodInfo.IsVirtual
+                        && SetMethodInfo == null
+                        && !GetMethodInfo.IsFinal)
                     {
-                        if (!MethodsAlreadyDone.Contains(Method.Name) && Method.IsVirtual && !Method.IsFinal)
-                        {
-                            string Static = Method.IsStatic ? "static " : "";
-                            Builder.AppendLineFormat(@"
-        public override {0} {1}({2})
+                        AssembliesUsing.AddIfUnique(GetAssemblies(Property.PropertyType));
+                        Builder.AppendLineFormat(@"
+        public override {0} {1} 
+        {{ 
+            get 
+            {{ 
+                {2} 
+            }}
+        }}",
+                                                    Property.PropertyType.GetName(),
+                                                    Property.Name,
+                                                    SetupMethod(Type, GetMethodInfo, true));
+                        MethodsAlreadyDone.Add(GetMethodInfo.Name);
+                    }
+                }
+                foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
+                {
+                    string MethodAttribute = "public";
+                    if (!MethodsAlreadyDone.Contains(Method.Name) && Method.IsVirtual && !Method.IsFinal && !Method.IsPrivate)
+                    {
+                        AssembliesUsing.AddIfUnique(GetAssemblies(Method.ReturnType));
+                        Method.GetParameters().ForEach(x => AssembliesUsing.AddIfUnique(GetAssemblies(x.ParameterType)));
+                        string Static = Method.IsStatic ? "static " : "";
+                        Builder.AppendLineFormat(@"
+        {4} override {0} {1}({2})
         {{ 
             {3}
         }}",
-                                                        Static + Method.ReturnType.GetName(),
-                                                        Method.Name,
-                                                        Method.GetParameters().ToString(x => x.ParameterType.GetName() + " " + x.Name),
-                                                        SetupMethod(Type, Method,false));
-                            MethodsAlreadyDone.Add(Method.Name);
-                        }
+                                                    Static + Method.ReturnType.GetName(),
+                                                    Method.Name,
+                                                    Method.GetParameters().ToString(x => x.ParameterType.GetName() + " " + x.Name),
+                                                    SetupMethod(Type, Method, false),
+                                                    MethodAttribute);
+                        MethodsAlreadyDone.Add(Method.Name);
                     }
-                    TempType = TempType.BaseType;
-                    if (TempType == typeof(object))
-                        break;
                 }
-                Builder.AppendLine(@"   }
+                TempType = TempType.BaseType;
+                if (TempType == typeof(object))
+                    break;
+            }
+            Builder.AppendLine(@"   }
 }");
 
-                Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
+            Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
+        }
+
+        private static Assembly[] GetAssemblies(Type Type)
+        {
+            List<Assembly> Types = new List<Assembly>();
+            Type TempType = Type;
+            while (TempType != null)
+            {
+                Types.AddIfUnique(TempType.Assembly);
+                TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssemblies(x)));
+                TempType = TempType.BaseType;
+                if (TempType == typeof(object))
+                    break;
+            }
+            return Types.ToArray();
         }
 
         /// <summary>
@@ -198,9 +260,10 @@ namespace {1}
         }
 
 
-        private static string SetupMethod(Type Type, MethodInfo MethodInfo,bool IsProperty)
+        private static string SetupMethod(Type Type, MethodInfo MethodInfo, bool IsProperty)
         {
-            Contract.Requires<ArgumentNullException>(MethodInfo != null, "MethodInfo");
+            if (MethodInfo == null)
+                return "";
             StringBuilder Builder = new StringBuilder();
             string BaseMethodName = MethodInfo.Name.Replace("get_", "").Replace("set_", "");
             string ReturnValue = MethodInfo.ReturnType != typeof(void) ? "FinalReturnValue" : "";

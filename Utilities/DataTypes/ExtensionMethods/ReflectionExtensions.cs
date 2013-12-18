@@ -275,6 +275,8 @@ namespace Utilities.DataTypes
             }
             else
             {
+                Output.Append(ObjectType.DeclaringType == null ? ObjectType.Namespace : ObjectType.DeclaringType.GetName())
+                    .Append(".");
                 if (ObjectType.Name.Contains("`"))
                 {
                     Type[] GenericTypes = ObjectType.GetGenericArguments();
@@ -978,6 +980,20 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(BaseType != null, "BaseType");
             List<Type> ReturnValues = new List<Type>();
             Assemblies.ForEach(y => ReturnValues.AddRange(y.Types(BaseType)));
+            return ReturnValues;
+        }
+
+
+        /// <summary>
+        /// Gets a list of types in the assemblies specified
+        /// </summary>
+        /// <param name="Assemblies">Assemblies to check</param>
+        /// <returns>List of types</returns>
+        public static IEnumerable<Type> Types(this IEnumerable<Assembly> Assemblies)
+        {
+            Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
+            List<Type> ReturnValues = new List<Type>();
+            Assemblies.ForEach(y => ReturnValues.AddRange(y.GetTypes()));
             return ReturnValues;
         }
 
