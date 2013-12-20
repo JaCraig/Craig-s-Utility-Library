@@ -173,6 +173,7 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <returns>True if it is less than, false otherwise</returns>
         public static bool operator <(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
         {
+            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
             return Value1.CompareTo(Value2) < 0;
         }
 
@@ -196,6 +197,7 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <returns>True if it is less than or equal, false otherwise</returns>
         public static bool operator <=(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
         {
+            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
             return Value1.CompareTo(Value2) <= 0;
         }
 

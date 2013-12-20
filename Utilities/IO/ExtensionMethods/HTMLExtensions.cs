@@ -101,6 +101,8 @@ namespace Utilities.IO
 
         private static string HTMLMinify(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             Input = Regex.Replace(Input, "/// <.+>", "");
             if (string.IsNullOrEmpty(Input))
                 return "";
@@ -110,6 +112,7 @@ namespace Utilities.IO
 
         private static string Evaluate(Match Matcher)
         {
+            Contract.Requires<ArgumentNullException>(Matcher != null, "Matcher");
             string MyString = Matcher.ToString();
             if (string.IsNullOrEmpty(MyString))
                 return "";
@@ -119,6 +122,8 @@ namespace Utilities.IO
 
         private static string JavaScriptMinify(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             string[] CodeLines = Input.Split(new string[] { System.Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
             StringBuilder Builder = new StringBuilder();
             foreach (string Line in CodeLines)
@@ -149,6 +154,8 @@ namespace Utilities.IO
 
         private static string CSSMinify(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return "";
             Input = Regex.Replace(Input, @"(/\*\*/)|(/\*[^!][\s\S]*?\*/)", string.Empty);
             Input = Regex.Replace(Input, @"\s+", " ");
             Input = Regex.Replace(Input, @"(\s([\{:,;\}\(\)]))", "$2");

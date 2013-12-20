@@ -28,6 +28,7 @@ using System.Text;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 using Utilities.DataTypes;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -240,6 +241,8 @@ namespace Utilities.IO.FileSystem.Default
         public override string Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
         {
             HttpWebRequest Request = WebRequest.Create(InternalFile) as HttpWebRequest;
+            if (Request == null)
+                return "";
             if (Mode.HasFlag(FileMode.Append) || Mode.HasFlag(FileMode.Open))
                 Request.Method = "PUT";
             else if (Mode.HasFlag(FileMode.Create) || Mode.HasFlag(FileMode.CreateNew))
@@ -268,6 +271,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Data">Data to send with the request</param>
         private static void SetupData(HttpWebRequest Request, string Data)
         {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
             if (string.IsNullOrEmpty(Data))
             {
                 Request.ContentLength = 0;
@@ -302,6 +306,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The string returned by the service</returns>
         private static string SendRequest(HttpWebRequest Request)
         {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
             using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
             {
                 if (Response.StatusCode != HttpStatusCode.OK)

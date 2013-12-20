@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;
@@ -136,6 +138,7 @@ namespace Utilities.Random.StringGenerators
         /// <returns>A string containing Lorem Ipsum text</returns>
         protected virtual string NextSentence(System.Random Rand, int NumberOfWords)
         {
+            Contract.Requires<ArgumentNullException>(Rand != null, "Rand");
             StringBuilder Builder = new StringBuilder();
             Builder.Append(Words[Rand.Next(Words.Length)].ToString(StringCase.FirstCharacterUpperCase));
             for (int x = 1; x < NumberOfWords; ++x)

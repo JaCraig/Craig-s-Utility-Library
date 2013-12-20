@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
@@ -75,6 +77,9 @@ namespace Utilities.Media.Procedural
         private static float GetValue(int X, int Y, int Width, int Height, float Frequency, float Amplitude,
             float Persistance, int Octaves, float[,] Noise)
         {
+            Contract.Requires<ArgumentException>(Octaves >= 0, "Octaves should be greater than or equal to 0");
+            if (Noise == null)
+                return 0.0f;
             float FinalValue = 0.0f;
             for (int i = 0; i < Octaves; ++i)
             {
@@ -89,6 +94,8 @@ namespace Utilities.Media.Procedural
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "4#")]
         private static float GetSmoothNoise(float X, float Y, int Width, int Height, float[,] Noise)
         {
+            if (Noise == null)
+                return 0.0f;
             float FractionX = X - (int)X;
             float FractionY = Y - (int)Y;
             int X1 = ((int)X + Width) % Width;

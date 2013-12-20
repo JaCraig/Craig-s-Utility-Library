@@ -74,6 +74,8 @@ namespace Utilities.Media.Procedural
         private static float GetHeight(float X, float Y, float[,] DistanceBuffer,
             float MinimumDistance, float MaxDistance)
         {
+            if (DistanceBuffer == null)
+                return 0.0f;
             return (DistanceBuffer[(int)X,(int)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);
         }
 

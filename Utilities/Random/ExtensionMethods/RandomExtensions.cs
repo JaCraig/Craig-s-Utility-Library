@@ -178,6 +178,9 @@ namespace Utilities.Random
         /// <returns>Item that is returned</returns>
         public static T Next<T>(this System.Random Random, IEnumerable<T> List)
         {
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
+            if (List == null)
+                return default(T);
             int x = 0;
             int Position = Random.Next(0, List.Count());
             foreach (T Item in List)

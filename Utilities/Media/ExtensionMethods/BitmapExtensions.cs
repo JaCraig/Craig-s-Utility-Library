@@ -1630,7 +1630,7 @@ namespace Utilities.Media
                     RValue = RValue / (PixelSize * PixelSize);
                     GValue = GValue / (PixelSize * PixelSize);
                     BValue = BValue / (PixelSize * PixelSize);
-                    Color TempPixel = Color.FromArgb(RValue, GValue, BValue);
+                    Color TempPixel = Color.FromArgb(RValue.Clamp(255, 0), GValue.Clamp(255, 0), BValue.Clamp(255, 0));
                     Parallel.For(MinX, MaxX, x2 =>
                     {
                         for (int y2 = MinY; y2 < MaxY; ++y2)
@@ -2276,6 +2276,7 @@ namespace Utilities.Media
         /// <returns>The Bitmap in base64 string format</returns>
         public static string ToBase64(this System.Drawing.Image Image, ImageFormat DesiredFormat = null)
         {
+            Contract.Requires<ArgumentNullException>(Image != null, "Image");
             DesiredFormat = DesiredFormat.Check(ImageFormat.Jpeg);
             using (MemoryStream Stream = new MemoryStream())
             {

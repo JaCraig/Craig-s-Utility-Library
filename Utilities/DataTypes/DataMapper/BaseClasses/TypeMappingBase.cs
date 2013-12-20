@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using Utilities.DataTypes.CodeGen;
 using Utilities.DataTypes.DataMapper.Interfaces;
 using Utilities.DataTypes;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes.DataMapper.BaseClasses
@@ -113,6 +114,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
 
         private void AddLeftIDictionaryMapping(Type LeftType, Type RightType)
         {
+            Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
             PropertyInfo[] Properties = RightType.GetProperties();
             for (int x = 0; x < Properties.Length; ++x)
             {
@@ -148,6 +150,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
 
         private void AddRightIDictionaryMapping(Type LeftType, Type RightType)
         {
+            Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
             PropertyInfo[] Properties = LeftType.GetProperties();
             for (int x = 0; x < Properties.Length; ++x)
             {

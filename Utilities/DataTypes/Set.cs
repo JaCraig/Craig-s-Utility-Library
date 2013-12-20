@@ -66,6 +66,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it is, false otherwise</returns>
         public virtual bool Contains(Set<T> Set)
         {
+            Contract.Requires<ArgumentNullException>(Set != null, "Set");
             return Set.IsSubset(this);
         }
 

@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 
 #endregion
 
@@ -73,6 +74,7 @@ namespace Utilities.Random
         /// <returns>A randomly generated value</returns>
         public static int ThreadSafeNext(int Min = int.MinValue, int Max = int.MaxValue)
         {
+            Contract.Requires<ArgumentException>(Min <= Max);
             if (Local == null)
             {
                 int Seed;

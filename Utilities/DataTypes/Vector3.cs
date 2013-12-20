@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Xml.Serialization;
 #endregion
 
@@ -111,6 +112,7 @@ namespace Utilities.DataTypes
             get { return new double[] { X, Y, Z }; }
             set
             {
+                Contract.Requires<ArgumentNullException>(value != null, "value");
                 if (value.Length == 3)
                 {
                     X = value[0];
@@ -158,6 +160,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static Vector3 operator +(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return new Vector3(V1.X + V2.X, V1.Y + V2.Y, V1.Z + V2.Z);
         }
 
@@ -169,6 +173,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static Vector3 operator -(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return new Vector3(V1.X - V2.X, V1.Y - V2.Y, V1.Z - V2.Z);
         }
 
@@ -179,6 +185,7 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static Vector3 operator -(Vector3 V1)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
             return new Vector3(-V1.X, -V1.Y, -V1.Z);
         }
 
@@ -190,6 +197,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static bool operator <(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return V1.Magnitude < V2.Magnitude;
         }
 
@@ -201,6 +210,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static bool operator <=(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return V1.Magnitude <= V2.Magnitude;
         }
 
@@ -212,6 +223,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static bool operator >(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return V1.Magnitude > V2.Magnitude;
         }
 
@@ -223,6 +236,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static bool operator >=(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return V1.Magnitude >= V2.Magnitude;
         }
 
@@ -256,6 +271,7 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static Vector3 operator /(Vector3 V1, double D)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
             return new Vector3(V1.X / D, V1.Y / D, V1.Z / D);
         }
 
@@ -267,6 +283,7 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static Vector3 operator *(Vector3 V1, double D)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
             return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
         }
 
@@ -278,6 +295,7 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static Vector3 operator *(double D, Vector3 V1)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
             return new Vector3(V1.X * D, V1.Y * D, V1.Z * D);
         }
 
@@ -289,6 +307,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static Vector3 operator *(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
             TempVector.X = (V1.Y * V2.Z) - (V1.Z * V2.Y);
             TempVector.Y = (V1.Z * V2.X) - (V1.X * V2.Z);
@@ -304,6 +324,8 @@ namespace Utilities.DataTypes
         /// <returns>a dot product</returns>
         public static double DotProduct(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return (V1.X * V2.X) + (V1.Y * V2.Y) + (V1.Z * V2.Z);
         }
 
@@ -316,6 +338,8 @@ namespace Utilities.DataTypes
         /// <returns>The interpolated vector</returns>
         public static Vector3 Interpolate(Vector3 V1, Vector3 V2, double Control)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             Vector3 TempVector = new Vector3(0.0, 0.0, 0.0);
             TempVector.X = (V1.X * (1 - Control)) + (V2.X * Control);
             TempVector.Y = (V1.Y * (1 - Control)) + (V2.Y * Control);
@@ -331,6 +355,8 @@ namespace Utilities.DataTypes
         /// <returns>Distance between the vectors</returns>
         public static double Distance(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return (((V1.X - V2.X) * (V1.X - V2.X)) + ((V1.Y - V2.Y) * (V1.Y - V2.Y)) + ((V1.Z - V2.Z) * (V1.Z - V2.Z))).Sqrt();
         }
 
@@ -342,6 +368,8 @@ namespace Utilities.DataTypes
         /// <returns>Angle between the vectors</returns>
         public static double Angle(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             V1.Normalize();
             V2.Normalize();
             return System.Math.Acos(Vector3.DotProduct(V1, V2));

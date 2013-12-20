@@ -711,6 +711,8 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             string PropertyName = Property.PropertyName();
             string[] SplitName = PropertyName.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            if (SplitName.Length == 0)
+                return null;
             PropertyInfo PropertyInfo = typeof(ClassType).GetProperty(SplitName[0]);
             ParameterExpression ObjectInstance = Expression.Parameter(PropertyInfo.DeclaringType, "x");
             ParameterExpression PropertySet = Expression.Parameter(typeof(DataType), "y");

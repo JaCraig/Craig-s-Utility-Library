@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 #endregion
@@ -48,6 +49,7 @@ namespace Utilities.DataTypes
         /// <returns>A list of methods involved in the stack trace</returns>
         public static IEnumerable<MethodBase> GetMethods(this StackTrace Stack, params Assembly[] ExcludedAssemblies)
         {
+            Contract.Requires<ArgumentNullException>(Stack != null, "Stack");
             return Stack.GetFrames().GetMethods(ExcludedAssemblies);
         }
 

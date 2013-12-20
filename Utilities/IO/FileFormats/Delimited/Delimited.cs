@@ -113,6 +113,8 @@ namespace Utilities.IO.FileFormats.Delimited
 
         private static string CheckDelimiters(string Content)
         {
+            if (string.IsNullOrEmpty(Content))
+                return ",";
             string[] Delimiters = new string[] { ",", "|", "\t", "$", ";", ":" };
             int[] Count = new int[6];
             int MaxIndex = 0;

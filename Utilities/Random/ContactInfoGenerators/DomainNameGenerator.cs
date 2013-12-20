@@ -71,9 +71,10 @@ namespace Utilities.Random.ContactInfoGenerators
                 + (CommonEndings ? Rand.Next(MostCommonEndings) : Rand.Next(Endings));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
         private static string CleanName(string Name)
         {
+            if (string.IsNullOrEmpty(Name))
+                return Name;
             return Name.ToLower(CultureInfo.InvariantCulture).Replace(" ", "").Replace(",", "").Replace("'", "").Replace("&", "").Replace(".", "");
         }
 

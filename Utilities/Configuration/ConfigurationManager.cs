@@ -51,6 +51,7 @@ namespace Utilities.Configuration
         public static T Get<T>(ConfigurationSystem System, string Name = "Default")
             where T : IConfig, new()
         {
+            Contract.Requires<ArgumentNullException>(System != null, "The config system can not be null.");
             return IoC.Manager.Bootstrapper.Resolve<Utilities.Configuration.Manager.Manager>().Get(System).Config<T>(Name);
         }
 

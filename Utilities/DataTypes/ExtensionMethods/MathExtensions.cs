@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 
@@ -88,6 +89,7 @@ namespace Utilities.DataTypes
         /// <returns>The absolute value</returns>
         public static long Absolute(this long Value)
         {
+            Contract.Requires<ArgumentException>(Value != -9223372036854775808);
             return System.Math.Abs(Value);
         }
 
@@ -98,6 +100,7 @@ namespace Utilities.DataTypes
         /// <returns>The absolute value</returns>
         public static short Absolute(this short Value)
         {
+            Contract.Requires<ArgumentException>(Value != -32768);
             return System.Math.Abs(Value);
         }
 
@@ -165,6 +168,7 @@ namespace Utilities.DataTypes
         [CLSCompliant(false)]
         public static int GreatestCommonDenominator(this int Value1, uint Value2)
         {
+            Contract.Requires<ArgumentException>(Value2 != 2147483648);
             return Value1.GreatestCommonDenominator((int)Value2);
         }
 
@@ -177,6 +181,8 @@ namespace Utilities.DataTypes
         [CLSCompliant(false)]
         public static int GreatestCommonDenominator(this uint Value1, uint Value2)
         {
+            Contract.Requires<ArgumentException>(Value1 != 2147483648);
+            Contract.Requires<ArgumentException>(Value2 != 2147483648);
             return ((int)Value1).GreatestCommonDenominator((int)Value2);
         }
 
@@ -299,6 +305,8 @@ namespace Utilities.DataTypes
         /// <returns></returns>
         public static double Round(this double Value, int Digits = 2, MidpointRounding Rounding = MidpointRounding.AwayFromZero)
         {
+            Contract.Requires<ArgumentException>(Digits >= 0);
+            Contract.Requires<ArgumentException>(Digits <= 15);
             return System.Math.Round(Value, Digits, Rounding);
         }
 

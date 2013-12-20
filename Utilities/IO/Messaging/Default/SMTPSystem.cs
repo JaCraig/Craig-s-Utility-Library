@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
@@ -129,6 +130,9 @@ namespace Utilities.IO.Messaging.Default
         /// <param name="message">Mail message object</param>
         private static void SendMessage(SmtpClient smtpClient, EmailMessage Message, MailMessage message)
         {
+            Contract.Requires<ArgumentNullException>(Message != null, "Message");
+            Contract.Requires<ArgumentNullException>(smtpClient != null, "smtpClient");
+            Contract.Requires<ArgumentNullException>(message != null, "message");
             using (System.Net.Mail.SmtpClient smtp = smtpClient)
             {
                 if (!string.IsNullOrEmpty(Message.UserName) && !string.IsNullOrEmpty(Message.Password))

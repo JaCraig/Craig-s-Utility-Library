@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 #endregion
 
@@ -59,6 +60,8 @@ namespace Utilities.DataTypes
             }
             this.Numerator = (int)Numerator;
             this.Denominator = (int)Denominator;
+            if (this.Denominator == int.MinValue)
+                return;
             this.Reduce();
         }
 
@@ -87,6 +90,7 @@ namespace Utilities.DataTypes
         /// <param name="Denominator">Denominator</param>
         public Fraction(float Numerator, float Denominator)
         {
+            Contract.Requires<ArgumentException>(Denominator != Int32.MinValue);
             while (Numerator != System.Math.Round(Numerator, MidpointRounding.AwayFromZero)
                 || Denominator != System.Math.Round(Denominator, MidpointRounding.AwayFromZero))
             {
@@ -95,6 +99,8 @@ namespace Utilities.DataTypes
             }
             this.Numerator = (int)Numerator;
             this.Denominator = (int)Denominator;
+            if (this.Denominator == int.MinValue)
+                return;
             this.Reduce();
         }
 
@@ -278,6 +284,7 @@ namespace Utilities.DataTypes
         /// <returns>The fraction as a double</returns>
         public static implicit operator double(Fraction Fraction)
         {
+            Contract.Requires<ArgumentNullException>(Fraction != null, "Fraction");
             return ((double)Fraction.Numerator / (double)Fraction.Denominator);
         }
 
@@ -292,6 +299,7 @@ namespace Utilities.DataTypes
         /// <returns>The fraction as a decimal</returns>
         public static implicit operator decimal(Fraction Fraction)
         {
+            Contract.Requires<ArgumentNullException>(Fraction!=null,"Fraction");
             return ((decimal)Fraction.Numerator / (decimal)Fraction.Denominator);
         }
 
@@ -306,6 +314,7 @@ namespace Utilities.DataTypes
         /// <returns>The fraction as a float</returns>
         public static implicit operator float(Fraction Fraction)
         {
+            Contract.Requires<ArgumentNullException>(Fraction != null, "Fraction");
             return ((float)Fraction.Numerator / (float)Fraction.Denominator);
         }
 
@@ -391,6 +400,7 @@ namespace Utilities.DataTypes
         /// <returns>The fraction as a string</returns>
         public static implicit operator string(Fraction Fraction)
         {
+            Contract.Requires<ArgumentNullException>(Fraction != null, "Fraction");
             return Fraction.ToString();
         }
 
@@ -406,6 +416,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting fraction</returns>
         public static Fraction operator *(Fraction First, Fraction Second)
         {
+            Contract.Requires<ArgumentNullException>(First != null, "First");
+            Contract.Requires<ArgumentNullException>(Second != null, "Second");
             Fraction Result = new Fraction(First.Numerator * Second.Numerator, First.Denominator * Second.Denominator);
             Result.Reduce();
             return Result;
@@ -423,6 +435,8 @@ namespace Utilities.DataTypes
         /// <returns>The added fraction</returns>
         public static Fraction operator +(Fraction First, Fraction Second)
         {
+            Contract.Requires<ArgumentNullException>(First != null, "First");
+            Contract.Requires<ArgumentNullException>(Second != null, "Second");
             Fraction Value1 = new Fraction(First.Numerator * (int)Second.Denominator, First.Denominator * Second.Denominator);
             Fraction Value2 = new Fraction(Second.Numerator * (int)First.Denominator, Second.Denominator * First.Denominator);
             Fraction Result = new Fraction(Value1.Numerator + Value2.Numerator, Value1.Denominator);
@@ -442,6 +456,8 @@ namespace Utilities.DataTypes
         /// <returns>The subtracted fraction</returns>
         public static Fraction operator -(Fraction First, Fraction Second)
         {
+            Contract.Requires<ArgumentNullException>(First != null, "First");
+            Contract.Requires<ArgumentNullException>(Second != null, "Second");
             Fraction Value1 = new Fraction(First.Numerator * (int)Second.Denominator, First.Denominator * Second.Denominator);
             Fraction Value2 = new Fraction(Second.Numerator * (int)First.Denominator, Second.Denominator * First.Denominator);
             Fraction Result = new Fraction(Value1.Numerator - Value2.Numerator, Value1.Denominator);
@@ -461,6 +477,8 @@ namespace Utilities.DataTypes
         /// <returns>The divided fraction</returns>
         public static Fraction operator /(Fraction First, Fraction Second)
         {
+            Contract.Requires<ArgumentNullException>(First != null, "First");
+            Contract.Requires<ArgumentNullException>(Second != null, "Second");
             return First * Second.Inverse();
         }
 
@@ -475,6 +493,7 @@ namespace Utilities.DataTypes
         /// <returns>The negated fraction</returns>
         public static Fraction operator -(Fraction First)
         {
+            Contract.Requires<ArgumentNullException>(First != null, "First");
             return new Fraction(-First.Numerator, First.Denominator);
         }
 

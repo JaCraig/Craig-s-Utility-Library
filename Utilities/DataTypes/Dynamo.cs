@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -83,6 +84,7 @@ namespace Utilities.DataTypes
         protected Dynamo(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            Contract.Requires<ArgumentNullException>(info != null, "info");
         }
 
         #endregion
@@ -232,6 +234,7 @@ namespace Utilities.DataTypes
         protected Dynamo(SerializationInfo info, StreamingContext context)
             : base()
         {
+            Contract.Requires<ArgumentNullException>(info != null, "info");
             foreach (SerializationEntry Item in info)
             {
                 SetValue(Item.Name, Item.Value);

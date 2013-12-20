@@ -74,6 +74,8 @@ namespace Utilities.Media.Procedural
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "3#")]
         private static float GenerateFault(int Width, int Height, int NumberFaults, float[,] Heights, float IncreaseVal, System.Random Generator)
         {
+            if (Generator == null)
+                return 0.0f;
             int Wall = 0;
             int Wall2 = 0;
             while (Wall == Wall2)

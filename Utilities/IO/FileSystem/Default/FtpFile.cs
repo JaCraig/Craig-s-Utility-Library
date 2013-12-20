@@ -28,6 +28,7 @@ using System.Text;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 using Utilities.DataTypes;
+using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default
@@ -263,6 +264,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Data">Data to send with the request</param>
         private void SetupData(FtpWebRequest Request, byte[] Data)
         {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
             Request.UsePassive = true;
             Request.KeepAlive = false;
             Request.UseBinary = true;
@@ -300,6 +302,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <returns>The string returned by the service</returns>
         private static string SendRequest(FtpWebRequest Request)
         {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
             using (FtpWebResponse Response = Request.GetResponse() as FtpWebResponse)
             {
                 using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))

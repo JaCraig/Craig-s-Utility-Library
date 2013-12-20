@@ -75,6 +75,7 @@ namespace Utilities.DataTypes
         /// <returns>An HTML formatted string</returns>
         public static string GetInformation(this Process Process, bool HTMLFormat = true)
         {
+            Contract.Requires<ArgumentNullException>(Process != null, "Process");
             StringBuilder Builder = new StringBuilder();
             return Builder.Append(HTMLFormat ? "<strong>" : "")
                    .Append(Process.ProcessName)
@@ -111,6 +112,7 @@ namespace Utilities.DataTypes
         /// <param name="TimeToKill">Amount of time until the process is killed</param>
         private static void KillProcessAsyncHelper(Process Process, int TimeToKill)
         {
+            Contract.Requires<ArgumentNullException>(Process != null, "Process");
             if (TimeToKill > 0)
                 Thread.Sleep(TimeToKill);
             Process.Kill();
