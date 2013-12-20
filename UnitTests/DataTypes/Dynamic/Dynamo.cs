@@ -37,9 +37,9 @@ namespace UnitTests.DataTypes.Dynamic
             int B = Temp.B;
             Assert.Equal<string>("Testing", Temp.A);
             Assert.Equal<int>(1, B);
-            Assert.Equal<string>("TestClass this\r\n\tInt32 B = 1\r\n\tString A = Testing\r\n", Temp.ToString());
+            Assert.Equal<string>("TestClass this\r\n\tSystem.Int32 B = 1\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
             Temp.C = new Func<int>(() => 1);
-            Assert.Equal<string>("TestClass this\r\n\tInt32 B = 1\r\n\tFunc<Int32> C = System.Func`1[System.Int32]\r\n\tString A = Testing\r\n", Temp.ToString());
+            Assert.Equal<string>("TestClass this\r\n\tSystem.Int32 B = 1\r\n\tSystem.Func<System.Int32> C = System.Func`1[System.Int32]\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
             Assert.Equal<int>(1, Temp.C());
         }
 

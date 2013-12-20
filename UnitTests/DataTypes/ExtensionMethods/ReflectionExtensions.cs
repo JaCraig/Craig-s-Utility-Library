@@ -148,9 +148,9 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetNameTest()
         {
-            Assert.Equal("TestClass", typeof(TestClass).GetName());
-            Assert.Equal("TestClass2", typeof(TestClass2).GetName());
-            Assert.Equal("TestClass3<Int32>", typeof(TestClass3<int>).GetName());
+            Assert.Equal("UnitTests.Reflection.ExtensionMethods.TestClass", typeof(TestClass).GetName());
+            Assert.Equal("UnitTests.Reflection.ExtensionMethods.TestClass2", typeof(TestClass2).GetName());
+            Assert.Equal("UnitTests.Reflection.ExtensionMethods.TestClass3<System.Int32>", typeof(TestClass3<int>).GetName());
         }
 
         [Fact]

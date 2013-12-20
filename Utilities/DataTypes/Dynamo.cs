@@ -41,7 +41,7 @@ using Utilities.DataTypes.DataMapper;
 namespace Utilities.DataTypes
 {
     /// <summary>
-    /// Dynamic object implementation (used when inheriting
+    /// Dynamic object implementation (used when inheriting)
     /// </summary>
     /// <typeparam name="T">Child object type</typeparam>
     [Serializable]
@@ -473,7 +473,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it is converted, false otherwise</returns>
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
-            result = Activator.CreateInstance(binder.Type);
+            result = IoC.Manager.Bootstrapper.Resolve<AOP.Manager>().Create(binder.Type);
             IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), binder.Type)
                 .AutoMap()
                 .Copy(this, result);
