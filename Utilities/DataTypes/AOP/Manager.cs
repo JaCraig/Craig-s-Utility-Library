@@ -119,13 +119,14 @@ namespace Utilities.DataTypes.AOP
             List<Type> Interfaces = new List<Type>();
             Aspects.ForEach(x => Interfaces.AddRange(x.InterfacesUsing == null ? new List<Type>() : x.InterfacesUsing));
             StringBuilder Builder = new StringBuilder();
+            string Namespace="CULGeneratedTypes.C" + Guid.NewGuid().ToString("N");
             Builder.AppendLineFormat(@"{0}
 namespace {1}
 {{
     public class {2} : {3}{4} {5}
     {{
 ", Usings.ToString(x => "using " + x + ";", "\r\n"),
- "CULGeneratedTypes.C" + Guid.NewGuid().ToString("N"),
+ Namespace,
  Type.Name + "Derived",
  Type.FullName.Replace("+", "."),
  Interfaces.Count > 0 ? "," : "", Interfaces.ToString(x => x.Name));
@@ -217,7 +218,7 @@ namespace {1}
             Builder.AppendLine(@"   }
 }");
 
-            Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
+            Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Namespace + "." + Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
         }
 
         private static Assembly[] GetAssemblies(Type Type)

@@ -36,6 +36,7 @@ using System.Text;
 using System.Xml.Serialization;
 using Utilities.DataTypes;
 using Utilities.DataTypes.DataMapper;
+using Utilities.DataTypes.Dynamic.Interfaces;
 #endregion
 
 namespace Utilities.DataTypes
@@ -213,6 +214,9 @@ namespace Utilities.DataTypes
                 IoC.Manager.Bootstrapper.Resolve<Manager>().Map(Item.GetType(), this.GetType())
                                                            .AutoMap()
                                                            .Copy(Item, this);
+            if (Extensions == null)
+                Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
+            Extensions.ForEach(x => x.Extend(this));
         }
 
         /// <summary>
@@ -224,6 +228,9 @@ namespace Utilities.DataTypes
         {
             InternalValues = new Dictionary<string, object>(Dictionary, StringComparer.OrdinalIgnoreCase);
             ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+            if (Extensions == null)
+                Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
+            Extensions.ForEach(x => x.Extend(this));
         }
 
         /// <summary>
@@ -239,11 +246,19 @@ namespace Utilities.DataTypes
             {
                 SetValue(Item.Name, Item.Value);
             }
+            if (Extensions == null)
+                Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
+            Extensions.ForEach(x => x.Extend(this));
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Extensions for the class
+        /// </summary>
+        private static IEnumerable<IDynamoExtension> Extensions { get; set; }
 
         /// <summary>
         /// Internal key/value dictionary

@@ -151,7 +151,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             ReflectionEmitResult Result = CSharpCompiler.Emit(Module);
             if (!Result.Success)
                 throw new Exception(Result.Diagnostics.ToString(x => x.Info.GetMessage(), System.Environment.NewLine));
-            Type ReturnType = Module.GetTypes().FirstOrDefault(x => x.Name == ClassName);
+            Type ReturnType = Module.GetTypes().FirstOrDefault(x => x.FullName == ClassName);
             Classes.Add(ReturnType);
             return ReturnType;
         }
