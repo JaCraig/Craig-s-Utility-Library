@@ -20,8 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Threading;
 using Utilities.DataTypes;
 using Xunit;
+using Utilities.Profiler;
 
 namespace UnitTests.DataTypes.Dynamic
 {
@@ -37,9 +39,9 @@ namespace UnitTests.DataTypes.Dynamic
             int B = Temp.B;
             Assert.Equal<string>("Testing", Temp.A);
             Assert.Equal<int>(1, B);
-            Assert.Equal<string>("TestClass this\r\n\tSystem.Int32 B = 1\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
+            Assert.Equal<string>("TestClass this\r\n\tSystem.Action Randomize = System.Action\r\n\tSystem.Int32 B = 1\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
             Temp.C = new Func<int>(() => 1);
-            Assert.Equal<string>("TestClass this\r\n\tSystem.Int32 B = 1\r\n\tSystem.Func<System.Int32> C = System.Func`1[System.Int32]\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
+            Assert.Equal<string>("TestClass this\r\n\tSystem.Action Randomize = System.Action\r\n\tSystem.Int32 B = 1\r\n\tSystem.Func<System.Int32> C = System.Func`1[System.Int32]\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
             Assert.Equal<int>(1, Temp.C());
         }
 
@@ -131,7 +133,7 @@ namespace UnitTests.DataTypes.Dynamic
             dynamic Temp = new TestClass();
             Temp.A = "Testing";
             Temp.B = new Func<string>(() => Temp.A);
-            Assert.Equal(2, Temp.Keys.Count);
+            Assert.Equal(3, Temp.Keys.Count);
             Assert.Contains("A", Temp.Keys);
             Assert.Contains("B", Temp.Keys);
         }
@@ -142,8 +144,23 @@ namespace UnitTests.DataTypes.Dynamic
             dynamic Temp = new TestClass();
             Temp.A = "Testing";
             Temp.B = new Func<string>(() => Temp.A);
-            Assert.Equal(2, Temp.Values.Count);
+            Assert.Equal(3, Temp.Values.Count);
             Assert.Contains("Testing", Temp.Values);
+        }
+
+        [Fact]
+        public void ChangeLog()
+        {
+            dynamic Temp = new TestClass();
+            Temp.A = "Testing";
+            Temp.B = new Func<string>(() => Temp.A);
+            Assert.Equal(2, Temp.ChangeLog.Count);
+            Assert.Contains("B", Temp.ChangeLog.Keys);
+            Assert.Contains("Randomize", Temp.ChangeLog.Keys);
+            dynamic Temp2 = new Utilities.DataTypes.Dynamo(new { A = "Testing" });
+            Temp2.A = "Testing2";
+            Assert.Equal("Testing", Temp2.ChangeLog["A"].OriginalValue);
+            Assert.Equal("Testing2", Temp2.ChangeLog["A"].NewValue);
         }
 
         public class TestClass : Utilities.DataTypes.Dynamo<TestClass>

@@ -102,6 +102,7 @@
     <Compile Include="DataTypes\DataMapper\Manager.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\Dynamic\Dynamo.cs" />
+    <Compile Include="DataTypes\Dynamic\Randomize.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\CacheExtensions.cs" />
     <Compile Include="DataTypes\ExtensionMethods\DateTimeExtension.cs" />

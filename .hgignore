@@ -16,3 +16,5 @@ Utilities/CraigsUtilityLibrary.3.0.nupkg
 .git/*
 ct.ignore
 *.coverage
+TestResults/Utilities.TE.Tests_log.ldf
+TestResults/Utilities.TE.Tests.mdf

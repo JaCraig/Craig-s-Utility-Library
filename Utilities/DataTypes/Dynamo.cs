@@ -166,7 +166,7 @@ namespace Utilities.DataTypes
             PropertyInfo Property = ObjectType.GetProperty(key);
             if (Property != null && Property.CanWrite)
             {
-                RaisePropertyChanged(key);
+                RaisePropertyChanged(key, value);
                 Property.SetValue(this, value);
             }
             else if (Property == null)
@@ -201,6 +201,7 @@ namespace Utilities.DataTypes
         {
             InternalValues = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+            ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
             IDictionary<string, object> DictItem = Item as IDictionary<string, object>;
             if (Item == null)
                 return;
@@ -228,6 +229,7 @@ namespace Utilities.DataTypes
         {
             InternalValues = new Dictionary<string, object>(Dictionary, StringComparer.OrdinalIgnoreCase);
             ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+            ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
             if (Extensions == null)
                 Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
             Extensions.ForEach(x => x.Extend(this));
@@ -242,6 +244,9 @@ namespace Utilities.DataTypes
             : base()
         {
             Contract.Requires<ArgumentNullException>(info != null, "info");
+            InternalValues = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
+            ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
             foreach (SerializationEntry Item in info)
             {
                 SetValue(Item.Name, Item.Value);
@@ -279,6 +284,11 @@ namespace Utilities.DataTypes
         /// Values
         /// </summary>
         public virtual ICollection<object> Values { get { return InternalValues.Values; } }
+
+        /// <summary>
+        /// Change log
+        /// </summary>
+        public IDictionary<string, Change> ChangeLog { get; private set; }
 
         /// <summary>
         /// Number of items
@@ -338,7 +348,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it is removed, false otherwise</returns>
         public bool Remove(string key)
         {
-            RaisePropertyChanged(key);
+            RaisePropertyChanged(key, null);
             return InternalValues.Remove(key);
         }
 
@@ -367,7 +377,7 @@ namespace Utilities.DataTypes
         /// </summary>
         public void Clear()
         {
-            RaisePropertyChanged("");
+            RaisePropertyChanged("", null);
             InternalValues.Clear();
         }
 
@@ -398,7 +408,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it is removed, false otherwise</returns>
         public bool Remove(KeyValuePair<string, object> item)
         {
-            RaisePropertyChanged(item.Key);
+            RaisePropertyChanged(item.Key, null);
             return InternalValues.Remove(item);
         }
 
@@ -527,7 +537,7 @@ namespace Utilities.DataTypes
         /// <param name="value">Value to set</param>
         protected virtual void SetValue(string key, object value)
         {
-            RaisePropertyChanged(key);
+            RaisePropertyChanged(key, value);
             if (InternalValues.ContainsKey(key))
                 InternalValues[key] = value;
             else
@@ -607,7 +617,8 @@ namespace Utilities.DataTypes
             int Value = 1;
             foreach (string Key in Keys)
             {
-                Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
+                if (!this[Key].GetType().Is<Delegate>())
+                    Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
             }
             return Value;
         }
@@ -655,12 +666,44 @@ namespace Utilities.DataTypes
         /// Raises the property changed event
         /// </summary>
         /// <param name="PropertyName">Property name</param>
-        protected void RaisePropertyChanged(string PropertyName)
+        /// <param name="NewValue">New value for the property</param>
+        protected void RaisePropertyChanged(string PropertyName, object NewValue)
         {
+            if (ChangeLog.ContainsKey(PropertyName))
+                ChangeLog.SetValue(PropertyName, new Change(this[PropertyName], NewValue));
+            else
+                ChangeLog.SetValue(PropertyName, new Change(NewValue, NewValue));
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Change class
+    /// </summary>
+    public class Change
+    {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="OriginalValue">Original value</param>
+        /// <param name="NewValue">New value</param>
+        public Change(object OriginalValue, object NewValue)
+        {
+            this.OriginalValue = OriginalValue;
+            this.NewValue = NewValue;
+        }
+
+        /// <summary>
+        /// Original value
+        /// </summary>
+        public object OriginalValue { get; set; }
+
+        /// <summary>
+        /// New value
+        /// </summary>
+        public object NewValue { get; set; }
     }
 }
