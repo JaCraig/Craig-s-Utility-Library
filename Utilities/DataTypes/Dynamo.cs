@@ -513,6 +513,9 @@ namespace Utilities.DataTypes
         /// <returns>The returned value</returns>
         protected virtual object GetValue(string Name, Type ReturnType)
         {
+            object Value = RaiseGetValueStart(Name);
+            if (Value != null)
+                return Value;
             if (ContainsKey(Name))
                 return InternalValues[Name].To(ReturnType, null);
             if (!ChildValues.ContainsKey(Name))
@@ -527,7 +530,9 @@ namespace Utilities.DataTypes
                 else
                     ChildValues.Add(Name, () => null);
             }
-            return ChildValues[Name]().To(ReturnType, null);
+            object ReturnValue = ChildValues[Name]().To(ReturnType, null);
+            Value = RaiseGetValueEnd(Name, ReturnValue);
+            return (Value != null) ? Value : ReturnValue;
         }
 
         /// <summary>
@@ -661,6 +666,45 @@ namespace Utilities.DataTypes
         /// Property changed event
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Called when beginning to get a value/property
+        /// Sends (this, EventArgs) to items attached to the event
+        /// </summary>
+        public event Action<Dynamo, EventArgs.OnStartEventArgs> GetValueStart;
+
+        /// <summary>
+        /// Called when the value/property is found but before it is returned to the caller
+        /// Sends (this, PropertyName, EventArgs) to items attached to the event
+        /// </summary>
+        public event Action<Dynamo, string, EventArgs.OnEndEventArgs> GetValueEnd;
+
+        /// <summary>
+        /// Raises the get value start event
+        /// </summary>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>Returns null if the function should continue, any other value should be immediately returned to the user</returns>
+        protected object RaiseGetValueStart(string PropertyName)
+        {
+            EventArgs.OnStartEventArgs Start = new EventArgs.OnStartEventArgs() { Content = PropertyName };
+            if (GetValueStart != null)
+                GetValueStart(this, Start);
+            return Start.Stop ? Start.Content : null;
+        }
+
+        /// <summary>
+        /// Raises the get value end event
+        /// </summary>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Value">Value initially being returned</param>
+        /// <returns>Returns null if the function should continue, any other value should be immediately returned to the user</returns>
+        protected object RaiseGetValueEnd(string PropertyName, object Value)
+        {
+            EventArgs.OnEndEventArgs End = new EventArgs.OnEndEventArgs() { Content = Value };
+            if (GetValueEnd != null)
+                GetValueEnd(this, PropertyName, End);
+            return End.Stop ? End.Content : null;
+        }
 
         /// <summary>
         /// Raises the property changed event
