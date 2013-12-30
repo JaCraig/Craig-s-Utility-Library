@@ -23,9 +23,9 @@ THE SOFTWARE.*/
 using System;
 using System.IO;
 using System.Text;
+using Utilities.DataTypes;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-using Utilities.DataTypes;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default

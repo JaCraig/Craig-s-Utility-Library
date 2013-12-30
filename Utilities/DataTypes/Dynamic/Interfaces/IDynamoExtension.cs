@@ -20,22 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.Contracts;
-using System.Dynamic;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Security;
-using System.Text;
-using System.Xml.Serialization;
-using Utilities.DataTypes;
-using Utilities.DataTypes.DataMapper;
+
 #endregion
 
 namespace Utilities.DataTypes.Dynamic.Interfaces

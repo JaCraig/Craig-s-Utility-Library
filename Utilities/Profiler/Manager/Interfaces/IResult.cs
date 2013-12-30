@@ -20,16 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Utilities.IO.FileSystem.Interfaces;
-using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.Profiler.Manager.Interfaces;
-using System.Diagnostics.Contracts;
+
 #endregion
 
 namespace Utilities.Profiler.Manager.Interfaces

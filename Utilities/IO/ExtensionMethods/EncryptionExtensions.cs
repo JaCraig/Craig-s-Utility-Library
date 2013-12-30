@@ -23,8 +23,6 @@ THE SOFTWARE.*/
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
-using System.IO;
-using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes;

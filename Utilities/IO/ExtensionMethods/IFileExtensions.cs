@@ -23,9 +23,6 @@ THE SOFTWARE.*/
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Utilities.IO.FileFormats;
-using Utilities.IO.FileFormats.BaseClasses;
-using Utilities.IO.FileFormats.Interfaces;
 using Utilities.IO.FileSystem.Interfaces;
 #endregion
 

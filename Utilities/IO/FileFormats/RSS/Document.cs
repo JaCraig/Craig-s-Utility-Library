@@ -26,9 +26,9 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Utilities.IO.FileFormats.BaseClasses;
-using Utilities.DataTypes;
 using System.Xml.XPath;
+using Utilities.DataTypes;
+using Utilities.IO.FileFormats.BaseClasses;
 #endregion
 
 namespace Utilities.IO.FileFormats.RSS

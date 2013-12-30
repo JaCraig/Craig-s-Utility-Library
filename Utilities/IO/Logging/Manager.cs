@@ -23,11 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Utilities.IO.Logging.Default;
-using Utilities.IO.Logging.Interfaces;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.IO.Logging.Default;
+using Utilities.IO.Logging.Interfaces;
 #endregion
 
 namespace Utilities.IO.Logging

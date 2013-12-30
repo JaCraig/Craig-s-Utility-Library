@@ -24,10 +24,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using Utilities.IO.Serializers.Interfaces;
 using Utilities.DataTypes;
+using Utilities.IO.Serializers.Interfaces;
 #endregion
 
 namespace Utilities.IO.Serializers

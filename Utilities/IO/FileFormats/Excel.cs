@@ -24,13 +24,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities.IO.FileFormats.BaseClasses;
-using Utilities.DataTypes;
-using System.Globalization;
 using System.Diagnostics.Contracts;
+using System.Globalization;
+using Utilities.DataTypes;
+using Utilities.IO.FileFormats.BaseClasses;
 #endregion
 
 namespace Utilities.IO.FileFormats

@@ -20,9 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Text.RegularExpressions;
-using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.FileSystem.Default;
 using Utilities.IO.FileSystem.Interfaces;
 

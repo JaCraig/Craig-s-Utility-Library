@@ -22,9 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.IO;
-using Utilities.IO;
+
 #endregion
 
 namespace Utilities.IO.FileFormats.BaseClasses

@@ -26,7 +26,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Utilities.DataTypes;
-using Utilities.Media;
+
 #endregion
 
 namespace Utilities.Media

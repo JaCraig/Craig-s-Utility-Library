@@ -22,7 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Diagnostics.Contracts;
-using Utilities.DataTypes;
+
 #endregion
 
 namespace Utilities.DataTypes

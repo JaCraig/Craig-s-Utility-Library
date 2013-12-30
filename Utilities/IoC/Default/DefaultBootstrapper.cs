@@ -22,9 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
-using System.Linq;
 #endregion
 
 namespace Utilities.IoC.Default

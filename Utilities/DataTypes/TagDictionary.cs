@@ -25,7 +25,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Utilities.DataTypes;
+
 #endregion
 
 namespace Utilities.DataTypes

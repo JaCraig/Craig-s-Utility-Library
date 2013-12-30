@@ -22,15 +22,14 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Utilities.DataTypes;
 using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-using Utilities.IO;
-using Utilities.DataTypes;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.IO.FileSystem.Default

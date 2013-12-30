@@ -24,15 +24,12 @@ using Roslyn.Compilers;
 using Roslyn.Compilers.CSharp;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Dynamic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes.CodeGen.BaseClasses

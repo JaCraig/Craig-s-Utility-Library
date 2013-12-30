@@ -20,12 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using Utilities.DataTypes.Caching.Interfaces;
 using System.Web;
+using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.DataTypes.Patterns.BaseClasses;
 #endregion
 

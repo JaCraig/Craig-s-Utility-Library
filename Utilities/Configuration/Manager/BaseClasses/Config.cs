@@ -22,14 +22,12 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Security.Cryptography;
 using Utilities.Configuration.Manager.Interfaces;
 using Utilities.DataTypes;
-using System.Linq;
-using System.Reflection;
 using Utilities.IO;
-using System.Security.Cryptography;
-using System.Runtime.Serialization;
+
 #endregion
 
 namespace Utilities.Configuration.Manager.BaseClasses

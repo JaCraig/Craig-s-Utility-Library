@@ -24,8 +24,8 @@ using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Comparison;
 
 #endregion
 

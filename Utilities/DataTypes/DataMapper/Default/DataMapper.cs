@@ -21,12 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Diagnostics.Contracts;
-using System.Linq.Expressions;
-using Utilities.DataTypes.CodeGen;
+using System.Linq;
 using Utilities.DataTypes.DataMapper.BaseClasses;
 using Utilities.DataTypes.DataMapper.Interfaces;
-using System.Linq;
 #endregion
 
 namespace Utilities.DataTypes.DataMapper.Default

@@ -22,13 +22,12 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Utilities.IO;
 using Utilities.DataTypes;
-using System.ComponentModel;
 #endregion
 
 namespace Utilities.IO

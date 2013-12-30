@@ -24,8 +24,6 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Text;
-using Utilities.IO.Encryption.Interfaces;
-using Utilities.IoC.Interfaces;
 using Utilities.DataTypes;
 using Utilities.IO.Encryption.BaseClasses;
 #endregion

@@ -21,15 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
-using System.Reflection;
-using System.Text;
 using Utilities.IO.Messaging.BaseClasses;
-using Utilities.IO.Messaging.Interfaces;
+
 #endregion
 
 namespace Utilities.IO.Messaging.Default

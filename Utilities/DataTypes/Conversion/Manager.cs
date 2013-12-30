@@ -21,14 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.IO;
-using Utilities.DataTypes;
 using System.ComponentModel;
-using Utilities.DataTypes.Conversion.Converters.Interfaces;
 using System.Globalization;
-using System.Dynamic;
-using System.Reflection;
+using Utilities.DataTypes.Conversion.Converters.Interfaces;
+
 #endregion
 
 namespace Utilities.DataTypes.Conversion

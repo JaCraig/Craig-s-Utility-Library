@@ -21,16 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities.DataTypes.CodeGen;
-using Utilities.DataTypes.DataMapper.Interfaces;
-using Utilities.DataTypes.DataMapper.Default;
 using Utilities.DataTypes.DataMapper.BaseClasses;
+using Utilities.DataTypes.DataMapper.Interfaces;
 #endregion
 
 namespace Utilities.DataTypes.DataMapper.Default

@@ -20,13 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Linq;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.BaseClasses;
 #endregion

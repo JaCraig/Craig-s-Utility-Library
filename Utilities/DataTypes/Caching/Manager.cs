@@ -22,16 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.IoC.Default;
-using Utilities.IoC.Interfaces;
-using Utilities.DataTypes;
-using Utilities.DataTypes.Caching.Interfaces;
-using Utilities.DataTypes.Caching.Default;
 using System.Web;
+using Utilities.DataTypes.Caching.Default;
+using Utilities.DataTypes.Caching.Interfaces;
+using Utilities.DataTypes.Patterns.BaseClasses;
 #endregion
 
 namespace Utilities.DataTypes.Caching

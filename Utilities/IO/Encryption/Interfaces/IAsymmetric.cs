@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Text;
-using Utilities.IoC.Interfaces;
+
 #endregion
 
 namespace Utilities.IO.Encryption.Interfaces

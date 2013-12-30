@@ -21,11 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Utilities.IO.FileSystem;
-using Utilities.IO.FileSystem.Interfaces;
+
 #endregion
 
 namespace Utilities.IO.FileFormats.Interfaces

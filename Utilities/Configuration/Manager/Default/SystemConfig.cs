@@ -20,18 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using Utilities.Configuration.Manager.Interfaces;
-using Utilities.DataTypes;
-using System.Linq;
-using System.Reflection;
-using Utilities.IO;
-using System.Security.Cryptography;
 using System.Configuration;
-using System.Web.Configuration;
 using System.Web;
+using System.Web.Configuration;
+using Utilities.Configuration.Manager.Interfaces;
 #endregion
 
 namespace Utilities.Configuration.Manager.Default

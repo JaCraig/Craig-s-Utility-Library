@@ -21,11 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
 #endregion
 

@@ -20,17 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Dynamic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
-using Utilities.DataTypes;
 using Utilities.DataTypes.CodeGen.BaseClasses;
 #endregion
 

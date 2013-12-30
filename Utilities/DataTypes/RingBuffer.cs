@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
-using Utilities.DataTypes;
+
 #endregion
 
 namespace Utilities.DataTypes

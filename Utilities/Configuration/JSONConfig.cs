@@ -21,18 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Utilities.IO.FileSystem.Interfaces;
-using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.Configuration.Manager.Interfaces;
-using System.Diagnostics.Contracts;
-using Utilities.Configuration.Manager.Default;
-using Utilities.IO;
 using Utilities.Configuration.Manager.BaseClasses;
+using Utilities.IO;
 #endregion
 
 namespace Utilities.Configuration

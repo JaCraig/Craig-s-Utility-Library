@@ -21,17 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Utilities.IO.Messaging.BaseClasses;
-using Utilities.IO.Messaging.Interfaces;
-using Utilities.DataTypes;
-using Utilities.IO.Compression.Interfaces;
 using System.IO;
-using System.Diagnostics.Contracts;
 using System.IO.Compression;
+using Utilities.IO.Compression.Interfaces;
 #endregion
 
 

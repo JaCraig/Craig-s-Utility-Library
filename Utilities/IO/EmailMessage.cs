@@ -20,12 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Reflection;
-using System.Text;
 using Utilities.IO.Messaging;
 using Utilities.IO.Messaging.BaseClasses;
 using Utilities.IO.Messaging.Interfaces;

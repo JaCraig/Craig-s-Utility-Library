@@ -20,13 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Diagnostics.Contracts;
-using System.Security.Cryptography;
-using System.Text;
-using Utilities.IO.Encryption.Interfaces;
-using Utilities.IoC.Interfaces;
-using Utilities.DataTypes;
 using Utilities.IO.Encryption.BaseClasses;
 #endregion
 

@@ -23,14 +23,10 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using Utilities.IO.Messaging.BaseClasses;
-using Utilities.IO.Messaging.Interfaces;
-using Utilities.DataTypes;
-using Utilities.IO.Compression.Interfaces;
-using Utilities.IO.Encryption.Interfaces;
 using System.Security.Cryptography;
+using System.Text;
+using Utilities.DataTypes;
+using Utilities.IO.Encryption.Interfaces;
 #endregion
 
 namespace Utilities.IO.Encryption

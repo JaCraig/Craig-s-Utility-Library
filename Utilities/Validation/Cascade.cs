@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Utilities.DataTypes;
-using Utilities.Validation;
+
 #endregion
 
 namespace Utilities.Validation

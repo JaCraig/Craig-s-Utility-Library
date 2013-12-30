@@ -21,14 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using System.Diagnostics.Contracts;
-using System.Security.Cryptography;
-using System.Text;
-using Utilities.IO.Encryption.Interfaces;
-using Utilities.IoC.Interfaces;
-using Utilities.DataTypes;
-using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.IO;
+using System.Security.Cryptography;
+using Utilities.DataTypes;
+using Utilities.IO.Encryption.Interfaces;
 #endregion
 
 namespace Utilities.IO.Encryption.BaseClasses

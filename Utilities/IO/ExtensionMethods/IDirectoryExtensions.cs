@@ -21,10 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Utilities.IO.FileSystem.Interfaces;
-using Utilities.DataTypes;
-using System.ComponentModel;
 #endregion
 
 namespace Utilities.IO

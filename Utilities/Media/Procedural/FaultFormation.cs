@@ -23,7 +23,7 @@ THE SOFTWARE.*/
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
-using Utilities.Media;
+
 #endregion
 
 namespace Utilities.Media.Procedural

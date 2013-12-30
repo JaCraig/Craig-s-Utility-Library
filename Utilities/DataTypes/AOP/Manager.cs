@@ -22,14 +22,12 @@ THE SOFTWARE.*/
 #region Usings
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
-using Utilities.DataTypes;
-using System.Diagnostics.Contracts;
 #endregion
 
 namespace Utilities.DataTypes.AOP
