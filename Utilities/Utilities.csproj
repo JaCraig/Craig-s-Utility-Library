@@ -393,6 +393,8 @@
     <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
     <Compile Include="Media\Procedural\PerlinNoise.cs" />
     <Compile Include="Media\RGBHistogram.cs" />
+    <Compile Include="ORM\Manager\Schema\BaseClasses\SourceBase.cs" />
+    <Compile Include="ORM\Manager\Schema\BaseClasses\TableBase.cs" />
     <Compile Include="ORM\Manager\Schema\Enums\TriggerType.cs" />
     <Compile Include="ORM\Manager\Schema\Interfaces\IColumn.cs" />
     <Compile Include="ORM\Manager\Schema\Interfaces\IFunction.cs" />
@@ -472,7 +474,6 @@
     <Folder Include="ORM\Manager\QueryProvider\BaseClasses\" />
     <Folder Include="ORM\Manager\QueryProvider\Default\" />
     <Folder Include="ORM\Manager\QueryProvider\Interfaces\" />
-    <Folder Include="ORM\Manager\Schema\BaseClasses\" />
     <Folder Include="ORM\Manager\Schema\Default\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -30,8 +30,6 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
     /// </summary>
     public interface IFunction
     {
-        #region Public Properties
-
         /// <summary>
         /// Name
         /// </summary>
@@ -46,7 +44,5 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// Parent database
         /// </summary>
         ISource ParentDatabase { get; set; }
-
-        #endregion
     }
 }

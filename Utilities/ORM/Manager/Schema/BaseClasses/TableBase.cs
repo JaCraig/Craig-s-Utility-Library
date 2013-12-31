@@ -21,53 +21,67 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Collections.Generic;
+using Utilities.ORM.Manager.Schema.Interfaces;
+using System.Linq;
+using Utilities.DataTypes;
 using System.Data;
-using Utilities.ORM.Manager.Schema.Enums;
-
 #endregion
 
-namespace Utilities.ORM.Manager.Schema.Interfaces
+namespace Utilities.ORM.Manager.Schema.BaseClasses
 {
     /// <summary>
-    /// Interface for table like structures
+    /// Table base class
     /// </summary>
-    public interface ITable
+    public abstract class TableBase : ITable
     {
         /// <summary>
-        /// Name
+        /// Constructor
         /// </summary>
-        string Name { get; set; }
+        /// <param name="Name">Name of the table</param>
+        /// <param name="Source">Source that the table is from</param>
+        protected TableBase(string Name, ISource Source)
+        {
+            this.Name = Name;
+            this.Source = Source;
+            this.Columns = new List<IColumn>();
+            this.Triggers = new List<ITrigger>();
+        }
+
+        /// <summary>
+        /// Name of the table
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// Columns
         /// </summary>
-        ICollection<IColumn> Columns { get; }
+        public ICollection<IColumn> Columns { get; private set; }
 
         /// <summary>
-        /// Parent of the table structure
+        /// Source/Parent
         /// </summary>
-        ISource Source { get; }
-
+        public ISource Source { get; private set; }
+        
         /// <summary>
-        /// Triggers associated with the table (if source supports them)
+        /// List of triggers associated with the table
         /// </summary>
-        ICollection<ITrigger> Triggers { get; }
+        public ICollection<ITrigger> Triggers { get; private set; }
 
         /// <summary>
-        /// Returns the specified column
+        /// The column specified
         /// </summary>
         /// <param name="Name">Name of the column</param>
-        /// <returns>Column specified</returns>
-        IColumn this[string Name] { get; }
+        /// <returns>The column specified</returns>
+        public IColumn this[string Name] { get { return Columns.FirstOrDefault(x => string.Equals(x.Name, Name, System.StringComparison.CurrentCultureIgnoreCase)); } }
 
         /// <summary>
         /// Adds a trigger to the table
         /// </summary>
         /// <param name="Name">Name of the trigger</param>
-        /// <param name="Definition">Trigger definition</param>
+        /// <param name="Definition">Definition of the trigger</param>
         /// <param name="Type">Trigger type</param>
-        /// <returns>Trigger added to the table</returns>
-        ITrigger AddTrigger(string Name, string Definition, TriggerType Type);
+        /// <returns>The trigger specified</returns>
+        public abstract ITrigger AddTrigger(string Name, string Definition, Enums.TriggerType Type);
 
         /// <summary>
         /// Adds a foreign key
@@ -75,19 +89,25 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// <param name="ColumnName">Column name</param>
         /// <param name="ForeignKeyTable">Foreign key table</param>
         /// <param name="ForeignKeyColumn">Foreign key column</param>
-        void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn);
+        public abstract void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn);
 
         /// <summary>
         /// Sets up foreign keys
         /// </summary>
-        void SetupForeignKeys();
+        public void SetupForeignKeys()
+        {
+            this.Columns.ForEach(x => x.SetupForeignKeys());
+        }
 
         /// <summary>
         /// Determines if a column exists in the table
         /// </summary>
         /// <param name="ColumnName">Column name</param>
         /// <returns>True if it exists, false otherwise</returns>
-        bool ContainsColumn(string ColumnName);
+        public bool ContainsColumn(string ColumnName)
+        {
+            return this[ColumnName] != null;
+        }
 
         /// <summary>
         /// Adds a column
@@ -107,7 +127,7 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// <param name="OnUpdateCascade">On Update Cascade</param>
         /// <param name="OnDeleteSetNull">On Delete Set Null</param>
         /// <typeparam name="T">Column type</typeparam>
-        IColumn AddColumn<T>(string ColumnName, DbType ColumnType, int Length = 0, bool Nullable = true,
+        public abstract IColumn AddColumn<T>(string ColumnName, DbType ColumnType, int Length = 0, bool Nullable = true,
             bool Identity = false, bool Index = false, bool PrimaryKey = false, bool Unique = false,
             string ForeignKeyTable = "", string ForeignKeyColumn = "", T DefaultValue = default(T),
             bool OnDeleteCascade = false, bool OnUpdateCascade = false, bool OnDeleteSetNull = false);
