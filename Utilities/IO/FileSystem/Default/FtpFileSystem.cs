@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -36,39 +38,28 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        public FtpFileSystem() : base() { }
+        public FtpFileSystem()
+            : base()
+        {
+        }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Relative starter
-        /// </summary>
-        protected override string HandleRegexString { get { return @"^ftps?://"; } }
 
         /// <summary>
         /// Name of the file system
         /// </summary>
         public override string Name { get { return "FTP"; } }
 
-        #endregion
+        /// <summary>
+        /// Relative starter
+        /// </summary>
+        protected override string HandleRegexString { get { return @"^ftps?://"; } }
+
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Gets the class representation for the file
-        /// </summary>
-        /// <param name="Path">Path to the file</param>
-        /// <param name="Domain">Domain of the user (optional)</param>
-        /// <param name="Password">Password to be used to access the file (optional)</param>
-        /// <param name="UserName">User name to be used to access the file (optional)</param>
-        /// <returns>The file object</returns>
-        public override IFile File(string Path, string UserName = "", string Password = "", string Domain = "")
-        {
-            Path = AbsolutePath(Path);
-            return new FtpFile(Path, UserName, Password, Domain);
-        }
 
         /// <summary>
         /// Gets the directory representation for the directory
@@ -82,6 +73,20 @@ namespace Utilities.IO.FileSystem.Default
         {
             Path = AbsolutePath(Path);
             return new FtpDirectory(Path, UserName, Password, Domain);
+        }
+
+        /// <summary>
+        /// Gets the class representation for the file
+        /// </summary>
+        /// <param name="Path">Path to the file</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
+        /// <returns>The file object</returns>
+        public override IFile File(string Path, string UserName = "", string Password = "", string Domain = "")
+        {
+            Path = AbsolutePath(Path);
+            return new FtpFile(Path, UserName, Password, Domain);
         }
 
         /// <summary>
@@ -100,9 +105,8 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Managed">Should managed resources be disposed</param>
         protected override void Dispose(bool Managed)
         {
-
         }
 
-        #endregion
+        #endregion Functions
     }
 }

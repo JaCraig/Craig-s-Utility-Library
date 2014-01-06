@@ -19,25 +19,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using Xunit;
 
 namespace UnitTests.Random.DefaultClasses
 {
     public class EnumGenerator
     {
-        public enum MyTest
-        {
-            Item1,
-            Item2,
-            Item3
-        }
-
         [Fact]
         public void Next()
         {
             Utilities.Random.DefaultClasses.EnumGenerator<MyTest> Generator = new Utilities.Random.DefaultClasses.EnumGenerator<MyTest>();
             Assert.InRange(Generator.Next(new System.Random()), MyTest.Item1, MyTest.Item3);
+        }
+
+        public enum MyTest
+        {
+            Item1,
+            Item2,
+            Item3
         }
     }
 }

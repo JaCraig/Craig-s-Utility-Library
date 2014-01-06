@@ -19,25 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
-using System.Reflection;
-using Utilities.DataTypes;
 using Utilities.DataTypes.DataMapper.Default;
 using Xunit;
-using System.Linq;
 
 namespace UnitTests.DataTypes.DataMapper.Default
 {
     public class TypeMapping
     {
-        [Fact]
-        public void CreationTest()
-        {
-            Utilities.DataTypes.DataMapper.Default.TypeMapping<MappingA, MappingB> TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
-            Assert.NotNull(TestObject);
-        }
-
         [Fact]
         public void AutoMapping()
         {
@@ -54,6 +42,14 @@ namespace UnitTests.DataTypes.DataMapper.Default
             TestObject.CopyLeftToRight(A, B);
             Assert.Equal(B.Item1, 12);
             Assert.Equal(B.Item2, "ASDF");
+        }
+
+        [Fact]
+        public void CreationTest()
+        {
+            Utilities.DataTypes.DataMapper.Default.TypeMapping<MappingA, MappingB> TestObject = null;
+            Assert.DoesNotThrow(() => TestObject = new TypeMapping<MappingA, MappingB>());
+            Assert.NotNull(TestObject);
         }
 
         [Fact]

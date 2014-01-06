@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -47,7 +48,7 @@ namespace Utilities.DataTypes
             return (DateTime.MinValue + Span).Day - 1;
         }
 
-        #endregion
+        #endregion DaysRemainder
 
         #region Months
 
@@ -61,7 +62,7 @@ namespace Utilities.DataTypes
             return (DateTime.MinValue + Span).Month - 1;
         }
 
-        #endregion
+        #endregion Months
 
         #region Years
 
@@ -75,13 +76,13 @@ namespace Utilities.DataTypes
             return (DateTime.MinValue + Span).Year - 1;
         }
 
-        #endregion
+        #endregion Years
 
         #region ToStringFull
 
         /// <summary>
-        /// Converts the input to a string in this format:
-        /// (Years) years, (Months) months, (DaysRemainder) days, (Hours) hours, (Minutes) minutes, (Seconds) seconds
+        /// Converts the input to a string in this format: (Years) years, (Months) months,
+        /// (DaysRemainder) days, (Hours) hours, (Minutes) minutes, (Seconds) seconds
         /// </summary>
         /// <param name="Input">Input TimeSpan</param>
         /// <returns>The TimeSpan as a string</returns>
@@ -98,8 +99,8 @@ namespace Utilities.DataTypes
             return Result;
         }
 
-        #endregion
+        #endregion ToStringFull
 
-        #endregion
+        #endregion Extension Methods
     }
-} 
+}

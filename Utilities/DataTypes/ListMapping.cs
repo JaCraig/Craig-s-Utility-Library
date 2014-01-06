@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -44,7 +45,7 @@ namespace Utilities.DataTypes
             Items = new Dictionary<T1, ICollection<T2>>();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Private Variables
 
@@ -53,7 +54,7 @@ namespace Utilities.DataTypes
         /// </summary>
         protected Dictionary<T1, ICollection<T2>> Items { get; private set; }
 
-        #endregion
+        #endregion Private Variables
 
         #region Public Functions
 
@@ -98,7 +99,7 @@ namespace Utilities.DataTypes
             Items[Key].Add(Value);
         }
 
-        #endregion
+        #endregion Add
 
         #region ContainsKey
 
@@ -112,7 +113,7 @@ namespace Utilities.DataTypes
             return Items.ContainsKey(key);
         }
 
-        #endregion
+        #endregion ContainsKey
 
         #region Remove
 
@@ -157,7 +158,7 @@ namespace Utilities.DataTypes
             return true;
         }
 
-        #endregion
+        #endregion Remove
 
         #region Clear
 
@@ -169,7 +170,7 @@ namespace Utilities.DataTypes
             Items.Clear();
         }
 
-        #endregion
+        #endregion Clear
 
         #region TryGetValue
 
@@ -190,7 +191,7 @@ namespace Utilities.DataTypes
             return false;
         }
 
-        #endregion
+        #endregion TryGetValue
 
         #region Contains
 
@@ -239,7 +240,7 @@ namespace Utilities.DataTypes
             return true;
         }
 
-        #endregion
+        #endregion Contains
 
         #region CopyTo
 
@@ -253,7 +254,7 @@ namespace Utilities.DataTypes
             throw new NotImplementedException();
         }
 
-        #endregion
+        #endregion CopyTo
 
         #region GetEnumerator
 
@@ -277,11 +278,35 @@ namespace Utilities.DataTypes
                 yield return this[Key];
         }
 
-        #endregion
+        #endregion GetEnumerator
 
-        #endregion
+        #endregion Public Functions
 
         #region Properties
+
+        /// <summary>
+        /// The number of items in the listing
+        /// </summary>
+        public virtual int Count
+        {
+            get { return Items.Count; }
+        }
+
+        /// <summary>
+        /// Not read only
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// The list of keys within the mapping
+        /// </summary>
+        public virtual ICollection<T1> Keys
+        {
+            get { return Items.Keys; }
+        }
 
         /// <summary>
         /// List that contains the list of values
@@ -298,14 +323,6 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// The number of items in the listing
-        /// </summary>
-        public virtual int Count
-        {
-            get { return Items.Count; }
-        }
-
-        /// <summary>
         /// Gets a list of values associated with a key
         /// </summary>
         /// <param name="key">Key to look for</param>
@@ -316,22 +333,6 @@ namespace Utilities.DataTypes
             set { Items[key] = value; }
         }
 
-        /// <summary>
-        /// The list of keys within the mapping
-        /// </summary>
-        public virtual ICollection<T1> Keys
-        {
-            get { return Items.Keys; }
-        }
-
-        /// <summary>
-        /// Not read only
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        #endregion
+        #endregion Properties
     }
 }

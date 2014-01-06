@@ -21,22 +21,12 @@ THE SOFTWARE.*/
 
 using System.Data;
 using System.Linq;
-using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.SQL.DataClasses
 {
     public class Table
     {
-        [Fact]
-        public void Create()
-        {
-            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Utilities.ORM.Manager.Schema.Interfaces.ITable Table = Database.AddTable("TestTable");
-            Assert.Equal(Table, Database.Tables.First());
-            Assert.Equal("TestTable", Table.Name);
-        }
-
         [Fact]
         public void AddColumns()
         {
@@ -47,6 +37,15 @@ namespace UnitTests.SQL.DataClasses
             Assert.Equal("Column1", Column.Name);
             Assert.Equal(DbType.Int32, Column.DataType);
             Assert.Equal("", Column.Default);
+        }
+
+        [Fact]
+        public void Create()
+        {
+            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
+            Utilities.ORM.Manager.Schema.Interfaces.ITable Table = Database.AddTable("TestTable");
+            Assert.Equal(Table, Database.Tables.First());
+            Assert.Equal("TestTable", Table.Name);
         }
     }
 }

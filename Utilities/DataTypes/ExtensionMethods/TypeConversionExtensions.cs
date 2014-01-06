@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,8 @@ using System.Linq;
 using System.Reflection;
 using Utilities.DataTypes.Conversion;
 using Utilities.DataTypes.DataMapper.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -55,7 +57,7 @@ namespace Utilities.DataTypes
             return !string.IsNullOrEmpty(Format) ? Input.Call<string>("ToString", Format) : Input.ToString();
         }
 
-        #endregion
+        #endregion FormatToString
 
         #region MapTo
 
@@ -65,7 +67,7 @@ namespace Utilities.DataTypes
         /// <param name="LeftType">Left type</param>
         /// <param name="RightType">Right type</param>
         /// <returns>The type mapping</returns>
-        public static ITypeMapping MapTo(this Type LeftType,Type RightType)
+        public static ITypeMapping MapTo(this Type LeftType, Type RightType)
         {
             return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map(LeftType, RightType);
         }
@@ -79,7 +81,7 @@ namespace Utilities.DataTypes
         /// <returns>The type mapping</returns>
         public static ITypeMapping<Left, Right> MapTo<Left, Right>(this Left Object)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map<Left,Right>();
+            return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map<Left, Right>();
         }
 
         /// <summary>
@@ -94,7 +96,7 @@ namespace Utilities.DataTypes
             return IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.DataMapper.Manager>().Map<Left, Right>();
         }
 
-        #endregion
+        #endregion MapTo
 
         #region To
 
@@ -134,8 +136,13 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Type to convert from</typeparam>
         /// <typeparam name="R">Return type</typeparam>
         /// <param name="Object">Object to convert</param>
-        /// <param name="DefaultValue">Default value to return if there is an issue or it can't be converted</param>
-        /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
+        /// <param name="DefaultValue">
+        /// Default value to return if there is an issue or it can't be converted
+        /// </param>
+        /// <returns>
+        /// The object converted to the other type or the default value if there is an error or
+        /// can't be converted
+        /// </returns>
         public static R To<T, R>(this T Object, R DefaultValue = default(R))
         {
             return Manager.To(Object, DefaultValue);
@@ -147,15 +154,20 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Type to convert from</typeparam>
         /// <param name="ResultType">Result type</param>
         /// <param name="Object">Object to convert</param>
-        /// <param name="DefaultValue">Default value to return if there is an issue or it can't be converted</param>
-        /// <returns>The object converted to the other type or the default value if there is an error or can't be converted</returns>
+        /// <param name="DefaultValue">
+        /// Default value to return if there is an issue or it can't be converted
+        /// </param>
+        /// <returns>
+        /// The object converted to the other type or the default value if there is an error or
+        /// can't be converted
+        /// </returns>
         public static object To<T>(this T Object, Type ResultType, object DefaultValue = null)
         {
             return Manager.To(Object, ResultType, DefaultValue);
         }
 
-        #endregion
+        #endregion To
 
-        #endregion
+        #endregion Functions
     }
 }

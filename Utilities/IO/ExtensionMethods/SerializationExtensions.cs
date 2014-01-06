@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using Utilities.IO.Serializers;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO
 {
@@ -34,19 +36,6 @@ namespace Utilities.IO
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class SerializationExtensions
     {
-        /// <summary>
-        /// Serializes the data based on the MIME content type specified (defaults to json)
-        /// </summary>
-        /// <typeparam name="R">Return type expected</typeparam>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to serialize</param>
-        /// <param name="ContentType">Content type (MIME type)</param>
-        /// <returns>The serialized object</returns>
-        public static R Serialize<R, T>(this T Object, string ContentType = "application/json")
-        {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Serialize<T, R>(Object, ContentType);
-        }
-
         /// <summary>
         /// Deserializes the data based on the MIME content type specified (defaults to json)
         /// </summary>
@@ -58,21 +47,6 @@ namespace Utilities.IO
         public static R Deserialize<R, T>(this T Data, string ContentType = "application/json")
         {
             return (R)IoC.Manager.Bootstrapper.Resolve<Manager>().Deserialize<T>(Data, typeof(R), ContentType);
-        }
-
-        /// <summary>
-        /// Serializes the data based on the type specified (defaults to json)
-        /// </summary>
-        /// <typeparam name="R">Return type expected</typeparam>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to serialize</param>
-        /// <param name="ContentType">Content type</param>
-        /// <returns>The serialized object</returns>
-        public static R Serialize<R, T>(this T Object, SerializationType ContentType)
-        {
-            if (ContentType == null)
-                ContentType = SerializationType.JSON;
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Serialize<T, R>(Object, ContentType);
         }
 
         /// <summary>
@@ -88,6 +62,34 @@ namespace Utilities.IO
             if (ContentType == null)
                 ContentType = SerializationType.JSON;
             return (R)IoC.Manager.Bootstrapper.Resolve<Manager>().Deserialize<T>(Data, typeof(R), ContentType);
+        }
+
+        /// <summary>
+        /// Serializes the data based on the MIME content type specified (defaults to json)
+        /// </summary>
+        /// <typeparam name="R">Return type expected</typeparam>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to serialize</param>
+        /// <param name="ContentType">Content type (MIME type)</param>
+        /// <returns>The serialized object</returns>
+        public static R Serialize<R, T>(this T Object, string ContentType = "application/json")
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Manager>().Serialize<T, R>(Object, ContentType);
+        }
+
+        /// <summary>
+        /// Serializes the data based on the type specified (defaults to json)
+        /// </summary>
+        /// <typeparam name="R">Return type expected</typeparam>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to serialize</param>
+        /// <param name="ContentType">Content type</param>
+        /// <returns>The serialized object</returns>
+        public static R Serialize<R, T>(this T Object, SerializationType ContentType)
+        {
+            if (ContentType == null)
+                ContentType = SerializationType.JSON;
+            return IoC.Manager.Bootstrapper.Resolve<Manager>().Serialize<T, R>(Object, ContentType);
         }
     }
 
@@ -105,7 +107,10 @@ namespace Utilities.IO
             this.Name = Name;
         }
 
-        private string Name { get; set; }
+        /// <summary>
+        /// Binary
+        /// </summary>
+        public static SerializationType Binary { get { return new SerializationType("application/octet-stream"); } }
 
         /// <summary>
         /// JSON
@@ -120,21 +125,9 @@ namespace Utilities.IO
         /// <summary>
         /// XML
         /// </summary>
-        public static SerializationType XML{ get { return new SerializationType("text/xml"); } }
+        public static SerializationType XML { get { return new SerializationType("text/xml"); } }
 
-        /// <summary>
-        /// Binary
-        /// </summary>
-        public static SerializationType Binary { get { return new SerializationType("application/octet-stream"); } }
-
-        /// <summary>
-        /// Returns the name of the serialization type
-        /// </summary>
-        /// <returns>Name</returns>
-        public override string ToString()
-        {
-            return Name;
-        }
+        private string Name { get; set; }
 
         /// <summary>
         /// Converts the object to a string implicitly
@@ -145,6 +138,15 @@ namespace Utilities.IO
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
             return Object.ToString();
+        }
+
+        /// <summary>
+        /// Returns the name of the serialization type
+        /// </summary>
+        /// <returns>Name</returns>
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

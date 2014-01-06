@@ -20,17 +20,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using Utilities.IO.Encryption.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Encryption.BaseClasses
 {
     /// <summary>
     /// Shift based encryption base class
     /// </summary>
-    public abstract class ShiftBase:IShift
+    public abstract class ShiftBase : IShift
     {
         /// <summary>
         /// Constructor
@@ -44,6 +45,20 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// </summary>
         public abstract string Name { get; }
 
+        /// <summary>
+        /// Decrypt the data based on the key
+        /// </summary>
+        /// <param name="Data">Data to encrypt</param>
+        /// <param name="Key">Key to use</param>
+        /// <returns>The decrypted data</returns>
+        public byte[] Decrypt(byte[] Data, byte[] Key)
+        {
+            if (Key == null)
+                throw new ArgumentNullException("Key");
+            if (Data == null)
+                return null;
+            return Process(Data, Key);
+        }
 
         /// <summary>
         /// Encrypts the data based on the key
@@ -79,21 +94,6 @@ namespace Utilities.IO.Encryption.BaseClasses
                     Position = 0;
             }
             return OutputArray;
-        }
-
-        /// <summary>
-        /// Decrypt the data based on the key
-        /// </summary>
-        /// <param name="Data">Data to encrypt</param>
-        /// <param name="Key">Key to use</param>
-        /// <returns>The decrypted data</returns>
-        public byte[] Decrypt(byte[] Data, byte[] Key)
-        {
-            if (Key == null)
-                throw new ArgumentNullException("Key");
-            if (Data == null)
-                return null;
-            return Process(Data, Key);
         }
     }
 }

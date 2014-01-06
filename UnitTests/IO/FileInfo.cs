@@ -28,24 +28,26 @@ namespace UnitTests.IO
     public class FileInfo
     {
         [Fact]
+        public void Clone()
+        {
+            Utilities.IO.FileInfo Temp = new Utilities.IO.FileInfo("./Test.txt");
+            Utilities.IO.FileInfo Temp2 = (Utilities.IO.FileInfo)Temp.Clone();
+            Assert.True(Temp == Temp2);
+            Assert.True(Temp.Equals(Temp2));
+            Assert.Equal(0, Temp.CompareTo(Temp2));
+            Assert.False(Temp < Temp2);
+            Assert.False(Temp > Temp2);
+            Assert.True(Temp <= Temp2);
+            Assert.True(Temp >= Temp2);
+            Assert.False(Temp != Temp2);
+        }
+
+        [Fact]
         public void Creation()
         {
             Utilities.IO.FileInfo File = new Utilities.IO.FileInfo("./Test.txt");
             Assert.NotNull(File);
             Assert.False(File.Exists);
-        }
-
-        [Fact]
-        public void ReadWrite()
-        {
-            Utilities.IO.FileInfo File = new Utilities.IO.FileInfo("./Test2.txt");
-            File.Write("Testing this out");
-            Assert.True(File.Exists);
-            Assert.Equal("Testing this out", File.Read());
-            Assert.Equal("Testing this out", File);
-            Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
-            Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File);
-            File.Delete();
         }
 
         [Fact]
@@ -62,18 +64,16 @@ namespace UnitTests.IO
         }
 
         [Fact]
-        public void Clone()
+        public void ReadWrite()
         {
-            Utilities.IO.FileInfo Temp = new Utilities.IO.FileInfo("./Test.txt");
-            Utilities.IO.FileInfo Temp2 = (Utilities.IO.FileInfo)Temp.Clone();
-            Assert.True(Temp == Temp2);
-            Assert.True(Temp.Equals(Temp2));
-            Assert.Equal(0, Temp.CompareTo(Temp2));
-            Assert.False(Temp < Temp2);
-            Assert.False(Temp > Temp2);
-            Assert.True(Temp <= Temp2);
-            Assert.True(Temp >= Temp2);
-            Assert.False(Temp != Temp2);
+            Utilities.IO.FileInfo File = new Utilities.IO.FileInfo("./Test2.txt");
+            File.Write("Testing this out");
+            Assert.True(File.Exists);
+            Assert.Equal("Testing this out", File.Read());
+            Assert.Equal("Testing this out", File);
+            Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
+            Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File);
+            File.Delete();
         }
 
         [Fact]

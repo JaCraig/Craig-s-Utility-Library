@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Enums
 {
@@ -34,10 +34,12 @@ namespace Utilities.ORM.Manager.Schema.Enums
         /// Insert
         /// </summary>
         Insert = 1,
+
         /// <summary>
         /// Update
         /// </summary>
         Update,
+
         /// <summary>
         /// Delete
         /// </summary>

@@ -21,8 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.Formatters.Interfaces
 {
@@ -41,6 +40,6 @@ namespace Utilities.DataTypes.Formatters.Interfaces
         /// <returns>The formatted string</returns>
         string Format(string Input, string FormatPattern);
 
-        #endregion
+        #endregion Functions
     }
 }

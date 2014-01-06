@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -49,16 +51,16 @@ namespace Utilities.Validation
             this.Value = (IComparable)Value;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
         /// Value to compare to
         /// </summary>
-        public IComparable Value { get;private set; }
+        public IComparable Value { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -80,7 +82,7 @@ namespace Utilities.Validation
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value==null)
+            if (value == null)
                 return ValidationResult.Success;
             GenericEqualityComparer<IComparable> Comparer = new GenericEqualityComparer<IComparable>();
             IEnumerable ValueList = value as IEnumerable;
@@ -98,6 +100,6 @@ namespace Utilities.Validation
             return ValidationResult.Success;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

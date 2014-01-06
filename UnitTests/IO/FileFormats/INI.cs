@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using UnitTests.Fixtures;
-using Utilities.IO;
 using Xunit;
 
 namespace UnitTests.IO.FileFormats
@@ -30,30 +29,6 @@ namespace UnitTests.IO.FileFormats
         public INI()
         {
             new Utilities.IO.DirectoryInfo(@"..\..\Data\FileFormats").CopyTo(new Utilities.IO.DirectoryInfo(@".\Testing"));
-        }
-
-        [Fact]
-        public void Load()
-        {
-            Utilities.IO.FileFormats.INI TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
-            Assert.Equal("Value1", TestObject.ReadFromINI("Section1", "Key1"));
-            Assert.Equal("Value2", TestObject.ReadFromINI("Section1", "Key2"));
-            Assert.Equal("Value3", TestObject.ReadFromINI("Section2", "Key1"));
-            Assert.Equal("Value4", TestObject.ReadFromINI("Section2", "Key2"));
-        }
-
-        [Fact]
-        public void Write()
-        {
-            Utilities.IO.FileFormats.INI TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
-            TestObject.WriteToINI("Section1", "Key3", "SpecialValue");
-
-            TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
-            Assert.Equal("Value1", TestObject.ReadFromINI("Section1", "Key1"));
-            Assert.Equal("Value2", TestObject.ReadFromINI("Section1", "Key2"));
-            Assert.Equal("SpecialValue", TestObject.ReadFromINI("Section1", "Key3"));
-            Assert.Equal("Value3", TestObject.ReadFromINI("Section2", "Key1"));
-            Assert.Equal("Value4", TestObject.ReadFromINI("Section2", "Key2"));
         }
 
         [Fact]
@@ -68,9 +43,32 @@ namespace UnitTests.IO.FileFormats
             Assert.Equal("Value4", TestObject.ReadFromINI("Section2", "Key2"));
         }
 
+        [Fact]
+        public void Load()
+        {
+            Utilities.IO.FileFormats.INI TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
+            Assert.Equal("Value1", TestObject.ReadFromINI("Section1", "Key1"));
+            Assert.Equal("Value2", TestObject.ReadFromINI("Section1", "Key2"));
+            Assert.Equal("Value3", TestObject.ReadFromINI("Section2", "Key1"));
+            Assert.Equal("Value4", TestObject.ReadFromINI("Section2", "Key2"));
+        }
+
         public void SetFixture(TestingDirectoryFixture data)
         {
+        }
 
+        [Fact]
+        public void Write()
+        {
+            Utilities.IO.FileFormats.INI TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
+            TestObject.WriteToINI("Section1", "Key3", "SpecialValue");
+
+            TestObject = new Utilities.IO.FileFormats.INI(@".\Testing\TestFile.ini");
+            Assert.Equal("Value1", TestObject.ReadFromINI("Section1", "Key1"));
+            Assert.Equal("Value2", TestObject.ReadFromINI("Section1", "Key2"));
+            Assert.Equal("SpecialValue", TestObject.ReadFromINI("Section1", "Key3"));
+            Assert.Equal("Value3", TestObject.ReadFromINI("Section2", "Key1"));
+            Assert.Equal("Value4", TestObject.ReadFromINI("Section2", "Key2"));
         }
     }
 }

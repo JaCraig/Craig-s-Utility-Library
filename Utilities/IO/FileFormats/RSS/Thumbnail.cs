@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Xml.XPath;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.RSS
 {
@@ -40,8 +42,8 @@ namespace Utilities.IO.FileFormats.RSS
         /// </summary>
         public Thumbnail()
         {
-
         }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -50,7 +52,7 @@ namespace Utilities.IO.FileFormats.RSS
         {
             Contract.Requires<ArgumentNullException>(Doc != null, "Doc");
             XPathNavigator Element = Doc.CreateNavigator();
-            if (Element.GetAttribute("url","") != null)
+            if (Element.GetAttribute("url", "") != null)
             {
                 Url = Element.GetAttribute("url", "");
             }
@@ -64,9 +66,14 @@ namespace Utilities.IO.FileFormats.RSS
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
+
+        /// <summary>
+        /// Image height
+        /// </summary>
+        public virtual int Height { get; set; }
 
         /// <summary>
         /// Location of the item
@@ -78,12 +85,7 @@ namespace Utilities.IO.FileFormats.RSS
         /// </summary>
         public virtual int Width { get; set; }
 
-        /// <summary>
-        /// Image height
-        /// </summary>
-        public virtual int Height { get; set; }
-
-        #endregion
+        #endregion Properties
 
         #region Public Overridden Functions
 
@@ -100,6 +102,6 @@ namespace Utilities.IO.FileFormats.RSS
             return string.Empty;
         }
 
-        #endregion
+        #endregion Public Overridden Functions
     }
 }

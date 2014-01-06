@@ -20,18 +20,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Linq.Expressions;
 using Utilities.DataTypes.DataMapper.BaseClasses;
 using Utilities.DataTypes.DataMapper.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.DataMapper.Default
 {
     /// <summary>
     /// Type mapping default class
     /// </summary>
-    public class TypeMapping<Left, Right> : TypeMappingBase<Left,Right>
+    public class TypeMapping<Left, Right> : TypeMappingBase<Left, Right>
     {
         /// <summary>
         /// Constructor
@@ -120,9 +122,8 @@ namespace Utilities.DataTypes.DataMapper.Default
         }
 
         /// <summary>
-        /// Copies from the source to the destination (used in 
-        /// instances when both Left and Right are the same type
-        /// and thus Copy is ambiguous)
+        /// Copies from the source to the destination (used in instances when both Left and Right
+        /// are the same type and thus Copy is ambiguous)
         /// </summary>
         /// <param name="Source">Source</param>
         /// <param name="Destination">Destination</param>
@@ -135,9 +136,8 @@ namespace Utilities.DataTypes.DataMapper.Default
         }
 
         /// <summary>
-        /// Copies from the source to the destination (used in 
-        /// instances when both Left and Right are the same type
-        /// and thus Copy is ambiguous)
+        /// Copies from the source to the destination (used in instances when both Left and Right
+        /// are the same type and thus Copy is ambiguous)
         /// </summary>
         /// <param name="Source">Source</param>
         /// <param name="Destination">Destination</param>
@@ -148,6 +148,5 @@ namespace Utilities.DataTypes.DataMapper.Default
                 Mapping.CopyRightToLeft(Source, Destination);
             }
         }
-
     }
 }

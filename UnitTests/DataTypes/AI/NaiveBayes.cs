@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System.Linq;
 using Xunit;
 
-
 namespace UnitTests.DataTypes.AI
 {
     public class NaiveBayes

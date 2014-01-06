@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.NameGenerators
 {
@@ -36,9 +38,12 @@ namespace Utilities.Random.NameGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        public MaleFirstNameGenerator() : base("", "") { }
+        public MaleFirstNameGenerator()
+            : base("", "")
+        {
+        }
 
-        #endregion
+        #endregion Constructors
 
         #region Functions
 
@@ -74,7 +79,7 @@ namespace Utilities.Random.NameGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
 
         #region Private Variables
 
@@ -95,14 +100,14 @@ namespace Utilities.Random.NameGenerators
                                               "Bryce", "Miles", "Kaleb", "Giovanni", "Antonio", "Kaden", "Colin", "Kyle",
                                               "Brian", "Timothy", "Steven", "Sean", "Miguel", "Richard", "Ivan", "Jake",
                                               "Alejandro", "Santiago", "Axel", "Joel", "Maxwell", "Brady", "Caden", "Preston",
-                                              "Damian", "Elias", "Jaxson", "Jesse", "Victor", "Patrick", "Jonah", "Marcus", 
+                                              "Damian", "Elias", "Jaxson", "Jesse", "Victor", "Patrick", "Jonah", "Marcus",
                                               "Rylan", "Emmanuel", "Edward", "Leonardo", "Cayden", "Grant", "Jeremy", "Braxton",
                                               "Gage", "Jude", "Wesley", "Devin", "Roman", "Mark", "Camden", "Kaiden", "Oscar",
                                               "Alan", "Malachi", "George", "Peyton", "Leo", "Nicolas", "Maddox", "Kenneth",
-                                              "Mateo", "Sawyer", "Collin", "Conner", "Cody", "Andres", "Declan", "Lincoln", 
+                                              "Mateo", "Sawyer", "Collin", "Conner", "Cody", "Andres", "Declan", "Lincoln",
                                               "Bradley", "Trevor", "Derek", "Tanner", "Silas", "Eduardo", "Seth", "Jaiden",
-                                              "Paul", "Jorge", "Cristian", "Garrett", "Travis", "Abraham", "Omar", "Javier", 
-                                              "Ezekiel", "Tucker", "Harrison", "Peter", "Damien", "Greyson", "Avery", "Kai", 
+                                              "Paul", "Jorge", "Cristian", "Garrett", "Travis", "Abraham", "Omar", "Javier",
+                                              "Ezekiel", "Tucker", "Harrison", "Peter", "Damien", "Greyson", "Avery", "Kai",
                                               "Weston", "Ezra", "Xander", "Jaylen", "Corbin", "Fernando", "Calvin", "Jameson",
                                               "Francisco", "Maximus", "Josue", "Ricardo", "Shane", "Trenton", "Cesar", "Chance",
                                               "Drake", "Zane", "Israel", "Emmett", "Jayce", "Mario", "Landen", "Kingston",
@@ -110,6 +115,6 @@ namespace Utilities.Random.NameGenerators
                                               "Raymond", "Edwin", "Charlie", "Abel", "Myles", "Bennett", "Johnathan", "Andre",
                                               "Alexis", "Edgar", "Troy", "Zion", "Jeffrey", "Hector", "Shawn", "Lukas", "Amir" };
 
-        #endregion
+        #endregion Private Variables
     }
 }

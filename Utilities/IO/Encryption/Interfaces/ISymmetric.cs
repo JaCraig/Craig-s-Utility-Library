@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Security.Cryptography;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Encryption.Interfaces
 {
@@ -44,6 +45,44 @@ namespace Utilities.IO.Encryption.Interfaces
         bool CanHandle(string Algorithm);
 
         /// <summary>
+        /// Decrypts a byte array
+        /// </summary>
+        /// <param name="Data">Data to be decrypted</param>
+        /// <param name="Key">Password to decrypt with</param>
+        /// <param name="Algorithm">Algorithm to use for decryption</param>
+        /// <param name="Salt">Salt to decrypt with</param>
+        /// <param name="HashAlgorithm">Can be either SHA1 or MD5</param>
+        /// <param name="PasswordIterations">Number of iterations to do</param>
+        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
+        /// <returns>A decrypted byte array</returns>
+        byte[] Decrypt(byte[] Data, string Key,
+            string Algorithm,
+            string Salt = "Kosher",
+            string HashAlgorithm = "SHA1",
+            int PasswordIterations = 2,
+            string InitialVector = "OFRna73m*aze01xY",
+            int KeySize = 256);
+
+        /// <summary>
+        /// Decrypts a byte array
+        /// </summary>
+        /// <param name="Data">Data to be decrypted</param>
+        /// <param name="Key">Password to decrypt with</param>
+        /// <param name="Algorithm">Algorithm to use for decryption</param>
+        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
+        /// <returns>A decrypted byte array</returns>
+        byte[] Decrypt(byte[] Data, DeriveBytes Key,
+            string Algorithm = "AES",
+            string InitialVector = "OFRna73m*aze01xY",
+            int KeySize = 256);
+
+        /// <summary>
         /// Encrypts a byte array
         /// </summary>
         /// <param name="Data">Data to be encrypted</param>
@@ -52,7 +91,9 @@ namespace Utilities.IO.Encryption.Interfaces
         /// <param name="HashAlgorithm">Can be either SHA1 or MD5</param>
         /// <param name="PasswordIterations">Number of iterations to do</param>
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
         /// <param name="Algorithm">Algorithm</param>
         /// <returns>An encrypted byte array</returns>
         byte[] Encrypt(byte[] Data, string Key,
@@ -64,49 +105,17 @@ namespace Utilities.IO.Encryption.Interfaces
             int KeySize = 256);
 
         /// <summary>
-        /// Decrypts a byte array
-        /// </summary>
-        /// <param name="Data">Data to be decrypted</param>
-        /// <param name="Key">Password to decrypt with</param>
-        /// <param name="Algorithm">Algorithm to use for decryption</param>
-        /// <param name="Salt">Salt to decrypt with</param>
-        /// <param name="HashAlgorithm">Can be either SHA1 or MD5</param>
-        /// <param name="PasswordIterations">Number of iterations to do</param>
-        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
-        /// <returns>A decrypted byte array</returns>
-        byte[] Decrypt(byte[] Data, string Key,
-            string Algorithm,
-            string Salt = "Kosher",
-            string HashAlgorithm = "SHA1",
-            int PasswordIterations = 2,
-            string InitialVector = "OFRna73m*aze01xY",
-            int KeySize = 256);
-
-        /// <summary>
         /// Encrypts a byte array
         /// </summary>
         /// <param name="Data">Data to be encrypted</param>
         /// <param name="Key">Password to encrypt with</param>
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
         /// <param name="Algorithm">Algorithm</param>
         /// <returns>An encrypted byte array</returns>
         byte[] Encrypt(byte[] Data, DeriveBytes Key,
-            string Algorithm = "AES",
-            string InitialVector = "OFRna73m*aze01xY",
-            int KeySize = 256);
-
-        /// <summary>
-        /// Decrypts a byte array
-        /// </summary>
-        /// <param name="Data">Data to be decrypted</param>
-        /// <param name="Key">Password to decrypt with</param>
-        /// <param name="Algorithm">Algorithm to use for decryption</param>
-        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
-        /// <returns>A decrypted byte array</returns>
-        byte[] Decrypt(byte[] Data, DeriveBytes Key,
             string Algorithm = "AES",
             string InitialVector = "OFRna73m*aze01xY",
             int KeySize = 256);

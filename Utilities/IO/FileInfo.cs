@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -29,7 +30,7 @@ using Utilities.IO.FileFormats.BaseClasses;
 using Utilities.IO.FileSystem;
 using Utilities.IO.FileSystem.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO
 {
@@ -61,14 +62,9 @@ namespace Utilities.IO
             this.InternalFile = InternalFile;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Internal directory
-        /// </summary>
-        protected IFile InternalFile { get; private set; }
 
         /// <summary>
         /// Last time accessed (UTC time)
@@ -79,11 +75,6 @@ namespace Utilities.IO
         /// Time created (UTC time)
         /// </summary>
         public DateTime Created { get { return InternalFile == null ? DateTime.Now : InternalFile.Created; } }
-
-        /// <summary>
-        /// Time modified (UTC time)
-        /// </summary>
-        public DateTime Modified { get { return InternalFile == null ? DateTime.Now : InternalFile.Modified; } }
 
         /// <summary>
         /// Directory the file is within
@@ -111,13 +102,73 @@ namespace Utilities.IO
         public long Length { get { return InternalFile == null ? 0 : InternalFile.Length; } }
 
         /// <summary>
+        /// Time modified (UTC time)
+        /// </summary>
+        public DateTime Modified { get { return InternalFile == null ? DateTime.Now : InternalFile.Modified; } }
+
+        /// <summary>
         /// Name of the file
         /// </summary>
         public string Name { get { return InternalFile == null ? "" : InternalFile.Name; } }
 
-        #endregion
+        /// <summary>
+        /// Internal directory
+        /// </summary>
+        protected IFile InternalFile { get; private set; }
+
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Clones the file object
+        /// </summary>
+        /// <returns>The cloned object</returns>
+        public object Clone()
+        {
+            FileInfo Temp = new FileInfo(InternalFile);
+            return Temp;
+        }
+
+        /// <summary>
+        /// Compares this to another file
+        /// </summary>
+        /// <param name="other">File to compare to</param>
+        /// <returns></returns>
+        public int CompareTo(IFile other)
+        {
+            if (other == null)
+                return 1;
+            if (InternalFile == null)
+                return -1;
+            return string.Compare(FullName, other.FullName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Compares this object to another object
+        /// </summary>
+        /// <param name="obj">Object to compare it to</param>
+        /// <returns></returns>
+        public int CompareTo(object obj)
+        {
+            FileInfo Temp = obj as FileInfo;
+            if (Temp == null)
+                return 1;
+            return CompareTo(Temp);
+        }
+
+        /// <summary>
+        /// Copies the file to another directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy the file to</param>
+        /// <param name="Overwrite">Should the file overwrite another file if found</param>
+        /// <returns>The newly created file</returns>
+        public IFile CopyTo(IDirectory Directory, bool Overwrite)
+        {
+            if (Directory == null || !Exists)
+                return null;
+            return InternalFile.CopyTo(Directory, Overwrite);
+        }
 
         /// <summary>
         /// Deletes the file
@@ -128,6 +179,63 @@ namespace Utilities.IO
             if (InternalFile == null)
                 return "";
             return InternalFile.Delete();
+        }
+
+        /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            FileInfo File = obj as FileInfo;
+            return File != null && File == this;
+        }
+
+        /// <summary>
+        /// Determines if the files are equal
+        /// </summary>
+        /// <param name="other">Other file</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public bool Equals(IFile other)
+        {
+            if (other == null)
+                return false;
+            return other.FullName == FullName;
+        }
+
+        /// <summary>
+        /// Executes the file
+        /// </summary>
+        /// <param name="Info">Info used to execute the file</param>
+        /// <returns>The process object created when the executable is started</returns>
+        public Process Execute(ProcessStartInfo Info = null)
+        {
+            if (InternalFile == null)
+                return null;
+            Info = Info == null ? new ProcessStartInfo() : Info;
+            Info.FileName = FullName;
+            return Process.Start(Info);
+        }
+
+        /// <summary>
+        /// Gets the hash code for the file
+        /// </summary>
+        /// <returns>The hash code</returns>
+        public override int GetHashCode()
+        {
+            return FullName.GetHashCode();
+        }
+
+        /// <summary>
+        /// Moves the file to a new directory
+        /// </summary>
+        /// <param name="Directory">Directory to move to</param>
+        public void MoveTo(IDirectory Directory)
+        {
+            if (InternalFile == null || Directory == null)
+                return;
+            InternalFile.MoveTo(Directory);
         }
 
         /// <summary>
@@ -164,149 +272,6 @@ namespace Utilities.IO
         }
 
         /// <summary>
-        /// Moves the file to a new directory
-        /// </summary>
-        /// <param name="Directory">Directory to move to</param>
-        public void MoveTo(IDirectory Directory)
-        {
-            if (InternalFile == null || Directory == null)
-                return;
-            InternalFile.MoveTo(Directory);
-        }
-
-        /// <summary>
-        /// Copies the file to another directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy the file to</param>
-        /// <param name="Overwrite">Should the file overwrite another file if found</param>
-        /// <returns>The newly created file</returns>
-        public IFile CopyTo(IDirectory Directory, bool Overwrite)
-        {
-            if (Directory == null || !Exists)
-                return null;
-            return InternalFile.CopyTo(Directory, Overwrite);
-        }
-
-        /// <summary>
-        /// Writes content to the file
-        /// </summary>
-        /// <param name="Content">Content to write</param>
-        /// <param name="Mode">Mode to open the file as</param>
-        /// <param name="Encoding">Encoding to use for the content</param>
-        /// <returns>The result of the write or original content</returns>
-        public string Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
-        {
-            if (InternalFile == null)
-                return Content;
-            return InternalFile.Write(Content, Mode, Encoding);
-        }
-
-        /// <summary>
-        /// Writes content to the file
-        /// </summary>
-        /// <param name="Content">Content to write</param>
-        /// <param name="Mode">Mode to open the file as</param>
-        /// <returns>The result of the write or original content</returns>
-        public byte[] Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
-        {
-            if (InternalFile == null)
-                return Content;
-            return InternalFile.Write(Content, Mode);
-        }
-
-        /// <summary>
-        /// Executes the file
-        /// </summary>
-        /// <param name="Info">Info used to execute the file</param>
-        /// <returns>The process object created when the executable is started</returns>
-        public Process Execute(ProcessStartInfo Info = null)
-        {
-            if (InternalFile == null)
-                return null;
-            Info = Info == null ? new ProcessStartInfo() : Info;
-            Info.FileName = FullName;
-            return Process.Start(Info);
-        }
-
-        /// <summary>
-        /// Returns the name of the file
-        /// </summary>
-        /// <returns>The name of the file</returns>
-        public override string ToString()
-        {
-            return FullName;
-        }
-
-        /// <summary>
-        /// Determines if the objects are equal
-        /// </summary>
-        /// <param name="obj">Object to compare to</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj)
-        {
-            FileInfo File = obj as FileInfo;
-            return File != null && File == this;
-        }
-
-        /// <summary>
-        /// Gets the hash code for the file
-        /// </summary>
-        /// <returns>The hash code</returns>
-        public override int GetHashCode()
-        {
-            return FullName.GetHashCode();
-        }
-
-        /// <summary>
-        /// Compares this to another file
-        /// </summary>
-        /// <param name="other">File to compare to</param>
-        /// <returns>-1 if this is smaller, 0 if they are the same, 1 if it is larger</returns>
-        public int CompareTo(IFile other)
-        {
-            if (other == null)
-                return 1;
-            if (InternalFile == null)
-                return -1;
-            return string.Compare(FullName, other.FullName, StringComparison.OrdinalIgnoreCase);
-        }
-
-        /// <summary>
-        /// Compares this object to another object
-        /// </summary>
-        /// <param name="obj">Object to compare it to</param>
-        /// <returns>-1 if this is smaller, 0 if they are the same, 1 if it is larger</returns>
-        public int CompareTo(object obj)
-        {
-            FileInfo Temp = obj as FileInfo;
-            if (Temp == null)
-                return 1;
-            return CompareTo(Temp);
-        }
-
-        /// <summary>
-        /// Determines if the files are equal
-        /// </summary>
-        /// <param name="other">Other file</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public bool Equals(IFile other)
-        {
-            if (other == null)
-                return false;
-            return other.FullName == FullName;
-        }
-
-        /// <summary>
-        /// Clones the file object
-        /// </summary>
-        /// <returns>The cloned object</returns>
-        public object Clone()
-        {
-            FileInfo Temp = new FileInfo(InternalFile);
-            return Temp;
-        }
-
-        /// <summary>
         /// Converts the file to the specified file format
         /// </summary>
         /// <typeparam name="T">File format</typeparam>
@@ -338,23 +303,68 @@ namespace Utilities.IO
             return Excel.Load(FullName);
         }
 
-        #endregion
+        /// <summary>
+        /// Returns the name of the file
+        /// </summary>
+        /// <returns>The name of the file</returns>
+        public override string ToString()
+        {
+            return FullName;
+        }
+
+        /// <summary>
+        /// Writes content to the file
+        /// </summary>
+        /// <param name="Content">Content to write</param>
+        /// <param name="Mode">Mode to open the file as</param>
+        /// <param name="Encoding">Encoding to use for the content</param>
+        /// <returns>The result of the write or original content</returns>
+        public string Write(string Content, System.IO.FileMode Mode = FileMode.Create, Encoding Encoding = null)
+        {
+            if (InternalFile == null)
+                return Content;
+            return InternalFile.Write(Content, Mode, Encoding);
+        }
+
+        /// <summary>
+        /// Writes content to the file
+        /// </summary>
+        /// <param name="Content">Content to write</param>
+        /// <param name="Mode">Mode to open the file as</param>
+        /// <returns>The result of the write or original content</returns>
+        public byte[] Write(byte[] Content, System.IO.FileMode Mode = FileMode.Create)
+        {
+            if (InternalFile == null)
+                return Content;
+            return InternalFile.Write(Content, Mode);
+        }
+
+        #endregion Functions
 
         #region Operators
 
         /// <summary>
-        /// Determines if two directories are equal
+        /// Reads the file and converts it to a byte array
         /// </summary>
-        /// <param name="File1">File 1</param>
-        /// <param name="File2">File 2</param>
-        /// <returns>True if they are, false otherwise</returns>
-        public static bool operator ==(FileInfo File1, FileInfo File2)
+        /// <param name="File">File to read</param>
+        /// <returns>The file as a byte array</returns>
+        public static implicit operator byte[](FileInfo File)
         {
-            if ((object)File1 == null && (object)File2 == null)
-                return true;
-            if ((object)File1 == null || (object)File2 == null)
-                return false;
-            return File1.FullName == File2.FullName;
+            if (File == null)
+                return new byte[0];
+            return File.ReadBinary();
+        }
+
+        /// <summary>
+        /// Reads the file and converts it to a string
+        /// </summary>
+        /// <param name="File">File to read</param>
+        /// <returns>The file as a string</returns>
+        public static implicit operator string(FileInfo File)
+        {
+            if (File == null)
+                return "";
+            return File.Read();
         }
 
         /// <summary>
@@ -395,6 +405,21 @@ namespace Utilities.IO
         }
 
         /// <summary>
+        /// Determines if two directories are equal
+        /// </summary>
+        /// <param name="File1">File 1</param>
+        /// <param name="File2">File 2</param>
+        /// <returns>True if they are, false otherwise</returns>
+        public static bool operator ==(FileInfo File1, FileInfo File2)
+        {
+            if ((object)File1 == null && (object)File2 == null)
+                return true;
+            if ((object)File1 == null || (object)File2 == null)
+                return false;
+            return File1.FullName == File2.FullName;
+        }
+
+        /// <summary>
         /// Greater than
         /// </summary>
         /// <param name="File1">File 1</param>
@@ -420,30 +445,6 @@ namespace Utilities.IO
             return string.Compare(File1.FullName, File2.FullName, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
-        /// <summary>
-        /// Reads the file and converts it to a string
-        /// </summary>
-        /// <param name="File">File to read</param>
-        /// <returns>The file as a string</returns>
-        public static implicit operator string(FileInfo File)
-        {
-            if (File == null)
-                return "";
-            return File.Read();
-        }
-
-        /// <summary>
-        /// Reads the file and converts it to a byte array
-        /// </summary>
-        /// <param name="File">File to read</param>
-        /// <returns>The file as a byte array</returns>
-        public static implicit operator byte[](FileInfo File)
-        {
-            if (File == null)
-                return new byte[0];
-            return File.ReadBinary();
-        }
-
-        #endregion
+        #endregion Operators
     }
 }

@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -76,9 +77,9 @@ namespace Utilities.Media.Procedural
         {
             if (DistanceBuffer == null)
                 return 0.0f;
-            return (DistanceBuffer[(int)X,(int)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);
+            return (DistanceBuffer[(int)X, (int)Y] - MinimumDistance) / (MaxDistance - MinimumDistance);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

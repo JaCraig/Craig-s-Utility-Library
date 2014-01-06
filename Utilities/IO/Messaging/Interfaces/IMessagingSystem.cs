@@ -20,11 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Threading.Tasks;
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Messaging.Interfaces
 {
@@ -34,14 +34,14 @@ namespace Utilities.IO.Messaging.Interfaces
     public interface IMessagingSystem
     {
         /// <summary>
-        /// Name of the communicator
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
         /// Message type used by the communicator
         /// </summary>
         Type MessageType { get; }
+
+        /// <summary>
+        /// Name of the communicator
+        /// </summary>
+        string Name { get; }
 
         /// <summary>
         /// Sends a message asynchronously

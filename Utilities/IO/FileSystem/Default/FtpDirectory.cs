@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -30,7 +31,8 @@ using Utilities.DataTypes;
 using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -73,7 +75,7 @@ namespace Utilities.IO.FileSystem.Default
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -89,14 +91,6 @@ namespace Utilities.IO.FileSystem.Default
         /// returns now
         /// </summary>
         public override DateTime Created
-        {
-            get { return DateTime.Now; }
-        }
-
-        /// <summary>
-        /// returns now
-        /// </summary>
-        public override DateTime Modified
         {
             get { return DateTime.Now; }
         }
@@ -118,6 +112,14 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
+        /// returns now
+        /// </summary>
+        public override DateTime Modified
+        {
+            get { return DateTime.Now; }
+        }
+
+        /// <summary>
         /// Full path
         /// </summary>
         public override string Name
@@ -130,7 +132,7 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override IDirectory Parent
         {
-            get { return InternalDirectory == null ? null : new FtpDirectory((string)InternalDirectory.AbsolutePath.Take(InternalDirectory.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1),UserName,Password,Domain); }
+            get { return InternalDirectory == null ? null : new FtpDirectory((string)InternalDirectory.AbsolutePath.Take(InternalDirectory.AbsolutePath.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) - 1), UserName, Password, Domain); }
         }
 
         /// <summary>
@@ -149,9 +151,30 @@ namespace Utilities.IO.FileSystem.Default
             get { return 0; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Copies the directory to the specified parent directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy to</param>
+        /// <param name="Options">Options</param>
+        /// <returns>Newly created directory</returns>
+        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
+        {
+            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            NewDirectory.Create();
+            foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
+            {
+                Temp.CopyTo(NewDirectory);
+            }
+            foreach (FileInfo Temp in EnumerateFiles("*"))
+            {
+                Temp.CopyTo(NewDirectory, true);
+            }
+            return NewDirectory;
+        }
 
         /// <summary>
         /// Not used
@@ -269,27 +292,6 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Copies the directory to the specified parent directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy to</param>
-        /// <param name="Options">Options</param>
-        /// <returns>Newly created directory</returns>
-        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
-        {
-            DirectoryInfo NewDirectory = new DirectoryInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            NewDirectory.Create();
-            foreach (DirectoryInfo Temp in EnumerateDirectories("*"))
-            {
-                Temp.CopyTo(NewDirectory);
-            }
-            foreach (FileInfo Temp in EnumerateFiles("*"))
-            {
-                Temp.CopyTo(NewDirectory, true);
-            }
-            return NewDirectory;
-        }
-
-        /// <summary>
         /// Not used
         /// </summary>
         /// <param name="Name"></param>
@@ -302,6 +304,37 @@ namespace Utilities.IO.FileSystem.Default
             SetupCredentials(Request);
             SendRequest(Request);
             InternalDirectory = new Uri(FullName + "/" + Name);
+        }
+
+        /// <summary>
+        /// Sends the request to the URL specified
+        /// </summary>
+        /// <param name="Request">The web request object</param>
+        /// <returns>The string returned by the service</returns>
+        private static string SendRequest(FtpWebRequest Request)
+        {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            using (FtpWebResponse Response = Request.GetResponse() as FtpWebResponse)
+            {
+                using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
+                {
+                    return Reader.ReadToEnd();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets up any credentials (basic authentication, for OAuth, please use the OAuth class to
+        /// create the
+        /// URL)
+        /// </summary>
+        /// <param name="Request">The web request object</param>
+        private void SetupCredentials(FtpWebRequest Request)
+        {
+            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+            {
+                Request.Credentials = new NetworkCredential(UserName, Password);
+            }
         }
 
         /// <summary>
@@ -328,37 +361,6 @@ namespace Utilities.IO.FileSystem.Default
             }
         }
 
-        /// <summary>
-        /// Sets up any credentials (basic authentication,
-        /// for OAuth, please use the OAuth class to create the
-        /// URL)
-        /// </summary>
-        /// <param name="Request">The web request object</param>
-        private void SetupCredentials(FtpWebRequest Request)
-        {
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-            {
-                Request.Credentials = new NetworkCredential(UserName, Password);
-            }
-        }
-
-        /// <summary>
-        /// Sends the request to the URL specified
-        /// </summary>
-        /// <param name="Request">The web request object</param>
-        /// <returns>The string returned by the service</returns>
-        private static string SendRequest(FtpWebRequest Request)
-        {
-            Contract.Requires<ArgumentNullException>(Request != null, "Request");
-            using (FtpWebResponse Response = Request.GetResponse() as FtpWebResponse)
-            {
-                using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
-                {
-                    return Reader.ReadToEnd();
-                }
-            }
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

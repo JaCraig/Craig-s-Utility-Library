@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using Utilities.DataTypes;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO
 {
@@ -56,7 +58,7 @@ namespace Utilities.IO
         /// <returns>The delimited file containing the list</returns>
         public static Utilities.IO.FileFormats.Delimited.Delimited ToDelimitedFile(this DataTable Data, string Delimiter = ",")
         {
-            Utilities.IO.FileFormats.Delimited.Delimited ReturnValue = new Utilities.IO.FileFormats.Delimited.Delimited("",Delimiter);
+            Utilities.IO.FileFormats.Delimited.Delimited ReturnValue = new Utilities.IO.FileFormats.Delimited.Delimited("", Delimiter);
             if (Data == null)
                 return ReturnValue;
             Utilities.IO.FileFormats.Delimited.Row TempRow = new Utilities.IO.FileFormats.Delimited.Row(Delimiter);
@@ -77,6 +79,6 @@ namespace Utilities.IO
             return ReturnValue;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

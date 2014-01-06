@@ -20,17 +20,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Threading.Tasks;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Messaging.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Messaging.BaseClasses
 {
     /// <summary>
     /// Message base
     /// </summary>
-    public abstract class MessageBase : SafeDisposableBaseClass,IMessage
+    public abstract class MessageBase : SafeDisposableBaseClass, IMessage
     {
         /// <summary>
         /// Constructor
@@ -42,19 +44,9 @@ namespace Utilities.IO.Messaging.BaseClasses
         }
 
         /// <summary>
-        /// Messaging system
+        /// Body of the text
         /// </summary>
-        private IMessagingSystem MessagingSystem { get; set; }
-
-        /// <summary>
-        /// Whom the message is to
-        /// </summary>
-        public string To { get; set; }
-
-        /// <summary>
-        /// The subject of the Communicator
-        /// </summary>
-        public string Subject { get; set; }
+        public string Body { get; set; }
 
         /// <summary>
         /// Whom the message is from
@@ -62,9 +54,19 @@ namespace Utilities.IO.Messaging.BaseClasses
         public string From { get; set; }
 
         /// <summary>
-        /// Body of the text
+        /// The subject of the Communicator
         /// </summary>
-        public string Body { get; set; }
+        public string Subject { get; set; }
+
+        /// <summary>
+        /// Whom the message is to
+        /// </summary>
+        public string To { get; set; }
+
+        /// <summary>
+        /// Messaging system
+        /// </summary>
+        private IMessagingSystem MessagingSystem { get; set; }
 
         /// <summary>
         /// Send a message

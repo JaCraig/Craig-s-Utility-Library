@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using Utilities.Random.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Random.DefaultClasses
 {

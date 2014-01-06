@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace UnitTests.IO.Messaging.Default
@@ -27,7 +24,6 @@ namespace UnitTests.IO.Messaging.Default
             Assert.NotNull(Temp);
             Assert.DoesNotThrow(() => { Temp.Send(null, new Temp()).Wait(); });
         }
-
 
         [Serializable]
         [DataContract]

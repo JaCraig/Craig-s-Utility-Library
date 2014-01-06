@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes;
@@ -30,6 +29,13 @@ namespace UnitTests.Encryption.ExtensionMethods
 {
     public class EncryptionExtensions
     {
+        [Fact]
+        public void BasicTest()
+        {
+            string Data = "This is my test.";
+            Assert.Equal("This is my test.", Data.ToByteArray().Encrypt("Babysfirstpassword".ToByteArray()).Decrypt("Babysfirstpassword".ToByteArray()).ToString(new UTF8Encoding()));
+        }
+
         [Fact]
         public void GenerateSalt()
         {
@@ -54,13 +60,6 @@ namespace UnitTests.Encryption.ExtensionMethods
         }
 
         [Fact]
-        public void BasicTest()
-        {
-            string Data = "This is my test.";
-            Assert.Equal("This is my test.", Data.ToByteArray().Encrypt("Babysfirstpassword".ToByteArray()).Decrypt("Babysfirstpassword".ToByteArray()).ToString(new UTF8Encoding()));
-        }
-
-        [Fact]
         public void SymmetricBasicTest()
         {
             string Data = "This is a test of the system.";
@@ -74,11 +73,11 @@ namespace UnitTests.Encryption.ExtensionMethods
         [Fact]
         public void SymmetricBasicTest2()
         {
-                string Data = "This is a test of the system.";
-                Assert.NotEqual("This is a test of the system.", Data.Encrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2)));
-                Assert.Equal("This is a test of the system.", Data.Encrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2)).Decrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2)));
-                Assert.Equal("This is a test of the system.", Data.Encrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2), AlgorithmUsing: "DES", KeySize: 64).Decrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2), AlgorithmUsing: "DES", KeySize: 64));
-                Assert.Equal("This is a test of the system.", Data.Encrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2), AlgorithmUsing: "TripleDES", KeySize: 192).Decrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2), AlgorithmUsing: "TripleDES", KeySize: 192));
+            string Data = "This is a test of the system.";
+            Assert.NotEqual("This is a test of the system.", Data.Encrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2)));
+            Assert.Equal("This is a test of the system.", Data.Encrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2)).Decrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2)));
+            Assert.Equal("This is a test of the system.", Data.Encrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2), AlgorithmUsing: "DES", KeySize: 64).Decrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2), AlgorithmUsing: "DES", KeySize: 64));
+            Assert.Equal("This is a test of the system.", Data.Encrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2), AlgorithmUsing: "TripleDES", KeySize: 192).Decrypt(new PasswordDeriveBytes("Babysfirstkey".ToByteArray(), "Kosher123".ToByteArray(), "SHA1", 2), AlgorithmUsing: "TripleDES", KeySize: 192));
         }
     }
 }

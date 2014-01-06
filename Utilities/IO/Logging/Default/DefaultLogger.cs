@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.IO.Logging.BaseClasses;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Logging.Default
 {

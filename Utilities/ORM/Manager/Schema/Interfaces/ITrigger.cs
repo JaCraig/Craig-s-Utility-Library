@@ -20,8 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.ORM.Manager.Schema.Enums;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Interfaces
 {
@@ -31,23 +33,23 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
     public interface ITrigger
     {
         /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
         /// Definition
         /// </summary>
         string Definition { get; set; }
 
         /// <summary>
-        /// Trigger type
+        /// Name
         /// </summary>
-        TriggerType Type { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// Parent table
         /// </summary>
         ITable ParentTable { get; set; }
+
+        /// <summary>
+        /// Trigger type
+        /// </summary>
+        TriggerType Type { get; set; }
     }
 }

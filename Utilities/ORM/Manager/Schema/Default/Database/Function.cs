@@ -20,13 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
+
 using Utilities.ORM.Manager.Schema.Interfaces;
-using System.Linq;
-using Utilities.DataTypes;
-using System.Data;
-using Utilities.ORM.Manager.Schema.Enums;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Default.Database
 {
@@ -49,14 +46,14 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         }
 
         /// <summary>
-        /// Name of the Function
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Definition of the Function
         /// </summary>
         public string Definition { get; set; }
+
+        /// <summary>
+        /// Name of the Function
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// Source

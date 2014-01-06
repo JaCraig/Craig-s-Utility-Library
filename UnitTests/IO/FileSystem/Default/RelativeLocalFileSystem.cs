@@ -27,20 +27,20 @@ namespace UnitTests.IO.FileSystem.Default
     public class RelativeLocalFileSystem
     {
         [Fact]
-        public void Creation()
-        {
-            Utilities.IO.FileSystem.Default.RelativeLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.RelativeLocalFileSystem();
-            Assert.NotNull(Temp);
-            Assert.Equal("Relative Local", Temp.Name);
-        }
-
-        [Fact]
         public void CanHandle()
         {
             Utilities.IO.FileSystem.Default.RelativeLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.RelativeLocalFileSystem();
             Assert.True(Temp.CanHandle(@".\TestPath\Yay"));
             Assert.True(Temp.CanHandle(@"..\TestPath\Yay"));
             Assert.True(Temp.CanHandle(@"~\TestPath\Yay"));
+        }
+
+        [Fact]
+        public void Creation()
+        {
+            Utilities.IO.FileSystem.Default.RelativeLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.RelativeLocalFileSystem();
+            Assert.NotNull(Temp);
+            Assert.Equal("Relative Local", Temp.Name);
         }
 
         [Fact]

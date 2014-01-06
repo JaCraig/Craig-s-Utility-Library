@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.IO.Encryption.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Encryption.BaseClasses
 {
@@ -42,7 +43,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -51,31 +52,9 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// </summary>
         public abstract string Name { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Encrypts a string using RSA
-        /// </summary>
-        /// <param name="Input">Input byte array (should be small as anything over 128 bytes can not be decrypted)</param>
-        /// <param name="Key">Key to use for encryption</param>
-        /// <returns>An encrypted byte array (64bit string)</returns>
-        public abstract byte[] Encrypt(byte[] Input, string Key);
-
-        /// <summary>
-        /// Gets the provider used
-        /// </summary>
-        /// <returns>Asymmetric algorithm</returns>
-        protected abstract AsymmetricAlgorithm GetProvider();
-
-        /// <summary>
-        /// Decrypts a byte array using RSA
-        /// </summary>
-        /// <param name="Input">Input byte array (should be small as anything over 128 bytes can not be decrypted)</param>
-        /// <param name="Key">Key to use for decryption</param>
-        /// <returns>A decrypted byte array</returns>
-        public abstract byte[] Decrypt(byte[] Input, string Key);
 
         /// <summary>
         /// Creates a new set of keys
@@ -89,6 +68,26 @@ namespace Utilities.IO.Encryption.BaseClasses
                 return Provider.ToXmlString(PrivatePublic);
             }
         }
+
+        /// <summary>
+        /// Decrypts a byte array using RSA
+        /// </summary>
+        /// <param name="Input">
+        /// Input byte array (should be small as anything over 128 bytes can not be decrypted)
+        /// </param>
+        /// <param name="Key">Key to use for decryption</param>
+        /// <returns>A decrypted byte array</returns>
+        public abstract byte[] Decrypt(byte[] Input, string Key);
+
+        /// <summary>
+        /// Encrypts a string using RSA
+        /// </summary>
+        /// <param name="Input">
+        /// Input byte array (should be small as anything over 128 bytes can not be decrypted)
+        /// </param>
+        /// <param name="Key">Key to use for encryption</param>
+        /// <returns>An encrypted byte array (64bit string)</returns>
+        public abstract byte[] Encrypt(byte[] Input, string Key);
 
         /// <summary>
         /// Takes a string and creates a signed hash of it
@@ -109,6 +108,12 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <returns>True if it is verified, false otherwise</returns>
         public abstract bool VerifyHash(string Hash, string SignedHash, string Key);
 
-        #endregion
+        /// <summary>
+        /// Gets the provider used
+        /// </summary>
+        /// <returns>Asymmetric algorithm</returns>
+        protected abstract AsymmetricAlgorithm GetProvider();
+
+        #endregion Functions
     }
 }

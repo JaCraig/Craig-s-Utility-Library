@@ -57,26 +57,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void RemoveTest()
-        {
-            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
-            TestObject = TestObject.Remove((x) => x % 2 == 0).ToList();
-            Assert.Equal(3, TestObject.Count());
-            foreach (int Item in TestObject)
-                Assert.False(Item % 2 == 0);
-        }
-
-        [Fact]
-        public void RemoveTest2()
-        {
-            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
-            TestObject = TestObject.Remove((x) => x % 2 == 0).ToArray();
-            Assert.Equal(3, TestObject.Count());
-            foreach (int Item in TestObject)
-                Assert.False(Item % 2 == 0);
-        }
-
-        [Fact]
         public void AddRange()
         {
             List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
@@ -101,6 +81,26 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(1, TestObject.Remove(new int[] { 1, 2, 3, 4, 5 }).Count);
             TestObject = new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6 };
             Assert.Equal(1, TestObject.Remove(new int[] { 1, 2, 3, 4, 5 }).Count);
+        }
+
+        [Fact]
+        public void RemoveTest()
+        {
+            List<int> TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            TestObject = TestObject.Remove((x) => x % 2 == 0).ToList();
+            Assert.Equal(3, TestObject.Count());
+            foreach (int Item in TestObject)
+                Assert.False(Item % 2 == 0);
+        }
+
+        [Fact]
+        public void RemoveTest2()
+        {
+            int[] TestObject = new int[] { 1, 2, 3, 4, 5, 6 };
+            TestObject = TestObject.Remove((x) => x % 2 == 0).ToArray();
+            Assert.Equal(3, TestObject.Count());
+            foreach (int Item in TestObject)
+                Assert.False(Item % 2 == 0);
         }
     }
 }

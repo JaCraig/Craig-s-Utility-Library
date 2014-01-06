@@ -20,17 +20,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Linq;
-using Utilities.DataTypes.CodeGen.BaseClasses;
-using Utilities.IO;
-using Utilities.IO.FileSystem.Interfaces;
-using Xunit;
 using Utilities.DataTypes;
+using Utilities.DataTypes.CodeGen.BaseClasses;
+using Xunit;
 
 namespace UnitTests.DataTypes.CodeGen
 {
     public class Compiler
     {
+        [Fact]
+        public void CreateType()
+        {
+            string File = "";
+            using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler("Test", ".", true))
+            {
+                Type Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
+                Assert.Equal("Test, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", Object.Assembly.FullName);
+                Assert.Equal("A", Object.FullName);
+                File = Test.AssemblyDirectory + "/" + Test.AssemblyName + ".dll";
+            }
+            new Utilities.IO.FileInfo(File).Delete();
+        }
+
         [Fact]
         public void Creation()
         {
@@ -43,20 +54,6 @@ namespace UnitTests.DataTypes.CodeGen
                 File = Test.AssemblyDirectory + "/" + Test.AssemblyName + ".dll";
             }
             Assert.True(new Utilities.IO.FileInfo(File).Exists);
-            new Utilities.IO.FileInfo(File).Delete();
-        }
-
-        [Fact]
-        public void CreateType()
-        {
-            string File = "";
-            using (Utilities.DataTypes.CodeGen.Compiler Test = new Utilities.DataTypes.CodeGen.Compiler("Test", ".", true))
-            {
-                Type Object = Test.CreateClass("A", "public class A{ public string Value1{get;set;}}", null, typeof(object).Assembly);
-                Assert.Equal("Test, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", Object.Assembly.FullName);
-                Assert.Equal("A", Object.FullName);
-                File = Test.AssemblyDirectory + "/" + Test.AssemblyName + ".dll";
-            }
             new Utilities.IO.FileInfo(File).Delete();
         }
     }

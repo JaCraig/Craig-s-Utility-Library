@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.IO;
 using System.IO.Compression;
 using Utilities.IO.Compression.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Compression.Default
 {
@@ -42,7 +44,7 @@ namespace Utilities.IO.Compression.Default
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -54,7 +56,7 @@ namespace Utilities.IO.Compression.Default
             get { return "Deflate"; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -69,6 +71,6 @@ namespace Utilities.IO.Compression.Default
             return new DeflateStream(Stream, compressionMode);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -27,6 +27,21 @@ namespace UnitTests.IO.FileSystem.Default
     public class LocalFile
     {
         [Fact]
+        public void Clone()
+        {
+            Utilities.IO.FileSystem.Default.LocalFile Temp = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
+            Utilities.IO.FileSystem.Default.LocalFile Temp2 = (Utilities.IO.FileSystem.Default.LocalFile)Temp.Clone();
+            Assert.True(Temp == Temp2);
+            Assert.True(Temp.Equals(Temp2));
+            Assert.Equal(0, Temp.CompareTo(Temp2));
+            Assert.False(Temp < Temp2);
+            Assert.False(Temp > Temp2);
+            Assert.True(Temp <= Temp2);
+            Assert.True(Temp >= Temp2);
+            Assert.False(Temp != Temp2);
+        }
+
+        [Fact]
         public void Creation()
         {
             Utilities.IO.FileSystem.Default.LocalFile File = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
@@ -45,21 +60,6 @@ namespace UnitTests.IO.FileSystem.Default
             Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File.ReadBinary());
             Assert.Equal(ASCIIEncoding.ASCII.GetBytes("Testing this out"), File);
             File.Delete();
-        }
-
-        [Fact]
-        public void Clone()
-        {
-            Utilities.IO.FileSystem.Default.LocalFile Temp = new Utilities.IO.FileSystem.Default.LocalFile("./Test.txt");
-            Utilities.IO.FileSystem.Default.LocalFile Temp2 = (Utilities.IO.FileSystem.Default.LocalFile)Temp.Clone();
-            Assert.True(Temp == Temp2);
-            Assert.True(Temp.Equals(Temp2));
-            Assert.Equal(0, Temp.CompareTo(Temp2));
-            Assert.False(Temp < Temp2);
-            Assert.False(Temp > Temp2);
-            Assert.True(Temp <= Temp2);
-            Assert.True(Temp >= Temp2);
-            Assert.False(Temp != Temp2);
         }
     }
 }

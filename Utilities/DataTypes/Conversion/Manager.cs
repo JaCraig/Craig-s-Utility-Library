@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Globalization;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.Conversion
 {
@@ -47,8 +48,8 @@ namespace Utilities.DataTypes.Conversion
             }
         }
 
-        #endregion
-        
+        #endregion Constructor
+
         #region Functions
 
         /// <summary>
@@ -57,13 +58,14 @@ namespace Utilities.DataTypes.Conversion
         /// <typeparam name="T">Incoming type</typeparam>
         /// <typeparam name="R">Resulting type</typeparam>
         /// <param name="Item">Incoming object</param>
-        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
+        /// <param name="DefaultValue">
+        /// Default return value if the item is null or can not be converted
+        /// </param>
         /// <returns>The value converted to the specified type</returns>
         public static R To<T, R>(T Item, R DefaultValue = default(R))
         {
             return (R)To(Item, typeof(R), DefaultValue);
         }
-
 
         /// <summary>
         /// Converts item from type T to R
@@ -71,9 +73,11 @@ namespace Utilities.DataTypes.Conversion
         /// <typeparam name="T">Incoming type</typeparam>
         /// <param name="Item">Incoming object</param>
         /// <param name="ResultType">Result type</param>
-        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
+        /// <param name="DefaultValue">
+        /// Default return value if the item is null or can not be converted
+        /// </param>
         /// <returns>The value converted to the specified type</returns>
-        public static object To<T>(T Item,Type ResultType, object DefaultValue = null)
+        public static object To<T>(T Item, Type ResultType, object DefaultValue = null)
         {
             try
             {
@@ -110,13 +114,14 @@ namespace Utilities.DataTypes.Conversion
                     return Activator.CreateInstance(ResultType);
                 return DefaultValue;
             }
-            catch {
+            catch
+            {
                 if (DefaultValue == null && ResultType.IsValueType)
                     return Activator.CreateInstance(ResultType);
                 return DefaultValue;
             }
         }
 
-        #endregion
+        #endregion Functions
     }
 }

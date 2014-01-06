@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.Profiler.Manager.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Profiler.Manager
 {
@@ -56,7 +57,7 @@ namespace Utilities.Profiler.Manager
             Profiler = TempType.Create<IProfiler>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -65,7 +66,7 @@ namespace Utilities.Profiler.Manager
         /// </summary>
         protected IProfiler Profiler { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -91,7 +92,9 @@ namespace Utilities.Profiler.Manager
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
+        /// <param name="Managed">
+        /// Determines if all objects should be disposed or just managed objects
+        /// </param>
         protected override void Dispose(bool Managed)
         {
             if (Profiler != null)
@@ -101,6 +104,6 @@ namespace Utilities.Profiler.Manager
             }
         }
 
-        #endregion
+        #endregion Functions
     }
 }

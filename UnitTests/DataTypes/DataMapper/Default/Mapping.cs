@@ -19,11 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Reflection;
-using Utilities.DataTypes;
 using Utilities.DataTypes.DataMapper.Default;
 using Xunit;
-using System.Linq;
 
 namespace UnitTests.DataTypes.DataMapper.Default
 {
@@ -50,21 +47,6 @@ namespace UnitTests.DataTypes.DataMapper.Default
             TempObject.CopyLeftToRight(A, B);
             Assert.Equal(B.Item1, 12);
             Assert.NotEqual(B.Item2, "ASDF");
-        }
-
-        [Fact]
-        public void RightToLeft()
-        {
-            Utilities.DataTypes.DataMapper.Default.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
-            MappingA A = new MappingA();
-            A.Item1 = 12;
-            A.Item2 = "ASDF";
-            MappingB B = new MappingB();
-            B.Item1 = 13;
-            B.Item2 = "ZXCV";
-            TempObject.CopyRightToLeft(B, A);
-            Assert.Equal(A.Item1, 13);
-            Assert.NotEqual(A.Item2, "ZXCV");
         }
 
         [Fact]
@@ -96,17 +78,34 @@ namespace UnitTests.DataTypes.DataMapper.Default
             Assert.Equal(12, A.Item1);
             Assert.Equal("ASDF", A.Item2);
         }
+
+        [Fact]
+        public void RightToLeft()
+        {
+            Utilities.DataTypes.DataMapper.Default.Mapping<MappingA, MappingB> TempObject = new Mapping<MappingA, MappingB>(x => x.Item1, x => x.Item1);
+            MappingA A = new MappingA();
+            A.Item1 = 12;
+            A.Item2 = "ASDF";
+            MappingB B = new MappingB();
+            B.Item1 = 13;
+            B.Item2 = "ZXCV";
+            TempObject.CopyRightToLeft(B, A);
+            Assert.Equal(A.Item1, 13);
+            Assert.NotEqual(A.Item2, "ZXCV");
+        }
     }
 
     public class MappingA
     {
         public int Item1 { get; set; }
+
         public string Item2 { get; set; }
     }
 
     public class MappingB
     {
         public int Item1 { get; set; }
+
         public string Item2 { get; set; }
     }
 }

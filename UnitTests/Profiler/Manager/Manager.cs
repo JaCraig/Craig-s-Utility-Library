@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UnitTests.Profiler.Manager
+﻿namespace UnitTests.Profiler.Manager
 {
-    class Manager
+    internal class Manager
     {
     }
 }

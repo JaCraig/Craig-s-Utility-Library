@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.IO.FileFormats.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats
 {
@@ -54,74 +56,9 @@ namespace Utilities.IO.FileFormats
             this.FileName = FileName;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Functions
-
-        /// <summary>
-        /// Writes a change to an INI file
-        /// </summary>
-        /// <param name="Section">Section</param>
-        /// <param name="Key">Key</param>
-        /// <param name="Value">Value</param>
-        public virtual void WriteToINI(string Section, string Key, string Value)
-        {
-            if (FileContents.Keys.Contains(Section))
-            {
-                if (FileContents[Section].Keys.Contains(Key))
-                {
-                    FileContents[Section][Key] = Value;
-                }
-                else
-                {
-                    FileContents[Section].Add(Key, Value);
-                }
-            }
-            else
-            {
-                Dictionary<string, string> TempDictionary = new Dictionary<string, string>();
-                TempDictionary.Add(Key, Value);
-                FileContents.Add(Section, TempDictionary);
-            }
-            Save(_FileName);
-        }
-
-        /// <summary>
-        /// Reads a value from an INI file
-        /// </summary>
-        /// <param name="Section">Section</param>
-        /// <param name="Key">Key</param>
-        /// <param name="DefaultValue">Default value if it does not exist</param>
-        public virtual string ReadFromINI(string Section, string Key, string DefaultValue = "")
-        {
-            if (FileContents.Keys.Contains(Section) && FileContents[Section].Keys.Contains(Key))
-                return FileContents[Section][Key];
-            return DefaultValue;
-        }
-
-        /// <summary>
-        /// Returns an XML representation of the INI file
-        /// </summary>
-        /// <returns>An XML representation of the INI file</returns>
-        public virtual string ToXML()
-        {
-            if (string.IsNullOrEmpty(this.FileName))
-                return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<INI>\r\n</INI>";
-            StringBuilder Builder = new StringBuilder();
-            Builder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n");
-            Builder.Append("<INI>\r\n");
-            foreach (string Header in FileContents.Keys)
-            {
-                Builder.Append("<section name=\"" + Header + "\">\r\n");
-                foreach (string Key in FileContents[Header].Keys)
-                {
-                    Builder.Append("<key name=\"" + Key + "\">" + FileContents[Header][Key] + "</key>\r\n");
-                }
-                Builder.Append("</section>\r\n");
-            }
-            Builder.Append("</INI>");
-            return Builder.ToString();
-        }
 
         /// <summary>
         /// Deletes a section from the INI file
@@ -157,6 +94,19 @@ namespace Utilities.IO.FileFormats
         }
 
         /// <summary>
+        /// Reads a value from an INI file
+        /// </summary>
+        /// <param name="Section">Section</param>
+        /// <param name="Key">Key</param>
+        /// <param name="DefaultValue">Default value if it does not exist</param>
+        public virtual string ReadFromINI(string Section, string Key, string DefaultValue = "")
+        {
+            if (FileContents.Keys.Contains(Section) && FileContents[Section].Keys.Contains(Key))
+                return FileContents[Section][Key];
+            return DefaultValue;
+        }
+
+        /// <summary>
         /// Convert the INI to a string
         /// </summary>
         /// <returns>The INI file as a string</returns>
@@ -172,7 +122,59 @@ namespace Utilities.IO.FileFormats
             return Builder.ToString();
         }
 
-        #endregion
+        /// <summary>
+        /// Returns an XML representation of the INI file
+        /// </summary>
+        /// <returns>An XML representation of the INI file</returns>
+        public virtual string ToXML()
+        {
+            if (string.IsNullOrEmpty(this.FileName))
+                return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<INI>\r\n</INI>";
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n");
+            Builder.Append("<INI>\r\n");
+            foreach (string Header in FileContents.Keys)
+            {
+                Builder.Append("<section name=\"" + Header + "\">\r\n");
+                foreach (string Key in FileContents[Header].Keys)
+                {
+                    Builder.Append("<key name=\"" + Key + "\">" + FileContents[Header][Key] + "</key>\r\n");
+                }
+                Builder.Append("</section>\r\n");
+            }
+            Builder.Append("</INI>");
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Writes a change to an INI file
+        /// </summary>
+        /// <param name="Section">Section</param>
+        /// <param name="Key">Key</param>
+        /// <param name="Value">Value</param>
+        public virtual void WriteToINI(string Section, string Key, string Value)
+        {
+            if (FileContents.Keys.Contains(Section))
+            {
+                if (FileContents[Section].Keys.Contains(Key))
+                {
+                    FileContents[Section][Key] = Value;
+                }
+                else
+                {
+                    FileContents[Section].Add(Key, Value);
+                }
+            }
+            else
+            {
+                Dictionary<string, string> TempDictionary = new Dictionary<string, string>();
+                TempDictionary.Add(Key, Value);
+                FileContents.Add(Section, TempDictionary);
+            }
+            Save(_FileName);
+        }
+
+        #endregion Public Functions
 
         #region Private Functions
 
@@ -205,7 +207,7 @@ namespace Utilities.IO.FileFormats
             }
         }
 
-        #endregion
+        #endregion Private Functions
 
         #region Properties
 
@@ -222,6 +224,6 @@ namespace Utilities.IO.FileFormats
 
         private string _FileName = string.Empty;
 
-        #endregion
+        #endregion Properties
     }
 }

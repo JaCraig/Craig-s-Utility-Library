@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -49,7 +51,7 @@ namespace Utilities.DataTypes
         public static ICollection<T> Add<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            if (Items==null)
+            if (Items == null)
                 return Collection;
             Items.ForEach(x => Collection.Add(x));
             return Collection;
@@ -65,13 +67,13 @@ namespace Utilities.DataTypes
         public static ICollection<T> Add<T>(this ICollection<T> Collection, params T[] Items)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            if (Items==null)
+            if (Items == null)
                 return Collection;
             Items.ForEach(x => Collection.Add(x));
             return Collection;
         }
 
-        #endregion
+        #endregion Add
 
         #region AddAndReturn
 
@@ -90,7 +92,7 @@ namespace Utilities.DataTypes
             return Item;
         }
 
-        #endregion
+        #endregion AddAndReturn
 
         #region AddIf
 
@@ -100,7 +102,9 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="Collection">Collection to add to</param>
         /// <param name="Items">Items to add to the collection</param>
-        /// <param name="Predicate">Predicate that an item needs to satisfy in order to be added</param>
+        /// <param name="Predicate">
+        /// Predicate that an item needs to satisfy in order to be added
+        /// </param>
         /// <returns>True if any are added, false otherwise</returns>
         public static bool AddIf<T>(this ICollection<T> Collection, Predicate<T> Predicate, params T[] Items)
         {
@@ -125,7 +129,9 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="Collection">Collection to add to</param>
         /// <param name="Items">Items to add to the collection</param>
-        /// <param name="Predicate">Predicate that an item needs to satisfy in order to be added</param>
+        /// <param name="Predicate">
+        /// Predicate that an item needs to satisfy in order to be added
+        /// </param>
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIf<T>(this ICollection<T> Collection, Predicate<T> Predicate, IEnumerable<T> Items)
         {
@@ -135,7 +141,7 @@ namespace Utilities.DataTypes
             return Collection.AddIf(Predicate, Items.ToArray());
         }
 
-        #endregion
+        #endregion AddIf
 
         #region AddIfUnique
 
@@ -165,7 +171,7 @@ namespace Utilities.DataTypes
             return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 
-        #endregion
+        #endregion AddIfUnique
 
         #region Remove
 
@@ -191,13 +197,13 @@ namespace Utilities.DataTypes
         public static ICollection<T> Remove<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            if (Items==null)
+            if (Items == null)
                 return Collection;
             return Collection.Where(x => !Items.Contains(x)).ToList();
         }
 
-        #endregion
+        #endregion Remove
 
-        #endregion
+        #endregion Functions
     }
 }

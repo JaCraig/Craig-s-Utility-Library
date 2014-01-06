@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Logging.Interfaces
 {
@@ -35,18 +36,24 @@ namespace Utilities.IO.Logging.Interfaces
         #region Properties
 
         /// <summary>
-        /// Name of the logger
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
         /// Logs held by the logger
         /// </summary>
         IDictionary<string, ILog> Logs { get; }
 
-        #endregion
+        /// <summary>
+        /// Name of the logger
+        /// </summary>
+        string Name { get; }
+
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Adds a log object or replaces one already in use
+        /// </summary>
+        /// <param name="Name">The name of the log file</param>
+        void AddLog(string Name = "Default");
 
         /// <summary>
         /// Gets a specified log
@@ -55,12 +62,6 @@ namespace Utilities.IO.Logging.Interfaces
         /// <returns>The log file specified</returns>
         ILog GetLog(string Name = "Default");
 
-        /// <summary>
-        /// Adds a log object or replaces one already in use
-        /// </summary>
-        /// <param name="Name">The name of the log file</param>
-        void AddLog(string Name = "Default");
-        
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.Delimited
 {
@@ -78,9 +80,14 @@ namespace Utilities.IO.FileFormats.Delimited
             }
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
+
+        /// <summary>
+        /// Delimiter used
+        /// </summary>
+        public string Delimiter { get; set; }
 
         /// <summary>
         /// Cells within the row
@@ -98,47 +105,24 @@ namespace Utilities.IO.FileFormats.Delimited
             set { Cells[Position] = value; }
         }
 
-        /// <summary>
-        /// Delimiter used
-        /// </summary>
-        public string Delimiter { get; set; }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
         /// <summary>
-        /// To string function
+        /// Number of Cells
         /// </summary>
-        /// <returns>The content of the row in string form</returns>
-        public override string ToString()
+        public int Count
         {
-            StringBuilder Builder = new StringBuilder();
-            string Seperator = "";
-            foreach (Cell CurrentCell in Cells)
-            {
-                Builder.Append(Seperator).Append(CurrentCell);
-                Seperator = Delimiter;
-            }
-            return Builder.Append(System.Environment.NewLine).ToString();
+            get { return Cells.Count; }
         }
 
         /// <summary>
-        /// Gets the enumerator for the delimited file
+        /// Is the file read only
         /// </summary>
-        /// <returns>The enumerator for this file</returns>
-        public IEnumerator<Cell> GetEnumerator()
+        public bool IsReadOnly
         {
-            return Cells.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets the enumerator for the delimited file
-        /// </summary>
-        /// <returns>The enumerator for this file</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return Cells.GetEnumerator();
+            get { return Cells.IsReadOnly; }
         }
 
         /// <summary>
@@ -179,29 +163,12 @@ namespace Utilities.IO.FileFormats.Delimited
         }
 
         /// <summary>
-        /// Number of Cells
+        /// Gets the enumerator for the delimited file
         /// </summary>
-        public int Count
+        /// <returns>The enumerator for this file</returns>
+        public IEnumerator<Cell> GetEnumerator()
         {
-            get { return Cells.Count; }
-        }
-
-        /// <summary>
-        /// Is the file read only
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return Cells.IsReadOnly; }
-        }
-
-        /// <summary>
-        /// Removes a Cell from the file
-        /// </summary>
-        /// <param name="item">Cell to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(Cell item)
-        {
-            return Cells.Remove(item);
+            return Cells.GetEnumerator();
         }
 
         /// <summary>
@@ -225,6 +192,16 @@ namespace Utilities.IO.FileFormats.Delimited
         }
 
         /// <summary>
+        /// Removes a Cell from the file
+        /// </summary>
+        /// <param name="item">Cell to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(Cell item)
+        {
+            return Cells.Remove(item);
+        }
+
+        /// <summary>
         /// Removes a Cell at a specific index
         /// </summary>
         /// <param name="index">Index of the Cell to remove</param>
@@ -233,6 +210,31 @@ namespace Utilities.IO.FileFormats.Delimited
             Cells.RemoveAt(index);
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the enumerator for the delimited file
+        /// </summary>
+        /// <returns>The enumerator for this file</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return Cells.GetEnumerator();
+        }
+
+        /// <summary>
+        /// To string function
+        /// </summary>
+        /// <returns>The content of the row in string form</returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            string Seperator = "";
+            foreach (Cell CurrentCell in Cells)
+            {
+                Builder.Append(Seperator).Append(CurrentCell);
+                Seperator = Delimiter;
+            }
+            return Builder.Append(System.Environment.NewLine).ToString();
+        }
+
+        #endregion Functions
     }
 }

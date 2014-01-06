@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ using System.Web;
 using Utilities.DataTypes.Caching.Default;
 using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.DataTypes.Patterns.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.Caching
 {
@@ -61,7 +63,7 @@ namespace Utilities.DataTypes.Caching
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -70,7 +72,7 @@ namespace Utilities.DataTypes.Caching
         /// </summary>
         protected IDictionary<string, ICache> Caches { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -78,7 +80,10 @@ namespace Utilities.DataTypes.Caching
         /// Gets the specified cache
         /// </summary>
         /// <param name="Name">Name of the cache (defaults to Default)</param>
-        /// <returns>Returns the ICache specified if it exists, otherwise creates a default cache and associates it with the name</returns>
+        /// <returns>
+        /// Returns the ICache specified if it exists, otherwise creates a default cache and
+        /// associates it with the name
+        /// </returns>
         public ICache Cache(string Name = "Default")
         {
             if (!Caches.ContainsKey(Name))
@@ -89,7 +94,9 @@ namespace Utilities.DataTypes.Caching
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
+        /// <param name="Managed">
+        /// Determines if all objects should be disposed or just managed objects
+        /// </param>
         protected override void Dispose(bool Managed)
         {
             if (Caches != null)
@@ -99,6 +106,6 @@ namespace Utilities.DataTypes.Caching
             }
         }
 
-        #endregion
+        #endregion Functions
     }
 }

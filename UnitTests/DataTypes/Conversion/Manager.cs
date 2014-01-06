@@ -20,14 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Linq;
-using Utilities.DataTypes.CodeGen.BaseClasses;
-using Utilities.IO;
-using Utilities.IO.FileSystem.Interfaces;
-using Xunit;
-using Utilities.DataTypes;
 using System.Data;
-using System.Globalization;
+using Xunit;
 
 namespace UnitTests.DataTypes.Conversion
 {
@@ -68,12 +62,14 @@ namespace UnitTests.DataTypes.Conversion
         public class TestA
         {
             public int A { get; set; }
+
             public string B { get; set; }
         }
 
         public class TestB
         {
             public int A { get; set; }
+
             public string B { get; set; }
         }
     }

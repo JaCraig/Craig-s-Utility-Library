@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,7 +29,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.RSS
 {
@@ -127,44 +128,9 @@ namespace Utilities.IO.FileFormats.RSS
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Title
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Link
-        /// </summary>
-        public string Link { get; set; }
-
-        /// <summary>
-        /// Description
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Copyright
-        /// </summary>
-        public string Copyright { get; set; }
-
-        /// <summary>
-        /// Language
-        /// </summary>
-        public string Language { get; set; }
-
-        /// <summary>
-        /// Web master
-        /// </summary>
-        public string WebMaster { get; set; }
-
-        /// <summary>
-        /// Publish date
-        /// </summary>
-        public DateTime PubDate { get; set; }
 
         /// <summary>
         /// Categories
@@ -172,19 +138,29 @@ namespace Utilities.IO.FileFormats.RSS
         public ICollection<string> Categories { get; private set; }
 
         /// <summary>
-        /// Docs
-        /// </summary>
-        public string Docs { get; set; }
-
-        /// <summary>
         /// Cloud
         /// </summary>
         public string Cloud { get; set; }
 
         /// <summary>
-        /// TTL
+        /// Copyright
         /// </summary>
-        public int TTL { get; set; }
+        public string Copyright { get; set; }
+
+        /// <summary>
+        /// Description
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Docs
+        /// </summary>
+        public string Docs { get; set; }
+
+        /// <summary>
+        /// Explicit
+        /// </summary>
+        public bool Explicit { get; set; }
 
         /// <summary>
         /// Image URL
@@ -192,86 +168,58 @@ namespace Utilities.IO.FileFormats.RSS
         public string ImageUrl { get; set; }
 
         /// <summary>
+        /// Language
+        /// </summary>
+        public string Language { get; set; }
+
+        /// <summary>
+        /// Link
+        /// </summary>
+        public string Link { get; set; }
+
+        /// <summary>
+        /// Publish date
+        /// </summary>
+        public DateTime PubDate { get; set; }
+
+        /// <summary>
+        /// Title
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// TTL
+        /// </summary>
+        public int TTL { get; set; }
+
+        /// <summary>
+        /// Web master
+        /// </summary>
+        public string WebMaster { get; set; }
+
+        /// <summary>
         /// Items
         /// </summary>
         protected IList<Item> Items { get; private set; }
 
-        /// <summary>
-        /// Explicit
-        /// </summary>
-        public bool Explicit { get; set; }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
         /// <summary>
-        /// Converts the channel to a string
+        /// Count
         /// </summary>
-        /// <returns>The channel as a string</returns>
-        public override string ToString()
+        public int Count
         {
-            StringBuilder ChannelString = new StringBuilder();
-            ChannelString.Append("<channel>");
-            ChannelString.Append("<title>").Append(Utils.StripIllegalCharacters(Title)).Append("</title>\r\n");
-            ChannelString.Append("<link>").Append(Link).Append("</link>\r\n");
-            ChannelString.Append("<atom:link xmlns:atom=\"http://www.w3.org/2005/Atom\" rel=\"self\" href=\"").Append(Link).Append("\" type=\"application/rss+xml\" />");
-
-            ChannelString.Append("<description><![CDATA[").Append(Utils.StripIllegalCharacters(Description)).Append("]]></description>\r\n");
-            ChannelString.Append("<language>").Append(Language).Append("</language>\r\n");
-            ChannelString.Append("<copyright>").Append(Copyright).Append("</copyright>\r\n");
-            ChannelString.Append("<webMaster>").Append(WebMaster).Append("</webMaster>\r\n");
-            ChannelString.Append("<pubDate>").Append(PubDate.ToString("Ddd, dd MMM yyyy HH':'mm':'ss", CultureInfo.InvariantCulture)).Append("</pubDate>\r\n");
-            ChannelString.Append("<itunes:explicit>").Append((Explicit ? "yes" : "no")).Append("</itunes:explicit>");
-            ChannelString.Append("<itunes:subtitle>").Append(Utils.StripIllegalCharacters(Title)).Append("</itunes:subtitle>");
-            ChannelString.Append("<itunes:summary><![CDATA[").Append(Utils.StripIllegalCharacters(Description)).Append("]]></itunes:summary>");
-
-            foreach (string Category in Categories)
-            {
-                ChannelString.Append("<category>").Append(Category).Append("</category>\r\n");
-                ChannelString.Append("<itunes:category text=\"").Append(Category).Append("\" />\r\n");
-            }
-            ChannelString.Append("<docs>").Append(Docs).Append("</docs>\r\n");
-            ChannelString.Append("<ttl>").Append(TTL.ToString(CultureInfo.InvariantCulture)).Append("</ttl>\r\n");
-            if (!string.IsNullOrEmpty(ImageUrl))
-            {
-                ChannelString.Append("<image><url>").Append(ImageUrl).Append("</url>\r\n<title>").Append(Title).Append("</title>\r\n<link>").Append(Link).Append("</link>\r\n</image>\r\n");
-            }
-            foreach (Item CurrentItem in Items)
-            {
-                ChannelString.Append(CurrentItem.ToString());
-            }
-            ChannelString.Append("</channel>\r\n");
-            return ChannelString.ToString();
+            get { return Items.Count; }
         }
 
         /// <summary>
-        /// Index of the item specified
+        /// Is read only?
         /// </summary>
-        /// <param name="item">Item specified</param>
-        /// <returns>The index of the item</returns>
-        public int IndexOf(Item item)
+        public bool IsReadOnly
         {
-            return Items.IndexOf(item);
-        }
-
-        /// <summary>
-        /// Inserts the item at a specific index
-        /// </summary>
-        /// <param name="index">Index to insert at</param>
-        /// <param name="item">Item to insert</param>
-        public void Insert(int index, Item item)
-        {
-            Items.Insert(index, item);
-        }
-
-        /// <summary>
-        /// Removes an item at a specific index
-        /// </summary>
-        /// <param name="index">Index to remove at</param>
-        public void RemoveAt(int index)
-        {
-            Items.RemoveAt(index);
+            get { return Items.IsReadOnly; }
         }
 
         /// <summary>
@@ -329,19 +277,32 @@ namespace Utilities.IO.FileFormats.RSS
         }
 
         /// <summary>
-        /// Count
+        /// Gets the enumerator
         /// </summary>
-        public int Count
+        /// <returns>The enumerator for the channel</returns>
+        public IEnumerator<Item> GetEnumerator()
         {
-            get { return Items.Count; }
+            return Items.GetEnumerator();
         }
 
         /// <summary>
-        /// Is read only?
+        /// Index of the item specified
         /// </summary>
-        public bool IsReadOnly
+        /// <param name="item">Item specified</param>
+        /// <returns>The index of the item</returns>
+        public int IndexOf(Item item)
         {
-            get { return Items.IsReadOnly; }
+            return Items.IndexOf(item);
+        }
+
+        /// <summary>
+        /// Inserts the item at a specific index
+        /// </summary>
+        /// <param name="index">Index to insert at</param>
+        /// <param name="item">Item to insert</param>
+        public void Insert(int index, Item item)
+        {
+            Items.Insert(index, item);
         }
 
         /// <summary>
@@ -355,12 +316,12 @@ namespace Utilities.IO.FileFormats.RSS
         }
 
         /// <summary>
-        /// Gets the enumerator
+        /// Removes an item at a specific index
         /// </summary>
-        /// <returns>The enumerator for the channel</returns>
-        public IEnumerator<Item> GetEnumerator()
+        /// <param name="index">Index to remove at</param>
+        public void RemoveAt(int index)
         {
-            return Items.GetEnumerator();
+            Items.RemoveAt(index);
         }
 
         /// <summary>
@@ -372,6 +333,46 @@ namespace Utilities.IO.FileFormats.RSS
             return Items.GetEnumerator();
         }
 
-        #endregion
+        /// <summary>
+        /// Converts the channel to a string
+        /// </summary>
+        /// <returns>The channel as a string</returns>
+        public override string ToString()
+        {
+            StringBuilder ChannelString = new StringBuilder();
+            ChannelString.Append("<channel>");
+            ChannelString.Append("<title>").Append(Utils.StripIllegalCharacters(Title)).Append("</title>\r\n");
+            ChannelString.Append("<link>").Append(Link).Append("</link>\r\n");
+            ChannelString.Append("<atom:link xmlns:atom=\"http://www.w3.org/2005/Atom\" rel=\"self\" href=\"").Append(Link).Append("\" type=\"application/rss+xml\" />");
+
+            ChannelString.Append("<description><![CDATA[").Append(Utils.StripIllegalCharacters(Description)).Append("]]></description>\r\n");
+            ChannelString.Append("<language>").Append(Language).Append("</language>\r\n");
+            ChannelString.Append("<copyright>").Append(Copyright).Append("</copyright>\r\n");
+            ChannelString.Append("<webMaster>").Append(WebMaster).Append("</webMaster>\r\n");
+            ChannelString.Append("<pubDate>").Append(PubDate.ToString("Ddd, dd MMM yyyy HH':'mm':'ss", CultureInfo.InvariantCulture)).Append("</pubDate>\r\n");
+            ChannelString.Append("<itunes:explicit>").Append((Explicit ? "yes" : "no")).Append("</itunes:explicit>");
+            ChannelString.Append("<itunes:subtitle>").Append(Utils.StripIllegalCharacters(Title)).Append("</itunes:subtitle>");
+            ChannelString.Append("<itunes:summary><![CDATA[").Append(Utils.StripIllegalCharacters(Description)).Append("]]></itunes:summary>");
+
+            foreach (string Category in Categories)
+            {
+                ChannelString.Append("<category>").Append(Category).Append("</category>\r\n");
+                ChannelString.Append("<itunes:category text=\"").Append(Category).Append("\" />\r\n");
+            }
+            ChannelString.Append("<docs>").Append(Docs).Append("</docs>\r\n");
+            ChannelString.Append("<ttl>").Append(TTL.ToString(CultureInfo.InvariantCulture)).Append("</ttl>\r\n");
+            if (!string.IsNullOrEmpty(ImageUrl))
+            {
+                ChannelString.Append("<image><url>").Append(ImageUrl).Append("</url>\r\n<title>").Append(Title).Append("</title>\r\n<link>").Append(Link).Append("</link>\r\n</image>\r\n");
+            }
+            foreach (Item CurrentItem in Items)
+            {
+                ChannelString.Append(CurrentItem.ToString());
+            }
+            ChannelString.Append("</channel>\r\n");
+            return ChannelString.ToString();
+        }
+
+        #endregion Functions
     }
 }

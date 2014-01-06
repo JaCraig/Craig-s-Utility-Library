@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.BaseClasses
 {
@@ -43,9 +44,18 @@ namespace Utilities.IO.FileFormats.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
+
+        /// <summary>
+        /// Clones the object
+        /// </summary>
+        /// <returns>A newly cloned object</returns>
+        public override object Clone()
+        {
+            return (FormatType)this.ToString();
+        }
 
         /// <summary>
         /// Compares the object to another object
@@ -58,6 +68,16 @@ namespace Utilities.IO.FileFormats.BaseClasses
         }
 
         /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="other">Other object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public override bool Equals(FormatType other)
+        {
+            return ToString().Equals(other.ToString(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Saves the object
         /// </summary>
         /// <param name="Location">Location to save it to</param>
@@ -66,16 +86,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
         {
             new FileInfo(Location).Write(ToString());
             return (FormatType)this;
-        }
-
-        /// <summary>
-        /// Determines if the objects are equal
-        /// </summary>
-        /// <param name="other">Other object to compare to</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(FormatType other)
-        {
-            return ToString().Equals(other.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -95,16 +105,7 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <param name="Data">Data to load into the object</param>
         protected abstract void LoadFromData(string Data);
 
-        /// <summary>
-        /// Clones the object
-        /// </summary>
-        /// <returns>A newly cloned object</returns>
-        public override object Clone()
-        {
-            return (FormatType)this.ToString();
-        }
-
-        #endregion
+        #endregion Functions
 
         #region Operators
 
@@ -131,6 +132,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
             return ReturnValue;
         }
 
-        #endregion
+        #endregion Operators
     }
 }

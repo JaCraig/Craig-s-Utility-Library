@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Interfaces
 {
@@ -37,19 +37,16 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// </summary>
         string Name { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
         /// <summary>
-        /// Gets the class representation for the file
+        /// Returns true if it can handle the path, false otherwise
         /// </summary>
-        /// <param name="Path">Path to the file</param>
-        /// <param name="Domain">Domain of the user (optional)</param>
-        /// <param name="Password">Password to be used to access the file (optional)</param>
-        /// <param name="UserName">User name to be used to access the file (optional)</param>
-        /// <returns>The file object</returns>
-        IFile File(string Path, string UserName = "", string Password = "", string Domain = "");
+        /// <param name="Path">The path to check against</param>
+        /// <returns>True if it can handle the path, false otherwise</returns>
+        bool CanHandle(string Path);
 
         /// <summary>
         /// Gets the directory representation for the directory
@@ -62,12 +59,15 @@ namespace Utilities.IO.FileSystem.Interfaces
         IDirectory Directory(string Path, string UserName = "", string Password = "", string Domain = "");
 
         /// <summary>
-        /// Returns true if it can handle the path, false otherwise
+        /// Gets the class representation for the file
         /// </summary>
-        /// <param name="Path">The path to check against</param>
-        /// <returns>True if it can handle the path, false otherwise</returns>
-        bool CanHandle(string Path);
+        /// <param name="Path">Path to the file</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
+        /// <returns>The file object</returns>
+        IFile File(string Path, string UserName = "", string Password = "", string Domain = "");
 
-        #endregion
+        #endregion Functions
     }
 }

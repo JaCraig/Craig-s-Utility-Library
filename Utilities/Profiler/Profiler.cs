@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using Utilities.DataTypes.Patterns.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Profiler
 {
@@ -46,6 +48,15 @@ namespace Utilities.Profiler
         private IDisposable ProfilerObject { get; set; }
 
         /// <summary>
+        /// ToString
+        /// </summary>
+        /// <returns>String equivalent of the info held by the profiler</returns>
+        public override string ToString()
+        {
+            return ProfilerObject != null ? ProfilerObject.ToString() : "";
+        }
+
+        /// <summary>
         /// Dispose function
         /// </summary>
         /// <param name="Managed">Is it managed or not</param>
@@ -56,15 +67,6 @@ namespace Utilities.Profiler
                 ProfilerObject.Dispose();
                 ProfilerObject = null;
             }
-        }
-
-        /// <summary>
-        /// ToString 
-        /// </summary>
-        /// <returns>String equivalent of the info held by the profiler</returns>
-        public override string ToString()
-        {
-            return ProfilerObject != null ? ProfilerObject.ToString() : "";
         }
     }
 }

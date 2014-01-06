@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Profiler
 {
@@ -37,7 +39,7 @@ namespace Utilities.Profiler
         #region Time
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="ActionToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -50,7 +52,7 @@ namespace Utilities.Profiler
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <typeparam name="T">Action input type</typeparam>
         /// <param name="ActionToTime">Action to time</param>
@@ -65,7 +67,7 @@ namespace Utilities.Profiler
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <typeparam name="T1">Action input type 1</typeparam>
         /// <typeparam name="T2">Action input type 2</typeparam>
@@ -82,7 +84,7 @@ namespace Utilities.Profiler
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <typeparam name="T1">Action input type 1</typeparam>
         /// <typeparam name="T2">Action input type 2</typeparam>
@@ -101,7 +103,7 @@ namespace Utilities.Profiler
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="FuncToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -116,7 +118,7 @@ namespace Utilities.Profiler
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="FuncToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -133,7 +135,7 @@ namespace Utilities.Profiler
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="FuncToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -152,7 +154,7 @@ namespace Utilities.Profiler
         }
 
         /// <summary>
-        /// Times an action and places 
+        /// Times an action and places
         /// </summary>
         /// <param name="FuncToTime">Action to time</param>
         /// <param name="FunctionName">Name to associate with the action</param>
@@ -172,8 +174,8 @@ namespace Utilities.Profiler
                 return FuncToTime(Object1, Object2, Object3);
         }
 
-        #endregion
+        #endregion Time
 
-        #endregion
+        #endregion Functions
     }
 }

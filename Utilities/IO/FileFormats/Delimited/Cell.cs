@@ -21,10 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 using System;
 using System.Diagnostics.Contracts;
+
 namespace Utilities.IO.FileFormats.Delimited
 {
     /// <summary>
@@ -52,7 +53,7 @@ namespace Utilities.IO.FileFormats.Delimited
             Value = Content.Replace("\"", "");
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -61,20 +62,9 @@ namespace Utilities.IO.FileFormats.Delimited
         /// </summary>
         public string Value { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Converts the cell to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(Cell Value)
-        {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
-        }
 
         /// <summary>
         /// Converts the string to a cell
@@ -88,6 +78,17 @@ namespace Utilities.IO.FileFormats.Delimited
         }
 
         /// <summary>
+        /// Converts the cell to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(Cell Value)
+        {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
+            return Value.ToString();
+        }
+
+        /// <summary>
         /// To string function
         /// </summary>
         /// <returns>The value of the cell</returns>
@@ -96,6 +97,6 @@ namespace Utilities.IO.FileFormats.Delimited
             return "\"" + Value + "\"";
         }
 
-        #endregion
+        #endregion Functions
     }
 }

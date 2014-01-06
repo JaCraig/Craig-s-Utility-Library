@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.Data;
 using Xunit;
 
@@ -52,14 +51,6 @@ namespace UnitTests.IO.FileFormats
         }
 
         [Fact]
-        public void Load5()
-        {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
-            Assert.Equal(1, TestObject.Count);
-            Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject);
-        }
-
-        [Fact]
         public void Load4()
         {
             Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
@@ -69,9 +60,50 @@ namespace UnitTests.IO.FileFormats
         }
 
         [Fact]
-        public void ToDataTable()
+        public void Load5()
         {
-            DataTable TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38").ToDataTable();
+            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"");
+            Assert.Equal(1, TestObject.Count);
+            Assert.Equal("\"Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38\"\r\n", TestObject);
+        }
+
+        [Fact]
+        public void PipeLoad()
+        {
+            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38");
+            Assert.Equal(3, TestObject.Count);
+            Assert.Equal("\"Year\"|\"Make\"|\"Model\"|\"Length\"" + System.Environment.NewLine + "\"1997\"|\"Ford\"|\"E350\"|\"2.34\"" + System.Environment.NewLine + "\"2000\"|\"Mercury\"|\"Cougar\"|\"2.38\"" + System.Environment.NewLine, TestObject);
+        }
+
+        [Fact]
+        public void PipeLoad2()
+        {
+            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year|Make|Model|Length\"\r\n\"1997|Ford|E350|2.34\"\r\n\"2000|Mercury|Cougar|2.38\"");
+            Assert.Equal(3, TestObject.Count);
+            Assert.Equal("\"Year|Make|Model|Length\"\r\n\"1997|Ford|E350|2.34\"\r\n\"2000|Mercury|Cougar|2.38\"\r\n", TestObject);
+        }
+
+        [Fact]
+        public void PipeLoad3()
+        {
+            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"");
+            Assert.Equal(1, TestObject.Count);
+            Assert.Equal("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"\r\n", TestObject);
+        }
+
+        [Fact]
+        public void PipeLoad4()
+        {
+            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
+            TestObject.Parse("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"");
+            Assert.Equal(1, TestObject.Count);
+            Assert.Equal("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"\r\n", TestObject);
+        }
+
+        [Fact]
+        public void PipeToDataTable()
+        {
+            DataTable TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38").ToDataTable();
             Assert.Equal(2, TestObject.Rows.Count);
             Assert.Equal("Year", TestObject.Columns[0].ColumnName);
             Assert.Equal("Make", TestObject.Columns[1].ColumnName);
@@ -140,42 +172,9 @@ namespace UnitTests.IO.FileFormats
         }
 
         [Fact]
-        public void PipeLoad()
+        public void ToDataTable()
         {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38");
-            Assert.Equal(3, TestObject.Count);
-            Assert.Equal("\"Year\"|\"Make\"|\"Model\"|\"Length\"" + System.Environment.NewLine + "\"1997\"|\"Ford\"|\"E350\"|\"2.34\"" + System.Environment.NewLine + "\"2000\"|\"Mercury\"|\"Cougar\"|\"2.38\"" + System.Environment.NewLine, TestObject);
-        }
-
-        [Fact]
-        public void PipeLoad2()
-        {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year|Make|Model|Length\"\r\n\"1997|Ford|E350|2.34\"\r\n\"2000|Mercury|Cougar|2.38\"");
-            Assert.Equal(3, TestObject.Count);
-            Assert.Equal("\"Year|Make|Model|Length\"\r\n\"1997|Ford|E350|2.34\"\r\n\"2000|Mercury|Cougar|2.38\"\r\n", TestObject);
-        }
-
-        [Fact]
-        public void PipeLoad3()
-        {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"");
-            Assert.Equal(1, TestObject.Count);
-            Assert.Equal("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"\r\n", TestObject);
-        }
-
-        [Fact]
-        public void PipeLoad4()
-        {
-            Utilities.IO.FileFormats.Delimited.Delimited TestObject = new Utilities.IO.FileFormats.Delimited.Delimited();
-            TestObject.Parse("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"");
-            Assert.Equal(1, TestObject.Count);
-            Assert.Equal("\"Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38\"\r\n", TestObject);
-        }
-
-        [Fact]
-        public void PipeToDataTable()
-        {
-            DataTable TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year|Make|Model|Length\r\n1997|Ford|E350|2.34\r\n2000|Mercury|Cougar|2.38").ToDataTable();
+            DataTable TestObject = new Utilities.IO.FileFormats.Delimited.Delimited("Year,Make,Model,Length\r\n1997,Ford,E350,2.34\r\n2000,Mercury,Cougar,2.38").ToDataTable();
             Assert.Equal(2, TestObject.Rows.Count);
             Assert.Equal("Year", TestObject.Columns[0].ColumnName);
             Assert.Equal("Make", TestObject.Columns[1].ColumnName);

@@ -19,7 +19,6 @@ LIABILITY| WHETHER IN AN ACTION OF CONTRACT| TORT OR OTHERWISE| ARISING FROM|
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using Xunit;
 
 namespace UnitTests.IO.FileFormats
@@ -31,11 +30,11 @@ namespace UnitTests.IO.FileFormats
         {
             Utilities.IO.FileFormats.Excel Docs = Utilities.IO.FileFormats.Excel.Load("../../Data/Testing/Test.xlsx", "Sheet1");
             Assert.Equal(4, Docs.Count);
-            Assert.Equal(3,Docs.ColumnNames.Count);
+            Assert.Equal(3, Docs.ColumnNames.Count);
             Assert.Equal("Header 1", Docs.ColumnNames[0]);
             Assert.Equal("Header 2", Docs.ColumnNames[1]);
             Assert.Equal("Header 3", Docs.ColumnNames[2]);
-            Assert.Equal("This", Docs[0,"Header 1"]);
+            Assert.Equal("This", Docs[0, "Header 1"]);
             Assert.Equal("is", Docs[0, "Header 2"]);
             Assert.Equal("a", Docs[0, "Header 3"]);
             Assert.Equal("simple", Docs[1, "Header 1"]);

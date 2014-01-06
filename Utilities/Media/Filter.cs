@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -27,7 +28,7 @@ using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Utilities.DataTypes;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Media
 {
@@ -52,9 +53,19 @@ namespace Utilities.Media
             Absolute = false;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Properties
+
+        /// <summary>
+        /// Determines if we should take the absolute value prior to clamping
+        /// </summary>
+        public virtual bool Absolute { get; set; }
+
+        /// <summary>
+        /// Height of the filter box
+        /// </summary>
+        public virtual int Height { get; set; }
 
         /// <summary>
         /// The actual filter array
@@ -63,26 +74,16 @@ namespace Utilities.Media
         public virtual int[,] MyFilter { get; set; }
 
         /// <summary>
-        /// Width of the filter box
-        /// </summary>
-        public virtual int Width { get; set; }
-
-        /// <summary>
-        /// Height of the filter box
-        /// </summary>
-        public virtual int Height { get; set; }
-
-        /// <summary>
         /// Amount to add to the red, blue, and green values
         /// </summary>
         public virtual int Offset { get; set; }
 
         /// <summary>
-        /// Determines if we should take the absolute value prior to clamping
+        /// Width of the filter box
         /// </summary>
-        public virtual bool Absolute { get; set; }
+        public virtual int Width { get; set; }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Functions
 
@@ -158,6 +159,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Public Functions
     }
 }

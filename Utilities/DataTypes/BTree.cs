@@ -20,13 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -54,23 +54,29 @@ namespace Utilities.DataTypes
             NumberOfNodes = Traversal(Root).Count();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-        /// <summary>
-        /// The root value
-        /// </summary>
-        public virtual TreeNode<T> Root { get; set; }
-
-        /// <summary>
-        /// The number of nodes in the tree
-        /// </summary>
-        protected virtual int NumberOfNodes { get; set; }
 
         /// <summary>
         /// Is the tree empty
         /// </summary>
         public virtual bool IsEmpty { get { return Root == null; } }
+
+        /// <summary>
+        /// Gets the maximum value of the tree
+        /// </summary>
+        public virtual T MaxValue
+        {
+            get
+            {
+                Contract.Requires<InvalidOperationException>(!IsEmpty, "The tree is empty");
+                TreeNode<T> TempNode = Root;
+                while (TempNode.Right != null)
+                    TempNode = TempNode.Right;
+                return TempNode.Value;
+            }
+        }
 
         /// <summary>
         /// Gets the minimum value of the tree
@@ -88,21 +94,16 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Gets the maximum value of the tree
+        /// The root value
         /// </summary>
-        public virtual T MaxValue
-        {
-            get
-            {
-                Contract.Requires<InvalidOperationException>(!IsEmpty, "The tree is empty");
-                TreeNode<T> TempNode = Root;
-                while (TempNode.Right != null)
-                    TempNode = TempNode.Right;
-                return TempNode.Value;
-            }
-        }
+        public virtual TreeNode<T> Root { get; set; }
 
-        #endregion
+        /// <summary>
+        /// The number of nodes in the tree
+        /// </summary>
+        protected virtual int NumberOfNodes { get; set; }
+
+        #endregion Properties
 
         #region IEnumerable<T> Members
 
@@ -118,7 +119,7 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        #endregion IEnumerable<T> Members
 
         #region IEnumerable Members
 
@@ -134,9 +135,25 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        #endregion IEnumerable Members
 
         #region ICollection<T> Members
+
+        /// <summary>
+        /// Number of items in the tree
+        /// </summary>
+        public virtual int Count
+        {
+            get { return NumberOfNodes; }
+        }
+
+        /// <summary>
+        /// Is this read only?
+        /// </summary>
+        public virtual bool IsReadOnly
+        {
+            get { return false; }
+        }
 
         /// <summary>
         /// Adds an item to a binary tree
@@ -206,22 +223,6 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Number of items in the tree
-        /// </summary>
-        public virtual int Count
-        {
-            get { return NumberOfNodes; }
-        }
-
-        /// <summary>
-        /// Is this read only?
-        /// </summary>
-        public virtual bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Removes an item from the tree
         /// </summary>
         /// <param name="item">Item to remove</param>
@@ -254,7 +255,7 @@ namespace Utilities.DataTypes
             return true;
         }
 
-        #endregion
+        #endregion ICollection<T> Members
 
         #region Private Functions
 
@@ -269,29 +270,6 @@ namespace Utilities.DataTypes
                 if (Item.Value.Equals(item))
                     return Item;
             return null;
-        }
-
-        /// <summary>
-        /// Traverses the list
-        /// </summary>
-        /// <param name="Node">The node to start the search from</param>
-        /// <returns>The individual items from the tree</returns>
-        protected virtual IEnumerable<TreeNode<T>> Traversal(TreeNode<T> Node)
-        {
-            if (Node != null)
-            {
-                if (Node.Left != null)
-                {
-                    foreach (TreeNode<T> LeftNode in Traversal(Node.Left))
-                        yield return LeftNode;
-                }
-                yield return Node;
-                if (Node.Right != null)
-                {
-                    foreach (TreeNode<T> RightNode in Traversal(Node.Right))
-                        yield return RightNode;
-                }
-            }
         }
 
         /// <summary>
@@ -338,18 +316,32 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Traverses the list
+        /// </summary>
+        /// <param name="Node">The node to start the search from</param>
+        /// <returns>The individual items from the tree</returns>
+        protected virtual IEnumerable<TreeNode<T>> Traversal(TreeNode<T> Node)
+        {
+            if (Node != null)
+            {
+                if (Node.Left != null)
+                {
+                    foreach (TreeNode<T> LeftNode in Traversal(Node.Left))
+                        yield return LeftNode;
+                }
+                yield return Node;
+                if (Node.Right != null)
+                {
+                    foreach (TreeNode<T> RightNode in Traversal(Node.Right))
+                        yield return RightNode;
+                }
+            }
+        }
+
+        #endregion Private Functions
 
         #region Functions
-
-        /// <summary>
-        /// Outputs the tree as a string
-        /// </summary>
-        /// <returns>The string representation of the tree</returns>
-        public override string ToString()
-        {
-            return this.ToString(x => x.ToString(), " ");
-        }
 
         /// <summary>
         /// Converts the object to a string
@@ -362,7 +354,16 @@ namespace Utilities.DataTypes
             return Value.ToString();
         }
 
-        #endregion
+        /// <summary>
+        /// Outputs the tree as a string
+        /// </summary>
+        /// <returns>The string representation of the tree</returns>
+        public override string ToString()
+        {
+            return this.ToString(x => x.ToString(), " ");
+        }
+
+        #endregion Functions
     }
 
     /// <summary>
@@ -388,34 +389,9 @@ namespace Utilities.DataTypes
             this.Parent = Parent;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
-        
-        /// <summary>
-        /// Value of the node
-        /// </summary>
-        public virtual T Value { get; set; }
-
-        /// <summary>
-        /// Parent node
-        /// </summary>
-        public virtual TreeNode<T> Parent { get; set; }
-
-        /// <summary>
-        /// Left node
-        /// </summary>
-        public virtual TreeNode<T> Left { get; set; }
-
-        /// <summary>
-        /// Right node
-        /// </summary>
-        public virtual TreeNode<T> Right { get; set; }
-
-        /// <summary>
-        /// Is this the root
-        /// </summary>
-        public virtual bool IsRoot { get { return Parent == null; } }
 
         /// <summary>
         /// Is this a leaf
@@ -423,11 +399,36 @@ namespace Utilities.DataTypes
         public virtual bool IsLeaf { get { return Left == null && Right == null; } }
 
         /// <summary>
+        /// Is this the root
+        /// </summary>
+        public virtual bool IsRoot { get { return Parent == null; } }
+
+        /// <summary>
+        /// Left node
+        /// </summary>
+        public virtual TreeNode<T> Left { get; set; }
+
+        /// <summary>
+        /// Parent node
+        /// </summary>
+        public virtual TreeNode<T> Parent { get; set; }
+
+        /// <summary>
+        /// Right node
+        /// </summary>
+        public virtual TreeNode<T> Right { get; set; }
+
+        /// <summary>
+        /// Value of the node
+        /// </summary>
+        public virtual T Value { get; set; }
+
+        /// <summary>
         /// Visited?
         /// </summary>
         internal bool Visited { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Public Overridden Functions
 
@@ -440,6 +441,6 @@ namespace Utilities.DataTypes
             return Value.ToString();
         }
 
-        #endregion
+        #endregion Public Overridden Functions
     }
 }

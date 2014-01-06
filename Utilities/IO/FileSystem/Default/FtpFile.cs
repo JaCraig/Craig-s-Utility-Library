@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -29,7 +30,8 @@ using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -72,7 +74,7 @@ namespace Utilities.IO.FileSystem.Default
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -88,14 +90,6 @@ namespace Utilities.IO.FileSystem.Default
         /// Time created (Just returns now)
         /// </summary>
         public override DateTime Created
-        {
-            get { return DateTime.Now; }
-        }
-
-        /// <summary>
-        /// Time modified (just returns now)
-        /// </summary>
-        public override DateTime Modified
         {
             get { return DateTime.Now; }
         }
@@ -141,6 +135,14 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
+        /// Time modified (just returns now)
+        /// </summary>
+        public override DateTime Modified
+        {
+            get { return DateTime.Now; }
+        }
+
+        /// <summary>
         /// Absolute path of the file (same as FullName)
         /// </summary>
         public override string Name
@@ -148,9 +150,26 @@ namespace Utilities.IO.FileSystem.Default
             get { return InternalFile == null ? "" : InternalFile.AbsolutePath; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Copies the file to another directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy the file to</param>
+        /// <param name="Overwrite">Should the file overwrite another file if found</param>
+        /// <returns>The newly created file</returns>
+        public override IFile CopyTo(IDirectory Directory, bool Overwrite)
+        {
+            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            if (!File.Exists || Overwrite)
+            {
+                File.Write(ReadBinary());
+                return File;
+            }
+            return this;
+        }
 
         /// <summary>
         /// Delete (does nothing)
@@ -163,6 +182,16 @@ namespace Utilities.IO.FileSystem.Default
             SetupData(Request, null);
             SetupCredentials(Request);
             return SendRequest(Request);
+        }
+
+        /// <summary>
+        /// Moves the file (not used)
+        /// </summary>
+        /// <param name="Directory">Not used</param>
+        public override void MoveTo(IDirectory Directory)
+        {
+            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain).Write(ReadBinary());
+            Delete();
         }
 
         /// <summary>
@@ -203,33 +232,6 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Moves the file (not used)
-        /// </summary>
-        /// <param name="Directory">Not used</param>
-        public override void MoveTo(IDirectory Directory)
-        {
-            new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain).Write(ReadBinary());
-            Delete();
-        }
-
-        /// <summary>
-        /// Copies the file to another directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy the file to</param>
-        /// <param name="Overwrite">Should the file overwrite another file if found</param>
-        /// <returns>The newly created file</returns>
-        public override IFile CopyTo(IDirectory Directory, bool Overwrite)
-        {
-            FileInfo File = new FileInfo(Directory.FullName + "\\" + Name.Right(Name.Length - (Name.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            if (!File.Exists || Overwrite)
-            {
-                File.Write(ReadBinary());
-                return File;
-            }
-            return this;
-        }
-
-        /// <summary>
         /// Not used
         /// </summary>
         /// <param name="Content">Not used</param>
@@ -256,45 +258,6 @@ namespace Utilities.IO.FileSystem.Default
             return SendRequest(Request).ToByteArray();
         }
 
-
-        /// <summary>
-        /// Sets up any data that needs to be sent
-        /// </summary>
-        /// <param name="Request">The web request object</param>
-        /// <param name="Data">Data to send with the request</param>
-        private void SetupData(FtpWebRequest Request, byte[] Data)
-        {
-            Contract.Requires<ArgumentNullException>(Request != null, "Request");
-            Request.UsePassive = true;
-            Request.KeepAlive = false;
-            Request.UseBinary = true;
-            Request.EnableSsl = Name.ToUpperInvariant().StartsWith("FTPS", StringComparison.OrdinalIgnoreCase);
-            if (Data==null)
-            {
-                Request.ContentLength = 0;
-                return;
-            }
-            Request.ContentLength = Data.Length;
-            using (Stream RequestStream = Request.GetRequestStream())
-            {
-                RequestStream.Write(Data, 0, Data.Length);
-            }
-        }
-
-        /// <summary>
-        /// Sets up any credentials (basic authentication,
-        /// for OAuth, please use the OAuth class to create the
-        /// URL)
-        /// </summary>
-        /// <param name="Request">The web request object</param>
-        private void SetupCredentials(FtpWebRequest Request)
-        {
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
-            {
-                Request.Credentials = new NetworkCredential(UserName, Password);
-            }
-        }
-
         /// <summary>
         /// Sends the request to the URL specified
         /// </summary>
@@ -312,6 +275,44 @@ namespace Utilities.IO.FileSystem.Default
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Sets up any credentials (basic authentication, for OAuth, please use the OAuth class to
+        /// create the
+        /// URL)
+        /// </summary>
+        /// <param name="Request">The web request object</param>
+        private void SetupCredentials(FtpWebRequest Request)
+        {
+            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+            {
+                Request.Credentials = new NetworkCredential(UserName, Password);
+            }
+        }
+
+        /// <summary>
+        /// Sets up any data that needs to be sent
+        /// </summary>
+        /// <param name="Request">The web request object</param>
+        /// <param name="Data">Data to send with the request</param>
+        private void SetupData(FtpWebRequest Request, byte[] Data)
+        {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Request.UsePassive = true;
+            Request.KeepAlive = false;
+            Request.UseBinary = true;
+            Request.EnableSsl = Name.ToUpperInvariant().StartsWith("FTPS", StringComparison.OrdinalIgnoreCase);
+            if (Data == null)
+            {
+                Request.ContentLength = 0;
+                return;
+            }
+            Request.ContentLength = Data.Length;
+            using (Stream RequestStream = Request.GetRequestStream())
+            {
+                RequestStream.Write(Data, 0, Data.Length);
+            }
+        }
+
+        #endregion Functions
     }
 }

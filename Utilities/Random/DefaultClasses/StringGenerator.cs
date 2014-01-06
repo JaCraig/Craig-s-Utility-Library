@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.DefaultClasses
 {
@@ -39,9 +41,12 @@ namespace Utilities.Random.DefaultClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public StringGenerator() : base("", "") { }
+        public StringGenerator()
+            : base("", "")
+        {
+        }
 
-        #endregion
+        #endregion Constructors
 
         /// <summary>
         /// Generates a random value of the specified type
@@ -76,14 +81,19 @@ namespace Utilities.Random.DefaultClasses
         }
 
         /// <summary>
-        /// Returns a randomly generated string of a specified length, containing
-        /// only a set of characters, and at max a specified number of non alpha numeric characters.
+        /// Returns a randomly generated string of a specified length, containing only a set of
+        /// characters, and at max a specified number of non alpha numeric characters.
         /// </summary>
         /// <param name="Length">Length of the string</param>
         /// <param name="AllowedCharacters">Characters allowed in the string</param>
-        /// <param name="NumberOfNonAlphaNumericsAllowed">Number of non alpha numeric characters allowed.</param>
+        /// <param name="NumberOfNonAlphaNumericsAllowed">
+        /// Number of non alpha numeric characters allowed.
+        /// </param>
         /// <param name="Rand">Random number generator</param>
-        /// <returns>A randomly generated string of a specified length, containing only a set of characters, and at max a specified number of non alpha numeric characters.</returns>
+        /// <returns>
+        /// A randomly generated string of a specified length, containing only a set of characters,
+        /// and at max a specified number of non alpha numeric characters.
+        /// </returns>
         protected virtual string NextString(System.Random Rand, int Length, string AllowedCharacters = ".", int NumberOfNonAlphaNumericsAllowed = int.MaxValue)
         {
             if (Length < 1)

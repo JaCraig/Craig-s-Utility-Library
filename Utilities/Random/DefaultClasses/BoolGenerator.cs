@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.DefaultClasses
 {
@@ -34,7 +36,10 @@ namespace Utilities.Random.DefaultClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public BoolGenerator() : base(false, true) { }
+        public BoolGenerator()
+            : base(false, true)
+        {
+        }
 
         /// <summary>
         /// Generates a random value of the specified type

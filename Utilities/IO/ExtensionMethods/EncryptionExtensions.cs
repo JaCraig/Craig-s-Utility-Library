@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
@@ -27,7 +28,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.Encryption;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO
 {
@@ -58,7 +60,7 @@ namespace Utilities.IO
             return Salt;
         }
 
-        #endregion
+        #endregion GenerateSalt
 
         #region Hash
 
@@ -87,14 +89,16 @@ namespace Utilities.IO
             return BitConverter.ToString(Data.ToByteArray(EncodingUsing).Hash(Algorithm)).Replace("-", "").Encode(null, EncodingUsing);
         }
 
-        #endregion
+        #endregion Hash
 
         #region Encrypt
-        
+
         /// <summary>
         /// Encrypts a byte array using RSA
         /// </summary>
-        /// <param name="Input">Input (should be small as anything over 128 bytes can not be decrypted)</param>
+        /// <param name="Input">
+        /// Input (should be small as anything over 128 bytes can not be decrypted)
+        /// </param>
         /// <param name="Key">Key to use for encryption</param>
         /// <returns>An encrypted string (64bit string)</returns>
         public static string Encrypt(byte[] Input, string Key)
@@ -110,18 +114,25 @@ namespace Utilities.IO
         /// <returns>The encrypted data</returns>
         public static byte[] Encrypt(this byte[] Data, byte[] Key)
         {
-            return IoC.Manager.Bootstrapper.Resolve<Manager>().Encrypt(Data,Key);
+            return IoC.Manager.Bootstrapper.Resolve<Manager>().Encrypt(Data, Key);
         }
 
         /// <summary>
         /// Encrypts a byte array
         /// </summary>
         /// <param name="Data">Data to encrypt</param>
-        /// <param name="Key">Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc. Really anything that implements DeriveBytes)</param>
+        /// <param name="Key">
+        /// Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc.
+        /// Really anything that implements DeriveBytes)
+        /// </param>
         /// <param name="AlgorithmUsing">Algorithm to use for encryption (defaults to AES)</param>
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
-        /// <param name="EncodingUsing">Encoding that the original string is using (defaults to UTF8)</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
+        /// <param name="EncodingUsing">
+        /// Encoding that the original string is using (defaults to UTF8)
+        /// </param>
         /// <returns>An encrypted byte array</returns>
         public static string Encrypt(this string Data,
             DeriveBytes Key,
@@ -141,10 +152,15 @@ namespace Utilities.IO
         /// Encrypts a byte array
         /// </summary>
         /// <param name="Data">Data to encrypt</param>
-        /// <param name="Key">Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc. Really anything that implements DeriveBytes)</param>
+        /// <param name="Key">
+        /// Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc.
+        /// Really anything that implements DeriveBytes)
+        /// </param>
         /// <param name="AlgorithmUsing">Algorithm to use for encryption (defaults to AES)</param>
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
         /// <returns>An encrypted byte array</returns>
         public static byte[] Encrypt(this byte[] Data,
             DeriveBytes Key,
@@ -155,7 +171,7 @@ namespace Utilities.IO
             return IoC.Manager.Bootstrapper.Resolve<Manager>().Encrypt(Data, Key, AlgorithmUsing, InitialVector, KeySize);
         }
 
-        #endregion
+        #endregion Encrypt
 
         #region Decrypt
 
@@ -163,11 +179,18 @@ namespace Utilities.IO
         /// Decrypts a string
         /// </summary>
         /// <param name="Data">Text to be decrypted (Base 64 string)</param>
-        /// <param name="Key">Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc. Really anything that implements DeriveBytes)</param>
-        /// <param name="EncodingUsing">Encoding that the output string should use (defaults to UTF8)</param>
+        /// <param name="Key">
+        /// Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc.
+        /// Really anything that implements DeriveBytes)
+        /// </param>
+        /// <param name="EncodingUsing">
+        /// Encoding that the output string should use (defaults to UTF8)
+        /// </param>
         /// <param name="AlgorithmUsing">Algorithm to use for decryption (defaults to AES)</param>
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
         /// <returns>A decrypted string</returns>
         public static string Decrypt(this string Data,
             DeriveBytes Key,
@@ -187,10 +210,15 @@ namespace Utilities.IO
         /// Decrypts a byte array
         /// </summary>
         /// <param name="Data">Data to encrypt</param>
-        /// <param name="Key">Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc. Really anything that implements DeriveBytes)</param>
+        /// <param name="Key">
+        /// Key to use to encrypt the data (can use PasswordDeriveBytes, Rfc2898DeriveBytes, etc.
+        /// Really anything that implements DeriveBytes)
+        /// </param>
         /// <param name="AlgorithmUsing">Algorithm to use for encryption (defaults to AES)</param>
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
         /// <returns>An encrypted byte array</returns>
         public static byte[] Decrypt(this byte[] Data,
             DeriveBytes Key,
@@ -218,7 +246,9 @@ namespace Utilities.IO
         /// <summary>
         /// Decrypts a string using RSA
         /// </summary>
-        /// <param name="Input">Input string (should be small as anything over 128 bytes can not be decrypted)</param>
+        /// <param name="Input">
+        /// Input string (should be small as anything over 128 bytes can not be decrypted)
+        /// </param>
         /// <param name="Key">Key to use for decryption</param>
         /// <param name="EncodingUsing">Encoding that the result should use (defaults to UTF8)</param>
         /// <returns>A decrypted string</returns>
@@ -227,7 +257,7 @@ namespace Utilities.IO
             return IoC.Manager.Bootstrapper.Resolve<Manager>().Decrypt(Input, Key).ToString(EncodingUsing);
         }
 
-        #endregion
+        #endregion Decrypt
 
         #region CreateKey
 
@@ -242,7 +272,7 @@ namespace Utilities.IO
             return IoC.Manager.Bootstrapper.Resolve<Manager>().CreateKey(PrivatePublic);
         }
 
-        #endregion
+        #endregion CreateKey
 
         #region SignHash
 
@@ -259,7 +289,7 @@ namespace Utilities.IO
             return IoC.Manager.Bootstrapper.Resolve<Manager>().SignHash(Input, Key, out Hash, EncodingUsing);
         }
 
-        #endregion
+        #endregion SignHash
 
         #region VerifyHash
 
@@ -275,8 +305,8 @@ namespace Utilities.IO
             return IoC.Manager.Bootstrapper.Resolve<Manager>().VerifyHash(Hash, SignedHash, Key);
         }
 
-        #endregion
+        #endregion VerifyHash
 
-        #endregion
+        #endregion Functions
     }
 }

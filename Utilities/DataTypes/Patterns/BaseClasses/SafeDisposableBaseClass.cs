@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.Patterns.BaseClasses
 {
@@ -40,7 +41,7 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region IDisposable Related Functions
 
@@ -56,10 +57,12 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         /// <summary>
         /// Function to override in order to dispose objects
         /// </summary>
-        /// <param name="Managed">If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.</param>
+        /// <param name="Managed">
+        /// If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.
+        /// </param>
         protected abstract void Dispose(bool Managed);
 
-        #endregion
+        #endregion IDisposable Related Functions
 
         #region Finalizer
 
@@ -71,6 +74,6 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
             Dispose(false);
         }
 
-        #endregion
+        #endregion Finalizer
     }
 }

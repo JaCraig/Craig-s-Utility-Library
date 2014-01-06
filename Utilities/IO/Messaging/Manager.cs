@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.Messaging.BaseClasses;
 using Utilities.IO.Messaging.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Messaging
 {
@@ -44,22 +46,23 @@ namespace Utilities.IO.Messaging
             Formatters = AppDomain.CurrentDomain.GetAssemblies().Objects<IFormatter>().ToList();
             MessagingSystems = new Dictionary<Type, IMessagingSystem>();
             IEnumerable<IMessagingSystem> TempSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IMessagingSystem>();
-            TempSystems.ForEach(x =>{
+            TempSystems.ForEach(x =>
+            {
                 ((MessagingSystemBase)x).Initialize(Formatters);
                 MessagingSystems.Add(x.MessageType, x);
             });
         }
 
         /// <summary>
+        /// Formatters
+        /// </summary>
+        public IList<IFormatter> Formatters { get; private set; }
+
+        /// <summary>
         /// Messaging systems
         /// </summary>
         public IDictionary<Type, IMessagingSystem> MessagingSystems { get; private set; }
 
-        /// <summary>
-        /// Formatters
-        /// </summary>
-        public IList<IFormatter> Formatters { get; private set; }
-        
         /// <summary>
         /// String info for the manager
         /// </summary>

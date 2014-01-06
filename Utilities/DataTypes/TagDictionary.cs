@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -48,14 +49,33 @@ namespace Utilities.DataTypes
             KeyList = new List<Key>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Items in the dictionary
+        /// Number of items in the dictionary
         /// </summary>
-        private ConcurrentBag<TaggedItem<Key, Value>> Items { get; set; }
+        public int Count
+        {
+            get { return Items.Count(); }
+        }
+
+        /// <summary>
+        /// Always false
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets the keys found in the dictionary
+        /// </summary>
+        public ICollection<Key> Keys
+        {
+            get { return KeyList; }
+        }
 
         /// <summary>
         /// Gets the values found in the dictionary
@@ -66,12 +86,9 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Gets the keys found in the dictionary
+        /// Items in the dictionary
         /// </summary>
-        public ICollection<Key> Keys
-        {
-            get { return KeyList; }
-        }
+        private ConcurrentBag<TaggedItem<Key, Value>> Items { get; set; }
 
         /// <summary>
         /// List of keys that have been entered
@@ -95,23 +112,7 @@ namespace Utilities.DataTypes
             }
         }
 
-        /// <summary>
-        /// Number of items in the dictionary
-        /// </summary>
-        public int Count
-        {
-            get { return Items.Count(); }
-        }
-
-        /// <summary>
-        /// Always false
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -136,46 +137,6 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Keys != null, "Keys");
             Items.Add(new TaggedItem<Key, Value>(Keys, Value));
             Keys.ForEach(x => KeyList.AddIfUnique(x));
-        }
-
-        /// <summary>
-        /// Determines if a key is in the dictionary
-        /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <returns>True if it exists, false otherwise</returns>
-        public bool ContainsKey(Key key)
-        {
-            return KeyList.Contains(key);
-        }
-
-        /// <summary>
-        /// Removes all items that are associated with a key
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>Returns true if the key was found, false otherwise</returns>
-        public bool Remove(Key key)
-        {
-            bool ReturnValue = ContainsKey(key);
-            Items = new ConcurrentBag<TaggedItem<Key, Value>>(Items.ToArray(x => x).Where(x => !x.Keys.Contains(key)));
-            KeyList.Remove(key);
-            return ReturnValue;
-        }
-
-        /// <summary>
-        /// Attempts to get the values associated with a key
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <param name="value">Values associated with a key</param>
-        /// <returns>True if something is returned, false otherwise</returns>
-        public bool TryGetValue(Key key, out IEnumerable<Value> value)
-        {
-            value = new List<Value>();
-            try
-            {
-                value = this[key];
-            }
-            catch { }
-            return value.Count() > 0;
         }
 
         /// <summary>
@@ -206,6 +167,16 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Determines if a key is in the dictionary
+        /// </summary>
+        /// <param name="key">Key to check</param>
+        /// <returns>True if it exists, false otherwise</returns>
+        public bool ContainsKey(Key key)
+        {
+            return KeyList.Contains(key);
+        }
+
+        /// <summary>
         /// Copies itself to an array
         /// </summary>
         /// <param name="array">Array</param>
@@ -216,6 +187,31 @@ namespace Utilities.DataTypes
             {
                 array[arrayIndex + x] = new KeyValuePair<Key, IEnumerable<Value>>(Keys.ElementAt(x), this[Keys.ElementAt(x)]);
             }
+        }
+
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        public IEnumerator<KeyValuePair<Key, IEnumerable<Value>>> GetEnumerator()
+        {
+            foreach (Key Key in Keys)
+            {
+                yield return new KeyValuePair<Key, IEnumerable<Value>>(Key, this[Key]);
+            }
+        }
+
+        /// <summary>
+        /// Removes all items that are associated with a key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>Returns true if the key was found, false otherwise</returns>
+        public bool Remove(Key key)
+        {
+            bool ReturnValue = ContainsKey(key);
+            Items = new ConcurrentBag<TaggedItem<Key, Value>>(Items.ToArray(x => x).Where(x => !x.Keys.Contains(key)));
+            KeyList.Remove(key);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -232,18 +228,6 @@ namespace Utilities.DataTypes
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<KeyValuePair<Key, IEnumerable<Value>>> GetEnumerator()
-        {
-            foreach (Key Key in Keys)
-            {
-                yield return new KeyValuePair<Key, IEnumerable<Value>>(Key, this[Key]);
-            }
-        }
-
-        /// <summary>
-        /// Gets the enumerator
-        /// </summary>
-        /// <returns>The enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             foreach (Key Key in Keys)
@@ -252,7 +236,24 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Attempts to get the values associated with a key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="value">Values associated with a key</param>
+        /// <returns>True if something is returned, false otherwise</returns>
+        public bool TryGetValue(Key key, out IEnumerable<Value> value)
+        {
+            value = new List<Value>();
+            try
+            {
+                value = this[key];
+            }
+            catch { }
+            return value.Count() > 0;
+        }
+
+        #endregion Functions
 
         #region Internal Classes
 
@@ -287,7 +288,7 @@ namespace Utilities.DataTypes
                 this.Value = Value;
             }
 
-            #endregion
+            #endregion Constructor
 
             #region Properties
 
@@ -301,9 +302,9 @@ namespace Utilities.DataTypes
             /// </summary>
             public TValue Value { get; set; }
 
-            #endregion
+            #endregion Properties
         }
 
-        #endregion
+        #endregion Internal Classes
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -27,7 +28,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.Delimited
 {
@@ -44,7 +46,6 @@ namespace Utilities.IO.FileFormats.Delimited
         public Delimited()
             : base()
         {
-
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Utilities.IO.FileFormats.Delimited
             : base()
         {
             Parse(FileContent);
-        }        
+        }
 
         /// <summary>
         /// Constructor
@@ -69,7 +70,7 @@ namespace Utilities.IO.FileFormats.Delimited
             Parse(FileContent);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -80,17 +81,36 @@ namespace Utilities.IO.FileFormats.Delimited
 
         private string _Delimiter = "";
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
         /// <summary>
-        /// Loads the object from the data specified
+        /// Converts the string to the format specified
         /// </summary>
-        /// <param name="Data">Data to load into the object</param>
-        protected override void LoadFromData(string Data)
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The string as an object</returns>
+        public static implicit operator Delimited(DataTable Value)
         {
-            Parse(Data);
+            Delimited ReturnValue = new Delimited();
+            if (Value == null)
+                return ReturnValue;
+            Row TempRow = new Row(ReturnValue.Delimiter);
+            foreach (DataColumn Column in Value.Columns)
+            {
+                TempRow.Add(new Cell(Column.ColumnName));
+            }
+            ReturnValue.Add(TempRow);
+            foreach (DataRow Row in Value.Rows)
+            {
+                TempRow = new Row(ReturnValue.Delimiter);
+                for (int x = 0; x < Row.ItemArray.Length; ++x)
+                {
+                    TempRow.Add(new Cell(Row.ItemArray[x].ToString()));
+                }
+                ReturnValue.Records.Add(TempRow);
+            }
+            return ReturnValue;
         }
 
         /// <summary>
@@ -109,28 +129,12 @@ namespace Utilities.IO.FileFormats.Delimited
                     .ForEach(x => Records.Add(new Row(x.Value, Delimiter)));
         }
 
-        private static string CheckDelimiters(string Content)
-        {
-            if (string.IsNullOrEmpty(Content))
-                return ",";
-            string[] Delimiters = new string[] { ",", "|", "\t", "$", ";", ":" };
-            int[] Count = new int[6];
-            int MaxIndex = 0;
-            for (int x = 0; x < Delimiters.Length; ++x)
-            {
-                string TempDelimiter = Delimiters[x];
-                Regex TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(TempDelimiter)));
-                Count[x] = TempSplitter.Matches(Content).Count;
-                if (Count[MaxIndex] < Count[x])
-                    MaxIndex = x;
-            }
-            return Count[MaxIndex] > 1 ? Delimiters[MaxIndex] : ",";
-        }
-
         /// <summary>
         /// Converts the delimited file to a DataTable
         /// </summary>
-        /// <param name="FirstRowIsHeader">Determines if the first row should be treated as a header or not</param>
+        /// <param name="FirstRowIsHeader">
+        /// Determines if the first row should be treated as a header or not
+        /// </param>
         /// <param name="Headers">Headers for the columns if the first row is not a header</param>
         /// <returns>The delimited file as a DataTable</returns>
         public DataTable ToDataTable(bool FirstRowIsHeader = true, params string[] Headers)
@@ -171,35 +175,33 @@ namespace Utilities.IO.FileFormats.Delimited
             return Builder.ToString();
         }
 
-
         /// <summary>
-        /// Converts the string to the format specified
+        /// Loads the object from the data specified
         /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The string as an object</returns>
-        public static implicit operator Delimited(DataTable Value)
+        /// <param name="Data">Data to load into the object</param>
+        protected override void LoadFromData(string Data)
         {
-            Delimited ReturnValue = new Delimited();
-            if (Value == null)
-                return ReturnValue;
-            Row TempRow = new Row(ReturnValue.Delimiter);
-            foreach (DataColumn Column in Value.Columns)
-            {
-                TempRow.Add(new Cell(Column.ColumnName));
-            }
-            ReturnValue.Add(TempRow);
-            foreach (DataRow Row in Value.Rows)
-            {
-                TempRow = new Row(ReturnValue.Delimiter);
-                for (int x = 0; x < Row.ItemArray.Length; ++x)
-                {
-                    TempRow.Add(new Cell(Row.ItemArray[x].ToString()));
-                }
-                ReturnValue.Records.Add(TempRow);
-            }
-            return ReturnValue;
+            Parse(Data);
         }
 
-        #endregion
+        private static string CheckDelimiters(string Content)
+        {
+            if (string.IsNullOrEmpty(Content))
+                return ",";
+            string[] Delimiters = new string[] { ",", "|", "\t", "$", ";", ":" };
+            int[] Count = new int[6];
+            int MaxIndex = 0;
+            for (int x = 0; x < Delimiters.Length; ++x)
+            {
+                string TempDelimiter = Delimiters[x];
+                Regex TempSplitter = new Regex(string.Format(CultureInfo.InvariantCulture, "(?<Value>\"(?:[^\"]|\"\")*\"|[^{0}\r\n]*?)(?<Delimiter>{0}|\r\n|\n|$)", Regex.Escape(TempDelimiter)));
+                Count[x] = TempSplitter.Matches(Content).Count;
+                if (Count[MaxIndex] < Count[x])
+                    MaxIndex = x;
+            }
+            return Count[MaxIndex] > 1 ? Delimiters[MaxIndex] : ",";
+        }
+
+        #endregion Functions
     }
 }

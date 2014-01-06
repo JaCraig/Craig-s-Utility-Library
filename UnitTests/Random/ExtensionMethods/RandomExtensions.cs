@@ -24,8 +24,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
-using Utilities.Random.DefaultClasses;
 using Utilities.Random;
+using Utilities.Random.DefaultClasses;
 using Utilities.Random.NameGenerators;
 using Utilities.Random.StringGenerators;
 using Xunit;
@@ -37,6 +37,17 @@ namespace UnitTests.Random.ExtensionMethods
         public RandomExtensions()
         {
             new System.Random().ResetGenerators();
+        }
+
+        [Fact]
+        public void ClassGenerator()
+        {
+            System.Random Rand = new System.Random(1231415);
+            RandomTestClass Item = Rand.NextClass<RandomTestClass>();
+            Assert.Equal(202970450, Item.A);
+            Assert.Equal("Lorem ipsum dolor sit amet. ", Item.B);
+            Assert.Equal(System.Math.Round(0.9043f, 4), System.Math.Round(Item.C, 4));
+            Assert.InRange(Item.D, 1, 100);
         }
 
         [Fact]
@@ -90,12 +101,21 @@ namespace UnitTests.Random.ExtensionMethods
             Assert.InRange(Random.Next<int>(new int[] { 1, 2, 3, 4, 5 }), 1, 5);
         }
 
-
         [Fact]
         public void NextLoremIpsumTest()
         {
             Utilities.Random.Random Rand = new Utilities.Random.Random();
             Assert.NotNull(Rand.Next<string>(new LoremIpsumGenerator(1, 4)));
+        }
+
+        [Fact]
+        public void NextName()
+        {
+            Utilities.Random.Random Rand = new Utilities.Random.Random();
+            Assert.Equal(3, Rand.Next<string>(new NameGenerator(false, true, true, false)).Split(' ').Length);
+            Assert.Equal(2, Rand.Next<string>(new NameGenerator(false, false, true, false)).Split(' ').Length);
+            Assert.Equal(4, Rand.Next<string>(new NameGenerator(true, true, true, false)).Split(' ').Length);
+            Assert.Equal(5, Rand.Next<string>(new NameGenerator(true, true, true, true)).Split(' ').Length);
         }
 
         [Fact]
@@ -114,32 +134,11 @@ namespace UnitTests.Random.ExtensionMethods
         }
 
         [Fact]
-        public void NextName()
-        {
-            Utilities.Random.Random Rand = new Utilities.Random.Random();
-            Assert.Equal(3, Rand.Next<string>(new NameGenerator(false, true, true, false)).Split(' ').Length);
-            Assert.Equal(2, Rand.Next<string>(new NameGenerator(false, false, true, false)).Split(' ').Length);
-            Assert.Equal(4, Rand.Next<string>(new NameGenerator(true, true, true, false)).Split(' ').Length);
-            Assert.Equal(5, Rand.Next<string>(new NameGenerator(true, true, true, true)).Split(' ').Length);
-        }
-
-        [Fact]
         public void RegisterGenerator()
         {
             Utilities.Random.Random Rand = new Utilities.Random.Random();
             Assert.DoesNotThrow(() => Rand.RegisterGenerator<string>(new NameGenerator()));
             Assert.True(100.Times(x => Rand.Next<string>()).All(x => x.Split(' ').Length == 2));
-        }
-
-        [Fact]
-        public void ClassGenerator()
-        {
-            System.Random Rand = new System.Random(1231415);
-            RandomTestClass Item = Rand.NextClass<RandomTestClass>();
-            Assert.Equal(202970450, Item.A);
-            Assert.Equal("Lorem ipsum dolor sit amet. ", Item.B);
-            Assert.Equal(System.Math.Round(0.9043f, 4), System.Math.Round(Item.C, 4));
-            Assert.InRange(Item.D, 1, 100);
         }
 
         [Fact]

@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.ComponentModel;
 using System.IO;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO
 {

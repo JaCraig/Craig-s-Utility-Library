@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
 using Utilities.Random.NameGenerators;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -37,9 +39,12 @@ namespace Utilities.Random.ContactInfoGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        public CityGenerator() : base("", "") { }
+        public CityGenerator()
+            : base("", "")
+        {
+        }
 
-        #endregion
+        #endregion Constructors
 
         #region Functions
 
@@ -78,9 +83,12 @@ namespace Utilities.Random.ContactInfoGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
 
         #region Private Variables
+
+        private string[] CityEndings = { "deen", "town", "ville", "berg", "view", "bury", "ton", "land", "mouth", "haven",
+                                           "shire", "don", "creek", "worth", "son", "mont", "wood", "dale","cliff","bridge" };
 
         private string[] CityPrefix = { "North", "South", "East", "West", "New", "Lake", "Old", "Port", "Fort", "Mount" };
 
@@ -89,9 +97,6 @@ namespace Utilities.Random.ContactInfoGenerators
                                           "Hills", "Creek", "Crest", "Dale", "Falls","Flats","Gardens","Landing","Meadows",
                                           "Pines" };
 
-        private string[] CityEndings = { "deen", "town", "ville", "berg", "view", "bury", "ton", "land", "mouth", "haven",
-                                           "shire", "don", "creek", "worth", "son", "mont", "wood", "dale","cliff","bridge" };
-
-        #endregion
+        #endregion Private Variables
     }
 }

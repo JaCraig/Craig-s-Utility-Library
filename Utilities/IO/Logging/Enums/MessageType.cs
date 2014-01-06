@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Logging.Enums
 {
@@ -34,22 +34,27 @@ namespace Utilities.IO.Logging.Enums
         /// General message
         /// </summary>
         General,
+
         /// <summary>
         /// Debug message
         /// </summary>
         Debug,
+
         /// <summary>
         /// Trace message
         /// </summary>
         Trace,
+
         /// <summary>
         /// Info message
         /// </summary>
         Info,
+
         /// <summary>
         /// Warn message
         /// </summary>
         Warn,
+
         /// <summary>
         /// Error message
         /// </summary>

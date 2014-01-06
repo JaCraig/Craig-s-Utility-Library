@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Soap;
@@ -27,7 +28,7 @@ using System.Security;
 using System.Text;
 using Utilities.IO.Serializers.BaseClasses;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Serializers.Default
 {
@@ -58,7 +59,25 @@ namespace Utilities.IO.Serializers.Default
         /// Name
         /// </summary>
         public override string Name { get { return "SOAP"; } }
-        
+
+        /// <summary>
+        /// Deserializes the data
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Data">Data to deserialize</param>
+        /// <returns>The deserialized data</returns>
+        [SecuritySafeCritical]
+        public override object Deserialize(Type ObjectType, string Data)
+        {
+            if (string.IsNullOrEmpty(Data) || ObjectType == null)
+                return null;
+            using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
+            {
+                SoapFormatter Formatter = new SoapFormatter();
+                return Formatter.Deserialize(Stream);
+            }
+        }
+
         /// <summary>
         /// Serializes the object
         /// </summary>
@@ -76,24 +95,6 @@ namespace Utilities.IO.Serializers.Default
                 Serializer.Serialize(Stream, Data);
                 Stream.Flush();
                 return Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
-            }
-        }
-
-        /// <summary>
-        /// Deserializes the data
-        /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Data">Data to deserialize</param>
-        /// <returns>The deserialized data</returns>
-        [SecuritySafeCritical]
-        public override object Deserialize(Type ObjectType, string Data)
-        {
-            if (string.IsNullOrEmpty(Data) || ObjectType == null)
-                return null;
-            using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
-            {
-                SoapFormatter Formatter = new SoapFormatter();
-                return Formatter.Deserialize(Stream);
             }
         }
     }

@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Profiler.Manager.Interfaces
 {
@@ -32,18 +33,18 @@ namespace Utilities.Profiler.Manager.Interfaces
     public interface IResult
     {
         /// <summary>
-        /// Total time that the profiler has taken (in milliseconds)
+        /// Where the profiler was started at
         /// </summary>
-        ICollection<long> Times { get; }
+        string CalledFrom { get; }
 
         /// <summary>
         /// Any child results (Key = Name/Identifier, Value = IResult object)
         /// </summary>
-        IDictionary<string,IResult> Children { get; }
-        
+        IDictionary<string, IResult> Children { get; }
+
         /// <summary>
-        /// Where the profiler was started at
+        /// Total time that the profiler has taken (in milliseconds)
         /// </summary>
-        string CalledFrom { get; }
+        ICollection<long> Times { get; }
     }
 }

@@ -28,17 +28,6 @@ namespace UnitTests.SQL.DataClasses
     public class Database
     {
         [Fact]
-        public void Create()
-        {
-            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Assert.Equal("TestDatabase", Database.Name);
-            Assert.Equal(0, Database.Functions.Count);
-            Assert.Equal(0, Database.StoredProcedures.Count);
-            Assert.Equal(0, Database.Tables.Count);
-            Assert.Equal(0, Database.Views.Count);
-        }
-
-        [Fact]
         public void AddFunction()
         {
             Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
@@ -78,6 +67,17 @@ namespace UnitTests.SQL.DataClasses
             Assert.Equal(1, Database.Views.Count);
             Assert.Equal("TestTable", Database.Views.First().Name);
             Assert.Equal(Database, Database.Views.First().Source);
+        }
+
+        [Fact]
+        public void Create()
+        {
+            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
+            Assert.Equal("TestDatabase", Database.Name);
+            Assert.Equal(0, Database.Functions.Count);
+            Assert.Equal(0, Database.StoredProcedures.Count);
+            Assert.Equal(0, Database.Tables.Count);
+            Assert.Equal(0, Database.Views.Count);
         }
     }
 }

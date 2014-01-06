@@ -20,14 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Linq;
-using Utilities.DataTypes.CodeGen.BaseClasses;
-using Utilities.IO;
-using Utilities.IO.FileSystem.Interfaces;
-using Xunit;
-using Utilities.DataTypes;
 using System.Data;
-using System.Globalization;
+using Xunit;
 
 namespace UnitTests.DataTypes.Conversion.Converter
 {
@@ -43,16 +37,6 @@ namespace UnitTests.DataTypes.Conversion.Converter
         }
 
         [Fact]
-        public void ConvertTo()
-        {
-            Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
-            Assert.Equal(SqlDbType.SmallInt, Temp.ConvertTo(DbType.Int16,typeof(SqlDbType)));
-            Assert.Equal(SqlDbType.Int, Temp.ConvertTo(DbType.Int32, typeof(SqlDbType)));
-            Assert.Equal(typeof(int), Temp.ConvertTo(DbType.Int32, typeof(Type)));
-            Assert.Equal(typeof(short), Temp.ConvertTo(DbType.Int16, typeof(Type)));
-        }
-
-        [Fact]
         public void ConvertFrom()
         {
             Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
@@ -60,6 +44,16 @@ namespace UnitTests.DataTypes.Conversion.Converter
             Assert.Equal(DbType.Int32, Temp.ConvertFrom(SqlDbType.Int));
             Assert.Equal(DbType.Int16, Temp.ConvertFrom(typeof(Int16)));
             Assert.Equal(DbType.Int32, Temp.ConvertFrom(typeof(Int32)));
+        }
+
+        [Fact]
+        public void ConvertTo()
+        {
+            Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.DbTypeTypeConverter();
+            Assert.Equal(SqlDbType.SmallInt, Temp.ConvertTo(DbType.Int16, typeof(SqlDbType)));
+            Assert.Equal(SqlDbType.Int, Temp.ConvertTo(DbType.Int32, typeof(SqlDbType)));
+            Assert.Equal(typeof(int), Temp.ConvertTo(DbType.Int32, typeof(Type)));
+            Assert.Equal(typeof(short), Temp.ConvertTo(DbType.Int16, typeof(Type)));
         }
     }
 }

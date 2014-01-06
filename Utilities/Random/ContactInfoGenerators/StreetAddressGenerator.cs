@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
 using Utilities.Random.NameGenerators;
 using Utilities.Random.StringGenerators;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -38,9 +40,12 @@ namespace Utilities.Random.ContactInfoGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        public StreetAddressGenerator() : base("", "") { }
+        public StreetAddressGenerator()
+            : base("", "")
+        {
+        }
 
-        #endregion
+        #endregion Constructors
 
         #region Functions
 
@@ -78,7 +83,7 @@ namespace Utilities.Random.ContactInfoGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
 
         #region Private Variables
 
@@ -90,6 +95,6 @@ namespace Utilities.Random.ContactInfoGenerators
                                             "Drive", "Estates", "Expressway", "Freeway", "Highway", "Junction", "Lane", "Loop",
                                             "Park", "Parkway", "Pass", "Plaza", "Road", "Route", "Street", "Turnpike" };
 
-        #endregion
+        #endregion Private Variables
     }
 }

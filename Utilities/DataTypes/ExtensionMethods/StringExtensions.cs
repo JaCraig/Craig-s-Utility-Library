@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +33,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.Formatters;
 using Utilities.DataTypes.Formatters.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -61,7 +63,7 @@ namespace Utilities.DataTypes
             return Builder.AppendFormat(CultureInfo.InvariantCulture, Format, Objects).AppendLine();
         }
 
-        #endregion
+        #endregion AppendLineFormat
 
         #region Center
 
@@ -89,7 +91,7 @@ namespace Utilities.DataTypes
             return Output;
         }
 
-        #endregion
+        #endregion Center
 
         #region Encode
 
@@ -97,8 +99,12 @@ namespace Utilities.DataTypes
         /// Converts a string to a string of another encoding
         /// </summary>
         /// <param name="Input">input string</param>
-        /// <param name="OriginalEncodingUsing">The type of encoding the string is currently using (defaults to ASCII)</param>
-        /// <param name="EncodingUsing">The type of encoding the string is converted into (defaults to UTF8)</param>
+        /// <param name="OriginalEncodingUsing">
+        /// The type of encoding the string is currently using (defaults to ASCII)
+        /// </param>
+        /// <param name="EncodingUsing">
+        /// The type of encoding the string is converted into (defaults to UTF8)
+        /// </param>
         /// <returns>string of the byte array</returns>
         public static string Encode(this string Input, Encoding OriginalEncodingUsing = null, Encoding EncodingUsing = null)
         {
@@ -110,7 +116,7 @@ namespace Utilities.DataTypes
                            .ToString(EncodingUsing);
         }
 
-        #endregion
+        #endregion Encode
 
         #region FromBase64
 
@@ -118,7 +124,9 @@ namespace Utilities.DataTypes
         /// Converts base 64 string based on the encoding passed in
         /// </summary>
         /// <param name="Input">Input string</param>
-        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <param name="EncodingUsing">
+        /// The type of encoding the string is using (defaults to UTF8)
+        /// </param>
         /// <returns>string in the encoding format</returns>
         public static string FromBase64(this string Input, Encoding EncodingUsing)
         {
@@ -138,7 +146,7 @@ namespace Utilities.DataTypes
             return string.IsNullOrEmpty(Input) ? new byte[0] : Convert.FromBase64String(Input);
         }
 
-        #endregion
+        #endregion FromBase64
 
         #region Is
 
@@ -188,7 +196,7 @@ namespace Utilities.DataTypes
             return new string(Value1.OrderBy(x => x).ToArray()) == new string(Value2.OrderBy(x => x).ToArray());
         }
 
-        #endregion
+        #endregion Is
 
         #region Keep
 
@@ -224,7 +232,7 @@ namespace Utilities.DataTypes
             return Input.Keep(Value);
         }
 
-        #endregion
+        #endregion Keep
 
         #region Left
 
@@ -239,7 +247,7 @@ namespace Utilities.DataTypes
             return string.IsNullOrEmpty(Input) ? "" : Input.Substring(0, Input.Length > Length ? Length : Input.Length);
         }
 
-        #endregion
+        #endregion Left
 
         #region LevenshteinDistance
 
@@ -273,7 +281,7 @@ namespace Utilities.DataTypes
             return Matrix[Value1.Length, Value2.Length];
         }
 
-        #endregion
+        #endregion LevenshteinDistance
 
         #region MaskLeft
 
@@ -292,7 +300,7 @@ namespace Utilities.DataTypes
             return Appending + Input.Remove(0, EndPosition);
         }
 
-        #endregion
+        #endregion MaskLeft
 
         #region MaskRight
 
@@ -314,7 +322,7 @@ namespace Utilities.DataTypes
             return Input.Remove(StartPosition) + Appending;
         }
 
-        #endregion
+        #endregion MaskRight
 
         #region NumberTimesOccurs
 
@@ -329,7 +337,7 @@ namespace Utilities.DataTypes
             return string.IsNullOrEmpty(Input) ? 0 : new Regex(Match).Matches(Input).Count;
         }
 
-        #endregion
+        #endregion NumberTimesOccurs
 
         #region Pluralize
 
@@ -337,7 +345,9 @@ namespace Utilities.DataTypes
         /// Pluralizes a word
         /// </summary>
         /// <param name="Word">Word to pluralize</param>
-        /// <param name="Culture">Culture info used to pluralize the word (defaults to current culture)</param>
+        /// <param name="Culture">
+        /// Culture info used to pluralize the word (defaults to current culture)
+        /// </param>
         /// <returns>The word pluralized</returns>
         public static string Pluralize(this string Word, CultureInfo Culture = null)
         {
@@ -347,7 +357,7 @@ namespace Utilities.DataTypes
             return PluralizationService.CreateService(Culture).Pluralize(Word);
         }
 
-        #endregion
+        #endregion Pluralize
 
         #region Remove
 
@@ -378,7 +388,7 @@ namespace Utilities.DataTypes
             return Input.Remove(Value);
         }
 
-        #endregion
+        #endregion Remove
 
         #region Replace
 
@@ -397,7 +407,7 @@ namespace Utilities.DataTypes
             return new Regex(FilterValue).Replace(Input, Value);
         }
 
-        #endregion
+        #endregion Replace
 
         #region Reverse
 
@@ -412,7 +422,7 @@ namespace Utilities.DataTypes
             return new string(Input.Reverse<char>().ToArray());
         }
 
-        #endregion
+        #endregion Reverse
 
         #region Right
 
@@ -430,7 +440,7 @@ namespace Utilities.DataTypes
             return Input.Substring(Input.Length - Length, Length);
         }
 
-        #endregion
+        #endregion Right
 
         #region Singularize
 
@@ -438,7 +448,9 @@ namespace Utilities.DataTypes
         /// Singularizes a word
         /// </summary>
         /// <param name="Word">Word to singularize</param>
-        /// <param name="Culture">Culture info used to singularize the word (defaults to current culture)</param>
+        /// <param name="Culture">
+        /// Culture info used to singularize the word (defaults to current culture)
+        /// </param>
         /// <returns>The word singularized</returns>
         public static string Singularize(this string Word, CultureInfo Culture = null)
         {
@@ -448,12 +460,13 @@ namespace Utilities.DataTypes
             return PluralizationService.CreateService(Culture).Singularize(Word);
         }
 
-        #endregion
+        #endregion Singularize
 
         #region StripLeft
 
         /// <summary>
-        /// Strips out any of the characters specified starting on the left side of the input string (stops when a character not in the list is found)
+        /// Strips out any of the characters specified starting on the left side of the input string
+        /// (stops when a character not in the list is found)
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <param name="Characters">Characters to strip (defaults to a space)</param>
@@ -467,12 +480,13 @@ namespace Utilities.DataTypes
             return Input.SkipWhile(x => Characters.Contains(x)).ToString(x => x.ToString(), "");
         }
 
-        #endregion
+        #endregion StripLeft
 
         #region StripRight
 
         /// <summary>
-        /// Strips out any of the characters specified starting on the right side of the input string (stops when a character not in the list is found)
+        /// Strips out any of the characters specified starting on the right side of the input
+        /// string (stops when a character not in the list is found)
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <param name="Characters">Characters to strip (defaults to a space)</param>
@@ -495,7 +509,7 @@ namespace Utilities.DataTypes
             return Input.Left(Position);
         }
 
-        #endregion
+        #endregion StripRight
 
         #region StripIllegalXML
 
@@ -528,7 +542,7 @@ namespace Utilities.DataTypes
                 .Replace("\"", "&quot;").Replace("\'", "&apos;");
         }
 
-        #endregion
+        #endregion StripIllegalXML
 
         #region ToByteArray
 
@@ -536,14 +550,16 @@ namespace Utilities.DataTypes
         /// Converts a string to a byte array
         /// </summary>
         /// <param name="Input">input string</param>
-        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <param name="EncodingUsing">
+        /// The type of encoding the string is using (defaults to UTF8)
+        /// </param>
         /// <returns>the byte array representing the string</returns>
         public static byte[] ToByteArray(this string Input, Encoding EncodingUsing = null)
         {
             return string.IsNullOrEmpty(Input) ? null : EncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
         }
 
-        #endregion
+        #endregion ToByteArray
 
         #region ToString
 
@@ -552,7 +568,9 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <param name="Options">Base 64 formatting options</param>
-        /// <param name="OriginalEncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
+        /// <param name="OriginalEncodingUsing">
+        /// The type of encoding the string is using (defaults to UTF8)
+        /// </param>
         /// <returns>Bas64 string</returns>
         public static string ToString(this string Input, Base64FormattingOptions Options, Encoding OriginalEncodingUsing = null)
         {
@@ -620,15 +638,14 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Formats a string based on a format string passed in.
-        /// The default formatter uses the following format:
-        /// # = digits
-        /// @ = alpha characters
-        /// \ = escape char
+        /// Formats a string based on a format string passed in. The default formatter uses the
+        /// following format: # = digits @ = alpha characters \ = escape char
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <param name="Format">Format of the output string</param>
-        /// <param name="Provider">String formatter provider (defaults to GenericStringFormatter)</param>
+        /// <param name="Provider">
+        /// String formatter provider (defaults to GenericStringFormatter)
+        /// </param>
         /// <returns>The formatted string</returns>
         public static string ToString(this string Input, string Format, IStringFormatter Provider = null)
         {
@@ -640,8 +657,12 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <param name="Object">Object to use to format the string</param>
-        /// <param name="StartSeperator">Seperator character/string to use to describe the start of the property name</param>
-        /// <param name="EndSeperator">Seperator character/string to use to describe the end of the property name</param>
+        /// <param name="StartSeperator">
+        /// Seperator character/string to use to describe the start of the property name
+        /// </param>
+        /// <param name="EndSeperator">
+        /// Seperator character/string to use to describe the end of the property name
+        /// </param>
         /// <returns>The formatted string</returns>
         public static string ToString(this string Input, object Object, string StartSeperator = "{", string EndSeperator = "}")
         {
@@ -690,9 +711,9 @@ namespace Utilities.DataTypes
             return Regex.Replace(Input, Format, OutputFormat, Options);
         }
 
-        #endregion
+        #endregion ToString
 
-        #endregion
+        #endregion Functions
 
         #region Private Functions
 
@@ -723,7 +744,7 @@ namespace Utilities.DataTypes
             return FilterValue;
         }
 
-        #endregion
+        #endregion Private Functions
     }
 
     #region Enums
@@ -737,10 +758,12 @@ namespace Utilities.DataTypes
         /// Sentence capitalization
         /// </summary>
         SentenceCapitalize,
+
         /// <summary>
         /// First character upper case
         /// </summary>
         FirstCharacterUpperCase,
+
         /// <summary>
         /// Title case
         /// </summary>
@@ -756,10 +779,12 @@ namespace Utilities.DataTypes
         /// Is this a credit card number?
         /// </summary>
         CreditCard,
+
         /// <summary>
         /// Is this an anagram?
         /// </summary>
         Anagram,
+
         /// <summary>
         /// Is this Unicode
         /// </summary>
@@ -776,19 +801,22 @@ namespace Utilities.DataTypes
         /// Alpha characters
         /// </summary>
         Alpha = 1,
+
         /// <summary>
         /// Numeric characters
         /// </summary>
         Numeric = 2,
+
         /// <summary>
         /// Numbers with period, basically allows for decimal point
         /// </summary>
         FloatNumeric = 4,
+
         /// <summary>
         /// Multiple spaces
         /// </summary>
         ExtraSpaces = 8
     }
 
-    #endregion
+    #endregion Enums
 }

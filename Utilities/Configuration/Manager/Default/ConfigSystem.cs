@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities.Configuration.Manager.Interfaces;
 using Utilities.DataTypes;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Configuration.Manager.Default
 {
@@ -44,7 +46,7 @@ namespace Utilities.Configuration.Manager.Default
             ConfigFiles = AppDomain.CurrentDomain.GetAssemblies().Objects<IConfig>().ToDictionary(x => x.Name, x => (IConfig)x);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -58,7 +60,7 @@ namespace Utilities.Configuration.Manager.Default
         /// </summary>
         protected Dictionary<string, IConfig> ConfigFiles { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -69,7 +71,6 @@ namespace Utilities.Configuration.Manager.Default
         /// <returns>The config object</returns>
         public T Config<T>(string Name = "Default")
             where T : IConfig, new()
-
         {
             if (!ContainsConfigFile<T>(Name))
                 throw new ArgumentException("The config object was not found or was not of the type specified.");
@@ -87,6 +88,6 @@ namespace Utilities.Configuration.Manager.Default
             return ConfigFiles.ContainsKey(Name) && ConfigFiles[Name] is T;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

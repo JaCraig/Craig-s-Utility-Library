@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Profiler.Manager.Default
 {
@@ -41,9 +41,17 @@ namespace Utilities.Profiler.Manager.Default
             Reset();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
+
+        /// <summary>
+        /// Resets the watch
+        /// </summary>
+        public virtual void Reset()
+        {
+            Watch.Reset();
+        }
 
         /// <summary>
         /// Starts the stop watch
@@ -55,14 +63,6 @@ namespace Utilities.Profiler.Manager.Default
         }
 
         /// <summary>
-        /// Resets the watch
-        /// </summary>
-        public virtual void Reset()
-        {
-            Watch.Reset();
-        }
-
-        /// <summary>
         /// Stops the stop watch
         /// </summary>
         public virtual void Stop()
@@ -70,7 +70,7 @@ namespace Utilities.Profiler.Manager.Default
             Watch.Stop();
         }
 
-        #endregion
+        #endregion Functions
 
         #region Properties
 
@@ -84,6 +84,6 @@ namespace Utilities.Profiler.Manager.Default
         /// </summary>
         protected System.Diagnostics.Stopwatch Watch { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 }

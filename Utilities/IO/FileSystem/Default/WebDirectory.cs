@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -30,7 +31,8 @@ using Utilities.DataTypes;
 using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -48,7 +50,7 @@ namespace Utilities.IO.FileSystem.Default
             : base()
         {
         }
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -73,7 +75,7 @@ namespace Utilities.IO.FileSystem.Default
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -94,14 +96,6 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// returns now
-        /// </summary>
-        public override DateTime Modified
-        {
-            get { return DateTime.Now; }
-        }
-
-        /// <summary>
         /// returns true
         /// </summary>
         public override bool Exists
@@ -114,7 +108,15 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         public override string FullName
         {
-            get { return InternalDirectory==null?"": InternalDirectory.AbsolutePath; }
+            get { return InternalDirectory == null ? "" : InternalDirectory.AbsolutePath; }
+        }
+
+        /// <summary>
+        /// returns now
+        /// </summary>
+        public override DateTime Modified
+        {
+            get { return DateTime.Now; }
         }
 
         /// <summary>
@@ -149,9 +151,26 @@ namespace Utilities.IO.FileSystem.Default
             get { return 0; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Copies the directory to the specified parent directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy to</param>
+        /// <param name="Options">Options</param>
+        /// <returns>Newly created directory</returns>
+        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
+        {
+            string TempName = Name;
+            if (TempName == "/")
+                TempName = "index.html";
+            FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
+            FileInfo OldFile = new FileInfo(TempName, UserName, Password, Domain);
+            NewDirectory.Write(OldFile.Read(), FileMode.Create);
+            return Directory;
+        }
 
         /// <summary>
         /// Not used
@@ -198,7 +217,7 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="SearchPattern"></param>
         /// <param name="Options"></param>
         /// <returns></returns>
-        public override IEnumerable<IFile> EnumerateFiles(string SearchPattern="*", SearchOption Options = SearchOption.TopDirectoryOnly)
+        public override IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly)
         {
             return new List<WebFile>();
         }
@@ -217,23 +236,6 @@ namespace Utilities.IO.FileSystem.Default
             NewDirectory.Write(OldFile.Read(), FileMode.Create);
             Delete();
         }
-        
-        /// <summary>
-        /// Copies the directory to the specified parent directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy to</param>
-        /// <param name="Options">Options</param>
-        /// <returns>Newly created directory</returns>
-        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
-        {
-            string TempName=Name;
-            if (TempName == "/")
-                TempName = "index.html";
-            FileInfo NewDirectory = new FileInfo(Directory.FullName + "\\" + TempName.Right(TempName.Length - (TempName.LastIndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)), UserName, Password, Domain);
-            FileInfo OldFile = new FileInfo(TempName, UserName, Password, Domain);
-            NewDirectory.Write(OldFile.Read(), FileMode.Create);
-            return Directory;
-        }
 
         /// <summary>
         /// Not used
@@ -241,6 +243,25 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="Name"></param>
         public override void Rename(string Name)
         {
+        }
+
+        /// <summary>
+        /// Sends the request to the URL specified
+        /// </summary>
+        /// <param name="Request">The web request object</param>
+        /// <returns>The string returned by the service</returns>
+        private static string SendRequest(HttpWebRequest Request)
+        {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
+            {
+                if (Response.StatusCode != HttpStatusCode.OK)
+                    return "";
+                using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
+                {
+                    return Reader.ReadToEnd();
+                }
+            }
         }
 
         /// <summary>
@@ -265,8 +286,8 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Sets up any credentials (basic authentication,
-        /// for OAuth, please use the OAuth class to create the
+        /// Sets up any credentials (basic authentication, for OAuth, please use the OAuth class to
+        /// create the
         /// URL)
         /// </summary>
         /// <param name="Request">The web request object</param>
@@ -278,25 +299,6 @@ namespace Utilities.IO.FileSystem.Default
             }
         }
 
-        /// <summary>
-        /// Sends the request to the URL specified
-        /// </summary>
-        /// <param name="Request">The web request object</param>
-        /// <returns>The string returned by the service</returns>
-        private static string SendRequest(HttpWebRequest Request)
-        {
-            Contract.Requires<ArgumentNullException>(Request != null, "Request");
-            using (HttpWebResponse Response = Request.GetResponse() as HttpWebResponse)
-            {
-                if (Response.StatusCode != HttpStatusCode.OK)
-                    return "";
-                using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
-                {
-                    return Reader.ReadToEnd();
-                }
-            }
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

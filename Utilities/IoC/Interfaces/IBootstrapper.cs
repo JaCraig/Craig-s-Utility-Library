@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IoC.Interfaces
 {
@@ -39,7 +40,7 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         string Name { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Register
 
@@ -49,7 +50,7 @@ namespace Utilities.IoC.Interfaces
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Object">Object to register</param>
         /// <param name="Name">Name associated with the object</param>
-        void Register<T>(T Object,string Name="")
+        void Register<T>(T Object, string Name = "")
             where T : class;
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <typeparam name="T">Object type to register</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        void Register<T>(string Name="")
+        void Register<T>(string Name = "")
             where T : class,new();
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace Utilities.IoC.Interfaces
         /// <typeparam name="T1">Base class/interface type</typeparam>
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        void Register<T1, T2>(string Name="")
+        void Register<T1, T2>(string Name = "")
             where T2 : class,T1, new()
             where T1 : class;
 
@@ -79,7 +80,7 @@ namespace Utilities.IoC.Interfaces
         void Register<T>(Func<T> Function, string Name = "")
             where T : class;
 
-        #endregion
+        #endregion Register
 
         #region Resolve
 
@@ -87,7 +88,9 @@ namespace Utilities.IoC.Interfaces
         /// Resolves the object based on the type specified
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
-        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
+        /// <param name="DefaultObject">
+        /// Default object to return if the type can not be resolved
+        /// </param>
         /// <returns>An object of the specified type</returns>
         T Resolve<T>(T DefaultObject = default(T))
             where T : class;
@@ -97,7 +100,9 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
+        /// <param name="DefaultObject">
+        /// Default object to return if the type can not be resolved
+        /// </param>
         /// <returns>An object of the specified type</returns>
         T Resolve<T>(string Name, T DefaultObject = default(T))
             where T : class;
@@ -106,7 +111,9 @@ namespace Utilities.IoC.Interfaces
         /// Resolves the object based on the type specified
         /// </summary>
         /// <param name="ObjectType">Object type</param>
-        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
+        /// <param name="DefaultObject">
+        /// Default object to return if the type can not be resolved
+        /// </param>
         /// <returns>An object of the specified type</returns>
         object Resolve(Type ObjectType, object DefaultObject = null);
 
@@ -115,11 +122,13 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
+        /// <param name="DefaultObject">
+        /// Default object to return if the type can not be resolved
+        /// </param>
         /// <returns>An object of the specified type</returns>
         object Resolve(Type ObjectType, string Name, object DefaultObject = null);
 
-        #endregion
+        #endregion Resolve
 
         #region ResolveAll
 
@@ -138,6 +147,6 @@ namespace Utilities.IoC.Interfaces
         /// <returns>A list of objects of the specified type</returns>
         IEnumerable<object> ResolveAll(Type ObjectType);
 
-        #endregion
+        #endregion ResolveAll
     }
 }

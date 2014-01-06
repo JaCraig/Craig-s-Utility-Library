@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Linq;
 using Utilities.DataTypes.Dynamic.BaseClasses;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.Dynamic.Default
 {
@@ -36,7 +37,10 @@ namespace Utilities.DataTypes.Dynamic.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        public Randomization() : base() { }
+        public Randomization()
+            : base()
+        {
+        }
 
         /// <summary>
         /// Extends the given dynamo object

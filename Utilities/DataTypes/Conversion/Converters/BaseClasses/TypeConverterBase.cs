@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
 {
@@ -32,7 +34,7 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
     /// Type converter base class
     /// </summary>
     /// <typeparam name="T">Converter type</typeparam>
-    public abstract class TypeConverterBase<T>:TypeConverter,IConverter
+    public abstract class TypeConverterBase<T> : TypeConverter, IConverter
     {
         #region Constructor
 
@@ -47,7 +49,7 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
             AssociatedType = typeof(T);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -57,21 +59,21 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         public Type AssociatedType { get; private set; }
 
         /// <summary>
-        /// Types it can convert to and mapped functions
-        /// </summary>
-        protected IDictionary<Type, Func<object, object>> ConvertToTypes { get; private set; }
-
-        /// <summary>
         /// Types it can convert from and mapped functions
         /// </summary>
         protected IDictionary<Type, Func<object, object>> ConvertFromTypes { get; private set; }
+
+        /// <summary>
+        /// Types it can convert to and mapped functions
+        /// </summary>
+        protected IDictionary<Type, Func<object, object>> ConvertToTypes { get; private set; }
 
         /// <summary>
         /// Converter used internally if this can not convert the object
         /// </summary>
         protected abstract TypeConverter InternalConverter { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -106,7 +108,7 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
         /// <returns>The DbType version</returns>
         public override object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
         {
-            if(value==null)
+            if (value == null)
                 return null;
             Type ValueType = value.GetType();
             if (ConvertFromTypes.ContainsKey(ValueType))
@@ -131,6 +133,6 @@ namespace Utilities.DataTypes.Conversion.Converters.BaseClasses
             return base.ConvertFrom(context, culture, value);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

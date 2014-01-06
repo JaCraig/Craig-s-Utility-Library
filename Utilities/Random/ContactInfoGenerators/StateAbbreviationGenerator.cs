@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -36,9 +38,12 @@ namespace Utilities.Random.ContactInfoGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        public StateAbbreviationGenerator() : base("", "") { }
+        public StateAbbreviationGenerator()
+            : base("", "")
+        {
+        }
 
-        #endregion
+        #endregion Constructors
 
         #region Functions
 
@@ -74,7 +79,7 @@ namespace Utilities.Random.ContactInfoGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
 
         #region Private Variables
 
@@ -84,6 +89,6 @@ namespace Utilities.Random.ContactInfoGenerators
                                                              "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT",
                                                              "VT", "VA", "WA", "WV", "WI", "WY", "DC" };
 
-        #endregion
+        #endregion Private Variables
     }
 }

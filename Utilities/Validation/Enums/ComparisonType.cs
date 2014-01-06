@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -34,22 +34,27 @@ namespace Utilities.Validation
         /// Equal
         /// </summary>
         Equal,
+
         /// <summary>
         /// Not equal
         /// </summary>
         NotEqual,
+
         /// <summary>
         /// Greater than
         /// </summary>
         GreaterThan,
+
         /// <summary>
         /// Greater than or equal
         /// </summary>
         GreaterThanOrEqual,
+
         /// <summary>
         /// Less than
         /// </summary>
         LessThan,
+
         /// <summary>
         /// Less than or equal
         /// </summary>

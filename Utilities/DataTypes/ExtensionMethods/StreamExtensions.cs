@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -48,7 +50,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Input != null, "Input");
             MemoryStream TempInput = Input as MemoryStream;
-            if (TempInput!=null)
+            if (TempInput != null)
                 return TempInput.ToArray();
             byte[] Buffer = new byte[1024];
             byte[] ReturnValue = null;
@@ -68,7 +70,7 @@ namespace Utilities.DataTypes
             return ReturnValue;
         }
 
-        #endregion
+        #endregion ReadAllBinary
 
         #region ReadAll
 
@@ -76,16 +78,18 @@ namespace Utilities.DataTypes
         /// Takes all of the data in the stream and returns it as a string
         /// </summary>
         /// <param name="Input">Input stream</param>
-        /// <param name="EncodingUsing">Encoding that the string should be in (defaults to UTF8)</param>
+        /// <param name="EncodingUsing">
+        /// Encoding that the string should be in (defaults to UTF8)
+        /// </param>
         /// <returns>A string containing the content of the stream</returns>
         public static string ReadAll(this Stream Input, Encoding EncodingUsing = null)
         {
-            Contract.Requires<ArgumentNullException>(Input!=null, "Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             return Input.ReadAllBinary().ToString(EncodingUsing);
         }
 
-        #endregion
+        #endregion ReadAll
 
-        #endregion
+        #endregion Functions
     }
 }

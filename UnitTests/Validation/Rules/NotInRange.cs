@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.ComponentModel.DataAnnotations;
 using Utilities.Validation;
 
@@ -42,7 +41,7 @@ namespace UnitTests.Validation.Rules
 
     public class NotBetweenClass
     {
-        [NotInRange(1,10)]
+        [NotInRange(1, 10)]
         public int ItemA { get; set; }
     }
 }

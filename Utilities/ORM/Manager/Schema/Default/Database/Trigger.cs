@@ -20,13 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
-using Utilities.ORM.Manager.Schema.Interfaces;
-using System.Linq;
-using Utilities.DataTypes;
-using System.Data;
+
 using Utilities.ORM.Manager.Schema.Enums;
-#endregion
+using Utilities.ORM.Manager.Schema.Interfaces;
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Default.Database
 {
@@ -51,23 +49,23 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         }
 
         /// <summary>
-        /// Name of the trigger
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Definition of the trigger
         /// </summary>
         public string Definition { get; set; }
 
         /// <summary>
-        /// Trigger type
+        /// Name of the trigger
         /// </summary>
-        public TriggerType Type { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Parent table
         /// </summary>
         public ITable ParentTable { get; set; }
+
+        /// <summary>
+        /// Trigger type
+        /// </summary>
+        public TriggerType Type { get; set; }
     }
 }

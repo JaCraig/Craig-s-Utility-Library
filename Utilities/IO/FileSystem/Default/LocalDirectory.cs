@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +29,7 @@ using Utilities.IO.Enums;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -61,11 +62,11 @@ namespace Utilities.IO.FileSystem.Default
         /// </summary>
         /// <param name="Directory">Internal directory</param>
         public LocalDirectory(System.IO.DirectoryInfo Directory)
-            :base(Directory)
+            : base(Directory)
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -86,14 +87,6 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
-        /// Time modified (UTC time)
-        /// </summary>
-        public override DateTime Modified
-        {
-            get { return InternalDirectory == null ? DateTime.Now : InternalDirectory.LastWriteTimeUtc; }
-        }
-
-        /// <summary>
         /// Does the directory exist?
         /// </summary>
         public override bool Exists
@@ -110,11 +103,19 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
+        /// Time modified (UTC time)
+        /// </summary>
+        public override DateTime Modified
+        {
+            get { return InternalDirectory == null ? DateTime.Now : InternalDirectory.LastWriteTimeUtc; }
+        }
+
+        /// <summary>
         /// Name of the directory
         /// </summary>
         public override string Name
         {
-            get { return InternalDirectory == null ? "": InternalDirectory.Name; }
+            get { return InternalDirectory == null ? "" : InternalDirectory.Name; }
         }
 
         /// <summary>
@@ -141,9 +142,48 @@ namespace Utilities.IO.FileSystem.Default
             get { return Exists ? InternalDirectory.EnumerateFiles("*", SearchOption.AllDirectories).Sum(x => x.Length) : 0; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Copies the directory to the specified parent directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy to</param>
+        /// <param name="Options">Copy options</param>
+        /// <returns>The newly created directory</returns>
+        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
+        {
+            if (InternalDirectory == null || Directory == null)
+                return null;
+            foreach (IFile TempFile in EnumerateFiles())
+            {
+                if (Options == CopyOptions.CopyAlways)
+                {
+                    TempFile.CopyTo(Directory, true);
+                }
+                else if (Options == CopyOptions.CopyIfNewer)
+                {
+                    if (File.Exists(Path.Combine(Directory.FullName, TempFile.Name)))
+                    {
+                        FileInfo FileInfo = new FileInfo(Path.Combine(Directory.FullName, TempFile.Name));
+                        if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
+                            TempFile.CopyTo(Directory, true);
+                    }
+                    else
+                    {
+                        TempFile.CopyTo(Directory, true);
+                    }
+                }
+                else if (Options == CopyOptions.DoNotOverwrite)
+                {
+                    TempFile.CopyTo(Directory, false);
+                }
+            }
+            foreach (IDirectory SubDirectory in EnumerateDirectories())
+                SubDirectory.CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, SubDirectory.Name)), Options);
+            return Directory;
+        }
 
         /// <summary>
         /// Creates the directory
@@ -221,46 +261,6 @@ namespace Utilities.IO.FileSystem.Default
             InternalDirectory = new System.IO.DirectoryInfo(Directory.FullName + "\\" + Name);
         }
 
-
-        /// <summary>
-        /// Copies the directory to the specified parent directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy to</param>
-        /// <param name="Options">Copy options</param>
-        /// <returns>The newly created directory</returns>
-        public override IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways)
-        {
-            if (InternalDirectory == null || Directory == null)
-                return null;
-            foreach (IFile TempFile in EnumerateFiles())
-            {
-                if (Options == CopyOptions.CopyAlways)
-                {
-                    TempFile.CopyTo(Directory, true);
-                }
-                else if (Options == CopyOptions.CopyIfNewer)
-                {
-                    if (File.Exists(Path.Combine(Directory.FullName, TempFile.Name)))
-                    {
-                        FileInfo FileInfo = new FileInfo(Path.Combine(Directory.FullName, TempFile.Name));
-                        if (FileInfo.Modified.CompareTo(TempFile.Modified) < 0)
-                            TempFile.CopyTo(Directory, true);
-                    }
-                    else
-                    {
-                        TempFile.CopyTo(Directory, true);
-                    }
-                }
-                else if (Options == CopyOptions.DoNotOverwrite)
-                {
-                    TempFile.CopyTo(Directory, false);
-                }
-            }
-            foreach (IDirectory SubDirectory in EnumerateDirectories())
-                SubDirectory.CopyTo(new DirectoryInfo(Path.Combine(Directory.FullName, SubDirectory.Name)), Options);
-            return Directory;
-        }
-
         /// <summary>
         /// Renames the directory
         /// </summary>
@@ -273,6 +273,6 @@ namespace Utilities.IO.FileSystem.Default
             InternalDirectory = new System.IO.DirectoryInfo(Parent.FullName + "\\" + Name);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.Text;
 using Utilities.IO.FileFormats.FixedLength.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
 {
@@ -43,9 +45,25 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
             Fields = new List<IField<T>>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
+
+        /// <summary>
+        /// Number of Fields
+        /// </summary>
+        public int Count
+        {
+            get { return Fields.Count; }
+        }
+
+        /// <summary>
+        /// Is the file read only
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return Fields.IsReadOnly; }
+        }
 
         /// <summary>
         /// Length
@@ -68,62 +86,9 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
             set { Fields[Position] = value; }
         }
 
-        /// <summary>
-        /// Number of Fields
-        /// </summary>
-        public int Count
-        {
-            get { return Fields.Count; }
-        }
-
-        /// <summary>
-        /// Is the file read only
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return Fields.IsReadOnly; }
-        }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Parses the record
-        /// </summary>
-        /// <param name="Value">Value</param>
-        /// <param name="Length">Length of the record</param>
-        public abstract void Parse(string Value, int Length = -1);
-
-        /// <summary>
-        /// Converts the record to a string
-        /// </summary>
-        /// <returns>The record as a string</returns>
-        public override string ToString()
-        {
-            StringBuilder Builder = new StringBuilder();
-            foreach (IField<T> Field in Fields)
-                Builder.Append(Field.ToString());
-            return Builder.ToString();
-        }
-
-        /// <summary>
-        /// Gets the enumerator for the file
-        /// </summary>
-        /// <returns>The enumerator for this file</returns>
-        public IEnumerator<IField<T>> GetEnumerator()
-        {
-            return Fields.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets the enumerator for the file
-        /// </summary>
-        /// <returns>The enumerator for this file</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return Fields.GetEnumerator();
-        }
 
         /// <summary>
         /// Adds a Field to the file
@@ -163,13 +128,12 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         }
 
         /// <summary>
-        /// Removes a Field from the file
+        /// Gets the enumerator for the file
         /// </summary>
-        /// <param name="item">Field to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(IField<T> item)
+        /// <returns>The enumerator for this file</returns>
+        public IEnumerator<IField<T>> GetEnumerator()
         {
-            return Fields.Remove(item);
+            return Fields.GetEnumerator();
         }
 
         /// <summary>
@@ -193,6 +157,23 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         }
 
         /// <summary>
+        /// Parses the record
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <param name="Length">Length of the record</param>
+        public abstract void Parse(string Value, int Length = -1);
+
+        /// <summary>
+        /// Removes a Field from the file
+        /// </summary>
+        /// <param name="item">Field to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(IField<T> item)
+        {
+            return Fields.Remove(item);
+        }
+
+        /// <summary>
         /// Removes a Field at a specific index
         /// </summary>
         /// <param name="index">Index of the Field to remove</param>
@@ -201,6 +182,27 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
             Fields.RemoveAt(index);
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the enumerator for the file
+        /// </summary>
+        /// <returns>The enumerator for this file</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return Fields.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Converts the record to a string
+        /// </summary>
+        /// <returns>The record as a string</returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            foreach (IField<T> Field in Fields)
+                Builder.Append(Field.ToString());
+            return Builder.ToString();
+        }
+
+        #endregion Functions
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +33,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes;
 using Utilities.Media.Procedural;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Media
 {
@@ -86,7 +88,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion AddNoise
 
         #region AdjustBrightness
 
@@ -95,7 +97,7 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">Image to change</param>
         /// <param name="FileName">File to save to</param>
-        /// <param name="Value">-255 to 255</param>
+        /// <param name="Value"></param>
         /// <returns>A bitmap object</returns>
         public static Bitmap AdjustBrightness(this Bitmap Image, int Value = 0, string FileName = "")
         {
@@ -116,7 +118,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion AdjustBrightness
 
         #region AdjustContrast
 
@@ -166,7 +168,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion AdjustContrast
 
         #region AdjustGamma
 
@@ -214,7 +216,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion AdjustGamma
 
         #region And
 
@@ -260,7 +262,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion And
 
         #region BlackAndWhite
 
@@ -288,7 +290,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion BlackAndWhite
 
         #region BlueFilter
 
@@ -316,7 +318,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion BlueFilter
 
         #region BoxBlur
 
@@ -341,7 +343,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion BoxBlur
 
         #region BumpMap
 
@@ -417,7 +419,7 @@ namespace Utilities.Media
             }
         }
 
-        #endregion
+        #endregion BumpMap
 
         #region Colorize
 
@@ -456,7 +458,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Colorize
 
         #region Crop
 
@@ -504,7 +506,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Crop
 
         #region Dilate
 
@@ -564,7 +566,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Dilate
 
         #region Distance
 
@@ -573,7 +575,7 @@ namespace Utilities.Media
             return ((double)(((R1 - R2) * (R1 - R2)) + ((G1 - G2) * (G1 - G2)) + ((B1 - B2) * (B1 - B2)))).Sqrt();
         }
 
-        #endregion
+        #endregion Distance
 
         #region DrawRoundedRectangle
 
@@ -620,7 +622,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion DrawRoundedRectangle
 
         #region DrawText
 
@@ -653,7 +655,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion DrawText
 
         #region EdgeDetection
 
@@ -709,7 +711,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion EdgeDetection
 
         #region Emboss
 
@@ -739,7 +741,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Emboss
 
         #region Equalize
 
@@ -783,7 +785,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Equalize
 
         #region Flip
 
@@ -812,7 +814,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Flip
 
         #region GaussianBlur
 
@@ -839,7 +841,7 @@ namespace Utilities.Media
             }
         }
 
-        #endregion
+        #endregion GaussianBlur
 
         #region GetHTMLPalette
 
@@ -870,7 +872,7 @@ namespace Utilities.Media
             return ReturnArray;
         }
 
-        #endregion
+        #endregion GetHTMLPalette
 
         #region GreenFilter
 
@@ -898,7 +900,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion GreenFilter
 
         #region GetHeight
 
@@ -914,7 +916,7 @@ namespace Utilities.Media
             return (float)Color.R / 255.0f;
         }
 
-        #endregion
+        #endregion GetHeight
 
         #region GetImageFormat
 
@@ -940,7 +942,7 @@ namespace Utilities.Media
             return ImageFormat.Bmp;
         }
 
-        #endregion
+        #endregion GetImageFormat
 
         #region GetMinMaxPixel
 
@@ -974,7 +976,7 @@ namespace Utilities.Media
             Max = Color.FromArgb(MaxR, MaxG, MaxB);
         }
 
-        #endregion
+        #endregion GetMinMaxPixel
 
         #region GetPixelSize
 
@@ -995,7 +997,7 @@ namespace Utilities.Media
             return 0;
         }
 
-        #endregion
+        #endregion GetPixelSize
 
         #region GetPixel
 
@@ -1017,7 +1019,7 @@ namespace Utilities.Media
                 Color.FromArgb(DataPointer[3], DataPointer[2], DataPointer[1], DataPointer[0]);
         }
 
-        #endregion
+        #endregion GetPixel
 
         #region Jitter
 
@@ -1060,7 +1062,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Jitter
 
         #region KuwaharaBlur
 
@@ -1162,7 +1164,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion KuwaharaBlur
 
         #region LaplaceEdgeDetection
 
@@ -1214,7 +1216,7 @@ namespace Utilities.Media
             }
         }
 
-        #endregion
+        #endregion LaplaceEdgeDetection
 
         #region LockImage
 
@@ -1230,7 +1232,7 @@ namespace Utilities.Media
                 ImageLockMode.ReadWrite, Image.PixelFormat);
         }
 
-        #endregion
+        #endregion LockImage
 
         #region Map
 
@@ -1241,7 +1243,7 @@ namespace Utilities.Media
             return ((int)(TempVal * 255)).Clamp(255, 0);
         }
 
-        #endregion
+        #endregion Map
 
         #region MedianFilter
 
@@ -1303,7 +1305,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion MedianFilter
 
         #region MotionDetection
 
@@ -1314,7 +1316,10 @@ namespace Utilities.Media
         /// <param name="OldImage">The "old" frame</param>
         /// <param name="Threshold">The threshold used to detect changes in the image</param>
         /// <param name="DetectionColor">Color to display changes in the images as</param>
-        /// <returns>A bitmap indicating where changes between frames have occurred overlayed on top of the new image.</returns>
+        /// <returns>
+        /// A bitmap indicating where changes between frames have occurred overlayed on top of the
+        /// new image.
+        /// </returns>
         public static Bitmap MotionDetection(this Bitmap NewImage, Bitmap OldImage, int Threshold, Color DetectionColor)
         {
             Contract.Requires<ArgumentNullException>(NewImage != null, "NewImage");
@@ -1386,7 +1391,7 @@ namespace Utilities.Media
             }
         }
 
-        #endregion
+        #endregion MotionDetection
 
         #region Negative
 
@@ -1423,7 +1428,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Negative
 
         #region NormalMap
 
@@ -1437,7 +1442,7 @@ namespace Utilities.Media
         public static Bitmap NormalMap(this Bitmap ImageUsing, bool InvertX = false, bool InvertY = false)
         {
             Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
-            using (Bitmap TempImageX = ImageUsing.BumpMap(Direction.LeftRight,InvertX))
+            using (Bitmap TempImageX = ImageUsing.BumpMap(Direction.LeftRight, InvertX))
             {
                 using (Bitmap TempImageY = ImageUsing.BumpMap(Direction.TopBottom, InvertY))
                 {
@@ -1479,7 +1484,7 @@ namespace Utilities.Media
             }
         }
 
-        #endregion
+        #endregion NormalMap
 
         #region Or
 
@@ -1525,7 +1530,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Or
 
         #region OilPainting
 
@@ -1555,7 +1560,7 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < Height; ++y)
                     {
-                        if (Map.ClosestPoint[x,y] == i)
+                        if (Map.ClosestPoint[x, y] == i)
                         {
                             Color Pixel = ImageData.GetPixel(x, y, ImagePixelSize);
                             Red += Pixel.R;
@@ -1570,7 +1575,7 @@ namespace Utilities.Media
                 {
                     for (int y = 0; y < Height; ++y)
                     {
-                        if (Map.ClosestPoint[x,y] == i)
+                        if (Map.ClosestPoint[x, y] == i)
                         {
                             ImageData.SetPixel(x, y, Color.FromArgb(Red / Counter, Green / Counter, Blue / Counter), ImagePixelSize);
                             ++Counter2;
@@ -1586,7 +1591,7 @@ namespace Utilities.Media
             return _Image;
         }
 
-        #endregion
+        #endregion OilPainting
 
         #region Pixelate
 
@@ -1647,7 +1652,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Pixelate
 
         #region RedFilter
 
@@ -1675,7 +1680,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion RedFilter
 
         #region Resize
 
@@ -1743,7 +1748,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Resize
 
         #region Rotate
 
@@ -1774,7 +1779,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Rotate
 
         #region SepiaTone
 
@@ -1802,7 +1807,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion SepiaTone
 
         #region SetPixel
 
@@ -1832,7 +1837,7 @@ namespace Utilities.Media
             DataPointer[0] = PixelColor.B;
         }
 
-        #endregion
+        #endregion SetPixel
 
         #region Sharpen
 
@@ -1862,7 +1867,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Sharpen
 
         #region SharpenLess
 
@@ -1892,7 +1897,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion SharpenLess
 
         #region SinWave
 
@@ -1949,7 +1954,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion SinWave
 
         #region SobelEdgeDetection
 
@@ -2027,7 +2032,7 @@ namespace Utilities.Media
             }
         }
 
-        #endregion
+        #endregion SobelEdgeDetection
 
         #region SobelEmboss
 
@@ -2058,7 +2063,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion SobelEmboss
 
         #region SNNBlur
 
@@ -2138,7 +2143,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion SNNBlur
 
         #region StretchContrast
 
@@ -2180,7 +2185,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion StretchContrast
 
         #region Threshold
 
@@ -2188,7 +2193,9 @@ namespace Utilities.Media
         /// Does threshold manipulation of the image
         /// </summary>
         /// <param name="OriginalImage">Image to transform</param>
-        /// <param name="Threshold">Float defining the threshold at which to set the pixel to black vs white.</param>
+        /// <param name="Threshold">
+        /// Float defining the threshold at which to set the pixel to black vs white.
+        /// </param>
         /// <param name="FileName">File to save to</param>
         /// <returns>A bitmap object containing the new image</returns>
         public static Bitmap Threshold(this Bitmap OriginalImage, float Threshold = 0.5f, string FileName = "")
@@ -2220,7 +2227,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Threshold
 
         #region ToASCIIArt
 
@@ -2247,7 +2254,6 @@ namespace Utilities.Media
                             Color CurrentPixel = OldData.GetPixel(y, x, OldPixelSize);
                             Builder.Append(_ASCIICharacters[((CurrentPixel.R * _ASCIICharacters.Length) / 255)]);
                         }
-
                     }
                     if (ShowLine)
                     {
@@ -2264,7 +2270,7 @@ namespace Utilities.Media
             }
         }
 
-        #endregion
+        #endregion ToASCIIArt
 
         #region ToBase64
 
@@ -2285,7 +2291,7 @@ namespace Utilities.Media
             }
         }
 
-        #endregion
+        #endregion ToBase64
 
         #region Turbulence
 
@@ -2339,7 +2345,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Turbulence
 
         #region UnlockImage
 
@@ -2357,7 +2363,7 @@ namespace Utilities.Media
             return Image;
         }
 
-        #endregion
+        #endregion UnlockImage
 
         #region Watermark
 
@@ -2366,10 +2372,14 @@ namespace Utilities.Media
         /// </summary>
         /// <param name="Image">image to add the watermark to</param>
         /// <param name="WatermarkImage">Watermark image</param>
-        /// <param name="Opacity">Opacity of the watermark (1.0 to 0.0 with 1 being completely visible and 0 being invisible)</param>
+        /// <param name="Opacity">
+        /// Opacity of the watermark (1.0 to 0.0 with 1 being completely visible and 0 being invisible)
+        /// </param>
         /// <param name="X">X position in pixels for the watermark</param>
         /// <param name="Y">Y position in pixels for the watermark</param>
-        /// <param name="KeyColor">Transparent color used in watermark image, set to null if not used</param>
+        /// <param name="KeyColor">
+        /// Transparent color used in watermark image, set to null if not used
+        /// </param>
         /// <param name="FileName">File to save to</param>
         /// <returns>The results in the form of a bitmap object</returns>
         public static Bitmap Watermark(this Bitmap Image, Bitmap WatermarkImage, float Opacity, int X, int Y, Color KeyColor, string FileName = "")
@@ -2408,7 +2418,7 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Watermark
 
         #region Xor
 
@@ -2454,9 +2464,9 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Xor
 
-        #endregion
+        #endregion Functions
 
         #region Variables
 
@@ -2465,7 +2475,7 @@ namespace Utilities.Media
         /// </summary>
         private static string[] _ASCIICharacters = { "#", "#", "@", "%", "=", "+", "*", ":", "-", ".", " " };
 
-        #endregion
+        #endregion Variables
     }
 
     #region Enums
@@ -2479,33 +2489,21 @@ namespace Utilities.Media
         /// Top
         /// </summary>
         Top,
+
         /// <summary>
         /// Bottom
         /// </summary>
         Bottom,
+
         /// <summary>
         /// Left
         /// </summary>
         Left,
+
         /// <summary>
         /// Right
         /// </summary>
         Right
-    }
-
-    /// <summary>
-    /// Enum defining quality
-    /// </summary>
-    public enum Quality
-    {
-        /// <summary>
-        /// High
-        /// </summary>
-        High,
-        /// <summary>
-        /// Low
-        /// </summary>
-        Low
     }
 
     /// <summary>
@@ -2517,11 +2515,28 @@ namespace Utilities.Media
         /// Top to bottom
         /// </summary>
         TopBottom = 0,
+
         /// <summary>
         /// Left to right
         /// </summary>
         LeftRight
     };
 
-    #endregion
+    /// <summary>
+    /// Enum defining quality
+    /// </summary>
+    public enum Quality
+    {
+        /// <summary>
+        /// High
+        /// </summary>
+        High,
+
+        /// <summary>
+        /// Low
+        /// </summary>
+        Low
+    }
+
+    #endregion Enums
 }

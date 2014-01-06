@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.Data;
 using Utilities.ORM.Manager.Schema.Enums;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Interfaces
 {
@@ -34,14 +35,14 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
     public interface ITable
     {
         /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
         /// Columns
         /// </summary>
         ICollection<IColumn> Columns { get; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        string Name { get; set; }
 
         /// <summary>
         /// Parent of the table structure
@@ -59,35 +60,6 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// <param name="Name">Name of the column</param>
         /// <returns>Column specified</returns>
         IColumn this[string Name] { get; }
-
-        /// <summary>
-        /// Adds a trigger to the table
-        /// </summary>
-        /// <param name="Name">Name of the trigger</param>
-        /// <param name="Definition">Trigger definition</param>
-        /// <param name="Type">Trigger type</param>
-        /// <returns>Trigger added to the table</returns>
-        ITrigger AddTrigger(string Name, string Definition, TriggerType Type);
-
-        /// <summary>
-        /// Adds a foreign key
-        /// </summary>
-        /// <param name="ColumnName">Column name</param>
-        /// <param name="ForeignKeyTable">Foreign key table</param>
-        /// <param name="ForeignKeyColumn">Foreign key column</param>
-        void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn);
-
-        /// <summary>
-        /// Sets up foreign keys
-        /// </summary>
-        void SetupForeignKeys();
-
-        /// <summary>
-        /// Determines if a column exists in the table
-        /// </summary>
-        /// <param name="ColumnName">Column name</param>
-        /// <returns>True if it exists, false otherwise</returns>
-        bool ContainsColumn(string ColumnName);
 
         /// <summary>
         /// Adds a column
@@ -111,5 +83,34 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
             bool Identity = false, bool Index = false, bool PrimaryKey = false, bool Unique = false,
             string ForeignKeyTable = "", string ForeignKeyColumn = "", T DefaultValue = default(T),
             bool OnDeleteCascade = false, bool OnUpdateCascade = false, bool OnDeleteSetNull = false);
+
+        /// <summary>
+        /// Adds a foreign key
+        /// </summary>
+        /// <param name="ColumnName">Column name</param>
+        /// <param name="ForeignKeyTable">Foreign key table</param>
+        /// <param name="ForeignKeyColumn">Foreign key column</param>
+        void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn);
+
+        /// <summary>
+        /// Adds a trigger to the table
+        /// </summary>
+        /// <param name="Name">Name of the trigger</param>
+        /// <param name="Definition">Trigger definition</param>
+        /// <param name="Type">Trigger type</param>
+        /// <returns>Trigger added to the table</returns>
+        ITrigger AddTrigger(string Name, string Definition, TriggerType Type);
+
+        /// <summary>
+        /// Determines if a column exists in the table
+        /// </summary>
+        /// <param name="ColumnName">Column name</param>
+        /// <returns>True if it exists, false otherwise</returns>
+        bool ContainsColumn(string ColumnName);
+
+        /// <summary>
+        /// Sets up foreign keys
+        /// </summary>
+        void SetupForeignKeys();
     }
 }

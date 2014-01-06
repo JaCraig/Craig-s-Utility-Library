@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Serializers.Interfaces
 {
@@ -59,19 +60,19 @@ namespace Utilities.IO.Serializers.Interfaces
     public interface ISerializer<T> : ISerializer
     {
         /// <summary>
-        /// Serializes the object
-        /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Data">Data to serialize</param>
-        /// <returns>The serialized data</returns>
-        T Serialize(Type ObjectType, object Data);
-
-        /// <summary>
         /// Deserializes the data
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Data">Data to deserialize</param>
         /// <returns>The deserialized data</returns>
         object Deserialize(Type ObjectType, T Data);
+
+        /// <summary>
+        /// Serializes the object
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Data">Data to serialize</param>
+        /// <returns>The serialized data</returns>
+        T Serialize(Type ObjectType, object Data);
     }
 }

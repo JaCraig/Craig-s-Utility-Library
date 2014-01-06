@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Globalization;
 using System.IO;
@@ -29,7 +30,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Utilities.IO.Serializers.BaseClasses;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Serializers.Default
 {
@@ -64,7 +65,25 @@ namespace Utilities.IO.Serializers.Default
         /// <summary>
         /// JSONP regex filter
         /// </summary>
-        private static Regex JsonPRegex=new Regex(@"[^\(]+\(([^\)]*)\);",RegexOptions.Compiled|RegexOptions.IgnoreCase);
+        private static Regex JsonPRegex = new Regex(@"[^\(]+\(([^\)]*)\);", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// Deserializes the data
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Data">Data to deserialize</param>
+        /// <returns>The deserialized data</returns>
+        public override object Deserialize(Type ObjectType, string Data)
+        {
+            if (string.IsNullOrEmpty(Data) || ObjectType == null)
+                return null;
+            Data = JsonPRegex.Replace(Data, "$1");
+            using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
+            {
+                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(ObjectType);
+                return Serializer.ReadObject(Stream);
+            }
+        }
 
         /// <summary>
         /// Serializes the object
@@ -94,24 +113,6 @@ namespace Utilities.IO.Serializers.Default
                 }
             }
             return ReturnValue;
-        }
-
-        /// <summary>
-        /// Deserializes the data
-        /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Data">Data to deserialize</param>
-        /// <returns>The deserialized data</returns>
-        public override object Deserialize(Type ObjectType, string Data)
-        {
-            if (string.IsNullOrEmpty(Data) || ObjectType == null)
-                return null;
-            Data = JsonPRegex.Replace(Data, "$1");
-            using (MemoryStream Stream = new MemoryStream(Encoding.UTF8.GetBytes(Data)))
-            {
-                DataContractJsonSerializer Serializer = new DataContractJsonSerializer(ObjectType);
-                return Serializer.ReadObject(Stream);
-            }
         }
     }
 }

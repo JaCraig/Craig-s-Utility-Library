@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Text;
 using Utilities.IO.FileFormats.BaseClasses;
 using Utilities.IO.FileFormats.FixedLength.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
 {
@@ -46,8 +47,8 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         {
         }
 
-        #endregion
-        
+        #endregion Constructor
+
         #region Functions
 
         /// <summary>
@@ -78,6 +79,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
             Parse(Data);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

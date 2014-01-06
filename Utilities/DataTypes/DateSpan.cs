@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -46,29 +47,9 @@ namespace Utilities.DataTypes
             this.End = End;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Start date
-        /// </summary>
-        public virtual DateTime Start { get; protected set; }
-
-        /// <summary>
-        /// End date
-        /// </summary>
-        public virtual DateTime End { get; protected set; }
-
-        /// <summary>
-        /// Years between the two dates
-        /// </summary>
-        public virtual int Years { get { return (End - Start).Years(); } }
-
-        /// <summary>
-        /// Months between the two dates
-        /// </summary>
-        public virtual int Months { get { return (End - Start).Months(); } }
 
         /// <summary>
         /// Days between the two dates
@@ -76,9 +57,19 @@ namespace Utilities.DataTypes
         public virtual int Days { get { return (End - Start).DaysRemainder(); } }
 
         /// <summary>
+        /// End date
+        /// </summary>
+        public virtual DateTime End { get; protected set; }
+
+        /// <summary>
         /// Hours between the two dates
         /// </summary>
         public virtual int Hours { get { return (End - Start).Hours; } }
+
+        /// <summary>
+        /// Milliseconds between the two dates
+        /// </summary>
+        public virtual int MilliSeconds { get { return (End - Start).Milliseconds; } }
 
         /// <summary>
         /// Minutes between the two dates
@@ -86,16 +77,26 @@ namespace Utilities.DataTypes
         public virtual int Minutes { get { return (End - Start).Minutes; } }
 
         /// <summary>
+        /// Months between the two dates
+        /// </summary>
+        public virtual int Months { get { return (End - Start).Months(); } }
+
+        /// <summary>
         /// Seconds between the two dates
         /// </summary>
         public virtual int Seconds { get { return (End - Start).Seconds; } }
 
         /// <summary>
-        /// Milliseconds between the two dates
+        /// Start date
         /// </summary>
-        public virtual int MilliSeconds { get { return (End - Start).Milliseconds; } }
+        public virtual DateTime Start { get; protected set; }
 
-        #endregion
+        /// <summary>
+        /// Years between the two dates
+        /// </summary>
+        public virtual int Years { get { return (End - Start).Years(); } }
+
+        #endregion Properties
 
         #region Functions
 
@@ -106,7 +107,7 @@ namespace Utilities.DataTypes
         /// <returns>The intersection of the two time spans</returns>
         public DateSpan Intersection(DateSpan Span)
         {
-            if (Span==null)
+            if (Span == null)
                 return null;
             if (!Overlap(Span))
                 return null;
@@ -126,9 +127,31 @@ namespace Utilities.DataTypes
             return ((Start >= Span.Start && Start < Span.End) || (End <= Span.End && End > Span.Start) || (Start <= Span.Start && End >= Span.End));
         }
 
-        #endregion
+        #endregion Functions
 
         #region Operators
+
+        /// <summary>
+        /// Converts the object to a string
+        /// </summary>
+        /// <param name="Value">Value to convert</param>
+        /// <returns>The value as a string</returns>
+        public static implicit operator string(DateSpan Value)
+        {
+            Contract.Requires<ArgumentNullException>(Value != null, "Value");
+            return Value.ToString();
+        }
+
+        /// <summary>
+        /// Determines if two DateSpans are not equal
+        /// </summary>
+        /// <param name="Span1">Span 1</param>
+        /// <param name="Span2">Span 2</param>
+        /// <returns>True if they are not equal, false otherwise</returns>
+        public static bool operator !=(DateSpan Span1, DateSpan Span2)
+        {
+            return !(Span1 == Span2);
+        }
 
         /// <summary>
         /// Addition operator
@@ -138,11 +161,11 @@ namespace Utilities.DataTypes
         /// <returns>The combined date span</returns>
         public static DateSpan operator +(DateSpan Span1, DateSpan Span2)
         {
-            if (Span1==null && Span2==null)
+            if (Span1 == null && Span2 == null)
                 return null;
-            if (Span1==null)
+            if (Span1 == null)
                 return new DateSpan(Span2.Start, Span2.End);
-            if (Span2==null)
+            if (Span2 == null)
                 return new DateSpan(Span1.Start, Span1.End);
             DateTime Start = Span1.Start < Span2.Start ? Span1.Start : Span2.Start;
             DateTime End = Span1.End > Span2.End ? Span1.End : Span2.End;
@@ -164,40 +187,9 @@ namespace Utilities.DataTypes
             return Span1.Start == Span2.Start && Span1.End == Span2.End;
         }
 
-        /// <summary>
-        /// Determines if two DateSpans are not equal
-        /// </summary>
-        /// <param name="Span1">Span 1</param>
-        /// <param name="Span2">Span 2</param>
-        /// <returns>True if they are not equal, false otherwise</returns>
-        public static bool operator !=(DateSpan Span1, DateSpan Span2)
-        {
-            return !(Span1 == Span2);
-        }
-
-        /// <summary>
-        /// Converts the object to a string
-        /// </summary>
-        /// <param name="Value">Value to convert</param>
-        /// <returns>The value as a string</returns>
-        public static implicit operator string(DateSpan Value)
-        {
-            Contract.Requires<ArgumentNullException>(Value != null, "Value");
-            return Value.ToString();
-        }
-
-        #endregion
+        #endregion Operators
 
         #region Overridden Functions
-
-        /// <summary>
-        /// Converts the DateSpan to a string
-        /// </summary>
-        /// <returns>The DateSpan as a string</returns>
-        public override string ToString()
-        {
-            return "Start: " + Start.ToString() + " End: " + End.ToString();
-        }
 
         /// <summary>
         /// Determines if two objects are equal
@@ -219,6 +211,15 @@ namespace Utilities.DataTypes
             return End.GetHashCode() & Start.GetHashCode();
         }
 
-        #endregion
+        /// <summary>
+        /// Converts the DateSpan to a string
+        /// </summary>
+        /// <returns>The DateSpan as a string</returns>
+        public override string ToString()
+        {
+            return "Start: " + Start.ToString() + " End: " + End.ToString();
+        }
+
+        #endregion Overridden Functions
     }
 }

@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Utilities.IO.Encryption.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Encryption.BaseClasses
 {
@@ -45,7 +46,7 @@ namespace Utilities.IO.Encryption.BaseClasses
             ImplementedAlgorithms = new Dictionary<string, Func<HashAlgorithm>>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -59,8 +60,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// </summary>
         protected IDictionary<string, Func<HashAlgorithm>> ImplementedAlgorithms { get; private set; }
 
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -103,6 +103,6 @@ namespace Utilities.IO.Encryption.BaseClasses
             return ImplementedAlgorithms[Algorithm.ToUpperInvariant()]();
         }
 
-        #endregion
+        #endregion Functions
     }
 }

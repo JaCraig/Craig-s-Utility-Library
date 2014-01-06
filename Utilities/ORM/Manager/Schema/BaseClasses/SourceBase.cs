@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
-using Utilities.ORM.Manager.Schema.Interfaces;
 using System.Linq;
-#endregion
+using Utilities.ORM.Manager.Schema.Interfaces;
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.BaseClasses
 {
@@ -45,14 +47,14 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         }
 
         /// <summary>
+        /// Functions with the source
+        /// </summary>
+        public ICollection<IFunction> Functions { get; private set; }
+
+        /// <summary>
         /// Name of the source
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Tables within the source
-        /// </summary>
-        public ICollection<ITable> Tables { get; private set; }
 
         /// <summary>
         /// Stored procedures within the source
@@ -60,14 +62,14 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         public ICollection<ITable> StoredProcedures { get; private set; }
 
         /// <summary>
+        /// Tables within the source
+        /// </summary>
+        public ICollection<ITable> Tables { get; private set; }
+
+        /// <summary>
         /// Views within the source
         /// </summary>
         public ICollection<ITable> Views { get; private set; }
-
-        /// <summary>
-        /// Functions with the source
-        /// </summary>
-        public ICollection<IFunction> Functions { get; private set; }
 
         /// <summary>
         /// Gets a specific table based on the name
@@ -75,6 +77,22 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         /// <param name="Name">Name of the table</param>
         /// <returns>The table specified</returns>
         public ITable this[string Name] { get { return Tables.FirstOrDefault(x => string.Equals(x.Name, Name, System.StringComparison.CurrentCultureIgnoreCase)); } }
+
+        /// <summary>
+        /// Adds a function to the source
+        /// </summary>
+        /// <param name="Name">Name of the function</param>
+        /// <param name="Definition">Definition of the function</param>
+        /// <returns>Function that was created/added</returns>
+        public abstract IFunction AddFunction(string Name, string Definition);
+
+        /// <summary>
+        /// Adds a stored procedure to the source
+        /// </summary>
+        /// <param name="ProcedureName">Procedure name</param>
+        /// <param name="Definition">Definition of the stored procedure</param>
+        /// <returns>Stored procedure that was created/added</returns>
+        public abstract ITable AddStoredProcedure(string ProcedureName, string Definition);
 
         /// <summary>
         /// Adds a table to the source
@@ -89,21 +107,5 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         /// <param name="ViewName">View name</param>
         /// <returns>View that was created/added</returns>
         public abstract ITable AddView(string ViewName);
-
-        /// <summary>
-        /// Adds a stored procedure to the source
-        /// </summary>
-        /// <param name="ProcedureName">Procedure name</param>
-        /// <param name="Definition">Definition of the stored procedure</param>
-        /// <returns>Stored procedure that was created/added</returns>
-        public abstract ITable AddStoredProcedure(string ProcedureName, string Definition);
-
-        /// <summary>
-        /// Adds a function to the source
-        /// </summary>
-        /// <param name="Name">Name of the function</param>
-        /// <param name="Definition">Definition of the function</param>
-        /// <returns>Function that was created/added</returns>
-        public abstract IFunction AddFunction(string Name, string Definition);
     }
 }

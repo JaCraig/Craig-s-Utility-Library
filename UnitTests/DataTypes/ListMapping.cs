@@ -28,6 +28,16 @@ namespace UnitTests.DataTypes
     public class ListMapping
     {
         [Fact]
+        public void ContainsTest()
+        {
+            ListMapping<string, int> TestObject = new ListMapping<string, int>();
+            TestObject.Add("A", 0);
+            TestObject.Add("A", 1);
+            Assert.True(TestObject.Contains("A", 0));
+            Assert.False(TestObject.Contains("A", 2));
+        }
+
+        [Fact]
         public void RandomTest()
         {
             ListMapping<string, int> TestObject = new ListMapping<string, int>();
@@ -55,16 +65,6 @@ namespace UnitTests.DataTypes
             TestObject.Remove("A", 0);
             Assert.Equal(1, TestObject["A"].Count);
             Assert.Equal(1, TestObject["A"].FirstOrDefault());
-        }
-
-        [Fact]
-        public void ContainsTest()
-        {
-            ListMapping<string, int> TestObject = new ListMapping<string, int>();
-            TestObject.Add("A", 0);
-            TestObject.Add("A", 1);
-            Assert.True(TestObject.Contains("A", 0));
-            Assert.False(TestObject.Contains("A", 2));
         }
     }
 }

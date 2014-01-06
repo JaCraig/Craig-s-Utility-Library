@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.NameGenerators
 {
@@ -36,9 +38,12 @@ namespace Utilities.Random.NameGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        public NameSuffixGenerator() : base("", "") { }
+        public NameSuffixGenerator()
+            : base("", "")
+        {
+        }
 
-        #endregion
+        #endregion Constructors
 
         #region Functions
 
@@ -74,12 +79,12 @@ namespace Utilities.Random.NameGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
 
         #region Private Variables
 
         private string[] NameSuffixes = { "Jr.", "Sr.", "II", "III", "IV", "M.D.", "Ph.D." };
 
-        #endregion
+        #endregion Private Variables
     }
 }

@@ -28,21 +28,21 @@ namespace UnitTests.SQL.DataClasses
     public class View
     {
         [Fact]
-        public void Create()
-        {
-            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
-            Utilities.ORM.Manager.Schema.Interfaces.ITable View = Database.AddView("TestView");
-            Assert.Equal(View, Database.Views.First());
-            Assert.Equal("TestView", View.Name);
-        }
-
-        [Fact]
         public void AddColumn()
         {
             Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
             Utilities.ORM.Manager.Schema.Interfaces.ITable View = Database.AddView("TestView");
             View.AddColumn<int>("Column1", DbType.Int32, 0, true);
             Assert.Equal(1, View.Columns.Count);
+        }
+
+        [Fact]
+        public void Create()
+        {
+            Utilities.ORM.Manager.Schema.Default.Database.Database Database = new Utilities.ORM.Manager.Schema.Default.Database.Database("TestDatabase");
+            Utilities.ORM.Manager.Schema.Interfaces.ITable View = Database.AddView("TestView");
+            Assert.Equal(View, Database.Views.First());
+            Assert.Equal("TestView", View.Name);
         }
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
@@ -27,13 +28,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
     /// <summary>
-    /// Class that helps with running tasks in parallel
-    /// on a set of objects (that will come in on an ongoing basis, think producer/consumer situations)
+    /// Class that helps with running tasks in parallel on a set of objects (that will come in on an
+    /// ongoing basis, think producer/consumer situations)
     /// </summary>
     /// <typeparam name="T">Object type to process</typeparam>
     public class TaskQueue<T> : BlockingCollection<T>, IDisposable
@@ -43,9 +44,13 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Capacity">Number of items that are allowed to be processed in the queue at one time</param>
+        /// <param name="Capacity">
+        /// Number of items that are allowed to be processed in the queue at one time
+        /// </param>
         /// <param name="ProcessItem">Action that is used to process each item</param>
-        /// <param name="HandleError">Handles an exception if it occurs (defaults to eating the error)</param>
+        /// <param name="HandleError">
+        /// Handles an exception if it occurs (defaults to eating the error)
+        /// </param>
         public TaskQueue(int Capacity, Action<T> ProcessItem, Action<Exception> HandleError = null)
             : base(new ConcurrentQueue<T>())
         {
@@ -57,29 +62,9 @@ namespace Utilities.DataTypes
             Capacity.Times(x => Tasks[x] = Task.Factory.StartNew(Process));
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Token used to signal cancellation
-        /// </summary>
-        private CancellationTokenSource CancellationToken { get; set; }
-
-        /// <summary>
-        /// Group of tasks that the queue uses
-        /// </summary>
-        private Task[] Tasks { get; set; }
-
-        /// <summary>
-        /// Action used to process an individual item in the queue
-        /// </summary>
-        private Action<T> ProcessItem { get; set; }
-
-        /// <summary>
-        /// Called when an exception occurs when processing the queue
-        /// </summary>
-        private Action<Exception> HandleError { get; set; }
 
         /// <summary>
         /// Determines if it has been cancelled
@@ -97,9 +82,44 @@ namespace Utilities.DataTypes
             get { return Tasks.All(x => x.IsCompleted); }
         }
 
-        #endregion
+        /// <summary>
+        /// Token used to signal cancellation
+        /// </summary>
+        private CancellationTokenSource CancellationToken { get; set; }
+
+        /// <summary>
+        /// Called when an exception occurs when processing the queue
+        /// </summary>
+        private Action<Exception> HandleError { get; set; }
+
+        /// <summary>
+        /// Action used to process an individual item in the queue
+        /// </summary>
+        private Action<T> ProcessItem { get; set; }
+
+        /// <summary>
+        /// Group of tasks that the queue uses
+        /// </summary>
+        private Task[] Tasks { get; set; }
+
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Cancels the queue from processing
+        /// </summary>
+        /// <param name="Wait">
+        /// Determines if the function should wait for the tasks to complete before returning
+        /// </param>
+        public void Cancel(bool Wait = false)
+        {
+            if (IsCompleted || IsCanceled)
+                return;
+            CancellationToken.Cancel(false);
+            if (Wait)
+                Task.WaitAll(Tasks);
+        }
 
         /// <summary>
         /// Adds the item to the queue to be processed
@@ -112,16 +132,28 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Cancels the queue from processing
+        /// Disposes of the objects
         /// </summary>
-        /// <param name="Wait">Determines if the function should wait for the tasks to complete before returning</param>
-        public void Cancel(bool Wait = false)
+        /// <param name="Disposing">
+        /// True to dispose of all resources, false only disposes of native resources
+        /// </param>
+        protected override void Dispose(bool Disposing)
         {
-            if (IsCompleted || IsCanceled)
-                return;
-            CancellationToken.Cancel(false);
-            if (Wait)
-                Task.WaitAll(Tasks);
+            if (Tasks != null)
+            {
+                Cancel(true);
+                foreach (Task Task in Tasks)
+                {
+                    Task.Dispose();
+                }
+                Tasks = null;
+            }
+            if (CancellationToken != null)
+            {
+                CancellationToken.Dispose();
+                CancellationToken = null;
+            }
+            base.Dispose(Disposing);
         }
 
         /// <summary>
@@ -146,29 +178,6 @@ namespace Utilities.DataTypes
             }
         }
 
-        /// <summary>
-        /// Disposes of the objects
-        /// </summary>
-        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
-        protected override void Dispose(bool Disposing)
-        {
-            if (Tasks != null)
-            {
-                Cancel(true);
-                foreach (Task Task in Tasks)
-                {
-                    Task.Dispose();
-                }
-                Tasks = null;
-            }
-            if (CancellationToken != null)
-            {
-                CancellationToken.Dispose();
-                CancellationToken = null;
-            }
-            base.Dispose(Disposing);
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

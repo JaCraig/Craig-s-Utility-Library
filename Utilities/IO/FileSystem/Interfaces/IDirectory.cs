@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Utilities.IO.Enums;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Interfaces
 {
@@ -46,11 +48,6 @@ namespace Utilities.IO.FileSystem.Interfaces
         DateTime Created { get; }
 
         /// <summary>
-        /// When it was last modified
-        /// </summary>
-        DateTime Modified { get; }
-
-        /// <summary>
         /// Does the directory exist
         /// </summary>
         bool Exists { get; }
@@ -59,6 +56,11 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// Full path to the directory
         /// </summary>
         string FullName { get; }
+
+        /// <summary>
+        /// When it was last modified
+        /// </summary>
+        DateTime Modified { get; }
 
         /// <summary>
         /// Name of the directory
@@ -80,9 +82,16 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// </summary>
         long Size { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Copies the directory to the specified parent directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy to</param>
+        /// <param name="Options">Copy options</param>
+        IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways);
 
         /// <summary>
         /// Creates the directory if it does not currently exist
@@ -100,15 +109,7 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <param name="SearchPattern">Search pattern to use</param>
         /// <param name="Options">Search options to use</param>
         /// <returns>The list of directories</returns>
-        IEnumerable<IDirectory> EnumerateDirectories(string SearchPattern="*", SearchOption Options = SearchOption.TopDirectoryOnly);
-
-        /// <summary>
-        /// Enumerates files within the directory (defaults to top level directory and not the sub directories)
-        /// </summary>
-        /// <param name="SearchPattern">Search pattern to use</param>
-        /// <param name="Options">Search options to use</param>
-        /// <returns>The list of files</returns>
-        IEnumerable<IFile> EnumerateFiles(string SearchPattern="*", SearchOption Options = SearchOption.TopDirectoryOnly);
+        IEnumerable<IDirectory> EnumerateDirectories(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly);
 
         /// <summary>
         /// Enumerates sub directories (defaults to top level sub directories)
@@ -117,6 +118,14 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <param name="Options">Search options to use</param>
         /// <returns>The list of directories</returns>
         IEnumerable<IDirectory> EnumerateDirectories(Predicate<IDirectory> Predicate, SearchOption Options = SearchOption.TopDirectoryOnly);
+
+        /// <summary>
+        /// Enumerates files within the directory (defaults to top level directory and not the sub directories)
+        /// </summary>
+        /// <param name="SearchPattern">Search pattern to use</param>
+        /// <param name="Options">Search options to use</param>
+        /// <returns>The list of files</returns>
+        IEnumerable<IFile> EnumerateFiles(string SearchPattern = "*", SearchOption Options = SearchOption.TopDirectoryOnly);
 
         /// <summary>
         /// Enumerates files within the directory (defaults to top level directory and not the sub directories)
@@ -138,13 +147,6 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <param name="Name">The new name of the directory</param>
         void Rename(string Name);
 
-        /// <summary>
-        /// Copies the directory to the specified parent directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy to</param>
-        /// <param name="Options">Copy options</param>
-        IDirectory CopyTo(IDirectory Directory, CopyOptions Options = CopyOptions.CopyAlways);
-
-        #endregion
+        #endregion Functions
     }
 }

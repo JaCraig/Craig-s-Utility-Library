@@ -23,7 +23,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Utilities.Validation;
 
-
 using Xunit;
 
 namespace UnitTests.Validation.Rules
@@ -52,16 +51,22 @@ namespace UnitTests.Validation.Rules
     {
         [Utilities.Validation.Compare(1, ComparisonType.Equal)]
         public int ItemA { get; set; }
+
         [Utilities.Validation.Compare(2.0f, ComparisonType.GreaterThan)]
         public float ItemB { get; set; }
+
         [Utilities.Validation.Compare("1/1/1900", ComparisonType.GreaterThanOrEqual)]
         public DateTime ItemC { get; set; }
+
         [Utilities.Validation.Compare("A", ComparisonType.LessThan)]
         public string ItemD { get; set; }
+
         [Utilities.Validation.Compare(0, ComparisonType.LessThanOrEqual)]
         public long ItemE { get; set; }
+
         [Utilities.Validation.Compare("1/1/2100", ComparisonType.NotEqual)]
         public DateTime ItemF { get; set; }
+
         [Utilities.Validation.Compare(double.NaN, ComparisonType.NotEqual)]
         public double NaNTest { get; set; }
     }

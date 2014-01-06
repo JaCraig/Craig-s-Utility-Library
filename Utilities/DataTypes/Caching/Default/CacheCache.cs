@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.DataTypes.Patterns.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.Caching.Default
 {
@@ -45,19 +47,27 @@ namespace Utilities.DataTypes.Caching.Default
             InternalKeys = new List<string>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Name
+        /// The number of items in the cache
         /// </summary>
-        public string Name { get { return "Cache"; } }
+        public int Count
+        {
+            get
+            {
+                if (HttpContext.Current == null)
+                    return 0;
+                return HttpContext.Current.Cache.Count;
+            }
+        }
 
         /// <summary>
-        /// Internal keys
+        /// Read only
         /// </summary>
-        private List<string> InternalKeys { get; set; }
+        public bool IsReadOnly { get { return false; } }
 
         /// <summary>
         /// Keys
@@ -69,6 +79,11 @@ namespace Utilities.DataTypes.Caching.Default
                 return InternalKeys;
             }
         }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        public string Name { get { return "Cache"; } }
 
         /// <summary>
         /// Values
@@ -89,6 +104,11 @@ namespace Utilities.DataTypes.Caching.Default
         }
 
         /// <summary>
+        /// Internal keys
+        /// </summary>
+        private List<string> InternalKeys { get; set; }
+
+        /// <summary>
         /// Indexer
         /// </summary>
         /// <param name="key">Key</param>
@@ -107,25 +127,7 @@ namespace Utilities.DataTypes.Caching.Default
             }
         }
 
-        /// <summary>
-        /// The number of items in the cache
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                if (HttpContext.Current == null)
-                    return 0;
-                return HttpContext.Current.Cache.Count;
-            }
-        }
-
-        /// <summary>
-        /// Read only
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -143,49 +145,6 @@ namespace Utilities.DataTypes.Caching.Default
                     System.Web.Caching.Cache.NoSlidingExpiration,
                     CacheItemPriority.Normal, null);
             InternalKeys.Add(key);
-        }
-
-        /// <summary>
-        /// Checks if the cache contains the key
-        /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <returns>True if it is there, false otherwise</returns>
-        public bool ContainsKey(string key)
-        {
-            if (HttpContext.Current == null)
-                return false;
-            return Keys.Contains(key);
-        }
-
-        /// <summary>
-        /// Removes an item from the cache
-        /// </summary>
-        /// <param name="key">key to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(string key)
-        {
-            if (HttpContext.Current == null)
-                return false;
-            HttpContext.Current.Cache.Remove(key);
-            InternalKeys.Remove(key);
-            return true;
-        }
-
-        /// <summary>
-        /// Attempt to get a value
-        /// </summary>
-        /// <param name="key">Key to get</param>
-        /// <param name="value">Value of the item</param>
-        /// <returns>True if it is found, false otherwise</returns>
-        public bool TryGetValue(string key, out object value)
-        {
-            if (HttpContext.Current == null)
-            {
-                value = null;
-                return false;
-            }
-            value = (ContainsKey(key)) ? HttpContext.Current.Cache.Get(key) : null;
-            return true;
         }
 
         /// <summary>
@@ -220,6 +179,18 @@ namespace Utilities.DataTypes.Caching.Default
         }
 
         /// <summary>
+        /// Checks if the cache contains the key
+        /// </summary>
+        /// <param name="key">Key to check</param>
+        /// <returns>True if it is there, false otherwise</returns>
+        public bool ContainsKey(string key)
+        {
+            if (HttpContext.Current == null)
+                return false;
+            return Keys.Contains(key);
+        }
+
+        /// <summary>
         /// Copies to an array
         /// </summary>
         /// <param name="array">Array to copy to</param>
@@ -228,18 +199,6 @@ namespace Utilities.DataTypes.Caching.Default
         {
             if (HttpContext.Current == null)
                 return;
-        }
-
-        /// <summary>
-        /// Removes an item from an array
-        /// </summary>
-        /// <param name="item">Item to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(KeyValuePair<string, object> item)
-        {
-            if (HttpContext.Current == null)
-                return false;
-            return Remove(item.Key);
         }
 
         /// <summary>
@@ -259,12 +218,55 @@ namespace Utilities.DataTypes.Caching.Default
         }
 
         /// <summary>
+        /// Removes an item from the cache
+        /// </summary>
+        /// <param name="key">key to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(string key)
+        {
+            if (HttpContext.Current == null)
+                return false;
+            HttpContext.Current.Cache.Remove(key);
+            InternalKeys.Remove(key);
+            return true;
+        }
+
+        /// <summary>
+        /// Removes an item from an array
+        /// </summary>
+        /// <param name="item">Item to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(KeyValuePair<string, object> item)
+        {
+            if (HttpContext.Current == null)
+                return false;
+            return Remove(item.Key);
+        }
+
+        /// <summary>
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Attempt to get a value
+        /// </summary>
+        /// <param name="key">Key to get</param>
+        /// <param name="value">Value of the item</param>
+        /// <returns>True if it is found, false otherwise</returns>
+        public bool TryGetValue(string key, out object value)
+        {
+            if (HttpContext.Current == null)
+            {
+                value = null;
+                return false;
+            }
+            value = (ContainsKey(key)) ? HttpContext.Current.Cache.Get(key) : null;
+            return true;
         }
 
         /// <summary>
@@ -278,6 +280,6 @@ namespace Utilities.DataTypes.Caching.Default
             Clear();
         }
 
-        #endregion
+        #endregion Functions
     }
 }

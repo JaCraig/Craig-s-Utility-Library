@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO
 {
@@ -94,18 +96,28 @@ namespace Utilities.IO
             return Input.Read().Minify(Type);
         }
 
-        #endregion
+        #endregion Minify
 
         #region Private Functions
 
-        private static string HTMLMinify(string Input)
+        private static string CSSMinify(string Input)
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            Input = Regex.Replace(Input, "/// <.+>", "");
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            Input = Regex.Replace(Input, @">[\s\S]*?<", new MatchEvaluator(Evaluate));
+            Input = Regex.Replace(Input, @"(/\*\*/)|(/\*[^!][\s\S]*?\*/)", string.Empty);
+            Input = Regex.Replace(Input, @"\s+", " ");
+            Input = Regex.Replace(Input, @"(\s([\{:,;\}\(\)]))", "$2");
+            Input = Regex.Replace(Input, @"(([\{:,;\}\(\)])\s)", "$2");
+            Input = Regex.Replace(Input, ":0 0 0 0;", ":0;");
+            Input = Regex.Replace(Input, ":0 0 0;", ":0;");
+            Input = Regex.Replace(Input, ":0 0;", ":0;");
+            Input = Regex.Replace(Input, ";}", "}");
+            Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&nbsp;)\s{2,}(?=[<])", string.Empty);
+            Input = Regex.Replace(Input, @"([!{}:;>+([,])\s+", "$1");
+            Input = Regex.Replace(Input, @"([\s:])(0)(px|em|%|in|cm|mm|pc|pt|ex)", "$1$2");
+            Input = Regex.Replace(Input, "background-position:0", "background-position:0 0");
+            Input = Regex.Replace(Input, @"(:|\s)0+\.(\d+)", "$1.$2");
+            Input = Regex.Replace(Input, @"[^\}]+\{;\}", "");
             return Input;
         }
 
@@ -117,6 +129,17 @@ namespace Utilities.IO
                 return "";
             MyString = Regex.Replace(MyString, @"\r\n\s*", "");
             return MyString;
+        }
+
+        private static string HTMLMinify(string Input)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            Input = Regex.Replace(Input, "/// <.+>", "");
+            if (string.IsNullOrEmpty(Input))
+                return "";
+            Input = Regex.Replace(Input, @">[\s\S]*?<", new MatchEvaluator(Evaluate));
+            return Input;
         }
 
         private static string JavaScriptMinify(string Input)
@@ -151,28 +174,7 @@ namespace Utilities.IO
             return Input;
         }
 
-        private static string CSSMinify(string Input)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return "";
-            Input = Regex.Replace(Input, @"(/\*\*/)|(/\*[^!][\s\S]*?\*/)", string.Empty);
-            Input = Regex.Replace(Input, @"\s+", " ");
-            Input = Regex.Replace(Input, @"(\s([\{:,;\}\(\)]))", "$2");
-            Input = Regex.Replace(Input, @"(([\{:,;\}\(\)])\s)", "$2");
-            Input = Regex.Replace(Input, ":0 0 0 0;", ":0;");
-            Input = Regex.Replace(Input, ":0 0 0;", ":0;");
-            Input = Regex.Replace(Input, ":0 0;", ":0;");
-            Input = Regex.Replace(Input, ";}", "}");
-            Input = Regex.Replace(Input, @"(?<=[>])\s{2,}(?=[<])|(?<=[>])\s{2,}(?=&nbsp;)|(?<=&nbsp;)\s{2,}(?=[<])", string.Empty);
-            Input = Regex.Replace(Input, @"([!{}:;>+([,])\s+", "$1");
-            Input = Regex.Replace(Input, @"([\s:])(0)(px|em|%|in|cm|mm|pc|pt|ex)", "$1$2");
-            Input = Regex.Replace(Input, "background-position:0", "background-position:0 0");
-            Input = Regex.Replace(Input, @"(:|\s)0+\.(\d+)", "$1.$2");
-            Input = Regex.Replace(Input, @"[^\}]+\{;\}", "");
-            return Input;
-        }
-
-        #endregion
+        #endregion Private Functions
     }
 
     #region Enums
@@ -186,15 +188,17 @@ namespace Utilities.IO
         /// CSS
         /// </summary>
         CSS,
+
         /// <summary>
         /// Javascript
         /// </summary>
         JavaScript,
+
         /// <summary>
         /// HTML
         /// </summary>
         HTML
     }
 
-    #endregion
+    #endregion Enums
 }

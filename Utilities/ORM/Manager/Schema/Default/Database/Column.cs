@@ -20,14 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
-using Utilities.ORM.Manager.Schema.Interfaces;
-using System.Linq;
-using Utilities.DataTypes;
 using System.Data;
-using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.DataTypes.Comparison;
-#endregion
+using Utilities.ORM.Manager.Schema.Interfaces;
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Default.Database
 {
@@ -91,64 +90,9 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
             AddForeignKey(ForeignKeyTable, ForeignKeyColumn);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Properties
-
-        /// <summary>
-        /// On Delete Cascade
-        /// </summary>
-        public bool OnDeleteCascade { get; set; }
-
-        /// <summary>
-        /// On Update Cascade
-        /// </summary>
-        public bool OnUpdateCascade { get; set; }
-
-        /// <summary>
-        /// On Delete Set Null
-        /// </summary>
-        public bool OnDeleteSetNull { get; set; }
-
-        /// <summary>
-        /// Name
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Data type
-        /// </summary>
-        public DbType DataType { get; set; }
-
-        /// <summary>
-        /// Data length
-        /// </summary>
-        public int Length { get; set; }
-
-        /// <summary>
-        /// Foreign keys
-        /// </summary>
-        public ICollection<IColumn> ForeignKey { get; private set; }
-
-        /// <summary>
-        /// Primary key?
-        /// </summary>
-        public bool PrimaryKey { get; set; }
-
-        /// <summary>
-        /// Nullable?
-        /// </summary>
-        public bool Nullable { get; set; }
-
-        /// <summary>
-        /// Unique?
-        /// </summary>
-        public bool Unique { get; set; }
-
-        /// <summary>
-        /// Index?
-        /// </summary>
-        public bool Index { get; set; }
 
         /// <summary>
         /// Auto increment?
@@ -156,23 +100,79 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         public bool AutoIncrement { get; set; }
 
         /// <summary>
+        /// Data type
+        /// </summary>
+        public DbType DataType { get; set; }
+
+        /// <summary>
         /// Default value
         /// </summary>
         public string Default { get; set; }
+
+        /// <summary>
+        /// Foreign keys
+        /// </summary>
+        public ICollection<IColumn> ForeignKey { get; private set; }
+
+        /// <summary>
+        /// Index?
+        /// </summary>
+        public bool Index { get; set; }
+
+        /// <summary>
+        /// Data length
+        /// </summary>
+        public int Length { get; set; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Nullable?
+        /// </summary>
+        public bool Nullable { get; set; }
+
+        /// <summary>
+        /// On Delete Cascade
+        /// </summary>
+        public bool OnDeleteCascade { get; set; }
+
+        /// <summary>
+        /// On Delete Set Null
+        /// </summary>
+        public bool OnDeleteSetNull { get; set; }
+
+        /// <summary>
+        /// On Update Cascade
+        /// </summary>
+        public bool OnUpdateCascade { get; set; }
 
         /// <summary>
         /// Parent table
         /// </summary>
         public ITable ParentTable { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Primary key?
+        /// </summary>
+        public bool PrimaryKey { get; set; }
+
+        /// <summary>
+        /// Unique?
+        /// </summary>
+        public bool Unique { get; set; }
+
+        #endregion Public Properties
 
         #region Private Variables
 
-        private List<string> ForeignKeyTables { get; set; }
         private List<string> ForeignKeyColumns { get; set; }
 
-        #endregion
+        private List<string> ForeignKeyTables { get; set; }
+
+        #endregion Private Variables
 
         #region Public Functions
 
@@ -218,6 +218,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
             }
         }
 
-        #endregion
+        #endregion Public Functions
     }
 }

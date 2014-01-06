@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.IO;
 using System.IO.Compression;
 using Utilities.IO.Compression.Interfaces;
-#endregion
 
+#endregion Usings
 
 namespace Utilities.IO.Compression.BaseClasses
 {
@@ -43,7 +44,7 @@ namespace Utilities.IO.Compression.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -52,7 +53,7 @@ namespace Utilities.IO.Compression.BaseClasses
         /// </summary>
         public abstract string Name { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -75,14 +76,6 @@ namespace Utilities.IO.Compression.BaseClasses
                 }
             }
         }
-
-        /// <summary>
-        /// Gets the stream used to compress/decompress the data
-        /// </summary>
-        /// <param name="Stream">Memory stream used</param>
-        /// <param name="compressionMode">Compression mode</param>
-        /// <returns>The stream used to compress/decompress the data</returns>
-        protected abstract Stream GetStream(MemoryStream Stream, CompressionMode compressionMode);
 
         /// <summary>
         /// Decompresses the data
@@ -113,6 +106,14 @@ namespace Utilities.IO.Compression.BaseClasses
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the stream used to compress/decompress the data
+        /// </summary>
+        /// <param name="Stream">Memory stream used</param>
+        /// <param name="compressionMode">Compression mode</param>
+        /// <returns>The stream used to compress/decompress the data</returns>
+        protected abstract Stream GetStream(MemoryStream Stream, CompressionMode compressionMode);
+
+        #endregion Functions
     }
 }

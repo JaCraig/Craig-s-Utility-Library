@@ -27,18 +27,18 @@ namespace UnitTests.IO.FileSystem.Default
     public class NetworkFileSystem
     {
         [Fact]
+        public void CanHandle()
+        {
+            Utilities.IO.FileSystem.Default.NetworkFileSystem Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
+            Assert.True(Temp.CanHandle(@"\\localhost\C$\TestPath\Yay"));
+        }
+
+        [Fact]
         public void Creation()
         {
             Utilities.IO.FileSystem.Default.NetworkFileSystem Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
             Assert.NotNull(Temp);
             Assert.Equal("Network", Temp.Name);
-        }
-
-        [Fact]
-        public void CanHandle()
-        {
-            Utilities.IO.FileSystem.Default.NetworkFileSystem Temp = new Utilities.IO.FileSystem.Default.NetworkFileSystem();
-            Assert.True(Temp.CanHandle(@"\\localhost\C$\TestPath\Yay"));
         }
 
         [Fact]

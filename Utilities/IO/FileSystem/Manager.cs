@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem
 {
@@ -45,7 +47,7 @@ namespace Utilities.IO.FileSystem
             FileSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -61,23 +63,9 @@ namespace Utilities.IO.FileSystem
         /// <returns>The file system specified</returns>
         public IFileSystem this[string Name] { get { return FileSystems.FirstOrDefault(x => x.Name == Name); } }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Gets the class representation for the file
-        /// </summary>
-        /// <param name="Path">Path to the file</param>
-        /// <param name="Domain">Domain of the user (optional)</param>
-        /// <param name="Password">Password to be used to access the file (optional)</param>
-        /// <param name="UserName">User name to be used to access the file (optional)</param>
-        /// <returns>The file object</returns>
-        public IFile File(string Path, string UserName = "", string Password = "", string Domain = "")
-        {
-            IFileSystem FileSystem = FindSystem(Path);
-            return FileSystem == null ? null : FileSystem.File(Path, UserName, Password, Domain);
-        }
 
         /// <summary>
         /// Gets the directory representation for the directory
@@ -94,13 +82,17 @@ namespace Utilities.IO.FileSystem
         }
 
         /// <summary>
-        /// Finds a file system compatible with the path
+        /// Gets the class representation for the file
         /// </summary>
-        /// <param name="Path">Path to search for</param>
-        /// <returns>The file system associated with the path</returns>
-        protected IFileSystem FindSystem(string Path)
+        /// <param name="Path">Path to the file</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
+        /// <returns>The file object</returns>
+        public IFile File(string Path, string UserName = "", string Password = "", string Domain = "")
         {
-            return FileSystems.FirstOrDefault(x => x.CanHandle(Path));
+            IFileSystem FileSystem = FindSystem(Path);
+            return FileSystem == null ? null : FileSystem.File(Path, UserName, Password, Domain);
         }
 
         /// <summary>
@@ -115,7 +107,9 @@ namespace Utilities.IO.FileSystem
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
+        /// <param name="Managed">
+        /// Determines if all objects should be disposed or just managed objects
+        /// </param>
         protected override void Dispose(bool Managed)
         {
             if (FileSystems != null)
@@ -128,6 +122,16 @@ namespace Utilities.IO.FileSystem
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Finds a file system compatible with the path
+        /// </summary>
+        /// <param name="Path">Path to search for</param>
+        /// <returns>The file system associated with the path</returns>
+        protected IFileSystem FindSystem(string Path)
+        {
+            return FileSystems.FirstOrDefault(x => x.CanHandle(Path));
+        }
+
+        #endregion Functions
     }
 }

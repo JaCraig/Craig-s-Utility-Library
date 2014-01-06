@@ -20,14 +20,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using Utilities.IO.Logging.Enums;
 using Utilities.IO.Logging.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Logging.BaseClasses
 {
+    /// <summary>
+    /// Delegate used to format the message
+    /// </summary>
+    /// <param name="Message">Message to format</param>
+    /// <param name="Type">Type of message</param>
+    /// <param name="args">Args to insert into the message</param>
+    /// <returns>The formatted message</returns>
+    public delegate string Format(string Message, MessageType Type, params object[] args);
+
     /// <summary>
     /// Base class for logs
     /// </summary>
@@ -47,7 +58,7 @@ namespace Utilities.IO.Logging.BaseClasses
             this.Log = new Dictionary<MessageType, Action<string>>();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -57,14 +68,14 @@ namespace Utilities.IO.Logging.BaseClasses
         public string Name { get; private set; }
 
         /// <summary>
-        /// Called when the log is "opened"
-        /// </summary>
-        protected Action<LogType> Start { get; set; }
-
-        /// <summary>
         /// Called when the log is "closed"
         /// </summary>
         protected Action<LogType> End { get; set; }
+
+        /// <summary>
+        /// Format message function
+        /// </summary>
+        protected Format FormatMessage { get; set; }
 
         /// <summary>
         /// Called to log the current message
@@ -72,11 +83,11 @@ namespace Utilities.IO.Logging.BaseClasses
         protected Dictionary<MessageType, Action<string>> Log { get; private set; }
 
         /// <summary>
-        /// Format message function
+        /// Called when the log is "opened"
         /// </summary>
-        protected Format FormatMessage { get; set; }
+        protected Action<LogType> Start { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -87,24 +98,6 @@ namespace Utilities.IO.Logging.BaseClasses
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the objects
-        /// </summary>
-        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
-        protected virtual void Dispose(bool Disposing)
-        {
-            if (Disposing)
-                End((LogType)this);
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~LogBase()
-        {
-            Dispose(false);
         }
 
         /// <summary>
@@ -129,15 +122,26 @@ namespace Utilities.IO.Logging.BaseClasses
             return Name;
         }
 
-        #endregion
-    }
+        /// <summary>
+        /// Disposes of the objects
+        /// </summary>
+        /// <param name="Disposing">
+        /// True to dispose of all resources, false only disposes of native resources
+        /// </param>
+        protected virtual void Dispose(bool Disposing)
+        {
+            if (Disposing)
+                End((LogType)this);
+        }
 
-    /// <summary>
-    /// Delegate used to format the message
-    /// </summary>
-    /// <param name="Message">Message to format</param>
-    /// <param name="Type">Type of message</param>
-    /// <param name="args">Args to insert into the message</param>
-    /// <returns>The formatted message</returns>
-    public delegate string Format(string Message, MessageType Type, params object[] args);
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~LogBase()
+        {
+            Dispose(false);
+        }
+
+        #endregion Functions
+    }
 }

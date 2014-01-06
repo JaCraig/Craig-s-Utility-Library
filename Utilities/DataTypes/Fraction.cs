@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -104,21 +106,21 @@ namespace Utilities.DataTypes
             this.Reduce();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Numerator of the faction
-        /// </summary>
-        public int Numerator { get; set; }
 
         /// <summary>
         /// Denominator of the fraction
         /// </summary>
         public int Denominator { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Numerator of the faction
+        /// </summary>
+        public int Numerator { get; set; }
+
+        #endregion Properties
 
         #region Functions
 
@@ -133,7 +135,7 @@ namespace Utilities.DataTypes
             return string.Format(CultureInfo.InvariantCulture, "{0}/{1}", Numerator, Denominator);
         }
 
-        #endregion
+        #endregion ToString
 
         #region GetHashCode
 
@@ -146,7 +148,7 @@ namespace Utilities.DataTypes
             return Numerator.GetHashCode() % Denominator.GetHashCode();
         }
 
-        #endregion
+        #endregion GetHashCode
 
         #region Equals
 
@@ -165,12 +167,13 @@ namespace Utilities.DataTypes
             return Value1 == Value2;
         }
 
-        #endregion
+        #endregion Equals
 
         #region Reduce
 
         /// <summary>
-        /// Reduces the fraction (finds the greatest common denominator and divides the numerator/denominator by it).
+        /// Reduces the fraction (finds the greatest common denominator and divides the
+        /// numerator/denominator by it).
         /// </summary>
         public void Reduce()
         {
@@ -182,7 +185,7 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        #endregion Reduce
 
         #region Inverse
 
@@ -195,9 +198,9 @@ namespace Utilities.DataTypes
             return new Fraction((int)Denominator, Numerator);
         }
 
-        #endregion
+        #endregion Inverse
 
-        #endregion
+        #endregion Functions
 
         #region Operators
 
@@ -236,7 +239,7 @@ namespace Utilities.DataTypes
             return Second.Equals(First);
         }
 
-        #endregion
+        #endregion Equals
 
         #region Not Equals
 
@@ -273,7 +276,7 @@ namespace Utilities.DataTypes
             return !(First == Second);
         }
 
-        #endregion
+        #endregion Not Equals
 
         #region ToDouble
 
@@ -288,7 +291,7 @@ namespace Utilities.DataTypes
             return ((double)Fraction.Numerator / (double)Fraction.Denominator);
         }
 
-        #endregion
+        #endregion ToDouble
 
         #region ToDecimal
 
@@ -299,11 +302,11 @@ namespace Utilities.DataTypes
         /// <returns>The fraction as a decimal</returns>
         public static implicit operator decimal(Fraction Fraction)
         {
-            Contract.Requires<ArgumentNullException>(Fraction!=null,"Fraction");
+            Contract.Requires<ArgumentNullException>(Fraction != null, "Fraction");
             return ((decimal)Fraction.Numerator / (decimal)Fraction.Denominator);
         }
 
-        #endregion
+        #endregion ToDecimal
 
         #region ToFloat
 
@@ -318,7 +321,7 @@ namespace Utilities.DataTypes
             return ((float)Fraction.Numerator / (float)Fraction.Denominator);
         }
 
-        #endregion
+        #endregion ToFloat
 
         #region FromDouble
 
@@ -332,7 +335,7 @@ namespace Utilities.DataTypes
             return new Fraction(Fraction, 1.0);
         }
 
-        #endregion
+        #endregion FromDouble
 
         #region FromDecimal
 
@@ -346,7 +349,7 @@ namespace Utilities.DataTypes
             return new Fraction(Fraction, 1.0m);
         }
 
-        #endregion
+        #endregion FromDecimal
 
         #region FromFloat
 
@@ -360,7 +363,7 @@ namespace Utilities.DataTypes
             return new Fraction(Fraction, 1.0);
         }
 
-        #endregion
+        #endregion FromFloat
 
         #region FromInt
 
@@ -374,7 +377,7 @@ namespace Utilities.DataTypes
             return new Fraction(Fraction, 1);
         }
 
-        #endregion
+        #endregion FromInt
 
         #region FromUInt
 
@@ -389,7 +392,7 @@ namespace Utilities.DataTypes
             return new Fraction((int)Fraction, 1);
         }
 
-        #endregion
+        #endregion FromUInt
 
         #region ToString
 
@@ -404,7 +407,7 @@ namespace Utilities.DataTypes
             return Fraction.ToString();
         }
 
-        #endregion
+        #endregion ToString
 
         #region Multiplication
 
@@ -423,7 +426,7 @@ namespace Utilities.DataTypes
             return Result;
         }
 
-        #endregion
+        #endregion Multiplication
 
         #region Addition
 
@@ -444,7 +447,7 @@ namespace Utilities.DataTypes
             return Result;
         }
 
-        #endregion
+        #endregion Addition
 
         #region Subtraction
 
@@ -465,7 +468,7 @@ namespace Utilities.DataTypes
             return Result;
         }
 
-        #endregion
+        #endregion Subtraction
 
         #region Division
 
@@ -482,7 +485,7 @@ namespace Utilities.DataTypes
             return First * Second.Inverse();
         }
 
-        #endregion
+        #endregion Division
 
         #region Negation
 
@@ -497,8 +500,8 @@ namespace Utilities.DataTypes
             return new Fraction(-First.Numerator, First.Denominator);
         }
 
-        #endregion
+        #endregion Negation
 
-        #endregion
+        #endregion Operators
     }
 }

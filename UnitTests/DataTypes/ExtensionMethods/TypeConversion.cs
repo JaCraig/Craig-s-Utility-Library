@@ -29,8 +29,97 @@ using Xunit;
 
 namespace UnitTests.DataTypes.ExtensionMethods
 {
+    public interface IMyTestClass
+    {
+    }
+
+    public enum MyEnumTest
+    {
+        Item1,
+        Item2,
+        Item3
+    }
+
+    public class MyTestClass : IMyTestClass
+    {
+        public MyTestClass()
+        {
+            B = 10;
+        }
+
+        public virtual MyTestClass A { get; set; }
+
+        public virtual int B { get; set; }
+    }
+
     public class TypeConversion
     {
+        [Fact]
+        public void DbTypeToSqlDbType()
+        {
+            Assert.Equal(SqlDbType.Int, DbType.Int32.To(SqlDbType.Int));
+            Assert.Equal(SqlDbType.NVarChar, DbType.String.To(SqlDbType.Int));
+            Assert.Equal(SqlDbType.Real, DbType.Single.To(SqlDbType.Int));
+        }
+
+        [Fact]
+        public void DbTypeToType()
+        {
+            Assert.Equal(typeof(int), DbType.Int32.To(typeof(int)));
+            Assert.Equal(typeof(string), DbType.String.To(typeof(int)));
+            Assert.Equal(typeof(float), DbType.Single.To(typeof(int)));
+        }
+
+        [Fact]
+        public void FormatToString()
+        {
+            object TestObject = new DateTime(1999, 1, 1);
+            Assert.Equal("January 1, 1999", TestObject.FormatToString("MMMM d, yyyy"));
+        }
+
+        [Fact]
+        public void SqlDbTypeToDbType()
+        {
+            Assert.Equal(DbType.Int32, SqlDbType.Int.To(DbType.Int32));
+            Assert.Equal(DbType.String, SqlDbType.NVarChar.To(DbType.Int32));
+            Assert.Equal(DbType.Single, SqlDbType.Real.To(DbType.Int32));
+        }
+
+        [Fact]
+        public void SqlDbTypeToType()
+        {
+            Assert.Equal(typeof(int), SqlDbType.Int.To(typeof(int)));
+            Assert.Equal(typeof(string), SqlDbType.NVarChar.To(typeof(int)));
+            Assert.Equal(typeof(float), SqlDbType.Real.To(typeof(int)));
+        }
+
+        [Fact]
+        public void ToExpando()
+        {
+            MyTestClass TestObject = new MyTestClass();
+            ExpandoObject Object = TestObject.To<MyTestClass, ExpandoObject>();
+            Assert.Equal(10, ((IDictionary<string, object>)Object)["B"]);
+            ((IDictionary<string, object>)Object)["B"] = 20;
+            Assert.Equal(20, Object.To(new MyTestClass()).B);
+        }
+
+        [Fact]
+        public void ToList()
+        {
+            List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
+            List<PreDataTable> Temp2 = Temp.To().To<PreDataTable>(() => new PreDataTable());
+            Assert.Equal(Temp, Temp2);
+        }
+
+        [Fact]
+        public void TryConvert()
+        {
+            Assert.Equal(1, (1.0f).To(0));
+            Assert.Equal("2011", (2011).To(""));
+            Assert.NotNull(new MyTestClass().To<MyTestClass, IMyTestClass>());
+            Assert.NotNull(((object)new MyTestClass()).To<object, IMyTestClass>());
+        }
+
         [Fact]
         public void TypeToDbType()
         {
@@ -48,89 +137,5 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(SqlDbType.Real, typeof(float).To(SqlDbType.Int));
             Assert.Equal(SqlDbType.Int, typeof(MyEnumTest).To(SqlDbType.Int));
         }
-
-        [Fact]
-        public void DbTypeToType()
-        {
-            Assert.Equal(typeof(int), DbType.Int32.To(typeof(int)));
-            Assert.Equal(typeof(string), DbType.String.To(typeof(int)));
-            Assert.Equal(typeof(float), DbType.Single.To(typeof(int)));
-        }
-
-        [Fact]
-        public void SqlDbTypeToType()
-        {
-            Assert.Equal(typeof(int), SqlDbType.Int.To(typeof(int)));
-            Assert.Equal(typeof(string), SqlDbType.NVarChar.To(typeof(int)));
-            Assert.Equal(typeof(float), SqlDbType.Real.To(typeof(int)));
-        }
-
-        [Fact]
-        public void DbTypeToSqlDbType()
-        {
-            Assert.Equal(SqlDbType.Int, DbType.Int32.To(SqlDbType.Int));
-            Assert.Equal(SqlDbType.NVarChar, DbType.String.To(SqlDbType.Int));
-            Assert.Equal(SqlDbType.Real, DbType.Single.To(SqlDbType.Int));
-        }
-
-        [Fact]
-        public void SqlDbTypeToDbType()
-        {
-            Assert.Equal(DbType.Int32, SqlDbType.Int.To(DbType.Int32));
-            Assert.Equal(DbType.String, SqlDbType.NVarChar.To(DbType.Int32));
-            Assert.Equal(DbType.Single, SqlDbType.Real.To(DbType.Int32));
-        }
-
-        [Fact]
-        public void FormatToString()
-        {
-            object TestObject = new DateTime(1999, 1, 1);
-            Assert.Equal("January 1, 1999", TestObject.FormatToString("MMMM d, yyyy"));
-        }
-
-        [Fact]
-        public void TryConvert()
-        {
-            Assert.Equal(1, (1.0f).To(0));
-            Assert.Equal("2011", (2011).To(""));
-            Assert.NotNull(new MyTestClass().To<MyTestClass, IMyTestClass>());
-            Assert.NotNull(((object)new MyTestClass()).To<object, IMyTestClass>());
-        }
-
-        [Fact]
-        public void ToList()
-        {
-            List<PreDataTable> Temp = new PreDataTable[] { new PreDataTable { ID = 1, Value = "A" }, new PreDataTable { ID = 2, Value = "B" }, new PreDataTable { ID = 3, Value = "C" } }.ToList();
-            List<PreDataTable> Temp2 = Temp.To().To<PreDataTable>(() => new PreDataTable());
-            Assert.Equal(Temp, Temp2);
-        }
-
-        [Fact]
-        public void ToExpando()
-        {
-            MyTestClass TestObject = new MyTestClass();
-            ExpandoObject Object = TestObject.To<MyTestClass, ExpandoObject>();
-            Assert.Equal(10, ((IDictionary<string, object>)Object)["B"]);
-            ((IDictionary<string, object>)Object)["B"] = 20;
-            Assert.Equal(20, Object.To(new MyTestClass()).B);
-        }
-    }
-
-    public enum MyEnumTest
-    {
-        Item1,
-        Item2,
-        Item3
-    }
-
-    public class MyTestClass:IMyTestClass
-    {
-        public MyTestClass() { B = 10; }
-        public virtual MyTestClass A { get; set; }
-        public virtual int B { get; set; }
-    }
-
-    public interface IMyTestClass
-    {
     }
 }

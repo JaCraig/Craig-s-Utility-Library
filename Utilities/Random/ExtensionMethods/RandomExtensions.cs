@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +31,7 @@ using Utilities.DataTypes;
 using Utilities.Random.DefaultClasses;
 using Utilities.Random.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Random
 {
@@ -49,7 +50,9 @@ namespace Utilities.Random
         /// </summary>
         /// <typeparam name="T">Type to generate</typeparam>
         /// <param name="Random">Random object</param>
-        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
+        /// <param name="Generator">
+        /// Generator to be used (if not included, default generator is used)
+        /// </param>
         /// <returns>The randomly generated value</returns>
         public static T Next<T>(this System.Random Random, IGenerator<T> Generator = null)
         {
@@ -69,28 +72,11 @@ namespace Utilities.Random
         /// </summary>
         /// <typeparam name="T">Type to generate</typeparam>
         /// <param name="Random">Random object</param>
-        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
-        /// <returns>The randomly generated value</returns>
-        public static T NextClass<T>(this System.Random Random, IGenerator<T> Generator = null)
-            where T : class,new()
-        {
-            Contract.Requires<ArgumentNullException>(Random != null, "Random");
-            SetupGenerators();
-            if (Generator == null)
-            {
-                Generator = new ClassGenerator<T>();
-            }
-            return Generator.Next(Random);
-        }
-
-        /// <summary>
-        /// Randomly generates a value of the specified type
-        /// </summary>
-        /// <typeparam name="T">Type to generate</typeparam>
-        /// <param name="Random">Random object</param>
         /// <param name="Max">Maximum value (inclusive)</param>
         /// <param name="Min">Minimum value (inclusive)</param>
-        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
+        /// <param name="Generator">
+        /// Generator to be used (if not included, default generator is used)
+        /// </param>
         /// <returns>The randomly generated value</returns>
         public static T Next<T>(this System.Random Random, T Min, T Max, IGenerator<T> Generator = null)
         {
@@ -111,7 +97,9 @@ namespace Utilities.Random
         /// <typeparam name="T">Type to the be generated</typeparam>
         /// <param name="Random">Random object</param>
         /// <param name="Amount">Number of items to generate</param>
-        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
+        /// <param name="Generator">
+        /// Generator to be used (if not included, default generator is used)
+        /// </param>
         /// <returns>The randomly generated value</returns>
         public static IEnumerable<T> Next<T>(this System.Random Random, int Amount, IGenerator<T> Generator = null)
         {
@@ -132,29 +120,11 @@ namespace Utilities.Random
         /// <typeparam name="T">Type to the be generated</typeparam>
         /// <param name="Random">Random object</param>
         /// <param name="Amount">Number of items to generate</param>
-        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
-        /// <returns>The randomly generated value</returns>
-        public static IEnumerable<T> NextClass<T>(this System.Random Random, int Amount, IGenerator<T> Generator = null)
-            where T : class,new()
-        {
-            Contract.Requires<ArgumentNullException>(Random != null, "Random");
-            SetupGenerators();
-            if (Generator == null)
-            {
-                Generator = new ClassGenerator<T>();
-            }
-            return Amount.Times(x => Generator.Next(Random));
-        }
-
-        /// <summary>
-        /// Randomly generates a list of values of the specified type
-        /// </summary>
-        /// <typeparam name="T">Type to the be generated</typeparam>
-        /// <param name="Random">Random object</param>
-        /// <param name="Amount">Number of items to generate</param>
         /// <param name="Max">Maximum value (inclusive)</param>
         /// <param name="Min">Minimum value (inclusive)</param>
-        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
+        /// <param name="Generator">
+        /// Generator to be used (if not included, default generator is used)
+        /// </param>
         /// <returns>The randomly generated value</returns>
         public static IEnumerable<T> Next<T>(this System.Random Random, int Amount, T Min, T Max, IGenerator<T> Generator = null)
         {
@@ -192,7 +162,50 @@ namespace Utilities.Random
             return default(T);
         }
 
-        #endregion
+        /// <summary>
+        /// Randomly generates a value of the specified type
+        /// </summary>
+        /// <typeparam name="T">Type to generate</typeparam>
+        /// <param name="Random">Random object</param>
+        /// <param name="Generator">
+        /// Generator to be used (if not included, default generator is used)
+        /// </param>
+        /// <returns>The randomly generated value</returns>
+        public static T NextClass<T>(this System.Random Random, IGenerator<T> Generator = null)
+            where T : class,new()
+        {
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
+            SetupGenerators();
+            if (Generator == null)
+            {
+                Generator = new ClassGenerator<T>();
+            }
+            return Generator.Next(Random);
+        }
+
+        /// <summary>
+        /// Randomly generates a list of values of the specified type
+        /// </summary>
+        /// <typeparam name="T">Type to the be generated</typeparam>
+        /// <param name="Random">Random object</param>
+        /// <param name="Amount">Number of items to generate</param>
+        /// <param name="Generator">
+        /// Generator to be used (if not included, default generator is used)
+        /// </param>
+        /// <returns>The randomly generated value</returns>
+        public static IEnumerable<T> NextClass<T>(this System.Random Random, int Amount, IGenerator<T> Generator = null)
+            where T : class,new()
+        {
+            Contract.Requires<ArgumentNullException>(Random != null, "Random");
+            SetupGenerators();
+            if (Generator == null)
+            {
+                Generator = new ClassGenerator<T>();
+            }
+            return Amount.Times(x => Generator.Next(Random));
+        }
+
+        #endregion Next
 
         #region NextEnum
 
@@ -201,7 +214,9 @@ namespace Utilities.Random
         /// </summary>
         /// <typeparam name="T">Type to generate</typeparam>
         /// <param name="Random">Random object</param>
-        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
+        /// <param name="Generator">
+        /// Generator to be used (if not included, default generator is used)
+        /// </param>
         /// <returns>The randomly generated value</returns>
         public static T NextEnum<T>(this System.Random Random, IGenerator<T> Generator = null)
         {
@@ -217,7 +232,9 @@ namespace Utilities.Random
         /// <typeparam name="T">Type to the be generated</typeparam>
         /// <param name="Random">Random object</param>
         /// <param name="Amount">Number of items to generate</param>
-        /// <param name="Generator">Generator to be used (if not included, default generator is used)</param>
+        /// <param name="Generator">
+        /// Generator to be used (if not included, default generator is used)
+        /// </param>
         /// <returns>The randomly generated value</returns>
         public static IEnumerable<T> NextEnum<T>(this System.Random Random, int Amount, IGenerator<T> Generator = null)
         {
@@ -227,7 +244,7 @@ namespace Utilities.Random
             return Amount.Times(x => Generator.Next(Random));
         }
 
-        #endregion
+        #endregion NextEnum
 
         #region RegisterGenerator
 
@@ -259,7 +276,7 @@ namespace Utilities.Random
             return Rand;
         }
 
-        #endregion
+        #endregion RegisterGenerator
 
         #region ResetGenerators
 
@@ -275,7 +292,7 @@ namespace Utilities.Random
             return Random;
         }
 
-        #endregion
+        #endregion ResetGenerators
 
         #region Shuffle
 
@@ -288,16 +305,18 @@ namespace Utilities.Random
         /// <returns>The shuffled list</returns>
         public static IEnumerable<T> Shuffle<T>(this System.Random Random, IEnumerable<T> List)
         {
-            if (List==null||List.Count()==0)
+            if (List == null || List.Count() == 0)
                 return List;
             return List.OrderBy(x => Random.Next());
         }
 
-        #endregion
+        #endregion Shuffle
 
-        #endregion
+        #endregion Functions
 
         #region Private Functions/Variables
+
+        private static Dictionary<Type, IGenerator> Generators = null;
 
         private static void SetupGenerators()
         {
@@ -323,8 +342,6 @@ namespace Utilities.Random
             Generators.Add(typeof(string), new StringGenerator());
         }
 
-        private static Dictionary<Type, IGenerator> Generators = null;
-
-        #endregion
+        #endregion Private Functions/Variables
     }
 }

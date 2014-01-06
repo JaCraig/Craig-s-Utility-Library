@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -65,9 +66,14 @@ namespace Utilities.DataTypes
             Buffer = new T[MaxCapacity];
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
+
+        /// <summary>
+        /// Is overflow allowed?
+        /// </summary>
+        public bool AllowOverflow { get; protected set; }
 
         /// <summary>
         /// Item count for the circular buffer
@@ -80,9 +86,9 @@ namespace Utilities.DataTypes
         public bool IsReadOnly { get; protected set; }
 
         /// <summary>
-        /// Is overflow allowed?
+        /// Is this synchronized?
         /// </summary>
-        public bool AllowOverflow { get; protected set; }
+        public bool IsSynchronized { get; protected set; }
 
         /// <summary>
         /// Maximum capacity
@@ -90,14 +96,9 @@ namespace Utilities.DataTypes
         public int MaxCapacity { get; protected set; }
 
         /// <summary>
-        /// Is this synchronized?
-        /// </summary>
-        public bool IsSynchronized { get; protected set; }
-
-        /// <summary>
         /// Sync root
         /// </summary>
-        public object SyncRoot 
+        public object SyncRoot
         {
             get
             {
@@ -106,7 +107,6 @@ namespace Utilities.DataTypes
                 return Root;
             }
         }
-        private object Root;
 
         /// <summary>
         /// Buffer that the circular buffer uses
@@ -144,7 +144,9 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        private object Root;
+
+        #endregion Properties
 
         #region Functions
 
@@ -191,7 +193,7 @@ namespace Utilities.DataTypes
                 Add(buffer[x]);
         }
 
-        #endregion
+        #endregion Add
 
         #region Clear
 
@@ -207,7 +209,7 @@ namespace Utilities.DataTypes
                 Buffer[x] = default(T);
         }
 
-        #endregion
+        #endregion Clear
 
         #region Constains
 
@@ -230,8 +232,8 @@ namespace Utilities.DataTypes
             }
             return false;
         }
-        
-        #endregion
+
+        #endregion Constains
 
         #region CopyTo
 
@@ -275,7 +277,7 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        #endregion CopyTo
 
         #region GetEnumerator
 
@@ -304,7 +306,7 @@ namespace Utilities.DataTypes
             return (IEnumerator)GetEnumerator();
         }
 
-        #endregion
+        #endregion GetEnumerator
 
         #region Remove
 
@@ -390,7 +392,7 @@ namespace Utilities.DataTypes
             return MaxLength;
         }
 
-        #endregion
+        #endregion Remove
 
         #region Skip
 
@@ -408,18 +410,9 @@ namespace Utilities.DataTypes
                 ReadPosition %= MaxCapacity;
         }
 
-        #endregion
+        #endregion Skip
 
         #region ToString
-
-        /// <summary>
-        /// Returns the buffer as a string
-        /// </summary>
-        /// <returns>The buffer as a string</returns>
-        public override string ToString()
-        {
-            return Buffer.ToString<T>();
-        }
 
         /// <summary>
         /// Converts the object to a string
@@ -432,8 +425,17 @@ namespace Utilities.DataTypes
             return Value.ToString();
         }
 
-        #endregion
+        /// <summary>
+        /// Returns the buffer as a string
+        /// </summary>
+        /// <returns>The buffer as a string</returns>
+        public override string ToString()
+        {
+            return Buffer.ToString<T>();
+        }
 
-        #endregion
+        #endregion ToString
+
+        #endregion Functions
     }
 }

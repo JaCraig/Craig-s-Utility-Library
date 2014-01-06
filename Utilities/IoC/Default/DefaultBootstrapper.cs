@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IoC.Default
 {
@@ -45,19 +47,9 @@ namespace Utilities.IoC.Default
             _AppContainer = new Dictionary<Tuple<Type, string>, ITypeBuilder>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        private IDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
-
-        /// <summary>
-        /// App container
-        /// </summary>
-        protected override IDictionary<Tuple<Type, string>, ITypeBuilder> AppContainer
-        {
-            get { return _AppContainer; }
-        }
 
         /// <summary>
         /// Name of the bootstrapper
@@ -67,7 +59,17 @@ namespace Utilities.IoC.Default
             get { return "Default bootstrapper"; }
         }
 
-        #endregion
+        /// <summary>
+        /// App container
+        /// </summary>
+        protected override IDictionary<Tuple<Type, string>, ITypeBuilder> AppContainer
+        {
+            get { return _AppContainer; }
+        }
+
+        private IDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
+
+        #endregion Properties
 
         #region Functions
 
@@ -79,7 +81,7 @@ namespace Utilities.IoC.Default
         /// <typeparam name="T">Type to register</typeparam>
         /// <param name="Object">Object to return</param>
         /// <param name="Name">Name to associate with it</param>
-        public override void Register<T>(T Object, string Name="")
+        public override void Register<T>(T Object, string Name = "")
         {
             Register(() => Object, Name);
         }
@@ -89,7 +91,7 @@ namespace Utilities.IoC.Default
         /// </summary>
         /// <typeparam name="T">Type to register</typeparam>
         /// <param name="Name">Name to associate with it</param>
-        public override void Register<T>(string Name="")
+        public override void Register<T>(string Name = "")
         {
             Register(() => new T(), Name);
         }
@@ -100,7 +102,7 @@ namespace Utilities.IoC.Default
         /// <typeparam name="T1">Interface/base class</typeparam>
         /// <typeparam name="T2">Implementation</typeparam>
         /// <param name="Name">Name to associate with it</param>
-        public override void Register<T1, T2>(string Name="")
+        public override void Register<T1, T2>(string Name = "")
         {
             Register<T1>(() => new T2(), Name);
         }
@@ -111,7 +113,7 @@ namespace Utilities.IoC.Default
         /// <typeparam name="T">Type to register</typeparam>
         /// <param name="Function">Function used to create the type</param>
         /// <param name="Name">Name to associate with the function</param>
-        public override void Register<T>(Func<T> Function, string Name="")
+        public override void Register<T>(Func<T> Function, string Name = "")
         {
             Tuple<Type, string> Key = new Tuple<Type, string>(typeof(T), Name);
             if (AppContainer.ContainsKey(Key))
@@ -124,7 +126,7 @@ namespace Utilities.IoC.Default
             }
         }
 
-        #endregion
+        #endregion Register
 
         #region Resolve
 
@@ -138,6 +140,7 @@ namespace Utilities.IoC.Default
         {
             return (T)Resolve(typeof(T), "", DefaultObject);
         }
+
         /// <summary>
         /// Resolves an object based on the type specified
         /// </summary>
@@ -180,7 +183,7 @@ namespace Utilities.IoC.Default
             catch { return DefaultObject; }
         }
 
-        #endregion
+        #endregion Resolve
 
         #region ResolveAll
 
@@ -221,7 +224,7 @@ namespace Utilities.IoC.Default
             return ReturnValues;
         }
 
-        #endregion
+        #endregion ResolveAll
 
         #region Dispose
 
@@ -243,8 +246,8 @@ namespace Utilities.IoC.Default
             base.Dispose(Managed);
         }
 
-        #endregion
+        #endregion Dispose
 
-        #endregion
+        #endregion Functions
     }
 }

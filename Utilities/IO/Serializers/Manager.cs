@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -27,7 +28,8 @@ using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.Serializers.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Serializers
 {
@@ -64,7 +66,7 @@ namespace Utilities.IO.Serializers
                                    });
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -73,38 +75,9 @@ namespace Utilities.IO.Serializers
         /// </summary>
         protected IDictionary<string, ISerializer> Serializers { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Serializes the object based on the content type specified
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to serialize</param>
-        /// <param name="ContentType">Content type (MIME type)</param>
-        /// <typeparam name="R">Return type</typeparam>
-        /// <returns>The serialized object as a string</returns>
-        public R Serialize<T, R>(T Object, string ContentType = "application/json")
-        {
-            return Serialize<R>(Object, typeof(T), ContentType);
-        }
-
-        /// <summary>
-        /// Serializes the object based on the content type specified
-        /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Object">Object to serialize</param>
-        /// <param name="ContentType">Content type (MIME type)</param>
-        /// <typeparam name="T">Return type</typeparam>
-        /// <returns>The serialized object as a string</returns>
-        public T Serialize<T>(object Object, Type ObjectType, string ContentType = "application/json")
-        {
-            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
-            if (!Serializers.ContainsKey(ContentType) || Serializers[ContentType].ReturnType != typeof(T))
-                return default(T);
-            return ((ISerializer<T>)Serializers[ContentType]).Serialize(ObjectType, Object);
-        }
 
         /// <summary>
         /// Deserializes the data to an object
@@ -136,6 +109,35 @@ namespace Utilities.IO.Serializers
         }
 
         /// <summary>
+        /// Serializes the object based on the content type specified
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Object">Object to serialize</param>
+        /// <param name="ContentType">Content type (MIME type)</param>
+        /// <typeparam name="R">Return type</typeparam>
+        /// <returns>The serialized object as a string</returns>
+        public R Serialize<T, R>(T Object, string ContentType = "application/json")
+        {
+            return Serialize<R>(Object, typeof(T), ContentType);
+        }
+
+        /// <summary>
+        /// Serializes the object based on the content type specified
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Object">Object to serialize</param>
+        /// <param name="ContentType">Content type (MIME type)</param>
+        /// <typeparam name="T">Return type</typeparam>
+        /// <returns>The serialized object as a string</returns>
+        public T Serialize<T>(object Object, Type ObjectType, string ContentType = "application/json")
+        {
+            Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
+            if (!Serializers.ContainsKey(ContentType) || Serializers[ContentType].ReturnType != typeof(T))
+                return default(T);
+            return ((ISerializer<T>)Serializers[ContentType]).Serialize(ObjectType, Object);
+        }
+
+        /// <summary>
         /// Outputs information about the serializers the system is using
         /// </summary>
         /// <returns>String version of the object</returns>
@@ -149,6 +151,6 @@ namespace Utilities.IO.Serializers
             return Builder.ToString();
         }
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Net.Mail;
 using UnitTests.Fixtures;
-using Utilities.IO;
 using Xunit;
 
 namespace UnitTests.IO.FileFormats
@@ -62,7 +61,6 @@ namespace UnitTests.IO.FileFormats
 
         public void SetFixture(TestingDirectoryFixture data)
         {
-
         }
     }
 }

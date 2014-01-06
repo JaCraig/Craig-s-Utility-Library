@@ -20,8 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.IO.FileFormats.FixedLength.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
 {
@@ -40,7 +42,7 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -54,7 +56,7 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
         /// </summary>
         public virtual T Value { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -75,6 +77,6 @@ namespace Utilities.IO.FileFormats.FixedLength.BaseClasses
             return Value.ToString();
         }
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,17 +20,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Globalization;
 using System.Web;
 using Utilities.IO.Logging.BaseClasses;
 using Utilities.IO.Logging.Enums;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Logging.Default
 {
     /// <summary>
-    /// Outputs messages to a file in ~/App_Data/Logs/ if a web app or ~/Logs/ if windows app with the format Name+DateTime.Now+".log"
+    /// Outputs messages to a file in ~/App_Data/Logs/ if a web app or ~/Logs/ if windows app with
+    /// the format Name+DateTime.Now+".log"
     /// </summary>
     public class DefaultLog : LogBase<DefaultLog>
     {

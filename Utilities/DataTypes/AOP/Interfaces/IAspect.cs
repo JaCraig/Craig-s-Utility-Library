@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.AOP.Interfaces
 {
@@ -35,11 +37,10 @@ namespace Utilities.DataTypes.AOP.Interfaces
         #region Functions
 
         /// <summary>
-        /// Used to insert code at the beginning of the method
+        /// Used to hook into the object once it has been created
         /// </summary>
-        /// <param name="Method">Overridding Method</param>
-        /// <param name="BaseType">Base type</param>
-        string SetupStartMethod(MethodInfo Method, Type BaseType);
+        /// <param name="Object">Object created by the system</param>
+        void Setup(object Object);
 
         /// <summary>
         /// Used to insert code at the end of the method
@@ -57,20 +58,26 @@ namespace Utilities.DataTypes.AOP.Interfaces
         string SetupExceptionMethod(MethodInfo Method, Type BaseType);
 
         /// <summary>
-        /// Used to hook into the object once it has been created
-        /// </summary>
-        /// <param name="Object">Object created by the system</param>
-        void Setup(object Object);
-
-        /// <summary>
         /// Used to set up any interfaces, extra fields, methods, etc. prior to overridding any methods.
         /// </summary>
         /// <param name="Type">Type of the object</param>
         string SetupInterfaces(Type Type);
 
-        #endregion
+        /// <summary>
+        /// Used to insert code at the beginning of the method
+        /// </summary>
+        /// <param name="Method">Overridding Method</param>
+        /// <param name="BaseType">Base type</param>
+        string SetupStartMethod(MethodInfo Method, Type BaseType);
+
+        #endregion Functions
 
         #region Properties
+
+        /// <summary>
+        /// Set of assemblies that the aspect requires
+        /// </summary>
+        ICollection<Assembly> AssembliesUsing { get; }
 
         /// <summary>
         /// List of interfaces that need to be injected by this aspect
@@ -82,11 +89,6 @@ namespace Utilities.DataTypes.AOP.Interfaces
         /// </summary>
         ICollection<string> Usings { get; }
 
-        /// <summary>
-        /// Set of assemblies that the aspect requires
-        /// </summary>
-        ICollection<Assembly> AssembliesUsing { get; }
-
-        #endregion
+        #endregion Properties
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,7 +29,8 @@ using System.Reflection;
 using System.Text;
 using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.AOP
 {
@@ -68,7 +70,7 @@ namespace Utilities.DataTypes.AOP
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -78,18 +80,42 @@ namespace Utilities.DataTypes.AOP
         protected static Compiler Compiler { get; private set; }
 
         /// <summary>
-        /// Dictionary containing generated types and associates it with original type
-        /// </summary>
-        private static IDictionary<Type, Type> Classes = new Dictionary<Type, Type>();
-
-        /// <summary>
         /// The list of aspects that are being used
         /// </summary>
         private static ICollection<IAspect> Aspects = new List<IAspect>();
 
-        #endregion
+        /// <summary>
+        /// Dictionary containing generated types and associates it with original type
+        /// </summary>
+        private static IDictionary<Type, Type> Classes = new Dictionary<Type, Type>();
+
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Creates an object of the specified base type, registering the type if necessary
+        /// </summary>
+        /// <typeparam name="T">The base type</typeparam>
+        /// <returns>Returns an object of the specified base type</returns>
+        public virtual T Create<T>()
+        {
+            return (T)Create(typeof(T));
+        }
+
+        /// <summary>
+        /// Creates an object of the specified base type, registering the type if necessary
+        /// </summary>
+        /// <param name="BaseType">The base type</param>
+        /// <returns>Returns an object of the specified base type</returns>
+        public virtual object Create(Type BaseType)
+        {
+            if (!Classes.ContainsKey(BaseType))
+                Setup(BaseType);
+            object ReturnObject = Classes[BaseType].Assembly.CreateInstance(Classes[BaseType].FullName);
+            Aspects.ForEach(x => x.Setup(ReturnObject));
+            return ReturnObject;
+        }
 
         /// <summary>
         /// Sets up a type so it can be used in the system later
@@ -117,7 +143,7 @@ namespace Utilities.DataTypes.AOP
             List<Type> Interfaces = new List<Type>();
             Aspects.ForEach(x => Interfaces.AddRange(x.InterfacesUsing == null ? new List<Type>() : x.InterfacesUsing));
             StringBuilder Builder = new StringBuilder();
-            string Namespace="CULGeneratedTypes.C" + Guid.NewGuid().ToString("N");
+            string Namespace = "CULGeneratedTypes.C" + Guid.NewGuid().ToString("N");
             Builder.AppendLineFormat(@"{0}
 namespace {1}
 {{
@@ -149,15 +175,15 @@ namespace {1}
                     {
                         AssembliesUsing.AddIfUnique(GetAssemblies(Property.PropertyType));
                         Builder.AppendLineFormat(@"
-        public override {0} {1} 
-        {{ 
-            get 
-            {{ 
-                {2} 
-            }} 
-            set 
-            {{ 
-                {3} 
+        public override {0} {1}
+        {{
+            get
+            {{
+                {2}
+            }}
+            set
+            {{
+                {3}
             }}
         }}",
                                                     Property.PropertyType.GetName(),
@@ -175,11 +201,11 @@ namespace {1}
                     {
                         AssembliesUsing.AddIfUnique(GetAssemblies(Property.PropertyType));
                         Builder.AppendLineFormat(@"
-        public override {0} {1} 
-        {{ 
-            get 
-            {{ 
-                {2} 
+        public override {0} {1}
+        {{
+            get
+            {{
+                {2}
             }}
         }}",
                                                     Property.PropertyType.GetName(),
@@ -198,7 +224,7 @@ namespace {1}
                         string Static = Method.IsStatic ? "static " : "";
                         Builder.AppendLineFormat(@"
         {4} override {0} {1}({2})
-        {{ 
+        {{
             {3}
         }}",
                                                     Static + Method.ReturnType.GetName(),
@@ -233,31 +259,6 @@ namespace {1}
             }
             return Types.ToArray();
         }
-
-        /// <summary>
-        /// Creates an object of the specified base type, registering the type if necessary
-        /// </summary>
-        /// <typeparam name="T">The base type</typeparam>
-        /// <returns>Returns an object of the specified base type</returns>
-        public virtual T Create<T>()
-        {
-            return (T)Create(typeof(T));
-        }
-
-        /// <summary>
-        /// Creates an object of the specified base type, registering the type if necessary
-        /// </summary>
-        /// <param name="BaseType">The base type</param>
-        /// <returns>Returns an object of the specified base type</returns>
-        public virtual object Create(Type BaseType)
-        {
-            if (!Classes.ContainsKey(BaseType))
-                Setup(BaseType);
-            object ReturnObject = Classes[BaseType].Assembly.CreateInstance(Classes[BaseType].FullName);
-            Aspects.ForEach(x => x.Setup(ReturnObject));
-            return ReturnObject;
-        }
-
 
         private static string SetupMethod(Type Type, MethodInfo MethodInfo, bool IsProperty)
         {
@@ -304,6 +305,6 @@ namespace {1}
             return Builder.ToString();
         }
 
-        #endregion
+        #endregion Functions
     }
 }

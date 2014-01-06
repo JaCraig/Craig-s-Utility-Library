@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Reflection;
 using Utilities.DataTypes.DataMapper.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.DataMapper.BaseClasses
 {
@@ -45,7 +47,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             this.Mappings = new List<IMapping<Left, Right>>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -54,9 +56,45 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// </summary>
         protected ICollection<IMapping<Left, Right>> Mappings { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Adds a mapping
+        /// </summary>
+        /// <param name="LeftExpression">Left expression</param>
+        /// <param name="RightExpression">Right expression</param>
+        /// <returns>This</returns>
+        public abstract ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression);
+
+        /// <summary>
+        /// Adds a mapping
+        /// </summary>
+        /// <param name="LeftGet">Left get function</param>
+        /// <param name="LeftSet">Left set action</param>
+        /// <param name="RightExpression">Right expression</param>
+        /// <returns>This</returns>
+        public abstract ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression);
+
+        /// <summary>
+        /// Adds a mapping
+        /// </summary>
+        /// <param name="LeftExpression">Left expression</param>
+        /// <param name="RightGet">Right get function</param>
+        /// <param name="RightSet">Right set function</param>
+        /// <returns>This</returns>
+        public abstract ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet);
+
+        /// <summary>
+        /// Adds a mapping
+        /// </summary>
+        /// <param name="LeftGet">Left get function</param>
+        /// <param name="LeftSet">Left set function</param>
+        /// <param name="RightGet">Right get function</param>
+        /// <param name="RightSet">Right set function</param>
+        /// <returns>This</returns>
+        public abstract ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet);
 
         /// <summary>
         /// Automatically maps properties that are named the same thing
@@ -105,6 +143,66 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         public void Copy(object Source, object Destination)
         {
             Copy((Left)Source, (Right)Destination);
+        }
+
+        /// <summary>
+        /// Copies from the source to the destination
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        public abstract void Copy(Left Source, Right Destination);
+
+        /// <summary>
+        /// Copies from the source to the destination
+        /// </summary>
+        /// <param name="Source">Source object</param>
+        /// <param name="Destination">Destination object</param>
+        public abstract void Copy(Right Source, Left Destination);
+
+        /// <summary>
+        /// Copies from the source to the destination (used in instances when both Left and Right
+        /// are the same type and thus Copy is ambiguous)
+        /// </summary>
+        /// <param name="Source">Source</param>
+        /// <param name="Destination">Destination</param>
+        public abstract void CopyLeftToRight(Left Source, Right Destination);
+
+        /// <summary>
+        /// Copies from the source to the destination (used in instances when both Left and Right
+        /// are the same type and thus Copy is ambiguous)
+        /// </summary>
+        /// <param name="Source">Source</param>
+        /// <param name="Destination">Destination</param>
+        public abstract void CopyRightToLeft(Right Source, Left Destination);
+
+        private void AddIDictionaryMappings()
+        {
+            this.AddMapping(x => x,
+            new Action<Left, object>((x, y) =>
+            {
+                IDictionary<string, object> LeftSide = (IDictionary<string, object>)x;
+                IDictionary<string, object> RightSide = (IDictionary<string, object>)y;
+                foreach (string Key in RightSide.Keys)
+                {
+                    if (LeftSide.ContainsKey(Key))
+                        LeftSide[Key] = RightSide[Key];
+                    else
+                        LeftSide.Add(Key, RightSide[Key]);
+                }
+            }),
+            x => x,
+            new Action<Right, object>((x, y) =>
+            {
+                IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
+                IDictionary<string, object> RightSide = (IDictionary<string, object>)x;
+                foreach (string Key in LeftSide.Keys)
+                {
+                    if (RightSide.ContainsKey(Key))
+                        RightSide[Key] = LeftSide[Key];
+                    else
+                        RightSide.Add(Key, LeftSide[Key]);
+                }
+            }));
         }
 
         private void AddLeftIDictionaryMapping(Type LeftType, Type RightType)
@@ -179,104 +277,6 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             }
         }
 
-        private void AddIDictionaryMappings()
-        {
-            this.AddMapping(x => x,
-            new Action<Left, object>((x, y) =>
-            {
-                IDictionary<string, object> LeftSide = (IDictionary<string, object>)x;
-                IDictionary<string, object> RightSide = (IDictionary<string, object>)y;
-                foreach (string Key in RightSide.Keys)
-                {
-                    if (LeftSide.ContainsKey(Key))
-                        LeftSide[Key] = RightSide[Key];
-                    else
-                        LeftSide.Add(Key, RightSide[Key]);
-                }
-            }),
-            x => x,
-            new Action<Right, object>((x, y) =>
-            {
-                IDictionary<string, object> LeftSide = (IDictionary<string, object>)y;
-                IDictionary<string, object> RightSide = (IDictionary<string, object>)x;
-                foreach (string Key in LeftSide.Keys)
-                {
-                    if (RightSide.ContainsKey(Key))
-                        RightSide[Key] = LeftSide[Key];
-                    else
-                        RightSide.Add(Key, LeftSide[Key]);
-                }
-            }));
-        }
-
-        /// <summary>
-        /// Adds a mapping
-        /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightExpression">Right expression</param>
-        /// <returns>This</returns>
-        public abstract ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Expression<Func<Right, object>> RightExpression);
-
-        /// <summary>
-        /// Adds a mapping
-        /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set action</param>
-        /// <param name="RightExpression">Right expression</param>
-        /// <returns>This</returns>
-        public abstract ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Expression<Func<Right, object>> RightExpression);
-
-        /// <summary>
-        /// Adds a mapping
-        /// </summary>
-        /// <param name="LeftExpression">Left expression</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
-        /// <returns>This</returns>
-        public abstract ITypeMapping<Left, Right> AddMapping(Expression<Func<Left, object>> LeftExpression, Func<Right, object> RightGet, Action<Right, object> RightSet);
-
-        /// <summary>
-        /// Adds a mapping
-        /// </summary>
-        /// <param name="LeftGet">Left get function</param>
-        /// <param name="LeftSet">Left set function</param>
-        /// <param name="RightGet">Right get function</param>
-        /// <param name="RightSet">Right set function</param>
-        /// <returns>This</returns>
-        public abstract ITypeMapping<Left, Right> AddMapping(Func<Left, object> LeftGet, Action<Left, object> LeftSet, Func<Right, object> RightGet, Action<Right, object> RightSet);
-
-        /// <summary>
-        /// Copies from the source to the destination
-        /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public abstract void Copy(Left Source, Right Destination);
-
-        /// <summary>
-        /// Copies from the source to the destination
-        /// </summary>
-        /// <param name="Source">Source object</param>
-        /// <param name="Destination">Destination object</param>
-        public abstract void Copy(Right Source, Left Destination);
-
-        /// <summary>
-        /// Copies from the source to the destination (used in 
-        /// instances when both Left and Right are the same type
-        /// and thus Copy is ambiguous)
-        /// </summary>
-        /// <param name="Source">Source</param>
-        /// <param name="Destination">Destination</param>
-        public abstract void CopyLeftToRight(Left Source, Right Destination);
-
-        /// <summary>
-        /// Copies from the source to the destination (used in 
-        /// instances when both Left and Right are the same type
-        /// and thus Copy is ambiguous)
-        /// </summary>
-        /// <param name="Source">Source</param>
-        /// <param name="Destination">Destination</param>
-        public abstract void CopyRightToLeft(Right Source, Left Destination);
-
-        #endregion
+        #endregion Functions
     }
 }

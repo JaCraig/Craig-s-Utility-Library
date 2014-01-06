@@ -21,8 +21,6 @@ THE SOFTWARE.*/
 
 using Xunit;
 
-
-
 namespace UnitTests.DataTypes
 {
     public class StringTemplate

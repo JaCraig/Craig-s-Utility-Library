@@ -27,6 +27,50 @@ namespace UnitTests.IO.FileSystem.Default
     public class LocalDirectory
     {
         [Fact]
+        public void Clone()
+        {
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = (Utilities.IO.FileSystem.Default.LocalDirectory)Temp.Clone();
+            Assert.True(Temp == Temp2);
+            Assert.True(Temp.Equals(Temp2));
+            Assert.Equal(0, Temp.CompareTo(Temp2));
+            Assert.False(Temp < Temp2);
+            Assert.False(Temp > Temp2);
+            Assert.True(Temp <= Temp2);
+            Assert.True(Temp >= Temp2);
+            Assert.False(Temp != Temp2);
+        }
+
+        [Fact]
+        public void Copy()
+        {
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
+            Temp.Create();
+            Temp2.Create();
+            IDirectory Temp3 = Temp2.CopyTo(Temp);
+            Assert.True(Temp.Exists);
+            Assert.True(Temp2.Exists);
+            Assert.True(Temp3.Exists);
+            Assert.Equal(Temp, Temp3);
+            Assert.NotEqual(Temp, Temp2);
+            Assert.NotEqual(Temp2, Temp3);
+            Temp.Delete();
+            Temp2.Delete();
+            Assert.False(Temp.Exists);
+        }
+
+        [Fact]
+        public void CreateAndDelete()
+        {
+            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
+            Temp.Create();
+            Assert.True(Temp.Exists);
+            Temp.Delete();
+            Assert.False(Temp.Exists);
+        }
+
+        [Fact]
         public void Creation()
         {
             Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
@@ -60,32 +104,6 @@ namespace UnitTests.IO.FileSystem.Default
         }
 
         [Fact]
-        public void Clone()
-        {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory(".");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = (Utilities.IO.FileSystem.Default.LocalDirectory)Temp.Clone();
-            Assert.True(Temp == Temp2);
-            Assert.True(Temp.Equals(Temp2));
-            Assert.Equal(0, Temp.CompareTo(Temp2));
-            Assert.False(Temp < Temp2);
-            Assert.False(Temp > Temp2);
-            Assert.True(Temp <= Temp2);
-            Assert.True(Temp >= Temp2);
-            Assert.False(Temp != Temp2);
-        }
-
-        [Fact]
-        public void CreateAndDelete()
-        {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
-            Temp.Create();
-            Assert.True(Temp.Exists);
-            Temp.Delete();
-            Assert.False(Temp.Exists);
-        }
-
-
-        [Fact]
         public void Move()
         {
             Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
@@ -97,25 +115,6 @@ namespace UnitTests.IO.FileSystem.Default
             Assert.True(Temp2.Exists);
             Assert.Equal(Temp, Temp2.Parent);
             Temp.Delete();
-            Assert.False(Temp.Exists);
-        }
-
-        [Fact]
-        public void Copy()
-        {
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test");
-            Utilities.IO.FileSystem.Default.LocalDirectory Temp2 = new Utilities.IO.FileSystem.Default.LocalDirectory("./Test2");
-            Temp.Create();
-            Temp2.Create();
-            IDirectory Temp3 = Temp2.CopyTo(Temp);
-            Assert.True(Temp.Exists);
-            Assert.True(Temp2.Exists);
-            Assert.True(Temp3.Exists);
-            Assert.Equal(Temp, Temp3);
-            Assert.NotEqual(Temp, Temp2);
-            Assert.NotEqual(Temp2, Temp3);
-            Temp.Delete();
-            Temp2.Delete();
             Assert.False(Temp.Exists);
         }
     }

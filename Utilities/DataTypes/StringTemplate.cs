@@ -20,14 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using System.Security;
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -62,14 +62,14 @@ namespace Utilities.DataTypes
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Template
+        /// Ending signifier of a key
         /// </summary>
-        public string Template { get; protected set; }
+        public string KeyEnd { get; protected set; }
 
         /// <summary>
         /// Beginning signifier of a key
@@ -77,33 +77,13 @@ namespace Utilities.DataTypes
         public string KeyStart { get; protected set; }
 
         /// <summary>
-        /// Ending signifier of a key
+        /// Template
         /// </summary>
-        public string KeyEnd { get; protected set; }
+        public string Template { get; protected set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Applies the key/values to the template and returns the resulting string
-        /// </summary>
-        /// <returns>The resulting string</returns>
-        public override string ToString()
-        {
-            return Template.ToString(this.ToArray(x => new KeyValuePair<string, string>(KeyStart + x.Key + KeyEnd, x.Value)));
-        }
-
-        /// <summary>
-        /// Implements the ISerializable interface and returns the data needed to serialize the dictionary instance
-        /// </summary>
-        /// <param name="info">Serialization info</param>
-        /// <param name="context">Streaming context</param>
-        [SecurityCritical]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-        }
 
         /// <summary>
         /// Converts the object to a string
@@ -116,6 +96,27 @@ namespace Utilities.DataTypes
             return Value.ToString();
         }
 
-        #endregion
+        /// <summary>
+        /// Implements the ISerializable interface and returns the data needed to serialize the
+        /// dictionary instance
+        /// </summary>
+        /// <param name="info">Serialization info</param>
+        /// <param name="context">Streaming context</param>
+        [SecurityCritical]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+        }
+
+        /// <summary>
+        /// Applies the key/values to the template and returns the resulting string
+        /// </summary>
+        /// <returns>The resulting string</returns>
+        public override string ToString()
+        {
+            return Template.ToString(this.ToArray(x => new KeyValuePair<string, string>(KeyStart + x.Key + KeyEnd, x.Value)));
+        }
+
+        #endregion Functions
     }
 }

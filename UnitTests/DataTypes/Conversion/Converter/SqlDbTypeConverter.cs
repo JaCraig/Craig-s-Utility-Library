@@ -20,14 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Linq;
-using Utilities.DataTypes.CodeGen.BaseClasses;
-using Utilities.IO;
-using Utilities.IO.FileSystem.Interfaces;
-using Xunit;
-using Utilities.DataTypes;
 using System.Data;
-using System.Globalization;
+using Xunit;
 
 namespace UnitTests.DataTypes.Conversion.Converter
 {
@@ -43,16 +37,6 @@ namespace UnitTests.DataTypes.Conversion.Converter
         }
 
         [Fact]
-        public void ConvertTo()
-        {
-            Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter();
-            Assert.Equal(DbType.Int16, Temp.ConvertTo(SqlDbType.SmallInt, typeof(DbType)));
-            Assert.Equal(DbType.Int32, Temp.ConvertTo(SqlDbType.Int, typeof(DbType)));
-            Assert.Equal(typeof(int), Temp.ConvertTo(SqlDbType.Int, typeof(Type)));
-            Assert.Equal(typeof(short), Temp.ConvertTo(SqlDbType.SmallInt, typeof(Type)));
-        }
-
-        [Fact]
         public void ConvertFrom()
         {
             Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter();
@@ -60,6 +44,16 @@ namespace UnitTests.DataTypes.Conversion.Converter
             Assert.Equal(SqlDbType.Int, Temp.ConvertFrom(DbType.Int32));
             Assert.Equal(SqlDbType.SmallInt, Temp.ConvertFrom(typeof(Int16)));
             Assert.Equal(SqlDbType.Int, Temp.ConvertFrom(typeof(Int32)));
+        }
+
+        [Fact]
+        public void ConvertTo()
+        {
+            Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter Temp = new Utilities.DataTypes.Conversion.Converters.SqlDbTypeTypeConverter();
+            Assert.Equal(DbType.Int16, Temp.ConvertTo(SqlDbType.SmallInt, typeof(DbType)));
+            Assert.Equal(DbType.Int32, Temp.ConvertTo(SqlDbType.Int, typeof(DbType)));
+            Assert.Equal(typeof(int), Temp.ConvertTo(SqlDbType.Int, typeof(Type)));
+            Assert.Equal(typeof(short), Temp.ConvertTo(SqlDbType.SmallInt, typeof(Type)));
         }
     }
 }

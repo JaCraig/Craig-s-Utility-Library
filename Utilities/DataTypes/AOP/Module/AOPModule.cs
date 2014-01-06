@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.DataTypes.CodeGen;
 using Utilities.IoC.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.AOP.Module
 {

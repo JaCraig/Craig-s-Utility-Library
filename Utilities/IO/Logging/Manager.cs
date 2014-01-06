@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.Logging.Default;
 using Utilities.IO.Logging.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Logging
 {
@@ -43,11 +45,11 @@ namespace Utilities.IO.Logging
         /// </summary>
         public Manager()
         {
-            IEnumerable<Type> Loggers = AppDomain.CurrentDomain.GetAssemblies().Types<ILogger>().Where(x=>!x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            IEnumerable<Type> Loggers = AppDomain.CurrentDomain.GetAssemblies().Types<ILogger>().Where(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
             LoggerUsing = Loggers.Count() == 0 ? (ILogger)Activator.CreateInstance(typeof(DefaultLogger)) : (ILogger)Activator.CreateInstance(Loggers.First());
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -56,7 +58,7 @@ namespace Utilities.IO.Logging
         /// </summary>
         protected ILogger LoggerUsing { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -82,7 +84,9 @@ namespace Utilities.IO.Logging
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
+        /// <param name="Managed">
+        /// Determines if all objects should be disposed or just managed objects
+        /// </param>
         protected override void Dispose(bool Managed)
         {
             if (LoggerUsing != null)
@@ -92,6 +96,6 @@ namespace Utilities.IO.Logging
             }
         }
 
-        #endregion
+        #endregion Functions
     }
 }

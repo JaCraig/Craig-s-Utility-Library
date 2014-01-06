@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -44,10 +45,9 @@ namespace Utilities.Validation
         public NotEmptyAttribute(string ErrorMessage = "")
             : base(string.IsNullOrEmpty(ErrorMessage) ? "{0} is not empty" : ErrorMessage)
         {
-
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
 
@@ -69,12 +69,12 @@ namespace Utilities.Validation
         /// <returns>The validation result</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value==null)
+            if (value == null)
                 return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             IEnumerable ValueList = value as IEnumerable;
             return ValueList != null && ValueList.GetEnumerator().MoveNext() ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
 
-        #endregion
+        #endregion Functions
     }
 }

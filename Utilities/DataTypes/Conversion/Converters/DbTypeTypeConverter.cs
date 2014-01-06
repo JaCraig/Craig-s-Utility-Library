@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using Utilities.DataTypes.Conversion.Converters.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.Conversion.Converters
 {
@@ -48,7 +50,7 @@ namespace Utilities.DataTypes.Conversion.Converters
             ConvertFromTypes.Add(typeof(SqlDbType), SqlDbTypeToDbType);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -57,7 +59,7 @@ namespace Utilities.DataTypes.Conversion.Converters
         /// </summary>
         protected override TypeConverter InternalConverter { get { return new EnumConverter(typeof(DbType)); } }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -97,7 +99,6 @@ namespace Utilities.DataTypes.Conversion.Converters
             else if (TempValue == DbType.Binary) return typeof(byte[]);
             return typeof(int);
         }
-
 
         private static object SqlDbTypeToDbType(object sqlDbType)
         {
@@ -153,6 +154,6 @@ namespace Utilities.DataTypes.Conversion.Converters
             return DbType.Int32;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

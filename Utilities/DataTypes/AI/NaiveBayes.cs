@@ -20,14 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.AI
 {
@@ -44,10 +44,15 @@ namespace Utilities.DataTypes.AI
         /// </summary>
         /// <param name="ATokenWeight">Weight of each token in set A</param>
         /// <param name="BTokenWeight">Weight of each token in set B</param>
-        /// <param name="MaxInterestingTokenCount">After sorting, this is the maximum number of tokens that are picked to figure out the final probability</param>
+        /// <param name="MaxInterestingTokenCount">
+        /// After sorting, this is the maximum number of tokens that are picked to figure out the
+        /// final probability
+        /// </param>
         /// <param name="MaxTokenProbability">Maximum token probability</param>
         /// <param name="MinTokenProbability">Minimum token probability</param>
-        /// <param name="MinCountForInclusion">Minimum number of times a token needs to be present for it to be included</param>
+        /// <param name="MinCountForInclusion">
+        /// Minimum number of times a token needs to be present for it to be included
+        /// </param>
         public NaiveBayes(int ATokenWeight = 1, int BTokenWeight = 1,
             double MinTokenProbability = 0.01, double MaxTokenProbability = 0.999,
             int MaxInterestingTokenCount = int.MaxValue,
@@ -67,9 +72,40 @@ namespace Utilities.DataTypes.AI
             this.MaxInterestingTokenCount = MaxInterestingTokenCount;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
+
+        /// <summary>
+        /// Weight to give to the probabilities in set A
+        /// </summary>
+        public int ATokenWeight { get; set; }
+
+        /// <summary>
+        /// Weight to give the probabilities in set B
+        /// </summary>
+        public int BTokenWeight { get; set; }
+
+        /// <summary>
+        /// After sorting, this is the maximum number of tokens that are picked to figure out the
+        /// final probability
+        /// </summary>
+        public int MaxInterestingTokenCount { get; set; }
+
+        /// <summary>
+        /// Maximum token probability (if greater than this amount, it becomes this amount)
+        /// </summary>
+        public double MaxTokenProbability { get; set; }
+
+        /// <summary>
+        /// Minimum count that an item needs to be found to be included in final probability
+        /// </summary>
+        public int MinCountForInclusion { get; set; }
+
+        /// <summary>
+        /// Minimum token probability (if less than this amount, it becomes this amount)
+        /// </summary>
+        public double MinTokenProbability { get; set; }
 
         /// <summary>
         /// Set A
@@ -80,6 +116,11 @@ namespace Utilities.DataTypes.AI
         /// Set B
         /// </summary>
         public Bag<T> SetB { get; private set; }
+
+        /// <summary>
+        /// Dictionary containing probabilities
+        /// </summary>
+        protected Dictionary<T, double> Probabilities { get; private set; }
 
         /// <summary>
         /// Total number of tokens
@@ -96,68 +137,9 @@ namespace Utilities.DataTypes.AI
         /// </summary>
         protected double TotalB { get; set; }
 
-        /// <summary>
-        /// Dictionary containing probabilities
-        /// </summary>
-        protected Dictionary<T, double> Probabilities { get; private set; }
-
-        /// <summary>
-        /// Weight to give to the probabilities in set A
-        /// </summary>
-        public int ATokenWeight { get; set; }
-
-        /// <summary>
-        /// Weight to give the probabilities in set B
-        /// </summary>
-        public int BTokenWeight { get; set; }
-
-        /// <summary>
-        /// Minimum count that an item needs to be found to be included in final probability
-        /// </summary>
-        public int MinCountForInclusion { get; set; }
-
-        /// <summary>
-        /// Minimum token probability (if less than this amount, it becomes this amount)
-        /// </summary>
-        public double MinTokenProbability { get; set; }
-
-        /// <summary>
-        /// Maximum token probability (if greater than this amount, it becomes this amount)
-        /// </summary>
-        public double MaxTokenProbability { get; set; }
-
-        /// <summary>
-        /// After sorting, this is the maximum number of tokens that are picked to figure out the final probability
-        /// </summary>
-        public int MaxInterestingTokenCount { get; set; }
-
-        #endregion
+        #endregion Properties
 
         #region Public Functions
-
-        /// <summary>
-        /// Loads a set of tokens
-        /// </summary>
-        /// <param name="SetATokens">Set A</param>
-        /// <param name="SetBTokens">Set B</param>
-        public virtual void LoadTokens(IEnumerable<T> SetATokens, IEnumerable<T> SetBTokens)
-        {
-            Contract.Requires<ArgumentNullException>(SetATokens != null, "SetATokens");
-            Contract.Requires<ArgumentNullException>(SetBTokens != null, "SetBTokens");
-            SetA = SetA.Check(() => new Bag<T>());
-            SetB = SetB.Check(() => new Bag<T>());
-            SetA.Add(SetATokens);
-            SetB.Add(SetBTokens);
-            TotalA = SetA.Sum(x => SetA[x]);
-            TotalB = SetB.Sum(x => SetB[x]);
-            Total = TotalA + TotalB;
-            Probabilities = new Dictionary<T, double>();
-            foreach (T Token in SetA)
-                Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
-            foreach (T Token in SetB)
-                if (!Probabilities.ContainsKey(Token))
-                    Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
-        }
 
         /// <summary>
         /// Calculates the probability of the list of tokens being in set A
@@ -195,7 +177,31 @@ namespace Utilities.DataTypes.AI
             return TotalProbability / (TotalProbability + NegativeTotalProbability);
         }
 
-        #endregion
+        /// <summary>
+        /// Loads a set of tokens
+        /// </summary>
+        /// <param name="SetATokens">Set A</param>
+        /// <param name="SetBTokens">Set B</param>
+        public virtual void LoadTokens(IEnumerable<T> SetATokens, IEnumerable<T> SetBTokens)
+        {
+            Contract.Requires<ArgumentNullException>(SetATokens != null, "SetATokens");
+            Contract.Requires<ArgumentNullException>(SetBTokens != null, "SetBTokens");
+            SetA = SetA.Check(() => new Bag<T>());
+            SetB = SetB.Check(() => new Bag<T>());
+            SetA.Add(SetATokens);
+            SetB.Add(SetBTokens);
+            TotalA = SetA.Sum(x => SetA[x]);
+            TotalB = SetB.Sum(x => SetB[x]);
+            Total = TotalA + TotalB;
+            Probabilities = new Dictionary<T, double>();
+            foreach (T Token in SetA)
+                Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
+            foreach (T Token in SetB)
+                if (!Probabilities.ContainsKey(Token))
+                    Probabilities.Add(Token, CalculateProbabilityOfToken(Token));
+        }
+
+        #endregion Public Functions
 
         #region Protected Functions
 
@@ -219,6 +225,6 @@ namespace Utilities.DataTypes.AI
             return Probability;
         }
 
-        #endregion
+        #endregion Protected Functions
     }
 }

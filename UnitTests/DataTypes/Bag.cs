@@ -35,7 +35,7 @@ namespace UnitTests.DataTypes
             {
                 string Value = x.ToString();
                 int Count = Rand.Next(1, 10);
-                for(int y=0;y<Count;++y)
+                for (int y = 0; y < Count; ++y)
                     BagObject.Add(Value);
                 Assert.Equal(Count, BagObject[Value]);
             }

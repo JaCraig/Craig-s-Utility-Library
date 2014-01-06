@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.Encryption.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Encryption.Default
 {
@@ -49,37 +51,11 @@ namespace Utilities.IO.Encryption.Default
         public override string Name { get { return "RSA"; } }
 
         /// <summary>
-        /// Encrypts a string using RSA
-        /// </summary>
-        /// <param name="Input">Input byte array (should be small as anything over 128 bytes can not be decrypted)</param>
-        /// <param name="Key">Key to use for encryption</param>
-        /// <returns>An encrypted byte array (64bit string)</returns>
-        public override byte[] Encrypt(byte[] Input, string Key)
-        {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
-            Contract.Requires<ArgumentNullException>(Input != null, "Input");
-            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
-            {
-                RSA.FromXmlString(Key);
-                byte[] EncryptedBytes = RSA.Encrypt(Input, true);
-                RSA.Clear();
-                return EncryptedBytes;
-            }
-        }
-
-        /// <summary>
-        /// Gets the provider used
-        /// </summary>
-        /// <returns>Asymmetric algorithm</returns>
-        protected override System.Security.Cryptography.AsymmetricAlgorithm GetProvider()
-        {
-            return new RSACryptoServiceProvider();
-        }
-
-        /// <summary>
         /// Decrypts a byte array using RSA
         /// </summary>
-        /// <param name="Input">Input byte array (should be small as anything over 128 bytes can not be decrypted)</param>
+        /// <param name="Input">
+        /// Input byte array (should be small as anything over 128 bytes can not be decrypted)
+        /// </param>
         /// <param name="Key">Key to use for decryption</param>
         /// <returns>A decrypted byte array</returns>
         public override byte[] Decrypt(byte[] Input, string Key)
@@ -90,6 +66,27 @@ namespace Utilities.IO.Encryption.Default
             {
                 RSA.FromXmlString(Key);
                 byte[] EncryptedBytes = RSA.Decrypt(Input, true);
+                RSA.Clear();
+                return EncryptedBytes;
+            }
+        }
+
+        /// <summary>
+        /// Encrypts a string using RSA
+        /// </summary>
+        /// <param name="Input">
+        /// Input byte array (should be small as anything over 128 bytes can not be decrypted)
+        /// </param>
+        /// <param name="Key">Key to use for encryption</param>
+        /// <returns>An encrypted byte array (64bit string)</returns>
+        public override byte[] Encrypt(byte[] Input, string Key)
+        {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Key), "Key");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
+            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+            {
+                RSA.FromXmlString(Key);
+                byte[] EncryptedBytes = RSA.Encrypt(Input, true);
                 RSA.Clear();
                 return EncryptedBytes;
             }
@@ -139,6 +136,15 @@ namespace Utilities.IO.Encryption.Default
                 RSA.Clear();
                 return Result;
             }
+        }
+
+        /// <summary>
+        /// Gets the provider used
+        /// </summary>
+        /// <returns>Asymmetric algorithm</returns>
+        protected override System.Security.Cryptography.AsymmetricAlgorithm GetProvider()
+        {
+            return new RSACryptoServiceProvider();
         }
     }
 }

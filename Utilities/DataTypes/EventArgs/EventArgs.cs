@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.EventArgs
 {
@@ -33,26 +33,20 @@ namespace Utilities.DataTypes.EventArgs
     public class BaseEventArgs : System.EventArgs
     {
         /// <summary>
-        /// Should the event be stopped?
-        /// </summary>
-        public bool Stop { get; set; }
-        /// <summary>
         /// Content of the event
         /// </summary>
         public object Content { get; set; }
+
+        /// <summary>
+        /// Should the event be stopped?
+        /// </summary>
+        public bool Stop { get; set; }
     }
 
     /// <summary>
-    /// Saved event args
+    /// Changed event args
     /// </summary>
-    public class SavedEventArgs : BaseEventArgs
-    {
-    }
-
-    /// <summary>
-    /// Saving event args
-    /// </summary>
-    public class SavingEventArgs : BaseEventArgs
+    public class ChangedEventArgs : BaseEventArgs
     {
     }
 
@@ -71,13 +65,6 @@ namespace Utilities.DataTypes.EventArgs
     }
 
     /// <summary>
-    /// Changed event args
-    /// </summary>
-    public class ChangedEventArgs : BaseEventArgs
-    {
-    }
-
-    /// <summary>
     /// Loaded event args
     /// </summary>
     public class LoadedEventArgs : BaseEventArgs
@@ -88,13 +75,6 @@ namespace Utilities.DataTypes.EventArgs
     /// Loading event args
     /// </summary>
     public class LoadingEventArgs : BaseEventArgs
-    {
-    }
-
-    /// <summary>
-    /// On start event args
-    /// </summary>
-    public class OnStartEventArgs : BaseEventArgs
     {
     }
 
@@ -112,5 +92,26 @@ namespace Utilities.DataTypes.EventArgs
     {
     }
 
-    #endregion
+    /// <summary>
+    /// On start event args
+    /// </summary>
+    public class OnStartEventArgs : BaseEventArgs
+    {
+    }
+
+    /// <summary>
+    /// Saved event args
+    /// </summary>
+    public class SavedEventArgs : BaseEventArgs
+    {
+    }
+
+    /// <summary>
+    /// Saving event args
+    /// </summary>
+    public class SavingEventArgs : BaseEventArgs
+    {
+    }
+
+    #endregion Event Args
 }

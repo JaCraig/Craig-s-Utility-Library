@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,16 +29,17 @@ using System.Reflection;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.Profiler.Manager.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Profiler.Manager.Default
 {
     /// <summary>
-    /// Object class used to profile a function.
-    /// Create at the beginning of a function in a using statement and it will automatically record the time.
-    /// Note that this isn't exact and is based on when the object is destroyed
+    /// Object class used to profile a function. Create at the beginning of a function in a using
+    /// statement and it will automatically record the time. Note that this isn't exact and is based
+    /// on when the object is destroyed
     /// </summary>
-    public class Profiler : IProfiler,IResult
+    public class Profiler : IProfiler, IResult
     {
         #region Constructors
 
@@ -77,54 +79,30 @@ namespace Utilities.Profiler.Manager.Default
             Child.Start();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
         /// <summary>
-        /// Total time that the profiler has taken (in milliseconds)
+        /// Contains the current profiler
         /// </summary>
-        public ICollection<long> Times { get; private set; }
-
-        /// <summary>
-        /// Children profiler items
-        /// </summary>
-        public IDictionary<string, Profiler> InternalChildren { get; private set; }
-
-        /// <summary>
-        /// Children result items
-        /// </summary>
-        public IDictionary<string, IResult> Children { get { return InternalChildren.ToDictionary(x => x.Key, x => (IResult)x.Value); } }
-
-        /// <summary>
-        /// Parent profiler item
-        /// </summary>
-        protected Profiler Parent { get; set; }
-
-        /// <summary>
-        /// Function name
-        /// </summary>
-        public string Function { get; protected set; }
-
-        /// <summary>
-        /// Determines if it is running
-        /// </summary>
-        protected bool Running { get; set; }
-
-        /// <summary>
-        /// Level of the profiler
-        /// </summary>
-        protected int Level { get; set; }
-
-        /// <summary>
-        /// Where the profiler was started at
-        /// </summary>
-        public string CalledFrom { get; set; }
-
-        /// <summary>
-        /// Stop watch
-        /// </summary>
-        protected StopWatch StopWatch { get; set; }
+        public static Profiler Current
+        {
+            get
+            {
+                Profiler ReturnValue = "Current_Profiler".GetFromCache<Profiler>(Cache: "Item");
+                if (ReturnValue == null)
+                {
+                    ReturnValue = "Root_Profiler".GetFromCache<Profiler>(Cache: "Item");
+                    Current = ReturnValue;
+                }
+                return ReturnValue;
+            }
+            protected set
+            {
+                value.Cache("Current_Profiler", "Item");
+            }
+        }
 
         /// <summary>
         /// Contains the root profiler
@@ -148,29 +126,81 @@ namespace Utilities.Profiler.Manager.Default
         }
 
         /// <summary>
-        /// Contains the current profiler
+        /// Where the profiler was started at
         /// </summary>
-        public static Profiler Current
-        {
-            get
-            {
-                Profiler ReturnValue = "Current_Profiler".GetFromCache<Profiler>(Cache: "Item");
-                if (ReturnValue == null)
-                {
-                    ReturnValue = "Root_Profiler".GetFromCache<Profiler>(Cache: "Item");
-                    Current = ReturnValue;
-                }
-                return ReturnValue;
-            }
-            protected set
-            {
-                value.Cache("Current_Profiler", "Item");
-            }
-        }
+        public string CalledFrom { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Children result items
+        /// </summary>
+        public IDictionary<string, IResult> Children { get { return InternalChildren.ToDictionary(x => x.Key, x => (IResult)x.Value); } }
+
+        /// <summary>
+        /// Function name
+        /// </summary>
+        public string Function { get; protected set; }
+
+        /// <summary>
+        /// Children profiler items
+        /// </summary>
+        public IDictionary<string, Profiler> InternalChildren { get; private set; }
+
+        /// <summary>
+        /// Total time that the profiler has taken (in milliseconds)
+        /// </summary>
+        public ICollection<long> Times { get; private set; }
+
+        /// <summary>
+        /// Level of the profiler
+        /// </summary>
+        protected int Level { get; set; }
+
+        /// <summary>
+        /// Parent profiler item
+        /// </summary>
+        protected Profiler Parent { get; set; }
+
+        /// <summary>
+        /// Determines if it is running
+        /// </summary>
+        protected bool Running { get; set; }
+
+        /// <summary>
+        /// Stop watch
+        /// </summary>
+        protected StopWatch StopWatch { get; set; }
+
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Compares the profilers and determines if they are not equal
+        /// </summary>
+        /// <param name="First">First</param>
+        /// <param name="Second">Second</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public static bool operator !=(Profiler First, Profiler Second)
+        {
+            return !(First == Second);
+        }
+
+        /// <summary>
+        /// Compares the profilers and determines if they are equal
+        /// </summary>
+        /// <param name="First">First</param>
+        /// <param name="Second">Second</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public static bool operator ==(Profiler First, Profiler Second)
+        {
+            if ((object)First == null && (object)Second == null)
+                return true;
+            if ((object)First == null)
+                return false;
+            if ((object)Second == null)
+                return false;
+            return First.Function == Second.Function;
+        }
 
         /// <summary>
         /// Disposes the object
@@ -182,35 +212,35 @@ namespace Utilities.Profiler.Manager.Default
         }
 
         /// <summary>
-        /// Disposes of the objects
+        /// Equals
         /// </summary>
-        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
-        protected virtual void Dispose(bool Disposing)
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public override bool Equals(object obj)
         {
-            if (Disposing)
-                Stop();
+            Profiler Temp = obj as Profiler;
+            if (Temp == null)
+                return false;
+            return Temp == this;
         }
 
         /// <summary>
-        /// Destructor
+        /// Gets the hash code for the profiler
         /// </summary>
-        ~Profiler()
+        /// <returns>The hash code</returns>
+        public override int GetHashCode()
         {
-            Dispose(false);
+            return Function.GetHashCode();
         }
 
         /// <summary>
-        /// Stops the timer and registers the information
+        /// Creates a profiler object and starts profiling
         /// </summary>
-        public void Stop()
+        /// <param name="Name">Function name</param>
+        /// <returns>An IDisposable that is used to stop profiling</returns>
+        public IDisposable Profile(string Name)
         {
-            if (Running)
-            {
-                Running = false;
-                StopWatch.Stop();
-                Times.Add(StopWatch.ElapsedTime);
-                Current = Parent;
-            }
+            return new Profiler(Name);
         }
 
         /// <summary>
@@ -229,22 +259,26 @@ namespace Utilities.Profiler.Manager.Default
         }
 
         /// <summary>
-        /// Creates a profiler object and starts profiling
-        /// </summary>
-        /// <param name="Name">Function name</param>
-        /// <returns>An IDisposable that is used to stop profiling</returns>
-        public IDisposable Profile(string Name)
-        {
-            return new Profiler(Name);
-        }
-
-        /// <summary>
         /// Starts profiling
         /// </summary>
         /// <returns>The root profiler</returns>
         public IDisposable StartProfiling()
         {
             return Root;
+        }
+
+        /// <summary>
+        /// Stops the timer and registers the information
+        /// </summary>
+        public void Stop()
+        {
+            if (Running)
+            {
+                Running = false;
+                StopWatch.Stop();
+                Times.Add(StopWatch.ElapsedTime);
+                Current = Parent;
+            }
         }
 
         /// <summary>
@@ -274,56 +308,25 @@ namespace Utilities.Profiler.Manager.Default
         }
 
         /// <summary>
-        /// Equals
+        /// Disposes of the objects
         /// </summary>
-        /// <param name="obj">Object to compare to</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj)
+        /// <param name="Disposing">
+        /// True to dispose of all resources, false only disposes of native resources
+        /// </param>
+        protected virtual void Dispose(bool Disposing)
         {
-            Profiler Temp = obj as Profiler;
-            if (Temp == null)
-                return false;
-            return Temp == this;
+            if (Disposing)
+                Stop();
         }
 
         /// <summary>
-        /// Compares the profilers and determines if they are equal
+        /// Destructor
         /// </summary>
-        /// <param name="First">First</param>
-        /// <param name="Second">Second</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public static bool operator ==(Profiler First, Profiler Second)
+        ~Profiler()
         {
-            if ((object)First == null && (object)Second == null)
-                return true;
-            if ((object)First == null)
-                return false;
-            if ((object)Second == null)
-                return false;
-            return First.Function == Second.Function;
+            Dispose(false);
         }
 
-
-        /// <summary>
-        /// Compares the profilers and determines if they are not equal
-        /// </summary>
-        /// <param name="First">First</param>
-        /// <param name="Second">Second</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public static bool operator !=(Profiler First, Profiler Second)
-        {
-            return !(First == Second);
-        }
-
-        /// <summary>
-        /// Gets the hash code for the profiler
-        /// </summary>
-        /// <returns>The hash code</returns>
-        public override int GetHashCode()
-        {
-            return Function.GetHashCode();
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

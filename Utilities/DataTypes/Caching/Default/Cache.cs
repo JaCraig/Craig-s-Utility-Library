@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes.Caching.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.Caching.Default
 {
@@ -44,19 +46,19 @@ namespace Utilities.DataTypes.Caching.Default
             InternalCache = new ConcurrentDictionary<string, object>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Internal cache
+        /// The number of items in the cache
         /// </summary>
-        protected ConcurrentDictionary<string, object> InternalCache { get; private set; }
+        public int Count { get { return InternalCache.Count; } }
 
         /// <summary>
-        /// Name
+        /// Read only
         /// </summary>
-        public string Name { get { return "Default"; } }
+        public bool IsReadOnly { get { return false; } }
 
         /// <summary>
         /// Keys
@@ -64,9 +66,19 @@ namespace Utilities.DataTypes.Caching.Default
         public ICollection<string> Keys { get { return InternalCache.Keys; } }
 
         /// <summary>
+        /// Name
+        /// </summary>
+        public string Name { get { return "Default"; } }
+
+        /// <summary>
         /// Values
         /// </summary>
         public ICollection<object> Values { get { return InternalCache.Values; } }
+
+        /// <summary>
+        /// Internal cache
+        /// </summary>
+        protected ConcurrentDictionary<string, object> InternalCache { get; private set; }
 
         /// <summary>
         /// Indexer
@@ -87,17 +99,7 @@ namespace Utilities.DataTypes.Caching.Default
             }
         }
 
-        /// <summary>
-        /// The number of items in the cache
-        /// </summary>
-        public int Count { get { return InternalCache.Count; } }
-
-        /// <summary>
-        /// Read only
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -109,38 +111,6 @@ namespace Utilities.DataTypes.Caching.Default
         public void Add(string key, object value)
         {
             InternalCache.AddOrUpdate(key, value, (x, y) => value);
-        }
-
-        /// <summary>
-        /// Checks if the cache contains the key
-        /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <returns>True if it is there, false otherwise</returns>
-        public bool ContainsKey(string key)
-        {
-            return InternalCache.ContainsKey(key);
-        }
-
-        /// <summary>
-        /// Removes an item from the cache
-        /// </summary>
-        /// <param name="key">key to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(string key)
-        {
-            object Value = null;
-            return InternalCache.TryRemove(key, out Value);
-        }
-
-        /// <summary>
-        /// Attempt to get a value
-        /// </summary>
-        /// <param name="key">Key to get</param>
-        /// <param name="value">Value of the item</param>
-        /// <returns>True if it is found, false otherwise</returns>
-        public bool TryGetValue(string key, out object value)
-        {
-            return InternalCache.TryGetValue(key, out value);
         }
 
         /// <summary>
@@ -171,6 +141,16 @@ namespace Utilities.DataTypes.Caching.Default
         }
 
         /// <summary>
+        /// Checks if the cache contains the key
+        /// </summary>
+        /// <param name="key">Key to check</param>
+        /// <returns>True if it is there, false otherwise</returns>
+        public bool ContainsKey(string key)
+        {
+            return InternalCache.ContainsKey(key);
+        }
+
+        /// <summary>
         /// Copies to an array
         /// </summary>
         /// <param name="array">Array to copy to</param>
@@ -178,35 +158,6 @@ namespace Utilities.DataTypes.Caching.Default
         public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
             InternalCache.ToArray().CopyTo(array, arrayIndex);
-        }
-
-        /// <summary>
-        /// Removes an item from an array
-        /// </summary>
-        /// <param name="item">Item to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(KeyValuePair<string, object> item)
-        {
-            object Value = null;
-            return InternalCache.TryRemove(item.Key, out Value);
-        }
-
-        /// <summary>
-        /// Gets the enumerator
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
-        {
-            return InternalCache.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets the enumerator
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return InternalCache.GetEnumerator();
         }
 
         /// <summary>
@@ -225,6 +176,57 @@ namespace Utilities.DataTypes.Caching.Default
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+        {
+            return InternalCache.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Removes an item from the cache
+        /// </summary>
+        /// <param name="key">key to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(string key)
+        {
+            object Value = null;
+            return InternalCache.TryRemove(key, out Value);
+        }
+
+        /// <summary>
+        /// Removes an item from an array
+        /// </summary>
+        /// <param name="item">Item to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(KeyValuePair<string, object> item)
+        {
+            object Value = null;
+            return InternalCache.TryRemove(item.Key, out Value);
+        }
+
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return InternalCache.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Attempt to get a value
+        /// </summary>
+        /// <param name="key">Key to get</param>
+        /// <param name="value">Value of the item</param>
+        /// <returns>True if it is found, false otherwise</returns>
+        public bool TryGetValue(string key, out object value)
+        {
+            return InternalCache.TryGetValue(key, out value);
+        }
+
+        #endregion Functions
     }
 }

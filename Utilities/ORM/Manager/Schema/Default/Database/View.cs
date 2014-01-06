@@ -20,14 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
-using Utilities.ORM.Manager.Schema.Interfaces;
-using System.Linq;
-using Utilities.DataTypes;
+
 using System.Data;
-using Utilities.ORM.Manager.Schema.Enums;
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.Schema.BaseClasses;
-#endregion
+using Utilities.ORM.Manager.Schema.Enums;
+using Utilities.ORM.Manager.Schema.Interfaces;
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Default.Database
 {
@@ -42,29 +42,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         /// <param name="Name">Name</param>
         /// <param name="Source">Source</param>
         public View(string Name, ISource Source)
-            :base(Name,Source)
-        {
-        }
-
-        /// <summary>
-        /// Adds a trigger to the table
-        /// </summary>
-        /// <param name="Name">Name of the trigger</param>
-        /// <param name="Definition">Definition of the trigger</param>
-        /// <param name="Type">Trigger type</param>
-        /// <returns>The trigger specified</returns>
-        public override ITrigger AddTrigger(string Name, string Definition, TriggerType Type)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Adds a foreign key
-        /// </summary>
-        /// <param name="ColumnName">Column name</param>
-        /// <param name="ForeignKeyTable">Foreign key table</param>
-        /// <param name="ForeignKeyColumn">Foreign key column</param>
-        public override void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn)
+            : base(Name, Source)
         {
         }
 
@@ -89,6 +67,28 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         public override IColumn AddColumn<T>(string ColumnName, DbType ColumnType, int Length = 0, bool Nullable = true, bool Identity = false, bool Index = false, bool PrimaryKey = false, bool Unique = false, string ForeignKeyTable = "", string ForeignKeyColumn = "", T DefaultValue = default(T), bool OnDeleteCascade = false, bool OnUpdateCascade = false, bool OnDeleteSetNull = false)
         {
             return Columns.AddAndReturn(new Column<T>(ColumnName, ColumnType, Length, Nullable, Identity, Index, PrimaryKey, Unique, ForeignKeyTable, ForeignKeyColumn, DefaultValue, OnDeleteCascade, OnUpdateCascade, OnDeleteSetNull, this));
+        }
+
+        /// <summary>
+        /// Adds a foreign key
+        /// </summary>
+        /// <param name="ColumnName">Column name</param>
+        /// <param name="ForeignKeyTable">Foreign key table</param>
+        /// <param name="ForeignKeyColumn">Foreign key column</param>
+        public override void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn)
+        {
+        }
+
+        /// <summary>
+        /// Adds a trigger to the table
+        /// </summary>
+        /// <param name="Name">Name of the trigger</param>
+        /// <param name="Definition">Definition of the trigger</param>
+        /// <param name="Type">Trigger type</param>
+        /// <returns>The trigger specified</returns>
+        public override ITrigger AddTrigger(string Name, string Definition, TriggerType Type)
+        {
+            return null;
         }
     }
 }

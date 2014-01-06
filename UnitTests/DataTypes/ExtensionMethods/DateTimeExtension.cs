@@ -28,37 +28,15 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class DateTimeExtension
     {
         [Fact]
-        public void IsInFutureTest()
+        public void AddWeeks()
         {
-            Assert.True(new DateTime(2100, 1, 1).Is(DateCompare.InFuture));
+            Assert.Equal(new DateTime(2009, 1, 15, 2, 3, 4), new DateTime(2009, 1, 1, 2, 3, 4).AddWeeks(2));
         }
 
         [Fact]
-        public void IsInPastTest()
+        public void Age()
         {
-            Assert.True(new DateTime(1900, 1, 1).Is(DateCompare.InPast));
-        }
-
-        [Fact]
-        public void DaysLeftIn()
-        {
-            Assert.Equal(29, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Month));
-            Assert.Equal(363, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Year));
-            Assert.Equal(0, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Week));
-            Assert.Equal(88, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Quarter));
-            Assert.Equal(1, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Day));
-        }
-
-        [Fact]
-        public void IsWeekDayTest()
-        {
-            Assert.False(new DateTime(1999, 1, 2).Is(DateCompare.WeekDay));
-        }
-
-        [Fact]
-        public void IsWeekEndTest()
-        {
-            Assert.True(new DateTime(1999, 1, 2).Is(DateCompare.WeekEnd));
+            Assert.Equal(41, new DateTime(1940, 1, 1).Age(new DateTime(1981, 1, 1)));
         }
 
         [Fact]
@@ -79,6 +57,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void ConvertToTimeZone()
+        {
+            Assert.Equal(new DateTime(2009, 1, 14, 23, 3, 4), new DateTime(2009, 1, 15, 2, 3, 4).To(TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")));
+        }
+
+        [Fact]
         public void DaysIn()
         {
             Assert.Equal(31, new DateTime(1999, 1, 2).DaysIn(TimeFrame.Month));
@@ -87,7 +71,17 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal(89, new DateTime(1999, 1, 2).DaysIn(TimeFrame.Quarter));
             Assert.Equal(1, new DateTime(1999, 1, 2).DaysIn(TimeFrame.Day));
         }
-        
+
+        [Fact]
+        public void DaysLeftIn()
+        {
+            Assert.Equal(29, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Month));
+            Assert.Equal(363, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Year));
+            Assert.Equal(0, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Week));
+            Assert.Equal(88, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Quarter));
+            Assert.Equal(1, new DateTime(1999, 1, 2).DaysLeftIn(TimeFrame.Day));
+        }
+
         [Fact]
         public void EndOf()
         {
@@ -100,27 +94,21 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void ToUnix()
-        {
-            Assert.Equal(915166800, new DateTime(1999, 1, 1).To());
-        }
-
-        [Fact]
         public void FromUnix()
         {
             Assert.Equal(new DateTime(2009, 2, 13, 23, 31, 30), 1234567890.To());
         }
 
         [Fact]
-        public void UTCOffset()
+        public void IsInFutureTest()
         {
-            Assert.Equal(-5, new DateTime(1999, 1, 2, 23, 1, 1, DateTimeKind.Local).UTCOffset());
+            Assert.True(new DateTime(2100, 1, 1).Is(DateCompare.InFuture));
         }
 
         [Fact]
-        public void Age()
+        public void IsInPastTest()
         {
-            Assert.Equal(41, new DateTime(1940, 1, 1).Age(new DateTime(1981, 1, 1)));
+            Assert.True(new DateTime(1900, 1, 1).Is(DateCompare.InPast));
         }
 
         [Fact]
@@ -130,28 +118,40 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void IsWeekDayTest()
+        {
+            Assert.False(new DateTime(1999, 1, 2).Is(DateCompare.WeekDay));
+        }
+
+        [Fact]
+        public void IsWeekEndTest()
+        {
+            Assert.True(new DateTime(1999, 1, 2).Is(DateCompare.WeekEnd));
+        }
+
+        [Fact]
+        public void RelativeTime()
+        {
+            Assert.Equal("34 years, 11 months from now", new DateTime(2011, 12, 1).ToString(new DateTime(1977, 1, 1)));
+            Assert.Equal("34 years, 11 months ago", new DateTime(1977, 1, 1).ToString(new DateTime(2011, 12, 1)));
+        }
+
+        [Fact]
         public void SetTime()
         {
             Assert.Equal(new DateTime(2009, 1, 1, 14, 2, 12), new DateTime(2009, 1, 1, 2, 3, 4).SetTime(14, 2, 12));
         }
 
         [Fact]
-        public void AddWeeks()
+        public void ToUnix()
         {
-            Assert.Equal(new DateTime(2009, 1, 15, 2, 3, 4), new DateTime(2009, 1, 1, 2, 3, 4).AddWeeks(2));
+            Assert.Equal(915166800, new DateTime(1999, 1, 1).To());
         }
 
         [Fact]
-        public void ConvertToTimeZone()
+        public void UTCOffset()
         {
-            Assert.Equal(new DateTime(2009, 1, 14, 23, 3, 4), new DateTime(2009, 1, 15, 2, 3, 4).To(TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")));
-        }
-                
-        [Fact]
-        public void RelativeTime()
-        {
-            Assert.Equal("34 years, 11 months from now", new DateTime(2011, 12, 1).ToString(new DateTime(1977, 1, 1)));
-            Assert.Equal("34 years, 11 months ago", new DateTime(1977, 1, 1).ToString(new DateTime(2011, 12, 1)));
+            Assert.Equal(-5, new DateTime(1999, 1, 2, 23, 1, 1, DateTimeKind.Local).UTCOffset());
         }
     }
 }

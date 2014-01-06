@@ -21,14 +21,14 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Random.Interfaces
 {
     /// <summary>
     /// String generator interface
     /// </summary>
-    public interface IStringGenerator :IGenerator
+    public interface IStringGenerator : IGenerator
     {
         /// <summary>
         /// Generates a random value of the specified type

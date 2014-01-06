@@ -20,43 +20,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using System.Threading;
-using Utilities.DataTypes;
 using Xunit;
-using Utilities.Profiler;
 
 namespace UnitTests.DataTypes.Dynamic
 {
     public class Dynamo
     {
         [Fact]
-        public void SetAndGetMember()
+        public void CallMethod()
         {
             dynamic Temp = new TestClass();
-            Assert.Equal<string>((string)null, Temp.A);
             Temp.A = "Testing";
-            Temp.B = 1;
-            int B = Temp.B;
-            Assert.Equal<string>("Testing", Temp.A);
-            Assert.Equal<int>(1, B);
-            Assert.Equal<string>("TestClass this\r\n\tSystem.Action Randomize = System.Action\r\n\tSystem.Int32 B = 1\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
-            Temp.C = new Func<int>(() => 1);
-            Assert.Equal<string>("TestClass this\r\n\tSystem.Action Randomize = System.Action\r\n\tSystem.Int32 B = 1\r\n\tSystem.Func<System.Int32> C = System.Func`1[System.Int32]\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
-            Assert.Equal<int>(1, Temp.C());
+            Temp.B = new Func<string>(() => Temp.A);
+            Assert.Equal("Testing", Temp.B());
+            Assert.Equal("Testing", Temp.A);
         }
 
         [Fact]
-        public void EqualValues()
+        public void ChangeLog()
         {
             dynamic Temp = new TestClass();
-            dynamic Temp2 = new TestClass();
             Temp.A = "Testing";
-            Temp.B = 1;
-            Temp2.A = "Testing";
-            Temp2.B = 1;
-            Assert.True(Temp.Equals(Temp2));
-            Assert.Equal(255206625, Temp.GetHashCode());
-            Assert.Equal(255206625, Temp2.GetHashCode());
+            Temp.B = new Func<string>(() => Temp.A);
+            Assert.Equal(2, Temp.ChangeLog.Count);
+            Assert.Contains("B", Temp.ChangeLog.Keys);
+            Assert.Contains("Randomize", Temp.ChangeLog.Keys);
+            dynamic Temp2 = new Utilities.DataTypes.Dynamo(new { A = "Testing" });
+            Temp2.A = "Testing2";
+            Assert.Equal("Testing", Temp2.ChangeLog["A"].OriginalValue);
+            Assert.Equal("Testing2", Temp2.ChangeLog["A"].NewValue);
         }
 
         [Fact]
@@ -77,7 +69,6 @@ namespace UnitTests.DataTypes.Dynamic
             Assert.Equal(1, Temp2.B);
         }
 
-
         [Fact]
         public void CopyBetweenItems()
         {
@@ -97,16 +88,17 @@ namespace UnitTests.DataTypes.Dynamic
         }
 
         [Fact]
-        public void SubSet()
+        public void EqualValues()
         {
-            dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });
-            Assert.Equal("Testing", Temp.A);
-            Assert.Equal(1, Temp.B);
-            Temp = Temp.SubSet("A");
-            Assert.Equal("Testing", Temp.A);
-            Assert.False(Temp.ContainsKey("B"));
-            Temp.Remove("A");
-            Assert.False(Temp.ContainsKey("A"));
+            dynamic Temp = new TestClass();
+            dynamic Temp2 = new TestClass();
+            Temp.A = "Testing";
+            Temp.B = 1;
+            Temp2.A = "Testing";
+            Temp2.B = 1;
+            Assert.True(Temp.Equals(Temp2));
+            Assert.Equal(255206625, Temp.GetHashCode());
+            Assert.Equal(255206625, Temp2.GetHashCode());
         }
 
         [Fact]
@@ -115,16 +107,6 @@ namespace UnitTests.DataTypes.Dynamic
             dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });
             Assert.Equal("Testing", Temp.A);
             Assert.Equal(1, Temp.B);
-        }
-
-        [Fact]
-        public void CallMethod()
-        {
-            dynamic Temp = new TestClass();
-            Temp.A = "Testing";
-            Temp.B = new Func<string>(() => Temp.A);
-            Assert.Equal("Testing", Temp.B());
-            Assert.Equal("Testing", Temp.A);
         }
 
         [Fact]
@@ -139,6 +121,35 @@ namespace UnitTests.DataTypes.Dynamic
         }
 
         [Fact]
+        public void SetAndGetMember()
+        {
+            dynamic Temp = new TestClass();
+            Assert.Equal<string>((string)null, Temp.A);
+            Temp.A = "Testing";
+            Temp.B = 1;
+            int B = Temp.B;
+            Assert.Equal<string>("Testing", Temp.A);
+            Assert.Equal<int>(1, B);
+            Assert.Equal<string>("TestClass this\r\n\tSystem.Action Randomize = System.Action\r\n\tSystem.Int32 B = 1\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
+            Temp.C = new Func<int>(() => 1);
+            Assert.Equal<string>("TestClass this\r\n\tSystem.Action Randomize = System.Action\r\n\tSystem.Int32 B = 1\r\n\tSystem.Func<System.Int32> C = System.Func`1[System.Int32]\r\n\tSystem.String A = Testing\r\n", Temp.ToString());
+            Assert.Equal<int>(1, Temp.C());
+        }
+
+        [Fact]
+        public void SubSet()
+        {
+            dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });
+            Assert.Equal("Testing", Temp.A);
+            Assert.Equal(1, Temp.B);
+            Temp = Temp.SubSet("A");
+            Assert.Equal("Testing", Temp.A);
+            Assert.False(Temp.ContainsKey("B"));
+            Temp.Remove("A");
+            Assert.False(Temp.ContainsKey("A"));
+        }
+
+        [Fact]
         public void Values()
         {
             dynamic Temp = new TestClass();
@@ -146,21 +157,6 @@ namespace UnitTests.DataTypes.Dynamic
             Temp.B = new Func<string>(() => Temp.A);
             Assert.Equal(3, Temp.Values.Count);
             Assert.Contains("Testing", Temp.Values);
-        }
-
-        [Fact]
-        public void ChangeLog()
-        {
-            dynamic Temp = new TestClass();
-            Temp.A = "Testing";
-            Temp.B = new Func<string>(() => Temp.A);
-            Assert.Equal(2, Temp.ChangeLog.Count);
-            Assert.Contains("B", Temp.ChangeLog.Keys);
-            Assert.Contains("Randomize", Temp.ChangeLog.Keys);
-            dynamic Temp2 = new Utilities.DataTypes.Dynamo(new { A = "Testing" });
-            Temp2.A = "Testing2";
-            Assert.Equal("Testing", Temp2.ChangeLog["A"].OriginalValue);
-            Assert.Equal("Testing2", Temp2.ChangeLog["A"].NewValue);
         }
 
         public class TestClass : Utilities.DataTypes.Dynamo<TestClass>
@@ -171,6 +167,7 @@ namespace UnitTests.DataTypes.Dynamic
         public class TestClass2
         {
             public string A { get; set; }
+
             public int B { get; set; }
         }
     }

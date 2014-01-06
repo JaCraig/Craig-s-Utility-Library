@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -27,7 +28,8 @@ using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.RSS
 {
@@ -105,24 +107,9 @@ namespace Utilities.IO.FileFormats.RSS
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Title
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Link
-        /// </summary>
-        public string Link { get; set; }
-
-        /// <summary>
-        /// Description
-        /// </summary>
-        public string Description { get; set; }
 
         /// <summary>
         /// Author
@@ -130,19 +117,14 @@ namespace Utilities.IO.FileFormats.RSS
         public string Author { get; set; }
 
         /// <summary>
-        /// Thumbnail
-        /// </summary>
-        public Thumbnail Thumbnail { get; set; }
-
-        /// <summary>
         /// Categories
         /// </summary>
         public ICollection<string> Categories { get; private set; }
 
         /// <summary>
-        /// Publication date
+        /// Description
         /// </summary>
-        public DateTime PubDate { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Enclosure
@@ -154,7 +136,27 @@ namespace Utilities.IO.FileFormats.RSS
         /// </summary>
         public virtual GUID GUID { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Link
+        /// </summary>
+        public string Link { get; set; }
+
+        /// <summary>
+        /// Publication date
+        /// </summary>
+        public DateTime PubDate { get; set; }
+
+        /// <summary>
+        /// Thumbnail
+        /// </summary>
+        public Thumbnail Thumbnail { get; set; }
+
+        /// <summary>
+        /// Title
+        /// </summary>
+        public string Title { get; set; }
+
+        #endregion Properties
 
         #region Public Overridden Function
 
@@ -186,6 +188,6 @@ namespace Utilities.IO.FileFormats.RSS
             return ItemString.ToString();
         }
 
-        #endregion
+        #endregion Public Overridden Function
     }
 }

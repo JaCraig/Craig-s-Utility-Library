@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.StringGenerators
 {
@@ -56,9 +58,24 @@ namespace Utilities.Random.StringGenerators
             this.HTMLFormatting = HTMLFormatting;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
+
+        /// <summary>
+        /// Should the sentence use HTML formatting?
+        /// </summary>
+        public virtual bool HTMLFormatting { get; protected set; }
+
+        /// <summary>
+        /// Maximum sentence length
+        /// </summary>
+        public virtual int MaxSentenceLength { get; protected set; }
+
+        /// <summary>
+        /// Minimum sentence length
+        /// </summary>
+        public virtual int MinSentenceLength { get; protected set; }
 
         /// <summary>
         /// Number of paragraphs
@@ -70,22 +87,7 @@ namespace Utilities.Random.StringGenerators
         /// </summary>
         public virtual int NumberOfSentences { get; protected set; }
 
-        /// <summary>
-        /// Minimum sentence length
-        /// </summary>
-        public virtual int MinSentenceLength { get; protected set; }
-
-        /// <summary>
-        /// Maximum sentence length
-        /// </summary>
-        public virtual int MaxSentenceLength { get; protected set; }
-
-        /// <summary>
-        /// Should the sentence use HTML formatting?
-        /// </summary>
-        public virtual bool HTMLFormatting { get; protected set; }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -131,6 +133,16 @@ namespace Utilities.Random.StringGenerators
         }
 
         /// <summary>
+        /// Generates next object
+        /// </summary>
+        /// <param name="Rand">Random number generator</param>
+        /// <returns>The next object</returns>
+        public override object NextObj(System.Random Rand)
+        {
+            return Next(Rand);
+        }
+
+        /// <summary>
         /// Creates a Lorem Ipsum sentence.
         /// </summary>
         /// <param name="NumberOfWords">Number of words for the sentence</param>
@@ -147,17 +159,7 @@ namespace Utilities.Random.StringGenerators
             return Builder.ToString();
         }
 
-        /// <summary>
-        /// Generates next object
-        /// </summary>
-        /// <param name="Rand">Random number generator</param>
-        /// <returns>The next object</returns>
-        public override object NextObj(System.Random Rand)
-        {
-            return Next(Rand);
-        }
-
-        #endregion
+        #endregion Functions
 
         #region Private Variables
 
@@ -207,6 +209,6 @@ namespace Utilities.Random.StringGenerators
         "diam", "voluptua", "at", "vero", "eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea",
         "rebum", "stet", "clita", "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum" };
 
-        #endregion
+        #endregion Private Variables
     }
 }

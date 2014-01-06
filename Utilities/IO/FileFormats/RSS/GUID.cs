@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Xml.XPath;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.RSS
 {
@@ -39,38 +41,38 @@ namespace Utilities.IO.FileFormats.RSS
         /// </summary>
         public GUID()
         {
-
         }
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Element">XML element holding info for the enclosure</param>
         public GUID(IXPathNavigable Element)
         {
-            Contract.Requires<ArgumentNullException>(Element!=null,"Element");
+            Contract.Requires<ArgumentNullException>(Element != null, "Element");
             XPathNavigator Navigator = Element.CreateNavigator();
-            if (Navigator.GetAttribute("isPermaLink","") != null)
+            if (Navigator.GetAttribute("isPermaLink", "") != null)
             {
-                PermaLink = Navigator.GetAttribute("isPermaLink","");
+                PermaLink = Navigator.GetAttribute("isPermaLink", "");
             }
             GUIDText = Navigator.Value;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Is this a perma link?
-        /// </summary>
-        public virtual string PermaLink { get; set; }
 
         /// <summary>
         /// GUID Text
         /// </summary>
         public virtual string GUIDText { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Is this a perma link?
+        /// </summary>
+        public virtual string PermaLink { get; set; }
+
+        #endregion Properties
 
         #region Public Overridden Functions
 
@@ -87,6 +89,6 @@ namespace Utilities.IO.FileFormats.RSS
             return string.Empty;
         }
 
-        #endregion
+        #endregion Public Overridden Functions
     }
 }

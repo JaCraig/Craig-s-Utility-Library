@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Configuration.Manager.Interfaces
 {
@@ -37,7 +37,7 @@ namespace Utilities.Configuration.Manager.Interfaces
         /// </summary>
         string Name { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -51,6 +51,6 @@ namespace Utilities.Configuration.Manager.Interfaces
         /// </summary>
         void Save();
 
-        #endregion
+        #endregion Functions
     }
 }

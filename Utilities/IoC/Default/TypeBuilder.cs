@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using Utilities.IoC.Default.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IoC.Default
 {
@@ -44,21 +45,21 @@ namespace Utilities.IoC.Default
             this.ReturnType = typeof(T);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Implementation used to create the type
-        /// </summary>
-        protected Func<T> Implementation { get; set; }
 
         /// <summary>
         /// Return type of the implementation
         /// </summary>
         public Type ReturnType { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Implementation used to create the type
+        /// </summary>
+        protected Func<T> Implementation { get; set; }
+
+        #endregion Properties
 
         #region Functions
 
@@ -71,6 +72,6 @@ namespace Utilities.IoC.Default
             return Implementation();
         }
 
-        #endregion
+        #endregion Functions
     }
 }

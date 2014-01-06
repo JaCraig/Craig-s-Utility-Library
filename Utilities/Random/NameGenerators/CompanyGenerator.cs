@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.NameGenerators
 {
@@ -36,9 +38,12 @@ namespace Utilities.Random.NameGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        public CompanyGenerator() : base("", "") { }
+        public CompanyGenerator()
+            : base("", "")
+        {
+        }
 
-        #endregion
+        #endregion Constructors
 
         #region Functions
 
@@ -74,7 +79,7 @@ namespace Utilities.Random.NameGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
 
         #region Private Variables
 
@@ -93,6 +98,6 @@ namespace Utilities.Random.NameGenerators
                                             "Sebben & Sebben","Planet Express","Applied Cryogenics","Initech","Rekall, Inc.",
                                             "Zorg Industries","Blue Sun Corporation","Venture Industries" };
 
-        #endregion
+        #endregion Private Variables
     }
 }

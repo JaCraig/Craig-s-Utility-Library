@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -49,7 +50,7 @@ namespace Utilities.DataTypes
         public static IEnumerable<Match> Where(this MatchCollection Collection, Predicate<Match> Predicate)
         {
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            if (Collection==null)
+            if (Collection == null)
                 return null;
             List<Match> Matches = new List<Match>();
             foreach (Match Item in Collection)
@@ -58,8 +59,8 @@ namespace Utilities.DataTypes
             return Matches;
         }
 
-        #endregion
+        #endregion Where
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -27,12 +27,17 @@ namespace UnitTests.Math.ExtensionMethods
 {
     public class MathExtensions
     {
-        
         [Fact]
         public void FactorialTest()
         {
             int Value = 8;
             Assert.Equal(40320, Value.Factorial());
+        }
+
+        [Fact]
+        public void GCD()
+        {
+            Assert.Equal(3, 9.GreatestCommonDenominator(12));
         }
 
         [Fact]
@@ -55,6 +60,20 @@ namespace UnitTests.Math.ExtensionMethods
         }
 
         [Fact]
+        public void Round()
+        {
+            double Value = 4.1234;
+            Assert.Equal(4.12, Value.Round());
+        }
+
+        [Fact]
+        public void SqrtTest()
+        {
+            double Value = 4;
+            Assert.Equal(2, Value.Sqrt());
+        }
+
+        [Fact]
         public void StandardDeviationTest()
         {
             Assert.InRange(new double[] { 5, 4, 2, 4, 7, 9, 1, 2, 0 }.ToList().StandardDeviation(), 2.73, 2.74);
@@ -64,26 +83,6 @@ namespace UnitTests.Math.ExtensionMethods
         public void VarianceTest()
         {
             Assert.InRange(new double[] { 5, 4, 2, 4, 7, 9, 1, 2, 0 }.ToList().Variance(), 7.5, 7.6);
-        }
-
-        [Fact]
-        public void SqrtTest()
-        {
-            double Value=4;
-            Assert.Equal(2, Value.Sqrt());
-        }
-
-        [Fact]
-        public void GCD()
-        {
-            Assert.Equal(3, 9.GreatestCommonDenominator(12));
-        }
-
-        [Fact]
-        public void Round()
-        {
-            double Value = 4.1234;
-            Assert.Equal(4.12, Value.Round());
         }
     }
 }

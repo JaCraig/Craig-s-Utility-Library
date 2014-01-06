@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Roslyn.Compilers;
 using Roslyn.Compilers.CSharp;
 using System;
@@ -30,7 +31,8 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Utilities.DataTypes.Patterns.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.CodeGen.BaseClasses
 {
@@ -73,24 +75,9 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Assembly builder
-        /// </summary>
-        protected AssemblyBuilder Assembly { get; private set; }
-
-        /// <summary>
-        /// Module builder
-        /// </summary>
-        protected ModuleBuilder Module { get; private set; }
-
-        /// <summary>
-        /// Dictionary containing generated types and associates it with original type
-        /// </summary>
-        public ICollection<Type> Classes { get; private set; }
 
         /// <summary>
         /// Assembly directory
@@ -103,16 +90,31 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         public string AssemblyName { get; private set; }
 
         /// <summary>
-        /// Determines if the assembly needs to be regenerated
+        /// Dictionary containing generated types and associates it with original type
         /// </summary>
-        protected bool RegenerateAssembly { get; private set; }
+        public ICollection<Type> Classes { get; private set; }
+
+        /// <summary>
+        /// Assembly builder
+        /// </summary>
+        protected AssemblyBuilder Assembly { get; private set; }
+
+        /// <summary>
+        /// Module builder
+        /// </summary>
+        protected ModuleBuilder Module { get; private set; }
 
         /// <summary>
         /// Should this be optimized?
         /// </summary>
         protected bool Optimize { get; private set; }
 
-        #endregion
+        /// <summary>
+        /// Determines if the assembly needs to be regenerated
+        /// </summary>
+        protected bool RegenerateAssembly { get; private set; }
+
+        #endregion Properties
 
         #region Functions
 
@@ -166,6 +168,18 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         }
 
         /// <summary>
+        /// Disposes of the object
+        /// </summary>
+        /// <param name="Managed">Destroy managed</param>
+        protected override void Dispose(bool Managed)
+        {
+            Save();
+            Assembly = null;
+            Module = null;
+            Classes = new List<Type>();
+        }
+
+        /// <summary>
         /// Saves the assembly
         /// </summary>
         protected void Save()
@@ -179,18 +193,6 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             }
         }
 
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        /// <param name="Managed">Destroy managed</param>
-        protected override void Dispose(bool Managed)
-        {
-            Save();
-            Assembly = null;
-            Module = null;
-            Classes = new List<Type>();
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using Utilities.DataTypes;
 using Utilities.IO;
 using Xunit;
 
@@ -66,12 +65,14 @@ namespace UnitTests.Configuration
             }
 
             public string A { get; set; }
+
             public string B { get; set; }
 
             public override string Name
             {
                 get { return "Test2"; }
             }
+
             protected override string ConfigFileLocation
             {
                 get

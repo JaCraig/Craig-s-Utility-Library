@@ -34,12 +34,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
-        public void Years()
-        {
-            Assert.Equal(34, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Years());
-        }
-
-        [Fact]
         public void Months()
         {
             Assert.Equal(11, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Months());
@@ -49,6 +43,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public void ToStringFull()
         {
             Assert.Equal("34 years, 11 months", (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).ToStringFull());
+        }
+
+        [Fact]
+        public void Years()
+        {
+            Assert.Equal(34, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).Years());
         }
     }
 }

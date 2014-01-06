@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using Utilities.IO.FileFormats.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.BaseClasses
 {
@@ -41,11 +42,29 @@ namespace Utilities.IO.FileFormats.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        protected FormatBase() { }
+        protected FormatBase()
+        {
+        }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
+
+        /// <summary>
+        /// Loads the object from the location specified
+        /// </summary>
+        /// <param name="Location">Location of the file to load</param>
+        /// <returns>The object specified in the location</returns>
+        public static FormatType Load(string Location)
+        {
+            return new FormatType().InternalLoad(Location);
+        }
+
+        /// <summary>
+        /// Clones the object
+        /// </summary>
+        /// <returns>A newly cloned object</returns>
+        public abstract object Clone();
 
         /// <summary>
         /// Compares the object to another object
@@ -72,36 +91,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
         public abstract bool Equals(FormatType other);
 
         /// <summary>
-        /// Loads the object from the location specified
-        /// </summary>
-        /// <param name="Location">Location of the file to load</param>
-        /// <returns>The object specified in the location</returns>
-        public static FormatType Load(string Location)
-        {
-            return new FormatType().InternalLoad(Location);
-        }
-
-        /// <summary>
-        /// Loads the object from the location specified
-        /// </summary>
-        /// <param name="Location">Location of the file to load</param>
-        /// <returns>This</returns>
-        protected abstract FormatType InternalLoad(string Location);
-
-        /// <summary>
-        /// Saves the object
-        /// </summary>
-        /// <param name="Location">Location to save it to</param>
-        /// <returns>This</returns>
-        public abstract FormatType Save(string Location);
-
-        /// <summary>
-        /// Clones the object
-        /// </summary>
-        /// <returns>A newly cloned object</returns>
-        public abstract object Clone();
-
-        /// <summary>
         /// Determines if the objects are equal
         /// </summary>
         /// <param name="obj">Other object to compare to</param>
@@ -123,20 +112,23 @@ namespace Utilities.IO.FileFormats.BaseClasses
             return ToString().GetHashCode();
         }
 
-        #endregion
-
-        #region Operators
+        /// <summary>
+        /// Saves the object
+        /// </summary>
+        /// <param name="Location">Location to save it to</param>
+        /// <returns>This</returns>
+        public abstract FormatType Save(string Location);
 
         /// <summary>
-        /// Determines if the two are equal
+        /// Loads the object from the location specified
         /// </summary>
-        /// <param name="Value1">Value 1</param>
-        /// <param name="Value2">Value 2</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public static bool operator ==(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
-        {
-            return Value1.Equals(Value2);
-        }
+        /// <param name="Location">Location of the file to load</param>
+        /// <returns>This</returns>
+        protected abstract FormatType InternalLoad(string Location);
+
+        #endregion Functions
+
+        #region Operators
 
         /// <summary>
         /// Determines if the two are not equal
@@ -147,18 +139,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
         public static bool operator !=(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
         {
             return !(Value1 == Value2);
-        }
-
-        /// <summary>
-        /// Determines if it is greater than
-        /// </summary>
-        /// <param name="Value1">Value 1</param>
-        /// <param name="Value2">Value 2</param>
-        /// <returns>True if it is greater than, false otherwise</returns>
-        public static bool operator >(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
-        {
-            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
-            return Value1.CompareTo(Value2) > 0;
         }
 
         /// <summary>
@@ -174,18 +154,6 @@ namespace Utilities.IO.FileFormats.BaseClasses
         }
 
         /// <summary>
-        /// Determines if it is greater than or equal
-        /// </summary>
-        /// <param name="Value1">Value 1</param>
-        /// <param name="Value2">Value 2</param>
-        /// <returns>True if it is greater than or equal, false otherwise</returns>
-        public static bool operator >=(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
-        {
-            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
-            return Value1.CompareTo(Value2) >= 0;
-        }
-
-        /// <summary>
         /// Determines if it is less than or equal
         /// </summary>
         /// <param name="Value1">Value 1</param>
@@ -197,6 +165,41 @@ namespace Utilities.IO.FileFormats.BaseClasses
             return Value1.CompareTo(Value2) <= 0;
         }
 
-        #endregion
+        /// <summary>
+        /// Determines if the two are equal
+        /// </summary>
+        /// <param name="Value1">Value 1</param>
+        /// <param name="Value2">Value 2</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public static bool operator ==(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
+        {
+            return Value1.Equals(Value2);
+        }
+
+        /// <summary>
+        /// Determines if it is greater than
+        /// </summary>
+        /// <param name="Value1">Value 1</param>
+        /// <param name="Value2">Value 2</param>
+        /// <returns>True if it is greater than, false otherwise</returns>
+        public static bool operator >(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
+        {
+            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
+            return Value1.CompareTo(Value2) > 0;
+        }
+
+        /// <summary>
+        /// Determines if it is greater than or equal
+        /// </summary>
+        /// <param name="Value1">Value 1</param>
+        /// <param name="Value2">Value 2</param>
+        /// <returns>True if it is greater than or equal, false otherwise</returns>
+        public static bool operator >=(FormatBase<FormatType, ContentType> Value1, FormatBase<FormatType, ContentType> Value2)
+        {
+            Contract.Requires<ArgumentNullException>(Value1 != null, "Value1");
+            return Value1.CompareTo(Value2) >= 0;
+        }
+
+        #endregion Operators
     }
 }

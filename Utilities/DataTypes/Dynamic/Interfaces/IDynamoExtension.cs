@@ -21,11 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.Dynamic.Interfaces
 {
-
     /// <summary>
     /// Extension for adding functionality to the Dynamo object
     /// </summary>

@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.DefaultClasses
 {
@@ -104,7 +106,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion ByteGenerator
 
     #region CharGenerator
 
@@ -142,7 +144,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion CharGenerator
 
     #region IntGenerator
 
@@ -180,7 +182,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion IntGenerator
 
     #region LongGenerator
 
@@ -218,7 +220,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion LongGenerator
 
     #region SByteGenerator
 
@@ -257,7 +259,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion SByteGenerator
 
     #region ShortGenerator
 
@@ -295,7 +297,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion ShortGenerator
 
     #region UIntGenerator
 
@@ -334,7 +336,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion UIntGenerator
 
     #region ULongGenerator
 
@@ -373,7 +375,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion ULongGenerator
 
     #region UShortGenerator
 
@@ -412,7 +414,7 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion UShortGenerator
 
-    #endregion
+    #endregion Integer generators
 }

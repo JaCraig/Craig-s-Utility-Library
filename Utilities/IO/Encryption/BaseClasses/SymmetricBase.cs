@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -27,7 +28,8 @@ using System.IO;
 using System.Security.Cryptography;
 using Utilities.DataTypes;
 using Utilities.IO.Encryption.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Encryption.BaseClasses
 {
@@ -65,69 +67,15 @@ namespace Utilities.IO.Encryption.BaseClasses
         }
 
         /// <summary>
-        /// Encrypts a byte array
-        /// </summary>
-        /// <param name="Data">Data to be encrypted</param>
-        /// <param name="Key">Password to encrypt with</param>
-        /// <param name="Salt">Salt to encrypt with</param>
-        /// <param name="HashAlgorithm">Can be either SHA1 or MD5</param>
-        /// <param name="PasswordIterations">Number of iterations to do</param>
-        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
-        /// <param name="Algorithm">Algorithm to use</param>
-        /// <returns>The encrypted byte array</returns>
-        public byte[] Encrypt(byte[] Data, string Key, string Algorithm, string Salt = "Kosher", string HashAlgorithm = "SHA1", int PasswordIterations = 2, string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
-        {
-            using (PasswordDeriveBytes TempKey = new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations))
-            {
-                return Encrypt(Data, TempKey, Algorithm, InitialVector, KeySize);
-            }
-        }
-
-        /// <summary>
-        /// Encrypts a byte array
-        /// </summary>
-        /// <param name="Data">Data to be encrypted</param>
-        /// <param name="Key">Password to encrypt with</param>
-        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
-        /// <param name="Algorithm">Algorithm to use</param>
-        /// <returns>The encrypted byte array</returns>
-        public byte[] Encrypt(byte[] Data, DeriveBytes Key, string Algorithm = "AES", string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
-        {
-            if (string.IsNullOrEmpty(InitialVector))
-                throw new ArgumentNullException("InitialVector");
-            if (Data == null)
-                return null;
-            using (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))
-            {
-                SymmetricKey.Mode = CipherMode.CBC;
-                byte[] CipherTextBytes = null;
-                using (ICryptoTransform Encryptor = SymmetricKey.CreateEncryptor(Key.GetBytes(KeySize / 8), InitialVector.ToByteArray()))
-                {
-                    using (MemoryStream MemStream = new MemoryStream())
-                    {
-                        using (CryptoStream CryptoStream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write))
-                        {
-                            CryptoStream.Write(Data, 0, Data.Length);
-                            CryptoStream.FlushFinalBlock();
-                            CipherTextBytes = MemStream.ToArray();
-                        }
-                    }
-                }
-                SymmetricKey.Clear();
-                return CipherTextBytes;
-            }
-        }
-
-        /// <summary>
         /// Decrypts a byte array
         /// </summary>
         /// <param name="Data">Data to be decrypted</param>
         /// <param name="Key">Password to decrypt with</param>
         /// <param name="Algorithm">Algorithm to use for decryption</param>
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
         /// <returns>A decrypted byte array</returns>
         public byte[] Decrypt(byte[] Data, DeriveBytes Key, string Algorithm = "AES", string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
@@ -164,13 +112,75 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// <param name="HashAlgorithm">Can be either SHA1 or MD5</param>
         /// <param name="PasswordIterations">Number of iterations to do</param>
         /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
-        /// <param name="KeySize">Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
         /// <returns>A decrypted byte array</returns>
-        public byte[] Decrypt(byte[] Data, string Key,string Algorithm, string Salt = "Kosher", string HashAlgorithm = "SHA1", int PasswordIterations = 2, string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
+        public byte[] Decrypt(byte[] Data, string Key, string Algorithm, string Salt = "Kosher", string HashAlgorithm = "SHA1", int PasswordIterations = 2, string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
         {
             using (PasswordDeriveBytes TempKey = new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations))
             {
                 return Decrypt(Data, TempKey, Algorithm, InitialVector, KeySize);
+            }
+        }
+
+        /// <summary>
+        /// Encrypts a byte array
+        /// </summary>
+        /// <param name="Data">Data to be encrypted</param>
+        /// <param name="Key">Password to encrypt with</param>
+        /// <param name="Salt">Salt to encrypt with</param>
+        /// <param name="HashAlgorithm">Can be either SHA1 or MD5</param>
+        /// <param name="PasswordIterations">Number of iterations to do</param>
+        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
+        /// <param name="Algorithm">Algorithm to use</param>
+        /// <returns>The encrypted byte array</returns>
+        public byte[] Encrypt(byte[] Data, string Key, string Algorithm, string Salt = "Kosher", string HashAlgorithm = "SHA1", int PasswordIterations = 2, string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
+        {
+            using (PasswordDeriveBytes TempKey = new PasswordDeriveBytes(Key, Salt.ToByteArray(), HashAlgorithm, PasswordIterations))
+            {
+                return Encrypt(Data, TempKey, Algorithm, InitialVector, KeySize);
+            }
+        }
+
+        /// <summary>
+        /// Encrypts a byte array
+        /// </summary>
+        /// <param name="Data">Data to be encrypted</param>
+        /// <param name="Key">Password to encrypt with</param>
+        /// <param name="InitialVector">Needs to be 16 ASCII characters long</param>
+        /// <param name="KeySize">
+        /// Can be 64 (DES only), 128 (AES), 192 (AES and Triple DES), or 256 (AES)
+        /// </param>
+        /// <param name="Algorithm">Algorithm to use</param>
+        /// <returns>The encrypted byte array</returns>
+        public byte[] Encrypt(byte[] Data, DeriveBytes Key, string Algorithm = "AES", string InitialVector = "OFRna73m*aze01xY", int KeySize = 256)
+        {
+            if (string.IsNullOrEmpty(InitialVector))
+                throw new ArgumentNullException("InitialVector");
+            if (Data == null)
+                return null;
+            using (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))
+            {
+                SymmetricKey.Mode = CipherMode.CBC;
+                byte[] CipherTextBytes = null;
+                using (ICryptoTransform Encryptor = SymmetricKey.CreateEncryptor(Key.GetBytes(KeySize / 8), InitialVector.ToByteArray()))
+                {
+                    using (MemoryStream MemStream = new MemoryStream())
+                    {
+                        using (CryptoStream CryptoStream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write))
+                        {
+                            CryptoStream.Write(Data, 0, Data.Length);
+                            CryptoStream.FlushFinalBlock();
+                            CipherTextBytes = MemStream.ToArray();
+                        }
+                    }
+                }
+                SymmetricKey.Clear();
+                return CipherTextBytes;
             }
         }
 

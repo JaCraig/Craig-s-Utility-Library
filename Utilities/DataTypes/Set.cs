@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -43,7 +44,6 @@ namespace Utilities.DataTypes
         public Set()
             : base()
         {
-
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Utilities.DataTypes
         {
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Functions
 
@@ -68,6 +68,21 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Set != null, "Set");
             return Set.IsSubset(this);
+        }
+
+        /// <summary>
+        /// Determines if the sets intersect
+        /// </summary>
+        /// <param name="Set">Set to check against</param>
+        /// <returns>True if they do, false otherwise</returns>
+        public virtual bool Intersect(Set<T> Set)
+        {
+            if (Set == null)
+                return false;
+            for (int x = 0; x < this.Count; ++x)
+                if (Set.Contains(this[x]))
+                    return true;
+            return false;
         }
 
         /// <summary>
@@ -86,22 +101,7 @@ namespace Utilities.DataTypes
             return true;
         }
 
-        /// <summary>
-        /// Determines if the sets intersect
-        /// </summary>
-        /// <param name="Set">Set to check against</param>
-        /// <returns>True if they do, false otherwise</returns>
-        public virtual bool Intersect(Set<T> Set)
-        {
-            if (Set == null)
-                return false;
-            for (int x = 0; x < this.Count; ++x)
-                if (Set.Contains(this[x]))
-                    return true;
-            return false;
-        }
-
-        #endregion
+        #endregion Public Functions
 
         #region Public Static Functions
 
@@ -128,25 +128,6 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Adds two sets together
-        /// </summary>
-        /// <param name="Set1">Set 1</param>
-        /// <param name="Set2">Set 2</param>
-        /// <returns>The joined sets</returns>
-        public static Set<T> operator +(Set<T> Set1, Set<T> Set2)
-        {
-            Contract.Requires<ArgumentNullException>(Set1!=null,"Set1");
-            Contract.Requires<ArgumentNullException>(Set2 != null, "Set2");
-
-            Set<T> ReturnValue = new Set<T>();
-            for (int x = 0; x < Set1.Count; ++x)
-                ReturnValue.Add(Set1[x]); ;
-            for (int x = 0; x < Set2.Count; ++x)
-                ReturnValue.Add(Set2[x]); ;
-            return ReturnValue;
-        }
-
-        /// <summary>
         /// Removes items from set 2 from set 1
         /// </summary>
         /// <param name="Set1">Set 1</param>
@@ -154,13 +135,43 @@ namespace Utilities.DataTypes
         /// <returns>The resulting set</returns>
         public static Set<T> operator -(Set<T> Set1, Set<T> Set2)
         {
-            Contract.Requires<ArgumentNullException>(Set1!=null,"Set1");
-            Contract.Requires<ArgumentNullException>(Set2!=null,"Set2");
+            Contract.Requires<ArgumentNullException>(Set1 != null, "Set1");
+            Contract.Requires<ArgumentNullException>(Set2 != null, "Set2");
 
             Set<T> ReturnValue = new Set<T>();
             for (int x = 0; x < Set1.Count; ++x)
                 if (!Set2.Contains(Set1[x]))
                     ReturnValue.Add(Set1[x]);
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Determines if the two sets are not equivalent
+        /// </summary>
+        /// <param name="Set1">Set 1</param>
+        /// <param name="Set2">Set 2</param>
+        /// <returns>False if they are, true otherwise</returns>
+        public static bool operator !=(Set<T> Set1, Set<T> Set2)
+        {
+            return !(Set1 == Set2);
+        }
+
+        /// <summary>
+        /// Adds two sets together
+        /// </summary>
+        /// <param name="Set1">Set 1</param>
+        /// <param name="Set2">Set 2</param>
+        /// <returns>The joined sets</returns>
+        public static Set<T> operator +(Set<T> Set1, Set<T> Set2)
+        {
+            Contract.Requires<ArgumentNullException>(Set1 != null, "Set1");
+            Contract.Requires<ArgumentNullException>(Set2 != null, "Set2");
+
+            Set<T> ReturnValue = new Set<T>();
+            for (int x = 0; x < Set1.Count; ++x)
+                ReturnValue.Add(Set1[x]); ;
+            for (int x = 0; x < Set2.Count; ++x)
+                ReturnValue.Add(Set2[x]); ;
             return ReturnValue;
         }
 
@@ -176,32 +187,12 @@ namespace Utilities.DataTypes
                 return true;
             if (((object)Set1) == null || ((object)Set2) == null)
                 return false;
-            return Set1.Contains(Set2)&&Set2.Contains(Set1);
+            return Set1.Contains(Set2) && Set2.Contains(Set1);
         }
 
-        /// <summary>
-        /// Determines if the two sets are not equivalent
-        /// </summary>
-        /// <param name="Set1">Set 1</param>
-        /// <param name="Set2">Set 2</param>
-        /// <returns>False if they are, true otherwise</returns>
-        public static bool operator !=(Set<T> Set1, Set<T> Set2)
-        {
-            return !(Set1 == Set2);
-        }
-
-        #endregion
+        #endregion Public Static Functions
 
         #region Public Overridden Functions
-
-        /// <summary>
-        /// Returns the hash code for the object
-        /// </summary>
-        /// <returns>The hash code for the object</returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
 
         /// <summary>
         /// Determines if the two sets are equivalent
@@ -211,6 +202,15 @@ namespace Utilities.DataTypes
         public override bool Equals(object obj)
         {
             return this == (obj as Set<T>);
+        }
+
+        /// <summary>
+        /// Returns the hash code for the object
+        /// </summary>
+        /// <returns>The hash code for the object</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         /// <summary>
@@ -232,6 +232,6 @@ namespace Utilities.DataTypes
             return Builder.ToString();
         }
 
-        #endregion
+        #endregion Public Overridden Functions
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +28,8 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Media
 {
@@ -42,8 +44,8 @@ namespace Utilities.Media
         #region TakeScreenShot
 
         /// <summary>
-        /// Takes a screenshot of the screen as a whole
-        /// (if multiple screens are attached, it takes an image containing them all)
+        /// Takes a screenshot of the screen as a whole (if multiple screens are attached, it takes
+        /// an image containing them all)
         /// </summary>
         /// <param name="Screen">Screen to get the screenshot from</param>
         /// <param name="FileName">Name of the file to save the screenshot (optional)</param>
@@ -51,7 +53,7 @@ namespace Utilities.Media
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static Bitmap TakeScreenShot(this Screen Screen, string FileName = "")
         {
-            Contract.Requires<ArgumentNullException>(Screen!=null,"Screen");
+            Contract.Requires<ArgumentNullException>(Screen != null, "Screen");
             Bitmap TempBitmap = new Bitmap(Screen.Bounds.Width > 1 ? Screen.Bounds.Width : 1, Screen.Bounds.Height > 1 ? Screen.Bounds.Height : 1, PixelFormat.Format32bppArgb);
             try
             {
@@ -70,8 +72,8 @@ namespace Utilities.Media
         }
 
         /// <summary>
-        /// Takes a screenshot of the screen as a whole
-        /// (if multiple screens are attached, it takes an image containing them all)
+        /// Takes a screenshot of the screen as a whole (if multiple screens are attached, it takes
+        /// an image containing them all)
         /// </summary>
         /// <param name="Screens">Screens to get the screenshot from</param>
         /// <param name="FileName">Name of the file to save the screenshot (optional)</param>
@@ -79,7 +81,7 @@ namespace Utilities.Media
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static Bitmap TakeScreenShot(this IEnumerable<Screen> Screens, string FileName = "")
         {
-            Contract.Requires<ArgumentNullException>(Screens!=null,"Screens");
+            Contract.Requires<ArgumentNullException>(Screens != null, "Screens");
             Rectangle TotalScreenRect = Rectangle.Empty;
             foreach (Screen CurrentScreen in Screen.AllScreens)
                 TotalScreenRect = Rectangle.Union(TotalScreenRect, CurrentScreen.Bounds);
@@ -100,8 +102,8 @@ namespace Utilities.Media
             return TempBitmap;
         }
 
-        #endregion
+        #endregion TakeScreenShot
 
-        #endregion
+        #endregion Functions
     }
 }

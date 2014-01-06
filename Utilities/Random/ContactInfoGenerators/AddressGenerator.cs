@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -36,9 +38,12 @@ namespace Utilities.Random.ContactInfoGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        public AddressGenerator() : base("", "") { }
+        public AddressGenerator()
+            : base("", "")
+        {
+        }
 
-        #endregion
+        #endregion Constructors
 
         #region Functions
 
@@ -76,6 +81,6 @@ namespace Utilities.Random.ContactInfoGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

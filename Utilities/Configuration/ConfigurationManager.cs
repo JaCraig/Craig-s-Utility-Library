@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using Utilities.Configuration.Manager.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Configuration
 {
@@ -37,7 +38,10 @@ namespace Utilities.Configuration
         /// Gets the config file specified
         /// </summary>
         /// <typeparam name="T">The config type</typeparam>
-        /// <param name="Name">Name of the config file (Defaults to "Default" which is the web.config/app.config file if using the default config system)</param>
+        /// <param name="Name">
+        /// Name of the config file (Defaults to "Default" which is the web.config/app.config file
+        /// if using the default config system)
+        /// </param>
         /// <param name="System">Configuration system to pull from</param>
         /// <returns>The config file specified</returns>
         public static T Get<T>(ConfigurationSystem System, string Name = "Default")
@@ -51,7 +55,10 @@ namespace Utilities.Configuration
         /// Gets the config file specified
         /// </summary>
         /// <typeparam name="T">The config type</typeparam>
-        /// <param name="Name">Name of the config file (Defaults to "Default" which is the web.config/app.config file if using the default config system)</param>
+        /// <param name="Name">
+        /// Name of the config file (Defaults to "Default" which is the web.config/app.config file
+        /// if using the default config system)
+        /// </param>
         /// <returns>The config file specified</returns>
         public static T Get<T>(string Name = "Default")
             where T : IConfig, new()
@@ -59,7 +66,6 @@ namespace Utilities.Configuration
             return IoC.Manager.Bootstrapper.Resolve<Utilities.Configuration.Manager.Manager>().Get(ConfigurationSystem.Default).Config<T>(Name);
         }
     }
-
 
     /// <summary>
     /// Configuration system enum
@@ -75,21 +81,12 @@ namespace Utilities.Configuration
             this.Name = Name;
         }
 
-        private string Name { get; set; }
-
         /// <summary>
         /// Default
         /// </summary>
         public static ConfigurationSystem Default { get { return new ConfigurationSystem("Default"); } }
-        
-        /// <summary>
-        /// Returns the name of the serialization type
-        /// </summary>
-        /// <returns>Name</returns>
-        public override string ToString()
-        {
-            return Name;
-        }
+
+        private string Name { get; set; }
 
         /// <summary>
         /// Converts the object to a string implicitly
@@ -100,6 +97,15 @@ namespace Utilities.Configuration
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
             return Object.ToString();
+        }
+
+        /// <summary>
+        /// Returns the name of the serialization type
+        /// </summary>
+        /// <returns>Name</returns>
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

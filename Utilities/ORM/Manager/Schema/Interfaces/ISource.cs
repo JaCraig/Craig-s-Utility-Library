@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Interfaces
 {
@@ -32,14 +33,14 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
     public interface ISource
     {
         /// <summary>
+        /// List of functions
+        /// </summary>
+        ICollection<IFunction> Functions { get; }
+
+        /// <summary>
         /// Name
         /// </summary>
         string Name { get; set; }
-
-        /// <summary>
-        /// List of tables
-        /// </summary>
-        ICollection<ITable> Tables { get; }
 
         /// <summary>
         /// List of stored procedures
@@ -47,14 +48,14 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         ICollection<ITable> StoredProcedures { get; }
 
         /// <summary>
+        /// List of tables
+        /// </summary>
+        ICollection<ITable> Tables { get; }
+
+        /// <summary>
         /// List of views
         /// </summary>
         ICollection<ITable> Views { get; }
-
-        /// <summary>
-        /// List of functions
-        /// </summary>
-        ICollection<IFunction> Functions { get; }
 
         /// <summary>
         /// Returns a table with the given name
@@ -62,6 +63,20 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// <param name="Name">Table name</param>
         /// <returns>The table specified</returns>
         ITable this[string Name] { get; }
+
+        /// <summary>
+        /// Adds a function to the database
+        /// </summary>
+        /// <param name="Name">Function name</param>
+        /// <param name="Definition">Function definition</param>
+        IFunction AddFunction(string Name, string Definition);
+
+        /// <summary>
+        /// Adds a stored procedure to the database
+        /// </summary>
+        /// <param name="ProcedureName">Procedure name</param>
+        /// <param name="Definition">Definition</param>
+        ITable AddStoredProcedure(string ProcedureName, string Definition);
 
         /// <summary>
         /// Adds a table to the database
@@ -74,19 +89,5 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// </summary>
         /// <param name="ViewName">View name</param>
         ITable AddView(string ViewName);
-
-        /// <summary>
-        /// Adds a stored procedure to the database
-        /// </summary>
-        /// <param name="ProcedureName">Procedure name</param>
-        /// <param name="Definition">Definition</param>
-        ITable AddStoredProcedure(string ProcedureName, string Definition);
-
-        /// <summary>
-        /// Adds a function to the database
-        /// </summary>
-        /// <param name="Name">Function name</param>
-        /// <param name="Definition">Function definition</param>
-        IFunction AddFunction(string Name, string Definition);
     }
 }

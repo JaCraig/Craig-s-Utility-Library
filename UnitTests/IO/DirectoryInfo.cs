@@ -30,6 +30,31 @@ namespace UnitTests.IO
     public class DirectoryInfo
     {
         [Fact]
+        public void Clone()
+        {
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
+            Utilities.IO.DirectoryInfo Temp2 = (Utilities.IO.DirectoryInfo)Temp.Clone();
+            Assert.True(Temp == Temp2);
+            Assert.True(Temp.Equals(Temp2));
+            Assert.Equal(0, Temp.CompareTo(Temp2));
+            Assert.False(Temp < Temp2);
+            Assert.False(Temp > Temp2);
+            Assert.True(Temp <= Temp2);
+            Assert.True(Temp >= Temp2);
+            Assert.False(Temp != Temp2);
+        }
+
+        [Fact]
+        public void CreateAndDelete()
+        {
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
+            Temp.Create();
+            Assert.True(Temp.Exists);
+            Temp.Delete();
+            Assert.False(Temp.Exists);
+        }
+
+        [Fact]
         public void Creation()
         {
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
@@ -38,6 +63,19 @@ namespace UnitTests.IO
             Temp = new Utilities.IO.DirectoryInfo(new Utilities.IO.DirectoryInfo("."));
             Assert.NotNull(Temp);
             Assert.True(Temp.Exists);
+        }
+
+        [Fact]
+        public void DeleteExtension()
+        {
+            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
+            Temp.Create();
+            for (int x = 0; x < 10; ++x)
+            {
+                new Utilities.IO.DirectoryInfo("./Test/" + x).Create();
+            }
+            Temp.EnumerateDirectories().Delete();
+            Temp.Delete();
         }
 
         [Fact]
@@ -65,45 +103,6 @@ namespace UnitTests.IO
             Assert.True(Temp <= Temp2);
             Assert.True(Temp >= Temp2);
             Assert.False(Temp != Temp2);
-        }
-
-        [Fact]
-        public void Clone()
-        {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
-            Utilities.IO.DirectoryInfo Temp2 = (Utilities.IO.DirectoryInfo)Temp.Clone();
-            Assert.True(Temp == Temp2);
-            Assert.True(Temp.Equals(Temp2));
-            Assert.Equal(0, Temp.CompareTo(Temp2));
-            Assert.False(Temp < Temp2);
-            Assert.False(Temp > Temp2);
-            Assert.True(Temp <= Temp2);
-            Assert.True(Temp >= Temp2);
-            Assert.False(Temp != Temp2);
-        }
-
-        [Fact]
-        public void CreateAndDelete()
-        {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
-            Temp.Create();
-            Assert.True(Temp.Exists);
-            Temp.Delete();
-            Assert.False(Temp.Exists);
-        }
-
-
-        [Fact]
-        public void DeleteExtension()
-        {
-            Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo("./Test");
-            Temp.Create();
-            for (int x = 0; x < 10; ++x)
-            {
-                new Utilities.IO.DirectoryInfo("./Test/" + x).Create();
-            }
-            Temp.EnumerateDirectories().Delete();
-            Temp.Delete();
         }
 
         [Fact]

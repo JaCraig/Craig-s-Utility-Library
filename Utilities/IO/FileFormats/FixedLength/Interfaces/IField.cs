@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength.Interfaces
 {
@@ -37,11 +37,10 @@ namespace Utilities.IO.FileFormats.FixedLength.Interfaces
         /// </summary>
         /// <param name="Value">The string value</param>
         /// <param name="Length">Max length of the value</param>
-        /// <param name="FillerCharacter">Filler character used to fill
-        /// the rest of the field</param>
-        void Parse(string Value, int Length=-1, string FillerCharacter=" ");
+        /// <param name="FillerCharacter">Filler character used to fill the rest of the field</param>
+        void Parse(string Value, int Length = -1, string FillerCharacter = " ");
 
-        #endregion
+        #endregion Functions
 
         #region Properties
 
@@ -55,6 +54,6 @@ namespace Utilities.IO.FileFormats.FixedLength.Interfaces
         /// </summary>
         T Value { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 }

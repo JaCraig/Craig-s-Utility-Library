@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -27,7 +28,8 @@ using System.Linq;
 using Utilities.Configuration.Manager.Interfaces;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Configuration.Manager
 {
@@ -46,7 +48,7 @@ namespace Utilities.Configuration.Manager
             ConfigSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IConfigSystem>().ToDictionary(x => x.Name);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -62,7 +64,7 @@ namespace Utilities.Configuration.Manager
         /// <returns>The config system specified</returns>
         public IConfigSystem this[string Name] { get { return Get(Name); } }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -89,7 +91,9 @@ namespace Utilities.Configuration.Manager
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
+        /// <param name="Managed">
+        /// Determines if all objects should be disposed or just managed objects
+        /// </param>
         protected override void Dispose(bool Managed)
         {
             if (ConfigSystems != null)
@@ -102,6 +106,6 @@ namespace Utilities.Configuration.Manager
             }
         }
 
-        #endregion
+        #endregion Functions
     }
 }

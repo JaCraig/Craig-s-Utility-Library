@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,7 +32,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities.DataTypes.Comparison;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -46,19 +48,17 @@ namespace Utilities.DataTypes
         #region Concat
 
         /// <summary>
-        /// Combines multiple IEnumerables together and returns a new IEnumerable containing all of the values
+        /// Combines multiple IEnumerables together and returns a new IEnumerable containing all of
+        /// the values
         /// </summary>
         /// <typeparam name="T">Type of the data in the IEnumerable</typeparam>
         /// <param name="Enumerable1">IEnumerable 1</param>
         /// <param name="Additions">IEnumerables to concat onto the first item</param>
         /// <returns>A new IEnumerable containing all values</returns>
         /// <example>
-        /// <code>
-        ///  int[] TestObject1 = new int[] { 1, 2, 3 };
-        ///  int[] TestObject2 = new int[] { 4, 5, 6 };
-        ///  int[] TestObject3 = new int[] { 7, 8, 9 };
-        ///  TestObject1 = TestObject1.Concat(TestObject2, TestObject3).ToArray();
-        /// </code>
+        /// <code>int[] TestObject1 = new int[] { 1, 2, 3 }; int[] TestObject2 = new int[] { 4, 5, 6
+        /// }; int[] TestObject3 = new int[] { 7, 8, 9 }; TestObject1 =
+        /// TestObject1.Concat(TestObject2, TestObject3).ToArray();</code>
         /// </example>
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> Enumerable1, params IEnumerable<T>[] Additions)
         {
@@ -72,7 +72,7 @@ namespace Utilities.DataTypes
             return Results;
         }
 
-        #endregion
+        #endregion Concat
 
         #region ElementsBetween
 
@@ -98,7 +98,7 @@ namespace Utilities.DataTypes
             return ReturnList;
         }
 
-        #endregion
+        #endregion ElementsBetween
 
         #region For
 
@@ -121,7 +121,8 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Does a function for each item in the IEnumerable between the start and end indexes and returns an IEnumerable of the results
+        /// Does a function for each item in the IEnumerable between the start and end indexes and
+        /// returns an IEnumerable of the results
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <typeparam name="R">Return type</typeparam>
@@ -140,7 +141,7 @@ namespace Utilities.DataTypes
             return ReturnValues;
         }
 
-        #endregion
+        #endregion For
 
         #region ForEach
 
@@ -228,7 +229,7 @@ namespace Utilities.DataTypes
             return ReturnValues;
         }
 
-        #endregion
+        #endregion ForEach
 
         #region ForParallel
 
@@ -268,7 +269,7 @@ namespace Utilities.DataTypes
             return Results;
         }
 
-        #endregion
+        #endregion ForParallel
 
         #region ForEachParallel
 
@@ -352,7 +353,7 @@ namespace Utilities.DataTypes
             return ReturnValues;
         }
 
-        #endregion
+        #endregion ForEachParallel
 
         #region Last
 
@@ -369,7 +370,7 @@ namespace Utilities.DataTypes
             return List.ElementsBetween(List.Count() - Count, List.Count());
         }
 
-        #endregion
+        #endregion Last
 
         #region PositionOf
 
@@ -379,7 +380,9 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="List">List of objects to search</param>
         /// <param name="Object">Object to find the position of</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is present</param>
+        /// <param name="EqualityComparer">
+        /// Equality comparer used to determine if the object is present
+        /// </param>
         /// <returns>The position of the object if it is present, otherwise -1</returns>
         public static int PositionOf<T>(this IEnumerable<T> List, T Object, IEqualityComparer<T> EqualityComparer = null)
         {
@@ -395,7 +398,7 @@ namespace Utilities.DataTypes
             return -1;
         }
 
-        #endregion
+        #endregion PositionOf
 
         #region Remove
 
@@ -414,7 +417,7 @@ namespace Utilities.DataTypes
             return Value.Where(x => !Predicate(x));
         }
 
-        #endregion
+        #endregion Remove
 
         #region ToArray
 
@@ -433,7 +436,7 @@ namespace Utilities.DataTypes
             return List.ForEach(ConvertingFunction).ToArray();
         }
 
-        #endregion
+        #endregion ToArray
 
         #region To
 
@@ -466,7 +469,7 @@ namespace Utilities.DataTypes
             return ReturnValue;
         }
 
-        #endregion
+        #endregion To
 
         #region ToList
 
@@ -485,7 +488,7 @@ namespace Utilities.DataTypes
             return List.ForEach(ConvertingFunction).ToList();
         }
 
-        #endregion
+        #endregion ToList
 
         #region ToString
 
@@ -494,7 +497,9 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
         /// <param name="List">List to convert</param>
-        /// <param name="ItemOutput">Used to convert the item to a string (defaults to calling ToString)</param>
+        /// <param name="ItemOutput">
+        /// Used to convert the item to a string (defaults to calling ToString)
+        /// </param>
         /// <param name="Seperator">Seperator to use between items (defaults to ,)</param>
         /// <returns>The string version of the list</returns>
         public static string ToString<T>(this IEnumerable<T> List, Func<T, string> ItemOutput = null, string Seperator = ",")
@@ -512,7 +517,7 @@ namespace Utilities.DataTypes
             return Builder.ToString();
         }
 
-        #endregion
+        #endregion ToString
 
         #region ThrowIfAll
 
@@ -558,7 +563,7 @@ namespace Utilities.DataTypes
             throw Exception;
         }
 
-        #endregion
+        #endregion ThrowIfAll
 
         #region ThrowIfAny
 
@@ -604,8 +609,8 @@ namespace Utilities.DataTypes
             return List;
         }
 
-        #endregion
+        #endregion ThrowIfAny
 
-        #endregion
+        #endregion Functions
     }
 }

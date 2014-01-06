@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Linq;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -50,7 +51,7 @@ namespace Utilities.DataTypes
             return x => Values.Contains(x) || Predicate(x);
         }
 
-        #endregion
+        #endregion AddToSet
 
         #region CartesianProduct
 
@@ -67,7 +68,7 @@ namespace Utilities.DataTypes
             return (x, y) => Predicate1(x) && Predicate2(y);
         }
 
-        #endregion
+        #endregion CartesianProduct
 
         #region Difference
 
@@ -83,7 +84,7 @@ namespace Utilities.DataTypes
             return x => Predicate1(x) ^ Predicate2(x);
         }
 
-        #endregion
+        #endregion Difference
 
         #region Intersect
 
@@ -99,7 +100,7 @@ namespace Utilities.DataTypes
             return x => Predicate1(x) && Predicate2(x);
         }
 
-        #endregion
+        #endregion Intersect
 
         #region RelativeComplement
 
@@ -115,7 +116,7 @@ namespace Utilities.DataTypes
             return x => Predicate1(x) && !Predicate2(x);
         }
 
-        #endregion
+        #endregion RelativeComplement
 
         #region RemoveFromSet
 
@@ -131,7 +132,7 @@ namespace Utilities.DataTypes
             return x => !Values.Contains(x) && Predicate(x);
         }
 
-        #endregion
+        #endregion RemoveFromSet
 
         #region Union
 
@@ -147,8 +148,8 @@ namespace Utilities.DataTypes
             return x => Predicate1(x) || Predicate2(x);
         }
 
-        #endregion
+        #endregion Union
 
-        #endregion
+        #endregion Functions
     }
 }

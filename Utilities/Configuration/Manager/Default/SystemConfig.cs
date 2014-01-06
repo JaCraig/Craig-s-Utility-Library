@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
 using System.Web.Configuration;
 using Utilities.Configuration.Manager.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Configuration.Manager.Default
 {
@@ -67,7 +69,7 @@ namespace Utilities.Configuration.Manager.Default
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -80,6 +82,11 @@ namespace Utilities.Configuration.Manager.Default
         /// Connection strings
         /// </summary>
         public IDictionary<string, ConnectionString> ConnectionStrings { get; private set; }
+
+        /// <summary>
+        /// Name of the Config object
+        /// </summary>
+        public string Name { get { return "Default"; } }
 
         /// <summary>
         /// Gets the configuration section based on the name specified
@@ -101,12 +108,7 @@ namespace Utilities.Configuration.Manager.Default
             }
         }
 
-        /// <summary>
-        /// Name of the Config object
-        /// </summary>
-        public string Name { get { return "Default"; } }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -124,7 +126,7 @@ namespace Utilities.Configuration.Manager.Default
         {
         }
 
-        #endregion
+        #endregion Functions
     }
 
     #region Classes
@@ -135,15 +137,15 @@ namespace Utilities.Configuration.Manager.Default
     public class ConnectionString
     {
         /// <summary>
-        /// Provider name
-        /// </summary>
-        public string ProviderName { get; set; }
-
-        /// <summary>
         /// Actual connection string
         /// </summary>
         public string Connection { get; set; }
+
+        /// <summary>
+        /// Provider name
+        /// </summary>
+        public string ProviderName { get; set; }
     }
 
-    #endregion
+    #endregion Classes
 }

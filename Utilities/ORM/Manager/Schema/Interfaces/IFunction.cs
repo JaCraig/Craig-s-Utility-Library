@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Interfaces
 {
@@ -31,14 +31,14 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
     public interface IFunction
     {
         /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
         /// Definition
         /// </summary>
         string Definition { get; set; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        string Name { get; set; }
 
         /// <summary>
         /// Parent database

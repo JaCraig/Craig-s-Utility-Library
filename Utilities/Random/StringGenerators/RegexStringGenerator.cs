@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.StringGenerators
 {
@@ -41,7 +43,9 @@ namespace Utilities.Random.StringGenerators
         /// </summary>
         /// <param name="Length">Length of the string to generate</param>
         /// <param name="AllowedCharacters">Characters that are allowed</param>
-        /// <param name="NumberOfNonAlphaNumericsAllowed">Number of non alphanumeric characters to allow</param>
+        /// <param name="NumberOfNonAlphaNumericsAllowed">
+        /// Number of non alphanumeric characters to allow
+        /// </param>
         public RegexStringGenerator(int Length, string AllowedCharacters = ".", int NumberOfNonAlphaNumericsAllowed = int.MaxValue)
             : base("", "")
         {
@@ -50,14 +54,9 @@ namespace Utilities.Random.StringGenerators
             this.NumberOfNonAlphaNumericsAllowed = NumberOfNonAlphaNumericsAllowed;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Length to generate
-        /// </summary>
-        public virtual int Length { get; protected set; }
 
         /// <summary>
         /// Characters allowed
@@ -65,11 +64,16 @@ namespace Utilities.Random.StringGenerators
         public virtual string AllowedCharacters { get; protected set; }
 
         /// <summary>
+        /// Length to generate
+        /// </summary>
+        public virtual int Length { get; protected set; }
+
+        /// <summary>
         /// Number of non alpha numeric characters allowed
         /// </summary>
         public virtual int NumberOfNonAlphaNumericsAllowed { get; protected set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -127,6 +131,6 @@ namespace Utilities.Random.StringGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

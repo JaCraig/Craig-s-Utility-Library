@@ -20,15 +20,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.Patterns
 {
     /// <summary>
-    /// Helps in fluent interface design to hide
-    /// ToString, Equals, and GetHashCode
+    /// Helps in fluent interface design to hide ToString, Equals, and GetHashCode
     /// </summary>
     public interface IFluentInterface
     {
@@ -50,19 +51,19 @@ namespace Utilities.DataTypes.Patterns
         int GetHashCode();
 
         /// <summary>
-        /// Hides ToString
-        /// </summary>
-        /// <returns></returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
-
-        /// <summary>
         /// Hides GetType
         /// </summary>
         /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         Type GetType();
 
-        #endregion
+        /// <summary>
+        /// Hides ToString
+        /// </summary>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        string ToString();
+
+        #endregion Functions
     }
 }

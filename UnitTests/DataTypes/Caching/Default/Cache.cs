@@ -20,25 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Collections.Generic;
-using Utilities.DataTypes;
 using Xunit;
 
 namespace UnitTests.DataTypes.Caching.Default
 {
     public class Cache
     {
-        [Fact]
-        public void Create()
-        {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
-            Assert.NotNull(Temp);
-            Assert.Equal(0, Temp.Count);
-            Assert.False(Temp.IsReadOnly);
-            Assert.Equal(0, Temp.Keys.Count);
-            Assert.Equal("Default", Temp.Name);
-            Assert.Equal(0, Temp.Values.Count);
-        }
-
         [Fact]
         public void Add()
         {
@@ -52,7 +39,38 @@ namespace UnitTests.DataTypes.Caching.Default
             Assert.Equal(1, Temp.Values.Count);
             Assert.Equal(1, Temp["A"]);
             Assert.True(Temp.ContainsKey("A"));
-            Assert.True(Temp.Contains(new KeyValuePair<string,object>("A",1)));
+            Assert.True(Temp.Contains(new KeyValuePair<string, object>("A", 1)));
+        }
+
+        [Fact]
+        public void Clear()
+        {
+            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            Temp.Add("A", 1);
+            Assert.NotNull(Temp);
+            Assert.Equal(1, Temp.Count);
+            Assert.False(Temp.IsReadOnly);
+            Assert.Equal(1, Temp.Keys.Count);
+            Assert.Equal("Default", Temp.Name);
+            Assert.Equal(1, Temp.Values.Count);
+            Temp.Clear();
+            Assert.Equal(0, Temp.Count);
+            Assert.False(Temp.IsReadOnly);
+            Assert.Equal(0, Temp.Keys.Count);
+            Assert.Equal("Default", Temp.Name);
+            Assert.Equal(0, Temp.Values.Count);
+        }
+
+        [Fact]
+        public void Create()
+        {
+            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
+            Assert.NotNull(Temp);
+            Assert.Equal(0, Temp.Count);
+            Assert.False(Temp.IsReadOnly);
+            Assert.Equal(0, Temp.Keys.Count);
+            Assert.Equal("Default", Temp.Name);
+            Assert.Equal(0, Temp.Values.Count);
         }
 
         [Fact]
@@ -87,28 +105,9 @@ namespace UnitTests.DataTypes.Caching.Default
             Assert.Equal(1, Temp.Keys.Count);
             Assert.Equal("Default", Temp.Name);
             Assert.Equal(1, Temp.Values.Count);
-            object Value=0;
+            object Value = 0;
             Assert.True(Temp.TryGetValue("A", out Value));
             Assert.Equal(1, Value);
-        }
-
-        [Fact]
-        public void Clear()
-        {
-            Utilities.DataTypes.Caching.Default.Cache Temp = new Utilities.DataTypes.Caching.Default.Cache();
-            Temp.Add("A", 1);
-            Assert.NotNull(Temp);
-            Assert.Equal(1, Temp.Count);
-            Assert.False(Temp.IsReadOnly);
-            Assert.Equal(1, Temp.Keys.Count);
-            Assert.Equal("Default", Temp.Name);
-            Assert.Equal(1, Temp.Values.Count);
-            Temp.Clear();
-            Assert.Equal(0, Temp.Count);
-            Assert.False(Temp.IsReadOnly);
-            Assert.Equal(0, Temp.Keys.Count);
-            Assert.Equal("Default", Temp.Name);
-            Assert.Equal(0, Temp.Values.Count);
         }
     }
 }

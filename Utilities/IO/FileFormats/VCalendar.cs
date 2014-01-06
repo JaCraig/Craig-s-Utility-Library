@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Globalization;
 using System.Net.Mail;
@@ -28,7 +29,7 @@ using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.BaseClasses;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileFormats
 {
@@ -49,9 +50,19 @@ namespace Utilities.IO.FileFormats
             CurrentTimeZone = TimeZone.CurrentTimeZone;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
+
+        /// <summary>
+        /// List of attendees
+        /// </summary>
+        public MailAddressCollection AttendeeList { get; private set; }
+
+        /// <summary>
+        /// Determines if the calendar item is being canceled
+        /// </summary>
+        public bool Cancel { get; set; }
 
         /// <summary>
         /// The time zone for the calendar event
@@ -59,9 +70,9 @@ namespace Utilities.IO.FileFormats
         public TimeZone CurrentTimeZone { get; set; }
 
         /// <summary>
-        /// The start time
+        /// The description of the event
         /// </summary>
-        public DateTime StartTime { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// The end time
@@ -74,24 +85,14 @@ namespace Utilities.IO.FileFormats
         public string Location { get; set; }
 
         /// <summary>
-        /// The subject of the item to send
-        /// </summary>
-        public string Subject { get; set; }
-
-        /// <summary>
-        /// The description of the event
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// List of attendees
-        /// </summary>
-        public MailAddressCollection AttendeeList { get; private set; }
-
-        /// <summary>
         /// Organizer
         /// </summary>
         public MailAddress Organizer { get; set; }
+
+        /// <summary>
+        /// The start time
+        /// </summary>
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// Sets the status for the appointment (FREE, BUSY, etc.)
@@ -99,33 +100,15 @@ namespace Utilities.IO.FileFormats
         public string Status { get; set; }
 
         /// <summary>
-        /// Determines if the calendar item is being canceled
+        /// The subject of the item to send
         /// </summary>
-        public bool Cancel { get; set; }
+        public string Subject { get; set; }
 
         private static readonly Regex STRIP_HTML_REGEX = new Regex("<[^>]*>", RegexOptions.Compiled);
 
-        #endregion
+        #endregion Properties
 
         #region Private Functions
-
-        private static string StripHTML(string HTML)
-        {
-            if (string.IsNullOrEmpty(HTML))
-                return string.Empty;
-
-            HTML = STRIP_HTML_REGEX.Replace(HTML, string.Empty);
-            HTML = HTML.Replace("&nbsp;", " ");
-            return HTML.Replace("&#160;", string.Empty);
-        }
-
-        private static bool ContainsHTML(string Input)
-        {
-            if (string.IsNullOrEmpty(Input))
-                return false;
-
-            return STRIP_HTML_REGEX.IsMatch(Input);
-        }
 
         /// <summary>
         /// Loads the object from the data specified
@@ -158,29 +141,63 @@ namespace Utilities.IO.FileFormats
             }
         }
 
-        #endregion
+        private static bool ContainsHTML(string Input)
+        {
+            if (string.IsNullOrEmpty(Input))
+                return false;
+
+            return STRIP_HTML_REGEX.IsMatch(Input);
+        }
+
+        private static string StripHTML(string HTML)
+        {
+            if (string.IsNullOrEmpty(HTML))
+                return string.Empty;
+
+            HTML = STRIP_HTML_REGEX.Replace(HTML, string.Empty);
+            HTML = HTML.Replace("&nbsp;", " ");
+            return HTML.Replace("&#160;", string.Empty);
+        }
+
+        #endregion Private Functions
 
         #region Public Functions
 
         /// <summary>
-        /// Returns the VCalendar item
+        /// Returns the HCalendar item
         /// </summary>
-        /// <returns>a string output of the VCalendar item</returns>
-        public virtual string GetVCalendar()
+        /// <returns>A string output of the HCalendar item</returns>
+        public virtual string GetHCalendar()
         {
-            return new StringBuilder().AppendLine("BEGIN:VCALENDAR")
-                      .AppendLine("VERSION:1.0")
-                      .AppendLine("BEGIN:VEVENT")
-                      .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture))
-                      .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture))
-                      .AppendLineFormat("Location;ENCODING=QUOTED-PRINTABLE:{0}", Location)
-                      .AppendLineFormat("SUMMARY;ENCODING=QUOTED-PRINTABLE:{0}", Subject)
-                      .AppendLineFormat("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:{0}", Description)
-                      .AppendLineFormat("UID:{0}{1}{2}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture), CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture), Subject)
-                      .AppendLine("PRIORITY:3")
-                      .AppendLine("End:VEVENT")
-                      .AppendLine("End:VCALENDAR")
-                      .ToString();
+            StringBuilder Output = new StringBuilder();
+            Output.Append("<div class=\"vevent\">")
+                  .Append("<div class=\"summary\">").Append(Subject).Append("</div>")
+                  .Append("<div>Date: <abbr class=\"dtstart\" title=\"")
+                  .Append(StartTime.ToString("MM-dd-yyyy hh:mm tt", CultureInfo.InvariantCulture)).Append("\">")
+                  .Append(StartTime.ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.InvariantCulture)).Append("</abbr> to ")
+                  .Append("<abbr class=\"dtend\" title=\"").Append(EndTime.ToString("MM-dd-yyyy hh:mm tt", CultureInfo.InvariantCulture))
+                  .Append("\">");
+            if (EndTime.Year != StartTime.Year)
+            {
+                Output.Append(EndTime.ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.CurrentCulture));
+            }
+            else if (EndTime.Month != StartTime.Month)
+            {
+                Output.Append(EndTime.ToString("MMMM dd hh:mm tt", CultureInfo.CurrentCulture));
+            }
+            else if (EndTime.Day != StartTime.Day)
+            {
+                Output.Append(EndTime.ToString("dd hh:mm tt", CultureInfo.CurrentCulture));
+            }
+            else
+            {
+                Output.Append(EndTime.ToString("hh:mm tt", CultureInfo.CurrentCulture));
+            }
+            return Output.Append("</abbr></div>")
+                         .Append("<div>Location: <span class=\"location\">").Append(Location).Append("</span></div>")
+                         .Append("<div class=\"description\">").Append(Description).Append("</div>")
+                         .Append("</div>")
+                         .ToString();
         }
 
         /// <summary>
@@ -241,43 +258,6 @@ namespace Utilities.IO.FileFormats
         }
 
         /// <summary>
-        /// Returns the HCalendar item
-        /// </summary>
-        /// <returns>A string output of the HCalendar item</returns>
-        public virtual string GetHCalendar()
-        {
-            StringBuilder Output = new StringBuilder();
-            Output.Append("<div class=\"vevent\">")
-                  .Append("<div class=\"summary\">").Append(Subject).Append("</div>")
-                  .Append("<div>Date: <abbr class=\"dtstart\" title=\"")
-                  .Append(StartTime.ToString("MM-dd-yyyy hh:mm tt", CultureInfo.InvariantCulture)).Append("\">")
-                  .Append(StartTime.ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.InvariantCulture)).Append("</abbr> to ")
-                  .Append("<abbr class=\"dtend\" title=\"").Append(EndTime.ToString("MM-dd-yyyy hh:mm tt", CultureInfo.InvariantCulture))
-                  .Append("\">");
-            if (EndTime.Year != StartTime.Year)
-            {
-                Output.Append(EndTime.ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.CurrentCulture));
-            }
-            else if (EndTime.Month != StartTime.Month)
-            {
-                Output.Append(EndTime.ToString("MMMM dd hh:mm tt", CultureInfo.CurrentCulture));
-            }
-            else if (EndTime.Day != StartTime.Day)
-            {
-                Output.Append(EndTime.ToString("dd hh:mm tt", CultureInfo.CurrentCulture));
-            }
-            else
-            {
-                Output.Append(EndTime.ToString("hh:mm tt", CultureInfo.CurrentCulture));
-            }
-            return Output.Append("</abbr></div>")
-                         .Append("<div>Location: <span class=\"location\">").Append(Location).Append("</span></div>")
-                         .Append("<div class=\"description\">").Append(Description).Append("</div>")
-                         .Append("</div>")
-                         .ToString();
-        }
-
-        /// <summary>
         /// Returns the text version of the appointment
         /// </summary>
         /// <returns>A text version of the appointement</returns>
@@ -294,6 +274,27 @@ namespace Utilities.IO.FileFormats
         }
 
         /// <summary>
+        /// Returns the VCalendar item
+        /// </summary>
+        /// <returns>a string output of the VCalendar item</returns>
+        public virtual string GetVCalendar()
+        {
+            return new StringBuilder().AppendLine("BEGIN:VCALENDAR")
+                      .AppendLine("VERSION:1.0")
+                      .AppendLine("BEGIN:VEVENT")
+                      .AppendLineFormat("DTStart:{0}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture))
+                      .AppendLineFormat("DTEnd:{0}", CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture))
+                      .AppendLineFormat("Location;ENCODING=QUOTED-PRINTABLE:{0}", Location)
+                      .AppendLineFormat("SUMMARY;ENCODING=QUOTED-PRINTABLE:{0}", Subject)
+                      .AppendLineFormat("DESCRIPTION;ENCODING=QUOTED-PRINTABLE:{0}", Description)
+                      .AppendLineFormat("UID:{0}{1}{2}", CurrentTimeZone.ToUniversalTime(StartTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture), CurrentTimeZone.ToUniversalTime(EndTime).ToString("yyyyMMddTHHmmss", CultureInfo.InvariantCulture), Subject)
+                      .AppendLine("PRIORITY:3")
+                      .AppendLine("End:VEVENT")
+                      .AppendLine("End:VCALENDAR")
+                      .ToString();
+        }
+
+        /// <summary>
         /// Returns the text version of the appointment
         /// </summary>
         /// <returns>A text version of the appointement</returns>
@@ -302,6 +303,6 @@ namespace Utilities.IO.FileFormats
             return GetICalendar();
         }
 
-        #endregion
+        #endregion Public Functions
     }
 }

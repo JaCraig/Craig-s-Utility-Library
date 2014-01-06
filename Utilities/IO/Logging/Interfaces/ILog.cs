@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using Utilities.IO.Logging.Enums;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Logging.Interfaces
 {
@@ -38,7 +40,7 @@ namespace Utilities.IO.Logging.Interfaces
         /// </summary>
         string Name { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -47,9 +49,11 @@ namespace Utilities.IO.Logging.Interfaces
         /// </summary>
         /// <param name="Message">Message text</param>
         /// <param name="Type">Message type</param>
-        /// <param name="args">Any additional arguments that will be used in formatting the message</param>
+        /// <param name="args">
+        /// Any additional arguments that will be used in formatting the message
+        /// </param>
         void LogMessage(string Message, MessageType Type, params object[] args);
 
-        #endregion
+        #endregion Functions
     }
 }

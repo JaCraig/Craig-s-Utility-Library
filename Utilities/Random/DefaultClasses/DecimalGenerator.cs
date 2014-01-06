@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.DefaultClasses
 {
@@ -169,5 +171,5 @@ namespace Utilities.Random.DefaultClasses
         }
     }
 
-    #endregion
+    #endregion Decimal Generators
 }

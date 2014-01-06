@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.Patterns
 {
@@ -44,7 +45,7 @@ namespace Utilities.DataTypes.Patterns
             Constructors = new Dictionary<Key, Func<T>>();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Protected Variables
 
@@ -53,29 +54,9 @@ namespace Utilities.DataTypes.Patterns
         /// </summary>
         protected Dictionary<Key, Func<T>> Constructors { get; private set; }
 
-        #endregion
+        #endregion Protected Variables
 
         #region Public Functions
-
-        /// <summary>
-        /// Registers an item
-        /// </summary>
-        /// <param name="Key">Item to register</param>
-        /// <param name="Result">The object to be returned</param>
-        public virtual void Register(Key Key, T Result)
-        {
-            Register(Key, () => Result);
-        }
-
-        /// <summary>
-        /// Registers an item
-        /// </summary>
-        /// <param name="Key">Item to register</param>
-        /// <param name="Constructor">The function to call when creating the item</param>
-        public virtual void Register(Key Key, Func<T> Constructor)
-        {
-            Constructors.SetValue(Key, Constructor);
-        }
 
         /// <summary>
         /// Creates an instance associated with the key
@@ -97,6 +78,26 @@ namespace Utilities.DataTypes.Patterns
             return Constructors.ContainsKey(Key);
         }
 
-        #endregion
+        /// <summary>
+        /// Registers an item
+        /// </summary>
+        /// <param name="Key">Item to register</param>
+        /// <param name="Result">The object to be returned</param>
+        public virtual void Register(Key Key, T Result)
+        {
+            Register(Key, () => Result);
+        }
+
+        /// <summary>
+        /// Registers an item
+        /// </summary>
+        /// <param name="Key">Item to register</param>
+        /// <param name="Constructor">The function to call when creating the item</param>
+        public virtual void Register(Key Key, Func<T> Constructor)
+        {
+            Constructors.SetValue(Key, Constructor);
+        }
+
+        #endregion Public Functions
     }
 }

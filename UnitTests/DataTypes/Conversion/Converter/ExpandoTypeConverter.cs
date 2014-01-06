@@ -19,32 +19,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Linq;
-using Utilities.DataTypes.CodeGen.BaseClasses;
-using Utilities.IO;
-using Utilities.IO.FileSystem.Interfaces;
-using Xunit;
-using Utilities.DataTypes;
-using System.Data;
-using System.Dynamic;
 using System.Collections.Generic;
+using System.Dynamic;
+using Utilities.DataTypes;
+using Xunit;
 
 namespace UnitTests.DataTypes.Conversion.Converter
 {
     public class ExpandoTypeConverter
     {
-        [Fact]
-        public void ConvertTo()
-        {
-            IDictionary<string,object> TestObject=new ExpandoObject();
-            TestObject.Add("A","This is a test");
-            TestObject.Add("B",10);
-            TestClass Result = TestObject.To<IDictionary<string, object>, TestClass>();
-            Assert.Equal(10, Result.B);
-            Assert.Equal("This is a test", Result.A);
-        }
-        
         [Fact]
         public void ConvertFrom()
         {
@@ -53,9 +36,21 @@ namespace UnitTests.DataTypes.Conversion.Converter
             Assert.Equal("This is a test", Result["A"]);
         }
 
+        [Fact]
+        public void ConvertTo()
+        {
+            IDictionary<string, object> TestObject = new ExpandoObject();
+            TestObject.Add("A", "This is a test");
+            TestObject.Add("B", 10);
+            TestClass Result = TestObject.To<IDictionary<string, object>, TestClass>();
+            Assert.Equal(10, Result.B);
+            Assert.Equal("This is a test", Result.A);
+        }
+
         public class TestClass
         {
             public string A { get; set; }
+
             public int B { get; set; }
         }
     }

@@ -20,14 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
-using Utilities.ORM.Manager.Schema.Interfaces;
-using System.Linq;
-using Utilities.DataTypes;
+
 using System.Data;
-using Utilities.ORM.Manager.Schema.Enums;
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.Schema.BaseClasses;
-#endregion
+using Utilities.ORM.Manager.Schema.Enums;
+using Utilities.ORM.Manager.Schema.Interfaces;
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Default.Database
 {
@@ -49,26 +49,9 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         }
 
         /// <summary>
-        /// Adds a trigger to the table
+        /// Definition of the stored procedure
         /// </summary>
-        /// <param name="Name">Name of the trigger</param>
-        /// <param name="Definition">Definition of the trigger</param>
-        /// <param name="Type">Trigger type</param>
-        /// <returns>The trigger specified</returns>
-        public override ITrigger AddTrigger(string Name, string Definition, TriggerType Type)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Adds a foreign key
-        /// </summary>
-        /// <param name="ColumnName">Column name</param>
-        /// <param name="ForeignKeyTable">Foreign key table</param>
-        /// <param name="ForeignKeyColumn">Foreign key column</param>
-        public override void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn)
-        {
-        }
+        public string Definition { get; set; }
 
         /// <summary>
         /// Adds a column
@@ -94,8 +77,25 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         }
 
         /// <summary>
-        /// Definition of the stored procedure
+        /// Adds a foreign key
         /// </summary>
-        public string Definition { get; set; }
+        /// <param name="ColumnName">Column name</param>
+        /// <param name="ForeignKeyTable">Foreign key table</param>
+        /// <param name="ForeignKeyColumn">Foreign key column</param>
+        public override void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn)
+        {
+        }
+
+        /// <summary>
+        /// Adds a trigger to the table
+        /// </summary>
+        /// <param name="Name">Name of the trigger</param>
+        /// <param name="Definition">Definition of the trigger</param>
+        /// <param name="Type">Trigger type</param>
+        /// <returns>The trigger specified</returns>
+        public override ITrigger AddTrigger(string Name, string Definition, TriggerType Type)
+        {
+            return null;
+        }
     }
 }

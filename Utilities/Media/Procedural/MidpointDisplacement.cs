@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.Drawing;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -46,11 +47,11 @@ namespace Utilities.Media.Procedural
         /// <param name="Seed">Random seed</param>
         /// <returns>An image containing "cracks"</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        public static Bitmap Generate(int Width,int Height,int NumberOfCracks,int Iterations,
-            int MaxChange,int MaxLength,int Seed)
+        public static Bitmap Generate(int Width, int Height, int NumberOfCracks, int Iterations,
+            int MaxChange, int MaxLength, int Seed)
         {
             Bitmap ReturnValue = new Bitmap(Width, Height);
-            List<Line> Lines = GenerateLines(Width,Height,NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);
+            List<Line> Lines = GenerateLines(Width, Height, NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);
             using (Graphics ReturnGraphic = Graphics.FromImage(ReturnValue))
             {
                 foreach (Line Line in Lines)
@@ -64,7 +65,7 @@ namespace Utilities.Media.Procedural
             return ReturnValue;
         }
 
-        private static List<Line> GenerateLines(int Width,int Height,int NumberOfCracks, int Iterations, int MaxChange, int MaxLength, int Seed)
+        private static List<Line> GenerateLines(int Width, int Height, int NumberOfCracks, int Iterations, int MaxChange, int MaxLength, int Seed)
         {
             List<Line> Lines = new List<Line>();
             System.Random Generator = new System.Random(Seed);
@@ -78,14 +79,14 @@ namespace Utilities.Media.Procedural
                         Generator.Next(0, Height), Generator.Next(0, Height));
                     LineLength = (int)System.Math.Sqrt((double)((TempLine.X1 - TempLine.X2) * (TempLine.X1 - TempLine.X2))
                         + ((TempLine.Y1 - TempLine.Y2) * (TempLine.Y1 - TempLine.Y2)));
-                } while (LineLength > MaxLength&&LineLength<=0);
+                } while (LineLength > MaxLength && LineLength <= 0);
                 Lines.Add(TempLine);
                 List<Line> TempLineList = new List<Line>();
                 TempLineList.Add(TempLine);
                 for (int y = 0; y < Iterations; ++y)
                 {
-                    Line LineUsing=TempLineList[Generator.Next(0,TempLineList.Count)];
-                    int XBreak=Generator.Next(LineUsing.X1,LineUsing.X2)+Generator.Next(-MaxChange,MaxChange);
+                    Line LineUsing = TempLineList[Generator.Next(0, TempLineList.Count)];
+                    int XBreak = Generator.Next(LineUsing.X1, LineUsing.X2) + Generator.Next(-MaxChange, MaxChange);
                     int YBreak = 0;
                     if (LineUsing.Y1 > LineUsing.Y2)
                     {
@@ -95,27 +96,29 @@ namespace Utilities.Media.Procedural
                     {
                         YBreak = Generator.Next(LineUsing.Y1, LineUsing.Y2) + Generator.Next(-MaxChange, MaxChange);
                     }
-                    Line LineA=new Line(LineUsing.X1,XBreak,LineUsing.Y1,YBreak);
-                    Line LineB=new Line(XBreak,LineUsing.X2,YBreak,LineUsing.Y2);
+                    Line LineA = new Line(LineUsing.X1, XBreak, LineUsing.Y1, YBreak);
+                    Line LineB = new Line(XBreak, LineUsing.X2, YBreak, LineUsing.Y2);
                     TempLineList.Remove(LineUsing);
                     TempLineList.Add(LineA);
                     TempLineList.Add(LineB);
                 }
-                TempLine.SubLines=TempLineList;
+                TempLine.SubLines = TempLineList;
             }
             return Lines;
         }
 
-        #endregion
+        #endregion Functions
     }
 
     #region Internal classes
 
     internal class Line
     {
-        public Line(){}
+        public Line()
+        {
+        }
 
-        public Line(int X1,int X2,int Y1,int Y2)
+        public Line(int X1, int X2, int Y1, int Y2)
         {
             if (X1 > X2)
             {
@@ -126,18 +129,18 @@ namespace Utilities.Media.Procedural
                 Y1 = Y2;
                 Y2 = Holder;
             }
-            this.X1=X1;
-            this.X2=X2;
-            this.Y1=Y1;
-            this.Y2=Y2;
+            this.X1 = X1;
+            this.X2 = X2;
+            this.Y1 = Y1;
+            this.Y2 = Y2;
         }
 
+        public List<Line> SubLines = new List<Line>();
         public int X1;
         public int X2;
         public int Y1;
         public int Y2;
-        public List<Line> SubLines = new List<Line>();
     }
 
-    #endregion
+    #endregion Internal classes
 }

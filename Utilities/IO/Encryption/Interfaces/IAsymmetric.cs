@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Text;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Encryption.Interfaces
 {
@@ -37,27 +38,31 @@ namespace Utilities.IO.Encryption.Interfaces
         string Name { get; }
 
         /// <summary>
-        /// Encrypts a string using RSA
-        /// </summary>
-        /// <param name="Input">Input byte array (should be small as anything over 128 bytes can not be decrypted)</param>
-        /// <param name="Key">Key to use for encryption</param>
-        /// <returns>An encrypted byte array (64bit string)</returns>
-        byte[] Encrypt(byte[] Input, string Key);
-
-        /// <summary>
-        /// Decrypts a byte array using RSA
-        /// </summary>
-        /// <param name="Input">Input byte array (should be small as anything over 128 bytes can not be decrypted)</param>
-        /// <param name="Key">Key to use for decryption</param>
-        /// <returns>A decrypted byte array</returns>
-        byte[] Decrypt(byte[] Input, string Key);
-
-        /// <summary>
         /// Creates a new set of keys
         /// </summary>
         /// <param name="PrivatePublic">True if private key should be included, false otherwise</param>
         /// <returns>XML representation of the key information</returns>
         string CreateKey(bool PrivatePublic);
+
+        /// <summary>
+        /// Decrypts a byte array using RSA
+        /// </summary>
+        /// <param name="Input">
+        /// Input byte array (should be small as anything over 128 bytes can not be decrypted)
+        /// </param>
+        /// <param name="Key">Key to use for decryption</param>
+        /// <returns>A decrypted byte array</returns>
+        byte[] Decrypt(byte[] Input, string Key);
+
+        /// <summary>
+        /// Encrypts a string using RSA
+        /// </summary>
+        /// <param name="Input">
+        /// Input byte array (should be small as anything over 128 bytes can not be decrypted)
+        /// </param>
+        /// <param name="Key">Key to use for encryption</param>
+        /// <returns>An encrypted byte array (64bit string)</returns>
+        byte[] Encrypt(byte[] Input, string Key);
 
         /// <summary>
         /// Takes a string and creates a signed hash of it

@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Text.RegularExpressions;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.BaseClasses
 {
@@ -43,14 +45,14 @@ namespace Utilities.IO.FileSystem.BaseClasses
             HandleRegex = new Regex(HandleRegexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Regex string used to determine if the file system can handle the path
+        /// Name of the file system
         /// </summary>
-        protected abstract string HandleRegexString { get; }
+        public abstract string Name { get; }
 
         /// <summary>
         /// Regex used to determine if the file system can handle the path
@@ -58,23 +60,23 @@ namespace Utilities.IO.FileSystem.BaseClasses
         protected Regex HandleRegex { get; private set; }
 
         /// <summary>
-        /// Name of the file system
+        /// Regex string used to determine if the file system can handle the path
         /// </summary>
-        public abstract string Name { get; }
+        protected abstract string HandleRegexString { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
         /// <summary>
-        /// Gets the class representation for the file
+        /// Returns true if it can handle the path, false otherwise
         /// </summary>
-        /// <param name="Path">Path to the file</param>
-        /// <param name="Domain">Domain of the user (optional)</param>
-        /// <param name="Password">Password to be used to access the file (optional)</param>
-        /// <param name="UserName">User name to be used to access the file (optional)</param>
-        /// <returns>The file object</returns>
-        public abstract IFile File(string Path, string UserName = "", string Password = "", string Domain = "");
+        /// <param name="Path">The path to check against</param>
+        /// <returns>True if it can handle the path, false otherwise</returns>
+        public bool CanHandle(string Path)
+        {
+            return HandleRegex.IsMatch(Path);
+        }
 
         /// <summary>
         /// Gets the directory representation for the directory
@@ -87,22 +89,22 @@ namespace Utilities.IO.FileSystem.BaseClasses
         public abstract IDirectory Directory(string Path, string UserName = "", string Password = "", string Domain = "");
 
         /// <summary>
+        /// Gets the class representation for the file
+        /// </summary>
+        /// <param name="Path">Path to the file</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
+        /// <returns>The file object</returns>
+        public abstract IFile File(string Path, string UserName = "", string Password = "", string Domain = "");
+
+        /// <summary>
         /// Gets the absolute path of the variable passed in
         /// </summary>
         /// <param name="Path">Path to convert to absolute</param>
         /// <returns>The absolute path of the path passed in</returns>
         protected abstract string AbsolutePath(string Path);
 
-        /// <summary>
-        /// Returns true if it can handle the path, false otherwise
-        /// </summary>
-        /// <param name="Path">The path to check against</param>
-        /// <returns>True if it can handle the path, false otherwise</returns>
-        public bool CanHandle(string Path)
-        {
-            return HandleRegex.IsMatch(Path);
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,7 @@ using System.Linq;
 using System.Threading;
 using Utilities.DataTypes.Comparison;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -43,9 +44,9 @@ namespace Utilities.DataTypes
         #region Chain
 
         /// <summary>
-        /// Allows actions to be chained together with the caveat that if Object is null,
-        /// it is replaced with the DefaultObjectValue specified.
-        /// If the Action or Object (once replaced with the default object value) is null, it will return the object.
+        /// Allows actions to be chained together with the caveat that if Object is null, it is
+        /// replaced with the DefaultObjectValue specified. If the Action or Object (once replaced
+        /// with the default object value) is null, it will return the object.
         /// </summary>
         /// <typeparam name="T">The type of the object</typeparam>
         /// <param name="Object">Object to run the action on</param>
@@ -55,7 +56,7 @@ namespace Utilities.DataTypes
         public static T Chain<T>(this T Object, Action<T> Action, T DefaultObjectValue = default(T))
         {
             Object = Object.Check(DefaultObjectValue);
-            if (Action==null || Object==null)
+            if (Action == null || Object == null)
                 return Object;
             Action(Object);
             return Object;
@@ -65,7 +66,8 @@ namespace Utilities.DataTypes
         /// Allows actions to be chained together. It also has a couple of checks in there:
         /// 1) If the function is null, it returns the default return value specified.
         /// 2) If the object is null, it will replace it with the default object value specified.
-        /// 3) If the object, once replaced with the default object value specified, is null, it will return the default return value specified.
+        /// 3) If the object, once replaced with the default object value specified, is null, it
+        ///    will return the default return value specified.
         /// 4) If the return value from the function is null, it returns the default return value specified.
         /// </summary>
         /// <typeparam name="T">The type of the object</typeparam>
@@ -78,12 +80,12 @@ namespace Utilities.DataTypes
         public static R Chain<T, R>(this T Object, Func<T, R> Function, R DefaultReturnValue = default(R), T DefaultObjectValue = default(T))
         {
             Object = Object.Check(DefaultObjectValue);
-            if (Function==null || Object==null)
+            if (Function == null || Object == null)
                 return DefaultReturnValue;
             return Function(Object).Check(DefaultReturnValue);
         }
 
-        #endregion
+        #endregion Chain
 
         #region Execute
 
@@ -94,7 +96,10 @@ namespace Utilities.DataTypes
         /// <param name="Function">Function to run</param>
         /// <param name="Attempts">Number of times to attempt it</param>
         /// <param name="RetryDelay">The amount of milliseconds to wait between tries</param>
-        /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
+        /// <param name="TimeOut">
+        /// Max amount of time to wait for the function to run (waits for the current attempt to
+        /// finish before checking)
+        /// </param>
         /// <returns>The returned value from the function</returns>
         public static T Execute<T>(this Func<T> Function, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
@@ -122,10 +127,13 @@ namespace Utilities.DataTypes
         /// <param name="Action">Action to run</param>
         /// <param name="Attempts">Number of times to attempt it</param>
         /// <param name="RetryDelay">The amount of milliseconds to wait between tries</param>
-        /// <param name="TimeOut">Max amount of time to wait for the function to run (waits for the current attempt to finish before checking)</param>
+        /// <param name="TimeOut">
+        /// Max amount of time to wait for the function to run (waits for the current attempt to
+        /// finish before checking)
+        /// </param>
         public static void Execute(this Action Action, int Attempts = 3, int RetryDelay = 0, int TimeOut = int.MaxValue)
         {
-            Contract.Requires<ArgumentNullException>(Action!=null, "Action");
+            Contract.Requires<ArgumentNullException>(Action != null, "Action");
             Exception Holder = null;
             long Start = System.Environment.TickCount;
             while (Attempts > 0)
@@ -140,16 +148,17 @@ namespace Utilities.DataTypes
                 Thread.Sleep(RetryDelay);
                 --Attempts;
             }
-            if (Holder!=null)
+            if (Holder != null)
                 throw Holder;
         }
 
-        #endregion
+        #endregion Execute
 
         #region Check
 
         /// <summary>
-        /// Checks to see if the object meets all the criteria. If it does, it returns the object. If it does not, it returns the default object
+        /// Checks to see if the object meets all the criteria. If it does, it returns the object.
+        /// If it does not, it returns the default object
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Object">Object to check</param>
@@ -163,7 +172,8 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Checks to see if the object meets all the criteria. If it does, it returns the object. If it does not, it returns the default object
+        /// Checks to see if the object meets all the criteria. If it does, it returns the object.
+        /// If it does not, it returns the default object
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Object">Object to check</param>
@@ -178,7 +188,8 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Checks to see if the object is null. If it is, it returns the default object, otherwise the object is returned.
+        /// Checks to see if the object is null. If it is, it returns the default object, otherwise
+        /// the object is returned.
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Object">Object to check</param>
@@ -190,7 +201,8 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Checks to see if the object is null. If it is, it returns the default object, otherwise the object is returned.
+        /// Checks to see if the object is null. If it is, it returns the default object, otherwise
+        /// the object is returned.
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Object">Object to check</param>
@@ -202,7 +214,7 @@ namespace Utilities.DataTypes
             return Object.Check(x => x != null, DefaultValue);
         }
 
-        #endregion
+        #endregion Check
 
         #region Is
 
@@ -233,7 +245,7 @@ namespace Utilities.DataTypes
             return Comparer.Equals(Object, ComparisonObject);
         }
 
-        #endregion
+        #endregion Is
 
         #region ThrowIf
 
@@ -269,15 +281,18 @@ namespace Utilities.DataTypes
             return Item;
         }
 
-        #endregion
+        #endregion ThrowIf
 
         #region ThrowIfDefault
 
         /// <summary>
-        /// Determines if the object is equal to default value and throws an ArgumentNullException if it is
+        /// Determines if the object is equal to default value and throws an ArgumentNullException
+        /// if it is
         /// </summary>
         /// <param name="Item">The object to check</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="EqualityComparer">
+        /// Equality comparer used to determine if the object is equal to default
+        /// </param>
         /// <param name="Name">Name of the argument</param>
         /// <returns>Returns Item</returns>
         public static T ThrowIfDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
@@ -286,10 +301,13 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Determines if the object is equal to default value and throws the exception that is passed in if it is
+        /// Determines if the object is equal to default value and throws the exception that is
+        /// passed in if it is
         /// </summary>
         /// <param name="Item">The object to check</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="EqualityComparer">
+        /// Equality comparer used to determine if the object is equal to default
+        /// </param>
         /// <param name="Exception">Exception to throw</param>
         /// <returns>Returns Item</returns>
         public static T ThrowIfDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
@@ -297,15 +315,18 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => EqualityComparer.Check(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
         }
 
-        #endregion
+        #endregion ThrowIfDefault
 
         #region ThrowIfNotDefault
 
         /// <summary>
-        /// Determines if the object is not equal to default value and throws an ArgumentException if it is
+        /// Determines if the object is not equal to default value and throws an ArgumentException
+        /// if it is
         /// </summary>
         /// <param name="Item">The object to check</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="EqualityComparer">
+        /// Equality comparer used to determine if the object is equal to default
+        /// </param>
         /// <param name="Name">Name of the argument</param>
         /// <returns>Returns Item</returns>
         public static T ThrowIfNotDefault<T>(this T Item, string Name, IEqualityComparer<T> EqualityComparer = null)
@@ -314,10 +335,13 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Determines if the object is not equal to default value and throws the exception that is passed in if it is
+        /// Determines if the object is not equal to default value and throws the exception that is
+        /// passed in if it is
         /// </summary>
         /// <param name="Item">The object to check</param>
-        /// <param name="EqualityComparer">Equality comparer used to determine if the object is equal to default</param>
+        /// <param name="EqualityComparer">
+        /// Equality comparer used to determine if the object is equal to default
+        /// </param>
         /// <param name="Exception">Exception to throw</param>
         /// <returns>Returns Item</returns>
         public static T ThrowIfNotDefault<T>(this T Item, Exception Exception, IEqualityComparer<T> EqualityComparer = null)
@@ -325,7 +349,7 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => !EqualityComparer.Check(() => new GenericEqualityComparer<T>()).Equals(x, default(T)), Exception);
         }
 
-        #endregion
+        #endregion ThrowIfNotDefault
 
         #region ThrowIfNot
 
@@ -342,7 +366,7 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => !Predicate(x), Exception);
         }
 
-        #endregion
+        #endregion ThrowIfNot
 
         #region ThrowIfNotNull
 
@@ -368,7 +392,7 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => x != null && !Convert.IsDBNull(x), Exception);
         }
 
-        #endregion
+        #endregion ThrowIfNotNull
 
         #region ThrowIfNull
 
@@ -394,7 +418,7 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => x == null || Convert.IsDBNull(x), Exception);
         }
 
-        #endregion
+        #endregion ThrowIfNull
 
         #region ThrowIfNotNullOrEmpty
 
@@ -411,7 +435,8 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Determines if the IEnumerable is not null or empty and throws the exception passed in if it is
+        /// Determines if the IEnumerable is not null or empty and throws the exception passed in if
+        /// it is
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
         /// <param name="Item">The object to check</param>
@@ -422,7 +447,7 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => x != null && x.Count() > 0, Exception);
         }
 
-        #endregion
+        #endregion ThrowIfNotNullOrEmpty
 
         #region ThrowIfNullOrEmpty
 
@@ -450,7 +475,7 @@ namespace Utilities.DataTypes
             return Item.ThrowIf(x => x == null || x.Count() == 0, Exception);
         }
 
-        #endregion
+        #endregion ThrowIfNullOrEmpty
 
         #region Times
 
@@ -480,8 +505,8 @@ namespace Utilities.DataTypes
                 Action(x);
         }
 
-        #endregion
+        #endregion Times
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
-using Utilities.DataTypes;
 using Xunit;
 
 namespace UnitTests.DataTypes.Dynamic
@@ -43,7 +42,9 @@ namespace UnitTests.DataTypes.Dynamic
         public class TestClass
         {
             public int A { get; set; }
+
             public float B { get; set; }
+
             public string C { get; set; }
         }
     }

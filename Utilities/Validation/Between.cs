@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ using System.Web.Mvc;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -54,24 +55,24 @@ namespace Utilities.Validation
             this.Max = Max;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Min value to compare to
-        /// </summary>
-        public object Min { get;private set; }
-
-        /// <summary>
         /// Max value to compare to
         /// </summary>
-        public object Max { get;private set; }
+        public object Max { get; private set; }
 
-        #endregion
+        /// <summary>
+        /// Min value to compare to
+        /// </summary>
+        public object Min { get; private set; }
+
+        #endregion Properties
 
         #region Functions
-        
+
         /// <summary>
         /// Formats the error message
         /// </summary>
@@ -80,6 +81,22 @@ namespace Utilities.Validation
         public override string FormatErrorMessage(string name)
         {
             return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, Min.ToString(), Max.ToString());
+        }
+
+        /// <summary>
+        /// Gets the client side validation rules
+        /// </summary>
+        /// <param name="metadata">Model meta data</param>
+        /// <param name="context">Controller context</param>
+        /// <returns>The list of client side validation rules</returns>
+        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
+        {
+            ModelClientValidationRule Rule = new ModelClientValidationRule();
+            Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
+            Rule.ValidationParameters.Add("Min", Min);
+            Rule.ValidationParameters.Add("Max", Max);
+            Rule.ValidationType = "Between";
+            return new ModelClientValidationRule[] { Rule };
         }
 
         /// <summary>
@@ -100,22 +117,6 @@ namespace Utilities.Validation
                 ValidationResult.Success;
         }
 
-        /// <summary>
-        /// Gets the client side validation rules
-        /// </summary>
-        /// <param name="metadata">Model meta data</param>
-        /// <param name="context">Controller context</param>
-        /// <returns>The list of client side validation rules</returns>
-        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
-        {
-            ModelClientValidationRule Rule = new ModelClientValidationRule();
-            Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
-            Rule.ValidationParameters.Add("Min", Min);
-            Rule.ValidationParameters.Add("Max", Max);
-            Rule.ValidationType = "Between";
-            return new ModelClientValidationRule[] { Rule };
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

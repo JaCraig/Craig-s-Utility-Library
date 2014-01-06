@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Globalization;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
 using Utilities.Random.NameGenerators;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {
@@ -38,23 +40,25 @@ namespace Utilities.Random.ContactInfoGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="CommonEndings">Common endings to domain names should be used (.com,.org,.net,etc.)</param>
+        /// <param name="CommonEndings">
+        /// Common endings to domain names should be used (.com,.org,.net,etc.)
+        /// </param>
         public DomainNameGenerator(bool CommonEndings = true)
             : base("", "")
         {
             this.CommonEndings = CommonEndings;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
         /// Should common domain name endings be used
         /// </summary>
-        public virtual bool CommonEndings { get;private set; }
+        public virtual bool CommonEndings { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -68,13 +72,6 @@ namespace Utilities.Random.ContactInfoGenerators
             string CompanyName = new CompanyGenerator().Next(Rand);
             return ((CompanyName.Length > 10) ? CleanName(CompanyName.Split(' ')[0]) : CleanName(CompanyName))
                 + (CommonEndings ? Rand.Next(MostCommonEndings) : Rand.Next(Endings));
-        }
-
-        private static string CleanName(string Name)
-        {
-            if (string.IsNullOrEmpty(Name))
-                return Name;
-            return Name.ToLower(CultureInfo.InvariantCulture).Replace(" ", "").Replace(",", "").Replace("'", "").Replace("&", "").Replace(".", "");
         }
 
         /// <summary>
@@ -99,7 +96,14 @@ namespace Utilities.Random.ContactInfoGenerators
             return Next(Rand);
         }
 
-        #endregion
+        private static string CleanName(string Name)
+        {
+            if (string.IsNullOrEmpty(Name))
+                return Name;
+            return Name.ToLower(CultureInfo.InvariantCulture).Replace(" ", "").Replace(",", "").Replace("'", "").Replace("&", "").Replace(".", "");
+        }
+
+        #endregion Functions
 
         #region Private Variables
 
@@ -107,6 +111,6 @@ namespace Utilities.Random.ContactInfoGenerators
 
         private string[] MostCommonEndings = { ".com", ".net", ".org" };
 
-        #endregion
+        #endregion Private Variables
     }
 }

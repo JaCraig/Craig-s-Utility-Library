@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Linq.Expressions;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.DataMapper.Interfaces
 {
@@ -98,18 +100,16 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
         void Copy(Right Source, Left Destination);
 
         /// <summary>
-        /// Copies from the source to the destination (used in 
-        /// instances when both Left and Right are the same type
-        /// and thus Copy is ambiguous)
+        /// Copies from the source to the destination (used in instances when both Left and Right
+        /// are the same type and thus Copy is ambiguous)
         /// </summary>
         /// <param name="Source">Source</param>
         /// <param name="Destination">Destination</param>
         void CopyLeftToRight(Left Source, Right Destination);
 
         /// <summary>
-        /// Copies from the source to the destination (used in 
-        /// instances when both Left and Right are the same type
-        /// and thus Copy is ambiguous)
+        /// Copies from the source to the destination (used in instances when both Left and Right
+        /// are the same type and thus Copy is ambiguous)
         /// </summary>
         /// <param name="Source">Source</param>
         /// <param name="Destination">Destination</param>

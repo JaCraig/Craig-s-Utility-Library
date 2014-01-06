@@ -20,16 +20,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.Compression;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO
 {
+    /// <summary>
+    /// Defines the various compression types that are available
+    /// </summary>
+    public enum CompressionType
+    {
+        /// <summary>
+        /// Deflate
+        /// </summary>
+        Deflate = 0,
+
+        /// <summary>
+        /// GZip
+        /// </summary>
+        GZip = 1
+    }
+
     /// <summary>
     /// Extension methods dealing with compression
     /// </summary>
@@ -90,7 +108,7 @@ namespace Utilities.IO
             return Data.ToByteArray(EncodingUsing).Compress(CompressionType).ToString(Base64FormattingOptions.None);
         }
 
-        #endregion
+        #endregion Compress
 
         #region Decompress
 
@@ -144,23 +162,8 @@ namespace Utilities.IO
             return Data.FromBase64().Decompress(CompressionType).ToString(EncodingUsing);
         }
 
-        #endregion
+        #endregion Decompress
 
-        #endregion
-    }
-
-    /// <summary>
-    /// Defines the various compression types that are available
-    /// </summary>
-    public enum CompressionType
-    {
-        /// <summary>
-        /// Deflate
-        /// </summary>
-        Deflate = 0,
-        /// <summary>
-        /// GZip
-        /// </summary>
-        GZip = 1
+        #endregion Functions
     }
 }

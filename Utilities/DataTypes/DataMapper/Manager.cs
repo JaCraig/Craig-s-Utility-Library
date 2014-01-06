@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.DataMapper
 {
@@ -49,7 +50,7 @@ namespace Utilities.DataTypes.DataMapper
             AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>().ForEach(x => x.Map(this));
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -58,7 +59,7 @@ namespace Utilities.DataTypes.DataMapper
         /// </summary>
         private IDataMapper DataMapper { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -84,6 +85,6 @@ namespace Utilities.DataTypes.DataMapper
             return DataMapper.Map(Left, Right);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

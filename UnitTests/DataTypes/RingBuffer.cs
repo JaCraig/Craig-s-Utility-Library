@@ -24,7 +24,6 @@ using System.Linq;
 using Utilities.DataTypes;
 using Xunit;
 
-
 namespace UnitTests.DataTypes
 {
     public class RingBuffer
@@ -43,7 +42,7 @@ namespace UnitTests.DataTypes
                 Assert.Equal(Value, TestObject.Remove());
             }
             Assert.Equal(0, TestObject.Count);
-            System.Collections.Generic.List<int> Values=new System.Collections.Generic.List<int>();
+            System.Collections.Generic.List<int> Values = new System.Collections.Generic.List<int>();
             for (int x = 0; x < 10; ++x)
             {
                 Values.Add(Rand.Next());

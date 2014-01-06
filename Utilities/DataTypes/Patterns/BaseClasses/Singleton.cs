@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Reflection;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.Patterns.BaseClasses
 {
@@ -37,16 +39,18 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        protected Singleton() { }
+        protected Singleton()
+        {
+        }
 
-        #endregion
+        #endregion Constructor
 
         #region Private Variables
 
         private static T _Instance = null;
         private static object Temp = 1;
 
-        #endregion
+        #endregion Private Variables
 
         #region Properties
 
@@ -75,6 +79,6 @@ namespace Utilities.DataTypes.Patterns.BaseClasses
             }
         }
 
-        #endregion
+        #endregion Properties
     }
 }

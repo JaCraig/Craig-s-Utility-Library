@@ -21,7 +21,6 @@ THE SOFTWARE.*/
 
 using Xunit;
 
-
 namespace UnitTests.DataTypes.DataMapper.Default
 {
     public class DataMapper

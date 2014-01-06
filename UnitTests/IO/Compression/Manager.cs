@@ -19,15 +19,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System;
-using System.Runtime.Serialization;
-using Xunit;
 using Utilities.DataTypes;
+using Xunit;
 
 namespace UnitTests.IO.Compression
 {
     public class Manager
     {
+        [Fact]
+        public void Compress()
+        {
+            Utilities.IO.Compression.Manager Temp = new Utilities.IO.Compression.Manager();
+            string Data = "This is a bit of data that I want to compress";
+            Assert.NotEqual("This is a bit of data that I want to compress", Temp.Compress(Data.ToByteArray(), "Deflate").ToString(null));
+            Assert.Equal("This is a bit of data that I want to compress", Temp.Decompress(Temp.Compress(Data.ToByteArray(), "Deflate"), "Deflate").ToString(null));
+        }
+
         [Fact]
         public void Creation()
         {
@@ -38,21 +45,12 @@ namespace UnitTests.IO.Compression
         }
 
         [Fact]
-        public void Compress()
-        {
-            Utilities.IO.Compression.Manager Temp = new Utilities.IO.Compression.Manager();
-            string Data = "This is a bit of data that I want to compress";
-            Assert.NotEqual("This is a bit of data that I want to compress", Temp.Compress(Data.ToByteArray(),"Deflate").ToString(null));
-            Assert.Equal("This is a bit of data that I want to compress", Temp.Decompress(Temp.Compress(Data.ToByteArray(),"Deflate"),"Deflate").ToString(null));
-        }
-
-        [Fact]
         public void Decompress()
         {
             Utilities.IO.Compression.Manager Temp = new Utilities.IO.Compression.Manager();
             string Data = "This is a bit of data that I want to compress";
-            Assert.NotEqual("This is a bit of data that I want to compress", Temp.Compress(Data.ToByteArray(),"GZip").ToString(null));
-            Assert.Equal("This is a bit of data that I want to compress", Temp.Decompress(Temp.Compress(Data.ToByteArray(),"GZip"),"GZip").ToString(null));
+            Assert.NotEqual("This is a bit of data that I want to compress", Temp.Compress(Data.ToByteArray(), "GZip").ToString(null));
+            Assert.Equal("This is a bit of data that I want to compress", Temp.Decompress(Temp.Compress(Data.ToByteArray(), "GZip"), "GZip").ToString(null));
         }
     }
 }

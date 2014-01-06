@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using Utilities.DataTypes.DataMapper.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.DataMapper.BaseClasses
 {
@@ -42,7 +44,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             this.Mappings = new Dictionary<Tuple<Type, Type>, ITypeMapping>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -51,7 +53,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// </summary>
         protected IDictionary<Tuple<Type, Type>, ITypeMapping> Mappings { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -71,6 +73,20 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         }
 
         /// <summary>
+        /// Adds or returns a mapping between two types
+        /// </summary>
+        /// <param name="Left">Left type</param>
+        /// <param name="Right">Right type</param>
+        /// <returns>A mapping object for the two types specified</returns>
+        public ITypeMapping Map(Type Left, Type Right)
+        {
+            Tuple<Type, Type> Key = new Tuple<Type, Type>(Left, Right);
+            return Mappings.ContainsKey(Key) ? Mappings[Key]
+                                             : Mappings.AddAndReturn(new KeyValuePair<Tuple<Type, Type>, ITypeMapping>(Key, CreateTypeMapping(Left, Right)))
+                                                                                  .Value;
+        }
+
+        /// <summary>
         /// Used internally to create type mappings
         /// </summary>
         /// <typeparam name="Left">Left type</typeparam>
@@ -86,20 +102,6 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <returns>A mapping object for the two types specified</returns>
         protected abstract ITypeMapping CreateTypeMapping(Type Left, Type Right);
 
-        /// <summary>
-        /// Adds or returns a mapping between two types
-        /// </summary>
-        /// <param name="Left">Left type</param>
-        /// <param name="Right">Right type</param>
-        /// <returns>A mapping object for the two types specified</returns>
-        public ITypeMapping Map(Type Left, Type Right)
-        {
-            Tuple<Type, Type> Key = new Tuple<Type, Type>(Left, Right);
-            return Mappings.ContainsKey(Key) ? Mappings[Key]
-                                             : Mappings.AddAndReturn(new KeyValuePair<Tuple<Type, Type>, ITypeMapping>(Key, CreateTypeMapping(Left, Right)))
-                                                                                  .Value;
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

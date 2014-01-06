@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -73,22 +74,19 @@ namespace Utilities.Media.Procedural
             return ReturnValue;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "8#")]
-        private static float GetValue(int X, int Y, int Width, int Height, float Frequency, float Amplitude,
-            float Persistance, int Octaves, float[,] Noise)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Return")]
+        private static float[,] GenerateNoise(int Seed, int Width, int Height)
         {
-            Contract.Requires<ArgumentException>(Octaves >= 0, "Octaves should be greater than or equal to 0");
-            if (Noise == null)
-                return 0.0f;
-            float FinalValue = 0.0f;
-            for (int i = 0; i < Octaves; ++i)
+            float[,] Noise = new float[Width, Height];
+            System.Random RandomGenerator = new System.Random(Seed);
+            for (int x = 0; x < Width; ++x)
             {
-                FinalValue += GetSmoothNoise(X * Frequency, Y * Frequency, Width, Height, Noise) * Amplitude;
-                Frequency *= 2.0f;
-                Amplitude *= Persistance;
+                for (int y = 0; y < Height; ++y)
+                {
+                    Noise[x, y] = ((float)(RandomGenerator.NextDouble()) - 0.5f) * 2.0f;
+                }
             }
-            FinalValue = FinalValue.Clamp(1.0f, -1.0f);
-            return FinalValue;
+            return Noise;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "4#")]
@@ -112,21 +110,24 @@ namespace Utilities.Media.Procedural
             return FinalValue;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Return")]
-        private static float[,] GenerateNoise(int Seed, int Width, int Height)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "8#")]
+        private static float GetValue(int X, int Y, int Width, int Height, float Frequency, float Amplitude,
+            float Persistance, int Octaves, float[,] Noise)
         {
-            float[,] Noise = new float[Width, Height];
-            System.Random RandomGenerator = new System.Random(Seed);
-            for (int x = 0; x < Width; ++x)
+            Contract.Requires<ArgumentException>(Octaves >= 0, "Octaves should be greater than or equal to 0");
+            if (Noise == null)
+                return 0.0f;
+            float FinalValue = 0.0f;
+            for (int i = 0; i < Octaves; ++i)
             {
-                for (int y = 0; y < Height; ++y)
-                {
-                    Noise[x, y] = ((float)(RandomGenerator.NextDouble()) - 0.5f) * 2.0f;
-                }
+                FinalValue += GetSmoothNoise(X * Frequency, Y * Frequency, Width, Height, Noise) * Amplitude;
+                Frequency *= 2.0f;
+                Amplitude *= Persistance;
             }
-            return Noise;
+            FinalValue = FinalValue.Clamp(1.0f, -1.0f);
+            return FinalValue;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -51,21 +53,21 @@ namespace Utilities.Validation
             this.Max = (IComparable)Max;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Min value to compare to
-        /// </summary>
-        public IComparable Min { get;private set; }
-
-        /// <summary>
         /// Max value to compare to
         /// </summary>
-        public IComparable Max { get;private set; }
+        public IComparable Max { get; private set; }
 
-        #endregion
+        /// <summary>
+        /// Min value to compare to
+        /// </summary>
+        public IComparable Min { get; private set; }
+
+        #endregion Properties
 
         #region Functions
 
@@ -97,6 +99,6 @@ namespace Utilities.Validation
                 ValidationResult.Success;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,13 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using Utilities.DataTypes.Conversion.Converters.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.Conversion.Converters
 {
@@ -48,72 +50,78 @@ namespace Utilities.DataTypes.Conversion.Converters
             ConvertFromTypes.Add(typeof(Type).GetType(), TypeToSqlDbType);
             ConvertFromTypes.Add(typeof(DbType), DbTypeToSqlDbType);
             Conversions = new Dictionary<Type, DbType>();
-            Conversions.Add(typeof(byte),DbType.Byte);
-            Conversions.Add(typeof(byte?),DbType.Byte);
-            Conversions.Add(typeof(sbyte),DbType.SByte);
-            Conversions.Add(typeof(sbyte?),DbType.SByte);
-            Conversions.Add(typeof(short),DbType.Int16);
-            Conversions.Add(typeof(short?),DbType.Int16);
-            Conversions.Add(typeof(ushort),DbType.UInt16);
-            Conversions.Add(typeof(ushort?),DbType.UInt16);
-            Conversions.Add(typeof(int),DbType.Int32);
-            Conversions.Add(typeof(int?),DbType.Int32);
-            Conversions.Add(typeof(uint),DbType.UInt32);
-            Conversions.Add(typeof(uint?),DbType.UInt32);
-            Conversions.Add(typeof(long),DbType.Int64);
-            Conversions.Add(typeof(long?),DbType.Int64);
-            Conversions.Add(typeof(ulong),DbType.UInt64);
-            Conversions.Add(typeof(ulong?),DbType.UInt64);
-            Conversions.Add(typeof(float),DbType.Single);
-            Conversions.Add(typeof(float?),DbType.Single);
-            Conversions.Add(typeof(double),DbType.Double);
-            Conversions.Add(typeof(double?),DbType.Double);
-            Conversions.Add(typeof(decimal),DbType.Decimal);
-            Conversions.Add(typeof(decimal?),DbType.Decimal);
-            Conversions.Add(typeof(bool),DbType.Boolean);
-            Conversions.Add(typeof(bool?),DbType.Boolean);
-            Conversions.Add(typeof(string),DbType.String);
-            Conversions.Add(typeof(char),DbType.StringFixedLength);
-            Conversions.Add(typeof(char?),DbType.StringFixedLength);
-            Conversions.Add(typeof(Guid),DbType.Guid);
-            Conversions.Add(typeof(Guid?),DbType.Guid);
-            Conversions.Add(typeof(DateTime),DbType.DateTime2);
-            Conversions.Add(typeof(DateTime?),DbType.DateTime2);
-            Conversions.Add(typeof(DateTimeOffset),DbType.DateTimeOffset);
-            Conversions.Add(typeof(DateTimeOffset?),DbType.DateTimeOffset);
-            Conversions.Add(typeof(byte[]),DbType.Binary);
+            Conversions.Add(typeof(byte), DbType.Byte);
+            Conversions.Add(typeof(byte?), DbType.Byte);
+            Conversions.Add(typeof(sbyte), DbType.SByte);
+            Conversions.Add(typeof(sbyte?), DbType.SByte);
+            Conversions.Add(typeof(short), DbType.Int16);
+            Conversions.Add(typeof(short?), DbType.Int16);
+            Conversions.Add(typeof(ushort), DbType.UInt16);
+            Conversions.Add(typeof(ushort?), DbType.UInt16);
+            Conversions.Add(typeof(int), DbType.Int32);
+            Conversions.Add(typeof(int?), DbType.Int32);
+            Conversions.Add(typeof(uint), DbType.UInt32);
+            Conversions.Add(typeof(uint?), DbType.UInt32);
+            Conversions.Add(typeof(long), DbType.Int64);
+            Conversions.Add(typeof(long?), DbType.Int64);
+            Conversions.Add(typeof(ulong), DbType.UInt64);
+            Conversions.Add(typeof(ulong?), DbType.UInt64);
+            Conversions.Add(typeof(float), DbType.Single);
+            Conversions.Add(typeof(float?), DbType.Single);
+            Conversions.Add(typeof(double), DbType.Double);
+            Conversions.Add(typeof(double?), DbType.Double);
+            Conversions.Add(typeof(decimal), DbType.Decimal);
+            Conversions.Add(typeof(decimal?), DbType.Decimal);
+            Conversions.Add(typeof(bool), DbType.Boolean);
+            Conversions.Add(typeof(bool?), DbType.Boolean);
+            Conversions.Add(typeof(string), DbType.String);
+            Conversions.Add(typeof(char), DbType.StringFixedLength);
+            Conversions.Add(typeof(char?), DbType.StringFixedLength);
+            Conversions.Add(typeof(Guid), DbType.Guid);
+            Conversions.Add(typeof(Guid?), DbType.Guid);
+            Conversions.Add(typeof(DateTime), DbType.DateTime2);
+            Conversions.Add(typeof(DateTime?), DbType.DateTime2);
+            Conversions.Add(typeof(DateTimeOffset), DbType.DateTimeOffset);
+            Conversions.Add(typeof(DateTimeOffset?), DbType.DateTimeOffset);
+            Conversions.Add(typeof(byte[]), DbType.Binary);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Internal converter
-        /// </summary>
-        protected override TypeConverter InternalConverter { get { return new EnumConverter(typeof(SqlDbType)); } }
 
         /// <summary>
         /// Conversions
         /// </summary>
         protected static Dictionary<Type, DbType> Conversions { get; private set; }
 
-        #endregion
+        /// <summary>
+        /// Internal converter
+        /// </summary>
+        protected override TypeConverter InternalConverter { get { return new EnumConverter(typeof(SqlDbType)); } }
+
+        #endregion Properties
 
         #region Functions
 
-        private static object TypeToSqlDbType(object arg)
+        private static object DbTypeToSqlDbType(object value)
         {
-            Type TempValue = arg as Type;
-            if (TempValue == null)
+            if (!(value is DbType))
                 return SqlDbType.Int;
-            DbType Item = DbType.Int32;
-            if (TempValue.IsEnum)
-                TempValue = Enum.GetUnderlyingType(TempValue);
-            Item = Conversions.GetValue(TempValue, DbType.Int32);
+            DbType TempValue = (DbType)value;
             SqlParameter Parameter = new SqlParameter();
-            Parameter.DbType = Item;
+            Parameter.DbType = TempValue;
             return Parameter.SqlDbType;
+        }
+
+        private static object SqlDbTypeToDbType(object sqlDbType)
+        {
+            if (!(sqlDbType is SqlDbType))
+                return DbType.Int32;
+            SqlDbType Temp = (SqlDbType)sqlDbType;
+            SqlParameter Parameter = new SqlParameter();
+            Parameter.SqlDbType = Temp;
+            return Parameter.DbType;
         }
 
         private static object SqlDbTypeToType(object arg)
@@ -145,26 +153,20 @@ namespace Utilities.DataTypes.Conversion.Converters
             return typeof(int);
         }
 
-        private static object DbTypeToSqlDbType(object value)
+        private static object TypeToSqlDbType(object arg)
         {
-            if (!(value is DbType))
+            Type TempValue = arg as Type;
+            if (TempValue == null)
                 return SqlDbType.Int;
-            DbType TempValue = (DbType)value;
+            DbType Item = DbType.Int32;
+            if (TempValue.IsEnum)
+                TempValue = Enum.GetUnderlyingType(TempValue);
+            Item = Conversions.GetValue(TempValue, DbType.Int32);
             SqlParameter Parameter = new SqlParameter();
-            Parameter.DbType = TempValue;
+            Parameter.DbType = Item;
             return Parameter.SqlDbType;
         }
 
-        private static object SqlDbTypeToDbType(object sqlDbType)
-        {
-            if (!(sqlDbType is SqlDbType))
-                return DbType.Int32;
-            SqlDbType Temp = (SqlDbType)sqlDbType;
-            SqlParameter Parameter = new SqlParameter();
-            Parameter.SqlDbType = Temp;
-            return Parameter.DbType;
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

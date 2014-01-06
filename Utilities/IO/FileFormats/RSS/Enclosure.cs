@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Xml.XPath;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.RSS
 {
@@ -39,8 +41,8 @@ namespace Utilities.IO.FileFormats.RSS
         /// </summary>
         public Enclosure()
         {
-
         }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -63,13 +65,9 @@ namespace Utilities.IO.FileFormats.RSS
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-        /// <summary>
-        /// Location of the item
-        /// </summary>
-        public virtual string Url { get; set; }
 
         /// <summary>
         /// Size in bytes
@@ -81,7 +79,12 @@ namespace Utilities.IO.FileFormats.RSS
         /// </summary>
         public virtual string Type { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Location of the item
+        /// </summary>
+        public virtual string Url { get; set; }
+
+        #endregion Properties
 
         #region Public Overridden Functions
 
@@ -95,11 +98,10 @@ namespace Utilities.IO.FileFormats.RSS
             {
                 return "<enclosure url=\"" + Url + "\" length=\"" + Length + "\" type=\"" + Type + "\" />\r\n"
                     + "<media:content url=\"" + Url + "\" fileSize=\"" + Length + "\" type=\"" + Type + "\" />";
-
             }
             return string.Empty;
         }
 
-        #endregion
+        #endregion Public Overridden Functions
     }
 }

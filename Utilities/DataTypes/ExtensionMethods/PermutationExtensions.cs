@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -48,7 +49,7 @@ namespace Utilities.DataTypes
         /// <returns>The list of permutations</returns>
         public static ListMapping<int, T> Permute<T>(this IEnumerable<T> Input)
         {
-            Contract.Requires<ArgumentNullException>(Input!=null,"Input");
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             System.Collections.Generic.List<T> Current = new System.Collections.Generic.List<T>();
             Current.AddRange(Input);
             ListMapping<int, T> ReturnValue = new ListMapping<int, T>();
@@ -86,8 +87,8 @@ namespace Utilities.DataTypes
             return ReturnValue;
         }
 
-        #endregion
+        #endregion Permute
 
-        #endregion
+        #endregion Functions
     }
 }

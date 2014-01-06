@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
-using Utilities.ORM.Manager.Schema.Interfaces;
+using System.Data;
 using System.Linq;
 using Utilities.DataTypes;
-using System.Data;
-#endregion
+using Utilities.ORM.Manager.Schema.Interfaces;
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.BaseClasses
 {
@@ -48,20 +50,20 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         }
 
         /// <summary>
-        /// Name of the table
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Columns
         /// </summary>
         public ICollection<IColumn> Columns { get; private set; }
 
         /// <summary>
+        /// Name of the table
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Source/Parent
         /// </summary>
         public ISource Source { get; private set; }
-        
+
         /// <summary>
         /// List of triggers associated with the table
         /// </summary>
@@ -73,41 +75,6 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
         /// <param name="Name">Name of the column</param>
         /// <returns>The column specified</returns>
         public IColumn this[string Name] { get { return Columns.FirstOrDefault(x => string.Equals(x.Name, Name, System.StringComparison.CurrentCultureIgnoreCase)); } }
-
-        /// <summary>
-        /// Adds a trigger to the table
-        /// </summary>
-        /// <param name="Name">Name of the trigger</param>
-        /// <param name="Definition">Definition of the trigger</param>
-        /// <param name="Type">Trigger type</param>
-        /// <returns>The trigger specified</returns>
-        public abstract ITrigger AddTrigger(string Name, string Definition, Enums.TriggerType Type);
-
-        /// <summary>
-        /// Adds a foreign key
-        /// </summary>
-        /// <param name="ColumnName">Column name</param>
-        /// <param name="ForeignKeyTable">Foreign key table</param>
-        /// <param name="ForeignKeyColumn">Foreign key column</param>
-        public abstract void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn);
-
-        /// <summary>
-        /// Sets up foreign keys
-        /// </summary>
-        public void SetupForeignKeys()
-        {
-            this.Columns.ForEach(x => x.SetupForeignKeys());
-        }
-
-        /// <summary>
-        /// Determines if a column exists in the table
-        /// </summary>
-        /// <param name="ColumnName">Column name</param>
-        /// <returns>True if it exists, false otherwise</returns>
-        public bool ContainsColumn(string ColumnName)
-        {
-            return this[ColumnName] != null;
-        }
 
         /// <summary>
         /// Adds a column
@@ -131,5 +98,40 @@ namespace Utilities.ORM.Manager.Schema.BaseClasses
             bool Identity = false, bool Index = false, bool PrimaryKey = false, bool Unique = false,
             string ForeignKeyTable = "", string ForeignKeyColumn = "", T DefaultValue = default(T),
             bool OnDeleteCascade = false, bool OnUpdateCascade = false, bool OnDeleteSetNull = false);
+
+        /// <summary>
+        /// Adds a foreign key
+        /// </summary>
+        /// <param name="ColumnName">Column name</param>
+        /// <param name="ForeignKeyTable">Foreign key table</param>
+        /// <param name="ForeignKeyColumn">Foreign key column</param>
+        public abstract void AddForeignKey(string ColumnName, string ForeignKeyTable, string ForeignKeyColumn);
+
+        /// <summary>
+        /// Adds a trigger to the table
+        /// </summary>
+        /// <param name="Name">Name of the trigger</param>
+        /// <param name="Definition">Definition of the trigger</param>
+        /// <param name="Type">Trigger type</param>
+        /// <returns>The trigger specified</returns>
+        public abstract ITrigger AddTrigger(string Name, string Definition, Enums.TriggerType Type);
+
+        /// <summary>
+        /// Determines if a column exists in the table
+        /// </summary>
+        /// <param name="ColumnName">Column name</param>
+        /// <returns>True if it exists, false otherwise</returns>
+        public bool ContainsColumn(string ColumnName)
+        {
+            return this[ColumnName] != null;
+        }
+
+        /// <summary>
+        /// Sets up foreign keys
+        /// </summary>
+        public void SetupForeignKeys()
+        {
+            this.Columns.ForEach(x => x.SetupForeignKeys());
+        }
     }
 }

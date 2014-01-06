@@ -27,20 +27,20 @@ namespace UnitTests.IO.FileSystem.Default
     public class AbsoluteFileSystem
     {
         [Fact]
-        public void Creation()
-        {
-            Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
-            Assert.NotNull(Temp);
-            Assert.Equal("Absolute Local", Temp.Name);
-        }
-
-        [Fact]
         public void CanHandle()
         {
             Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
             Assert.True(Temp.CanHandle(@"C:\TestPath\Yay"));
             Assert.True(Temp.CanHandle(@"F:\TestPath\Yay"));
             Assert.True(Temp.CanHandle(@"Q:\TestPath\Yay"));
+        }
+
+        [Fact]
+        public void Creation()
+        {
+            Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem Temp = new Utilities.IO.FileSystem.Default.AbsoluteLocalFileSystem();
+            Assert.NotNull(Temp);
+            Assert.Equal("Absolute Local", Temp.Name);
         }
 
         [Fact]

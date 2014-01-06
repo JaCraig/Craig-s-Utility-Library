@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +28,8 @@ using System.Linq;
 using System.Reflection;
 using Utilities.IoC.Default;
 using Utilities.IoC.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IoC
 {
@@ -81,17 +83,9 @@ namespace Utilities.IoC
             }
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Bootstrapper object
-        /// </summary>
-        protected IBootstrapper InternalBootstrapper { get; private set; }
-
-        private static Manager _Instance = new Manager();
-        private static object Temp = 1;
 
         /// <summary>
         /// Gets the instance of the manager
@@ -114,9 +108,26 @@ namespace Utilities.IoC
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Bootstrapper object
+        /// </summary>
+        protected IBootstrapper InternalBootstrapper { get; private set; }
+
+        private static Manager _Instance = new Manager();
+        private static object Temp = 1;
+
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Disposes of the object
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Displays information about the IoC container in string form
@@ -130,16 +141,9 @@ namespace Utilities.IoC
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
+        /// <param name="Managed">
+        /// Determines if all objects should be disposed or just managed objects
+        /// </param>
         protected virtual void Dispose(bool Managed)
         {
             if (InternalBootstrapper != null)
@@ -157,6 +161,6 @@ namespace Utilities.IoC
             Dispose(false);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

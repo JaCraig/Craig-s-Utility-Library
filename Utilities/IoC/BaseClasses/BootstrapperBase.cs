@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using Utilities.IoC.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IoC.BaseClasses
 {
@@ -42,32 +44,32 @@ namespace Utilities.IoC.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// The IoC container
-        /// </summary>
-        protected abstract Container AppContainer { get; }
 
         /// <summary>
         /// Name of the bootstrapper
         /// </summary>
         public abstract string Name { get; }
 
-        #endregion
+        /// <summary>
+        /// The IoC container
+        /// </summary>
+        protected abstract Container AppContainer { get; }
+
+        #endregion Properties
 
         #region Functions
 
         /// <summary>
-        /// Resolves the object based on the type specified
+        /// Disposes of the object
         /// </summary>
-        /// <typeparam name="T">Type to resolve</typeparam>
-        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
-        /// <returns>An object of the specified type</returns>
-        public abstract T Resolve<T>(T DefaultObject = default(T))
-            where T : class;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Registers an object with the bootstrapper
@@ -75,7 +77,7 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Object">Object to register</param>
         /// <param name="Name">Name associated with the object</param>
-        public abstract void Register<T>(T Object, string Name="")
+        public abstract void Register<T>(T Object, string Name = "")
             where T : class;
 
         /// <summary>
@@ -83,7 +85,7 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <typeparam name="T">Object type to register</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        public abstract void Register<T>(string Name="")
+        public abstract void Register<T>(string Name = "")
             where T : class,new();
 
         /// <summary>
@@ -92,8 +94,8 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T1">Base class/interface type</typeparam>
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        public abstract void Register<T1, T2>(string Name="")
-            where T2 : class,T1,new()
+        public abstract void Register<T1, T2>(string Name = "")
+            where T2 : class,T1, new()
             where T1 : class;
 
         /// <summary>
@@ -102,7 +104,18 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T">Type that the function returns</typeparam>
         /// <param name="Name">Name associated with the object</param>
         /// <param name="Function">Function to register with the type</param>
-        public abstract void Register<T>(Func<T> Function, string Name="")
+        public abstract void Register<T>(Func<T> Function, string Name = "")
+            where T : class;
+
+        /// <summary>
+        /// Resolves the object based on the type specified
+        /// </summary>
+        /// <typeparam name="T">Type to resolve</typeparam>
+        /// <param name="DefaultObject">
+        /// Default object to return if the type can not be resolved
+        /// </param>
+        /// <returns>An object of the specified type</returns>
+        public abstract T Resolve<T>(T DefaultObject = default(T))
             where T : class;
 
         /// <summary>
@@ -110,7 +123,9 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
+        /// <param name="DefaultObject">
+        /// Default object to return if the type can not be resolved
+        /// </param>
         /// <returns>An object of the specified type</returns>
         public abstract T Resolve<T>(string Name, T DefaultObject = default(T))
             where T : class;
@@ -119,7 +134,9 @@ namespace Utilities.IoC.BaseClasses
         /// Resolves the object based on the type specified
         /// </summary>
         /// <param name="ObjectType">Object type</param>
-        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
+        /// <param name="DefaultObject">
+        /// Default object to return if the type can not be resolved
+        /// </param>
         /// <returns>An object of the specified type</returns>
         public abstract object Resolve(Type ObjectType, object DefaultObject = null);
 
@@ -128,7 +145,9 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
+        /// <param name="DefaultObject">
+        /// Default object to return if the type can not be resolved
+        /// </param>
         /// <returns>An object of the specified type</returns>
         public abstract object Resolve(Type ObjectType, string Name, object DefaultObject = null);
 
@@ -150,17 +169,12 @@ namespace Utilities.IoC.BaseClasses
         /// <summary>
         /// Disposes of the object
         /// </summary>
-        public void Dispose()
+        /// <param name="Managed">
+        /// Determines if all objects should be disposed or just managed objects
+        /// </param>
+        protected virtual void Dispose(bool Managed)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
-
-        /// <summary>
-        /// Disposes of the object
-        /// </summary>
-        /// <param name="Managed">Determines if all objects should be disposed or just managed objects</param>
-        protected virtual void Dispose(bool Managed) { }
 
         /// <summary>
         /// Destructor
@@ -170,6 +184,6 @@ namespace Utilities.IoC.BaseClasses
             Dispose(false);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

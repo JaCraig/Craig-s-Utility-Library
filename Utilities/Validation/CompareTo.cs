@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ using System.Web.Mvc;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -54,21 +55,21 @@ namespace Utilities.Validation
             this.Type = Type;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
         /// Property to compare to
         /// </summary>
-        public string PropertyName { get;private set; }
+        public string PropertyName { get; private set; }
 
         /// <summary>
         /// Comparison type
         /// </summary>
-        public ComparisonType Type { get;private set; }
+        public ComparisonType Type { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -93,6 +94,22 @@ namespace Utilities.Validation
             else if (Type == ComparisonType.NotEqual)
                 ComparisonTypeString = "not equal";
             return string.Format(CultureInfo.InvariantCulture, ErrorMessageString, name, ComparisonTypeString, PropertyName);
+        }
+
+        /// <summary>
+        /// Gets the client side validation rules
+        /// </summary>
+        /// <param name="metadata">Model meta data</param>
+        /// <param name="context">Controller context</param>
+        /// <returns>The list of client side validation rules</returns>
+        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
+        {
+            ModelClientValidationRule Rule = new ModelClientValidationRule();
+            Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
+            Rule.ValidationParameters.Add("Type", Type);
+            Rule.ValidationParameters.Add("PropertyName", PropertyName);
+            Rule.ValidationType = "CompareTo";
+            return new ModelClientValidationRule[] { Rule };
         }
 
         /// <summary>
@@ -122,23 +139,6 @@ namespace Utilities.Validation
                 return ValidationResult.Success;
         }
 
-
-        /// <summary>
-        /// Gets the client side validation rules
-        /// </summary>
-        /// <param name="metadata">Model meta data</param>
-        /// <param name="context">Controller context</param>
-        /// <returns>The list of client side validation rules</returns>
-        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
-        {
-            ModelClientValidationRule Rule = new ModelClientValidationRule();
-            Rule.ErrorMessage = FormatErrorMessage(metadata.GetDisplayName());
-            Rule.ValidationParameters.Add("Type", Type);
-            Rule.ValidationParameters.Add("PropertyName", PropertyName);
-            Rule.ValidationType = "CompareTo";
-            return new ModelClientValidationRule[] { Rule };
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

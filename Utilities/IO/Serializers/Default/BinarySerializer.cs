@@ -20,19 +20,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Utilities.IO.Serializers.BaseClasses;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Serializers.Default
 {
     /// <summary>
     /// Binary serializer
     /// </summary>
-    public class BinarySerializer:SerializerBase<byte[]>
+    public class BinarySerializer : SerializerBase<byte[]>
     {
         /// <summary>
         /// Constructor
@@ -58,6 +59,23 @@ namespace Utilities.IO.Serializers.Default
         public override string Name { get { return "Binary"; } }
 
         /// <summary>
+        /// Deserializes the data
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Data">Data to deserialize</param>
+        /// <returns>The deserialized data</returns>
+        public override object Deserialize(Type ObjectType, byte[] Data)
+        {
+            if (Data == null || Data.Length == 0 || ObjectType == null)
+                return null;
+            using (MemoryStream Stream = new MemoryStream(Data))
+            {
+                BinaryFormatter Formatter = new BinaryFormatter();
+                return Formatter.Deserialize(Stream);
+            }
+        }
+
+        /// <summary>
         /// Serializes the object
         /// </summary>
         /// <param name="ObjectType">Object type</param>
@@ -72,23 +90,6 @@ namespace Utilities.IO.Serializers.Default
                 BinaryFormatter Formatter = new BinaryFormatter();
                 Formatter.Serialize(Stream, Data);
                 return Stream.ToArray();
-            }
-        }
-
-        /// <summary>
-        /// Deserializes the data
-        /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Data">Data to deserialize</param>
-        /// <returns>The deserialized data</returns>
-        public override object Deserialize(Type ObjectType, byte[] Data)
-        {
-            if (Data == null || Data.Length == 0 || ObjectType == null)
-                return null;
-            using (MemoryStream Stream = new MemoryStream(Data))
-            {
-                BinaryFormatter Formatter = new BinaryFormatter();
-                return Formatter.Deserialize(Stream);
             }
         }
     }

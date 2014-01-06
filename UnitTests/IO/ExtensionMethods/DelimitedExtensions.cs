@@ -41,6 +41,7 @@ namespace UnitTests.IO.FileFormats.ExtensionMethods
         public class ExportClass
         {
             public virtual int ID { get; set; }
+
             public virtual string Value { get; set; }
         }
     }

@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.Net.Mail;
 using Utilities.IO.Messaging;
 using Utilities.IO.Messaging.BaseClasses;
 using Utilities.IO.Messaging.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO
 {
@@ -48,7 +50,7 @@ namespace Utilities.IO
             Port = 25;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -58,9 +60,29 @@ namespace Utilities.IO
         public ICollection<Attachment> Attachments { get; private set; }
 
         /// <summary>
+        /// BCC
+        /// </summary>
+        public string Bcc { get; set; }
+
+        /// <summary>
+        /// CC
+        /// </summary>
+        public string CC { get; set; }
+
+        /// <summary>
         /// Embedded resource
         /// </summary>
         public ICollection<LinkedResource> EmbeddedResources { get; private set; }
+
+        /// <summary>
+        /// Password for the user
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Port to use
+        /// </summary>
+        public int Port { get; set; }
 
         /// <summary>
         /// Priority
@@ -78,38 +100,20 @@ namespace Utilities.IO
         public string UserName { get; set; }
 
         /// <summary>
-        /// Password for the user
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// Port to use
-        /// </summary>
-        public int Port { get; set; }
-
-        /// <summary>
         /// Use SSL?
         /// </summary>
         public bool UseSSL { get; set; }
 
-        /// <summary>
-        /// CC
-        /// </summary>
-        public string CC { get; set; }
-
-        /// <summary>
-        /// BCC
-        /// </summary>
-        public string Bcc { get; set; }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
         /// <summary>
         /// Disposes of the objects
         /// </summary>
-        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        /// <param name="Disposing">
+        /// True to dispose of all resources, false only disposes of native resources
+        /// </param>
         protected override void Dispose(bool Disposing)
         {
             if (Attachments != null)
@@ -130,6 +134,6 @@ namespace Utilities.IO
             }
         }
 
-        #endregion
+        #endregion Functions
     }
 }

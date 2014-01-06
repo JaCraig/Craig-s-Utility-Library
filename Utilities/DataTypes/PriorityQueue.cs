@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.Linq;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -43,20 +45,9 @@ namespace Utilities.DataTypes
             HighestKey = int.MinValue;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Functions
-
-        /// <summary>
-        /// Peek at the next thing in the queue
-        /// </summary>
-        /// <returns>The next item in queue or default(T) if it is empty</returns>
-        public virtual T Peek()
-        {
-            if (Items.ContainsKey(HighestKey))
-                return Items[HighestKey].FirstOrDefault();
-            return default(T);
-        }
 
         /// <summary>
         /// Adds an item to the queue
@@ -94,6 +85,17 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Peek at the next thing in the queue
+        /// </summary>
+        /// <returns>The next item in queue or default(T) if it is empty</returns>
+        public virtual T Peek()
+        {
+            if (Items.ContainsKey(HighestKey))
+                return Items[HighestKey].FirstOrDefault();
+            return default(T);
+        }
+
+        /// <summary>
         /// Removes an item from the queue and returns it
         /// </summary>
         /// <returns>The next item in the queue</returns>
@@ -115,7 +117,7 @@ namespace Utilities.DataTypes
             return ReturnValue;
         }
 
-        #endregion
+        #endregion Public Functions
 
         #region Protected Variables
 
@@ -124,6 +126,6 @@ namespace Utilities.DataTypes
         /// </summary>
         protected virtual int HighestKey { get; set; }
 
-        #endregion
+        #endregion Protected Variables
     }
 }

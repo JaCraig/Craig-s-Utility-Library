@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using Utilities.IO.Messaging.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Messaging.BaseClasses
 {
@@ -43,9 +45,9 @@ namespace Utilities.IO.Messaging.BaseClasses
         }
 
         /// <summary>
-        /// Name of the messaging system
+        /// Formatters that the system have available
         /// </summary>
-        public abstract string Name { get; }
+        public IEnumerable<IFormatter> Formatters { get; private set; }
 
         /// <summary>
         /// Message type that this handles
@@ -53,9 +55,9 @@ namespace Utilities.IO.Messaging.BaseClasses
         public abstract Type MessageType { get; }
 
         /// <summary>
-        /// Formatters that the system have available
+        /// Name of the messaging system
         /// </summary>
-        public IEnumerable<IFormatter> Formatters { get; private set; }
+        public abstract string Name { get; }
 
         /// <summary>
         /// Initializes the system
@@ -108,7 +110,7 @@ namespace Utilities.IO.Messaging.BaseClasses
         }
 
         /// <summary>
-        /// Internal function 
+        /// Internal function
         /// </summary>
         /// <param name="Message">Message to send</param>
         protected abstract void InternalSend(IMessage Message);

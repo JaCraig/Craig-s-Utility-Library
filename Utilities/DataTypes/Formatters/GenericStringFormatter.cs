@@ -20,19 +20,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Text;
 using Utilities.DataTypes.Formatters.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.Formatters
 {
     /// <summary>
     /// Generic string formatter
     /// </summary>
-    public class GenericStringFormatter : IFormatProvider, ICustomFormatter,IStringFormatter
+    public class GenericStringFormatter : IFormatProvider, ICustomFormatter, IStringFormatter
     {
         #region Constructor
 
@@ -43,10 +44,10 @@ namespace Utilities.DataTypes.Formatters
         {
             DigitChar = '#';
             AlphaChar = '@';
-            EscapeChar='\\';
+            EscapeChar = '\\';
         }
 
-        #endregion
+        #endregion Constructor
 
         #region IFormatProvider Functions
 
@@ -60,7 +61,7 @@ namespace Utilities.DataTypes.Formatters
             return formatType == typeof(ICustomFormatter) ? this : null;
         }
 
-        #endregion
+        #endregion IFormatProvider Functions
 
         #region ICustomFormatter Functions
 
@@ -76,7 +77,7 @@ namespace Utilities.DataTypes.Formatters
             return Format(arg.ToString(), format);
         }
 
-        #endregion
+        #endregion ICustomFormatter Functions
 
         #region Functions
 
@@ -102,16 +103,16 @@ namespace Utilities.DataTypes.Formatters
                 }
                 else
                 {
-                    char NextValue=char.MinValue;
-                    Input=GetMatchingInput(Input,FormatPattern[x],out NextValue);
-                    if(NextValue!=char.MinValue)
+                    char NextValue = char.MinValue;
+                    Input = GetMatchingInput(Input, FormatPattern[x], out NextValue);
+                    if (NextValue != char.MinValue)
                         ReturnValue.Append(NextValue);
                 }
             }
             return ReturnValue.ToString();
         }
 
-        #endregion
+        #endregion Format
 
         #region GetMatchingInput
 
@@ -122,30 +123,30 @@ namespace Utilities.DataTypes.Formatters
         /// <param name="FormatChar">Current format character</param>
         /// <param name="MatchChar">The matching character found</param>
         /// <returns>The remainder of the input string left</returns>
-        protected virtual string GetMatchingInput(string Input, char FormatChar,out char MatchChar)
+        protected virtual string GetMatchingInput(string Input, char FormatChar, out char MatchChar)
         {
-            bool Digit=FormatChar==DigitChar;
-            bool Alpha=FormatChar==AlphaChar;
+            bool Digit = FormatChar == DigitChar;
+            bool Alpha = FormatChar == AlphaChar;
             if (!Digit && !Alpha)
             {
                 MatchChar = FormatChar;
                 return Input;
             }
-            int Index=0;
+            int Index = 0;
             MatchChar = char.MinValue;
             for (int x = 0; x < Input.Length; ++x)
             {
                 if ((Digit && char.IsDigit(Input[x])) || (Alpha && char.IsLetter(Input[x])))
                 {
                     MatchChar = Input[x];
-                    Index = x+1;
+                    Index = x + 1;
                     break;
                 }
             }
             return Input.Substring(Index);
         }
 
-        #endregion
+        #endregion GetMatchingInput
 
         #region IsValid
 
@@ -174,16 +175,11 @@ namespace Utilities.DataTypes.Formatters
             return true;
         }
 
-        #endregion
+        #endregion IsValid
 
-        #endregion
+        #endregion Functions
 
         #region Properties
-
-        /// <summary>
-        /// Represents digits (defaults to #)
-        /// </summary>
-        public virtual char DigitChar { get; protected set; }
 
         /// <summary>
         /// Represents alpha characters (defaults to @)
@@ -191,10 +187,15 @@ namespace Utilities.DataTypes.Formatters
         public virtual char AlphaChar { get; protected set; }
 
         /// <summary>
+        /// Represents digits (defaults to #)
+        /// </summary>
+        public virtual char DigitChar { get; protected set; }
+
+        /// <summary>
         /// Represents the escape character (defaults to \)
         /// </summary>
         public virtual char EscapeChar { get; protected set; }
 
-        #endregion
+        #endregion Properties
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ using Utilities.Configuration.Manager.Interfaces;
 using Utilities.DataTypes;
 using Utilities.IO;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Configuration.Manager.BaseClasses
 {
@@ -53,13 +54,18 @@ namespace Utilities.Configuration.Manager.BaseClasses
             this.StringToObject = StringToObject.Check(x => x.Deserialize<ConfigClassType, string>(SerializationType.XML));
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Location to save/load the config file from.
-        /// If blank, it does not save/load but uses any defaults specified.
+        /// Name of the Config object
+        /// </summary>
+        public abstract string Name { get; }
+
+        /// <summary>
+        /// Location to save/load the config file from. If blank, it does not save/load but uses any
+        /// defaults specified.
         /// </summary>
         protected virtual string ConfigFileLocation { get { return ""; } }
 
@@ -69,21 +75,16 @@ namespace Utilities.Configuration.Manager.BaseClasses
         protected virtual string EncryptionPassword { get { return ""; } }
 
         /// <summary>
-        /// Name of the Config object
+        /// Gets a string representation of the object
         /// </summary>
-        public abstract string Name { get; }
+        private Func<ConfigClassType, string> ObjectToString { get; set; }
 
         /// <summary>
         /// Gets the object
         /// </summary>
         private Func<string, ConfigClassType> StringToObject { get; set; }
 
-        /// <summary>
-        /// Gets a string representation of the object
-        /// </summary>
-        private Func<ConfigClassType, string> ObjectToString { get; set; }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -116,13 +117,16 @@ namespace Utilities.Configuration.Manager.BaseClasses
             Decrypt();
         }
 
-        private void LoadProperties(ConfigClassType Temp)
+        private void Decrypt()
         {
-            if (Temp == null)
+            if (string.IsNullOrEmpty(EncryptionPassword))
                 return;
-            foreach (KeyValuePair<string, object> Item in this)
+            using (PasswordDeriveBytes Temp = new PasswordDeriveBytes(EncryptionPassword, "Kosher".ToByteArray(), "SHA1", 2))
             {
-                SetValue(Item.Key, Item.Value);
+                foreach (KeyValuePair<string, object> Item in this.Where(x => x.Value.GetType() == typeof(string)))
+                {
+                    SetValue(Item.Key, ((string)Item.Value).Decrypt(Temp));
+                }
             }
         }
 
@@ -139,19 +143,16 @@ namespace Utilities.Configuration.Manager.BaseClasses
             }
         }
 
-        private void Decrypt()
+        private void LoadProperties(ConfigClassType Temp)
         {
-            if (string.IsNullOrEmpty(EncryptionPassword))
+            if (Temp == null)
                 return;
-            using (PasswordDeriveBytes Temp = new PasswordDeriveBytes(EncryptionPassword, "Kosher".ToByteArray(), "SHA1", 2))
+            foreach (KeyValuePair<string, object> Item in this)
             {
-                foreach (KeyValuePair<string, object> Item in this.Where(x => x.Value.GetType() == typeof(string)))
-                {
-                    SetValue(Item.Key, ((string)Item.Value).Decrypt(Temp));
-                }
+                SetValue(Item.Key, Item.Value);
             }
         }
 
-        #endregion
+        #endregion Functions
     }
 }

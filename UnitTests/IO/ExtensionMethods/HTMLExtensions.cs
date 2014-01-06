@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Collections.Generic;
 using Utilities.IO;
 using Xunit;
 
@@ -27,6 +26,15 @@ namespace UnitTests.Web.ExtensionMethods
 {
     public class MinificationExtensions
     {
+        [Fact]
+        public void CSSMinify()
+        {
+            string FileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Read();
+            string MinifiedFileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Minify(MinificationType.CSS);
+            Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
+            Assert.True(FileContent.Length > MinifiedFileContent.Length);
+        }
+
         [Fact]
         public void HTMLMinify()
         {
@@ -41,15 +49,6 @@ namespace UnitTests.Web.ExtensionMethods
         {
             string FileContent = new FileInfo(@"..\..\Data\Web\RandomJS.js").Read();
             string MinifiedFileContent = new FileInfo(@"..\..\Data\Web\RandomJS.js").Minify(MinificationType.JavaScript);
-            Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
-            Assert.True(FileContent.Length > MinifiedFileContent.Length);
-        }
-
-        [Fact]
-        public void CSSMinify()
-        {
-            string FileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Read();
-            string MinifiedFileContent = new FileInfo(@"..\..\Data\Web\RandomCSS.css").Minify(MinificationType.CSS);
             Assert.NotEqual(FileContent.Length, MinifiedFileContent.Length);
             Assert.True(FileContent.Length > MinifiedFileContent.Length);
         }

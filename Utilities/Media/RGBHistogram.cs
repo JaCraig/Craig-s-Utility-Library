@@ -20,14 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.Media
 {
@@ -51,52 +51,9 @@ namespace Utilities.Media
                 LoadImage(Image);
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Functions
-
-        /// <summary>
-        /// Loads an image
-        /// </summary>
-        /// <param name="ImageUsing">Image to load</param>
-        public virtual void LoadImage(Bitmap ImageUsing)
-        {
-            Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
-            BitmapData OldData = ImageUsing.LockImage();
-            int PixelSize = OldData.GetPixelSize();
-            Width = ImageUsing.Width;
-            Height = ImageUsing.Height;
-            R.Clear();
-            G.Clear();
-            B.Clear();
-            for (int x = 0; x < Width; ++x)
-            {
-                for (int y = 0; y < Height; ++y)
-                {
-                    Color TempColor = OldData.GetPixel(x, y, PixelSize);
-                    ++R[(int)TempColor.R];
-                    ++G[(int)TempColor.G];
-                    ++B[(int)TempColor.B];
-                }
-            }
-            ImageUsing.UnlockImage(OldData);
-        }
-
-        /// <summary>
-        /// Normalizes the histogram
-        /// </summary>
-        public virtual void Normalize()
-        {
-            float TotalPixels = Width * Height;
-            if (TotalPixels <= 0)
-                return;
-            for (int x = 0; x < 256; ++x)
-            {
-                R[x] /= TotalPixels;
-                G[x] /= TotalPixels;
-                B[x] /= TotalPixels;
-            }
-        }
 
         /// <summary>
         /// Equalizes the histogram
@@ -154,20 +111,65 @@ namespace Utilities.Media
             Height = 1;
         }
 
-        #endregion
+        /// <summary>
+        /// Loads an image
+        /// </summary>
+        /// <param name="ImageUsing">Image to load</param>
+        public virtual void LoadImage(Bitmap ImageUsing)
+        {
+            Contract.Requires<ArgumentNullException>(ImageUsing != null, "ImageUsing");
+            BitmapData OldData = ImageUsing.LockImage();
+            int PixelSize = OldData.GetPixelSize();
+            Width = ImageUsing.Width;
+            Height = ImageUsing.Height;
+            R.Clear();
+            G.Clear();
+            B.Clear();
+            for (int x = 0; x < Width; ++x)
+            {
+                for (int y = 0; y < Height; ++y)
+                {
+                    Color TempColor = OldData.GetPixel(x, y, PixelSize);
+                    ++R[(int)TempColor.R];
+                    ++G[(int)TempColor.G];
+                    ++B[(int)TempColor.B];
+                }
+            }
+            ImageUsing.UnlockImage(OldData);
+        }
+
+        /// <summary>
+        /// Normalizes the histogram
+        /// </summary>
+        public virtual void Normalize()
+        {
+            float TotalPixels = Width * Height;
+            if (TotalPixels <= 0)
+                return;
+            for (int x = 0; x < 256; ++x)
+            {
+                R[x] /= TotalPixels;
+                G[x] /= TotalPixels;
+                B[x] /= TotalPixels;
+            }
+        }
+
+        #endregion Public Functions
 
         #region Private Values
-        private int Width;
+
         private int Height;
-        #endregion
+        private int Width;
+
+        #endregion Private Values
 
         #region Public Properties
 
         /// <summary>
-        /// Red values
+        /// Blue values
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public virtual float[] R { get; set; }
+        public virtual float[] B { get; set; }
 
         /// <summary>
         /// Green values
@@ -176,11 +178,11 @@ namespace Utilities.Media
         public virtual float[] G { get; set; }
 
         /// <summary>
-        /// Blue values
+        /// Red values
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public virtual float[] B { get; set; }
+        public virtual float[] R { get; set; }
 
-        #endregion
+        #endregion Public Properties
     }
 }

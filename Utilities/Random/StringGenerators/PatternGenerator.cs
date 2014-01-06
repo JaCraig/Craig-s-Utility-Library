@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Text;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.StringGenerators
 {
@@ -37,18 +39,14 @@ namespace Utilities.Random.StringGenerators
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Pattern">
-        /// Pattern to use:
-        /// # = Number
-        /// @ = Alpha character
-        /// </param>
+        /// <param name="Pattern">Pattern to use: # = Number @ = Alpha character</param>
         public PatternGenerator(string Pattern)
             : base("", "")
         {
             this.Pattern = Pattern;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -57,7 +55,7 @@ namespace Utilities.Random.StringGenerators
         /// </summary>
         public virtual string Pattern { get; protected set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -111,6 +109,6 @@ namespace Utilities.Random.StringGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

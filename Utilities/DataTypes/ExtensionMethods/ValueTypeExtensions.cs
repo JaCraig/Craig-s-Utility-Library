@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Text;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -43,7 +44,10 @@ namespace Utilities.DataTypes
         /// Converts a byte array into a base 64 string
         /// </summary>
         /// <param name="Input">Input array</param>
-        /// <param name="Count">Number of bytes starting at the index to convert (use -1 for the entire array starting at the index)</param>
+        /// <param name="Count">
+        /// Number of bytes starting at the index to convert (use -1 for the entire array starting
+        /// at the index)
+        /// </param>
         /// <param name="Index">Index to start at</param>
         /// <param name="Options">Base 64 formatting options</param>
         /// <returns>The equivalent byte array in a base 64 string</returns>
@@ -54,25 +58,30 @@ namespace Utilities.DataTypes
                 Count = Input.Length - Index;
             return Input == null ? "" : Convert.ToBase64String(Input, Index, Count, Options);
         }
-        
+
         /// <summary>
         /// Converts a byte array to a string
         /// </summary>
         /// <param name="Input">input array</param>
-        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
-        /// <param name="Count">Number of bytes starting at the index to convert (use -1 for the entire array starting at the index)</param>
+        /// <param name="EncodingUsing">
+        /// The type of encoding the string is using (defaults to UTF8)
+        /// </param>
+        /// <param name="Count">
+        /// Number of bytes starting at the index to convert (use -1 for the entire array starting
+        /// at the index)
+        /// </param>
         /// <param name="Index">Index to start at</param>
         /// <returns>string of the byte array</returns>
         public static string ToString(this byte[] Input, Encoding EncodingUsing, int Index = 0, int Count = -1)
         {
-            if (Input==null)
+            if (Input == null)
                 return "";
             if (Count == -1)
                 Count = Input.Length - Index;
             return EncodingUsing.Check(new UTF8Encoding()).GetString(Input, Index, Count);
         }
 
-        #endregion
+        #endregion ToString
 
         #region Is
 
@@ -82,7 +91,7 @@ namespace Utilities.DataTypes
         /// <param name="Value">Value to check</param>
         /// <param name="CharacterType">Character type</param>
         /// <returns>True if it is, false otherwise</returns>
-        public static bool Is(this char Value,CharIs CharacterType)
+        public static bool Is(this char Value, CharIs CharacterType)
         {
             if (CharacterType.HasFlag(CharIs.WhiteSpace))
                 return char.IsWhiteSpace(Value);
@@ -113,7 +122,7 @@ namespace Utilities.DataTypes
             return false;
         }
 
-        #endregion
+        #endregion Is
 
         #region IsUnicode
 
@@ -127,9 +136,9 @@ namespace Utilities.DataTypes
             return Input == null ? true : Input.ToString(new UnicodeEncoding()).Is(StringCompare.Unicode);
         }
 
-        #endregion
+        #endregion IsUnicode
 
-        #endregion
+        #endregion Functions
     }
 
     #region Enums
@@ -144,55 +153,67 @@ namespace Utilities.DataTypes
         /// White space
         /// </summary>
         WhiteSpace = 1,
+
         /// <summary>
         /// Upper case
         /// </summary>
         Upper = 2,
+
         /// <summary>
         /// Symbol
         /// </summary>
         Symbol = 4,
+
         /// <summary>
         /// Surrogate
         /// </summary>
         Surrogate = 8,
+
         /// <summary>
         /// Punctuation
         /// </summary>
         Punctuation = 16,
+
         /// <summary>
         /// Number
         /// </summary>
         Number = 32,
+
         /// <summary>
         /// Low surrogate
         /// </summary>
         LowSurrogate = 64,
+
         /// <summary>
         /// Lower
         /// </summary>
         Lower = 128,
+
         /// <summary>
         /// letter or digit
         /// </summary>
         LetterOrDigit = 256,
+
         /// <summary>
         /// Letter
         /// </summary>
         Letter = 512,
+
         /// <summary>
         /// High surrogate
         /// </summary>
         HighSurrogate = 1024,
+
         /// <summary>
         /// Digit
         /// </summary>
         Digit = 2048,
+
         /// <summary>
         /// Control
         /// </summary>
         Control = 4096
     }
 
-    #endregion
+    #endregion Enums
 }

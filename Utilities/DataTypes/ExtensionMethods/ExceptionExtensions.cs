@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Text;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -68,6 +69,6 @@ namespace Utilities.DataTypes
             return Builder.ToString();
         }
 
-        #endregion
+        #endregion ToString
     }
 }

@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using Utilities.IO.Serializers.BaseClasses;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Serializers.Default
 {
@@ -57,25 +58,6 @@ namespace Utilities.IO.Serializers.Default
         /// Name
         /// </summary>
         public override string Name { get { return "XML"; } }
-        
-        /// <summary>
-        /// Serializes the object
-        /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Data">Data to serialize</param>
-        /// <returns>The serialized data</returns>
-        public override string Serialize(Type ObjectType, object Data)
-        {
-            if (Data == null||ObjectType==null)
-                return null;
-            using (MemoryStream Stream = new MemoryStream())
-            {
-                XmlSerializer Serializer = new XmlSerializer(ObjectType);
-                Serializer.Serialize(Stream, Data);
-                Stream.Flush();
-                return Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
-            }
-        }
 
         /// <summary>
         /// Deserializes the data
@@ -91,6 +73,25 @@ namespace Utilities.IO.Serializers.Default
             {
                 XmlSerializer Serializer = new XmlSerializer(ObjectType);
                 return Serializer.Deserialize(Stream);
+            }
+        }
+
+        /// <summary>
+        /// Serializes the object
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Data">Data to serialize</param>
+        /// <returns>The serialized data</returns>
+        public override string Serialize(Type ObjectType, object Data)
+        {
+            if (Data == null || ObjectType == null)
+                return null;
+            using (MemoryStream Stream = new MemoryStream())
+            {
+                XmlSerializer Serializer = new XmlSerializer(ObjectType);
+                Serializer.Serialize(Stream, Data);
+                Stream.Flush();
+                return Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
             }
         }
     }

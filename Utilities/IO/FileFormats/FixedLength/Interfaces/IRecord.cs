@@ -21,8 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.FixedLength.Interfaces
 {
@@ -38,9 +37,9 @@ namespace Utilities.IO.FileFormats.FixedLength.Interfaces
         /// </summary>
         /// <param name="Value">The string value</param>
         /// <param name="Length">Max length of the value</param>
-        void Parse(string Value,int Length=-1);
+        void Parse(string Value, int Length = -1);
 
-        #endregion
+        #endregion Functions
 
         #region Properties
 
@@ -49,6 +48,6 @@ namespace Utilities.IO.FileFormats.FixedLength.Interfaces
         /// </summary>
         int Length { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 }

@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Drawing;
 using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.DefaultClasses
 {
@@ -36,7 +38,10 @@ namespace Utilities.Random.DefaultClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public ColorGenerator() : base(Color.Black, Color.White) { }
+        public ColorGenerator()
+            : base(Color.Black, Color.White)
+        {
+        }
 
         /// <summary>
         /// Generates a random value of the specified type

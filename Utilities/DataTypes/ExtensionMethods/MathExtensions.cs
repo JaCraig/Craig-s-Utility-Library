@@ -20,15 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-
-#endregion
-
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -41,7 +40,7 @@ namespace Utilities.DataTypes
         #region Public Static Functions
 
         #region Absolute
-        
+
         /// <summary>
         /// Returns the absolute value
         /// </summary>
@@ -104,7 +103,7 @@ namespace Utilities.DataTypes
             return System.Math.Abs(Value);
         }
 
-        #endregion
+        #endregion Absolute
 
         #region Exp
 
@@ -118,7 +117,7 @@ namespace Utilities.DataTypes
             return System.Math.Exp(Value);
         }
 
-        #endregion
+        #endregion Exp
 
         #region Factorial
 
@@ -135,7 +134,7 @@ namespace Utilities.DataTypes
             return Value1;
         }
 
-        #endregion
+        #endregion Factorial
 
         #region GreatestCommonDenominator
 
@@ -186,7 +185,7 @@ namespace Utilities.DataTypes
             return ((int)Value1).GreatestCommonDenominator((int)Value2);
         }
 
-        #endregion
+        #endregion GreatestCommonDenominator
 
         #region Log
 
@@ -211,7 +210,7 @@ namespace Utilities.DataTypes
             return System.Math.Log(Value, Base);
         }
 
-        #endregion
+        #endregion Log
 
         #region Log10
 
@@ -225,7 +224,7 @@ namespace Utilities.DataTypes
             return System.Math.Log10(Value);
         }
 
-        #endregion
+        #endregion Log10
 
         #region Median
 
@@ -245,7 +244,7 @@ namespace Utilities.DataTypes
             return Values.ElementAt((Values.Count() / 2));
         }
 
-        #endregion
+        #endregion Median
 
         #region Mode
 
@@ -277,7 +276,7 @@ namespace Utilities.DataTypes
             return MaxIndex;
         }
 
-        #endregion
+        #endregion Mode
 
         #region Pow
 
@@ -292,7 +291,7 @@ namespace Utilities.DataTypes
             return System.Math.Pow(Value, Power);
         }
 
-        #endregion
+        #endregion Pow
 
         #region Round
 
@@ -310,7 +309,7 @@ namespace Utilities.DataTypes
             return System.Math.Round(Value, Digits, Rounding);
         }
 
-        #endregion
+        #endregion Round
 
         #region StandardDeviation
 
@@ -324,7 +323,7 @@ namespace Utilities.DataTypes
             return Values.Variance().Sqrt();
         }
 
-        #endregion
+        #endregion StandardDeviation
 
         #region Sqrt
 
@@ -338,7 +337,7 @@ namespace Utilities.DataTypes
             return System.Math.Sqrt(Value);
         }
 
-        #endregion
+        #endregion Sqrt
 
         #region Variance
 
@@ -390,8 +389,8 @@ namespace Utilities.DataTypes
             return Sum / (double)Values.Count();
         }
 
-        #endregion
+        #endregion Variance
 
-        #endregion
+        #endregion Public Static Functions
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +28,8 @@ using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes.Comparison;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -49,7 +51,9 @@ namespace Utilities.DataTypes
         /// <param name="Dictionary">Dictionary to get the value from</param>
         /// <param name="Key">Key to look for</param>
         /// <param name="Default">Default value if the key is not found</param>
-        /// <returns>The value associated with the key or the default value if the key is not found</returns>
+        /// <returns>
+        /// The value associated with the key or the default value if the key is not found
+        /// </returns>
         /// <exception cref="System.ArgumentNullException">Thrown if the dictionary is null</exception>
         public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> Dictionary, TKey Key, TValue Default = default(TValue))
         {
@@ -58,7 +62,7 @@ namespace Utilities.DataTypes
             return Dictionary.TryGetValue(Key, out ReturnValue) ? ReturnValue : Default;
         }
 
-        #endregion
+        #endregion GetValue
 
         #region SetValue
 
@@ -82,7 +86,7 @@ namespace Utilities.DataTypes
             return Dictionary;
         }
 
-        #endregion
+        #endregion SetValue
 
         #region Sort
 
@@ -97,7 +101,7 @@ namespace Utilities.DataTypes
         public static IDictionary<T1, T2> Sort<T1, T2>(this IDictionary<T1, T2> Dictionary, IComparer<T1> Comparer = null)
             where T1 : IComparable
         {
-            Contract.Requires<ArgumentNullException>(Dictionary!= null, "Dictionary");
+            Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             return Dictionary.Sort(x => x.Key, Comparer);
         }
 
@@ -116,11 +120,11 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Dictionary != null, "Dictionary");
             Contract.Requires<ArgumentNullException>(OrderBy != null, "OrderBy");
-            return Dictionary.OrderBy(OrderBy, Comparer.Check(()=>new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
+            return Dictionary.OrderBy(OrderBy, Comparer.Check(() => new GenericComparer<T3>())).ToDictionary(x => x.Key, x => x.Value);
         }
 
-        #endregion
+        #endregion Sort
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,10 +35,38 @@ using System.Text;
 using System.Xml.Serialization;
 using Utilities.DataTypes.DataMapper;
 using Utilities.DataTypes.Dynamic.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
+    /// <summary>
+    /// Change class
+    /// </summary>
+    public class Change
+    {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="OriginalValue">Original value</param>
+        /// <param name="NewValue">New value</param>
+        public Change(object OriginalValue, object NewValue)
+        {
+            this.OriginalValue = OriginalValue;
+            this.NewValue = NewValue;
+        }
+
+        /// <summary>
+        /// New value
+        /// </summary>
+        public object NewValue { get; set; }
+
+        /// <summary>
+        /// Original value
+        /// </summary>
+        public object OriginalValue { get; set; }
+    }
+
     /// <summary>
     /// Dynamic object implementation (used when inheriting)
     /// </summary>
@@ -85,7 +114,7 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(info != null, "info");
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -108,7 +137,7 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Gets the Values 
+        /// Gets the Values
         /// </summary>
         public override ICollection<object> Values
         {
@@ -123,7 +152,7 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -170,7 +199,7 @@ namespace Utilities.DataTypes
                 base.SetValue(key, value);
         }
 
-        #endregion
+        #endregion Functions
     }
 
     /// <summary>
@@ -253,34 +282,9 @@ namespace Utilities.DataTypes
             Extensions.ForEach(x => x.Extend(this));
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Extensions for the class
-        /// </summary>
-        private static IEnumerable<IDynamoExtension> Extensions { get; set; }
-
-        /// <summary>
-        /// Internal key/value dictionary
-        /// </summary>
-        internal IDictionary<string, object> InternalValues { get; set; }
-
-        /// <summary>
-        /// Child class key/value dictionary
-        /// </summary>
-        internal IDictionary<string, Func<object>> ChildValues { get; set; }
-
-        /// <summary>
-        /// Keys
-        /// </summary>
-        public virtual ICollection<string> Keys { get { return InternalValues.Keys; } }
-
-        /// <summary>
-        /// Values
-        /// </summary>
-        public virtual ICollection<object> Values { get { return InternalValues.Values; } }
 
         /// <summary>
         /// Change log
@@ -296,6 +300,31 @@ namespace Utilities.DataTypes
         /// Is this read only?
         /// </summary>
         public bool IsReadOnly { get { return InternalValues.IsReadOnly; } }
+
+        /// <summary>
+        /// Keys
+        /// </summary>
+        public virtual ICollection<string> Keys { get { return InternalValues.Keys; } }
+
+        /// <summary>
+        /// Values
+        /// </summary>
+        public virtual ICollection<object> Values { get { return InternalValues.Values; } }
+
+        /// <summary>
+        /// Child class key/value dictionary
+        /// </summary>
+        internal IDictionary<string, Func<object>> ChildValues { get; set; }
+
+        /// <summary>
+        /// Internal key/value dictionary
+        /// </summary>
+        internal IDictionary<string, object> InternalValues { get; set; }
+
+        /// <summary>
+        /// Extensions for the class
+        /// </summary>
+        private static IEnumerable<IDynamoExtension> Extensions { get; set; }
 
         /// <summary>
         /// Gets the value associated with the key specified
@@ -314,7 +343,7 @@ namespace Utilities.DataTypes
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -326,38 +355,6 @@ namespace Utilities.DataTypes
         public void Add(string key, object value)
         {
             SetValue(key, value);
-        }
-
-        /// <summary>
-        /// Determines if the object contains a key
-        /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <returns>True if it is found, false otherwise</returns>
-        public bool ContainsKey(string key)
-        {
-            return InternalValues.ContainsKey(key);
-        }
-
-        /// <summary>
-        /// Removes the value associated with the key
-        /// </summary>
-        /// <param name="key">Key to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(string key)
-        {
-            RaisePropertyChanged(key, null);
-            return InternalValues.Remove(key);
-        }
-
-        /// <summary>
-        /// Attempts to get a value
-        /// </summary>
-        /// <param name="key">Key to get</param>
-        /// <param name="value">Value object</param>
-        /// <returns>True if it the key is found, false otherwise</returns>
-        public bool TryGetValue(string key, out object value)
-        {
-            return InternalValues.TryGetValue(key, out value);
         }
 
         /// <summary>
@@ -389,6 +386,16 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Determines if the object contains a key
+        /// </summary>
+        /// <param name="key">Key to check</param>
+        /// <returns>True if it is found, false otherwise</returns>
+        public bool ContainsKey(string key)
+        {
+            return InternalValues.ContainsKey(key);
+        }
+
+        /// <summary>
         /// Copies the key/value pairs to an array
         /// </summary>
         /// <param name="array">Array to copy to</param>
@@ -399,14 +406,25 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Removes a key/value pair
+        /// Determines if two objects are equal
         /// </summary>
-        /// <param name="item">Item to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(KeyValuePair<string, object> item)
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>True if they're equal, false otherwise</returns>
+        public override bool Equals(object obj)
         {
-            RaisePropertyChanged(item.Key, null);
-            return InternalValues.Remove(item);
+            Dynamo TempObj = obj as Dynamo;
+            if (TempObj == null)
+                return false;
+            return TempObj.GetHashCode() == GetHashCode();
+        }
+
+        /// <summary>
+        /// Gets the dynamic member names
+        /// </summary>
+        /// <returns>The keys used internally</returns>
+        public override IEnumerable<string> GetDynamicMemberNames()
+        {
+            return Keys;
         }
 
         /// <summary>
@@ -422,6 +440,96 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Gets the hash code
+        /// </summary>
+        /// <returns>The hash code</returns>
+        public override int GetHashCode()
+        {
+            int Value = 1;
+            foreach (string Key in Keys)
+            {
+                if (!this[Key].GetType().Is<Delegate>())
+                    Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
+            }
+            return Value;
+        }
+
+        /// <summary>
+        /// Gets the object data and serializes it
+        /// </summary>
+        /// <param name="info">Serialization info object</param>
+        /// <param name="context">Streaming context object</param>
+        [SecurityCritical]
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            foreach (string Key in Keys)
+            {
+                info.AddValue(Key, GetValue(Key, typeof(object)));
+            }
+        }
+
+        /// <summary>
+        /// Not used
+        /// </summary>
+        /// <returns>Null</returns>
+        public System.Xml.Schema.XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Reads the data from an XML doc
+        /// </summary>
+        /// <param name="reader">XML reader</param>
+        public virtual void ReadXml(System.Xml.XmlReader reader)
+        {
+            SetValue(reader.Name, reader.Value);
+            while (reader.Read())
+            {
+                SetValue(reader.Name, reader.Value);
+            }
+        }
+
+        /// <summary>
+        /// Removes the value associated with the key
+        /// </summary>
+        /// <param name="key">Key to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(string key)
+        {
+            RaisePropertyChanged(key, null);
+            return InternalValues.Remove(key);
+        }
+
+        /// <summary>
+        /// Removes a key/value pair
+        /// </summary>
+        /// <param name="item">Item to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(KeyValuePair<string, object> item)
+        {
+            RaisePropertyChanged(item.Key, null);
+            return InternalValues.Remove(item);
+        }
+
+        /// <summary>
+        /// Returns a subset of the current Dynamo object
+        /// </summary>
+        /// <param name="Keys">Property keys to return</param>
+        /// <returns>A new Dynamo object containing only the keys specified</returns>
+        public dynamic SubSet(params string[] Keys)
+        {
+            if (Keys == null)
+                return new Dynamo();
+            Dynamo ReturnValue = new Dynamo();
+            foreach (string Key in Keys)
+            {
+                ReturnValue.Add(Key, this[Key]);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
         /// Gets the enumerator for the object
         /// </summary>
         /// <returns>The enumerator</returns>
@@ -431,12 +539,34 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Gets the dynamic member names
+        /// Outputs the object graph
         /// </summary>
-        /// <returns>The keys used internally</returns>
-        public override IEnumerable<string> GetDynamicMemberNames()
+        /// <returns>The string version of the object</returns>
+        public override string ToString()
         {
-            return Keys;
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("{0} this", GetType().Name);
+            foreach (string Key in Keys)
+            {
+                object Item = GetValue(Key, typeof(object));
+                Builder.AppendLineFormat("\t{0} {1} = {2}", Item.GetType().GetName(), Key, Item.ToString());
+            }
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Attempts to convert the object
+        /// </summary>
+        /// <param name="binder">Convert binder</param>
+        /// <param name="result">Result</param>
+        /// <returns>True if it is converted, false otherwise</returns>
+        public override bool TryConvert(ConvertBinder binder, out object result)
+        {
+            result = IoC.Manager.Bootstrapper.Resolve<AOP.Manager>().Create(binder.Type);
+            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), binder.Type)
+                .AutoMap()
+                .Copy(this, result);
+            return true;
         }
 
         /// <summary>
@@ -449,6 +579,17 @@ namespace Utilities.DataTypes
         {
             result = GetValue(binder.Name, binder.ReturnType);
             return true;
+        }
+
+        /// <summary>
+        /// Attempts to get a value
+        /// </summary>
+        /// <param name="key">Key to get</param>
+        /// <param name="value">Value object</param>
+        /// <returns>True if it the key is found, false otherwise</returns>
+        public bool TryGetValue(string key, out object value)
+        {
+            return InternalValues.TryGetValue(key, out value);
         }
 
         /// <summary>
@@ -488,18 +629,15 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Attempts to convert the object
+        /// Writes the data to an XML doc
         /// </summary>
-        /// <param name="binder">Convert binder</param>
-        /// <param name="result">Result</param>
-        /// <returns>True if it is converted, false otherwise</returns>
-        public override bool TryConvert(ConvertBinder binder, out object result)
+        /// <param name="writer">XML writer</param>
+        public virtual void WriteXml(System.Xml.XmlWriter writer)
         {
-            result = IoC.Manager.Bootstrapper.Resolve<AOP.Manager>().Create(binder.Type);
-            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), binder.Type)
-                .AutoMap()
-                .Copy(this, result);
-            return true;
+            foreach (string Key in Keys)
+            {
+                writer.WriteElementString(Key, (string)GetValue(Key, typeof(string)));
+            }
         }
 
         /// <summary>
@@ -546,118 +684,21 @@ namespace Utilities.DataTypes
                 InternalValues.Add(key, value);
         }
 
-        /// <summary>
-        /// Gets the object data and serializes it
-        /// </summary>
-        /// <param name="info">Serialization info object</param>
-        /// <param name="context">Streaming context object</param>
-        [SecurityCritical]
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            foreach (string Key in Keys)
-            {
-                info.AddValue(Key, GetValue(Key, typeof(object)));
-            }
-        }
-
-        /// <summary>
-        /// Not used
-        /// </summary>
-        /// <returns>Null</returns>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Reads the data from an XML doc
-        /// </summary>
-        /// <param name="reader">XML reader</param>
-        public virtual void ReadXml(System.Xml.XmlReader reader)
-        {
-            SetValue(reader.Name, reader.Value);
-            while (reader.Read())
-            {
-                SetValue(reader.Name, reader.Value);
-            }
-        }
-
-        /// <summary>
-        /// Writes the data to an XML doc
-        /// </summary>
-        /// <param name="writer">XML writer</param>
-        public virtual void WriteXml(System.Xml.XmlWriter writer)
-        {
-            foreach (string Key in Keys)
-            {
-                writer.WriteElementString(Key, (string)GetValue(Key, typeof(string)));
-            }
-        }
-
-        /// <summary>
-        /// Outputs the object graph
-        /// </summary>
-        /// <returns>The string version of the object</returns>
-        public override string ToString()
-        {
-            StringBuilder Builder = new StringBuilder();
-            Builder.AppendLineFormat("{0} this", GetType().Name);
-            foreach (string Key in Keys)
-            {
-                object Item = GetValue(Key, typeof(object));
-                Builder.AppendLineFormat("\t{0} {1} = {2}", Item.GetType().GetName(), Key, Item.ToString());
-            }
-            return Builder.ToString();
-        }
-
-        /// <summary>
-        /// Gets the hash code 
-        /// </summary>
-        /// <returns>The hash code</returns>
-        public override int GetHashCode()
-        {
-            int Value = 1;
-            foreach (string Key in Keys)
-            {
-                if (!this[Key].GetType().Is<Delegate>())
-                    Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
-            }
-            return Value;
-        }
-
-        /// <summary>
-        /// Determines if two objects are equal
-        /// </summary>
-        /// <param name="obj">Object to compare to</param>
-        /// <returns>True if they're equal, false otherwise</returns>
-        public override bool Equals(object obj)
-        {
-            Dynamo TempObj = obj as Dynamo;
-            if (TempObj == null)
-                return false;
-            return TempObj.GetHashCode() == GetHashCode();
-        }
-
-        /// <summary>
-        /// Returns a subset of the current Dynamo object
-        /// </summary>
-        /// <param name="Keys">Property keys to return</param>
-        /// <returns>A new Dynamo object containing only the keys specified</returns>
-        public dynamic SubSet(params string[] Keys)
-        {
-            if (Keys == null)
-                return new Dynamo();
-            Dynamo ReturnValue = new Dynamo();
-            foreach (string Key in Keys)
-            {
-                ReturnValue.Add(Key, this[Key]);
-            }
-            return ReturnValue;
-        }
-
-        #endregion
+        #endregion Functions
 
         #region Events
+
+        /// <summary>
+        /// Called when the value/property is found but before it is returned to the caller Sends
+        /// (this, PropertyName, EventArgs) to items attached to the event
+        /// </summary>
+        public event Action<Dynamo, string, EventArgs.OnEndEventArgs> GetValueEnd;
+
+        /// <summary>
+        /// Called when beginning to get a value/property Sends (this, EventArgs) to items attached
+        /// to the event
+        /// </summary>
+        public event Action<Dynamo, EventArgs.OnStartEventArgs> GetValueStart;
 
         /// <summary>
         /// Property changed event
@@ -665,42 +706,36 @@ namespace Utilities.DataTypes
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Called when beginning to get a value/property
-        /// Sends (this, EventArgs) to items attached to the event
-        /// </summary>
-        public event Action<Dynamo, EventArgs.OnStartEventArgs> GetValueStart;
-
-        /// <summary>
-        /// Called when the value/property is found but before it is returned to the caller
-        /// Sends (this, PropertyName, EventArgs) to items attached to the event
-        /// </summary>
-        public event Action<Dynamo, string, EventArgs.OnEndEventArgs> GetValueEnd;
-
-        /// <summary>
-        /// Raises the get value start event
-        /// </summary>
-        /// <param name="PropertyName">Property name</param>
-        /// <returns>Returns null if the function should continue, any other value should be immediately returned to the user</returns>
-        protected object RaiseGetValueStart(string PropertyName)
-        {
-            EventArgs.OnStartEventArgs Start = new EventArgs.OnStartEventArgs() { Content = PropertyName };
-            if (GetValueStart != null)
-                GetValueStart(this, Start);
-            return Start.Stop ? Start.Content : null;
-        }
-
-        /// <summary>
         /// Raises the get value end event
         /// </summary>
         /// <param name="PropertyName">Property name</param>
         /// <param name="Value">Value initially being returned</param>
-        /// <returns>Returns null if the function should continue, any other value should be immediately returned to the user</returns>
+        /// <returns>
+        /// Returns null if the function should continue, any other value should be immediately
+        /// returned to the user
+        /// </returns>
         protected object RaiseGetValueEnd(string PropertyName, object Value)
         {
             EventArgs.OnEndEventArgs End = new EventArgs.OnEndEventArgs() { Content = Value };
             if (GetValueEnd != null)
                 GetValueEnd(this, PropertyName, End);
             return End.Stop ? End.Content : null;
+        }
+
+        /// <summary>
+        /// Raises the get value start event
+        /// </summary>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>
+        /// Returns null if the function should continue, any other value should be immediately
+        /// returned to the user
+        /// </returns>
+        protected object RaiseGetValueStart(string PropertyName)
+        {
+            EventArgs.OnStartEventArgs Start = new EventArgs.OnStartEventArgs() { Content = PropertyName };
+            if (GetValueStart != null)
+                GetValueStart(this, Start);
+            return Start.Stop ? Start.Content : null;
         }
 
         /// <summary>
@@ -718,33 +753,6 @@ namespace Utilities.DataTypes
                 PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
         }
 
-        #endregion
-    }
-
-    /// <summary>
-    /// Change class
-    /// </summary>
-    public class Change
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="OriginalValue">Original value</param>
-        /// <param name="NewValue">New value</param>
-        public Change(object OriginalValue, object NewValue)
-        {
-            this.OriginalValue = OriginalValue;
-            this.NewValue = NewValue;
-        }
-
-        /// <summary>
-        /// Original value
-        /// </summary>
-        public object OriginalValue { get; set; }
-
-        /// <summary>
-        /// New value
-        /// </summary>
-        public object NewValue { get; set; }
+        #endregion Events
     }
 }

@@ -20,15 +20,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.IO.Encryption.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Encryption.Default
 {
     /// <summary>
     /// Shift default class
     /// </summary>
-    public class Shift:ShiftBase
+    public class Shift : ShiftBase
     {
         /// <summary>
         /// Constructor
@@ -36,7 +38,6 @@ namespace Utilities.IO.Encryption.Default
         public Shift()
             : base()
         {
-            
         }
 
         /// <summary>

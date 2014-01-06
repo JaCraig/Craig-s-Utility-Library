@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Drawing;
 using System.Drawing.Imaging;
 using Utilities.DataTypes;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -34,7 +35,7 @@ namespace Utilities.Media.Procedural
     public static class FaultFormation
     {
         #region Functions
-        
+
         /// <summary>
         /// Generates a number of faults, returning an image
         /// </summary>
@@ -44,7 +45,7 @@ namespace Utilities.Media.Procedural
         /// <param name="Seed">Random seed</param>
         /// <returns>An image from the resulting faults</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body")]
-        public static Bitmap Generate(int Width,int Height,int NumberFaults,int Seed)
+        public static Bitmap Generate(int Width, int Height, int NumberFaults, int Seed)
         {
             float[,] Heights = new float[Width, Height];
             float IncreaseVal = 0.1f;
@@ -177,6 +178,6 @@ namespace Utilities.Media.Procedural
             return IncreaseVal;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

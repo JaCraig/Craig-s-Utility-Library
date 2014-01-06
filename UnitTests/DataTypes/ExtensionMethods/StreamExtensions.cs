@@ -28,7 +28,10 @@ namespace UnitTests.DataTypes.ExtensionMethods
 {
     public class StreamExtensions : IUseFixture<TestingDirectoryFixture>
     {
-        public StreamExtensions() { new DirectoryInfo(@"..\..\Data\Testing").CopyTo(new DirectoryInfo(@".\Testing")); }
+        public StreamExtensions()
+        {
+            new DirectoryInfo(@"..\..\Data\Testing").CopyTo(new DirectoryInfo(@".\Testing"));
+        }
 
         [Fact]
         public void ReadAll()
@@ -56,9 +59,9 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ReadAllBinary2()
         {
-            using(System.IO.MemoryStream Test=new System.IO.MemoryStream())
+            using (System.IO.MemoryStream Test = new System.IO.MemoryStream())
             {
-                Test.Write("This is a test".ToByteArray(),0,"This is a test".Length);
+                Test.Write("This is a test".ToByteArray(), 0, "This is a test".Length);
                 byte[] Content = Test.ReadAllBinary();
                 Assert.Equal("This is a test", System.Text.Encoding.ASCII.GetString(Content, 0, Content.Length));
             }
@@ -66,7 +69,6 @@ namespace UnitTests.DataTypes.ExtensionMethods
 
         public void SetFixture(TestingDirectoryFixture data)
         {
-            
         }
     }
 }

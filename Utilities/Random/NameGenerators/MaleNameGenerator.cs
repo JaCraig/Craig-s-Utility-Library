@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.BaseClasses;
 using Utilities.Random.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.Random.NameGenerators
 {
@@ -49,14 +51,14 @@ namespace Utilities.Random.NameGenerators
             this.LastName = LastName;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
-        /// Should a prefix be generated?
+        /// Should a last name be generated?
         /// </summary>
-        public virtual bool Prefix { get; protected set; }
+        public virtual bool LastName { get; protected set; }
 
         /// <summary>
         /// Should a middle name be generated?
@@ -64,16 +66,16 @@ namespace Utilities.Random.NameGenerators
         public virtual bool MiddleName { get; protected set; }
 
         /// <summary>
+        /// Should a prefix be generated?
+        /// </summary>
+        public virtual bool Prefix { get; protected set; }
+
+        /// <summary>
         /// Should a suffix be generated?
         /// </summary>
         public virtual bool Suffix { get; protected set; }
 
-        /// <summary>
-        /// Should a last name be generated?
-        /// </summary>
-        public virtual bool LastName { get; protected set; }
-
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -113,6 +115,6 @@ namespace Utilities.Random.NameGenerators
             return Next(Rand);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 using System;
 using System.Net.Mail;
 using System.Runtime.Serialization;
-using Utilities.IO.Logging.Enums;
 using Xunit;
 
 namespace UnitTests.IO
@@ -60,7 +59,6 @@ namespace UnitTests.IO
                 Assert.Throws<AggregateException>(() => Message.Send().Wait());
             }
         }
-
 
         [Serializable]
         [DataContract]

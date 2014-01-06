@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Media.Procedural
 {
@@ -47,8 +48,8 @@ namespace Utilities.Media.Procedural
             MinDistance = float.MaxValue;
             MaxDistance = float.MinValue;
             Random.Random Rand = new Random.Random(Seed);
-            Distances = new float[Width,Height];
-            ClosestPoint = new int[Width,Height];
+            Distances = new float[Width, Height];
+            ClosestPoint = new int[Width, Height];
             for (int x = 0; x < NumberOfPoints; ++x)
             {
                 Point TempPoint = new Point();
@@ -59,7 +60,7 @@ namespace Utilities.Media.Procedural
             CalculateDistances();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Private Functions
 
@@ -95,15 +96,15 @@ namespace Utilities.Media.Procedural
                     Index = z;
                 }
             }
-            ClosestPoint[x,y] = Index;
-            Distances[x,y] = MaxDistance;
+            ClosestPoint[x, y] = Index;
+            Distances[x, y] = MaxDistance;
             if (MaxDistance < this.MinDistance)
                 this.MinDistance = MaxDistance;
             if (MaxDistance > this.MaxDistance)
                 this.MaxDistance = MaxDistance;
         }
 
-        #endregion
+        #endregion Private Functions
 
         #region Public Properties
 
@@ -120,22 +121,24 @@ namespace Utilities.Media.Procedural
         public virtual float[,] Distances { get; set; }
 
         /// <summary>
-        /// Minimum distance to a point
-        /// </summary>
-        public virtual float MinDistance { get; set; }
-
-        /// <summary>
         /// Maximum distance to a point
         /// </summary>
         public virtual float MaxDistance { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Minimum distance to a point
+        /// </summary>
+        public virtual float MinDistance { get; set; }
+
+        #endregion Public Properties
 
         #region Private Properties
-        private List<Point> Points = new List<Point>();
-        private int _Width = 0;
+
         private int _Height = 0;
-        #endregion
+        private int _Width = 0;
+        private List<Point> Points = new List<Point>();
+
+        #endregion Private Properties
     }
 
     #region Internal Classes
@@ -150,9 +153,11 @@ namespace Utilities.Media.Procedural
         /// <summary>
         /// Constructor
         /// </summary>
-        public Point() { }
+        public Point()
+        {
+        }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Properties
 
@@ -166,8 +171,8 @@ namespace Utilities.Media.Procedural
         /// </summary>
         public virtual int Y { get; set; }
 
-        #endregion
+        #endregion Public Properties
     }
 
-    #endregion
+    #endregion Internal Classes
 }

@@ -20,11 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.IO;
 using System.Text;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Interfaces
 {
@@ -44,11 +45,6 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// When the file was created
         /// </summary>
         DateTime Created { get; }
-
-        /// <summary>
-        /// When the file was last modified
-        /// </summary>
-        DateTime Modified { get; }
 
         /// <summary>
         /// Directory the file is in
@@ -76,19 +72,38 @@ namespace Utilities.IO.FileSystem.Interfaces
         long Length { get; }
 
         /// <summary>
+        /// When the file was last modified
+        /// </summary>
+        DateTime Modified { get; }
+
+        /// <summary>
         /// File name
         /// </summary>
         string Name { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Copies the file to another directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy the file to</param>
+        /// <param name="Overwrite">Should the file overwrite another file if found</param>
+        /// <returns>The newly created file</returns>
+        IFile CopyTo(IDirectory Directory, bool Overwrite);
 
         /// <summary>
         /// Deletes the file
         /// </summary>
         /// <returns>Any response for deleting the resource (usually FTP, HTTP, etc)</returns>
         string Delete();
+
+        /// <summary>
+        /// Moves the file to another directory
+        /// </summary>
+        /// <param name="Directory">Directory to move the file to</param>
+        void MoveTo(IDirectory Directory);
 
         /// <summary>
         /// Reads the file to the end as a string
@@ -109,25 +124,13 @@ namespace Utilities.IO.FileSystem.Interfaces
         void Rename(string NewName);
 
         /// <summary>
-        /// Moves the file to another directory
-        /// </summary>
-        /// <param name="Directory">Directory to move the file to</param>
-        void MoveTo(IDirectory Directory);
-
-        /// <summary>
-        /// Copies the file to another directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy the file to</param>
-        /// <param name="Overwrite">Should the file overwrite another file if found</param>
-        /// <returns>The newly created file</returns>
-        IFile CopyTo(IDirectory Directory, bool Overwrite);
-
-        /// <summary>
         /// Writes content to the file
         /// </summary>
         /// <param name="Content">Content to write</param>
         /// <param name="Mode">File mode</param>
-        /// <param name="Encoding">Encoding that the content should be saved as (default is UTF8)</param>
+        /// <param name="Encoding">
+        /// Encoding that the content should be saved as (default is UTF8)
+        /// </param>
         /// <returns>The result of the write or original content</returns>
         string Write(string Content, FileMode Mode = FileMode.Create, Encoding Encoding = null);
 
@@ -139,6 +142,6 @@ namespace Utilities.IO.FileSystem.Interfaces
         /// <returns>The result of the write or original content</returns>
         byte[] Write(byte[] Content, FileMode Mode = FileMode.Create);
 
-        #endregion
+        #endregion Functions
     }
 }

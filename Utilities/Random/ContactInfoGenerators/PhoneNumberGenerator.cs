@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.Random.StringGenerators;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Random.ContactInfoGenerators
 {

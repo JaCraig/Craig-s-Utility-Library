@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,7 +29,8 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using Utilities.DataTypes;
 using Utilities.IO.FileFormats.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats
 {
@@ -59,14 +61,14 @@ namespace Utilities.IO.FileFormats
             Parse(FilePath, Sheet);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
         /// Names of each column
         /// </summary>
-        public IList<string> ColumnNames { get;private  set; }
+        public IList<string> ColumnNames { get; private set; }
 
         /// <summary>
         /// Gets the value based on the row and column name specified
@@ -74,18 +76,59 @@ namespace Utilities.IO.FileFormats
         /// <param name="Value">Row to get</param>
         /// <param name="Name">Column name to look for</param>
         /// <returns>The value</returns>
-        public string this[int Value, string Name] 
-        { 
-            get 
+        public string this[int Value, string Name]
+        {
+            get
             {
                 Contract.Requires<ArgumentException>(Value >= 0, "Value must be greater than or equal to 0");
-                return Records[Value][ColumnNames.IndexOf(Name)]; 
-            } 
+                return Records[Value][ColumnNames.IndexOf(Name)];
+            }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Loads an excel doc/sheet
+        /// </summary>
+        /// <param name="Location">Location of the file to load</param>
+        /// <param name="Sheet">Sheet of the document to load</param>
+        /// <returns>The excel doc</returns>
+        public static Excel Load(string Location, string Sheet)
+        {
+            return new Excel(Location, Sheet);
+        }
+
+        /// <summary>
+        /// To string function
+        /// </summary>
+        /// <returns>A string containing the file information</returns>
+        public override string ToString()
+        {
+            return ColumnNames.ToString(x => x, "\t")
+                + System.Environment.NewLine
+                + Records.ToString(x => x.ToString(y => y, "\t"), System.Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Loads data from the excel doc
+        /// </summary>
+        /// <param name="Location">Location of the file</param>
+        /// <returns>The excel doc</returns>
+        protected override Excel InternalLoad(string Location)
+        {
+            return Load(Location, "Sheet1");
+        }
+
+        /// <summary>
+        /// Loads data from the excel doc
+        /// </summary>
+        /// <param name="Data">Data to load from</param>
+        protected override void LoadFromData(string Data)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Parses the file
@@ -118,47 +161,6 @@ namespace Utilities.IO.FileFormats
             }
         }
 
-        /// <summary>
-        /// Loads an excel doc/sheet
-        /// </summary>
-        /// <param name="Location">Location of the file to load</param>
-        /// <param name="Sheet">Sheet of the document to load</param>
-        /// <returns>The excel doc</returns>
-        public static Excel Load(string Location, string Sheet)
-        {
-            return new Excel(Location, Sheet);
-        }
-
-        /// <summary>
-        /// Loads data from the excel doc
-        /// </summary>
-        /// <param name="Data">Data to load from</param>
-        protected override void LoadFromData(string Data)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Loads data from the excel doc
-        /// </summary>
-        /// <param name="Location">Location of the file</param>
-        /// <returns>The excel doc</returns>
-        protected override Excel InternalLoad(string Location)
-        {
-            return Load(Location, "Sheet1");
-        }
-
-        /// <summary>
-        /// To string function
-        /// </summary>
-        /// <returns>A string containing the file information</returns>
-        public override string ToString()
-        {
-            return ColumnNames.ToString(x => x, "\t")
-                + System.Environment.NewLine
-                + Records.ToString(x => x.ToString(y => y, "\t"), System.Environment.NewLine);
-        }
-
-        #endregion
+        #endregion Functions
     }
 }

@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.IO;
 using System.Web;
 using Utilities.IO.FileSystem.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
@@ -38,23 +40,26 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        public RelativeLocalFileSystem() : base() { }
+        public RelativeLocalFileSystem()
+            : base()
+        {
+        }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// Relative starter
-        /// </summary>
-        protected override string HandleRegexString { get { return @"^[~|\.]"; } }
 
         /// <summary>
         /// Name of the file system
         /// </summary>
         public override string Name { get { return "Relative Local"; } }
 
-        #endregion
+        /// <summary>
+        /// Relative starter
+        /// </summary>
+        protected override string HandleRegexString { get { return @"^[~|\.]"; } }
+
+        #endregion Properties
 
         #region Functions
 
@@ -96,12 +101,14 @@ namespace Utilities.IO.FileSystem.Default
         /// <summary>
         /// Function to override in order to dispose objects
         /// </summary>
-        /// <param name="Managed">If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.</param>
+        /// <param name="Managed">
+        /// If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.
+        /// </param>
         protected override void Dispose(bool Managed)
         {
             base.Dispose(Managed);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

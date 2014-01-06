@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Media
 {
@@ -43,7 +44,7 @@ namespace Utilities.Media
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -53,7 +54,7 @@ namespace Utilities.Media
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public virtual float[][] Matrix { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Public Functions
 
@@ -83,6 +84,6 @@ namespace Utilities.Media
             return NewBitmap;
         }
 
-        #endregion
+        #endregion Public Functions
     }
 }

@@ -20,13 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Net.Mail;
 using System.Net.Mime;
 using Utilities.IO.Messaging.BaseClasses;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Messaging.Default
 {
@@ -38,17 +39,19 @@ namespace Utilities.IO.Messaging.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        public SMTPSystem() { }
-
-        /// <summary>
-        /// Name of the system
-        /// </summary>
-        public override string Name { get { return "SMTP"; } }
+        public SMTPSystem()
+        {
+        }
 
         /// <summary>
         /// Message type accepts
         /// </summary>
         public override Type MessageType { get { return typeof(EmailMessage); } }
+
+        /// <summary>
+        /// Name of the system
+        /// </summary>
+        public override string Name { get { return "SMTP"; } }
 
         /// <summary>
         /// Internal send message

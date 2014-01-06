@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Text;
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -50,18 +50,9 @@ namespace Utilities.DataTypes
             this.Values = (Values == null) ? new double[Width, Height] : Values;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Properties
-
-        /// <summary>
-        /// Width of the matrix
-        /// </summary>
-        public virtual int Width
-        {
-            get { return _Width; }
-            set { _Width = value; Values = new double[Width,Height]; }
-        }
 
         /// <summary>
         /// Height of the matrix
@@ -69,7 +60,21 @@ namespace Utilities.DataTypes
         public virtual int Height
         {
             get { return _Height; }
-            set { _Height = value; Values = new double[Width,Height]; }
+            set { _Height = value; Values = new double[Width, Height]; }
+        }
+
+        /// <summary>
+        /// Values for the matrix
+        /// </summary>
+        public virtual double[,] Values { get; set; }
+
+        /// <summary>
+        /// Width of the matrix
+        /// </summary>
+        public virtual int Width
+        {
+            get { return _Width; }
+            set { _Width = value; Values = new double[Width, Height]; }
         }
 
         /// <summary>
@@ -95,71 +100,16 @@ namespace Utilities.DataTypes
             }
         }
 
-        /// <summary>
-        /// Values for the matrix
-        /// </summary>
-        public virtual double[,] Values { get; set; }
-
-        #endregion
+        #endregion Public Properties
 
         #region Private Variables
-        private int _Width = 1;
+
         private int _Height = 1;
-        #endregion
+        private int _Width = 1;
+
+        #endregion Private Variables
 
         #region Operators
-
-        /// <summary>
-        /// Determines if two matrices are equal
-        /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="M2">Matrix 2</param>
-        /// <returns>True if they are equal, false otherwise</returns>
-        public static bool operator ==(Matrix M1, Matrix M2)
-        {
-            if ((object)M1 == null && (object)M2 == null)
-                return true;
-            if ((object)M1 == null)
-                return false;
-            if ((object)M2 == null)
-                return false;
-            if (M1.Width != M2.Width || M1.Height != M2.Height)
-                return false;
-            for (int x = 0; x <= M1.Width; ++x)
-                for (int y = 0; y <= M1.Height; ++y)
-                    if (M1[x, y] != M2[x, y])
-                        return false;
-            return true;
-        }
-
-        /// <summary>
-        /// Determines if two matrices are unequal
-        /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="M2">Matrix 2</param>
-        /// <returns>True if they are not equal, false otherwise</returns>
-        public static bool operator !=(Matrix M1, Matrix M2)
-        {
-            return !(M1 == M2);
-        }
-
-        /// <summary>
-        /// Adds two matrices
-        /// </summary>
-        /// <param name="M1">Matrix 1</param>
-        /// <param name="M2">Matrix 2</param>
-        /// <returns>The result</returns>
-        public static Matrix operator +(Matrix M1, Matrix M2)
-        {
-            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
-            Contract.Requires<ArgumentNullException>(M2 != null, "M2");
-            Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
-            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
-            for (int x = 0; x < M1.Width; ++x)
-                for (int y = 0; y < M1.Height; ++y)
-                    TempMatrix[x, y] = M1[x, y] + M2[x, y];
-            return TempMatrix;
-        }
 
         /// <summary>
         /// Subtracts two matrices
@@ -192,6 +142,17 @@ namespace Utilities.DataTypes
                 for (int y = 0; y < M1.Height; ++y)
                     TempMatrix[x, y] = -M1[x, y];
             return TempMatrix;
+        }
+
+        /// <summary>
+        /// Determines if two matrices are unequal
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="M2">Matrix 2</param>
+        /// <returns>True if they are not equal, false otherwise</returns>
+        public static bool operator !=(Matrix M1, Matrix M2)
+        {
+            return !(M1 == M2);
         }
 
         /// <summary>
@@ -275,7 +236,48 @@ namespace Utilities.DataTypes
             return M1 * (1 / D);
         }
 
-        #endregion
+        /// <summary>
+        /// Adds two matrices
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="M2">Matrix 2</param>
+        /// <returns>The result</returns>
+        public static Matrix operator +(Matrix M1, Matrix M2)
+        {
+            Contract.Requires<ArgumentNullException>(M1 != null, "M1");
+            Contract.Requires<ArgumentNullException>(M2 != null, "M2");
+            Contract.Requires<ArgumentException>(M1.Width == M2.Width && M1.Height == M2.Height, "Both matrices must be the same dimensions.");
+            Matrix TempMatrix = new Matrix(M1.Width, M1.Height);
+            for (int x = 0; x < M1.Width; ++x)
+                for (int y = 0; y < M1.Height; ++y)
+                    TempMatrix[x, y] = M1[x, y] + M2[x, y];
+            return TempMatrix;
+        }
+
+        /// <summary>
+        /// Determines if two matrices are equal
+        /// </summary>
+        /// <param name="M1">Matrix 1</param>
+        /// <param name="M2">Matrix 2</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public static bool operator ==(Matrix M1, Matrix M2)
+        {
+            if ((object)M1 == null && (object)M2 == null)
+                return true;
+            if ((object)M1 == null)
+                return false;
+            if ((object)M2 == null)
+                return false;
+            if (M1.Width != M2.Width || M1.Height != M2.Height)
+                return false;
+            for (int x = 0; x <= M1.Width; ++x)
+                for (int y = 0; y <= M1.Height; ++y)
+                    if (M1[x, y] != M2[x, y])
+                        return false;
+            return true;
+        }
+
+        #endregion Operators
 
         #region Public Overridden Functions
 
@@ -327,22 +329,9 @@ namespace Utilities.DataTypes
             return Builder.ToString();
         }
 
-        #endregion
+        #endregion Public Overridden Functions
 
         #region Public Functions
-
-        /// <summary>
-        /// Transposes the matrix
-        /// </summary>
-        /// <returns>Returns a new transposed matrix</returns>
-        public virtual Matrix Transpose()
-        {
-            Matrix TempValues = new Matrix(Height, Width);
-            for (int x = 0; x < Width; ++x)
-                for (int y = 0; y < Height; ++y)
-                    TempValues[y, x] = Values[x, y];
-            return TempValues;
-        }
 
         /// <summary>
         /// Gets the determinant of a square matrix
@@ -379,6 +368,19 @@ namespace Utilities.DataTypes
             return Answer;
         }
 
-        #endregion
+        /// <summary>
+        /// Transposes the matrix
+        /// </summary>
+        /// <returns>Returns a new transposed matrix</returns>
+        public virtual Matrix Transpose()
+        {
+            Matrix TempValues = new Matrix(Height, Width);
+            for (int x = 0; x < Width; ++x)
+                for (int y = 0; y < Height; ++y)
+                    TempValues[y, x] = Values[x, y];
+            return TempValues;
+        }
+
+        #endregion Public Functions
     }
 }

@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Threading;
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -48,7 +48,7 @@ namespace Utilities.DataTypes
             new Thread(Action.Invoke).Start();
         }
 
-        #endregion
+        #endregion Async
 
         #region Raise
 
@@ -93,8 +93,8 @@ namespace Utilities.DataTypes
             return default(T2);
         }
 
-        #endregion
+        #endregion Raise
 
-        #endregion
+        #endregion Functions
     }
 }

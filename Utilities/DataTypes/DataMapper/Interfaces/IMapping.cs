@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes.DataMapper.Interfaces
 {
@@ -39,6 +39,5 @@ namespace Utilities.DataTypes.DataMapper.Interfaces
     /// <typeparam name="Right">Right type</typeparam>
     public interface IMapping<Left, Right> : IMapping
     {
-
     }
 }

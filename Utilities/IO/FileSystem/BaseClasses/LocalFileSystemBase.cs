@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using Utilities.IO.FileSystem.Default;
 using Utilities.IO.FileSystem.Interfaces;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.BaseClasses
 {
@@ -42,23 +43,9 @@ namespace Utilities.IO.FileSystem.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
-
-        /// <summary>
-        /// Gets the class representation for the file
-        /// </summary>
-        /// <param name="Path">Path to the file</param>
-        /// <param name="Domain">Domain of the user (optional)</param>
-        /// <param name="Password">Password to be used to access the file (optional)</param>
-        /// <param name="UserName">User name to be used to access the file (optional)</param>
-        /// <returns>The file object</returns>
-        public override IFile File(string Path, string UserName = "", string Password = "", string Domain = "")
-        {
-            Path = AbsolutePath(Path);
-            return new LocalFile(Path);
-        }
 
         /// <summary>
         /// Gets the directory representation for the directory
@@ -75,14 +62,29 @@ namespace Utilities.IO.FileSystem.BaseClasses
         }
 
         /// <summary>
-        /// Function to override in order to dispose objects
+        /// Gets the class representation for the file
         /// </summary>
-        /// <param name="Managed">If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.</param>
-        protected override void Dispose(bool Managed)
+        /// <param name="Path">Path to the file</param>
+        /// <param name="Domain">Domain of the user (optional)</param>
+        /// <param name="Password">Password to be used to access the file (optional)</param>
+        /// <param name="UserName">User name to be used to access the file (optional)</param>
+        /// <returns>The file object</returns>
+        public override IFile File(string Path, string UserName = "", string Password = "", string Domain = "")
         {
-
+            Path = AbsolutePath(Path);
+            return new LocalFile(Path);
         }
 
-        #endregion
+        /// <summary>
+        /// Function to override in order to dispose objects
+        /// </summary>
+        /// <param name="Managed">
+        /// If true, managed and unmanaged objects should be disposed. Otherwise unmanaged objects only.
+        /// </param>
+        protected override void Dispose(bool Managed)
+        {
+        }
+
+        #endregion Functions
     }
 }

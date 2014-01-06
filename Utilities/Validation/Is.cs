@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,7 +29,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Utilities.DataTypes;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -51,16 +52,16 @@ namespace Utilities.Validation
             this.Type = Type;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
         /// <summary>
         /// Type of validation to do
         /// </summary>
-        public IsValid Type { get;private set; }
+        public IsValid Type { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -84,26 +85,6 @@ namespace Utilities.Validation
         }
 
         /// <summary>
-        /// Determines if the property is valid
-        /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <param name="validationContext">Validation context</param>
-        /// <returns>The validation result</returns>
-        protected override System.ComponentModel.DataAnnotations.ValidationResult IsValid(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext)
-        {
-            string Tempvalue = value as string;
-            if (Type == Utilities.Validation.IsValid.CreditCard)
-                return Tempvalue.Is(StringCompare.CreditCard) ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if(Type==Utilities.Validation.IsValid.Decimal)
-                return Regex.IsMatch(Tempvalue, @"^(\d+)+(\.\d+)?$|^(\d+)?(\.\d+)+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == Utilities.Validation.IsValid.Domain)
-                return Regex.IsMatch(Tempvalue, @"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            else if (Type == Utilities.Validation.IsValid.Integer)
-                return Regex.IsMatch(Tempvalue, @"^\d+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
-            return ValidationResult.Success;
-        }
-
-        /// <summary>
         /// Gets the client side validation rules
         /// </summary>
         /// <param name="metadata">Model meta data</param>
@@ -118,6 +99,26 @@ namespace Utilities.Validation
             return new ModelClientValidationRule[] { Rule };
         }
 
-        #endregion
+        /// <summary>
+        /// Determines if the property is valid
+        /// </summary>
+        /// <param name="value">Value to check</param>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>The validation result</returns>
+        protected override System.ComponentModel.DataAnnotations.ValidationResult IsValid(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext)
+        {
+            string Tempvalue = value as string;
+            if (Type == Utilities.Validation.IsValid.CreditCard)
+                return Tempvalue.Is(StringCompare.CreditCard) ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            else if (Type == Utilities.Validation.IsValid.Decimal)
+                return Regex.IsMatch(Tempvalue, @"^(\d+)+(\.\d+)?$|^(\d+)?(\.\d+)+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            else if (Type == Utilities.Validation.IsValid.Domain)
+                return Regex.IsMatch(Tempvalue, @"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            else if (Type == Utilities.Validation.IsValid.Integer)
+                return Regex.IsMatch(Tempvalue, @"^\d+$") ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            return ValidationResult.Success;
+        }
+
+        #endregion Functions
     }
 }

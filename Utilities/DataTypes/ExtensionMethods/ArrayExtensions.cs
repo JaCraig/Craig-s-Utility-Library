@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -62,7 +64,7 @@ namespace Utilities.DataTypes
             return (ArrayType[])((Array)Array).Clear();
         }
 
-        #endregion
+        #endregion Clear
 
         #region Concat
 
@@ -89,8 +91,8 @@ namespace Utilities.DataTypes
             return Result;
         }
 
-        #endregion
+        #endregion Concat
 
-        #endregion
+        #endregion Functions
     }
 }

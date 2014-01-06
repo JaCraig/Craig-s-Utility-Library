@@ -20,16 +20,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Diagnostics.Contracts;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Random
 {
     /// <summary>
-    /// Utility class for handling random
-    /// information.
+    /// Utility class for handling random information.
     /// </summary>
     public class Random : System.Random
     {
@@ -52,15 +52,16 @@ namespace Utilities.Random
         {
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Private Variables
 
         private static Random GlobalSeed = new Random();
+
         [ThreadStatic]
         private static Random Local;
 
-        #endregion
+        #endregion Private Variables
 
         #region Static Functions
 
@@ -85,8 +86,8 @@ namespace Utilities.Random
             return Local.Next(Min, Max);
         }
 
-        #endregion
+        #endregion ThreadSafeNext
 
-        #endregion
+        #endregion Static Functions
     }
 }

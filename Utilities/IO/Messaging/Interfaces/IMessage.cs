@@ -20,8 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Threading.Tasks;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Messaging.Interfaces
 {
@@ -31,14 +33,9 @@ namespace Utilities.IO.Messaging.Interfaces
     public interface IMessage
     {
         /// <summary>
-        /// Whom the message is to
+        /// Body of the text (may be combined with the model object if one is supplied)
         /// </summary>
-        string To { get; set; }
-
-        /// <summary>
-        /// The subject of the message
-        /// </summary>
-        string Subject { get; set; }
+        string Body { get; set; }
 
         /// <summary>
         /// Whom the message is from
@@ -46,9 +43,14 @@ namespace Utilities.IO.Messaging.Interfaces
         string From { get; set; }
 
         /// <summary>
-        /// Body of the text (may be combined with the model object if one is supplied)
+        /// The subject of the message
         /// </summary>
-        string Body { get; set; }
+        string Subject { get; set; }
+
+        /// <summary>
+        /// Whom the message is to
+        /// </summary>
+        string To { get; set; }
 
         /// <summary>
         /// Sends a message

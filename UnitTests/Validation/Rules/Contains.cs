@@ -27,6 +27,12 @@ using Xunit;
 
 namespace UnitTests.Validation.Rules
 {
+    public class ClassC
+    {
+        [Contains("A")]
+        public List<string> ItemA { get; set; }
+    }
+
     public class Contains
     {
         [Fact]
@@ -41,11 +47,5 @@ namespace UnitTests.Validation.Rules
             Temp.ItemA.Add("B");
             Assert.Throws<ValidationException>(() => Temp.Validate());
         }
-    }
-
-    public class ClassC
-    {
-        [Contains("A")]
-        public List<string> ItemA { get; set; }
     }
 }

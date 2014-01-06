@@ -19,13 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
-using System.Reflection;
-using Utilities.DataTypes;
-using Utilities.DataTypes.DataMapper.Default;
-using Xunit;
-using System.Linq;
 using UnitTests.DataTypes.DataMapper.Default;
+using Xunit;
 
 namespace UnitTests.DataTypes.DataMapper
 {

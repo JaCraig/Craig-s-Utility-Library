@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +31,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -49,7 +50,9 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Attribute type</typeparam>
         /// <param name="Provider">Attribute provider</param>
-        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
+        /// <param name="Inherit">
+        /// When true, it looks up the heirarchy chain for the inherited custom attributes
+        /// </param>
         /// <returns>Attribute specified if it exists</returns>
         public static T Attribute<T>(this ICustomAttributeProvider Provider, bool Inherit = true) where T : Attribute
         {
@@ -57,7 +60,7 @@ namespace Utilities.DataTypes
             return Provider.IsDefined(typeof(T), Inherit) ? Provider.Attributes<T>(Inherit)[0] : default(T);
         }
 
-        #endregion
+        #endregion Attribute
 
         #region Attributes
 
@@ -66,7 +69,9 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Attribute type</typeparam>
         /// <param name="Provider">Attribute provider</param>
-        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
+        /// <param name="Inherit">
+        /// When true, it looks up the heirarchy chain for the inherited custom attributes
+        /// </param>
         /// <returns>Array of attributes</returns>
         public static T[] Attributes<T>(this ICustomAttributeProvider Provider, bool Inherit = true) where T : Attribute
         {
@@ -74,7 +79,7 @@ namespace Utilities.DataTypes
             return Provider.IsDefined(typeof(T), Inherit) ? Provider.GetCustomAttributes(typeof(T), Inherit).ToArray(x => (T)x) : new T[0];
         }
 
-        #endregion
+        #endregion Attributes
 
         #region Call
 
@@ -138,7 +143,7 @@ namespace Utilities.DataTypes
         /// <typeparam name="GenericType1">Generic method type 1</typeparam>
         /// <typeparam name="GenericType2">Generic method type 2</typeparam>
         /// <returns>The returned value of the method</returns>
-        public static ReturnType Call<GenericType1,GenericType2, ReturnType>(this object Object, string MethodName, params object[] InputVariables)
+        public static ReturnType Call<GenericType1, GenericType2, ReturnType>(this object Object, string MethodName, params object[] InputVariables)
         {
             Contract.Requires<ArgumentNullException>(Object != null, "Object");
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(MethodName), "MethodName");
@@ -200,7 +205,7 @@ namespace Utilities.DataTypes
             return (ReturnType)Method.Invoke(Object, InputVariables);
         }
 
-        #endregion
+        #endregion Call
 
         #region Create
 
@@ -211,7 +216,7 @@ namespace Utilities.DataTypes
         /// <param name="Type">Type to create an instance of</param>
         /// <param name="args">Arguments sent into the constructor</param>
         /// <returns>The newly created instance of the type</returns>
-        public static ClassType Create<ClassType>(this Type Type,params object[] args)
+        public static ClassType Create<ClassType>(this Type Type, params object[] args)
         {
             Contract.Requires<ArgumentNullException>(Type != null, "Type");
             return (ClassType)Type.Create(args);
@@ -254,13 +259,12 @@ namespace Utilities.DataTypes
             return Types.ForEach(x => x.Create(args));
         }
 
-        #endregion
+        #endregion Create
 
         #region GetName
 
         /// <summary>
-        /// Returns the type's name (Actual C# name, not the funky version from
-        /// the Name property)
+        /// Returns the type's name (Actual C# name, not the funky version from the Name property)
         /// </summary>
         /// <param name="ObjectType">Type to get the name of</param>
         /// <returns>string name of the type</returns>
@@ -297,8 +301,8 @@ namespace Utilities.DataTypes
             return Output.ToString();
         }
 
-        #endregion
-        
+        #endregion GetName
+
         #region HasDefaultConstructor
 
         /// <summary>
@@ -313,7 +317,7 @@ namespace Utilities.DataTypes
                         .Any(x => x.GetParameters().Length == 0);
         }
 
-        #endregion
+        #endregion HasDefaultConstructor
 
         #region Is
 
@@ -348,7 +352,6 @@ namespace Utilities.DataTypes
             return ObjectType.BaseType.Is(Type);
         }
 
-
         /// <summary>
         /// Determines if an object is of a specific type
         /// </summary>
@@ -373,7 +376,7 @@ namespace Utilities.DataTypes
             return ObjectType.Is(typeof(BaseObjectType));
         }
 
-        #endregion
+        #endregion Is
 
         #region Load
 
@@ -392,7 +395,7 @@ namespace Utilities.DataTypes
             catch (BadImageFormatException) { return null; }
         }
 
-        #endregion
+        #endregion Load
 
         #region LoadAssemblies
 
@@ -417,7 +420,7 @@ namespace Utilities.DataTypes
             return Assemblies;
         }
 
-        #endregion
+        #endregion LoadAssemblies
 
         #region MarkedWith
 
@@ -426,17 +429,19 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="T">Attribute type</typeparam>
         /// <param name="Types">Types to check</param>
-        /// <param name="Inherit">When true, it looks up the heirarchy chain for the inherited custom attributes</param>
+        /// <param name="Inherit">
+        /// When true, it looks up the heirarchy chain for the inherited custom attributes
+        /// </param>
         /// <returns>The list of types that are marked with an attribute</returns>
-        public static IEnumerable<Type> MarkedWith<T>(this IEnumerable<Type> Types, bool Inherit = true) 
+        public static IEnumerable<Type> MarkedWith<T>(this IEnumerable<Type> Types, bool Inherit = true)
             where T : Attribute
         {
-            if(Types==null)
+            if (Types == null)
                 return null;
             return Types.Where(x => x.IsDefined(typeof(T), Inherit) && !x.IsAbstract);
         }
 
-        #endregion
+        #endregion MarkedWith
 
         #region MakeShallowCopy
 
@@ -444,9 +449,12 @@ namespace Utilities.DataTypes
         /// Makes a shallow copy of the object
         /// </summary>
         /// <param name="Object">Object to copy</param>
-        /// <param name="SimpleTypesOnly">If true, it only copies simple types (no classes, only items like int, string, etc.), false copies everything.</param>
+        /// <param name="SimpleTypesOnly">
+        /// If true, it only copies simple types (no classes, only items like int, string, etc.),
+        /// false copies everything.
+        /// </param>
         /// <returns>A copy of the object</returns>
-        public static T MakeShallowCopy<T>(this T Object, bool SimpleTypesOnly=false)
+        public static T MakeShallowCopy<T>(this T Object, bool SimpleTypesOnly = false)
         {
             if (Object == null)
                 return default(T);
@@ -456,15 +464,15 @@ namespace Utilities.DataTypes
             {
                 try
                 {
-                        if (Property.CanRead 
-                                && Property.CanWrite
-                                && SimpleTypesOnly 
-                                && Property.PropertyType.IsValueType)
-                            Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
-                        else if (!SimpleTypesOnly
-                                    &&Property.CanRead 
-                                    && Property.CanWrite)
-                            Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
+                    if (Property.CanRead
+                            && Property.CanWrite
+                            && SimpleTypesOnly
+                            && Property.PropertyType.IsValueType)
+                        Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
+                    else if (!SimpleTypesOnly
+                                && Property.CanRead
+                                && Property.CanWrite)
+                        Property.SetValue(ClassInstance, Property.GetValue(Object, null), null);
                 }
                 catch { }
             }
@@ -473,9 +481,9 @@ namespace Utilities.DataTypes
             {
                 try
                 {
-                    if (SimpleTypesOnly&&Field.IsPublic)
+                    if (SimpleTypesOnly && Field.IsPublic)
                         Field.SetValue(ClassInstance, Field.GetValue(Object));
-                    else if(!SimpleTypesOnly&&Field.IsPublic)
+                    else if (!SimpleTypesOnly && Field.IsPublic)
                         Field.SetValue(ClassInstance, Field.GetValue(Object));
                 }
                 catch { }
@@ -484,13 +492,13 @@ namespace Utilities.DataTypes
             return ClassInstance;
         }
 
-        #endregion
+        #endregion MakeShallowCopy
 
         #region Objects
 
         /// <summary>
-        /// Returns an instance of all classes that it finds within an assembly
-        /// that are of the specified base type/interface.
+        /// Returns an instance of all classes that it finds within an assembly that are of the
+        /// specified base type/interface.
         /// </summary>
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Assembly">Assembly to search within</param>
@@ -502,8 +510,8 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Returns an instance of all classes that it finds within a group of assemblies
-        /// that are of the specified base type/interface.
+        /// Returns an instance of all classes that it finds within a group of assemblies that are
+        /// of the specified base type/interface.
         /// </summary>
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Assemblies">Assemblies to search within</param>
@@ -518,8 +526,8 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Returns an instance of all classes that it finds within a directory
-        /// that are of the specified base type/interface.
+        /// Returns an instance of all classes that it finds within a directory that are of the
+        /// specified base type/interface.
         /// </summary>
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Directory">Directory to search within</param>
@@ -531,7 +539,7 @@ namespace Utilities.DataTypes
             return Directory.LoadAssemblies(Recursive).Objects<ClassType>();
         }
 
-        #endregion
+        #endregion Objects
 
         #region Property
 
@@ -621,7 +629,7 @@ namespace Utilities.DataTypes
             return Object;
         }
 
-        #endregion
+        #endregion Property
 
         #region PropertyGetter
 
@@ -661,7 +669,7 @@ namespace Utilities.DataTypes
             return Property.PropertyGetter<ClassType, object>();
         }
 
-        #endregion
+        #endregion PropertyGetter
 
         #region PropertyName
 
@@ -696,7 +704,7 @@ namespace Utilities.DataTypes
             return TempExpression.Expression.PropertyName() + TempExpression.Member.Name + ".";
         }
 
-        #endregion
+        #endregion PropertyName
 
         #region PropertySetter
 
@@ -769,7 +777,7 @@ namespace Utilities.DataTypes
             return Property.PropertySetter<ClassType, object>();
         }
 
-        #endregion
+        #endregion PropertySetter
 
         #region PropertyType
 
@@ -777,9 +785,10 @@ namespace Utilities.DataTypes
         /// Gets a property's type
         /// </summary>
         /// <param name="Object">object who contains the property</param>
-        /// <param name="PropertyPath">Path of the property (ex: Prop1.Prop2.Prop3 would be
-        /// the Prop1 of the source object, which then has a Prop2 on it, which in turn
-        /// has a Prop3 on it.)</param>
+        /// <param name="PropertyPath">
+        /// Path of the property (ex: Prop1.Prop2.Prop3 would be the Prop1 of the source object,
+        /// which then has a Prop2 on it, which in turn has a Prop3 on it.)
+        /// </param>
         /// <returns>The type of the property specified or null if it can not be reached.</returns>
         public static Type PropertyType(this object Object, string PropertyPath)
         {
@@ -792,9 +801,10 @@ namespace Utilities.DataTypes
         /// Gets a property's type
         /// </summary>
         /// <param name="ObjectType">Object type</param>
-        /// <param name="PropertyPath">Path of the property (ex: Prop1.Prop2.Prop3 would be
-        /// the Prop1 of the source object, which then has a Prop2 on it, which in turn
-        /// has a Prop3 on it.)</param>
+        /// <param name="PropertyPath">
+        /// Path of the property (ex: Prop1.Prop2.Prop3 would be the Prop1 of the source object,
+        /// which then has a Prop2 on it, which in turn has a Prop3 on it.)
+        /// </param>
         /// <returns>The type of the property specified or null if it can not be reached.</returns>
         public static Type PropertyType(this Type ObjectType, string PropertyPath)
         {
@@ -810,8 +820,8 @@ namespace Utilities.DataTypes
             return ObjectType;
         }
 
-        #endregion
-        
+        #endregion PropertyType
+
         #region ToString
 
         /// <summary>
@@ -895,8 +905,7 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Dumps the properties names and current values
-        /// from an object type (used for static classes)
+        /// Dumps the properties names and current values from an object type (used for static classes)
         /// </summary>
         /// <param name="ObjectType">Object type to dunp</param>
         /// <param name="HTMLOutput">Should this be output as an HTML string</param>
@@ -924,7 +933,7 @@ namespace Utilities.DataTypes
             return TempValue.ToString();
         }
 
-        #endregion
+        #endregion ToString
 
         #region Types
 
@@ -984,7 +993,6 @@ namespace Utilities.DataTypes
             return ReturnValues;
         }
 
-
         /// <summary>
         /// Gets a list of types in the assemblies specified
         /// </summary>
@@ -998,9 +1006,9 @@ namespace Utilities.DataTypes
             return ReturnValues;
         }
 
-        #endregion
+        #endregion Types
 
-        #endregion
+        #endregion Functions
     }
 
     #region Enums
@@ -1014,11 +1022,12 @@ namespace Utilities.DataTypes
         /// Short version
         /// </summary>
         ShortVersion = 1,
+
         /// <summary>
         /// Long version
         /// </summary>
         LongVersion = 2
     }
 
-    #endregion
+    #endregion Enums
 }

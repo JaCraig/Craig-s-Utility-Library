@@ -20,15 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Collections.Generic;
-using Utilities.ORM.Manager.Schema.Interfaces;
-using System.Linq;
+
 using Utilities.DataTypes;
-using System.Data;
-using Utilities.ORM.Manager.Schema.Enums;
-using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager.Schema.BaseClasses;
-#endregion
+using Utilities.ORM.Manager.Schema.Interfaces;
+
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Default.Database
 {
@@ -48,9 +45,29 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Functions
+
+        /// <summary>
+        /// Adds a function to the database
+        /// </summary>
+        /// <param name="Name">Function name</param>
+        /// <param name="Definition">Function definition</param>
+        public override IFunction AddFunction(string Name, string Definition)
+        {
+            return Functions.AddAndReturn(new Function(Name, Definition, this));
+        }
+
+        /// <summary>
+        /// Adds a stored procedure to the database
+        /// </summary>
+        /// <param name="ProcedureName">Procedure name</param>
+        /// <param name="Definition">Definition</param>
+        public override ITable AddStoredProcedure(string ProcedureName, string Definition)
+        {
+            return StoredProcedures.AddAndReturn(new StoredProcedure(ProcedureName, Definition, this));
+        }
 
         /// <summary>
         /// Adds a table to the database
@@ -70,26 +87,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
             return Views.AddAndReturn(new View(ViewName, this));
         }
 
-        /// <summary>
-        /// Adds a stored procedure to the database
-        /// </summary>
-        /// <param name="ProcedureName">Procedure name</param>
-        /// <param name="Definition">Definition</param>
-        public override ITable AddStoredProcedure(string ProcedureName, string Definition)
-        {
-            return StoredProcedures.AddAndReturn(new StoredProcedure(ProcedureName, Definition, this));
-        }
-
-        /// <summary>
-        /// Adds a function to the database
-        /// </summary>
-        /// <param name="Name">Function name</param>
-        /// <param name="Definition">Function definition</param>
-        public override IFunction AddFunction(string Name, string Definition)
-        {
-            return Functions.AddAndReturn(new Function(Name, Definition, this));
-        }
-
-        #endregion
+        #endregion Public Functions
     }
 }

@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
 using System.Data;
 
-#endregion
+#endregion Usings
 
 namespace Utilities.ORM.Manager.Schema.Interfaces
 {
@@ -33,24 +34,9 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
     public interface IColumn
     {
         /// <summary>
-        /// On Delete Cascade
+        /// Auto increment?
         /// </summary>
-        bool OnDeleteCascade { get; set; }
-
-        /// <summary>
-        /// On Update Cascade
-        /// </summary>
-        bool OnUpdateCascade { get; set; }
-
-        /// <summary>
-        /// On Delete Set Null
-        /// </summary>
-        bool OnDeleteSetNull { get; set; }
-
-        /// <summary>
-        /// Name
-        /// </summary>
-        string Name { get; set; }
+        bool AutoIncrement { get; set; }
 
         /// <summary>
         /// Data type
@@ -58,9 +44,9 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         DbType DataType { get; set; }
 
         /// <summary>
-        /// Data length
+        /// Default value
         /// </summary>
-        int Length { get; set; }
+        string Default { get; set; }
 
         /// <summary>
         /// Foreign keys
@@ -68,9 +54,19 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         ICollection<IColumn> ForeignKey { get; }
 
         /// <summary>
-        /// Primary key?
+        /// Index?
         /// </summary>
-        bool PrimaryKey { get; set; }
+        bool Index { get; set; }
+
+        /// <summary>
+        /// Data length
+        /// </summary>
+        int Length { get; set; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        string Name { get; set; }
 
         /// <summary>
         /// Nullable?
@@ -78,29 +74,34 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         bool Nullable { get; set; }
 
         /// <summary>
-        /// Unique?
+        /// On Delete Cascade
         /// </summary>
-        bool Unique { get; set; }
+        bool OnDeleteCascade { get; set; }
 
         /// <summary>
-        /// Index?
+        /// On Delete Set Null
         /// </summary>
-        bool Index { get; set; }
+        bool OnDeleteSetNull { get; set; }
 
         /// <summary>
-        /// Auto increment?
+        /// On Update Cascade
         /// </summary>
-        bool AutoIncrement { get; set; }
-
-        /// <summary>
-        /// Default value
-        /// </summary>
-        string Default { get; set; }
+        bool OnUpdateCascade { get; set; }
 
         /// <summary>
         /// Parent table
         /// </summary>
         ITable ParentTable { get; set; }
+
+        /// <summary>
+        /// Primary key?
+        /// </summary>
+        bool PrimaryKey { get; set; }
+
+        /// <summary>
+        /// Unique?
+        /// </summary>
+        bool Unique { get; set; }
 
         /// <summary>
         /// Add foreign key

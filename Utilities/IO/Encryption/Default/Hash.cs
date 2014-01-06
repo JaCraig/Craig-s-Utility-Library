@@ -20,17 +20,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Security.Cryptography;
 using Utilities.DataTypes;
 using Utilities.IO.Encryption.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Encryption.Default
 {
     /// <summary>
     /// Hash
     /// </summary>
-    public class Hash:HasherBase
+    public class Hash : HasherBase
     {
         /// <summary>
         /// Constructor

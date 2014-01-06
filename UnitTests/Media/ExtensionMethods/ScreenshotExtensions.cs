@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-
 using System.IO;
 using System.Windows.Forms;
 using UnitTests.Fixtures;
@@ -30,6 +29,10 @@ namespace UnitTests.Media.Image.ExtensionMethods
 {
     public class ScreenshotExtensions : IUseFixture<TestingDirectoryFixture>
     {
+        public void SetFixture(TestingDirectoryFixture data)
+        {
+        }
+
         [Fact]
         public void TakeScreenShot()
         {
@@ -37,10 +40,6 @@ namespace UnitTests.Media.Image.ExtensionMethods
             Assert.True(new FileInfo(@".\Testing\1.bmp").Exists);
             Assert.NotNull(Screen.PrimaryScreen.TakeScreenShot(@".\Testing\2.bmp"));
             Assert.True(new FileInfo(@".\Testing\2.bmp").Exists);
-        }
-
-        public void SetFixture(TestingDirectoryFixture data)
-        {
         }
     }
 }

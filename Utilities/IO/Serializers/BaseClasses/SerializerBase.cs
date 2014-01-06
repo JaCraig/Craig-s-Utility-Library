@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using Utilities.IO.Serializers.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Serializers.BaseClasses
 {
@@ -41,7 +43,7 @@ namespace Utilities.IO.Serializers.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -65,17 +67,9 @@ namespace Utilities.IO.Serializers.BaseClasses
         /// </summary>
         public Type ReturnType { get { return typeof(T); } }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Serializes the object
-        /// </summary>
-        /// <param name="ObjectType">Object type</param>
-        /// <param name="Data">Data to serialize</param>
-        /// <returns>The serialized data</returns>
-        public abstract T Serialize(Type ObjectType, object Data);
 
         /// <summary>
         /// Deserializes the data
@@ -85,6 +79,14 @@ namespace Utilities.IO.Serializers.BaseClasses
         /// <returns>The deserialized data</returns>
         public abstract object Deserialize(Type ObjectType, T Data);
 
-        #endregion
+        /// <summary>
+        /// Serializes the object
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <param name="Data">Data to serialize</param>
+        /// <returns>The serialized data</returns>
+        public abstract T Serialize(Type ObjectType, object Data);
+
+        #endregion Functions
     }
 }

@@ -20,20 +20,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.IO;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.FileSystem.BaseClasses;
 using Utilities.IO.FileSystem.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileSystem.Default
 {
     /// <summary>
     /// Basic local file class
     /// </summary>
-    public class LocalFile : FileBase<System.IO.FileInfo,LocalFile>
+    public class LocalFile : FileBase<System.IO.FileInfo, LocalFile>
     {
         #region Constructor
 
@@ -63,7 +65,7 @@ namespace Utilities.IO.FileSystem.Default
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
 
@@ -81,14 +83,6 @@ namespace Utilities.IO.FileSystem.Default
         public override DateTime Created
         {
             get { return InternalFile == null ? DateTime.Now : InternalFile.CreationTimeUtc; }
-        }
-
-        /// <summary>
-        /// Time modified (UTC time)
-        /// </summary>
-        public override DateTime Modified
-        {
-            get { return InternalFile == null ? DateTime.Now : InternalFile.LastWriteTimeUtc; }
         }
 
         /// <summary>
@@ -132,6 +126,14 @@ namespace Utilities.IO.FileSystem.Default
         }
 
         /// <summary>
+        /// Time modified (UTC time)
+        /// </summary>
+        public override DateTime Modified
+        {
+            get { return InternalFile == null ? DateTime.Now : InternalFile.LastWriteTimeUtc; }
+        }
+
+        /// <summary>
         /// Name of the file
         /// </summary>
         public override string Name
@@ -139,9 +141,24 @@ namespace Utilities.IO.FileSystem.Default
             get { return InternalFile == null ? "" : InternalFile.Name; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Copies the file to another directory
+        /// </summary>
+        /// <param name="Directory">Directory to copy the file to</param>
+        /// <param name="Overwrite">Should the file overwrite another file if found</param>
+        /// <returns>The newly created file</returns>
+        public override IFile CopyTo(IDirectory Directory, bool Overwrite)
+        {
+            if (Directory == null || !Exists)
+                return null;
+            InternalFile.CopyTo(Directory.FullName + "\\" + Name, Overwrite);
+            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
+            return new FileInfo(InternalFile.FullName);
+        }
 
         /// <summary>
         /// Deletes the file
@@ -154,6 +171,18 @@ namespace Utilities.IO.FileSystem.Default
             InternalFile.Delete();
             InternalFile.Refresh();
             return "";
+        }
+
+        /// <summary>
+        /// Moves the file to a new directory
+        /// </summary>
+        /// <param name="Directory">Directory to move to</param>
+        public override void MoveTo(IDirectory Directory)
+        {
+            if (Directory == null || !Exists)
+                return;
+            InternalFile.MoveTo(Directory.FullName + "\\" + Name);
+            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
         }
 
         /// <summary>
@@ -200,37 +229,10 @@ namespace Utilities.IO.FileSystem.Default
         /// <param name="NewName">New name for the file</param>
         public override void Rename(string NewName)
         {
-            if (string.IsNullOrEmpty(NewName)||!Exists)
+            if (string.IsNullOrEmpty(NewName) || !Exists)
                 return;
             InternalFile.MoveTo(InternalFile.DirectoryName + "\\" + NewName);
             InternalFile = new System.IO.FileInfo(InternalFile.DirectoryName + "\\" + NewName);
-        }
-
-        /// <summary>
-        /// Moves the file to a new directory
-        /// </summary>
-        /// <param name="Directory">Directory to move to</param>
-        public override void MoveTo(IDirectory Directory)
-        {
-            if (Directory == null || !Exists)
-                return;
-            InternalFile.MoveTo(Directory.FullName + "\\" + Name);
-            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
-        }
-
-        /// <summary>
-        /// Copies the file to another directory
-        /// </summary>
-        /// <param name="Directory">Directory to copy the file to</param>
-        /// <param name="Overwrite">Should the file overwrite another file if found</param>
-        /// <returns>The newly created file</returns>
-        public override IFile CopyTo(IDirectory Directory, bool Overwrite)
-        {
-            if (Directory == null || !Exists)
-                return null;
-            InternalFile.CopyTo(Directory.FullName + "\\" + Name, Overwrite);
-            InternalFile = new System.IO.FileInfo(Directory.FullName + "\\" + Name);
-            return new FileInfo(InternalFile.FullName);
         }
 
         /// <summary>
@@ -268,6 +270,6 @@ namespace Utilities.IO.FileSystem.Default
             return Content;
         }
 
-        #endregion
+        #endregion Functions
     }
 }

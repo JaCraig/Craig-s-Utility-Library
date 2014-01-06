@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +28,8 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -77,8 +79,8 @@ namespace Utilities.DataTypes
             return Methods;
         }
 
-        #endregion
+        #endregion GetMethods
 
-        #endregion
+        #endregion Functions
     }
 }

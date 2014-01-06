@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Enums
 {
@@ -34,10 +34,12 @@ namespace Utilities.IO.Enums
         /// Copy if newer than the DateTime specified
         /// </summary>
         CopyIfNewer,
+
         /// <summary>
         /// Copy always
         /// </summary>
         CopyAlways,
+
         /// <summary>
         /// Do not overwrite a file
         /// </summary>

@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Utilities.DataTypes.CodeGen.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.CodeGen
 {
@@ -54,7 +56,7 @@ namespace Utilities.DataTypes.CodeGen
         {
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Functions
 
@@ -71,6 +73,6 @@ namespace Utilities.DataTypes.CodeGen
             return Add(ClassName, Code, Usings, References);
         }
 
-        #endregion
+        #endregion Functions
     }
 }

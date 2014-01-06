@@ -27,20 +27,20 @@ namespace UnitTests.IO.FileSystem.Default
     public class HttpFileSystem
     {
         [Fact]
-        public void Creation()
-        {
-            Utilities.IO.FileSystem.Default.HttpFileSystem Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
-            Assert.NotNull(Temp);
-            Assert.Equal("HTTP", Temp.Name);
-        }
-
-        [Fact]
         public void CanHandle()
         {
             Utilities.IO.FileSystem.Default.HttpFileSystem Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
             Assert.True(Temp.CanHandle(@"http://www.google.com"));
             Assert.True(Temp.CanHandle(@"https://www.google.com"));
             Assert.True(Temp.CanHandle(@"www.google.com"));
+        }
+
+        [Fact]
+        public void Creation()
+        {
+            Utilities.IO.FileSystem.Default.HttpFileSystem Temp = new Utilities.IO.FileSystem.Default.HttpFileSystem();
+            Assert.NotNull(Temp);
+            Assert.Equal("HTTP", Temp.Name);
         }
 
         [Fact]

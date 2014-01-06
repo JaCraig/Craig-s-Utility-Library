@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
-#endregion
+#endregion Usings
 
 namespace Utilities.DataTypes
 {
@@ -45,9 +45,25 @@ namespace Utilities.DataTypes
             Items = new Dictionary<T, int>();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region ICollection<T> Members
+
+        /// <summary>
+        /// Number of items in the bag
+        /// </summary>
+        public virtual int Count
+        {
+            get { return Items.Count; }
+        }
+
+        /// <summary>
+        /// Is this read only?
+        /// </summary>
+        public virtual bool IsReadOnly
+        {
+            get { return false; }
+        }
 
         /// <summary>
         /// Adds an item to the bag
@@ -90,22 +106,6 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
-        /// Number of items in the bag
-        /// </summary>
-        public virtual int Count
-        {
-            get { return Items.Count; }
-        }
-
-        /// <summary>
-        /// Is this read only?
-        /// </summary>
-        public virtual bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Removes an item from the bag
         /// </summary>
         /// <param name="item">Item to remove</param>
@@ -115,7 +115,7 @@ namespace Utilities.DataTypes
             return Items.Remove(item);
         }
 
-        #endregion
+        #endregion ICollection<T> Members
 
         #region IEnumerable<T> Members
 
@@ -129,7 +129,7 @@ namespace Utilities.DataTypes
                 yield return Key;
         }
 
-        #endregion
+        #endregion IEnumerable<T> Members
 
         #region IEnumerable Members
 
@@ -143,9 +143,14 @@ namespace Utilities.DataTypes
                 yield return Key;
         }
 
-        #endregion
+        #endregion IEnumerable Members
 
         #region Properties
+
+        /// <summary>
+        /// Actual internal container
+        /// </summary>
+        protected Dictionary<T, int> Items { get; private set; }
 
         /// <summary>
         /// Gets a specified item
@@ -158,11 +163,6 @@ namespace Utilities.DataTypes
             set { Items[index] = value; }
         }
 
-        /// <summary>
-        /// Actual internal container
-        /// </summary>
-        protected Dictionary<T, int> Items { get; private set; }
-
-        #endregion
+        #endregion Properties
     }
 }

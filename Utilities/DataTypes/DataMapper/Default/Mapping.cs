@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Linq.Expressions;
 using Utilities.DataTypes.DataMapper.BaseClasses;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.DataTypes.DataMapper.Default
 {
@@ -93,7 +95,7 @@ namespace Utilities.DataTypes.DataMapper.Default
             this.RightSet = RightSet.Check((x, y) => { });
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -103,21 +105,21 @@ namespace Utilities.DataTypes.DataMapper.Default
         protected Func<Left, object> LeftGet { get; set; }
 
         /// <summary>
-        /// Right get function
-        /// </summary>
-        protected Func<Right, object> RightGet { get; set; }
-
-        /// <summary>
         /// Left set function
         /// </summary>
         protected Action<Left, object> LeftSet { get; set; }
+
+        /// <summary>
+        /// Right get function
+        /// </summary>
+        protected Func<Right, object> RightGet { get; set; }
 
         /// <summary>
         /// Right set function
         /// </summary>
         protected Action<Right, object> RightSet { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
 
@@ -144,9 +146,8 @@ namespace Utilities.DataTypes.DataMapper.Default
         }
 
         /// <summary>
-        /// Copies from the source to the destination (used in 
-        /// instances when both Left and Right are the same type
-        /// and thus Copy is ambiguous)
+        /// Copies from the source to the destination (used in instances when both Left and Right
+        /// are the same type and thus Copy is ambiguous)
         /// </summary>
         /// <param name="Source">Source object</param>
         /// <param name="Destination">Destination object</param>
@@ -157,9 +158,8 @@ namespace Utilities.DataTypes.DataMapper.Default
         }
 
         /// <summary>
-        /// Copies from the source to the destination (used in 
-        /// instances when both Left and Right are the same type
-        /// and thus Copy is ambiguous)
+        /// Copies from the source to the destination (used in instances when both Left and Right
+        /// are the same type and thus Copy is ambiguous)
         /// </summary>
         /// <param name="Source">Source object</param>
         /// <param name="Destination">Destination object</param>
@@ -169,6 +169,6 @@ namespace Utilities.DataTypes.DataMapper.Default
             LeftSet(Destination, RightGet(Source));
         }
 
-        #endregion
+        #endregion Functions
     }
 }

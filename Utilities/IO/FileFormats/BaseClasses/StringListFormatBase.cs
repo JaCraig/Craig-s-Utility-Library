@@ -20,8 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System.Collections.Generic;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.FileFormats.BaseClasses
 {
@@ -42,25 +44,9 @@ namespace Utilities.IO.FileFormats.BaseClasses
             Records = new List<RecordType>();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Properties
-
-        /// <summary>
-        /// The list of records
-        /// </summary>
-        protected IList<RecordType> Records { get; private set; }
-
-        /// <summary>
-        /// Individual records
-        /// </summary>
-        /// <param name="Position">The record that you want to get</param>
-        /// <returns>The record requested</returns>
-        public RecordType this[int Position]
-        {
-            get { return Records[Position]; }
-            set { Records[Position] = value; }
-        }
 
         /// <summary>
         /// Count of records
@@ -78,27 +64,25 @@ namespace Utilities.IO.FileFormats.BaseClasses
             get { return Records.IsReadOnly; }
         }
 
-        #endregion
+        /// <summary>
+        /// The list of records
+        /// </summary>
+        protected IList<RecordType> Records { get; private set; }
+
+        /// <summary>
+        /// Individual records
+        /// </summary>
+        /// <param name="Position">The record that you want to get</param>
+        /// <returns>The record requested</returns>
+        public RecordType this[int Position]
+        {
+            get { return Records[Position]; }
+            set { Records[Position] = value; }
+        }
+
+        #endregion Properties
 
         #region Functions
-
-        /// <summary>
-        /// Gets the enumerator for the delimited file
-        /// </summary>
-        /// <returns>The enumerator for this file</returns>
-        public IEnumerator<RecordType> GetEnumerator()
-        {
-            return Records.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets the enumerator for the delimited file
-        /// </summary>
-        /// <returns>The enumerator for this file</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return Records.GetEnumerator();
-        }
 
         /// <summary>
         /// Adds a Record to the file
@@ -138,13 +122,12 @@ namespace Utilities.IO.FileFormats.BaseClasses
         }
 
         /// <summary>
-        /// Removes a Record from the file
+        /// Gets the enumerator for the delimited file
         /// </summary>
-        /// <param name="item">Record to remove</param>
-        /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(RecordType item)
+        /// <returns>The enumerator for this file</returns>
+        public IEnumerator<RecordType> GetEnumerator()
         {
-            return Records.Remove(item);
+            return Records.GetEnumerator();
         }
 
         /// <summary>
@@ -168,6 +151,16 @@ namespace Utilities.IO.FileFormats.BaseClasses
         }
 
         /// <summary>
+        /// Removes a Record from the file
+        /// </summary>
+        /// <param name="item">Record to remove</param>
+        /// <returns>True if it is removed, false otherwise</returns>
+        public bool Remove(RecordType item)
+        {
+            return Records.Remove(item);
+        }
+
+        /// <summary>
         /// Removes a Record at a specific index
         /// </summary>
         /// <param name="index">Index of the Record to remove</param>
@@ -176,6 +169,15 @@ namespace Utilities.IO.FileFormats.BaseClasses
             Records.RemoveAt(index);
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the enumerator for the delimited file
+        /// </summary>
+        /// <returns>The enumerator for this file</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return Records.GetEnumerator();
+        }
+
+        #endregion Functions
     }
 }

@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Encryption.Interfaces
 {
@@ -36,19 +36,19 @@ namespace Utilities.IO.Encryption.Interfaces
         string Name { get; }
 
         /// <summary>
-        /// Encrypts the data based on the key
-        /// </summary>
-        /// <param name="Data">Data to encrypt</param>
-        /// <param name="Key">Key to use</param>
-        /// <returns>The encrypted data</returns>
-        byte[] Encrypt(byte[] Data, byte[] Key);
-
-        /// <summary>
         /// Decrypt the data based on the key
         /// </summary>
         /// <param name="Data">Data to encrypt</param>
         /// <param name="Key">Key to use</param>
         /// <returns>The decrypted data</returns>
         byte[] Decrypt(byte[] Data, byte[] Key);
+
+        /// <summary>
+        /// Encrypts the data based on the key
+        /// </summary>
+        /// <param name="Data">Data to encrypt</param>
+        /// <param name="Key">Key to use</param>
+        /// <returns>The encrypted data</returns>
+        byte[] Encrypt(byte[] Data, byte[] Key);
     }
 }

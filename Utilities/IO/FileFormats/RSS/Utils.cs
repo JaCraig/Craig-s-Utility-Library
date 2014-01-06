@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Diagnostics.Contracts;
+
 namespace Utilities.IO.FileFormats.RSS
 {
     /// <summary>
@@ -29,6 +30,7 @@ namespace Utilities.IO.FileFormats.RSS
     public static class Utils
     {
         #region Public Static Functions
+
         /// <summary>
         /// Strips illegal characters from RSS items
         /// </summary>
@@ -42,6 +44,7 @@ namespace Utilities.IO.FileFormats.RSS
             Original = Original.Trim().Replace("&", "and");
             return Original;
         }
-        #endregion
+
+        #endregion Public Static Functions
     }
 }

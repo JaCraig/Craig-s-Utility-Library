@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.IO.Encryption.Interfaces
 {
@@ -48,6 +48,6 @@ namespace Utilities.IO.Encryption.Interfaces
         /// <param name="Data">Data to hash</param>
         /// <param name="Algorithm">Algorithm</param>
         /// <returns>The hashed data</returns>
-        byte[] Hash(byte[] Data,string Algorithm);
+        byte[] Hash(byte[] Data, string Algorithm);
     }
 }

@@ -21,7 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
-#endregion
+#endregion Usings
 
 namespace Utilities.Validation
 {
@@ -34,14 +34,17 @@ namespace Utilities.Validation
         /// Credit card
         /// </summary>
         CreditCard,
+
         /// <summary>
         /// Decimal
         /// </summary>
         Decimal,
+
         /// <summary>
         /// Domain
         /// </summary>
         Domain,
+
         /// <summary>
         /// Integer
         /// </summary>

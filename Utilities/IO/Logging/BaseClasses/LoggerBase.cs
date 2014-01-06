@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Collections.Generic;
 using Utilities.IO.Logging.Interfaces;
-#endregion
+
+#endregion Usings
 
 namespace Utilities.IO.Logging.BaseClasses
 {
@@ -42,24 +44,29 @@ namespace Utilities.IO.Logging.BaseClasses
             Logs = new Dictionary<string, ILog>();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// Name of the logger
-        /// </summary>
-        public abstract string Name { get; }
 
         /// <summary>
         /// Called to log the current message
         /// </summary>
         public IDictionary<string, ILog> Logs { get; private set; }
 
+        /// <summary>
+        /// Name of the logger
+        /// </summary>
+        public abstract string Name { get; }
 
-        #endregion
+        #endregion Properties
 
         #region Functions
+
+        /// <summary>
+        /// Adds a log object or replaces one already in use
+        /// </summary>
+        /// <param name="Name">The name of the log file</param>
+        public abstract void AddLog(string Name = "Default");
 
         /// <summary>
         /// Disposes the object
@@ -71,9 +78,32 @@ namespace Utilities.IO.Logging.BaseClasses
         }
 
         /// <summary>
+        /// Gets a specified log
+        /// </summary>
+        /// <param name="Name">The name of the log file</param>
+        /// <returns>The log file specified</returns>
+        public ILog GetLog(string Name = "Default")
+        {
+            if (!Logs.ContainsKey(Name))
+                AddLog(Name);
+            return Logs[Name];
+        }
+
+        /// <summary>
+        /// String representation of the logger
+        /// </summary>
+        /// <returns>The name of the logger</returns>
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        /// <summary>
         /// Disposes of the objects
         /// </summary>
-        /// <param name="Disposing">True to dispose of all resources, false only disposes of native resources</param>
+        /// <param name="Disposing">
+        /// True to dispose of all resources, false only disposes of native resources
+        /// </param>
         protected virtual void Dispose(bool Disposing)
         {
             if (Logs != null)
@@ -94,33 +124,6 @@ namespace Utilities.IO.Logging.BaseClasses
             Dispose(false);
         }
 
-        /// <summary>
-        /// String representation of the logger
-        /// </summary>
-        /// <returns>The name of the logger</returns>
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        /// <summary>
-        /// Gets a specified log
-        /// </summary>
-        /// <param name="Name">The name of the log file</param>
-        /// <returns>The log file specified</returns>
-        public ILog GetLog(string Name = "Default")
-        {
-            if (!Logs.ContainsKey(Name))
-                AddLog(Name);
-            return Logs[Name];
-        }
-
-        /// <summary>
-        /// Adds a log object or replaces one already in use
-        /// </summary>
-        /// <param name="Name">The name of the log file</param>
-        public abstract void AddLog(string Name = "Default");
-
-        #endregion
+        #endregion Functions
     }
 }
