@@ -54,6 +54,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.True(TestObject.AddIfUnique(7));
             Assert.True(TestObject.AddIfUnique(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
             Assert.Equal(8, TestObject.Count);
+            TestObject = new int[] { 1, 2, 3, 4, 5, 6 }.ToList();
+            Assert.False(TestObject.AddIfUnique((x, y) => x == y, 1));
+            Assert.True(TestObject.AddIfUnique((x, y) => x == y, 7));
+            Assert.True(TestObject.AddIfUnique((x, y) => x == y, new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
+            Assert.Equal(8, TestObject.Count);
         }
 
         [Fact]

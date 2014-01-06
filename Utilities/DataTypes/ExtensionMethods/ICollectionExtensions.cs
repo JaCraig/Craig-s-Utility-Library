@@ -164,11 +164,47 @@ namespace Utilities.DataTypes
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="Collection">Collection to add to</param>
         /// <param name="Items">Items to add to the collection</param>
+        /// <param name="Predicate">
+        /// Predicate used to determine if two values are equal. Return true if they are the same,
+        /// false otherwise
+        /// </param>
+        /// <returns>True if it is added, false otherwise</returns>
+        public static bool AddIfUnique<T>(this ICollection<T> Collection, Func<T, T, bool> Predicate, params T[] Items)
+        {
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            return Collection.AddIf(x => !Collection.Any(y => Predicate(x, y)), Items);
+        }
+
+        /// <summary>
+        /// Adds an item to the collection if it isn't already in the collection
+        /// </summary>
+        /// <typeparam name="T">Collection type</typeparam>
+        /// <param name="Collection">Collection to add to</param>
+        /// <param name="Items">Items to add to the collection</param>
         /// <returns>True if it is added, false otherwise</returns>
         public static bool AddIfUnique<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             return Collection.AddIf(x => !Collection.Contains(x), Items);
+        }
+
+        /// <summary>
+        /// Adds an item to the collection if it isn't already in the collection
+        /// </summary>
+        /// <typeparam name="T">Collection type</typeparam>
+        /// <param name="Collection">Collection to add to</param>
+        /// <param name="Items">Items to add to the collection</param>
+        /// <param name="Predicate">
+        /// Predicate used to determine if two values are equal. Return true if they are the same,
+        /// false otherwise
+        /// </param>
+        /// <returns>True if it is added, false otherwise</returns>
+        public static bool AddIfUnique<T>(this ICollection<T> Collection, Func<T, T, bool> Predicate, IEnumerable<T> Items)
+        {
+            Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            return Collection.AddIf(x => !Collection.Any(y => Predicate(x, y)), Items);
         }
 
         #endregion AddIfUnique

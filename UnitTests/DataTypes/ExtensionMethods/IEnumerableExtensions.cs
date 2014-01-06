@@ -32,6 +32,14 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class IEnumerableExtensions
     {
         [Fact]
+        public void Distinct()
+        {
+            List<int> Temp = new int[] { 0, 0, 1, 2, 1, 3, 5, 2 }.ToList();
+            List<int> Results = new int[] { 0, 1, 2, 3, 5 }.ToList();
+            Assert.Equal(Results, Temp.Distinct((x, y) => x == y));
+        }
+
+        [Fact]
         public void ElementsBetween()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();

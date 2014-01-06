@@ -74,6 +74,41 @@ namespace Utilities.DataTypes
 
         #endregion Concat
 
+        #region Distinct
+
+        /// <summary>
+        /// Returns only distinct items from the IEnumerable based on the predicate
+        /// </summary>
+        /// <typeparam name="T">Object type within the list</typeparam>
+        /// <param name="Enumerable">List of objects</param>
+        /// <param name="Predicate">
+        /// Predicate that is used to determine if two objects are equal. True if they are the same,
+        /// false otherwise
+        /// </param>
+        /// <returns>An IEnumerable of only the distinct items</returns>
+        public static IEnumerable<T> Distinct<T>(this IEnumerable<T> Enumerable, Func<T, T, bool> Predicate)
+        {
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            List<T> Results = new List<T>();
+            foreach (T Item in Enumerable)
+            {
+                bool Found = false;
+                foreach (T Item2 in Results)
+                {
+                    if (Predicate(Item, Item2))
+                    {
+                        Found = true;
+                        break;
+                    }
+                }
+                if (!Found)
+                    Results.Add(Item);
+            }
+            return Results;
+        }
+
+        #endregion Distinct
+
         #region ElementsBetween
 
         /// <summary>
