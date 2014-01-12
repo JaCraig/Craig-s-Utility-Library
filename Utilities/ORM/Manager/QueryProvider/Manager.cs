@@ -28,11 +28,12 @@ using System.Configuration;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.Schema
+namespace Utilities.ORM.Manager.QueryProvider
 {
     /// <summary>
     /// Profiler manager
@@ -44,26 +45,23 @@ namespace Utilities.ORM.Manager.Schema
         /// </summary>
         public Manager()
         {
-            SchemaGenerators = AppDomain.CurrentDomain
-                                        .GetAssemblies()
-                                        .Objects<ISchemaGenerator>()
-                                        .ToDictionary(x => x.ProviderName);
+            Providers = AppDomain.CurrentDomain
+                                 .GetAssemblies()
+                                 .Objects<Interfaces.IQueryProvider>()
+                                 .ToDictionary(x => x.ProviderName);
         }
 
         /// <summary>
-        /// Schema generators
+        /// Providers
         /// </summary>
-        protected IDictionary<string, ISchemaGenerator> SchemaGenerators { get; private set; }
+        protected IDictionary<string, Interfaces.IQueryProvider> Providers { get; private set; }
 
         /// <summary>
-        /// Generates a list of commands used to modify the source. If it does not exist prior, the
-        /// commands will create the source from scratch. Otherwise the commands will only add new
-        /// fields, tables, etc. It does not delete old fields.
+        /// Creates a batch object
         /// </summary>
-        /// <param name="DesiredStructure">Desired source structure</param>
-        /// <param name="ConnectionString">Connection string name</param>
-        /// <returns>List of commands generated</returns>
-        public IEnumerable<string> GenerateSchema(ISource DesiredStructure, string ConnectionString)
+        /// <param name="ConnectionString">CConnection string name</param>
+        /// <returns>The batch object</returns>
+        public IBatch Batch(string ConnectionString)
         {
             ConnectionString = string.IsNullOrEmpty(ConnectionString) && ConfigurationManager.ConnectionStrings[0] != null ? ConfigurationManager.ConnectionStrings[0].Name : ConnectionString;
             string DbType = "System.Data.SqlClient";
@@ -73,16 +71,16 @@ namespace Utilities.ORM.Manager.Schema
             }
             if (string.IsNullOrEmpty(DbType))
                 DbType = "System.Data.SqlClient";
-            return SchemaGenerators[DbType].GenerateSchema(DesiredStructure, ConnectionString);
+            return Providers[DbType].Batch();
         }
 
         /// <summary>
-        /// Outputs the schema generator information as a string
+        /// Outputs the provider information as a string
         /// </summary>
-        /// <returns>The schema generator information as a string</returns>
+        /// <returns>The provider information as a string</returns>
         public override string ToString()
         {
-            return SchemaGenerators.ToString(x => x.Key);
+            return Providers.ToString(x => x.Key);
         }
     }
 }
