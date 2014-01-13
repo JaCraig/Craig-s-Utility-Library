@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 #endregion
 
@@ -94,6 +96,20 @@ namespace Utilities.DataTypes.ExtensionMethods
             if (Input.Minutes > 0) { Result += Splitter + Input.Minutes + " minute" + (Input.Minutes > 1 ? "s" : ""); Splitter = ", "; }
             if (Input.Seconds > 0) { Result += Splitter + Input.Seconds + " second" + (Input.Seconds > 1 ? "s" : ""); Splitter = ", "; }
             return Result;
+        }
+
+        /// <summary>
+        /// Computes the average of a sequence of TimeSpan objects
+        /// </summary>
+        /// <param name="spans">A sequence of values to calculate the average of</param>
+        /// <returns>The average of the sequence of values</returns>
+        public static TimeSpan Average(this IEnumerable<TimeSpan> Spans)
+        {
+            double ticks = 0;
+            Spans.Check(Enumerable.Empty<TimeSpan>());
+            if (Spans.Any())
+                ticks = Spans.Average(a => a.Ticks);
+            return new TimeSpan((long)ticks);
         }
 
         #endregion
