@@ -34,6 +34,9 @@ using Utilities.ORM.Manager.Schema.Interfaces;
 
 namespace Utilities.ORM.Manager.QueryProvider.Interfaces
 {
+    /// <summary>
+    /// Parameter interface
+    /// </summary>
     public interface IParameter
     {
     }

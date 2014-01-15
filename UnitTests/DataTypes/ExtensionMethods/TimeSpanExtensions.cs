@@ -28,6 +28,12 @@ namespace UnitTests.DataTypes.ExtensionMethods
     public class TimeSpanExtensions
     {
         [Fact]
+        public void Average()
+        {
+            Assert.Equal(new TimeSpan(20), new TimeSpan[] { new TimeSpan(10), new TimeSpan(30) }.Average());
+        }
+
+        [Fact]
         public void DaysRemainder()
         {
             Assert.Equal(0, (new DateTime(2011, 12, 1) - new DateTime(1977, 1, 1)).DaysRemainder());

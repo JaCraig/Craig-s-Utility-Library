@@ -22,7 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
+using System.Linq;
 
 #endregion Usings
 
@@ -100,6 +103,21 @@ namespace Utilities.DataTypes
         }
 
         #endregion ToStringFull
+
+        #region Average
+
+        /// <summary>
+        /// Averages a list of TimeSpans
+        /// </summary>
+        /// <param name="List">List of TimeSpans</param>
+        /// <returns>The average value</returns>
+        public static TimeSpan Average(this IEnumerable<TimeSpan> List)
+        {
+            List = List.Check(new List<TimeSpan>());
+            return List.Any() ? new TimeSpan((long)List.Average(x => x.Ticks)) : new TimeSpan(0);
+        }
+
+        #endregion Average
 
         #endregion Extension Methods
     }
