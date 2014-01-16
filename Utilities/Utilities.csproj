@@ -393,6 +393,10 @@
     <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
     <Compile Include="Media\Procedural\PerlinNoise.cs" />
     <Compile Include="Media\RGBHistogram.cs" />
+    <Compile Include="ORM\Interfaces\IDatabase.cs" />
+    <Compile Include="ORM\Manager\Mapper\BaseClasses\PropertyBase.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ID.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IProperty.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IBatch.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IParameter.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IQueryProvider.cs" />
@@ -482,7 +486,7 @@
   <ItemGroup>
     <Folder Include="ORM\ExtensionMethods\" />
     <Folder Include="ORM\Manager\Aspect\" />
-    <Folder Include="ORM\Manager\Mapper\" />
+    <Folder Include="ORM\Manager\Mapper\Module\" />
     <Folder Include="ORM\Manager\Module\" />
     <Folder Include="ORM\Manager\QueryProvider\BaseClasses\" />
     <Folder Include="ORM\Manager\QueryProvider\Default\" />

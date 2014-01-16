@@ -25,56 +25,39 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using Utilities.DataTypes;
+using Utilities.DataTypes.DataMapper.Interfaces;
+using Utilities.DataTypes.Patterns;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider
+namespace Utilities.ORM.Manager.Mapper.Default
 {
     /// <summary>
-    /// Profiler manager
+    /// ID class
     /// </summary>
-    public class Manager
+    /// <typeparam name="ClassType">Class type</typeparam>
+    /// <typeparam name="DataType">Data type</typeparam>
+    public class ID<ClassType, DataType> : PropertyBase<ClassType, DataType, ID<ClassType, DataType>>
+        where ClassType : class,new()
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Expression">Expression pointing to the ID</param>
+        /// <param name="Mapping">Mapping the StringID is added to</param>
+        public ID(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
+            : base(Expression, Mapping)
         {
-            Providers = AppDomain.CurrentDomain
-                                 .GetAssemblies()
-                                 .Objects<Interfaces.IQueryProvider>()
-                                 .ToDictionary(x => x.ProviderName);
-        }
-
-        /// <summary>
-        /// Providers
-        /// </summary>
-        protected IDictionary<string, Interfaces.IQueryProvider> Providers { get; private set; }
-
-        /// <summary>
-        /// Creates a batch object
-        /// </summary>
-        /// <param name="SchemaType">Schema type</param>
-        /// <returns>The batch object</returns>
-        public IBatch Batch(string SchemaType)
-        {
-            if (string.IsNullOrEmpty(SchemaType))
-                SchemaType = "System.Data.SqlClient";
-            return Providers[SchemaType].Batch();
-        }
-
-        /// <summary>
-        /// Outputs the provider information as a string
-        /// </summary>
-        /// <returns>The provider information as a string</returns>
-        public override string ToString()
-        {
-            return Providers.ToString(x => x.Key);
+            SetDefaultValue(() => default(DataType));
+            SetFieldName(Name + "_");
         }
     }
 }

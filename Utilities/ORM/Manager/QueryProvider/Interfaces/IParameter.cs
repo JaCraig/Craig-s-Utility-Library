@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -37,7 +38,33 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
     /// <summary>
     /// Parameter interface
     /// </summary>
+    /// <typeparam name="T">Value type</typeparam>
+    public interface IParameter<T> : IParameter
+    {
+        /// <summary>
+        /// The value that the parameter is associated with
+        /// </summary>
+        T Value { get; set; }
+    }
+
+    /// <summary>
+    /// Parameter interface
+    /// </summary>
     public interface IParameter
     {
+        /// <summary>
+        /// Database type
+        /// </summary>
+        DbType DatabaseType { get; set; }
+
+        /// <summary>
+        /// Direction of the parameter
+        /// </summary>
+        ParameterDirection Direction { get; set; }
+
+        /// <summary>
+        /// The name that the parameter goes by
+        /// </summary>
+        string ID { get; set; }
     }
 }

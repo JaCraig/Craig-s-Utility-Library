@@ -62,18 +62,13 @@ namespace Utilities.ORM.Manager.Schema
         /// </summary>
         /// <param name="DesiredStructure">Desired source structure</param>
         /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="SchemaType">Schema type</param>
         /// <returns>List of commands generated</returns>
-        public IEnumerable<string> GenerateSchema(ISource DesiredStructure, string ConnectionString)
+        public IEnumerable<string> GenerateSchema(ISource DesiredStructure, string ConnectionString, string SchemaType)
         {
-            ConnectionString = string.IsNullOrEmpty(ConnectionString) && ConfigurationManager.ConnectionStrings[0] != null ? ConfigurationManager.ConnectionStrings[0].Name : ConnectionString;
-            string DbType = "System.Data.SqlClient";
-            if (ConfigurationManager.ConnectionStrings[ConnectionString] != null)
-            {
-                DbType = ConfigurationManager.ConnectionStrings[ConnectionString].ProviderName;
-            }
-            if (string.IsNullOrEmpty(DbType))
-                DbType = "System.Data.SqlClient";
-            return SchemaGenerators[DbType].GenerateSchema(DesiredStructure, ConnectionString);
+            if (string.IsNullOrEmpty(SchemaType))
+                SchemaType = "System.Data.SqlClient";
+            return SchemaGenerators[SchemaType].GenerateSchema(DesiredStructure, ConnectionString);
         }
 
         /// <summary>

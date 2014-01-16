@@ -33,48 +33,45 @@ using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider
+namespace Utilities.ORM.Interfaces
 {
     /// <summary>
-    /// Profiler manager
+    /// Database configuration interface
     /// </summary>
-    public class Manager
+    public interface IDatabase
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Manager()
-        {
-            Providers = AppDomain.CurrentDomain
-                                 .GetAssemblies()
-                                 .Objects<Interfaces.IQueryProvider>()
-                                 .ToDictionary(x => x.ProviderName);
-        }
+        #region Properties
 
         /// <summary>
-        /// Providers
+        /// Determines if audit tables are generated
         /// </summary>
-        protected IDictionary<string, Interfaces.IQueryProvider> Providers { get; private set; }
+        bool Audit { get; }
 
         /// <summary>
-        /// Creates a batch object
+        /// Name associated with the database
         /// </summary>
-        /// <param name="SchemaType">Schema type</param>
-        /// <returns>The batch object</returns>
-        public IBatch Batch(string SchemaType)
-        {
-            if (string.IsNullOrEmpty(SchemaType))
-                SchemaType = "System.Data.SqlClient";
-            return Providers[SchemaType].Batch();
-        }
+        string Name { get; }
 
         /// <summary>
-        /// Outputs the provider information as a string
+        /// Order that this database should be in (if only one database is being used, it is ignored)
         /// </summary>
-        /// <returns>The provider information as a string</returns>
-        public override string ToString()
-        {
-            return Providers.ToString(x => x.Key);
-        }
+        int Order { get; }
+
+        /// <summary>
+        /// Should this database be used to read data?
+        /// </summary>
+        bool Readable { get; }
+
+        /// <summary>
+        /// Should the structure of the database be updated?
+        /// </summary>
+        bool Update { get; }
+
+        /// <summary>
+        /// Should this database be used to write data?
+        /// </summary>
+        bool Writable { get; }
+
+        #endregion Properties
     }
 }
