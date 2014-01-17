@@ -68,7 +68,9 @@ namespace Utilities.ORM.Manager.Schema
         {
             if (string.IsNullOrEmpty(SchemaType))
                 SchemaType = "System.Data.SqlClient";
-            return SchemaGenerators[SchemaType].GenerateSchema(DesiredStructure, ConnectionString);
+            return SchemaGenerators.ContainsKey(SchemaType) ?
+                SchemaGenerators[SchemaType].GenerateSchema(DesiredStructure, ConnectionString) :
+                new List<string>();
         }
 
         /// <summary>

@@ -56,7 +56,6 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public ID(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {
-            SetDefaultValue(() => default(DataType));
             SetFieldName(Name + "_");
         }
     }

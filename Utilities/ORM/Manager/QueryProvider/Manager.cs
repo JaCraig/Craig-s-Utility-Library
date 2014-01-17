@@ -65,7 +65,7 @@ namespace Utilities.ORM.Manager.QueryProvider
         {
             if (string.IsNullOrEmpty(SchemaType))
                 SchemaType = "System.Data.SqlClient";
-            return Providers[SchemaType].Batch();
+            return Providers.ContainsKey(SchemaType) ? Providers[SchemaType].Batch() : null;
         }
 
         /// <summary>

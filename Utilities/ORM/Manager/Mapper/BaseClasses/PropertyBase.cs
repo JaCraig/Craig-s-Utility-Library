@@ -60,6 +60,8 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
             this.DerivedFieldName = "_" + Name + "Derived";
             this.Mapping = Mapping;
             this.CompiledExpression = this.Expression.Compile();
+            this.MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
+            this.DefaultValue = () => default(DataType);
         }
 
         /// <summary>
@@ -135,7 +137,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Property type
         /// </summary>
-        public Type Type { get; private set; }
+        public Type Type { get; protected set; }
 
         /// <summary>
         /// Unique

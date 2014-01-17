@@ -181,6 +181,8 @@
     <Compile Include="Media\Procedural\CellularTexture.cs" />
     <Compile Include="Media\Procedural\FaultFormation.cs" />
     <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ID.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Manager.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Column.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Function.cs" />
@@ -188,6 +190,7 @@
     <Compile Include="ORM\Manager\Schema\Default\Table.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Trigger.cs" />
     <Compile Include="ORM\Manager\Schema\Default\View.cs" />
+    <Compile Include="ORM\Manager\Schema\Manager.cs" />
     <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
     <Compile Include="Profiler\Manager\Default\Profiler.cs" />
     <Compile Include="Profiler\Manager\Default\StopWatch.cs" />
