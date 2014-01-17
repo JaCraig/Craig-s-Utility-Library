@@ -36,7 +36,7 @@ using Utilities.ORM.Manager.Schema.Interfaces;
 namespace Utilities.ORM.Manager.QueryProvider
 {
     /// <summary>
-    /// Profiler manager
+    /// Query provider manager
     /// </summary>
     public class Manager
     {

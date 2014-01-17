@@ -25,38 +25,44 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns;
 using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.Mapper.Default
+namespace Utilities.ORM.Manager.Mapper
 {
     /// <summary>
-    /// ID class
+    /// Mapping manager
     /// </summary>
-    /// <typeparam name="ClassType">Class type</typeparam>
-    /// <typeparam name="DataType">Data type</typeparam>
-    public class ID<ClassType, DataType> : PropertyBase<ClassType, DataType, ID<ClassType, DataType>>
-        where ClassType : class,new()
+    public class Manager
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Expression">Expression pointing to the ID</param>
-        /// <param name="Mapping">Mapping the StringID is added to</param>
-        public ID(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
-            : base(Expression, Mapping)
+        public Manager()
         {
-            SetFieldName(Name + "_");
+            Mappings = AppDomain.CurrentDomain
+                                 .GetAssemblies()
+                                 .Objects<IMapping>();
+        }
+
+        /// <summary>
+        /// Mappings
+        /// </summary>
+        protected IEnumerable<IMapping> Mappings { get; private set; }
+
+        /// <summary>
+        /// Outputs the mapping information as a string
+        /// </summary>
+        /// <returns>The mapping information as a string</returns>
+        public override string ToString()
+        {
+            return Mappings.ToString(x => x.ToString());
         }
     }
 }

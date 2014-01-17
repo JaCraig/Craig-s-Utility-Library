@@ -52,7 +52,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// </summary>
         /// <param name="Expression">Expression used to point to the property</param>
         /// <param name="Mapping">Mapping the StringID is added to</param>
-        protected PropertyBase(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
+        protected PropertyBase(Expression<Func<ClassType, DataType>> Expression, Utilities.ORM.Manager.Mapper.Interfaces.IMapping Mapping)
         {
             this.Expression = Expression;
             this.Name = Expression.PropertyName();
@@ -102,7 +102,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Foreign mapping
         /// </summary>
-        public IMapping ForeignMapping { get; private set; }
+        public Utilities.ORM.Manager.Mapper.Interfaces.IMapping ForeignMapping { get; private set; }
 
         /// <summary>
         /// Index
@@ -112,7 +112,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Mapping
         /// </summary>
-        public IMapping Mapping { get; private set; }
+        public Utilities.ORM.Manager.Mapper.Interfaces.IMapping Mapping { get; private set; }
 
         /// <summary>
         /// Max length

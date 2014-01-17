@@ -35,7 +35,7 @@ using Utilities.ORM.Manager.Schema.Interfaces;
 namespace Utilities.ORM.Manager.Schema
 {
     /// <summary>
-    /// Profiler manager
+    /// Schema manager
     /// </summary>
     public class Manager
     {
