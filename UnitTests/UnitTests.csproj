@@ -182,6 +182,14 @@
     <Compile Include="Media\Procedural\FaultFormation.cs" />
     <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\ID.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\IEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\ManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\Map.cs" />
+    <Compile Include="ORM\Manager\Mapper\Default\Reference.cs" />
+    <Compile Include="ORM\Manager\Mapper\Manager.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Manager.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Column.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database.cs" />

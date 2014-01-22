@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -52,7 +53,11 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="TableName">Table name</param>
         /// <param name="Suffix">Suffix used to define names of properties/table name</param>
         /// <param name="Prefix">Prefix used to define names of properties/table name</param>
-        protected MappingBaseClass(string TableName = "", string Suffix = "_", string Prefix = "")
+        /// <param name="Order">
+        /// The order in which the mappings are initialized (lower items are initialized prior to
+        /// higher number items)
+        /// </param>
+        protected MappingBaseClass(string TableName = "", string Suffix = "_", string Prefix = "", int Order = 10)
         {
             if (string.IsNullOrEmpty(TableName))
                 TableName = Prefix + typeof(ClassType).Name + Suffix;
@@ -60,22 +65,19 @@ namespace Utilities.ORM.BaseClasses
             this.Suffix = Suffix;
             this.Prefix = Prefix;
             this.Properties = new List<IProperty>();
+            this.IDProperties = new List<IProperty>();
+            this.Order = Order;
         }
 
         /// <summary>
         /// Database config type
         /// </summary>
-        public Type DatabaseConfigType { get { return typeof(ClassType); } }
+        public Type DatabaseConfigType { get { return typeof(DatabaseType); } }
 
         /// <summary>
-        /// ID Property
+        /// ID Properties
         /// </summary>
-        public IProperty IDProperty { get; private set; }
-
-        /// <summary>
-        /// Mapping manager
-        /// </summary>
-        public Manager.Mapper.Manager Manager { get; private set; }
+        public ICollection<IProperty> IDProperties { get; private set; }
 
         /// <summary>
         /// Object type
@@ -83,7 +85,8 @@ namespace Utilities.ORM.BaseClasses
         public Type ObjectType { get { return typeof(ClassType); } }
 
         /// <summary>
-        /// The order in which the mappings are initialized
+        /// The order in which the mappings are initialized (lower items are initialized prior to
+        /// higher number items)
         /// </summary>
         public int Order { get; private set; }
 
@@ -115,7 +118,10 @@ namespace Utilities.ORM.BaseClasses
         /// <returns>ID object</returns>
         public ID<ClassType, DataType> ID<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
         {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            ID<ClassType, DataType> ReturnValue = new ID<ClassType, DataType>(Expression, this);
+            IDProperties.Add(ReturnValue);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -124,9 +130,13 @@ namespace Utilities.ORM.BaseClasses
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression</param>
         /// <returns>The many to many object</returns>
-        public ManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class, new()
+        public ManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
+            where DataType : class, new()
         {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            ManyToMany<ClassType, DataType> ReturnValue = new ManyToMany<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -135,9 +145,13 @@ namespace Utilities.ORM.BaseClasses
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression</param>
         /// <returns>The many to many object</returns>
-        public ListManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, List<DataType>>> Expression) where DataType : class, new()
+        public ListManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, List<DataType>>> Expression)
+            where DataType : class, new()
         {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            ListManyToMany<ClassType, DataType> ReturnValue = new ListManyToMany<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -146,9 +160,13 @@ namespace Utilities.ORM.BaseClasses
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression</param>
         /// <returns>The many to one object</returns>
-        public ManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression) where DataType : class, new()
+        public ManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
+            where DataType : class, new()
         {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            ManyToOne<ClassType, DataType> ReturnValue = new ManyToOne<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -157,9 +175,13 @@ namespace Utilities.ORM.BaseClasses
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression</param>
         /// <returns>The many to one object</returns>
-        public IEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IEnumerable<DataType>>> Expression) where DataType : class, new()
+        public IEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
+            where DataType : class, new()
         {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            IEnumerableManyToOne<ClassType, DataType> ReturnValue = new IEnumerableManyToOne<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -168,9 +190,13 @@ namespace Utilities.ORM.BaseClasses
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression</param>
         /// <returns>The many to one object</returns>
-        public ListManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, List<DataType>>> Expression) where DataType : class, new()
+        public ListManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, List<DataType>>> Expression)
+            where DataType : class, new()
         {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            ListManyToOne<ClassType, DataType> ReturnValue = new ListManyToOne<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -179,9 +205,13 @@ namespace Utilities.ORM.BaseClasses
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression</param>
         /// <returns>The map object</returns>
-        public Map<ClassType, DataType> Map<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression) where DataType : class, new()
+        public Map<ClassType, DataType> Map<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
+            where DataType : class, new()
         {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            Map<ClassType, DataType> ReturnValue = new Map<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -192,7 +222,10 @@ namespace Utilities.ORM.BaseClasses
         /// <returns>A reference object</returns>
         public Reference<ClassType, DataType> Reference<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
         {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            Reference<ClassType, DataType> ReturnValue = new Reference<ClassType, DataType>(Expression, this);
+            Properties.Add(ReturnValue);
+            return ReturnValue;
         }
     }
 }

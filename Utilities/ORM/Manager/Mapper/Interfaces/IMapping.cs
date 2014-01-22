@@ -129,14 +129,9 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         Type DatabaseConfigType { get; }
 
         /// <summary>
-        /// ID property
+        /// ID properties
         /// </summary>
-        IProperty IDProperty { get; }
-
-        /// <summary>
-        /// Mapping manager
-        /// </summary>
-        Manager Manager { get; }
+        ICollection<IProperty> IDProperties { get; }
 
         /// <summary>
         /// The object type associated with the mapping
