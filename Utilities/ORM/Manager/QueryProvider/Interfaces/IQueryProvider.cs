@@ -49,5 +49,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// </summary>
         /// <returns>A batch object</returns>
         IBatch Batch();
+
+        /// <summary></summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        IGenerator<T> Generate<T>()
+            where T : class;
     }
 }
