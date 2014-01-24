@@ -47,6 +47,11 @@ namespace Utilities.ORM.Manager.Schema.Default.Database
         }
 
         /// <summary>
+        /// Definition of the view
+        /// </summary>
+        public string Definition { get; set; }
+
+        /// <summary>
         /// Adds a column
         /// </summary>
         /// <param name="ColumnName">Column Name</param>

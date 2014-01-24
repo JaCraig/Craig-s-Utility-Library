@@ -77,7 +77,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// </summary>
         /// <param name="Objects">Objects to delete</param>
         /// <returns>Batch with the appropriate commands</returns>
-        IBatch Delete(IEnumerable<T> Object);
+        IBatch Delete(IEnumerable<T> Objects);
 
         /// <summary>
         /// Generates a batch that will insert the data from the object
@@ -123,6 +123,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// </summary>
         /// <param name="Objects">Objects to update</param>
         /// <returns>Batch with the appropriate commands</returns>
-        IBatch Update(IEnumerable<T> Object);
+        IBatch Update(IEnumerable<T> Objects);
     }
 }

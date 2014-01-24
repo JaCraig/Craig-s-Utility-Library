@@ -50,6 +50,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// </summary>
         /// <param name="Command">Command (SQL or stored procedure) to run</param>
         /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        IBatch AddCommand(CommandType CommandType, string Command);
+
+        /// <summary>
+        /// Adds a command to be batched
+        /// </summary>
+        /// <param name="Command">Command (SQL or stored procedure) to run</param>
+        /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters to add</param>
         /// <returns>This</returns>
         IBatch AddCommand(string Command, CommandType CommandType, params object[] Parameters);

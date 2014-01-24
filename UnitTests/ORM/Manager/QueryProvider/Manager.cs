@@ -30,7 +30,7 @@ namespace UnitTests.ORM.Manager.QueryProvider
         [Fact]
         public void Batch()
         {
-            Assert.Null(new Utilities.ORM.Manager.QueryProvider.Manager().Batch("System.Data.SqlClient"));
+            Assert.Null(new Utilities.ORM.Manager.QueryProvider.Manager().Batch("System.Data.SqlClient", ""));
         }
 
         [Fact]
@@ -38,6 +38,17 @@ namespace UnitTests.ORM.Manager.QueryProvider
         {
             Assert.DoesNotThrow(() => new Utilities.ORM.Manager.QueryProvider.Manager());
             Assert.Equal("", new Utilities.ORM.Manager.QueryProvider.Manager().ToString());
+        }
+
+        [Fact]
+        public void Generate()
+        {
+            Assert.Null(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<Temp>("System.Data.SqlClient"));
+        }
+
+        public class Temp
+        {
+            public int A { get; set; }
         }
     }
 }

@@ -47,8 +47,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <summary>
         /// Creates a batch for running commands
         /// </summary>
+        /// <param name="ConnectionString">Connection string</param>
         /// <returns>A batch object</returns>
-        IBatch Batch();
+        IBatch Batch(string ConnectionString);
 
         /// <summary></summary>
         /// <typeparam name="T"></typeparam>

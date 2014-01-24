@@ -409,6 +409,7 @@
     <Compile Include="ORM\Manager\Mapper\Manager.cs" />
     <Compile Include="ORM\Manager\Mapper\Module\MapperModule.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Interfaces\IGenerator.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IParameter.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IQueryProvider.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Manager.cs" />
@@ -418,6 +419,7 @@
     <Compile Include="ORM\Manager\Schema\Default\Database\Column.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database\Database.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database\Function.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\Database\SQLServer\SQLServerSchemaGenerator.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database\StoredProcedure.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database\Table.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database\Trigger.cs" />

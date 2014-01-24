@@ -60,12 +60,27 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// Creates a batch object
         /// </summary>
         /// <param name="SchemaType">Schema type</param>
+        /// <param name="ConnectionString">Connection string</param>
         /// <returns>The batch object</returns>
-        public IBatch Batch(string SchemaType)
+        public IBatch Batch(string SchemaType, string ConnectionString)
         {
             if (string.IsNullOrEmpty(SchemaType))
                 SchemaType = "System.Data.SqlClient";
-            return Providers.ContainsKey(SchemaType) ? Providers[SchemaType].Batch() : null;
+            return Providers.ContainsKey(SchemaType) ? Providers[SchemaType].Batch(ConnectionString) : null;
+        }
+
+        /// <summary>
+        /// Creates a generator object
+        /// </summary>
+        /// <typeparam name="T">Class type the generator uses</typeparam>
+        /// <param name="SchemaType">Schema type</param>
+        /// <returns>The generator object</returns>
+        public IGenerator<T> Generate<T>(string SchemaType)
+            where T : class
+        {
+            if (string.IsNullOrEmpty(SchemaType))
+                SchemaType = "System.Data.SqlClient";
+            return Providers.ContainsKey(SchemaType) ? Providers[SchemaType].Generate<T>() : null;
         }
 
         /// <summary>
