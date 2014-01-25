@@ -118,7 +118,8 @@ namespace Utilities.ORM.BaseClasses
         /// <returns>ID object</returns>
         public ID<ClassType, DataType> ID<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
         {
-            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
             ID<ClassType, DataType> ReturnValue = new ID<ClassType, DataType>(Expression, this);
             IDProperties.Add(ReturnValue);
             return ReturnValue;
@@ -133,7 +134,8 @@ namespace Utilities.ORM.BaseClasses
         public ManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
             where DataType : class, new()
         {
-            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
             ManyToMany<ClassType, DataType> ReturnValue = new ManyToMany<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
@@ -148,7 +150,8 @@ namespace Utilities.ORM.BaseClasses
         public ListManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, List<DataType>>> Expression)
             where DataType : class, new()
         {
-            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
             ListManyToMany<ClassType, DataType> ReturnValue = new ListManyToMany<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
@@ -163,7 +166,8 @@ namespace Utilities.ORM.BaseClasses
         public ManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
             where DataType : class, new()
         {
-            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
             ManyToOne<ClassType, DataType> ReturnValue = new ManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
@@ -178,7 +182,8 @@ namespace Utilities.ORM.BaseClasses
         public IEnumerableManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
             where DataType : class, new()
         {
-            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
             IEnumerableManyToOne<ClassType, DataType> ReturnValue = new IEnumerableManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
@@ -193,7 +198,8 @@ namespace Utilities.ORM.BaseClasses
         public ListManyToOne<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, List<DataType>>> Expression)
             where DataType : class, new()
         {
-            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
             ListManyToOne<ClassType, DataType> ReturnValue = new ListManyToOne<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
@@ -208,7 +214,8 @@ namespace Utilities.ORM.BaseClasses
         public Map<ClassType, DataType> Map<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
             where DataType : class, new()
         {
-            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
             Map<ClassType, DataType> ReturnValue = new Map<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
@@ -222,7 +229,8 @@ namespace Utilities.ORM.BaseClasses
         /// <returns>A reference object</returns>
         public Reference<ClassType, DataType> Reference<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> Expression)
         {
-            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            if (Expression == null)
+                throw new ArgumentNullException("Expression");
             Reference<ClassType, DataType> ReturnValue = new Reference<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;

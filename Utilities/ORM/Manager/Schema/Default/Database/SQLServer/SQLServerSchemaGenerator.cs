@@ -25,9 +25,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
@@ -45,7 +47,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// </summary>
         public SQLServerSchemaGenerator()
         {
-            Provider = Utilities.IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <summary>
         /// Query provider object
         /// </summary>
-        protected QueryProvider.Manager Provider { get; private set; }
+        protected static QueryProvider.Manager Provider { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>(); } }
 
         /// <summary>
         /// Generates a list of commands used to modify the source. If it does not exist prior, the
@@ -68,7 +69,32 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <returns>List of commands generated</returns>
         public IEnumerable<string> GenerateSchema(ISource DesiredStructure, string ConnectionString)
         {
-            return new List<string>();
+            ISource CurrentStructure = GetSourceStructure(ConnectionString);
+            return BuildCommands(DesiredStructure, CurrentStructure).ToArray();
+            //ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
+            //IBatch Batch = Provider.Batch(ProviderName, ConnectionString);
+            //for (int x = 0; x < Commands.Length; ++x)
+            //{
+            //    if (Commands[x].Contains("CREATE TRIGGER") || Commands[x].Contains("CREATE FUNCTION"))
+            //    {
+            //        if (Batch.CommandCount > 0)
+            //        {
+            //            Batch.Execute();
+            //            Batch = Provider.Batch(ProviderName, ConnectionString);
+            //        }
+            //        Batch.AddCommand(CommandType.Text, Commands[x]);
+            //        if (x < Commands.Length - 1)
+            //        {
+            //            Batch.Execute();
+            //            Batch = Provider.Batch(ProviderName, ConnectionString);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Batch.AddCommand(CommandType.Text, Commands[x]);
+            //    }
+            //}
+            //Batch.Execute();
         }
 
         /// <summary>
@@ -158,6 +184,290 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                            .AddCommand("SELECT * FROM sys.views WHERE name=@0", CommandType.Text, View)
                            .Execute()
                            .Count() > 0;
+        }
+
+        private static IEnumerable<string> BuildCommands(ISource DesiredStructure, ISource CurrentStructure)
+        {
+            List<string> Commands = new List<string>();
+            DesiredStructure = DesiredStructure.Check(new Database(""));
+            if (CurrentStructure == null)
+                Commands.Add(string.Format(CultureInfo.CurrentCulture,
+                    "EXEC dbo.sp_executesql @statement = N'CREATE DATABASE {0}'",
+                    DesiredStructure.Name));
+            CurrentStructure = CurrentStructure.Check(new Database(DesiredStructure.Name));
+            foreach (Table Table in DesiredStructure.Tables)
+            {
+                ITable CurrentTable = CurrentStructure[Table.Name];
+                Commands.Add((CurrentTable == null) ? GetTableCommand(Table) : GetAlterTableCommand(Table, CurrentTable));
+            }
+            foreach (Table Table in DesiredStructure.Tables)
+            {
+                Commands.Add(GetForeignKeyCommand(Table));
+                ITable CurrentTable = CurrentStructure[Table.Name];
+                Commands.Add((CurrentTable == null) ? GetTriggerCommand(Table) : GetAlterTriggerCommand(Table, CurrentTable));
+            }
+            foreach (Function Function in DesiredStructure.Functions)
+            {
+                Function CurrentFunction = (Function)CurrentStructure.Functions.FirstOrDefault(x => x.Name == Function.Name);
+                Commands.Add(CurrentFunction != null ? GetAlterFunctionCommand(Function, CurrentFunction) : GetFunctionCommand(Function));
+            }
+            foreach (View View in DesiredStructure.Views)
+            {
+                View CurrentView = (View)CurrentStructure.Views.FirstOrDefault(x => x.Name == View.Name);
+                Commands.Add(CurrentView != null ? GetAlterViewCommand(View, CurrentView) : GetViewCommand(View));
+            }
+            foreach (StoredProcedure StoredProcedure in DesiredStructure.StoredProcedures)
+            {
+                StoredProcedure CurrentStoredProcedure = (StoredProcedure)CurrentStructure.StoredProcedures.FirstOrDefault(x => x.Name == StoredProcedure.Name);
+                Commands.Add(CurrentStoredProcedure != null ? GetAlterStoredProcedure(StoredProcedure, CurrentStoredProcedure) : GetStoredProcedure(StoredProcedure));
+            }
+            return Commands;
+        }
+
+        private static IEnumerable<string> GetAlterFunctionCommand(Function Function, Function CurrentFunction)
+        {
+            List<string> ReturnValue = new List<string>();
+            if (Function.Definition != CurrentFunction.Definition)
+            {
+                ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
+                    "EXEC dbo.sp_executesql @statement = N'DROP FUNCTION {0}'",
+                    Function.Name));
+                ReturnValue.Add(GetFunctionCommand(Function));
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetAlterStoredProcedure(StoredProcedure StoredProcedure, StoredProcedure CurrentStoredProcedure)
+        {
+            List<string> ReturnValue = new List<string>();
+            if (StoredProcedure.Definition != CurrentStoredProcedure.Definition)
+            {
+                ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
+                    "EXEC dbo.sp_executesql @statement = N'DROP PROCEDURE {0}'",
+                    StoredProcedure.Name));
+                ReturnValue.Add(GetStoredProcedure(StoredProcedure));
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetAlterTableCommand(Table Table, ITable CurrentTable)
+        {
+            List<string> ReturnValue = new List<string>();
+            foreach (IColumn Column in Table.Columns)
+            {
+                IColumn CurrentColumn = CurrentTable[Column.Name];
+                string Command = "";
+                if (CurrentColumn == null)
+                {
+                    Command = string.Format(CultureInfo.CurrentCulture,
+                        "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ADD {1} {2}",
+                        Table.Name,
+                        Column.Name,
+                        Column.DataType.To(SqlDbType.Int).ToString());
+                    if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
+                    {
+                        Command += (Column.Length < 0 || Column.Length >= 4000) ?
+                                        "(MAX)" :
+                                        "(" + Column.Length.ToString(CultureInfo.InvariantCulture) + ")";
+                    }
+                    ReturnValue.Add(Command);
+                    foreach (IColumn ForeignKey in Column.ForeignKey)
+                    {
+                        Command = string.Format(CultureInfo.CurrentCulture,
+                            "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ADD FOREIGN KEY ({1}) REFERENCES {2}({3}){4}{5}{6}",
+                            Table.Name,
+                            Column.Name,
+                            ForeignKey.ParentTable.Name,
+                            ForeignKey.Name,
+                            Column.OnDeleteCascade ? " ON DELETE CASCADE" : "",
+                            Column.OnUpdateCascade ? " ON UPDATE CASCADE" : "",
+                            Column.OnDeleteSetNull ? " ON DELETE SET NULL" : "");
+                        ReturnValue.Add(Command);
+                    }
+                }
+                else if (CurrentColumn.DataType != Column.DataType
+                    || (CurrentColumn.DataType == Column.DataType
+                        && CurrentColumn.DataType == SqlDbType.NVarChar.To(DbType.Int32)
+                        && CurrentColumn.Length != Column.Length
+                        && CurrentColumn.Length.Between(0, 4000)
+                        && Column.Length.Between(0, 4000)))
+                {
+                    Command = string.Format(CultureInfo.CurrentCulture,
+                        "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ALTER COLUMN {1} {2}",
+                        Table.Name,
+                        Column.Name,
+                        Column.DataType.To(SqlDbType.Int).ToString());
+                    if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
+                    {
+                        Command += (Column.Length < 0 || Column.Length >= 4000) ?
+                            "(MAX)" :
+                            "(" + Column.Length.ToString(CultureInfo.InvariantCulture) + ")";
+                    }
+                    ReturnValue.Add(Command);
+                }
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetAlterTriggerCommand(Table Table, ITable CurrentTable)
+        {
+            List<string> ReturnValue = new List<string>();
+            foreach (Trigger Trigger in Table.Triggers)
+            {
+                foreach (Trigger Trigger2 in CurrentTable.Triggers)
+                {
+                    if (Trigger.Name == Trigger2.Name && Trigger.Definition != Trigger2.Definition)
+                    {
+                        ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
+                            "EXEC dbo.sp_executesql @statement = N'DROP TRIGGER {0}'",
+                            Trigger.Name));
+                        string Definition = Regex.Replace(Trigger.Definition, "-- (.*)", "");
+                        ReturnValue.Add(Definition.Replace("\n", " ").Replace("\r", " "));
+                        break;
+                    }
+                }
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetAlterViewCommand(View View, View CurrentView)
+        {
+            List<string> ReturnValue = new List<string>();
+            if (View.Definition != CurrentView.Definition)
+            {
+                ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
+                    "EXEC dbo.sp_executesql @statement = N'DROP VIEW {0}'",
+                    View.Name));
+                ReturnValue.Add(GetViewCommand(View));
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetForeignKeyCommand(Table Table)
+        {
+            List<string> ReturnValue = new List<string>();
+            foreach (IColumn Column in Table.Columns)
+            {
+                if (Column.ForeignKey.Count > 0)
+                {
+                    foreach (IColumn ForeignKey in Column.ForeignKey)
+                    {
+                        string Command = string.Format(CultureInfo.CurrentCulture,
+                            "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ADD FOREIGN KEY ({1}) REFERENCES {2}({3})",
+                            Column.ParentTable.Name,
+                            Column.Name,
+                            ForeignKey.ParentTable.Name,
+                            ForeignKey.Name);
+                        if (Column.OnDeleteCascade)
+                            Command += " ON DELETE CASCADE";
+                        if (Column.OnUpdateCascade)
+                            Command += " ON UPDATE CASCADE";
+                        if (Column.OnDeleteSetNull)
+                            Command += " ON DELETE SET NULL";
+                        ReturnValue.Add(Command);
+                    }
+                }
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetFunctionCommand(Function Function)
+        {
+            string Definition = Regex.Replace(Function.Definition, "-- (.*)", "");
+            return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
+        }
+
+        private static IEnumerable<string> GetStoredProcedure(StoredProcedure StoredProcedure)
+        {
+            string Definition = Regex.Replace(StoredProcedure.Definition, "-- (.*)", "");
+            return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
+        }
+
+        private static IEnumerable<string> GetTableCommand(Table Table)
+        {
+            List<string> ReturnValue = new List<string>();
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("EXEC dbo.sp_executesql @statement = N'CREATE TABLE ").Append(Table.Name).Append("(");
+            string Splitter = "";
+            foreach (IColumn Column in Table.Columns)
+            {
+                Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.To(SqlDbType.Int).ToString());
+                if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
+                {
+                    if (Column.Length < 0 || Column.Length >= 4000)
+                    {
+                        Builder.Append("(MAX)");
+                    }
+                    else
+                    {
+                        Builder.Append("(").Append(Column.Length.ToString(CultureInfo.InvariantCulture)).Append(")");
+                    }
+                }
+                if (!Column.Nullable)
+                {
+                    Builder.Append(" NOT NULL");
+                }
+                if (Column.Unique)
+                {
+                    Builder.Append(" UNIQUE");
+                }
+                if (Column.PrimaryKey)
+                {
+                    Builder.Append(" PRIMARY KEY");
+                }
+                if (!string.IsNullOrEmpty(Column.Default))
+                {
+                    Builder.Append(" DEFAULT ").Append(Column.Default.Replace("(", "").Replace(")", "").Replace("'", "''"));
+                }
+                if (Column.AutoIncrement)
+                {
+                    Builder.Append(" IDENTITY");
+                }
+                Splitter = ",";
+            }
+            Builder.Append(")");
+            ReturnValue.Add(Builder.ToString());
+            int Counter = 0;
+            foreach (IColumn Column in Table.Columns)
+            {
+                if (Column.Index && Column.Unique)
+                {
+                    ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
+                        "EXEC dbo.sp_executesql @statement = N'CREATE UNIQUE INDEX Index_{0}{1} ON {2}({3})'",
+                        Column.Name,
+                        Counter.ToString(CultureInfo.InvariantCulture),
+                        Column.ParentTable.Name,
+                        Column.Name));
+                }
+                else if (Column.Index)
+                {
+                    ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
+                        "EXEC dbo.sp_executesql @statement = N'CREATE INDEX Index_{0}{1} ON {2}({3})'",
+                        Column.Name,
+                        Counter.ToString(CultureInfo.InvariantCulture),
+                        Column.ParentTable.Name,
+                        Column.Name));
+                }
+                ++Counter;
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetTriggerCommand(Table Table)
+        {
+            List<string> ReturnValue = new List<string>();
+            foreach (Trigger Trigger in Table.Triggers)
+            {
+                string Definition = Regex.Replace(Trigger.Definition, "-- (.*)", "");
+                ReturnValue.Add(Definition.Replace("\n", " ").Replace("\r", " "));
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetViewCommand(View View)
+        {
+            string Definition = Regex.Replace(View.Definition, "-- (.*)", "");
+            return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
         }
 
         private static void SetupColumns(Table Table, IEnumerable<dynamic> Values)

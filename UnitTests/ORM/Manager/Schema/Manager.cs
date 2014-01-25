@@ -31,7 +31,7 @@ namespace UnitTests.ORM.Manager.Schema
         public void Create()
         {
             Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Schema.Manager());
-            Assert.Equal("", new Utilities.ORM.Manager.Schema.Manager().ToString());
+            Assert.Equal("System.Data.SqlClient", new Utilities.ORM.Manager.Schema.Manager().ToString());
         }
 
         [Fact]
