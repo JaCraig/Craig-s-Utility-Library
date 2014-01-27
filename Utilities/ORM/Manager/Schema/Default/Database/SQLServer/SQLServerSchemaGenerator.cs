@@ -124,10 +124,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <returns>True if it exists, false otherwise</returns>
         public bool SourceExists(string Source, string ConnectionString)
         {
-            return Provider.Batch(ProviderName, ConnectionString)
-                           .AddCommand("SELECT * FROM Master.sys.Databases WHERE name=@0", CommandType.Text, Source)
-                           .Execute()
-                           .Count() > 0;
+            return Exists("SELECT * FROM Master.sys.Databases WHERE name=@0", Source, ConnectionString);
         }
 
         /// <summary>
@@ -138,10 +135,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <returns>True if it exists, false otherwise</returns>
         public bool StoredProcedureExists(string StoredProcedure, string ConnectionString)
         {
-            return Provider.Batch(ProviderName, ConnectionString)
-                           .AddCommand("SELECT * FROM sys.Procedures WHERE name=@0", CommandType.Text, StoredProcedure)
-                           .Execute()
-                           .Count() > 0;
+            return Exists("SELECT * FROM sys.Procedures WHERE name=@0", StoredProcedure, ConnectionString);
         }
 
         /// <summary>
@@ -152,10 +146,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <returns>True if it exists, false otherwise</returns>
         public bool TableExists(string Table, string ConnectionString)
         {
-            return Provider.Batch(ProviderName, ConnectionString)
-                           .AddCommand("SELECT * FROM sys.Tables WHERE name=@0", CommandType.Text, Table)
-                           .Execute()
-                           .Count() > 0;
+            return Exists("SELECT * FROM sys.Tables WHERE name=@0", Table, ConnectionString);
         }
 
         /// <summary>
@@ -166,10 +157,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <returns>True if it exists, false otherwise</returns>
         public bool TriggerExists(string Trigger, string ConnectionString)
         {
-            return Provider.Batch(ProviderName, ConnectionString)
-                           .AddCommand("SELECT * FROM sys.triggers WHERE name=@0", CommandType.Text, Trigger)
-                           .Execute()
-                           .Count() > 0;
+            return Exists("SELECT * FROM sys.triggers WHERE name=@0", Trigger, ConnectionString);
         }
 
         /// <summary>
@@ -180,10 +168,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <returns>True if it exists, false otherwise</returns>
         public bool ViewExists(string View, string ConnectionString)
         {
-            return Provider.Batch(ProviderName, ConnectionString)
-                           .AddCommand("SELECT * FROM sys.views WHERE name=@0", CommandType.Text, View)
-                           .Execute()
-                           .Count() > 0;
+            return Exists("SELECT * FROM sys.views WHERE name=@0", View, ConnectionString);
         }
 
         private static IEnumerable<string> BuildCommands(ISource DesiredStructure, ISource CurrentStructure)
@@ -495,11 +480,22 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
+        private bool Exists(string Command, string Value, string ConnectionString)
+        {
+            return Provider.Batch(ProviderName, ConnectionString)
+                           .AddCommand(Command, CommandType.Text, Value)
+                           .Execute()
+                           .FirstOrDefault()
+                           .Check(new List<dynamic>())
+                           .Count() > 0;
+        }
+
         private void GetTables(string ConnectionString, Database Temp)
         {
             IEnumerable<dynamic> Values = Provider.Batch(ProviderName, ConnectionString)
                                                   .AddCommand(CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
-                                                  .Execute();
+                                                  .Execute()
+                                                  .FirstOrDefault();
             foreach (dynamic Item in Values)
             {
                 string TableName = Item.TABLE_NAME;
@@ -516,7 +512,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             IEnumerable<dynamic> Values = Provider.Batch(ProviderName, ConnectionString)
                                                       .AddCommand(CommandType.Text,
                                                             "SELECT SPECIFIC_NAME as NAME,ROUTINE_DEFINITION as DEFINITION FROM INFORMATION_SCHEMA.ROUTINES WHERE INFORMATION_SCHEMA.ROUTINES.ROUTINE_TYPE='FUNCTION'")
-                                                      .Execute();
+                                                      .Execute()
+                                                      .FirstOrDefault();
             foreach (dynamic Item in Values)
             {
                 Temp.AddFunction(Item.NAME, Item.DEFINITION);
@@ -528,7 +525,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             IEnumerable<dynamic> Values = Provider.Batch(ProviderName, ConnectionString)
                                                       .AddCommand(CommandType.Text,
                                                             "SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures")
-                                                      .Execute();
+                                                      .Execute()
+                                                      .FirstOrDefault();
             foreach (dynamic Item in Values)
             {
                 Temp.AddStoredProcedure(Item.NAME, Item.DEFINITION);
@@ -539,7 +537,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                                 .AddCommand(@"SELECT sys.systypes.name as TYPE,sys.parameters.name as NAME,sys.parameters.max_length as LENGTH,sys.parameters.default_value as [DEFAULT VALUE] FROM sys.procedures INNER JOIN sys.parameters on sys.procedures.object_id=sys.parameters.object_id INNER JOIN sys.systypes on sys.systypes.xusertype=sys.parameters.system_type_id WHERE sys.procedures.name=@0 AND (sys.systypes.xusertype <> 256)",
                                         CommandType.Text,
                                         Procedure.Name)
-                                .Execute();
+                                .Execute()
+                                .FirstOrDefault();
                 foreach (dynamic Item in Values)
                 {
                     string Type = Item.TYPE;
@@ -577,7 +576,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                                                                 WHERE (sys.tables.name = @0) AND (sys.systypes.xusertype <> 256)",
                                                                 CommandType.Text,
                                                                 Table.Name)
-                                                      .Execute();
+                                                      .Execute()
+                                                      .FirstOrDefault();
                 SetupColumns(Table, Values);
                 SetupTriggers(ConnectionString, Table, Values);
             }
@@ -598,7 +598,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                                                 where sys.tables.name=@0",
                                     CommandType.Text,
                                     Table.Name)
-                             .Execute();
+                             .Execute()
+                             .FirstOrDefault();
             foreach (dynamic Item in Values)
             {
                 string Name = Item.Name;
@@ -616,7 +617,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                                                       .AddCommand(@"SELECT OBJECT_DEFINITION(sys.views.object_id) as Definition FROM sys.views WHERE sys.views.name=@0",
                                                                 CommandType.Text,
                                                                 View.Name)
-                                                      .Execute();
+                                                      .Execute()
+                                                      .FirstOrDefault();
                 View.Definition = Values.First().Definition;
                 Values = Provider.Batch(ProviderName, ConnectionString)
                                  .AddCommand(@"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
@@ -627,7 +629,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                                                         WHERE (sys.views.name = @0) AND (sys.systypes.xusertype <> 256)",
                                         CommandType.Text,
                                         View.Name)
-                                 .Execute();
+                                 .Execute()
+                                 .FirstOrDefault();
                 foreach (dynamic Item in Values)
                 {
                     string ColumnName = Item.Column;
