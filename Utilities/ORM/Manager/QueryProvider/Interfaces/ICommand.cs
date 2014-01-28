@@ -26,7 +26,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Common;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -37,48 +36,23 @@ using Utilities.ORM.Manager.Schema.Interfaces;
 namespace Utilities.ORM.Manager.QueryProvider.Interfaces
 {
     /// <summary>
-    /// Parameter interface
+    /// Command interface
     /// </summary>
-    /// <typeparam name="T">Value type</typeparam>
-    public interface IParameter<T> : IParameter
+    public interface ICommand
     {
         /// <summary>
-        /// The value that the parameter is associated with
+        /// Command type
         /// </summary>
-        T Value { get; set; }
-    }
-
-    /// <summary>
-    /// Parameter interface
-    /// </summary>
-    public interface IParameter
-    {
-        /// <summary>
-        /// Database type
-        /// </summary>
-        DbType DatabaseType { get; set; }
+        CommandType CommandType { get; }
 
         /// <summary>
-        /// Direction of the parameter
+        /// Parameters associated with the command
         /// </summary>
-        ParameterDirection Direction { get; set; }
+        ICollection<IParameter> Parameters { get; }
 
         /// <summary>
-        /// The name that the parameter goes by
+        /// Actual SQL command
         /// </summary>
-        string ID { get; set; }
-
-        /// <summary>
-        /// Adds this parameter to the SQLHelper
-        /// </summary>
-        /// <param name="Helper">SQLHelper</param>
-        void AddParameter(DbCommand Helper);
-
-        /// <summary>
-        /// Creates a copy of the parameter
-        /// </summary>
-        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
-        /// <returns>A copy of the parameter</returns>
-        IParameter CreateCopy(string Suffix);
+        string SQLCommand { get; }
     }
 }

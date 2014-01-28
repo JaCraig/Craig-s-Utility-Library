@@ -190,6 +190,10 @@
     <Compile Include="ORM\Manager\Mapper\Default\Map.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\Reference.cs" />
     <Compile Include="ORM\Manager\Mapper\Manager.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\DatabaseBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\Parameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\StringParameter.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Manager.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Column.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database.cs" />

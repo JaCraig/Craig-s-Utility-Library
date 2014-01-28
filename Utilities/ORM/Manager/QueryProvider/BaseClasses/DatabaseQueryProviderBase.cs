@@ -25,60 +25,56 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.Data.Common;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.ORM.Manager.QueryProvider.Default;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider.Interfaces
+namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
 {
     /// <summary>
-    /// Parameter interface
+    /// Database query provider base class
     /// </summary>
-    /// <typeparam name="T">Value type</typeparam>
-    public interface IParameter<T> : IParameter
+    public abstract class DatabaseQueryProviderBase : Utilities.ORM.Manager.QueryProvider.Interfaces.IQueryProvider
     {
         /// <summary>
-        /// The value that the parameter is associated with
+        /// Constructor
         /// </summary>
-        T Value { get; set; }
-    }
-
-    /// <summary>
-    /// Parameter interface
-    /// </summary>
-    public interface IParameter
-    {
-        /// <summary>
-        /// Database type
-        /// </summary>
-        DbType DatabaseType { get; set; }
+        protected DatabaseQueryProviderBase()
+            : base()
+        {
+        }
 
         /// <summary>
-        /// Direction of the parameter
+        /// Provider name
         /// </summary>
-        ParameterDirection Direction { get; set; }
+        public abstract string ProviderName { get; }
 
         /// <summary>
-        /// The name that the parameter goes by
+        /// Parameter prefix
         /// </summary>
-        string ID { get; set; }
+        protected abstract string ParameterPrefix { get; }
 
         /// <summary>
-        /// Adds this parameter to the SQLHelper
+        /// Returns a batch object
         /// </summary>
-        /// <param name="Helper">SQLHelper</param>
-        void AddParameter(DbCommand Helper);
+        /// <param name="ConnectionString">Connection string</param>
+        /// <returns>Batch object</returns>
+        public IBatch Batch(string ConnectionString)
+        {
+            return new DatabaseBatch(ConnectionString, ParameterPrefix, ProviderName);
+        }
 
         /// <summary>
-        /// Creates a copy of the parameter
+        /// Creates a generator class for the appropriate provider
         /// </summary>
-        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
-        /// <returns>A copy of the parameter</returns>
-        IParameter CreateCopy(string Suffix);
+        /// <typeparam name="T">Object type</typeparam>
+        /// <returns>A generator class</returns>
+        public abstract IGenerator<T> Generate<T>()
+            where T : class;
     }
 }

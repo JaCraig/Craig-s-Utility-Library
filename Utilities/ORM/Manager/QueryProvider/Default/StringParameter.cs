@@ -28,57 +28,51 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.ORM.Manager.QueryProvider.BaseClasses;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider.Interfaces
+namespace Utilities.ORM.Manager.QueryProvider.Default
 {
     /// <summary>
-    /// Parameter interface
+    /// Holds parameter information
     /// </summary>
-    /// <typeparam name="T">Value type</typeparam>
-    public interface IParameter<T> : IParameter
+    public class StringParameter : ParameterBase<string>
     {
         /// <summary>
-        /// The value that the parameter is associated with
+        /// Constructor
         /// </summary>
-        T Value { get; set; }
-    }
-
-    /// <summary>
-    /// Parameter interface
-    /// </summary>
-    public interface IParameter
-    {
-        /// <summary>
-        /// Database type
-        /// </summary>
-        DbType DatabaseType { get; set; }
-
-        /// <summary>
-        /// Direction of the parameter
-        /// </summary>
-        ParameterDirection Direction { get; set; }
-
-        /// <summary>
-        /// The name that the parameter goes by
-        /// </summary>
-        string ID { get; set; }
+        /// <param name="ID">ID of the parameter</param>
+        /// <param name="Value">Value of the parameter</param>
+        /// <param name="Direction">Direction of the parameter</param>
+        /// <param name="ParameterStarter">Parameter starter</param>
+        public StringParameter(string ID, string Value, ParameterDirection Direction = ParameterDirection.Input, string ParameterStarter = "@")
+            : base(ID, Value, Direction, ParameterStarter)
+        {
+        }
 
         /// <summary>
         /// Adds this parameter to the SQLHelper
         /// </summary>
         /// <param name="Helper">SQLHelper</param>
-        void AddParameter(DbCommand Helper);
+        public override void AddParameter(DbCommand Helper)
+        {
+            Helper.AddParameter(ID, Value, Direction);
+        }
 
         /// <summary>
         /// Creates a copy of the parameter
         /// </summary>
         /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
         /// <returns>A copy of the parameter</returns>
-        IParameter CreateCopy(string Suffix);
+        public override IParameter CreateCopy(string Suffix)
+        {
+            return new StringParameter(ID + Suffix, Value, Direction, ParameterStarter);
+        }
     }
 }

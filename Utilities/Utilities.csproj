@@ -394,6 +394,8 @@
     <Compile Include="Media\Procedural\PerlinNoise.cs" />
     <Compile Include="Media\RGBHistogram.cs" />
     <Compile Include="ORM\BaseClasses\MappingBaseClass.cs" />
+    <Compile Include="ORM\ExtensionMethods\DbCommandExtensions.cs" />
+    <Compile Include="ORM\ExtensionMethods\IDataReaderExtensions.cs" />
     <Compile Include="ORM\Interfaces\IDatabase.cs" />
     <Compile Include="ORM\Manager\Mapper\BaseClasses\PropertyBase.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\ID.cs" />
@@ -408,6 +410,13 @@
     <Compile Include="ORM\Manager\Mapper\Interfaces\IProperty.cs" />
     <Compile Include="ORM\Manager\Mapper\Manager.cs" />
     <Compile Include="ORM\Manager\Mapper\Module\MapperModule.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\BaseClasses\DatabaseQueryProviderBase.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\BaseClasses\ParameterBase.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\DatabaseBatch.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\Parameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\StringParameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Interfaces\ICommand.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IBatch.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IGenerator.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IParameter.cs" />
@@ -499,11 +508,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ORM\ExtensionMethods\" />
     <Folder Include="ORM\Manager\Aspect\" />
     <Folder Include="ORM\Manager\Module\" />
-    <Folder Include="ORM\Manager\QueryProvider\BaseClasses\" />
-    <Folder Include="ORM\Manager\QueryProvider\Default\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

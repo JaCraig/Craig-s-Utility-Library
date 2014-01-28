@@ -43,6 +43,7 @@ namespace UnitTests.DataTypes.Conversion
             Assert.Equal(5.0f, Utilities.DataTypes.Conversion.Manager.To("5", 10.0f));
             Assert.Equal("5", Utilities.DataTypes.Conversion.Manager.To(5, ""));
             Assert.Equal(DbType.Guid, Utilities.DataTypes.Conversion.Manager.To(typeof(Guid), DbType.Int32));
+            Assert.Equal(DbType.Int32, Utilities.DataTypes.Conversion.Manager.To(typeof(int), DbType.Int16));
         }
 
         [Fact]
