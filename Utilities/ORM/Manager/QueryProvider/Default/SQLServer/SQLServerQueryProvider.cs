@@ -28,23 +28,24 @@ using System.Configuration;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
+namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 {
     /// <summary>
-    /// Database query provider base class
+    /// SQL Server query provider
     /// </summary>
-    public abstract class DatabaseQueryProviderBase : Utilities.ORM.Manager.QueryProvider.Interfaces.IQueryProvider
+    public class SQLServerQueryProvider : DatabaseQueryProviderBase
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        protected DatabaseQueryProviderBase()
+        public SQLServerQueryProvider()
             : base()
         {
         }
@@ -52,29 +53,22 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <summary>
         /// Provider name
         /// </summary>
-        public abstract string ProviderName { get; }
+        public override string ProviderName { get { return "System.Data.SqlClient"; } }
 
         /// <summary>
         /// Parameter prefix
         /// </summary>
-        protected abstract string ParameterPrefix { get; }
-
-        /// <summary>
-        /// Returns a batch object
-        /// </summary>
-        /// <param name="ConnectionString">Connection string</param>
-        /// <returns>Batch object</returns>
-        public IBatch Batch(string ConnectionString)
-        {
-            return new DatabaseBatch(ConnectionString, ParameterPrefix, ProviderName);
-        }
+        protected override string ParameterPrefix { get { return "@"; } }
 
         /// <summary>
         /// Creates a generator class for the appropriate provider
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
+        /// <param name="ConnectionString">Connection string to use</param>
         /// <returns>A generator class</returns>
-        public abstract IGenerator<T> Generate<T>(string ConnectionString)
-            where T : class;
+        public override IGenerator<T> Generate<T>(string ConnectionString)
+        {
+            return new SQLServerGenerator<T>(this, ConnectionString);
+        }
     }
 }

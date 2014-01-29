@@ -415,6 +415,8 @@
     <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\DatabaseBatch.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\Parameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerQueryProvider.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\StringParameter.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\ICommand.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IBatch.cs" />

@@ -105,18 +105,68 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
                 Assert.False(true, "Nothing was inserted");
             }
 
-            //using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT COUNT(*) as [ItemCount] FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            //{
-            //    Helper.ExecuteReader();
-            //    if (Helper.Read())
-            //    {
-            //        Assert.Equal(1, Helper.GetParameter<int>("ItemCount", 0));
-            //    }
-            //    else
-            //    {
-            //        Assert.False(true, "Nothing was inserted");
-            //    }
-            //}
+            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Found = false;
+            foreach (dynamic Item in Temp.AddCommand(CommandType.Text, "SELECT COUNT(*) as [ItemCount] FROM TestTable")
+                .Execute()
+                .First())
+            {
+                Assert.Equal(1, Item.ItemCount);
+                Found = true;
+            }
+            if (!Found)
+            {
+                Assert.False(true, "Nothing was inserted");
+            }
+        }
+
+        [Fact]
+        public void InsertNullString()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Temp.AddCommand("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
+                "Test String",
+                "",
+                12345,
+                true,
+                1234.5678m,
+                12345.6534f,
+                new DateTime(1999, 12, 31),
+                TempGuid)
+                .Execute();
+
+            bool Found = false;
+            foreach (dynamic Item in Temp.AddCommand(CommandType.Text, "SELECT * FROM TestTable")
+                .Execute()
+                .First())
+            {
+                Assert.Equal("Test String", Item.StringValue1);
+                Assert.Equal<string>((string)null, Item.StringValue2);
+                Assert.Equal(12345, Item.BigIntValue);
+                Assert.Equal(true, Item.BitValue);
+                Assert.Equal(1234.5678m, Item.DecimalValue);
+                Assert.Equal(12345.6534f, Item.FloatValue);
+                Assert.Equal(TempGuid, Item.GUIDValue);
+                Assert.Equal(new DateTime(1999, 12, 31), Item.DateTimeValue);
+                Found = true;
+            }
+            if (!Found)
+            {
+                Assert.False(true, "Nothing was inserted");
+            }
+        }
+
+        [Fact]
+        public void MBDBug()
+        {
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=Master;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            int DbID = Temp.AddCommand("SELECT database_id FROM Master.sys.Databases WHERE name=@0", CommandType.Text, "TestDatabase")
+                .Execute()
+                .First()
+                .First()
+                .database_id;
+            Assert.True(DbID > 0);
         }
     }
 }

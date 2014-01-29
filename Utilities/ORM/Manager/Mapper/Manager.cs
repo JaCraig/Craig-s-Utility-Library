@@ -48,13 +48,21 @@ namespace Utilities.ORM.Manager.Mapper
         {
             Mappings = AppDomain.CurrentDomain
                                  .GetAssemblies()
-                                 .Objects<IMapping>();
+                                 .Objects<IMapping>()
+                                 .ToDictionary(x => x.ObjectType);
         }
 
         /// <summary>
         /// Mappings
         /// </summary>
-        protected IEnumerable<IMapping> Mappings { get; private set; }
+        protected IDictionary<Type, IMapping> Mappings { get; private set; }
+
+        /// <summary>
+        /// Gets the mapping specified by the object type
+        /// </summary>
+        /// <param name="Key">The object type</param>
+        /// <returns>The mapping specified</returns>
+        public IMapping this[Type Key] { get { return Mappings.GetValue(Key); } }
 
         /// <summary>
         /// Outputs the mapping information as a string

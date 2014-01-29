@@ -51,10 +51,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <returns>A batch object</returns>
         IBatch Batch(string ConnectionString);
 
-        /// <summary></summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        IGenerator<T> Generate<T>()
+        /// <summary>
+        /// Creates a generator object
+        /// </summary>
+        /// <typeparam name="T">Class type to create the generator for</typeparam>
+        /// <param name="ConnectionString">Connection string</param>
+        /// <returns>Generator object</returns>
+        IGenerator<T> Generate<T>(string ConnectionString)
             where T : class;
     }
 }

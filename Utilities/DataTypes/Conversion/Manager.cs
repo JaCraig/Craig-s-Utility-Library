@@ -81,13 +81,13 @@ namespace Utilities.DataTypes.Conversion
         {
             try
             {
-                if (Item == null)
+                Type ObjectType = Item.GetType();
+                if (Item == null || ObjectType == typeof(DBNull))
                 {
                     if (DefaultValue == null && ResultType.IsValueType)
                         return Activator.CreateInstance(ResultType);
                     return DefaultValue;
                 }
-                Type ObjectType = Item.GetType();
                 if (ResultType.IsAssignableFrom(ObjectType))
                     return Item;
                 TypeConverter Converter = TypeDescriptor.GetConverter(Item);

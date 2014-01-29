@@ -53,7 +53,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         {
             this.SQLCommand = SQLCommand;
             this.CommandType = CommandType;
-            this.Parameters = Parameters;
+            this.Parameters = Parameters.Check(new IParameter[0]);
         }
 
         /// <summary>

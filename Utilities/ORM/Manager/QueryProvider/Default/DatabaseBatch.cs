@@ -225,7 +225,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                     ExecutableCommand.Connection = Connection;
                     ExecutableCommand.CommandType = CommandType.Text;
                     FinalParameters.ForEach(x => x.AddParameter(ExecutableCommand));
-                    ExecutableCommand.BeginTransaction();
+                    if (Commands.Count > 1
+                        && !FinalSQLCommand.Contains("ALTER DATABASE")
+                        && !FinalSQLCommand.Contains("CREATE DATABASE"))
+                        ExecutableCommand.BeginTransaction();
                     ExecutableCommand.Open();
                     try
                     {
