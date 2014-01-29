@@ -41,7 +41,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
     /// </summary>
     /// <typeparam name="T">Class type to generate</typeparam>
     public interface IGenerator<T>
-        where T : class
+        where T : class,new()
     {
         /// <summary>
         /// Generates a batch that will get all items for the given type the parameters specified

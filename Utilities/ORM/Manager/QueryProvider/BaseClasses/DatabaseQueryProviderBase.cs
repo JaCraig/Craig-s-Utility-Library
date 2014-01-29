@@ -75,6 +75,6 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <typeparam name="T">Object type</typeparam>
         /// <returns>A generator class</returns>
         public abstract IGenerator<T> Generate<T>(string ConnectionString)
-            where T : class;
+            where T : class,new();
     }
 }

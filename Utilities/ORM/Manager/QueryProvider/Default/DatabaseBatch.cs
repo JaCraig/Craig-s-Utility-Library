@@ -136,6 +136,20 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         }
 
         /// <summary>
+        /// Adds a batch's commands to the current batch
+        /// </summary>
+        /// <param name="Batch">Batch to add</param>
+        /// <returns>This</returns>
+        public IBatch AddCommand(IBatch Batch)
+        {
+            DatabaseBatch TempValue = Batch as DatabaseBatch;
+            if (TempValue == null)
+                return this;
+            Commands.Add(TempValue.Commands);
+            return this;
+        }
+
+        /// <summary>
         /// Executes the commands and returns the results
         /// </summary>
         /// <returns>The results of the batched commands</returns>

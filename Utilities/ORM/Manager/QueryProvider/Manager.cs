@@ -74,13 +74,14 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// </summary>
         /// <typeparam name="T">Class type the generator uses</typeparam>
         /// <param name="SchemaType">Schema type</param>
+        /// <param name="ConnectionString">Connection string</param>
         /// <returns>The generator object</returns>
-        public IGenerator<T> Generate<T>(string SchemaType)
-            where T : class
+        public IGenerator<T> Generate<T>(string SchemaType, string ConnectionString)
+            where T : class,new()
         {
             if (string.IsNullOrEmpty(SchemaType))
                 SchemaType = "System.Data.SqlClient";
-            return Providers.ContainsKey(SchemaType) ? Providers[SchemaType].Generate<T>() : null;
+            return Providers.ContainsKey(SchemaType) ? Providers[SchemaType].Generate<T>(ConnectionString) : null;
         }
 
         /// <summary>

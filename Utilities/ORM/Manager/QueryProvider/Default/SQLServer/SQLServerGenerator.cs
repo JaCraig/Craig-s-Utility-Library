@@ -45,7 +45,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
     /// </summary>
     /// <typeparam name="T">Class type</typeparam>
     public class SQLServerGenerator<T> : IGenerator<T>
-        where T : class
+        where T : class,new()
     {
         /// <summary>
         /// Constructor
@@ -60,6 +60,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// Constructor
         /// </summary>
         /// <param name="QueryProvider">Query provider</param>
+        /// <param name="ConnectionString">Connection string</param>
         public SQLServerGenerator(SQLServerQueryProvider QueryProvider, string ConnectionString)
             : this()
         {
@@ -87,7 +88,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="Parameters">Parameters</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch All(params IParameter[] Parameters)
+        public IBatch All(params IParameter[] Parameters)
         {
             if (Mapping == null)
                 return QueryProvider.Batch(ConnectionString);
@@ -106,7 +107,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="Parameters">Parameters</param>
         /// <param name="Limit">Max number of items to return</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch All(int Limit, params IParameter[] Parameters)
+        public IBatch All(int Limit, params IParameter[] Parameters)
         {
             if (Limit < 1)
                 return All(Parameters);
@@ -127,7 +128,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="Parameters">Parameters</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch Any(params IParameter[] Parameters)
+        public IBatch Any(params IParameter[] Parameters)
         {
             return All(1, Parameters);
         }
@@ -137,12 +138,25 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="Object">Object to delete</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch Delete(T Object)
+        public IBatch Delete(T Object)
         {
-            return QueryProvider.Batch(ConnectionString)
+            string IDProperties = "";
+            int Count = 0;
+            string Separator = "";
+            foreach (IProperty Property in Mapping.IDProperties)
+            {
+                IDProperties += Separator + Property.FieldName + "=@" + Count;
+                Separator = " AND ";
+                ++Count;
+            }
+            return QueryProvider
+                .Batch(ConnectionString)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                "DELETE FROM {0} WHERE {1}",
-                Mapping.TableName
+                    "DELETE FROM {0} WHERE {1}",
+                    Mapping.TableName,
+                    IDProperties),
+                CommandType.Text,
+                Mapping.IDProperties.ToArray(x => ((IProperty<T>)x).GetValue(Object)));
         }
 
         /// <summary>
@@ -150,8 +164,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="Objects">Objects to delete</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch Delete(IEnumerable<T> Objects)
+        public IBatch Delete(IEnumerable<T> Objects)
         {
+            IBatch TempBatch = QueryProvider.Batch(ConnectionString);
+            foreach (T Object in Objects)
+            {
+                TempBatch.AddCommand(Delete(Object));
+            }
+            return TempBatch;
         }
 
         /// <summary>
@@ -159,8 +179,42 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="Object">Object to insert</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch Insert(T Object)
+        public IBatch Insert(T Object)
         {
+            string ParameterList = "";
+            string ValueList = "";
+            string Splitter = "";
+            int Counter = 0;
+            foreach (IProperty Property in Mapping.Properties)
+            {
+                if (!Property.AutoIncrement)
+                {
+                    ParameterList += Splitter + Property.FieldName;
+                    ValueList += Splitter + "@" + Counter;
+                    Splitter = ",";
+                    ++Counter;
+                }
+            }
+            foreach (IProperty Property in Mapping.IDProperties)
+            {
+                if (!Property.AutoIncrement)
+                {
+                    ParameterList += Splitter + Property.FieldName;
+                    ValueList += Splitter + "@" + Counter;
+                    Splitter = ",";
+                    ++Counter;
+                }
+            }
+            return QueryProvider.Batch(ConnectionString)
+                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                    "INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [ID]",
+                    Mapping.TableName,
+                    ParameterList,
+                    ValueList),
+                CommandType.Text,
+                Mapping.Properties.Concat(Mapping.IDProperties)
+                        .Where(x => !x.AutoIncrement)
+                        .ToArray(x => ((IProperty<T>)x).GetValue(Object)));
         }
 
         /// <summary>
@@ -168,8 +222,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="Objects">Objects to insert</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch Insert(IEnumerable<T> Objects)
+        public IBatch Insert(IEnumerable<T> Objects)
         {
+            IBatch TempBatch = QueryProvider.Batch(ConnectionString);
+            foreach (T Object in Objects)
+            {
+                TempBatch.AddCommand(Insert(Object));
+            }
+            return TempBatch;
         }
 
         /// <summary>
@@ -179,8 +239,20 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="Parameters">Parameters</param>
         /// <param name="PageSize">Page size</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch PageCount(int PageSize, params IParameter[] Parameters)
+        public IBatch PageCount(int PageSize, params IParameter[] Parameters)
         {
+            string WhereCommand = "";
+            if (Parameters != null && Parameters.Length > 0)
+                WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
+            return QueryProvider
+                .Batch(ConnectionString)
+                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                    "SELECT COUNT(*) as Total FROM (SELECT {0} FROM {1} {2}) as Query",
+                    Mapping.IDProperties.ToString(x => x.FieldName),
+                    Mapping.TableName,
+                    WhereCommand),
+                CommandType.Text,
+                Parameters);
         }
 
         /// <summary>
@@ -190,8 +262,24 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="CurrentPage">The current page (starting at 0)</param>
         /// <param name="PageSize">Page size</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters)
+        public IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters)
         {
+            string WhereCommand = "";
+            string OrderBy = Mapping.IDProperties.ToString(x => x.FieldName);
+            int PageStart = CurrentPage * PageSize;
+            if (Parameters != null && Parameters.Length > 0)
+                WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
+            return QueryProvider
+                .Batch(ConnectionString)
+                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                    "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {0}) AS Row, Query.* FROM (SELECT * FROM {1} {2}) as Query) AS Paged WHERE Row>{3} AND Row<={4}",
+                    OrderBy,
+                    Mapping.TableName,
+                    WhereCommand,
+                    PageStart,
+                    PageStart + PageSize),
+                CommandType.Text,
+                Parameters);
         }
 
         /// <summary>
@@ -199,8 +287,40 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="Object">Object to update</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch Update(T Object)
+        public IBatch Update(T Object)
         {
+            string ParameterList = "";
+            string IDProperties = "";
+            int Count = 0;
+            string Separator = "";
+            foreach (IProperty Property in Mapping.IDProperties)
+            {
+                IDProperties += Separator + Property.FieldName + "=@" + Count;
+                Separator = " AND ";
+                ++Count;
+            }
+            string Splitter = "";
+            Count = 0;
+            foreach (IProperty Property in Mapping.Properties)
+            {
+                if (!Property.AutoIncrement)
+                {
+                    ParameterList += Splitter + Property.FieldName + "=@" + Count;
+                    Splitter = ",";
+                    ++Count;
+                }
+            }
+            return QueryProvider.Batch(ConnectionString)
+                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                    "UPDATE {0} SET {1} WHERE {2}",
+                    Mapping.TableName,
+                    ParameterList,
+                    IDProperties),
+                CommandType.Text,
+                Mapping.Properties
+                        .Where(x => !x.AutoIncrement)
+                        .Concat(Mapping.IDProperties)
+                        .ToArray(x => ((IProperty<T>)x).GetValue(Object)));
         }
 
         /// <summary>
@@ -208,8 +328,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="Objects">Objects to update</param>
         /// <returns>Batch with the appropriate commands</returns>
-        private IBatch Update(IEnumerable<T> Objects)
+        public IBatch Update(IEnumerable<T> Objects)
         {
+            IBatch TempBatch = QueryProvider.Batch(ConnectionString);
+            foreach (T Object in Objects)
+            {
+                TempBatch.AddCommand(Update(Object));
+            }
+            return TempBatch;
         }
     }
 }

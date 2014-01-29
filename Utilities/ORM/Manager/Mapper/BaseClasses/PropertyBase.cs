@@ -43,7 +43,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
     /// <summary>
     /// Property base class
     /// </summary>
-    public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>, IProperty<ClassType, DataType>
+    public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>
         where ClassType : class,new()
         where ReturnType : IProperty<ClassType, DataType, ReturnType>
     {
@@ -222,6 +222,16 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         public override int GetHashCode()
         {
             return (Name.GetHashCode() * Mapping.GetHashCode()) % int.MaxValue;
+        }
+
+        /// <summary>
+        /// Gets the property's value from the object sent in
+        /// </summary>
+        /// <param name="Object">Object to get the value from</param>
+        /// <returns>The value of the property</returns>
+        public object GetValue(ClassType Object)
+        {
+            return CompiledExpression(Object);
         }
 
         /// <summary>

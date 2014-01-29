@@ -43,7 +43,7 @@ namespace UnitTests.ORM.Manager.QueryProvider
         [Fact]
         public void Generate()
         {
-            Assert.Null(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<Temp>("System.Data.SqlClient"));
+            Assert.Null(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<Temp>("System.Data.SqlClient", ""));
         }
 
         public class Temp

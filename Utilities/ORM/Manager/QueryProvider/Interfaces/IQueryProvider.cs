@@ -58,6 +58,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <param name="ConnectionString">Connection string</param>
         /// <returns>Generator object</returns>
         IGenerator<T> Generate<T>(string ConnectionString)
-            where T : class;
+            where T : class,new();
     }
 }

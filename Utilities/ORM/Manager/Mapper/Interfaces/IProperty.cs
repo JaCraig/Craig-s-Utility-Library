@@ -45,7 +45,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     /// <typeparam name="ReturnType">Return type</typeparam>
-    public interface IProperty<ClassType, DataType, ReturnType> : IFluentInterface
+    public interface IProperty<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType>, IFluentInterface
         where ClassType : class,new()
         where ReturnType : IProperty<ClassType, DataType, ReturnType>
     {
@@ -121,7 +121,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType"></typeparam>
-    public interface IProperty<ClassType, DataType> : IProperty
+    public interface IProperty<ClassType, DataType> : IProperty<ClassType>
         where ClassType : class,new()
     {
         /// <summary>
@@ -163,6 +163,21 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Property type
         /// </summary>
         Type Type { get; }
+    }
+
+    /// <summary>
+    /// Property interface
+    /// </summary>
+    /// <typeparam name="ClassType">Class type</typeparam>
+    public interface IProperty<ClassType> : IProperty
+        where ClassType : class,new()
+    {
+        /// <summary>
+        /// Gets the property's value from the object sent in
+        /// </summary>
+        /// <param name="Object">Object to get the value from</param>
+        /// <returns>The value of the property</returns>
+        object GetValue(ClassType Object);
     }
 
     /// <summary>

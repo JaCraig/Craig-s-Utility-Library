@@ -72,6 +72,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         IBatch AddCommand(string Command, CommandType CommandType, params IParameter[] Parameters);
 
         /// <summary>
+        /// Adds a batch's commands to the current batch
+        /// </summary>
+        /// <param name="Batch">Batch to add</param>
+        /// <returns>This</returns>
+        IBatch AddCommand(IBatch Batch);
+
+        /// <summary>
         /// Executes the commands and returns the results
         /// </summary>
         /// <returns>The results of the batched commands</returns>
