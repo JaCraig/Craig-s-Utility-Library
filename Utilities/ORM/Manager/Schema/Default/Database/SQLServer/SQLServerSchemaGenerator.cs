@@ -32,6 +32,8 @@ using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -65,11 +67,11 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// fields, tables, etc. It does not delete old fields.
         /// </summary>
         /// <param name="DesiredStructure">Desired source structure</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source to use</param>
         /// <returns>List of commands generated</returns>
-        public IEnumerable<string> GenerateSchema(ISource DesiredStructure, string ConnectionString)
+        public IEnumerable<string> GenerateSchema(ISource DesiredStructure, ISourceInfo Source)
         {
-            ISource CurrentStructure = GetSourceStructure(ConnectionString);
+            ISource CurrentStructure = GetSourceStructure(Source);
             return BuildCommands(DesiredStructure, CurrentStructure).ToArray();
             //ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
             //IBatch Batch = Provider.Batch(ProviderName, ConnectionString);
@@ -100,19 +102,19 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <summary>
         /// Gets the structure of a source
         /// </summary>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source to use</param>
         /// <returns>The source structure</returns>
-        public ISource GetSourceStructure(string ConnectionString)
+        public ISource GetSourceStructure(ISourceInfo Source)
         {
-            string DatabaseName = Regex.Match(ConnectionString, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", "");
-            if (!SourceExists(DatabaseName, ConnectionString))
+            string DatabaseName = Regex.Match(Source.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", "");
+            if (!SourceExists(DatabaseName, Source))
                 return null;
             Database Temp = new Database(DatabaseName);
-            GetTables(ConnectionString, Temp);
-            SetupTables(ConnectionString, Temp);
-            SetupViews(ConnectionString, Temp);
-            SetupStoredProcedures(ConnectionString, Temp);
-            SetupFunctions(ConnectionString, Temp);
+            GetTables(Source, Temp);
+            SetupTables(Source, Temp);
+            SetupViews(Source, Temp);
+            SetupStoredProcedures(Source, Temp);
+            SetupFunctions(Source, Temp);
             return Temp;
         }
 
@@ -120,55 +122,55 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// Checks if a source exists
         /// </summary>
         /// <param name="Source">Source to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Info">Source info to use</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool SourceExists(string Source, string ConnectionString)
+        public bool SourceExists(string Source, ISourceInfo Info)
         {
-            return Exists("SELECT * FROM Master.sys.Databases WHERE name=@0", Source, ConnectionString);
+            return Exists("SELECT * FROM Master.sys.Databases WHERE name=@0", Source, Info);
         }
 
         /// <summary>
         /// Checks if a stored procedure exists
         /// </summary>
         /// <param name="StoredProcedure">Stored procedure to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source to use</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool StoredProcedureExists(string StoredProcedure, string ConnectionString)
+        public bool StoredProcedureExists(string StoredProcedure, ISourceInfo Source)
         {
-            return Exists("SELECT * FROM sys.Procedures WHERE name=@0", StoredProcedure, ConnectionString);
+            return Exists("SELECT * FROM sys.Procedures WHERE name=@0", StoredProcedure, Source);
         }
 
         /// <summary>
         /// Checks if a table exists
         /// </summary>
         /// <param name="Table">Table to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source to use</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool TableExists(string Table, string ConnectionString)
+        public bool TableExists(string Table, ISourceInfo Source)
         {
-            return Exists("SELECT * FROM sys.Tables WHERE name=@0", Table, ConnectionString);
+            return Exists("SELECT * FROM sys.Tables WHERE name=@0", Table, Source);
         }
 
         /// <summary>
         /// Checks if a trigger exists
         /// </summary>
         /// <param name="Trigger">Trigger to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source to use</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool TriggerExists(string Trigger, string ConnectionString)
+        public bool TriggerExists(string Trigger, ISourceInfo Source)
         {
-            return Exists("SELECT * FROM sys.triggers WHERE name=@0", Trigger, ConnectionString);
+            return Exists("SELECT * FROM sys.triggers WHERE name=@0", Trigger, Source);
         }
 
         /// <summary>
         /// Checks if a view exists
         /// </summary>
         /// <param name="View">View to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source to use</param>
         /// <returns>True if it exists, false otherwise</returns>
-        public bool ViewExists(string View, string ConnectionString)
+        public bool ViewExists(string View, ISourceInfo Source)
         {
-            return Exists("SELECT * FROM sys.views WHERE name=@0", View, ConnectionString);
+            return Exists("SELECT * FROM sys.views WHERE name=@0", View, Source);
         }
 
         private static IEnumerable<string> BuildCommands(ISource DesiredStructure, ISource CurrentStructure)
@@ -207,6 +209,16 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 Commands.Add(CurrentStoredProcedure != null ? GetAlterStoredProcedure(StoredProcedure, CurrentStoredProcedure) : GetStoredProcedure(StoredProcedure));
             }
             return Commands;
+        }
+
+        private static bool Exists(string Command, string Value, ISourceInfo Source)
+        {
+            return Provider.Batch(Source)
+                           .AddCommand(Command, CommandType.Text, Value)
+                           .Execute()
+                           .FirstOrDefault()
+                           .Check(new List<dynamic>())
+                           .Count() > 0;
         }
 
         private static IEnumerable<string> GetAlterFunctionCommand(Function Function, Function CurrentFunction)
@@ -255,11 +267,12 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                                         "(MAX)" :
                                         "(" + Column.Length.ToString(CultureInfo.InvariantCulture) + ")";
                     }
+                    Command += "'";
                     ReturnValue.Add(Command);
                     foreach (IColumn ForeignKey in Column.ForeignKey)
                     {
                         Command = string.Format(CultureInfo.CurrentCulture,
-                            "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ADD FOREIGN KEY ({1}) REFERENCES {2}({3}){4}{5}{6}",
+                            "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ADD FOREIGN KEY ({1}) REFERENCES {2}({3}){4}{5}{6}'",
                             Table.Name,
                             Column.Name,
                             ForeignKey.ParentTable.Name,
@@ -288,6 +301,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                             "(MAX)" :
                             "(" + Column.Length.ToString(CultureInfo.InvariantCulture) + ")";
                     }
+                    Command += "'";
                     ReturnValue.Add(Command);
                 }
             }
@@ -349,6 +363,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                             Command += " ON UPDATE CASCADE";
                         if (Column.OnDeleteSetNull)
                             Command += " ON DELETE SET NULL";
+                        Command += "'";
                         ReturnValue.Add(Command);
                     }
                 }
@@ -410,7 +425,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 }
                 Splitter = ",";
             }
-            Builder.Append(")");
+            Builder.Append(")'");
             ReturnValue.Add(Builder.ToString());
             int Counter = 0;
             foreach (IColumn Column in Table.Columns)
@@ -436,6 +451,23 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 ++Counter;
             }
             return ReturnValue;
+        }
+
+        private static void GetTables(ISourceInfo Source, Database Temp)
+        {
+            IEnumerable<dynamic> Values = Provider.Batch(Source)
+                                                  .AddCommand(CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
+                                                  .Execute()
+                                                  .FirstOrDefault();
+            foreach (dynamic Item in Values)
+            {
+                string TableName = Item.TABLE_NAME;
+                string TableType = Item.TABLE_TYPE;
+                if (TableType == "BASE TABLE")
+                    Temp.AddTable(TableName);
+                else if (TableType == "VIEW")
+                    Temp.AddView(TableName);
+            }
         }
 
         private static IEnumerable<string> GetTriggerCommand(Table Table)
@@ -465,8 +497,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 }
                 else
                 {
-                    Table.AddColumn(Item.Column,
-                        Item.COLUMN_TYPE.To<string, SqlDbType>().To(DbType.Int32),
+                    Table.AddColumn<string>(Item.Column,
+                        Utilities.DataTypes.TypeConversionExtensions.To(Utilities.DataTypes.TypeConversionExtensions.To<string, SqlDbType>(Item.COLUMN_TYPE), DbType.Int32),
                         (Item.COLUMN_TYPE == "nvarchar") ? Item.MAX_LENGTH / 2 : Item.MAX_LENGTH,
                         Item.IS_NULLABLE,
                         Item.IS_IDENTITY,
@@ -480,36 +512,9 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private bool Exists(string Command, string Value, string ConnectionString)
+        private static void SetupFunctions(ISourceInfo Source, Database Temp)
         {
-            return Provider.Batch(ProviderName, ConnectionString)
-                           .AddCommand(Command, CommandType.Text, Value)
-                           .Execute()
-                           .FirstOrDefault()
-                           .Check(new List<dynamic>())
-                           .Count() > 0;
-        }
-
-        private void GetTables(string ConnectionString, Database Temp)
-        {
-            IEnumerable<dynamic> Values = Provider.Batch(ProviderName, ConnectionString)
-                                                  .AddCommand(CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
-                                                  .Execute()
-                                                  .FirstOrDefault();
-            foreach (dynamic Item in Values)
-            {
-                string TableName = Item.TABLE_NAME;
-                string TableType = Item.TABLE_TYPE;
-                if (TableType == "BASE TABLE")
-                    Temp.AddTable(TableName);
-                else if (TableType == "VIEW")
-                    Temp.AddView(TableName);
-            }
-        }
-
-        private void SetupFunctions(string ConnectionString, Database Temp)
-        {
-            IEnumerable<dynamic> Values = Provider.Batch(ProviderName, ConnectionString)
+            IEnumerable<dynamic> Values = Provider.Batch(Source)
                                                       .AddCommand(CommandType.Text,
                                                             "SELECT SPECIFIC_NAME as NAME,ROUTINE_DEFINITION as DEFINITION FROM INFORMATION_SCHEMA.ROUTINES WHERE INFORMATION_SCHEMA.ROUTINES.ROUTINE_TYPE='FUNCTION'")
                                                       .Execute()
@@ -520,9 +525,9 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private void SetupStoredProcedures(string ConnectionString, Database Temp)
+        private static void SetupStoredProcedures(ISourceInfo Source, Database Temp)
         {
-            IEnumerable<dynamic> Values = Provider.Batch(ProviderName, ConnectionString)
+            IEnumerable<dynamic> Values = Provider.Batch(Source)
                                                       .AddCommand(CommandType.Text,
                                                             "SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures")
                                                       .Execute()
@@ -533,7 +538,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
             foreach (StoredProcedure Procedure in Temp.StoredProcedures)
             {
-                Values = Provider.Batch(ProviderName, ConnectionString)
+                Values = Provider.Batch(Source)
                                 .AddCommand(@"SELECT sys.systypes.name as TYPE,sys.parameters.name as NAME,sys.parameters.max_length as LENGTH,sys.parameters.default_value as [DEFAULT VALUE] FROM sys.procedures INNER JOIN sys.parameters on sys.procedures.object_id=sys.parameters.object_id INNER JOIN sys.systypes on sys.systypes.xusertype=sys.parameters.system_type_id WHERE sys.procedures.name=@0 AND (sys.systypes.xusertype <> 256)",
                                         CommandType.Text,
                                         Procedure.Name)
@@ -552,11 +557,11 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private void SetupTables(string ConnectionString, Database Temp)
+        private static void SetupTables(ISourceInfo Source, Database Temp)
         {
             foreach (Table Table in Temp.Tables)
             {
-                IEnumerable<dynamic> Values = Provider.Batch(ProviderName, ConnectionString)
+                IEnumerable<dynamic> Values = Provider.Batch(Source)
                                                       .AddCommand(@"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
                                                                 sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE],
                                                                 sys.columns.is_identity as [IS_IDENTITY], sys.index_columns.index_id as [IS_INDEX],
@@ -579,7 +584,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                                                       .Execute()
                                                       .FirstOrDefault();
                 SetupColumns(Table, Values);
-                SetupTriggers(ConnectionString, Table, Values);
+                SetupTriggers(Source, Table, Values);
             }
             foreach (Table Table in Temp.Tables)
             {
@@ -587,9 +592,9 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private void SetupTriggers(string ConnectionString, Table Table, IEnumerable<dynamic> Values)
+        private static void SetupTriggers(ISourceInfo Source, Table Table, IEnumerable<dynamic> Values)
         {
-            Values = Provider.Batch(ProviderName, ConnectionString)
+            Values = Provider.Batch(Source)
                              .AddCommand(@"SELECT sys.triggers.name as Name,sys.trigger_events.type as Type,
                                                 OBJECT_DEFINITION(sys.triggers.object_id) as Definition 
                                                 FROM sys.triggers 
@@ -609,18 +614,18 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private void SetupViews(string ConnectionString, Database Temp)
+        private static void SetupViews(ISourceInfo Source, Database Temp)
         {
             foreach (View View in Temp.Views)
             {
-                IEnumerable<dynamic> Values = Provider.Batch(ProviderName, ConnectionString)
+                IEnumerable<dynamic> Values = Provider.Batch(Source)
                                                       .AddCommand(@"SELECT OBJECT_DEFINITION(sys.views.object_id) as Definition FROM sys.views WHERE sys.views.name=@0",
                                                                 CommandType.Text,
                                                                 View.Name)
                                                       .Execute()
                                                       .FirstOrDefault();
                 View.Definition = Values.First().Definition;
-                Values = Provider.Batch(ProviderName, ConnectionString)
+                Values = Provider.Batch(Source)
                                  .AddCommand(@"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
                                                         sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE] 
                                                         FROM sys.views 

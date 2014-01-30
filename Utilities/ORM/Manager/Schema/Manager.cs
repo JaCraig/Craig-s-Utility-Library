@@ -29,6 +29,7 @@ using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -61,15 +62,12 @@ namespace Utilities.ORM.Manager.Schema
         /// fields, tables, etc. It does not delete old fields.
         /// </summary>
         /// <param name="DesiredStructure">Desired source structure</param>
-        /// <param name="ConnectionString">Connection string name</param>
-        /// <param name="SchemaType">Schema type</param>
+        /// <param name="Source">Source to use</param>
         /// <returns>List of commands generated</returns>
-        public IEnumerable<string> GenerateSchema(ISource DesiredStructure, string ConnectionString, string SchemaType)
+        public IEnumerable<string> GenerateSchema(ISource DesiredStructure, ISourceInfo Source)
         {
-            if (string.IsNullOrEmpty(SchemaType))
-                SchemaType = "System.Data.SqlClient";
-            return SchemaGenerators.ContainsKey(SchemaType) ?
-                SchemaGenerators[SchemaType].GenerateSchema(DesiredStructure, ConnectionString) :
+            return SchemaGenerators.ContainsKey(Source.SourceType) ?
+                SchemaGenerators[Source.SourceType].GenerateSchema(DesiredStructure, Source) :
                 new List<string>();
         }
 

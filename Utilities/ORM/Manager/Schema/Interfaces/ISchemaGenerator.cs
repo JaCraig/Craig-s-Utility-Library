@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System.Collections.Generic;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -43,55 +44,55 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// fields, tables, etc. It does not delete old fields.
         /// </summary>
         /// <param name="DesiredStructure">Desired source structure</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source to use</param>
         /// <returns>List of commands generated</returns>
-        IEnumerable<string> GenerateSchema(ISource DesiredStructure, string ConnectionString);
+        IEnumerable<string> GenerateSchema(ISource DesiredStructure, ISourceInfo Source);
 
         /// <summary>
         /// Gets the structure of a source
         /// </summary>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source information</param>
         /// <returns>The source structure</returns>
-        ISource GetSourceStructure(string ConnectionString);
+        ISource GetSourceStructure(ISourceInfo Source);
 
         /// <summary>
         /// Checks if a source exists
         /// </summary>
         /// <param name="Source">Source to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Info">Source info</param>
         /// <returns>True if it exists, false otherwise</returns>
-        bool SourceExists(string Source, string ConnectionString);
+        bool SourceExists(string Source, ISourceInfo Info);
 
         /// <summary>
         /// Checks if a stored procedure exists
         /// </summary>
         /// <param name="StoredProcedure">Stored procedure to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source information</param>
         /// <returns>True if it exists, false otherwise</returns>
-        bool StoredProcedureExists(string StoredProcedure, string ConnectionString);
+        bool StoredProcedureExists(string StoredProcedure, ISourceInfo Source);
 
         /// <summary>
         /// Checks if a table exists
         /// </summary>
         /// <param name="Table">Table to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source information</param>
         /// <returns>True if it exists, false otherwise</returns>
-        bool TableExists(string Table, string ConnectionString);
+        bool TableExists(string Table, ISourceInfo Source);
 
         /// <summary>
         /// Checks if a trigger exists
         /// </summary>
         /// <param name="Trigger">Trigger to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source information</param>
         /// <returns>True if it exists, false otherwise</returns>
-        bool TriggerExists(string Trigger, string ConnectionString);
+        bool TriggerExists(string Trigger, ISourceInfo Source);
 
         /// <summary>
         /// Checks if a view exists
         /// </summary>
         /// <param name="View">View to check</param>
-        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Source">Source information</param>
         /// <returns>True if it exists, false otherwise</returns>
-        bool ViewExists(string View, string ConnectionString);
+        bool ViewExists(string View, ISourceInfo Source);
     }
 }

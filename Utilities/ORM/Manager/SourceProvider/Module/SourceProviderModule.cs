@@ -19,36 +19,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Data;
-using Utilities.ORM.Manager.Schema.Default.Database;
-using Xunit;
+#region Usings
 
-namespace UnitTests.ORM.Manager.QueryProvider
+using Utilities.IoC.Interfaces;
+
+#endregion Usings
+
+namespace Utilities.ORM.Manager.SourceProvider.Module
 {
-    public class Manager
+    /// <summary>
+    /// Schema module
+    /// </summary>
+    public class SourceProviderModule : IModule
     {
-        [Fact]
-        public void Batch()
+        /// <summary>
+        /// Order to run it in
+        /// </summary>
+        public int Order
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Batch("System.Data.SqlClient", ""));
+            get { return 1; }
         }
 
-        [Fact]
-        public void Create()
+        /// <summary>
+        /// Loads the module
+        /// </summary>
+        /// <param name="Bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper Bootstrapper)
         {
-            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.QueryProvider.Manager());
-            Assert.Equal("System.Data.SqlClient", new Utilities.ORM.Manager.QueryProvider.Manager().ToString());
-        }
-
-        [Fact]
-        public void Generate()
-        {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<Temp>("System.Data.SqlClient", ""));
-        }
-
-        public class Temp
-        {
-            public int A { get; set; }
+            Bootstrapper.Register(new Manager());
         }
     }
 }

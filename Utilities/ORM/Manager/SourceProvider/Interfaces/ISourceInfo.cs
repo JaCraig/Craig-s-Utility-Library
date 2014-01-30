@@ -29,36 +29,44 @@ using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.ORM.Manager.Schema.Interfaces;
-using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider.Interfaces
+namespace Utilities.ORM.Manager.SourceProvider.Interfaces
 {
     /// <summary>
-    /// Query provider
+    /// Source information
     /// </summary>
-    public interface IQueryProvider
+    public interface ISourceInfo
     {
         /// <summary>
-        /// Provider name associated with the query provider
+        /// Connection string
         /// </summary>
-        string ProviderName { get; }
+        string Connection { get; }
 
         /// <summary>
-        /// Creates a batch for running commands
+        /// Name of the source
         /// </summary>
-        /// <param name="Source">Source info</param>
-        /// <returns>A batch object</returns>
-        IBatch Batch(ISourceInfo Source);
+        string Name { get; }
 
         /// <summary>
-        /// Creates a generator object
+        /// Parameter prefix that the source uses
         /// </summary>
-        /// <typeparam name="T">Class type to create the generator for</typeparam>
-        /// <param name="Source">Source info</param>
-        /// <returns>Generator object</returns>
-        IGenerator<T> Generate<T>(ISourceInfo Source)
-            where T : class,new();
+        string ParameterPrefix { get; }
+
+        /// <summary>
+        /// Should this source be used to read data?
+        /// </summary>
+        bool Readable { get; }
+
+        /// <summary>
+        /// Source type, based on ADO.Net provider name
+        /// </summary>
+        string SourceType { get; }
+
+        /// <summary>
+        /// Should this source be used to write data?
+        /// </summary>
+        bool Writable { get; }
     }
 }

@@ -235,5 +235,14 @@ namespace Utilities.ORM.BaseClasses
             Properties.Add(ReturnValue);
             return ReturnValue;
         }
+
+        /// <summary>
+        /// Converts the mapping to a string
+        /// </summary>
+        /// <returns>The table name</returns>
+        public override string ToString()
+        {
+            return this.TableName;
+        }
     }
 }

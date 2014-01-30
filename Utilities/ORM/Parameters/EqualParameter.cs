@@ -25,73 +25,70 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics.Contracts;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
-using Utilities.ORM.Manager.SourceProvider;
-using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider
+namespace Utilities.ORM.Parameters
 {
     /// <summary>
-    /// Query provider manager
+    /// Parameter class that checks for equality
     /// </summary>
-    public class Manager
+    /// <typeparam name="DataType">Type of the parameter</typeparam>
+    public class EqualParameter<DataType> : ParameterBase<DataType>
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Value">Value of the parameter</param>
+        /// <param name="ID">Name of the parameter</param>
+        /// <param name="ParameterStarter">
+        /// What the database expects as the parameter starting string ("@" for SQL Server, ":" for
+        /// Oracle, etc.)
+        /// </param>
+        public EqualParameter(DataType Value, string ID, string ParameterStarter = "@")
+            : base(ID, Value, System.Data.ParameterDirection.Input, ParameterStarter)
         {
-            Providers = AppDomain.CurrentDomain
-                                 .GetAssemblies()
-                                 .Objects<Interfaces.IQueryProvider>()
-                                 .ToDictionary(x => x.ProviderName);
+            this.Value = Value;
+            this.ID = ID;
+            this.ParameterStarter = ParameterStarter;
         }
 
         /// <summary>
-        /// Providers
+        /// Adds the parameter to the SQLHelper
         /// </summary>
-        protected IDictionary<string, Interfaces.IQueryProvider> Providers { get; private set; }
-
-        /// <summary>
-        /// Creates a batch object
-        /// </summary>
-        /// <param name="Source">Source to use</param>
-        /// <returns>The batch object</returns>
-        public IBatch Batch(ISourceInfo Source)
+        /// <param name="Helper">SQLHelper to add the parameter to</param>
+        public override void AddParameter(DbCommand Helper)
         {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Batch(Source) : null;
+            Helper.AddParameter(ID, Value);
         }
 
         /// <summary>
-        /// Creates a generator object
+        /// Creates a copy of the parameter
         /// </summary>
-        /// <typeparam name="T">Class type the generator uses</typeparam>
-        /// <param name="Source">Source to use</param>
-        /// <returns>The generator object</returns>
-        public IGenerator<T> Generate<T>(ISourceInfo Source)
-            where T : class,new()
+        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
+        /// <returns>A copy of the parameter</returns>
+        public override IParameter CreateCopy(string Suffix)
         {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Generate<T>(Source) : null;
+            return new EqualParameter<DataType>(Value, ID + Suffix, ParameterStarter);
         }
 
         /// <summary>
-        /// Outputs the provider information as a string
+        /// Outputs the param as a string
         /// </summary>
-        /// <returns>The provider information as a string</returns>
+        /// <returns>The param as a string</returns>
         public override string ToString()
         {
-            return Providers.ToString(x => x.Key);
+            return ID + "=" + ParameterStarter + ID;
         }
     }
 }

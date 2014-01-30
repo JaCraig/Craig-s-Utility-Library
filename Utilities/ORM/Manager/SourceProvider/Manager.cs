@@ -25,7 +25,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -33,15 +32,14 @@ using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
-using Utilities.ORM.Manager.SourceProvider;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider
+namespace Utilities.ORM.Manager.SourceProvider
 {
     /// <summary>
-    /// Query provider manager
+    /// Database manager
     /// </summary>
     public class Manager
     {
@@ -50,48 +48,40 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// </summary>
         public Manager()
         {
-            Providers = AppDomain.CurrentDomain
+            Sources = AppDomain.CurrentDomain
                                  .GetAssemblies()
-                                 .Objects<Interfaces.IQueryProvider>()
-                                 .ToDictionary(x => x.ProviderName);
+                                 .Objects<IDatabase>()
+                                 .OrderBy(x => x.Order)
+                                 .ToDictionary(x => x.Name, x => (ISourceInfo)new SourceInfo("", x.Name, "", "", x.Writable, x.Readable));
+            foreach (ConnectionStringSettings ConnectionString in ConfigurationManager.ConnectionStrings)
+            {
+                if (Sources.ContainsKey(ConnectionString.Name))
+                    Sources.Add(ConnectionString.Name, new SourceInfo(ConnectionString.ConnectionString, ConnectionString.Name, "", "", true, true));
+            }
         }
 
         /// <summary>
-        /// Providers
+        /// Source information
         /// </summary>
-        protected IDictionary<string, Interfaces.IQueryProvider> Providers { get; private set; }
+        protected IDictionary<string, ISourceInfo> Sources { get; private set; }
 
         /// <summary>
-        /// Creates a batch object
+        /// Gets the source info specified
         /// </summary>
-        /// <param name="Source">Source to use</param>
-        /// <returns>The batch object</returns>
-        public IBatch Batch(ISourceInfo Source)
+        /// <param name="Name">Name of the source to get</param>
+        /// <returns>The source specified</returns>
+        public ISourceInfo GetSource(string Name)
         {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Batch(Source) : null;
+            return Sources.GetValue(Name, null);
         }
 
         /// <summary>
-        /// Creates a generator object
+        /// Outputs the source information as a string
         /// </summary>
-        /// <typeparam name="T">Class type the generator uses</typeparam>
-        /// <param name="Source">Source to use</param>
-        /// <returns>The generator object</returns>
-        public IGenerator<T> Generate<T>(ISourceInfo Source)
-            where T : class,new()
-        {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Generate<T>(Source) : null;
-        }
-
-        /// <summary>
-        /// Outputs the provider information as a string
-        /// </summary>
-        /// <returns>The provider information as a string</returns>
+        /// <returns>The source information as a string</returns>
         public override string ToString()
         {
-            return Providers.ToString(x => x.Key);
+            return Sources.ToString(x => x.Key);
         }
     }
 }

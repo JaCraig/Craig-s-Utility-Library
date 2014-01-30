@@ -31,6 +31,7 @@ using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -62,19 +63,20 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <summary>
         /// Returns a batch object
         /// </summary>
-        /// <param name="ConnectionString">Connection string</param>
+        /// <param name="Source">Source info</param>
         /// <returns>Batch object</returns>
-        public IBatch Batch(string ConnectionString)
+        public IBatch Batch(ISourceInfo Source)
         {
-            return new DatabaseBatch(ConnectionString, ParameterPrefix, ProviderName);
+            return new DatabaseBatch(Source);
         }
 
         /// <summary>
         /// Creates a generator class for the appropriate provider
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
+        /// <param name="Source">Source info</param>
         /// <returns>A generator class</returns>
-        public abstract IGenerator<T> Generate<T>(string ConnectionString)
+        public abstract IGenerator<T> Generate<T>(ISourceInfo Source)
             where T : class,new();
     }
 }

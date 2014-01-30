@@ -25,8 +25,13 @@ using Xunit;
 
 namespace UnitTests.ORM.Manager.Schema
 {
-    public class Manager
+    public class Manager : DatabaseBaseClass
     {
+        public Manager()
+            : base()
+        {
+        }
+
         [Fact]
         public void Create()
         {
@@ -37,7 +42,7 @@ namespace UnitTests.ORM.Manager.Schema
         [Fact]
         public void GenerateSchema()
         {
-            Assert.Empty(new Utilities.ORM.Manager.Schema.Manager().GenerateSchema(new Database("Test"), "", "System.Data.SqlClient"));
+            Assert.Empty(new Utilities.ORM.Manager.Schema.Manager().GenerateSchema(new Database("TestDatabase"), "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "System.Data.SqlClient"));
         }
     }
 }

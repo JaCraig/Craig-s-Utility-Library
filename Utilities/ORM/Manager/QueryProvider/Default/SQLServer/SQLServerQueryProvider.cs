@@ -32,6 +32,7 @@ using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -64,11 +65,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// Creates a generator class for the appropriate provider
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        /// <param name="ConnectionString">Connection string to use</param>
+        /// <param name="Source">Source information</param>
         /// <returns>A generator class</returns>
-        public override IGenerator<T> Generate<T>(string ConnectionString)
+        public override IGenerator<T> Generate<T>(ISourceInfo Source)
         {
-            return new SQLServerGenerator<T>(this, ConnectionString);
+            return new SQLServerGenerator<T>(this, Source);
         }
     }
 }

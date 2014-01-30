@@ -1,0 +1,90 @@
+﻿/*
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.*/
+
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Utilities.ORM.Manager.Schema.Default.Database;
+using Utilities.ORM.Manager.Schema.Interfaces;
+using Xunit;
+
+namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
+{
+    public class SQLServerSchemaGenerator : DatabaseBaseClass
+    {
+        public SQLServerSchemaGenerator()
+            : base()
+        {
+        }
+
+        [Fact]
+        public void Create()
+        {
+            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            Assert.Equal("System.Data.SqlClient", Temp.ProviderName);
+        }
+
+        [Fact]
+        public void GenerateSchema()
+        {
+            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            ISource Source = Temp.GetSourceStructure("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Source.Tables.First().AddColumn<string>("A", DbType.Int16);
+            ITable Table = Source.AddTable("TestTable2");
+            Table.AddColumn<string>("A", DbType.Int16);
+            IEnumerable<string> Commands = Temp.GenerateSchema(Source, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Assert.Equal(2, Commands.Count());
+            Assert.Equal("EXEC dbo.sp_executesql @statement = N'ALTER TABLE TestTable ADD A SmallInt'", Commands.First());
+            Assert.Equal("EXEC dbo.sp_executesql @statement = N'CREATE TABLE TestTable2(A SmallInt)'", Commands.Last());
+        }
+
+        [Fact]
+        public void GetSourceStructure()
+        {
+            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            ISource Source = Temp.GetSourceStructure("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Assert.Equal(0, Source.Functions.Count);
+            Assert.Equal("TestDatabase", Source.Name);
+            Assert.Equal(0, Source.StoredProcedures.Count);
+            Assert.Equal(1, Source.Tables.Count);
+            Assert.Equal(0, Source.Views.Count);
+            ITable TempTable = Source.Tables.First();
+            Assert.Equal(9, TempTable.Columns.Count);
+            Assert.Equal("TestTable", TempTable.Name);
+            Assert.Equal(Source, TempTable.Source);
+            Assert.Equal(0, TempTable.Triggers.Count);
+        }
+
+        [Fact]
+        public void SourceExists()
+        {
+            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            Assert.True(Temp.SourceExists("TestDatabase", "Data Source=localhost;Integrated Security=SSPI;Pooling=false"));
+        }
+
+        [Fact]
+        public void TableExists()
+        {
+            Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            Assert.True(Temp.TableExists("TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"));
+        }
+    }
+}

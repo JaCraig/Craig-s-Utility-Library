@@ -30,17 +30,11 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
     /// <summary>
     /// Database batch
     /// </summary>
-    public class DatabaseBatch : IDisposable
+    public class DatabaseBatch : DatabaseBaseClass
     {
-        public DatabaseBatch()
+        public DatabaseBatch() :
+            base()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
-            Temp.AddCommand(CommandType.Text, "Create Database TestDatabase")
-                .Execute();
-
-            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
-            Temp.AddCommand(CommandType.Text, "Create Table TestTable(ID INT PRIMARY KEY IDENTITY,StringValue1 NVARCHAR(100),StringValue2 NVARCHAR(MAX),BigIntValue BIGINT,BitValue BIT,DecimalValue DECIMAL(12,6),FloatValue FLOAT,DateTimeValue DATETIME,GUIDValue UNIQUEIDENTIFIER)")
-                .Execute();
         }
 
         [Fact]
@@ -57,15 +51,6 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("A", "@", "System.Data.SqlClient");
             Assert.NotNull(Temp);
             Assert.Equal(0, Temp.CommandCount);
-        }
-
-        public void Dispose()
-        {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
-            Temp.AddCommand(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
-                    .AddCommand(CommandType.Text, "ALTER DATABASE TestDatabase SET ONLINE")
-                    .AddCommand(CommandType.Text, "DROP DATABASE TestDatabase")
-                    .Execute();
         }
 
         [Fact]

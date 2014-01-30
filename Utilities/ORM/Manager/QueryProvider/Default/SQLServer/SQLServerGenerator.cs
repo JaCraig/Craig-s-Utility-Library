@@ -35,6 +35,7 @@ using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -60,18 +61,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// Constructor
         /// </summary>
         /// <param name="QueryProvider">Query provider</param>
-        /// <param name="ConnectionString">Connection string</param>
-        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, string ConnectionString)
+        /// <param name="Source">Source info</param>
+        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source)
             : this()
         {
             this.QueryProvider = QueryProvider;
-            this.ConnectionString = ConnectionString;
+            this.Source = Source;
         }
-
-        /// <summary>
-        /// Connection string used to create the batch objects
-        /// </summary>
-        protected string ConnectionString { get; private set; }
 
         /// <summary>
         /// Mapping that the generator uses
@@ -84,6 +80,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         protected SQLServerQueryProvider QueryProvider { get; private set; }
 
         /// <summary>
+        /// Source used to connect
+        /// </summary>
+        protected ISourceInfo Source { get; private set; }
+
+        /// <summary>
         /// Generates a batch that will get all items for the given type the parameters specified
         /// </summary>
         /// <param name="Parameters">Parameters</param>
@@ -91,8 +92,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         public IBatch All(params IParameter[] Parameters)
         {
             if (Mapping == null)
-                return QueryProvider.Batch(ConnectionString);
-            return QueryProvider.Batch(ConnectionString)
+                return QueryProvider.Batch(Source);
+            return QueryProvider.Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
                     "SELECT * FROM {0}{1}",
                     Mapping.TableName,
@@ -112,8 +113,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (Limit < 1)
                 return All(Parameters);
             if (Mapping == null)
-                return QueryProvider.Batch(ConnectionString);
-            return QueryProvider.Batch(ConnectionString)
+                return QueryProvider.Batch(Source);
+            return QueryProvider.Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
                     "SELECT TOP {0} * FROM {1}{2}",
                     Limit,
@@ -150,7 +151,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 ++Count;
             }
             return QueryProvider
-                .Batch(ConnectionString)
+                .Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
                     "DELETE FROM {0} WHERE {1}",
                     Mapping.TableName,
@@ -166,7 +167,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Delete(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(ConnectionString);
+            IBatch TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Delete(Object));
@@ -205,7 +206,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                     ++Counter;
                 }
             }
-            return QueryProvider.Batch(ConnectionString)
+            return QueryProvider.Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
                     "INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [ID]",
                     Mapping.TableName,
@@ -224,7 +225,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Insert(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(ConnectionString);
+            IBatch TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Insert(Object));
@@ -245,7 +246,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (Parameters != null && Parameters.Length > 0)
                 WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
             return QueryProvider
-                .Batch(ConnectionString)
+                .Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
                     "SELECT COUNT(*) as Total FROM (SELECT {0} FROM {1} {2}) as Query",
                     Mapping.IDProperties.ToString(x => x.FieldName),
@@ -270,7 +271,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (Parameters != null && Parameters.Length > 0)
                 WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
             return QueryProvider
-                .Batch(ConnectionString)
+                .Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
                     "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {0}) AS Row, Query.* FROM (SELECT * FROM {1} {2}) as Query) AS Paged WHERE Row>{3} AND Row<={4}",
                     OrderBy,
@@ -310,7 +311,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                     ++Count;
                 }
             }
-            return QueryProvider.Batch(ConnectionString)
+            return QueryProvider.Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
                     "UPDATE {0} SET {1} WHERE {2}",
                     Mapping.TableName,
@@ -330,7 +331,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Update(IEnumerable<T> Objects)
         {
-            IBatch TempBatch = QueryProvider.Batch(ConnectionString);
+            IBatch TempBatch = QueryProvider.Batch(Source);
             foreach (T Object in Objects)
             {
                 TempBatch.AddCommand(Update(Object));

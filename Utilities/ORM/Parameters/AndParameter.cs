@@ -25,73 +25,73 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics.Contracts;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
-using Utilities.ORM.Manager.SourceProvider;
-using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.QueryProvider
+namespace Utilities.ORM.Parameters
 {
     /// <summary>
-    /// Query provider manager
+    /// Parameter class that ANDs two other parameters together
     /// </summary>
-    public class Manager
+    public class AndParameter : ParameterBase<string>
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        public AndParameter(IParameter Left, IParameter Right)
+            : base("", "", System.Data.ParameterDirection.Input, "@")
         {
-            Providers = AppDomain.CurrentDomain
-                                 .GetAssemblies()
-                                 .Objects<Interfaces.IQueryProvider>()
-                                 .ToDictionary(x => x.ProviderName);
+            this.Left = Left;
+            this.Right = Right;
         }
 
         /// <summary>
-        /// Providers
+        /// Left parameter
         /// </summary>
-        protected IDictionary<string, Interfaces.IQueryProvider> Providers { get; private set; }
+        public IParameter Left { get; set; }
 
         /// <summary>
-        /// Creates a batch object
+        /// Right parameter
         /// </summary>
-        /// <param name="Source">Source to use</param>
-        /// <returns>The batch object</returns>
-        public IBatch Batch(ISourceInfo Source)
+        public IParameter Right { get; set; }
+
+        /// <summary>
+        /// Adds the parameter to the SQLHelper
+        /// </summary>
+        /// <param name="Helper">SQLHelper to add the parameter to</param>
+        public override void AddParameter(DbCommand Helper)
         {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Batch(Source) : null;
+            Left.AddParameter(Helper);
+            Right.AddParameter(Helper);
         }
 
         /// <summary>
-        /// Creates a generator object
+        /// Creates a copy of the parameter
         /// </summary>
-        /// <typeparam name="T">Class type the generator uses</typeparam>
-        /// <param name="Source">Source to use</param>
-        /// <returns>The generator object</returns>
-        public IGenerator<T> Generate<T>(ISourceInfo Source)
-            where T : class,new()
+        /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>
+        /// <returns>A copy of the parameter</returns>
+        public override IParameter CreateCopy(string Suffix)
         {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Generate<T>(Source) : null;
+            return new AndParameter(Left.CreateCopy(Suffix), Right.CreateCopy(Suffix));
         }
 
         /// <summary>
-        /// Outputs the provider information as a string
+        /// Outputs the param as a string
         /// </summary>
-        /// <returns>The provider information as a string</returns>
+        /// <returns>The param as a string</returns>
         public override string ToString()
         {
-            return Providers.ToString(x => x.Key);
+            return "(" + Left.ToString() + " AND " + Right.ToString() + ")";
         }
     }
 }

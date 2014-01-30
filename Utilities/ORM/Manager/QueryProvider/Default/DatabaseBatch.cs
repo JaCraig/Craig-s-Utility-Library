@@ -34,6 +34,7 @@ using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -56,15 +57,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="ConnectionString">Connection string</param>
-        /// <param name="ParameterPrefix">Parameter prefix</param>
-        /// <param name="DatabaseType">Database type</param>
-        public DatabaseBatch(string ConnectionString, string ParameterPrefix, string DatabaseType)
+        /// <param name="Source">Source info</param>
+        public DatabaseBatch(ISourceInfo Source)
             : this()
         {
-            this.ConnectionString = ConnectionString;
-            this.ParameterPrefix = ParameterPrefix;
-            this.DatabaseType = DatabaseType;
+            this.Source = Source;
         }
 
         /// <summary>
@@ -80,17 +77,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <summary>
         /// Connection string
         /// </summary>
-        protected string ConnectionString { get; set; }
-
-        /// <summary>
-        /// Database type
-        /// </summary>
-        protected string DatabaseType { get; set; }
-
-        /// <summary>
-        /// Parameter prefix
-        /// </summary>
-        protected string ParameterPrefix { get; private set; }
+        protected ISourceInfo Source { get; set; }
 
         /// <summary>
         /// Used to parse SQL commands to find parameters (when batching)
@@ -118,7 +105,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns>This</returns>
         public IBatch AddCommand(string Command, CommandType CommandType, params object[] Parameters)
         {
-            Commands.Add(new Command(Command, CommandType, ParameterPrefix, Parameters));
+            Commands.Add(new Command(Command, CommandType, Source.ParameterPrefix, Parameters));
             return this;
         }
 
@@ -229,10 +216,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                 ReturnValue.Add(new List<dynamic>());
                 return ReturnValue;
             }
-            DbProviderFactory Factory = DbProviderFactories.GetFactory(DatabaseType);
+            DbProviderFactory Factory = DbProviderFactories.GetFactory(Source.SourceType);
             using (DbConnection Connection = Factory.CreateConnection())
             {
-                Connection.ConnectionString = ConnectionString;
+                Connection.ConnectionString = Source.Connection;
                 using (DbCommand ExecutableCommand = Factory.CreateCommand())
                 {
                     ExecutableCommand.CommandText = FinalSQLCommand;

@@ -181,6 +181,7 @@
     <Compile Include="Media\Procedural\CellularTexture.cs" />
     <Compile Include="Media\Procedural\FaultFormation.cs" />
     <Compile Include="Media\Procedural\MidpointDisplacement.cs" />
+    <Compile Include="ORM\DatabaseBaseClass.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\ID.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\IEnumerableManyToOne.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\ListManyToMany.cs" />
@@ -193,16 +194,27 @@
     <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\DatabaseBatch.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\Parameter.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\SQLServer\SQLServerQueryProvider.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\StringParameter.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Manager.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Column.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Function.cs" />
+    <Compile Include="ORM\Manager\Schema\Default\SQLServer\SQLServerSchemaGenerator.cs" />
     <Compile Include="ORM\Manager\Schema\Default\StoredProcedure.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Table.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Trigger.cs" />
     <Compile Include="ORM\Manager\Schema\Default\View.cs" />
     <Compile Include="ORM\Manager\Schema\Manager.cs" />
+    <Compile Include="ORM\Parameters\AndParameter.cs" />
+    <Compile Include="ORM\Parameters\BetweenParameter.cs" />
+    <Compile Include="ORM\Parameters\EqualParameter.cs" />
+    <Compile Include="ORM\Parameters\LikeParameter.cs" />
+    <Compile Include="ORM\Parameters\NotEqualParameter.cs" />
+    <Compile Include="ORM\Parameters\OrParameter.cs" />
+    <Compile Include="ORM\Parameters\StringEqualParamter.cs" />
+    <Compile Include="ORM\Parameters\StringNotEqualParameter.cs" />
     <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
     <Compile Include="Profiler\Manager\Default\Profiler.cs" />
     <Compile Include="Profiler\Manager\Default\StopWatch.cs" />
@@ -237,6 +249,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
