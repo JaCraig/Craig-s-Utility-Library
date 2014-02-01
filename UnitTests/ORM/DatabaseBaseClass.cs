@@ -24,6 +24,7 @@ using System.Data;
 using System.Linq;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 using Xunit;
 
 namespace UnitTests.ORM
@@ -33,20 +34,27 @@ namespace UnitTests.ORM
         public DatabaseBaseClass()
             : base()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            DatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Integrated Security=SSPI;Pooling=false");
+            MasterDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false");
+            TestDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(DatabaseSource);
             Temp.AddCommand(CommandType.Text, "Create Database TestDatabase")
                 .Execute();
 
-            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Temp.AddCommand(CommandType.Text, "Create Table TestTable(ID INT PRIMARY KEY IDENTITY,StringValue1 NVARCHAR(100),StringValue2 NVARCHAR(MAX),BigIntValue BIGINT,BitValue BIT,DecimalValue DECIMAL(12,6),FloatValue FLOAT,DateTimeValue DATETIME,GUIDValue UNIQUEIDENTIFIER)")
                 .Execute();
         }
 
-        protected ISource Source = new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Default");
+        protected ISourceInfo DatabaseSource { get; set; }
+
+        protected ISourceInfo MasterDatabaseSource { get; set; }
+
+        protected ISourceInfo TestDatabaseSource { get; set; }
 
         public void Dispose()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
             Temp.AddCommand(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
                     .AddCommand(CommandType.Text, "ALTER DATABASE TestDatabase SET ONLINE")
                     .AddCommand(CommandType.Text, "DROP DATABASE TestDatabase")

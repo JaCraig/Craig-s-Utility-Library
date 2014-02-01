@@ -33,7 +33,7 @@ namespace UnitTests.ORM.Parameters
         {
             Utilities.ORM.Parameters.OrParameter TestObject = new Utilities.ORM.Parameters.OrParameter(new EqualParameter<int>(1, "Left"), new EqualParameter<int>(2, "Right"));
             Assert.Equal("(Left=@Left OR Right=@Right)", TestObject.ToString());
-            IBatch Batch = new Utilities.ORM.Manager.QueryProvider.Manager().Batch("System.Data.SqlClient", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            IBatch Batch = new Utilities.ORM.Manager.QueryProvider.Manager().Batch(TestDatabaseSource);
             Assert.DoesNotThrow(() => Batch.AddCommand("SELECT * FROM TestTable", CommandType.Text, TestObject).Execute());
         }
     }

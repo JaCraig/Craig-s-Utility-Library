@@ -45,7 +45,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
-    public class Map<ClassType, DataType> : PropertyBase<ClassType, DataType, Map<ClassType, DataType>>
+    public class Map<ClassType, DataType> : PropertyBase<ClassType, DataType, Map<ClassType, DataType>>, IMap
         where ClassType : class,new()
         where DataType : class,new()
     {

@@ -45,7 +45,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
-    public class ListManyToMany<ClassType, DataType> : PropertyBase<ClassType, List<DataType>, ListManyToMany<ClassType, DataType>>
+    public class ListManyToMany<ClassType, DataType> : PropertyBase<ClassType, List<DataType>, ListManyToMany<ClassType, DataType>>, IListManyToMany
         where ClassType : class,new()
         where DataType : class,new()
     {

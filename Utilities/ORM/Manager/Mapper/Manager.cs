@@ -39,30 +39,61 @@ namespace Utilities.ORM.Manager.Mapper
     /// <summary>
     /// Mapping manager
     /// </summary>
-    public class Manager
+    public class Manager : IEnumerable<IMapping>
     {
         /// <summary>
         /// Constructor
         /// </summary>
         public Manager()
         {
-            Mappings = AppDomain.CurrentDomain
-                                 .GetAssemblies()
-                                 .Objects<IMapping>()
-                                 .ToDictionary(x => x.ObjectType);
+            Mappings = new ListMapping<Type, IMapping>();
+            AppDomain.CurrentDomain
+                        .GetAssemblies()
+                        .Objects<IMapping>()
+                        .ForEach(x => Mappings.Add(x.ObjectType, x));
         }
 
         /// <summary>
         /// Mappings
         /// </summary>
-        protected IDictionary<Type, IMapping> Mappings { get; private set; }
+        protected ListMapping<Type, IMapping> Mappings { get; private set; }
 
         /// <summary>
         /// Gets the mapping specified by the object type
         /// </summary>
         /// <param name="Key">The object type</param>
         /// <returns>The mapping specified</returns>
-        public IMapping this[Type Key] { get { return Mappings.GetValue(Key); } }
+        public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key); } }
+
+        /// <summary>
+        /// Gets the enumerator for the mappings
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        public IEnumerator<IMapping> GetEnumerator()
+        {
+            foreach (IEnumerable<IMapping> MappingList in Mappings.Values)
+            {
+                foreach (IMapping Mapping in MappingList)
+                {
+                    yield return Mapping;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumerator for the mappings
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            foreach (IEnumerable<IMapping> MappingList in Mappings.Values)
+            {
+                foreach (IMapping Mapping in MappingList)
+                {
+                    yield return Mapping;
+                }
+            }
+        }
 
         /// <summary>
         /// Outputs the mapping information as a string
@@ -70,7 +101,7 @@ namespace Utilities.ORM.Manager.Mapper
         /// <returns>The mapping information as a string</returns>
         public override string ToString()
         {
-            return Mappings.ToString(x => x.Value.ToString());
+            return Mappings.ToString(x => x.Value.ToString(y => y.ToString()));
         }
     }
 }

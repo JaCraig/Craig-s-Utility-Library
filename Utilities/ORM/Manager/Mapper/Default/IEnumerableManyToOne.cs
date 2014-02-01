@@ -45,7 +45,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
-    public class IEnumerableManyToOne<ClassType, DataType> : PropertyBase<ClassType, IEnumerable<DataType>, IEnumerableManyToOne<ClassType, DataType>>
+    public class IEnumerableManyToOne<ClassType, DataType> : PropertyBase<ClassType, IEnumerable<DataType>, IEnumerableManyToOne<ClassType, DataType>>, IIEnumerableManyToOne
         where ClassType : class,new()
         where DataType : class,new()
     {

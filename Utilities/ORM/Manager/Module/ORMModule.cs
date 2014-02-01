@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,25 +19,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using System.Data;
-using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Parameters;
-using Xunit;
+#region Usings
 
-namespace UnitTests.ORM.Parameters
+using Utilities.IoC.Interfaces;
+using Utilities.ORM.Aspect;
+
+#endregion Usings
+
+namespace Utilities.ORM.Manager.Module
 {
-    public class EqualParameter : DatabaseBaseClass
+    /// <summary>
+    /// ORM module
+    /// </summary>
+    public class ORMModule : IModule
     {
-        [Fact]
-        public void Creation()
+        /// <summary>
+        /// Order to run it in
+        /// </summary>
+        public int Order
         {
-            EqualParameter<int> TestObject = new EqualParameter<int>(12, "ID");
-            Assert.Equal("ID", TestObject.ID);
-            Assert.Equal(12, TestObject.Value);
-            Assert.Equal("@", TestObject.ParameterStarter);
-            Assert.Equal("ID=@ID", TestObject.ToString());
-            IBatch Batch = new Utilities.ORM.Manager.QueryProvider.Manager().Batch(TestDatabaseSource);
-            Assert.DoesNotThrow(() => Batch.AddCommand("SELECT * FROM TestTable", CommandType.Text, TestObject).Execute());
+            get { return 1; }
+        }
+
+        /// <summary>
+        /// Loads the module
+        /// </summary>
+        /// <param name="Bootstrapper">Bootstrapper to register with</param>
+        public void Load(IBootstrapper Bootstrapper)
+        {
+            Bootstrapper.Register(new ORMManager());
+            ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
         }
     }
 }

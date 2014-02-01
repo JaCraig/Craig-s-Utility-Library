@@ -51,7 +51,8 @@ namespace Utilities.ORM.Manager.SourceProvider
         /// Constructor
         /// </summary>
         public SourceInfo(string Connection, string Name, string SourceType = "System.Data.SqlClient",
-                        string ParameterPrefix = "@", bool Writable = true, bool Readable = true)
+                        string ParameterPrefix = "@", bool Writable = true, bool Readable = true,
+                        IDatabase Database = null)
             : base()
         {
             this.Name = string.IsNullOrEmpty(Name) && ConfigurationManager.ConnectionStrings[0] != null ? ConfigurationManager.ConnectionStrings[0].Name : Name;
@@ -87,12 +88,18 @@ namespace Utilities.ORM.Manager.SourceProvider
                 this.ParameterPrefix = ParameterPrefix;
             this.Writable = Writable;
             this.Readable = Readable;
+            this.Database = Database.Check(new DefaultDatabase());
         }
 
         /// <summary>
         /// Connection string
         /// </summary>
         public string Connection { get; protected set; }
+
+        /// <summary>
+        /// The database object associated with the source info (if one is associated with it)
+        /// </summary>
+        public IDatabase Database { get; protected set; }
 
         /// <summary>
         /// Name of the source

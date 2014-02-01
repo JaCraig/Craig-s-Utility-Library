@@ -40,7 +40,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void AddCommand()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("A", "@", "System.Data.SqlClient");
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Temp.AddCommand("SELECT * FROM A", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
             Assert.Equal(1, Temp.CommandCount);
         }
@@ -48,7 +48,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("A", "@", "System.Data.SqlClient");
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Assert.NotNull(Temp);
             Assert.Equal(0, Temp.CommandCount);
         }
@@ -57,7 +57,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public void Insert()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Temp.AddCommand("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
                 "Test String",
@@ -69,7 +69,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
                 TempGuid)
                 .Execute();
 
-            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             bool Found = false;
             foreach (dynamic Item in Temp.AddCommand(CommandType.Text, "SELECT * FROM TestTable")
                 .Execute()
@@ -90,7 +90,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
                 Assert.False(true, "Nothing was inserted");
             }
 
-            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Found = false;
             foreach (dynamic Item in Temp.AddCommand(CommandType.Text, "SELECT COUNT(*) as [ItemCount] FROM TestTable")
                 .Execute()
@@ -109,7 +109,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public void InsertNullString()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Temp.AddCommand("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
                 "",
@@ -145,7 +145,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void MBDBug()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch("Data Source=localhost;Initial Catalog=Master;Integrated Security=SSPI;Pooling=false", "@", "System.Data.SqlClient");
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
             int DbID = Temp.AddCommand("SELECT database_id FROM Master.sys.Databases WHERE name=@0", CommandType.Text, "TestDatabase")
                 .Execute()
                 .First()

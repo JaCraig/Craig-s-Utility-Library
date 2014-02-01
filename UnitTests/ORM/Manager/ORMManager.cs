@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2012 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,25 +19,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
 using System.Data;
-using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Parameters;
+using System.Linq;
+using Utilities.ORM.Manager.Schema.Default.Database;
+using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 using Xunit;
 
-namespace UnitTests.ORM.Parameters
+namespace UnitTests.ORM.Manager
 {
-    public class EqualParameter : DatabaseBaseClass
+    public class ORMManager : DatabaseBaseClass
     {
         [Fact]
-        public void Creation()
+        public void Create()
         {
-            EqualParameter<int> TestObject = new EqualParameter<int>(12, "ID");
-            Assert.Equal("ID", TestObject.ID);
-            Assert.Equal(12, TestObject.Value);
-            Assert.Equal("@", TestObject.ParameterStarter);
-            Assert.Equal("ID=@ID", TestObject.ToString());
-            IBatch Batch = new Utilities.ORM.Manager.QueryProvider.Manager().Batch(TestDatabaseSource);
-            Assert.DoesNotThrow(() => Batch.AddCommand("SELECT * FROM TestTable", CommandType.Text, TestObject).Execute());
+            Utilities.ORM.Manager.ORMManager Temp = new Utilities.ORM.Manager.ORMManager();
+            Assert.NotNull(Temp);
+        }
+
+        [Fact]
+        public void Initialize()
+        {
+            string Name = Utilities.IoC.Manager.Bootstrapper.Name;
+            Utilities.ORM.Manager.ORMManager Temp = new Utilities.ORM.Manager.ORMManager();
+            Assert.DoesNotThrow(() => Temp.Initialize());
         }
     }
 }

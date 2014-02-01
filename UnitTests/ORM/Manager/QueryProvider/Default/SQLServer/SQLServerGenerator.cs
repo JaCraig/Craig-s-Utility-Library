@@ -38,7 +38,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         {
             Utilities.ORM.Manager.Mapper.Manager Temp = new Utilities.ORM.Manager.Mapper.Manager();
             QueryProvider = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
-            Generator = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator<TestClass>(QueryProvider, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            Generator = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator<TestClass>(QueryProvider, TestDatabaseSource);
         }
 
         private Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator<TestClass> Generator { get; set; }
@@ -117,7 +117,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
 
         public class TestClass
         {
-            public int A { get; set; }
+            public int ID { get; set; }
         }
 
         public class TestClassDatabase : IDatabase
@@ -129,7 +129,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
 
             public string Name
             {
-                get { return "TestDatabase"; }
+                get { return "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"; }
             }
 
             public int Order
@@ -158,7 +158,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
             public TestClassMapping()
                 : base()
             {
-                ID(x => x.A).SetAutoIncrement();
+                ID(x => x.ID).SetFieldName("ID").SetAutoIncrement();
             }
         }
     }

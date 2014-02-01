@@ -191,6 +191,7 @@
     <Compile Include="ORM\Manager\Mapper\Default\Map.cs" />
     <Compile Include="ORM\Manager\Mapper\Default\Reference.cs" />
     <Compile Include="ORM\Manager\Mapper\Manager.cs" />
+    <Compile Include="ORM\Manager\ORMManager.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\DatabaseBatch.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\Parameter.cs" />
@@ -207,6 +208,9 @@
     <Compile Include="ORM\Manager\Schema\Default\Trigger.cs" />
     <Compile Include="ORM\Manager\Schema\Default\View.cs" />
     <Compile Include="ORM\Manager\Schema\Manager.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\Manager.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\SourceInfo.cs" />
     <Compile Include="ORM\Parameters\AndParameter.cs" />
     <Compile Include="ORM\Parameters\BetweenParameter.cs" />
     <Compile Include="ORM\Parameters\EqualParameter.cs" />
@@ -249,7 +253,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

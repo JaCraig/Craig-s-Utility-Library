@@ -394,6 +394,20 @@
     <Compile Include="Media\Procedural\PerlinNoise.cs" />
     <Compile Include="Media\RGBHistogram.cs" />
     <Compile Include="ORM\BaseClasses\MappingBaseClass.cs" />
+    <Compile Include="ORM\Manager\Aspect\Interfaces\IORMObject.cs" />
+    <Compile Include="ORM\Manager\Aspect\ORMAspect.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IIEnumerableManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IID.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IListManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IListManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IManyToMany.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IManyToOne.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IMap.cs" />
+    <Compile Include="ORM\Manager\Mapper\Interfaces\IReference.cs" />
+    <Compile Include="ORM\Manager\Module\ORMModule.cs" />
+    <Compile Include="ORM\Manager\ORMManager.cs" />
+    <Compile Include="ORM\Manager\Session.cs" />
+    <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
     <Compile Include="ORM\Manager\SourceProvider\Manager.cs" />
     <Compile Include="ORM\Manager\SourceProvider\Module\SourceProviderModule.cs" />
     <Compile Include="ORM\Manager\SourceProvider\SourceInfo.cs" />
@@ -521,10 +535,7 @@
     <None Include="Key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ORM\Manager\Aspect\" />
-    <Folder Include="ORM\Manager\Module\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

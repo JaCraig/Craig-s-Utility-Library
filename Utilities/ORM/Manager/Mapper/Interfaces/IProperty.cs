@@ -135,11 +135,6 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         Func<DataType> DefaultValue { get; }
 
         /// <summary>
-        /// Derived field name
-        /// </summary>
-        string DerivedFieldName { get; }
-
-        /// <summary>
         /// Expression pointing to the property
         /// </summary>
         Expression<Func<ClassType, DataType>> Expression { get; }
@@ -158,11 +153,6 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Property name
         /// </summary>
         string Name { get; }
-
-        /// <summary>
-        /// Property type
-        /// </summary>
-        Type Type { get; }
     }
 
     /// <summary>
@@ -196,6 +186,11 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         bool Cascade { get; }
 
         /// <summary>
+        /// Derived field name
+        /// </summary>
+        string DerivedFieldName { get; }
+
+        /// <summary>
         /// Field name
         /// </summary>
         string FieldName { get; }
@@ -219,6 +214,11 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Table name
         /// </summary>
         string TableName { get; }
+
+        /// <summary>
+        /// Property type
+        /// </summary>
+        Type Type { get; }
 
         /// <summary>
         /// Unique

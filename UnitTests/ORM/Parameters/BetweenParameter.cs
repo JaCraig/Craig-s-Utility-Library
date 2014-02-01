@@ -37,7 +37,7 @@ namespace UnitTests.ORM.Parameters
             Assert.Equal(12, TestObject.Max);
             Assert.Equal("@", TestObject.ParameterStarter);
             Assert.Equal("ID BETWEEN @IDMin AND @IDMax", TestObject.ToString());
-            IBatch Batch = new Utilities.ORM.Manager.QueryProvider.Manager().Batch("System.Data.SqlClient", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            IBatch Batch = new Utilities.ORM.Manager.QueryProvider.Manager().Batch(TestDatabaseSource);
             Assert.DoesNotThrow(() => Batch.AddCommand("SELECT * FROM TestTable", CommandType.Text, TestObject).Execute());
         }
     }

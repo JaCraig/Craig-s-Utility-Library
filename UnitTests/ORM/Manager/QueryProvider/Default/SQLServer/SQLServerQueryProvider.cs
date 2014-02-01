@@ -22,6 +22,8 @@ THE SOFTWARE.*/
 using System;
 using System.Data;
 using System.Linq;
+using Utilities.ORM.BaseClasses;
+using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
@@ -39,7 +41,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         public void Batch()
         {
             Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
-            IBatch Batch = Temp.Batch("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            IBatch Batch = Temp.Batch(TestDatabaseSource);
             Assert.Equal(0, Batch.CommandCount);
             Assert.Equal(0, Batch.Execute().First().Count());
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch), Batch.GetType());
@@ -57,13 +59,55 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         public void Generate()
         {
             Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
-            IGenerator<TestClass> Generator = Temp.Generate<TestClass>("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            IGenerator<TestClass> Generator = Temp.Generate<TestClass>(TestDatabaseSource);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator<TestClass>), Generator.GetType());
         }
 
-        private class TestClass
+        public class TestClass
         {
-            public int A { get; set; }
+            public int ID { get; set; }
+        }
+
+        public class TestClassDatabase : IDatabase
+        {
+            public bool Audit
+            {
+                get { return false; }
+            }
+
+            public string Name
+            {
+                get { return "Data Source=localhost;Initial Catalog=TestDatabase2;Integrated Security=SSPI;Pooling=false"; }
+            }
+
+            public int Order
+            {
+                get { return 0; }
+            }
+
+            public bool Readable
+            {
+                get { return true; }
+            }
+
+            public bool Update
+            {
+                get { return false; }
+            }
+
+            public bool Writable
+            {
+                get { return false; }
+            }
+        }
+
+        public class TestClassMapping : MappingBaseClass<TestClass, TestClassDatabase>
+        {
+            public TestClassMapping()
+                : base()
+            {
+                ID(x => x.ID).SetFieldName("ID").SetAutoIncrement();
+            }
         }
     }
 }

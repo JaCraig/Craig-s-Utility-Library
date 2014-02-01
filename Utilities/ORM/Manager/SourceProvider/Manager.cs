@@ -41,7 +41,7 @@ namespace Utilities.ORM.Manager.SourceProvider
     /// <summary>
     /// Database manager
     /// </summary>
-    public class Manager
+    public class Manager : IEnumerable<ISourceInfo>
     {
         /// <summary>
         /// Constructor
@@ -52,10 +52,10 @@ namespace Utilities.ORM.Manager.SourceProvider
                                  .GetAssemblies()
                                  .Objects<IDatabase>()
                                  .OrderBy(x => x.Order)
-                                 .ToDictionary(x => x.Name, x => (ISourceInfo)new SourceInfo("", x.Name, "", "", x.Writable, x.Readable));
+                                 .ToDictionary(x => x.Name, x => (ISourceInfo)new SourceInfo("", x.Name, "", "", x.Writable, x.Readable, x));
             foreach (ConnectionStringSettings ConnectionString in ConfigurationManager.ConnectionStrings)
             {
-                if (Sources.ContainsKey(ConnectionString.Name))
+                if (!Sources.ContainsKey(ConnectionString.Name))
                     Sources.Add(ConnectionString.Name, new SourceInfo(ConnectionString.ConnectionString, ConnectionString.Name, "", "", true, true));
             }
         }
@@ -66,13 +66,33 @@ namespace Utilities.ORM.Manager.SourceProvider
         protected IDictionary<string, ISourceInfo> Sources { get; private set; }
 
         /// <summary>
+        /// Gets the enumerator for the sources
+        /// </summary>
+        /// <returns>The source enumerator</returns>
+        public IEnumerator<ISourceInfo> GetEnumerator()
+        {
+            return Sources.ToList(x => x.Value).GetEnumerator();
+        }
+
+        /// <summary>
         /// Gets the source info specified
         /// </summary>
         /// <param name="Name">Name of the source to get</param>
         /// <returns>The source specified</returns>
         public ISourceInfo GetSource(string Name)
         {
+            if (!Sources.ContainsKey(Name))
+                Sources.Add(Name, new SourceInfo(Name, Name));
             return Sources.GetValue(Name, null);
+        }
+
+        /// <summary>
+        /// Gets the enumerator for the sources
+        /// </summary>
+        /// <returns>The source enumerator</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Sources.ToList(x => x.Value).GetEnumerator();
         }
 
         /// <summary>

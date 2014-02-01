@@ -73,30 +73,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         {
             ISource CurrentStructure = GetSourceStructure(Source);
             return BuildCommands(DesiredStructure, CurrentStructure).ToArray();
-            //ConnectionString = Regex.Replace(ConnectionString, "Pooling=(.*?;)", "", RegexOptions.IgnoreCase) + ";Pooling=false;";
-            //IBatch Batch = Provider.Batch(ProviderName, ConnectionString);
-            //for (int x = 0; x < Commands.Length; ++x)
-            //{
-            //    if (Commands[x].Contains("CREATE TRIGGER") || Commands[x].Contains("CREATE FUNCTION"))
-            //    {
-            //        if (Batch.CommandCount > 0)
-            //        {
-            //            Batch.Execute();
-            //            Batch = Provider.Batch(ProviderName, ConnectionString);
-            //        }
-            //        Batch.AddCommand(CommandType.Text, Commands[x]);
-            //        if (x < Commands.Length - 1)
-            //        {
-            //            Batch.Execute();
-            //            Batch = Provider.Batch(ProviderName, ConnectionString);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Batch.AddCommand(CommandType.Text, Commands[x]);
-            //    }
-            //}
-            //Batch.Execute();
         }
 
         /// <summary>

@@ -46,11 +46,11 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void GenerateSchema()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
-            ISource Source = Temp.GetSourceStructure("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
             Source.Tables.First().AddColumn<string>("A", DbType.Int16);
             ITable Table = Source.AddTable("TestTable2");
             Table.AddColumn<string>("A", DbType.Int16);
-            IEnumerable<string> Commands = Temp.GenerateSchema(Source, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            IEnumerable<string> Commands = Temp.GenerateSchema(Source, TestDatabaseSource);
             Assert.Equal(2, Commands.Count());
             Assert.Equal("EXEC dbo.sp_executesql @statement = N'ALTER TABLE TestTable ADD A SmallInt'", Commands.First());
             Assert.Equal("EXEC dbo.sp_executesql @statement = N'CREATE TABLE TestTable2(A SmallInt)'", Commands.Last());
@@ -60,7 +60,7 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void GetSourceStructure()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
-            ISource Source = Temp.GetSourceStructure("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
+            ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
             Assert.Equal(0, Source.Functions.Count);
             Assert.Equal("TestDatabase", Source.Name);
             Assert.Equal(0, Source.StoredProcedures.Count);
@@ -77,14 +77,14 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void SourceExists()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
-            Assert.True(Temp.SourceExists("TestDatabase", "Data Source=localhost;Integrated Security=SSPI;Pooling=false"));
+            Assert.True(Temp.SourceExists("TestDatabase", DatabaseSource));
         }
 
         [Fact]
         public void TableExists()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
-            Assert.True(Temp.TableExists("TestTable", "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"));
+            Assert.True(Temp.TableExists("TestTable", TestDatabaseSource));
         }
     }
 }

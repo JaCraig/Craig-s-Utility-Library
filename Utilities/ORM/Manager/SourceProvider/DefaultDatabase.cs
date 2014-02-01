@@ -26,45 +26,73 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
-using System.Linq.Expressions;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns;
+using Utilities.DataTypes.Comparison;
 using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.ORM.Manager.Mapper.BaseClasses;
-using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.BaseClasses;
+using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.Mapper.Default
+namespace Utilities.ORM.Manager.SourceProvider
 {
     /// <summary>
-    /// Many to one class
+    /// Default database object
     /// </summary>
-    /// <typeparam name="ClassType">Class type</typeparam>
-    /// <typeparam name="DataType">Data type</typeparam>
-    public class ListManyToOne<ClassType, DataType> : PropertyBase<ClassType, List<DataType>, ListManyToOne<ClassType, DataType>>, IListManyToOne
-        where ClassType : class,new()
-        where DataType : class,new()
+    public class DefaultDatabase : IDatabase
     {
         /// <summary>
-        /// Constructor
+        /// Should the database be auditted
         /// </summary>
-        /// <param name="Expression">Expression pointing to the many to one</param>
-        /// <param name="Mapping">Mapping the StringID is added to</param>
-        public ListManyToOne(Expression<Func<ClassType, List<DataType>>> Expression, IMapping Mapping)
-            : base(Expression, Mapping)
+        public bool Audit
         {
-            Type = typeof(DataType);
-            SetDefaultValue(() => new List<DataType>());
-            string Class1 = typeof(ClassType).Name;
-            string Class2 = typeof(DataType).Name;
-            if (string.Compare(Class1, Class2, StringComparison.Ordinal) < 0)
-                SetTableName(Class1 + "_" + Class2);
-            else
-                SetTableName(Class2 + "_" + Class1);
+            get { return false; }
+        }
+
+        /// <summary>
+        /// The name of the connection string
+        /// </summary>
+        public string Name
+        {
+            get { return ConfigurationManager.ConnectionStrings[0].Name; }
+        }
+
+        /// <summary>
+        /// Order of the database (used when running commands to save/select objects)
+        /// </summary>
+        public int Order
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Is this readable?
+        /// </summary>
+        public bool Readable
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Should we update the database
+        /// </summary>
+        public bool Update
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Is this writable?
+        /// </summary>
+        public bool Writable
+        {
+            get { return true; }
         }
     }
 }

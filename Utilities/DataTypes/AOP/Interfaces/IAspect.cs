@@ -43,11 +43,19 @@ namespace Utilities.DataTypes.AOP.Interfaces
         void Setup(object Object);
 
         /// <summary>
+        /// Used to insert code into the default constructor
+        /// </summary>
+        /// <param name="BaseType">Base type</param>
+        /// <returns>The code to insert</returns>
+        string SetupDefaultConstructor(Type BaseType);
+
+        /// <summary>
         /// Used to insert code at the end of the method
         /// </summary>
         /// <param name="Method">Overridding Method</param>
         /// <param name="BaseType">Base type</param>
         /// <param name="ReturnValueName">Local holder for the value returned by the function</param>
+        /// <returns>The code to insert</returns>
         string SetupEndMethod(MethodInfo Method, Type BaseType, string ReturnValueName);
 
         /// <summary>
@@ -55,12 +63,14 @@ namespace Utilities.DataTypes.AOP.Interfaces
         /// </summary>
         /// <param name="Method">Overridding Method</param>
         /// <param name="BaseType">Base type</param>
+        /// <returns>The code to insert</returns>
         string SetupExceptionMethod(MethodInfo Method, Type BaseType);
 
         /// <summary>
         /// Used to set up any interfaces, extra fields, methods, etc. prior to overridding any methods.
         /// </summary>
         /// <param name="Type">Type of the object</param>
+        /// <returns>The code to insert</returns>
         string SetupInterfaces(Type Type);
 
         /// <summary>
@@ -68,6 +78,7 @@ namespace Utilities.DataTypes.AOP.Interfaces
         /// </summary>
         /// <param name="Method">Overridding Method</param>
         /// <param name="BaseType">Base type</param>
+        /// <returns>The code to insert</returns>
         string SetupStartMethod(MethodInfo Method, Type BaseType);
 
         #endregion Functions

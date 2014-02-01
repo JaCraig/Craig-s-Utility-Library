@@ -20,17 +20,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Data;
+using Utilities.ORM.BaseClasses;
+using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.QueryProvider
 {
-    public class Manager
+    public class Manager : DatabaseBaseClass
     {
         [Fact]
         public void Batch()
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Batch("System.Data.SqlClient", ""));
+            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Batch(TestDatabaseSource));
         }
 
         [Fact]
@@ -43,12 +45,54 @@ namespace UnitTests.ORM.Manager.QueryProvider
         [Fact]
         public void Generate()
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<Temp>("System.Data.SqlClient", ""));
+            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<TestClass>(TestDatabaseSource));
         }
 
-        public class Temp
+        public class TestClass
         {
-            public int A { get; set; }
+            public int ID { get; set; }
+        }
+
+        public class TestClassDatabase : IDatabase
+        {
+            public bool Audit
+            {
+                get { return false; }
+            }
+
+            public string Name
+            {
+                get { return "Data Source=localhost;Initial Catalog=TestDatabase3;Integrated Security=SSPI;Pooling=false"; }
+            }
+
+            public int Order
+            {
+                get { return 0; }
+            }
+
+            public bool Readable
+            {
+                get { return true; }
+            }
+
+            public bool Update
+            {
+                get { return false; }
+            }
+
+            public bool Writable
+            {
+                get { return false; }
+            }
+        }
+
+        public class TestClassMapping : MappingBaseClass<TestClass, TestClassDatabase>
+        {
+            public TestClassMapping()
+                : base()
+            {
+                ID(x => x.ID).SetFieldName("ID").SetAutoIncrement();
+            }
         }
     }
 }

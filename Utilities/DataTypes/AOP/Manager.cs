@@ -48,7 +48,8 @@ namespace Utilities.DataTypes.AOP
         {
             Contract.Requires<ArgumentNullException>(Compiler != null, "Compiler");
             Manager.Compiler = Compiler;
-            Aspects.Add(AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>());
+            if (Aspects.Count == 0)
+                Aspects.Add(AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>());
             Compiler.Classes.ForEach(x => Classes.Add(x.BaseType, x));
             if (Classes.Count == 0)
             {
@@ -154,6 +155,18 @@ namespace {1}
  Type.Name + "Derived",
  Type.FullName.Replace("+", "."),
  Interfaces.Count > 0 ? "," : "", Interfaces.ToString(x => x.Name));
+            if (Type.HasDefaultConstructor())
+            {
+                Builder.AppendLineFormat(@"
+        public {0}()
+            :base()
+        {{
+            ",
+               Type.Name + "Derived");
+                Aspects.ForEach(x => Builder.AppendLine(x.SetupDefaultConstructor(Type)));
+                Builder.AppendLineFormat(@"
+        }}");
+            }
 
             Aspects.ForEach(x => Builder.AppendLine(x.SetupInterfaces(Type)));
 

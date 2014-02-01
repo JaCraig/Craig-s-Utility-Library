@@ -28,6 +28,7 @@ using System.Configuration;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
@@ -43,6 +44,11 @@ namespace Utilities.ORM.Manager.SourceProvider.Interfaces
         /// Connection string
         /// </summary>
         string Connection { get; }
+
+        /// <summary>
+        /// The database object associated with the source info (if one is associated with it)
+        /// </summary>
+        IDatabase Database { get; }
 
         /// <summary>
         /// Name of the source

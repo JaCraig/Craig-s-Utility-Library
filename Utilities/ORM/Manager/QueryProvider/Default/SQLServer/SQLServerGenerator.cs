@@ -30,6 +30,8 @@ using System.Globalization;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.IO.FileSystem.Interfaces;
+using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Default;
@@ -51,22 +53,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <summary>
         /// Constructor
         /// </summary>
-        public SQLServerGenerator()
-            : base()
-        {
-            Mapping = Utilities.IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>()[typeof(T)];
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
         public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source)
-            : this()
         {
             this.QueryProvider = QueryProvider;
             this.Source = Source;
+            Mapper.Manager MappingManager = Utilities.IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            this.Mapping = MappingManager[typeof(T)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
         }
 
         /// <summary>

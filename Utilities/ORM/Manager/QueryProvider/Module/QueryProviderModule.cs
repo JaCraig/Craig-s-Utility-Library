@@ -37,7 +37,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Module
         /// </summary>
         public int Order
         {
-            get { return 1; }
+            get { return 0; }
         }
 
         /// <summary>

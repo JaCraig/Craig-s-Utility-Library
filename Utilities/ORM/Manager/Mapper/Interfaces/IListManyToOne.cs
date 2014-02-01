@@ -29,42 +29,21 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using Utilities.DataTypes;
+using Utilities.DataTypes.DataMapper.Interfaces;
 using Utilities.DataTypes.Patterns;
 using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.ORM.Manager.Mapper.BaseClasses;
-using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.Mapper.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.Mapper.Default
+namespace Utilities.ORM.Manager.Mapper.Interfaces
 {
     /// <summary>
-    /// Many to one class
+    /// ListManyToOne interface
     /// </summary>
-    /// <typeparam name="ClassType">Class type</typeparam>
-    /// <typeparam name="DataType">Data type</typeparam>
-    public class ListManyToOne<ClassType, DataType> : PropertyBase<ClassType, List<DataType>, ListManyToOne<ClassType, DataType>>, IListManyToOne
-        where ClassType : class,new()
-        where DataType : class,new()
+    public interface IListManyToOne
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Expression">Expression pointing to the many to one</param>
-        /// <param name="Mapping">Mapping the StringID is added to</param>
-        public ListManyToOne(Expression<Func<ClassType, List<DataType>>> Expression, IMapping Mapping)
-            : base(Expression, Mapping)
-        {
-            Type = typeof(DataType);
-            SetDefaultValue(() => new List<DataType>());
-            string Class1 = typeof(ClassType).Name;
-            string Class2 = typeof(DataType).Name;
-            if (string.Compare(Class1, Class2, StringComparison.Ordinal) < 0)
-                SetTableName(Class1 + "_" + Class2);
-            else
-                SetTableName(Class2 + "_" + Class1);
-        }
     }
 }
