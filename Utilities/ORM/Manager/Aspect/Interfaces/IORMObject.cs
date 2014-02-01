@@ -21,24 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.ORM.Interfaces;
-using Utilities.ORM.Manager.Mapper.Interfaces;
-using Utilities.ORM.Manager.QueryProvider.Default;
-using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Manager.Schema.Enums;
-using Utilities.ORM.Manager.Schema.Interfaces;
-using Utilities.ORM.Manager.SourceProvider.Interfaces;
-
 #endregion Usings
 
 namespace Utilities.ORM.Manager.Aspect.Interfaces

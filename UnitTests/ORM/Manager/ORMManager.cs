@@ -34,16 +34,8 @@ namespace UnitTests.ORM.Manager
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.ORMManager Temp = new Utilities.ORM.Manager.ORMManager();
+            Utilities.ORM.Manager.ORMManager Temp = new Utilities.ORM.Manager.ORMManager(Utilities.IoC.Manager.Bootstrapper);
             Assert.NotNull(Temp);
-        }
-
-        [Fact]
-        public void Initialize()
-        {
-            string Name = Utilities.IoC.Manager.Bootstrapper.Name;
-            Utilities.ORM.Manager.ORMManager Temp = new Utilities.ORM.Manager.ORMManager();
-            Assert.DoesNotThrow(() => Temp.Initialize());
         }
     }
 }

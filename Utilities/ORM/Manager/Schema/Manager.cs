@@ -22,12 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 

@@ -47,7 +47,7 @@ namespace Utilities.ORM.Manager.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new ORMManager());
+            Bootstrapper.Register(new ORMManager(Bootstrapper));
             ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
         }
     }

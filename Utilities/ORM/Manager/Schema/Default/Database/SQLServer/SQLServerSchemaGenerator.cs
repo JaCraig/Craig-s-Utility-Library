@@ -28,11 +28,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Comparison;
-using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
-using Utilities.ORM.Manager.SourceProvider;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings

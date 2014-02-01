@@ -24,16 +24,13 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings

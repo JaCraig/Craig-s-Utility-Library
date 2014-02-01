@@ -21,8 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -30,6 +28,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Roslyn.Compilers;
+using Roslyn.Compilers.CSharp;
 using Utilities.DataTypes.Patterns.BaseClasses;
 
 #endregion Usings

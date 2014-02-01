@@ -22,21 +22,9 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
-using System.Data.Common;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Comparison;
-using Utilities.DataTypes.Patterns.BaseClasses;
-using Utilities.ORM.Manager.QueryProvider.Interfaces;
-using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 

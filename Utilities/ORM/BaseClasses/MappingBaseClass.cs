@@ -22,17 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns.BaseClasses;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Default;
 using Utilities.ORM.Manager.Mapper.Interfaces;
-using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 

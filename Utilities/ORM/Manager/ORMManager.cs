@@ -24,20 +24,16 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Utilities.DataTypes;
-using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.IoC.Interfaces;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
-using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
-using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -51,30 +47,21 @@ namespace Utilities.ORM.Manager
         /// <summary>
         /// Constructor
         /// </summary>
-        public ORMManager()
+        public ORMManager(IBootstrapper Bootstrapper)
         {
             this.Mappings = new ListMapping<IDatabase, IMapping>();
+            MapperProvider = Bootstrapper.Resolve<Mapper.Manager>();
+            QueryProvider = Bootstrapper.Resolve<QueryProvider.Manager>();
+            SchemaProvider = Bootstrapper.Resolve<Schema.Manager>();
+            SourceProvider = Bootstrapper.Resolve<SourceProvider.Manager>();
+            SetupMappings();
+            SetupDatabases();
         }
 
         /// <summary>
         /// Mapper provider
         /// </summary>
-        private static Mapper.Manager MapperProvider { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>(); } }
-
-        /// <summary>
-        /// Query provider
-        /// </summary>
-        private static QueryProvider.Manager QueryProvider { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>(); } }
-
-        /// <summary>
-        /// Schema provider
-        /// </summary>
-        private static Schema.Manager SchemaProvider { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<Schema.Manager>(); } }
-
-        /// <summary>
-        /// Source provider
-        /// </summary>
-        private static SourceProvider.Manager SourceProvider { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<SourceProvider.Manager>(); } }
+        private Mapper.Manager MapperProvider { get; set; }
 
         /// <summary>
         /// Mappings associate with a source
@@ -82,13 +69,19 @@ namespace Utilities.ORM.Manager
         private ListMapping<IDatabase, IMapping> Mappings { get; set; }
 
         /// <summary>
-        /// Initializes the system
+        /// Query provider
         /// </summary>
-        public void Initialize()
-        {
-            SetupMappings();
-            SetupDatabases();
-        }
+        private QueryProvider.Manager QueryProvider { get; set; }
+
+        /// <summary>
+        /// Schema provider
+        /// </summary>
+        private Schema.Manager SchemaProvider { get; set; }
+
+        /// <summary>
+        /// Source provider
+        /// </summary>
+        private SourceProvider.Manager SourceProvider { get; set; }
 
         private static ITable SetupAuditTables(ITable Table)
         {
