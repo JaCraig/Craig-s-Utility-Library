@@ -89,6 +89,7 @@ namespace Utilities.DataTypes
         public static IEnumerable<T> Distinct<T>(this IEnumerable<T> Enumerable, Func<T, T, bool> Predicate)
         {
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            Contract.Requires<ArgumentNullException>(Enumerable != null, "Enumerable");
             List<T> Results = new List<T>();
             foreach (T Item in Enumerable)
             {

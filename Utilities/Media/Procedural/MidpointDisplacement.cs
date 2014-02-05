@@ -21,7 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 
 #endregion Usings
@@ -67,6 +69,7 @@ namespace Utilities.Media.Procedural
 
         private static List<Line> GenerateLines(int Width, int Height, int NumberOfCracks, int Iterations, int MaxChange, int MaxLength, int Seed)
         {
+            Contract.Requires<ArgumentException>(NumberOfCracks >= 0 && Width >= 0);
             List<Line> Lines = new List<Line>();
             System.Random Generator = new System.Random(Seed);
             for (int x = 0; x < NumberOfCracks; ++x)

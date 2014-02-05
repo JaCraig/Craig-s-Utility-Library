@@ -26,6 +26,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -147,6 +148,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
 
         private static IEnumerable<dynamic> GetValues(DbDataReader TempReader)
         {
+            Contract.Requires<ArgumentNullException>(TempReader != null, "TempReader");
             List<dynamic> ReturnValue = new List<dynamic>();
             string[] FieldNames = new string[TempReader.FieldCount];
             for (int x = 0; x < TempReader.FieldCount; ++x)

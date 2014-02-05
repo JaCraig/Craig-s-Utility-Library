@@ -208,6 +208,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         private void AddLeftIDictionaryMapping(Type LeftType, Type RightType)
         {
             Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
+            Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
             PropertyInfo[] Properties = RightType.GetProperties();
             for (int x = 0; x < Properties.Length; ++x)
             {
@@ -243,6 +244,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
 
         private void AddRightIDictionaryMapping(Type LeftType, Type RightType)
         {
+            Contract.Requires<ArgumentNullException>(RightType != null, "RightType");
             Contract.Requires<ArgumentNullException>(LeftType != null, "LeftType");
             PropertyInfo[] Properties = LeftType.GetProperties();
             for (int x = 0; x < Properties.Length; ++x)

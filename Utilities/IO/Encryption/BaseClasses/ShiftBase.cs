@@ -80,9 +80,9 @@ namespace Utilities.IO.Encryption.BaseClasses
         /// </summary>
         private static byte[] Process(byte[] Input, byte[] Key)
         {
-            if (Input == null)
+            if (Input == null || Input.Length == 0)
                 return null;
-            if (Key == null)
+            if (Key == null || Key.Length == 0)
                 return Input;
             byte[] OutputArray = new byte[Input.Length];
             int Position = 0;

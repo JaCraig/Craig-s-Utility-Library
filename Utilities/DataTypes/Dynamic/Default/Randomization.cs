@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes.Dynamic.BaseClasses;
 
@@ -48,6 +49,7 @@ namespace Utilities.DataTypes.Dynamic.Default
         /// <param name="Object">Object to extend</param>
         public override void Extend(Dynamo Object)
         {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             if (Object.ContainsKey("Randomize"))
                 return;
             dynamic Temp = Object;
@@ -56,6 +58,7 @@ namespace Utilities.DataTypes.Dynamic.Default
 
         private static void Randomize(Dynamo Object)
         {
+            Contract.Requires<ArgumentNullException>(Object != null, "Object");
             System.Random Rand = new System.Random();
             foreach (string Key in Object.Keys.ToList())
             {

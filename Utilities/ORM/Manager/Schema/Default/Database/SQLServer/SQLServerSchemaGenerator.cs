@@ -21,8 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -186,6 +188,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static bool Exists(string Command, string Value, ISourceInfo Source)
         {
+            Contract.Requires<ArgumentNullException>(Source != null, "Source");
             return Provider.Batch(Source)
                            .AddCommand(Command, CommandType.Text, Value)
                            .Execute()
@@ -196,6 +199,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetAlterFunctionCommand(Function Function, Function CurrentFunction)
         {
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Contract.Requires<ArgumentNullException>(CurrentFunction != null, "CurrentFunction");
             List<string> ReturnValue = new List<string>();
             if (Function.Definition != CurrentFunction.Definition)
             {
@@ -209,6 +214,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetAlterStoredProcedure(StoredProcedure StoredProcedure, StoredProcedure CurrentStoredProcedure)
         {
+            Contract.Requires<ArgumentNullException>(StoredProcedure != null, "StoredProcedure");
+            Contract.Requires<ArgumentNullException>(CurrentStoredProcedure != null, "CurrentStoredProcedure");
             List<string> ReturnValue = new List<string>();
             if (StoredProcedure.Definition != CurrentStoredProcedure.Definition)
             {
@@ -222,6 +229,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetAlterTableCommand(Table Table, ITable CurrentTable)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             List<string> ReturnValue = new List<string>();
             foreach (IColumn Column in Table.Columns)
             {
@@ -283,6 +291,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetAlterTriggerCommand(Table Table, ITable CurrentTable)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             List<string> ReturnValue = new List<string>();
             foreach (Trigger Trigger in Table.Triggers)
             {
@@ -304,6 +313,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetAlterViewCommand(View View, View CurrentView)
         {
+            Contract.Requires<ArgumentNullException>(View != null, "View");
+            Contract.Requires<ArgumentNullException>(CurrentView != null, "CurrentView");
             List<string> ReturnValue = new List<string>();
             if (View.Definition != CurrentView.Definition)
             {
@@ -317,6 +328,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetForeignKeyCommand(Table Table)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             List<string> ReturnValue = new List<string>();
             foreach (IColumn Column in Table.Columns)
             {
@@ -346,18 +358,21 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetFunctionCommand(Function Function)
         {
+            Contract.Requires<ArgumentNullException>(Function != null, "Function");
             string Definition = Regex.Replace(Function.Definition, "-- (.*)", "");
             return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
         }
 
         private static IEnumerable<string> GetStoredProcedure(StoredProcedure StoredProcedure)
         {
+            Contract.Requires<ArgumentNullException>(StoredProcedure != null, "StoredProcedure");
             string Definition = Regex.Replace(StoredProcedure.Definition, "-- (.*)", "");
             return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
         }
 
         private static IEnumerable<string> GetTableCommand(Table Table)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             List<string> ReturnValue = new List<string>();
             StringBuilder Builder = new StringBuilder();
             Builder.Append("EXEC dbo.sp_executesql @statement = N'CREATE TABLE ").Append(Table.Name).Append("(");
@@ -428,6 +443,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static void GetTables(ISourceInfo Source, Database Temp)
         {
+            Contract.Requires<ArgumentNullException>(Source != null, "Source");
             IEnumerable<dynamic> Values = Provider.Batch(Source)
                                                   .AddCommand(CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
                                                   .Execute()
@@ -445,6 +461,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetTriggerCommand(Table Table)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             List<string> ReturnValue = new List<string>();
             foreach (Trigger Trigger in Table.Triggers)
             {
@@ -456,12 +473,14 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static IEnumerable<string> GetViewCommand(View View)
         {
+            Contract.Requires<ArgumentNullException>(View != null, "View");
             string Definition = Regex.Replace(View.Definition, "-- (.*)", "");
             return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
         }
 
         private static void SetupColumns(Table Table, IEnumerable<dynamic> Values)
         {
+            Contract.Requires<ArgumentNullException>(Values != null, "Values");
             foreach (dynamic Item in Values)
             {
                 if (Table.ContainsColumn(Item.Column))
@@ -487,6 +506,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static void SetupFunctions(ISourceInfo Source, Database Temp)
         {
+            Contract.Requires<ArgumentNullException>(Source != null, "Source");
             IEnumerable<dynamic> Values = Provider.Batch(Source)
                                                       .AddCommand(CommandType.Text,
                                                             "SELECT SPECIFIC_NAME as NAME,ROUTINE_DEFINITION as DEFINITION FROM INFORMATION_SCHEMA.ROUTINES WHERE INFORMATION_SCHEMA.ROUTINES.ROUTINE_TYPE='FUNCTION'")
@@ -500,6 +520,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static void SetupStoredProcedures(ISourceInfo Source, Database Temp)
         {
+            Contract.Requires<ArgumentNullException>(Source != null, "Source");
             IEnumerable<dynamic> Values = Provider.Batch(Source)
                                                       .AddCommand(CommandType.Text,
                                                             "SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures")
@@ -532,6 +553,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static void SetupTables(ISourceInfo Source, Database Temp)
         {
+            Contract.Requires<ArgumentNullException>(Temp != null, "Temp");
             foreach (Table Table in Temp.Tables)
             {
                 IEnumerable<dynamic> Values = Provider.Batch(Source)
@@ -567,6 +589,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static void SetupTriggers(ISourceInfo Source, Table Table, IEnumerable<dynamic> Values)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            Contract.Requires<ArgumentNullException>(Source != null, "Source");
             Values = Provider.Batch(Source)
                              .AddCommand(@"SELECT sys.triggers.name as Name,sys.trigger_events.type as Type,
                                                 OBJECT_DEFINITION(sys.triggers.object_id) as Definition 
@@ -589,6 +613,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
 
         private static void SetupViews(ISourceInfo Source, Database Temp)
         {
+            Contract.Requires<ArgumentNullException>(Temp != null, "Temp");
             foreach (View View in Temp.Views)
             {
                 IEnumerable<dynamic> Values = Provider.Batch(Source)

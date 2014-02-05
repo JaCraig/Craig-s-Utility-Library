@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
@@ -85,6 +86,7 @@ namespace Utilities.ORM.Manager
 
         private static ITable SetupAuditTables(ITable Table)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             ITable AuditTable = Table.Source.AddTable(Table.Name + "Audit");
             AuditTable.AddColumn("ID", DbType.Int32, 0, false, true, true, true, false, "", "", 0);
             AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.To(DbType.Int32), 1, false, false, false, false, false, "", "", "");
@@ -95,6 +97,7 @@ namespace Utilities.ORM.Manager
 
         private static void SetupAuditTables(IDatabase Key, Schema.Default.Database.Database TempDatabase)
         {
+            Contract.Requires<ArgumentNullException>(Key != null, "Key");
             if (!Key.Audit)
                 return;
             List<ITable> TempTables = new List<ITable>();
@@ -109,6 +112,7 @@ namespace Utilities.ORM.Manager
 
         private static void SetupDeleteTrigger(ITable Table)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             StringBuilder Columns = new StringBuilder();
             StringBuilder Builder = new StringBuilder();
             Builder.Append("CREATE TRIGGER dbo.").Append(Table.Name).Append("_Audit_D ON dbo.")
@@ -129,6 +133,7 @@ namespace Utilities.ORM.Manager
 
         private static void SetupInsertUpdateTrigger(ITable Table)
         {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             StringBuilder Columns = new StringBuilder();
             StringBuilder Builder = new StringBuilder();
             Builder.Append("CREATE TRIGGER dbo.").Append(Table.Name).Append("_Audit_IU ON dbo.")
@@ -151,6 +156,8 @@ namespace Utilities.ORM.Manager
 
         private static void SetupProperties(ITable Table, IMapping Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
             foreach (IProperty Property in Mapping.IDProperties)
             {
                 Table.AddColumn(Property.FieldName,
@@ -266,6 +273,7 @@ namespace Utilities.ORM.Manager
 
         private void SetupJoiningTablesEnumerable(IMapping Mapping, IProperty Property, IDatabase Key, Schema.Default.Database.Database TempDatabase)
         {
+            Contract.Requires<ArgumentNullException>(TempDatabase != null, "TempDatabase");
             if (TempDatabase.Tables.FirstOrDefault(x => x.Name == Property.TableName) != null)
                 return;
             IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
