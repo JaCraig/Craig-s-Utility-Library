@@ -139,11 +139,6 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Mapping
         /// </summary>
         IMapping Mapping { get; }
-
-        /// <summary>
-        /// Property name
-        /// </summary>
-        string Name { get; }
     }
 
     /// <summary>
@@ -195,6 +190,11 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Max length
         /// </summary>
         int MaxLength { get; }
+
+        /// <summary>
+        /// Property name
+        /// </summary>
+        string Name { get; }
 
         /// <summary>
         /// Not null

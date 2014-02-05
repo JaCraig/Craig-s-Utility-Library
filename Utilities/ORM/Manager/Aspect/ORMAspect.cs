@@ -99,7 +99,25 @@ namespace Utilities.ORM.Aspect
         /// <returns>The code used</returns>
         public string SetupEndMethod(MethodInfo Method, Type BaseType, string ReturnValueName)
         {
-            return "";
+            StringBuilder Builder = new StringBuilder();
+            if (Mapper[BaseType] != null && Method.Name.StartsWith("get_", StringComparison.Ordinal))
+            {
+                foreach (IMapping Mapping in Mapper[BaseType])
+                {
+                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("get_", ""));
+                    if (Property != null)
+                    {
+                        if (Property is IManyToOne || Property is IMap)
+                            Builder.AppendLine(SetupSingleProperty(Method, BaseType, ReturnValueName, Property, Mapping));
+                        else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
+                            Builder.AppendLine(SetupIEnumerableProperty(Method, BaseType, ReturnValueName, Property, Mapping));
+                        else if (Property is IListManyToMany || Property is IListManyToOne)
+                            Builder.AppendLine(SetupListProperty(Method, BaseType, ReturnValueName, Property, Mapping));
+                        return Builder.ToString();
+                    }
+                }
+            }
+            return Builder.ToString();
         }
 
         /// <summary>
@@ -134,7 +152,50 @@ namespace Utilities.ORM.Aspect
         /// <returns>The code used</returns>
         public string SetupStartMethod(MethodInfo Method, Type BaseType)
         {
-            return "";
+            StringBuilder Builder = new StringBuilder();
+            if (Mapper[BaseType] != null && Method.Name.StartsWith("set_", StringComparison.Ordinal))
+            {
+                foreach (IMapping Mapping in Mapper[BaseType])
+                {
+                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("set_", ""));
+                    if (Fields.Contains(Property))
+                    {
+                        Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName);
+                        Builder.AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded");
+                    }
+                }
+            }
+            return Builder.ToString();
+        }
+
+        private static string SetupIEnumerableProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
+                .AppendLine("{")
+                //.AppendLine(
+                .AppendLine("}");
+            return Builder.ToString();
+        }
+
+        private static string SetupListProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
+                .AppendLine("{")
+                //.AppendLine(
+                .AppendLine("}");
+            return Builder.ToString();
+        }
+
+        private static string SetupSingleProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
+                .AppendLine("{")
+                //.AppendLine(
+                .AppendLine("}");
+            return Builder.ToString();
         }
 
         private string SetupFields(Type Type)
@@ -153,6 +214,7 @@ namespace Utilities.ORM.Aspect
                             {
                                 Fields.Add(Property);
                                 Builder.AppendLineFormat("private {0} {1};", Property.Type.GetName(), Property.DerivedFieldName);
+                                Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
                             }
                         }
                         else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
@@ -161,6 +223,7 @@ namespace Utilities.ORM.Aspect
                             {
                                 Fields.Add(Property);
                                 Builder.AppendLineFormat("private {0} {1};", typeof(IEnumerable<>).MakeGenericType(Property.Type).GetName(), Property.DerivedFieldName);
+                                Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
                             }
                         }
                         else if (Property is IListManyToOne || Property is IListManyToMany)
@@ -169,6 +232,7 @@ namespace Utilities.ORM.Aspect
                             {
                                 Fields.Add(Property);
                                 Builder.AppendLineFormat("private {0} {1};", typeof(List<>).MakeGenericType(Property.Type).GetName(), Property.DerivedFieldName);
+                                Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
                             }
                         }
                     }
