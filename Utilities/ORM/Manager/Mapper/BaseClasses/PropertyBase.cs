@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.Interfaces;
@@ -45,6 +46,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <param name="Mapping">Mapping the StringID is added to</param>
         protected PropertyBase(Expression<Func<ClassType, DataType>> Expression, Utilities.ORM.Manager.Mapper.Interfaces.IMapping Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             this.Expression = Expression;
             this.Name = Expression.PropertyName();
             this.Type = typeof(DataType);
@@ -99,6 +101,16 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// Index
         /// </summary>
         public bool Index { get; private set; }
+
+        /// <summary>
+        /// Command used to load the property
+        /// </summary>
+        public string LoadCommand { get; private set; }
+
+        /// <summary>
+        /// Command type for the load command
+        /// </summary>
+        public CommandType LoadCommandType { get; private set; }
 
         /// <summary>
         /// Mapping
@@ -285,6 +297,8 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>this</returns>
         public ReturnType SetLoadUsingCommand(string Command, CommandType CommandType)
         {
+            this.LoadCommand = Command;
+            this.LoadCommandType = CommandType;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
 

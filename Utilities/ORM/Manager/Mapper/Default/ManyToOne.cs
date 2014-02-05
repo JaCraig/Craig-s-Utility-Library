@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
@@ -47,6 +48,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public ManyToOne(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             SetDefaultValue(() => default(DataType));
             string Class1 = typeof(ClassType).Name;
             string Class2 = typeof(DataType).Name;

@@ -52,6 +52,7 @@ namespace Utilities.Media.Procedural
         public static Bitmap Generate(int Width, int Height, int NumberOfCracks, int Iterations,
             int MaxChange, int MaxLength, int Seed)
         {
+            Contract.Requires<ArgumentException>(NumberOfCracks >= 0, "Number of cracks should be greater than 0");
             Bitmap ReturnValue = new Bitmap(Width, Height);
             List<Line> Lines = GenerateLines(Width, Height, NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);
             using (Graphics ReturnGraphic = Graphics.FromImage(ReturnValue))

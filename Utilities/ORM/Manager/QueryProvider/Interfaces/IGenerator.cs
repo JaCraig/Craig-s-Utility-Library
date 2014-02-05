@@ -22,6 +22,8 @@ THE SOFTWARE.*/
 #region Usings
 
 using System.Collections.Generic;
+using Utilities.ORM.Manager.Mapper.Default;
+using Utilities.ORM.Manager.Mapper.Interfaces;
 
 #endregion Usings
 
@@ -85,6 +87,15 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         IBatch Insert(IEnumerable<T> Objects);
 
         /// <summary>
+        /// Generates a batch that will get the specific property for the object
+        /// </summary>
+        /// <typeparam name="P">Property type</typeparam>
+        /// <param name="Object">Object to get the property for</param>
+        /// <param name="Property">Property to get</param>
+        /// <returns>Batch with the appropriate commands</returns>
+        IBatch LoadProperty<P>(T Object, IProperty<T, P> Property);
+
+        /// <summary>
         /// Generates a batch that will get the number of pages for a given page size given the
         /// parameters specified
         /// </summary>
@@ -101,6 +112,46 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <param name="PageSize">Page size</param>
         /// <returns>Batch with the appropriate commands</returns>
         IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters);
+
+        /// <summary>
+        /// Sets up the default load command for a map property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">Map property</param>
+        void SetupLoadCommands<D>(Map<T, D> Property)
+            where D : class,new();
+
+        /// <summary>
+        /// Sets up the default load command for a IEnumerableManyToOne property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">IEnumerableManyToOne property</param>
+        void SetupLoadCommands<D>(IEnumerableManyToOne<T, D> Property)
+            where D : class,new();
+
+        /// <summary>
+        /// Sets up the default load command for a ListManyToOne property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ListManyToOne property</param>
+        void SetupLoadCommands<D>(ListManyToOne<T, D> Property)
+            where D : class,new();
+
+        /// <summary>
+        /// Sets up the default load command for a ListManyToMany property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ListManyToMany property</param>
+        void SetupLoadCommands<D>(ListManyToMany<T, D> Property)
+            where D : class,new();
+
+        /// <summary>
+        /// Sets up the default load command for a ManyToMany property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ManyToMany property</param>
+        void SetupLoadCommands<D>(ManyToMany<T, D> Property)
+            where D : class,new();
 
         /// <summary>
         /// Generates a batch that will update the data from the object

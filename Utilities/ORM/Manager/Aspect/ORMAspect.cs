@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -170,6 +171,7 @@ namespace Utilities.ORM.Aspect
 
         private static string SetupIEnumerableProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
@@ -180,6 +182,7 @@ namespace Utilities.ORM.Aspect
 
         private static string SetupListProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
@@ -190,6 +193,7 @@ namespace Utilities.ORM.Aspect
 
         private static string SetupSingleProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Property != null, "Property");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")

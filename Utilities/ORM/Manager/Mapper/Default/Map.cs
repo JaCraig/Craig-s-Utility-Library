@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
@@ -49,6 +50,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public Map(Expression<Func<ClassType, DataType>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             if (typeof(DataType).Is(typeof(IEnumerable)))
                 throw new ArgumentException("Expression is an IEnumerable, use ManyToOne or ManyToMany instead");
             SetFieldName(typeof(DataType).Name + "_" + Name + "_ID");

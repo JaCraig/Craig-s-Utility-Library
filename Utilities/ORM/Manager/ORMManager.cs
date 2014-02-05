@@ -50,6 +50,7 @@ namespace Utilities.ORM.Manager
         /// </summary>
         public ORMManager(IBootstrapper Bootstrapper)
         {
+            Contract.Requires<ArgumentNullException>(Bootstrapper != null, "Bootstrapper");
             this.Mappings = new ListMapping<IDatabase, IMapping>();
             MapperProvider = Bootstrapper.Resolve<Mapper.Manager>();
             QueryProvider = Bootstrapper.Resolve<QueryProvider.Manager>();

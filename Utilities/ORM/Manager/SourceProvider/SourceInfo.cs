@@ -77,6 +77,7 @@ namespace Utilities.ORM.Manager.SourceProvider
             this.Writable = Writable;
             this.Readable = Readable;
             this.Database = Database.Check(new DefaultDatabase());
+            this.Order = this.Database.Order;
         }
 
         /// <summary>
@@ -93,6 +94,11 @@ namespace Utilities.ORM.Manager.SourceProvider
         /// Name of the source
         /// </summary>
         public string Name { get; protected set; }
+
+        /// <summary>
+        /// Order that the source is generally used in
+        /// </summary>
+        public int Order { get; protected set; }
 
         /// <summary>
         /// Parameter prefix that the source uses

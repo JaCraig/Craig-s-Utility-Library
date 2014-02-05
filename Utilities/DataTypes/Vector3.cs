@@ -245,6 +245,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static bool operator !=(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return !(V1 == V2);
         }
 
@@ -348,6 +350,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting vector</returns>
         public static bool operator ==(Vector3 V1, Vector3 V2)
         {
+            Contract.Requires<ArgumentNullException>(V1 != null, "V1");
+            Contract.Requires<ArgumentNullException>(V2 != null, "V2");
             return V1.X == V2.X && V1.Y == V2.Y && V1.Z == V2.Z;
         }
 

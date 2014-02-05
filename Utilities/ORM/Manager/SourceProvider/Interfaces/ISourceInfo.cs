@@ -48,6 +48,11 @@ namespace Utilities.ORM.Manager.SourceProvider.Interfaces
         string Name { get; }
 
         /// <summary>
+        /// Order that the source should be used in
+        /// </summary>
+        int Order { get; }
+
+        /// <summary>
         /// Parameter prefix that the source uses
         /// </summary>
         string ParameterPrefix { get; }

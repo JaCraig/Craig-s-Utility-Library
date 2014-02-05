@@ -222,6 +222,8 @@ namespace Utilities.ORM
         /// <returns>The DbParameter associated with the ID</returns>
         public static DbParameter GetOrCreateParameter(this DbCommand Command, string ID)
         {
+            if (Command == null)
+                return null;
             if (Command.Parameters.Contains(ID))
                 return Command.Parameters[ID];
             else

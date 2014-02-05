@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.Schema.Interfaces;
@@ -63,6 +64,7 @@ namespace Utilities.ORM.Manager.Schema
         /// <returns>List of commands generated</returns>
         public IEnumerable<string> GenerateSchema(ISource DesiredStructure, ISourceInfo Source)
         {
+            Contract.Requires<ArgumentNullException>(Source != null, "Source");
             return SchemaGenerators.ContainsKey(Source.SourceType) ?
                 SchemaGenerators[Source.SourceType].GenerateSchema(DesiredStructure, Source) :
                 new List<string>();

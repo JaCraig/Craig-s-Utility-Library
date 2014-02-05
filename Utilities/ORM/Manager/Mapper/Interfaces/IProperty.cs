@@ -187,6 +187,16 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         bool Index { get; }
 
         /// <summary>
+        /// Load command
+        /// </summary>
+        string LoadCommand { get; }
+
+        /// <summary>
+        /// Load command type
+        /// </summary>
+        CommandType LoadCommandType { get; }
+
+        /// <summary>
         /// Max length
         /// </summary>
         int MaxLength { get; }

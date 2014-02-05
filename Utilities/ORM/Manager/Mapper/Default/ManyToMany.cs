@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
@@ -48,6 +49,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         public ManyToMany(Expression<Func<ClassType, IEnumerable<DataType>>> Expression, IMapping Mapping)
             : base(Expression, Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             Type = typeof(DataType);
             SetDefaultValue(() => new List<DataType>());
             string Class1 = typeof(ClassType).Name;
