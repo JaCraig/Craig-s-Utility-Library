@@ -50,5 +50,12 @@ namespace Utilities.ORM.Manager.Mapper.Default
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             SetFieldName(Name + "_");
         }
+
+        /// <summary>
+        /// Sets up the property
+        /// </summary>
+        public override void Setup()
+        {
+        }
     }
 }

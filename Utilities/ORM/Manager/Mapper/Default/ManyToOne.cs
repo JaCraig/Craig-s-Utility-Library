@@ -23,9 +23,11 @@ THE SOFTWARE.*/
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Linq.Expressions;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -56,6 +58,16 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 SetTableName(Class1 + "_" + Class2);
             else
                 SetTableName(Class2 + "_" + Class1);
+        }
+
+        /// <summary>
+        /// Sets up the property
+        /// </summary>
+        public override void Setup()
+        {
+            ForeignMapping = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>()[Type].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
+            ISourceInfo Source = IoC.Manager.Bootstrapper.Resolve<SourceProvider.Manager>().GetSource(Mapping.DatabaseConfigType);
+            IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>().Generate<ClassType>(Source).SetupLoadCommands(this);
         }
     }
 }

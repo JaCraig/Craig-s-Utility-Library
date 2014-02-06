@@ -36,7 +36,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType">Data type</typeparam>
     /// <typeparam name="ReturnType">Return type</typeparam>
-    public interface IProperty<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType>, IFluentInterface
+    public interface IProperty<ClassType, DataType, ReturnType> : IFluentInterface
         where ClassType : class,new()
         where ReturnType : IProperty<ClassType, DataType, ReturnType>
     {
@@ -129,16 +129,6 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Expression pointing to the property
         /// </summary>
         Expression<Func<ClassType, DataType>> Expression { get; }
-
-        /// <summary>
-        /// If the property is a class, this is the foreign mapping
-        /// </summary>
-        IMapping ForeignMapping { get; }
-
-        /// <summary>
-        /// Mapping
-        /// </summary>
-        IMapping Mapping { get; }
     }
 
     /// <summary>
@@ -182,6 +172,11 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         string FieldName { get; }
 
         /// <summary>
+        /// If the property is a class, this is the foreign mapping
+        /// </summary>
+        IMapping ForeignMapping { get; }
+
+        /// <summary>
         /// Index
         /// </summary>
         bool Index { get; }
@@ -195,6 +190,11 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Load command type
         /// </summary>
         CommandType LoadCommandType { get; }
+
+        /// <summary>
+        /// Mapping
+        /// </summary>
+        IMapping Mapping { get; }
 
         /// <summary>
         /// Max length
@@ -225,5 +225,10 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Unique
         /// </summary>
         bool Unique { get; }
+
+        /// <summary>
+        /// Sets up the property (used internally)
+        /// </summary>
+        void Setup();
     }
 }

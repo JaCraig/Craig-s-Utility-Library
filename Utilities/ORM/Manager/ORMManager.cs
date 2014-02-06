@@ -35,6 +35,7 @@ using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -354,6 +355,17 @@ namespace Utilities.ORM.Manager
             foreach (IMapping Mapping in MapperProvider)
             {
                 Mappings.Add(Databases.FirstOrDefault(x => x.GetType() == Mapping.DatabaseConfigType), Mapping);
+            }
+
+            foreach (IMapping Mapping in MapperProvider.OrderBy(x => x.Order))
+            {
+                foreach (IProperty Property in Mapping.Properties)
+                {
+                    if (Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne)
+                    {
+                        Property.Setup();
+                    }
+                }
             }
         }
 

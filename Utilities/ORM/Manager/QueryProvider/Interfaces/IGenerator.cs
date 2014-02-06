@@ -154,6 +154,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
             where D : class,new();
 
         /// <summary>
+        /// Sets up the default load command for a ManyToOne property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ManyToOne property</param>
+        void SetupLoadCommands<D>(ManyToOne<T, D> Property)
+            where D : class,new();
+
+        /// <summary>
         /// Generates a batch that will update the data from the object
         /// </summary>
         /// <param name="Object">Object to update</param>

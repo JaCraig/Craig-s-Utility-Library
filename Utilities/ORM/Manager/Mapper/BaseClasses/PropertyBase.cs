@@ -24,9 +24,11 @@ THE SOFTWARE.*/
 using System;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Linq.Expressions;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -35,7 +37,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
     /// <summary>
     /// Property base class
     /// </summary>
-    public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>
+    public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>, IProperty<ClassType, DataType>
         where ClassType : class,new()
         where ReturnType : IProperty<ClassType, DataType, ReturnType>
     {
@@ -95,7 +97,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Foreign mapping
         /// </summary>
-        public Utilities.ORM.Manager.Mapper.Interfaces.IMapping ForeignMapping { get; private set; }
+        public Utilities.ORM.Manager.Mapper.Interfaces.IMapping ForeignMapping { get; protected set; }
 
         /// <summary>
         /// Index
@@ -343,6 +345,11 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
             this.Unique = true;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
+
+        /// <summary>
+        /// Sets up the property, is used internally
+        /// </summary>
+        public abstract void Setup();
 
         /// <summary>
         /// Gets the property as a string

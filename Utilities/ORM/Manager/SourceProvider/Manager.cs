@@ -83,6 +83,16 @@ namespace Utilities.ORM.Manager.SourceProvider
         }
 
         /// <summary>
+        /// Getsthe source info specified
+        /// </summary>
+        /// <param name="DatabaseType">Database type</param>
+        /// <returns>The source specified</returns>
+        public ISourceInfo GetSource(Type DatabaseType)
+        {
+            return Sources.FirstOrDefault(x => x.Value.Database.GetType() == DatabaseType).Value;
+        }
+
+        /// <summary>
         /// Gets the enumerator for the sources
         /// </summary>
         /// <returns>The source enumerator</returns>

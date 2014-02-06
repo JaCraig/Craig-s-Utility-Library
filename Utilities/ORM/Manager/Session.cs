@@ -30,6 +30,7 @@ using System.Text;
 using Utilities.DataTypes;
 using Utilities.IoC.Interfaces;
 using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.Aspect.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
@@ -51,14 +52,14 @@ namespace Utilities.ORM.Manager
         public Session()
         {
             QueryProvider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            SourceProvider=IoC.Manager.Bootstrapper.Resolve<SourceProvider.Manager>();
-            MapperProvider=IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            SourceProvider = IoC.Manager.Bootstrapper.Resolve<SourceProvider.Manager>();
+            MapperProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
         }
 
         /// <summary>
         /// Mapper provider
         /// </summary>
-        private Mapper.Manager MapperProvider{get;set;}
+        private Mapper.Manager MapperProvider { get; set; }
 
         /// <summary>
         /// Query provider
@@ -68,11 +69,7 @@ namespace Utilities.ORM.Manager
         /// <summary>
         /// Source provider
         /// </summary>
-        private SourceProvider.Manager SourceProvider{get;set;}
-
-private DataType Item in
-
-private IORMObject TempItem = Item as IORMObject;
+        private SourceProvider.Manager SourceProvider { get; set; }
 
         /// <summary>
         /// Returns all items that match the criteria
@@ -184,44 +181,34 @@ private IORMObject TempItem = Item as IORMObject;
         /// <param name="PropertyName">Property name</param>
         /// <param name="Parameters">Extra parameters (generally will be the ID of the object)</param>
         /// <returns>The appropriate property value</returns>
-        public virtual IEnumerable<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+        public virtual IEnumerable<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName)
             where ObjectType : class,new()
             where DataType : class,new()
         {
             System.Collections.Generic.List<DataType> ReturnValue = new System.Collections.Generic.List<DataType>();
-            foreach(ISourceInfo Source in SourceProvider.Where(x=>x.Readable).OrderBy(x=>x.Order))
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
-                IMapping Mapping=MapperProvider[typeof(ObjectType)].FirstOrDefault(x=>x.DatabaseConfigType==Source.Database.GetType());
-                QueryProvider.Generate<ObjectType>(Source)
-                    .LoadProperty
-            }
-
-                IMapping Mapping = Mappings[Database].FirstOrDefault(x => x.ObjectType == typeof(ObjectType));
-                if (Mapping != null)
+                IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+                IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
+                if (Mapping != null && Property != null)
                 {
-                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Type == typeof(DataType)
-                        && x.Name == PropertyName);
-                    if (Property != null)
+                    foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source)
+                        .LoadProperty(Object, (IProperty<ObjectType, DataType>)Property)
+                        .Execute())
                     {
-                        using (SQLHelper ORMObject = new SQLHelper(Database.Name))
-                        {
-                            if (Property.CommandToLoad == null)
-                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.All<DataType>("*", 0, "", ReturnValue, () => Manager.Create<DataType>(), false, Parameters);
-                            else
-                                ReturnValue = (System.Collections.Generic.List<DataType>)ORMObject.All<DataType>(Property.CommandToLoad.SQLCommand, Property.CommandToLoad.CommandType, ReturnValue, () => Manager.Create<DataType>(), false, Parameters);
-                        }
+                        DataType Temp = Item;
+                        ReturnValue.Add(Temp);
                     }
                 }
             }
 
-            foreach ( ReturnValue)
+            foreach (IORMObject TempItem in ReturnValue)
             {
                 if (TempItem != null)
-                    TempItem.Session0 = CurrentSession;
+                    TempItem.Session0 = this;
             }
 
             return ReturnValue;
-            return QueryProvider.Generate<ObjectType>(SourceProvider.GetSource(.LoadProperties<ObjectType, DataType>(this, Object, PropertyName, Parameters);
         }
 
         /// <summary>
@@ -235,10 +222,9 @@ private IORMObject TempItem = Item as IORMObject;
         /// <returns>The appropriate property value</returns>
         public virtual DataType LoadProperty<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
 
-            where ObjectType : internal class,new()
+            where ObjectType : class,new()
 
-            where DataType : internal class,new()
-
+            where DataType : class,new()
         {
             return QueryProvider.LoadProperty<ObjectType, DataType>(this, Object, PropertyName, Parameters);
         }
@@ -250,8 +236,7 @@ private IORMObject TempItem = Item as IORMObject;
         /// <param name="Parameters">Parameters to search by</param>
         /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
-        public virtual int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters) where ObjectType : internal class,new()
-
+        public virtual int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.PageCount<ObjectType>(this, PageSize, Parameters);
         }
@@ -264,8 +249,7 @@ private IORMObject TempItem = Item as IORMObject;
         /// <param name="Command">Command to get the page count of</param>
         /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
-        public virtual int PageCount<ObjectType>(string Command, int PageSize = 25, params IParameter[] internal Parameters) where ObjectType : internal class,new()
-
+        public virtual int PageCount<ObjectType>(string Command, int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.PageCount<ObjectType>(this, Command, PageSize, Parameters);
         }
@@ -280,8 +264,7 @@ private IORMObject TempItem = Item as IORMObject;
         /// <param name="CurrentPage">Current page (starting with 0)</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A paged list of items that match the criteria</returns>
-        public virtual IEnumerable<ObjectType> Paged<ObjectType>(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] internal Parameters) where ObjectType : internal class,new()
-
+        public virtual IEnumerable<ObjectType> Paged<ObjectType>(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.Paged<ObjectType>(this, Columns, OrderBy, PageSize, CurrentPage, Parameters);
         }
@@ -296,8 +279,7 @@ private IORMObject TempItem = Item as IORMObject;
         /// <param name="CurrentPage">Current page (starting with 0)</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A paged list of items that match the criteria</returns>
-        public virtual IEnumerable<ObjectType> PagedCommand<ObjectType>(string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] internal Parameters) where ObjectType : internal class,new()
-
+        public virtual IEnumerable<ObjectType> PagedCommand<ObjectType>(string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.PagedCommand<ObjectType>(this, Command, OrderBy, PageSize, CurrentPage, Parameters);
         }
@@ -309,8 +291,7 @@ private IORMObject TempItem = Item as IORMObject;
         /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
         /// <param name="Object">Object to save</param>
         /// <param name="Parameters">Extra parameters to save</param>
-        public virtual void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] internal Parameters) where ObjectType : internal class,new()
-
+        public virtual void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] Parameters) where ObjectType : class,new()
         {
             QueryProvider.Save<ObjectType, PrimaryKeyType>(Object, Parameters);
         }
@@ -324,10 +305,8 @@ private IORMObject TempItem = Item as IORMObject;
         /// <typeparam name="DataType">Data type</typeparam>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <returns>The scalar value returned by the command</returns>
-        public virtual DataType Scalar<ObjectType, DataType>(string Command, CommandType CommandType, params IParameter[] internal Parameters)
-
-            where ObjectType : internal class,new()
-
+        public virtual DataType Scalar<ObjectType, DataType>(string Command, CommandType CommandType, params IParameter[] Parameters)
+            where ObjectType : class,new()
         {
             return QueryProvider.Scalar<ObjectType, DataType>(this, Command, CommandType, Parameters);
         }
@@ -340,14 +319,10 @@ private IORMObject TempItem = Item as IORMObject;
         /// <param name="AggregateFunction">Aggregate function</param>
         /// <param name="Parameters">Parameters</param>
         /// <returns>The scalar value returned by the command</returns>
-        public virtual DataType Scalar<ObjectType, DataType>(string AggregateFunction, params IParameter[] internal Parameters)
-
-            where ObjectType : internal class,new()
-
+        public virtual DataType Scalar<ObjectType, DataType>(string AggregateFunction, params IParameter[] Parameters)
+            where ObjectType : class,new()
         {
             return QueryProvider.Scalar<ObjectType, DataType>(this, AggregateFunction, Parameters);
         }
-
-        #endregion
     }
 }

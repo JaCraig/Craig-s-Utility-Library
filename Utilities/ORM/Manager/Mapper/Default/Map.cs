@@ -24,10 +24,12 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Linq.Expressions;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -54,6 +56,16 @@ namespace Utilities.ORM.Manager.Mapper.Default
             if (typeof(DataType).Is(typeof(IEnumerable)))
                 throw new ArgumentException("Expression is an IEnumerable, use ManyToOne or ManyToMany instead");
             SetFieldName(typeof(DataType).Name + "_" + Name + "_ID");
+        }
+
+        /// <summary>
+        /// Sets up the property
+        /// </summary>
+        public override void Setup()
+        {
+            ForeignMapping = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>()[Type].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
+            ISourceInfo Source = IoC.Manager.Bootstrapper.Resolve<SourceProvider.Manager>().GetSource(Mapping.DatabaseConfigType);
+            IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>().Generate<ClassType>(Source).SetupLoadCommands(this);
         }
     }
 }

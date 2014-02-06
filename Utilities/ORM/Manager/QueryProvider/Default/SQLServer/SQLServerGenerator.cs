@@ -227,48 +227,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch LoadProperty<P>(T Object, IProperty<T, P> Property)
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
-            string Command = Property.LoadCommand;
-            CommandType Type = Property.LoadCommandType;
-            if (string.IsNullOrEmpty(Command) && Property as IMap == null)
-            {
-                Type = CommandType.Text;
-                IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0";
-                }
-                else
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0";
-                }
-            }
-            else if (Property as IMap != null)
-            {
-                IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0";
-                }
-                else
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0";
-                }
-            }
-            TempBatch.AddCommand(Command, Type, ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
-            return TempBatch;
+            return QueryProvider.Batch(Source)
+                .AddCommand(Property.LoadCommand, Property.LoadCommandType, ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
         }
 
         /// <summary>
@@ -376,143 +336,116 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             }
         }
 
+        /// <summary>
+        /// Sets up the default load command for a ListManyToOne property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ListManyToOne property</param>
         public void SetupLoadCommands<D>(Mapper.Default.ListManyToOne<T, D> Property)
                     where D : class, new()
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
-            string Command = Property.LoadCommand;
-            CommandType Type = Property.LoadCommandType;
-            if (string.IsNullOrEmpty(Command) && Property as IMap == null)
-            {
-                Type = CommandType.Text;
-                IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0";
-                }
-                else
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0";
-                }
-            }
-            else if (Property as IMap != null)
+            if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
                 if (ForeignMapping == Mapping)
                 {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0";
+                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
+                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
                 }
                 else
                 {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
                                 INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0";
+                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
                 }
             }
-            TempBatch.AddCommand(Command, Type, ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
-            return TempBatch;
         }
 
-        public void SetupLoadCommands<D>(Mapper.Default.ListManyToMany<T, D> MapProperty) where D : class, new()
+        /// <summary>
+        /// Sets up the default load command for a ListManyToMany property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ListManyToMany property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ListManyToMany<T, D> Property)
+            where D : class, new()
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
-            string Command = Property.LoadCommand;
-            CommandType Type = Property.LoadCommandType;
-            if (string.IsNullOrEmpty(Command) && Property as IMap == null)
-            {
-                Type = CommandType.Text;
-                IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0";
-                }
-                else
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0";
-                }
-            }
-            else if (Property as IMap != null)
+            if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
                 if (ForeignMapping == Mapping)
                 {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0";
+                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
+                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
                 }
                 else
                 {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
                                 INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0";
+                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
                 }
             }
-            TempBatch.AddCommand(Command, Type, ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
-            return TempBatch;
         }
 
-        public void SetupLoadCommands<D>(Mapper.Default.ManyToMany<T, D> MapProperty) where D : class, new()
+        /// <summary>
+        /// Sets up the default load command for a ManyToOne property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ManyToOne property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ManyToOne<T, D> Property)
+            where D : class, new()
         {
-            IBatch TempBatch = QueryProvider.Batch(Source);
-            string Command = Property.LoadCommand;
-            CommandType Type = Property.LoadCommandType;
-            if (string.IsNullOrEmpty(Command) && Property as IMap == null)
-            {
-                Type = CommandType.Text;
-                IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0";
-                }
-                else
-                {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0";
-                }
-            }
-            else if (Property as IMap != null)
+            if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
                 if (ForeignMapping == Mapping)
                 {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
                                 INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0";
+                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@ID", CommandType.Text);
                 }
                 else
                 {
-                    Command = @"SELECT " + ForeignMapping.TableName + @".*
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
                                 FROM " + ForeignMapping.TableName + @"
                                 INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0";
+                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
                 }
             }
-            TempBatch.AddCommand(Command, Type, ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
-            return TempBatch;
+        }
+
+        /// <summary>
+        /// Sets up the default load command for a ManyToMany property
+        /// </summary>
+        /// <typeparam name="D">Data type</typeparam>
+        /// <param name="Property">ManyToMany property</param>
+        public void SetupLoadCommands<D>(Mapper.Default.ManyToMany<T, D> Property)
+            where D : class, new()
+        {
+            if (string.IsNullOrEmpty(Property.LoadCommand))
+            {
+                IMapping ForeignMapping = Property.ForeignMapping;
+                if (ForeignMapping == Mapping)
+                {
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
+                                FROM " + ForeignMapping.TableName + @"
+                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
+                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
+                }
+                else
+                {
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
+                                FROM " + ForeignMapping.TableName + @"
+                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
+                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
+                }
+            }
         }
 
         /// <summary>
