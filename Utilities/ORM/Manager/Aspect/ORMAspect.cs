@@ -162,7 +162,6 @@ namespace Utilities.ORM.Aspect
                     if (Fields.Contains(Property))
                     {
                         Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName);
-                        Builder.AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded");
                     }
                 }
             }
@@ -175,7 +174,8 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                //.AppendLine(
+                .AppendLineFormat("{0}=Session0.LoadProperties(this,\"{1}\");", Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();
         }
@@ -186,7 +186,8 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                //.AppendLine(
+                .AppendLineFormat("{0}=Session0.LoadProperties(this,\"{1}\");", Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();
         }
@@ -197,7 +198,8 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                //.AppendLine(
+                .AppendLineFormat("{0}=Session0.LoadProperty(this,\"{1}\");", Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();
         }

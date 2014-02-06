@@ -406,6 +406,19 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Copies data from here to another object
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="result">Result</param>
+        public void CopyTo<ObjectType>(ObjectType result)
+        {
+            Type TempType = typeof(ObjectType);
+            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), TempType)
+                .AutoMap()
+                .Copy(this, result);
+        }
+
+        /// <summary>
         /// Determines if two objects are equal
         /// </summary>
         /// <param name="obj">Object to compare to</param>

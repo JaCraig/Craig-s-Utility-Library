@@ -80,7 +80,7 @@ namespace Utilities.ORM.Manager
         /// <param name="OrderBy">Order by clause (minus the ORDER BY part)</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>All items that match the criteria</returns>
-        public virtual IEnumerable<ObjectType> All<ObjectType>(string Columns, int Limit, string OrderBy, params IParameter[] Parameters) where ObjectType : class,new()
+        public IEnumerable<ObjectType> All<ObjectType>(string Columns, int Limit, string OrderBy, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.All<ObjectType>(this, Columns, Limit, OrderBy, Parameters);
         }
@@ -91,7 +91,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Type of the object</typeparam>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>All items that match the criteria</returns>
-        public virtual IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
+        public IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.All<ObjectType>(this, Parameters);
         }
@@ -104,7 +104,7 @@ namespace Utilities.ORM.Manager
         /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>All items that match the criteria</returns>
-        public virtual IEnumerable<ObjectType> All<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
+        public IEnumerable<ObjectType> All<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.All<ObjectType>(this, Command, CommandType, Parameters);
         }
@@ -116,7 +116,7 @@ namespace Utilities.ORM.Manager
         /// <param name="Columns">Columns to load</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A single object matching the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(string Columns, params IParameter[] Parameters) where ObjectType : class,new()
+        public ObjectType Any<ObjectType>(string Columns, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.Any<ObjectType>(this, Columns, null, Parameters);
         }
@@ -127,7 +127,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Type of the object</typeparam>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A single object matching the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
+        public ObjectType Any<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.Any<ObjectType>(this, null, Parameters);
         }
@@ -140,7 +140,7 @@ namespace Utilities.ORM.Manager
         /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A single object matching the criteria</returns>
-        public virtual ObjectType Any<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
+        public ObjectType Any<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
         {
             return QueryProvider.Any<ObjectType>(this, Command, CommandType, null, Parameters);
         }
@@ -150,26 +150,15 @@ namespace Utilities.ORM.Manager
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="Object">Object to delete</param>
-        public virtual void Delete<ObjectType>(ObjectType Object) where ObjectType : class,new()
-        {
-            QueryProvider.Delete(Object);
-        }
-
-        /// <summary>
-        /// Loads a property (primarily used internally for lazy loading)
-        /// </summary>
-        /// <typeparam name="ObjectType">Object type</typeparam>
-        /// <typeparam name="DataType">Data type</typeparam>
-        /// <param name="Object">Object</param>
-        /// <param name="PropertyName">Property name</param>
-        /// <param name="Parameters">Extra parameters (generally will be the ID of the object)</param>
-        /// <returns>The appropriate property value</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        public virtual List<DataType> LoadListProperties<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
+        public void Delete<ObjectType>(ObjectType Object)
             where ObjectType : class,new()
-            where DataType : class,new()
         {
-            return QueryProvider.LoadListProperties<ObjectType, DataType>(this, Object, PropertyName, Parameters);
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
+            {
+                QueryProvider.Generate<ObjectType>(Source)
+                    .Delete(Object)
+                    .Execute();
+            }
         }
 
         /// <summary>
@@ -179,9 +168,8 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Object">Object</param>
         /// <param name="PropertyName">Property name</param>
-        /// <param name="Parameters">Extra parameters (generally will be the ID of the object)</param>
         /// <returns>The appropriate property value</returns>
-        public virtual IEnumerable<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName)
+        public List<DataType> LoadProperties<ObjectType, DataType>(ObjectType Object, string PropertyName)
             where ObjectType : class,new()
             where DataType : class,new()
         {
@@ -197,7 +185,15 @@ namespace Utilities.ORM.Manager
                         .Execute())
                     {
                         DataType Temp = Item;
-                        ReturnValue.Add(Temp);
+                        IProperty<DataType> IDProperty = (IProperty<DataType>)Property.Mapping.IDProperties.FirstOrDefault();
+                        object IDValue = IDProperty.GetValue(Temp);
+                        DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
+                        if (Value == default(DataType))
+                            ReturnValue.Add(Temp);
+                        else
+                        {
+                            Item.CopyTo(Value);
+                        }
                     }
                 }
             }
@@ -218,15 +214,12 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Object">Object</param>
         /// <param name="PropertyName">Property name</param>
-        /// <param name="Parameters">Extra parameters (generally will be the ID of the object)</param>
         /// <returns>The appropriate property value</returns>
-        public virtual DataType LoadProperty<ObjectType, DataType>(ObjectType Object, string PropertyName, params IParameter[] Parameters)
-
+        public DataType LoadProperty<ObjectType, DataType>(ObjectType Object, string PropertyName)
             where ObjectType : class,new()
-
             where DataType : class,new()
         {
-            return QueryProvider.LoadProperty<ObjectType, DataType>(this, Object, PropertyName, Parameters);
+            return LoadProperties<ObjectType, DataType>(Object, PropertyName).FirstOrDefault();
         }
 
         /// <summary>
@@ -236,52 +229,62 @@ namespace Utilities.ORM.Manager
         /// <param name="Parameters">Parameters to search by</param>
         /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
         /// <returns>The number of pages that the table contains for the specified page size</returns>
-        public virtual int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
+        public int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters)
+            where ObjectType : class,new()
         {
-            return QueryProvider.PageCount<ObjectType>(this, PageSize, Parameters);
-        }
-
-        /// <summary>
-        /// Gets the number of pages based on the specified
-        /// </summary>
-        /// <param name="PageSize">Page size</param>
-        /// <param name="Parameters">Parameters to search by</param>
-        /// <param name="Command">Command to get the page count of</param>
-        /// <typeparam name="ObjectType">Object type to get the page count of</typeparam>
-        /// <returns>The number of pages that the table contains for the specified page size</returns>
-        public virtual int PageCount<ObjectType>(string Command, int PageSize = 25, params IParameter[] Parameters) where ObjectType : class,new()
-        {
-            return QueryProvider.PageCount<ObjectType>(this, Command, PageSize, Parameters);
-        }
-
-        /// <summary>
-        /// Returns a paged list of items
-        /// </summary>
-        /// <typeparam name="ObjectType">Object type</typeparam>
-        /// <param name="Columns">Columns to load</param>
-        /// <param name="OrderBy">Order by clause (minus the ORDER BY part)</param>
-        /// <param name="PageSize">Page size</param>
-        /// <param name="CurrentPage">Current page (starting with 0)</param>
-        /// <param name="Parameters">Parameters used in the where clause</param>
-        /// <returns>A paged list of items that match the criteria</returns>
-        public virtual IEnumerable<ObjectType> Paged<ObjectType>(string Columns = "*", string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
-        {
-            return QueryProvider.Paged<ObjectType>(this, Columns, OrderBy, PageSize, CurrentPage, Parameters);
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                int Count = QueryProvider.Generate<ObjectType>(Source)
+                    .PageCount(PageSize, Parameters)
+                    .Execute()
+                    .FirstOrDefault()
+                    .FirstOrDefault()
+                    .Total;
+                if (Count > 0)
+                    return Count;
+            }
+            return 0;
         }
 
         /// <summary>
         /// Returns a paged list of items
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
-        /// <param name="Command">Command to call</param>
-        /// <param name="OrderBy">Order by clause (minus the ORDER BY part)</param>
         /// <param name="PageSize">Page size</param>
         /// <param name="CurrentPage">Current page (starting with 0)</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A paged list of items that match the criteria</returns>
-        public virtual IEnumerable<ObjectType> PagedCommand<ObjectType>(string Command, string OrderBy = "", int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters) where ObjectType : class,new()
+        public IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters)
+            where ObjectType : class,new()
         {
-            return QueryProvider.PagedCommand<ObjectType>(this, Command, OrderBy, PageSize, CurrentPage, Parameters);
+            System.Collections.Generic.List<ObjectType> ReturnValue = new System.Collections.Generic.List<ObjectType>();
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source)
+                    .Paged(PageSize, CurrentPage, Parameters)
+                    .Execute())
+                {
+                    ObjectType Temp = Item;
+                    IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+                    IProperty<ObjectType> IDProperty = (IProperty<ObjectType>)Mapping.IDProperties.FirstOrDefault();
+                    object IDValue = IDProperty.GetValue(Temp);
+                    ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
+                    if (Value == default(ObjectType))
+                        ReturnValue.Add(Temp);
+                    else
+                    {
+                        Item.CopyTo(Value);
+                    }
+                }
+            }
+
+            foreach (IORMObject TempItem in ReturnValue)
+            {
+                if (TempItem != null)
+                    TempItem.Session0 = this;
+            }
+
+            return ReturnValue;
         }
 
         /// <summary>
@@ -291,7 +294,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
         /// <param name="Object">Object to save</param>
         /// <param name="Parameters">Extra parameters to save</param>
-        public virtual void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] Parameters) where ObjectType : class,new()
+        public void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] Parameters) where ObjectType : class,new()
         {
             QueryProvider.Save<ObjectType, PrimaryKeyType>(Object, Parameters);
         }
@@ -305,7 +308,7 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="DataType">Data type</typeparam>
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <returns>The scalar value returned by the command</returns>
-        public virtual DataType Scalar<ObjectType, DataType>(string Command, CommandType CommandType, params IParameter[] Parameters)
+        public DataType Scalar<ObjectType, DataType>(string Command, CommandType CommandType, params IParameter[] Parameters)
             where ObjectType : class,new()
         {
             return QueryProvider.Scalar<ObjectType, DataType>(this, Command, CommandType, Parameters);
@@ -319,7 +322,7 @@ namespace Utilities.ORM.Manager
         /// <param name="AggregateFunction">Aggregate function</param>
         /// <param name="Parameters">Parameters</param>
         /// <returns>The scalar value returned by the command</returns>
-        public virtual DataType Scalar<ObjectType, DataType>(string AggregateFunction, params IParameter[] Parameters)
+        public DataType Scalar<ObjectType, DataType>(string AggregateFunction, params IParameter[] Parameters)
             where ObjectType : class,new()
         {
             return QueryProvider.Scalar<ObjectType, DataType>(this, AggregateFunction, Parameters);
