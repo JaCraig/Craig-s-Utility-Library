@@ -26,9 +26,11 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
+using Utilities.ORM.Parameters;
 
 #endregion Usings
 
@@ -279,6 +281,38 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                     PageStart + PageSize),
                 CommandType.Text,
                 Parameters);
+        }
+
+        /// <summary>
+        /// Saves the object to the source
+        /// </summary>
+        /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
+        /// <param name="Object">Object to save</param>
+        public IBatch Save<PrimaryKeyType>(T Object)
+        {
+            IBatch TempBatch = QueryProvider.Batch(Source);
+            IProperty<T> IDProperty = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault());
+            PrimaryKeyType IDValue = IDProperty.GetValue(Object).To(default(PrimaryKeyType));
+
+            GenericEqualityComparer<PrimaryKeyType> Comparer = new GenericEqualityComparer<PrimaryKeyType>();
+            IParameter Param1 = null;
+            if (Comparer.Equals(IDValue, default(PrimaryKeyType)))
+            {
+                return TempBatch.AddCommand(Insert(Object));
+            }
+            if (IDProperty.AutoIncrement)
+            {
+                return TempBatch.AddCommand(Update(Object));
+            }
+            if (typeof(PrimaryKeyType).Is(typeof(string)))
+                Param1 = new StringEqualParameter(IDValue.ToString(), IDProperty.FieldName, IDValue.ToString().Length, Source.ParameterPrefix);
+            else
+                Param1 = new EqualParameter<PrimaryKeyType>(IDValue, IDProperty.FieldName, Source.ParameterPrefix);
+            if (Any(Param1).Execute().FirstOrDefault().FirstOrDefault() == null)
+            {
+                return TempBatch.AddCommand(Insert(Object));
+            }
+            return TempBatch.AddCommand(Update(Object));
         }
 
         /// <summary>

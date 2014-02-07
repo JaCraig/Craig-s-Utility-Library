@@ -114,6 +114,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters);
 
         /// <summary>
+        /// Saves the object to the source
+        /// </summary>
+        /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
+        /// <param name="Object">Object to save</param>
+        IBatch Save<PrimaryKeyType>(T Object);
+
+        /// <summary>
         /// Sets up the default load command for a map property
         /// </summary>
         /// <typeparam name="D">Data type</typeparam>

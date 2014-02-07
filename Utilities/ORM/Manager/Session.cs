@@ -75,50 +75,30 @@ namespace Utilities.ORM.Manager
         /// Returns all items that match the criteria
         /// </summary>
         /// <typeparam name="ObjectType">Type of the object</typeparam>
-        /// <param name="Columns">Columns to load</param>
-        /// <param name="Limit">Limit of the number of items to load</param>
-        /// <param name="OrderBy">Order by clause (minus the ORDER BY part)</param>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>All items that match the criteria</returns>
-        public IEnumerable<ObjectType> All<ObjectType>(string Columns, int Limit, string OrderBy, params IParameter[] Parameters) where ObjectType : class,new()
+        public IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters)
+            where ObjectType : class,new()
         {
-            return QueryProvider.All<ObjectType>(this, Columns, Limit, OrderBy, Parameters);
-        }
-
-        /// <summary>
-        /// Returns all items that match the criteria
-        /// </summary>
-        /// <typeparam name="ObjectType">Type of the object</typeparam>
-        /// <param name="Parameters">Parameters used in the where clause</param>
-        /// <returns>All items that match the criteria</returns>
-        public IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
-        {
-            return QueryProvider.All<ObjectType>(this, Parameters);
-        }
-
-        /// <summary>
-        /// /// Returns all items that match the criteria
-        /// </summary>
-        /// <typeparam name="ObjectType"></typeparam>
-        /// <param name="Command">SQL Command to run</param>
-        /// <param name="CommandType">Command type</param>
-        /// <param name="Parameters">Parameters used in the where clause</param>
-        /// <returns>All items that match the criteria</returns>
-        public IEnumerable<ObjectType> All<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
-        {
-            return QueryProvider.All<ObjectType>(this, Command, CommandType, Parameters);
-        }
-
-        /// <summary>
-        /// Returns a single item matching the criteria
-        /// </summary>
-        /// <typeparam name="ObjectType">Type of the object</typeparam>
-        /// <param name="Columns">Columns to load</param>
-        /// <param name="Parameters">Parameters used in the where clause</param>
-        /// <returns>A single object matching the criteria</returns>
-        public ObjectType Any<ObjectType>(string Columns, params IParameter[] Parameters) where ObjectType : class,new()
-        {
-            return QueryProvider.Any<ObjectType>(this, Columns, null, Parameters);
+            List<ObjectType> ReturnValue = new List<ObjectType>();
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+                foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source).All(Parameters).Execute().FirstOrDefault())
+                {
+                    ObjectType Temp = Item;
+                    IProperty<ObjectType> IDProperty = (IProperty<ObjectType>)Mapping.IDProperties.FirstOrDefault();
+                    object IDValue = IDProperty.GetValue(Temp);
+                    ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
+                    if (Value == default(ObjectType))
+                        ReturnValue.Add(Temp);
+                    else
+                    {
+                        Item.CopyTo(Value);
+                    }
+                }
+            }
+            return ReturnValue;
         }
 
         /// <summary>
@@ -127,22 +107,19 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Type of the object</typeparam>
         /// <param name="Parameters">Parameters used in the where clause</param>
         /// <returns>A single object matching the criteria</returns>
-        public ObjectType Any<ObjectType>(params IParameter[] Parameters) where ObjectType : class,new()
+        public ObjectType Any<ObjectType>(params IParameter[] Parameters)
+            where ObjectType : class,new()
         {
-            return QueryProvider.Any<ObjectType>(this, null, Parameters);
-        }
-
-        /// <summary>
-        /// Returns a single item matching the criteria
-        /// </summary>
-        /// <typeparam name="ObjectType">Type of the object</typeparam>
-        /// <param name="Command">SQL Command to run</param>
-        /// <param name="CommandType">Command type</param>
-        /// <param name="Parameters">Parameters used in the where clause</param>
-        /// <returns>A single object matching the criteria</returns>
-        public ObjectType Any<ObjectType>(string Command, CommandType CommandType, params IParameter[] Parameters) where ObjectType : class,new()
-        {
-            return QueryProvider.Any<ObjectType>(this, Command, CommandType, null, Parameters);
+            ObjectType ReturnValue = null;
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                dynamic Value = QueryProvider.Generate<ObjectType>(Source).Any(Parameters).Execute().FirstOrDefault().FirstOrDefault();
+                if (ReturnValue == null)
+                    ReturnValue = Value;
+                else
+                    Value.CopyTo(ReturnValue);
+            }
+            return ReturnValue;
         }
 
         /// <summary>
@@ -182,7 +159,8 @@ namespace Utilities.ORM.Manager
                 {
                     foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source)
                         .LoadProperty(Object, (IProperty<ObjectType, DataType>)Property)
-                        .Execute())
+                        .Execute()
+                        .FirstOrDefault())
                     {
                         DataType Temp = Item;
                         IProperty<DataType> IDProperty = (IProperty<DataType>)Property.Mapping.IDProperties.FirstOrDefault();
@@ -262,7 +240,8 @@ namespace Utilities.ORM.Manager
             {
                 foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source)
                     .Paged(PageSize, CurrentPage, Parameters)
-                    .Execute())
+                    .Execute()
+                    .FirstOrDefault())
                 {
                     ObjectType Temp = Item;
                     IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
@@ -293,39 +272,14 @@ namespace Utilities.ORM.Manager
         /// <typeparam name="ObjectType">Object type</typeparam>
         /// <typeparam name="PrimaryKeyType">Primary key type</typeparam>
         /// <param name="Object">Object to save</param>
-        /// <param name="Parameters">Extra parameters to save</param>
-        public void Save<ObjectType, PrimaryKeyType>(ObjectType Object, params IParameter[] Parameters) where ObjectType : class,new()
-        {
-            QueryProvider.Save<ObjectType, PrimaryKeyType>(Object, Parameters);
-        }
-
-        /// <summary>
-        /// Runs a supplied scalar function and returns the result
-        /// </summary>
-        /// <param name="CommandType">Command type</param>
-        /// <param name="Parameters">Parameters to search by</param>
-        /// <param name="Command">Command to get the page count of</param>
-        /// <typeparam name="DataType">Data type</typeparam>
-        /// <typeparam name="ObjectType">Object type</typeparam>
-        /// <returns>The scalar value returned by the command</returns>
-        public DataType Scalar<ObjectType, DataType>(string Command, CommandType CommandType, params IParameter[] Parameters)
+        public void Save<ObjectType, PrimaryKeyType>(ObjectType Object)
             where ObjectType : class,new()
         {
-            return QueryProvider.Scalar<ObjectType, DataType>(this, Command, CommandType, Parameters);
-        }
-
-        /// <summary>
-        /// Runs a scalar command using the specified aggregate function
-        /// </summary>
-        /// <typeparam name="DataType">Data type</typeparam>
-        /// <typeparam name="ObjectType">Object type</typeparam>
-        /// <param name="AggregateFunction">Aggregate function</param>
-        /// <param name="Parameters">Parameters</param>
-        /// <returns>The scalar value returned by the command</returns>
-        public DataType Scalar<ObjectType, DataType>(string AggregateFunction, params IParameter[] Parameters)
-            where ObjectType : class,new()
-        {
-            return QueryProvider.Scalar<ObjectType, DataType>(this, AggregateFunction, Parameters);
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
+            {
+                QueryProvider.Generate<ObjectType>(Source)
+                    .Save<ObjectType>(Object);
+            }
         }
     }
 }
