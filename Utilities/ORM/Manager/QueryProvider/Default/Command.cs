@@ -91,5 +91,53 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// SQL command
         /// </summary>
         public string SQLCommand { get; set; }
+
+        /// <summary>
+        /// Determines if the objects are equal
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>Determines if the commands are equal</returns>
+        public override bool Equals(object obj)
+        {
+            Command OtherCommand = obj as Command;
+            if (OtherCommand == null)
+                return false;
+
+            if (OtherCommand.SQLCommand != SQLCommand
+                || OtherCommand.CommandType != CommandType
+                || Parameters.Count != OtherCommand.Parameters.Count)
+                return false;
+
+            foreach (IParameter Parameter in Parameters)
+                if (!OtherCommand.Parameters.Contains(Parameter))
+                    return false;
+
+            foreach (IParameter Parameter in OtherCommand.Parameters)
+                if (!Parameters.Contains(Parameter))
+                    return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Returns the hash code for the command
+        /// </summary>
+        /// <returns>The hash code for the object</returns>
+        public override int GetHashCode()
+        {
+            int ParameterTotal = Parameters.Sum(x => x.GetHashCode());
+            if (ParameterTotal > 0)
+                return (SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode()) * 23 + ParameterTotal;
+            return SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns the string representation of the command
+        /// </summary>
+        /// <returns>The string representation of the command</returns>
+        public override string ToString()
+        {
+            return SQLCommand;
+        }
     }
 }

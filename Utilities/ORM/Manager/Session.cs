@@ -32,6 +32,7 @@ using Utilities.IoC.Interfaces;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Aspect.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
@@ -277,9 +278,93 @@ namespace Utilities.ORM.Manager
         {
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
             {
-                QueryProvider.Generate<ObjectType>(Source)
-                    .Save<ObjectType>(Object);
+                IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+                IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source);
+                IBatch TempBatch = QueryProvider.Batch(Source);
+                foreach (IProperty Property in Mapping.Properties)
+                {
+                    if (Property.Cascade)
+                    {
+                        TempBatch.AddCommand(CascadeSave(Object, Property, Generator));
+                    }
+                }
+                CascadeUpdateIDs(Object, Mapping, TempBatch.Execute());
+
+                TempBatch = QueryProvider.Batch(Source);
+                TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
+                UpdateID(Object, Mapping, TempBatch.Execute().FirstOrDefault().FirstOrDefault());
+
+                TempBatch = QueryProvider.Batch(Source);
+                foreach (IProperty Property in Mapping.Properties)
+                {
+                    if (!Property.Cascade &&
+                        (Property is IManyToMany
+                            || Property is IManyToOne
+                            || Property is IIEnumerableManyToOne
+                            || Property is IListManyToMany
+                            || Property is IListManyToOne))
+                    {
+                        TempBatch.AddCommand(JoinsDelete(Object, Property));
+                    }
+                    if (Property.Cascade)
+                    {
+                        TempBatch.AddCommand(CascadeJoinsDelete(Object, Property));
+                    }
+                }
+                foreach (IProperty Property in Mapping.Properties)
+                {
+                    if (!Property.Cascade &&
+                        (Property is IManyToMany
+                            || Property is IManyToOne
+                            || Property is IIEnumerableManyToOne
+                            || Property is IListManyToMany
+                            || Property is IListManyToOne))
+                    {
+                        TempBatch.AddCommand(JoinsSave(Object, Property));
+                    }
+                    if (Property.Cascade)
+                    {
+                        TempBatch.AddCommand(CascadeJoinsSave(Object, Property));
+                    }
+                }
+                TempBatch.RemoveDuplicateCommands().Execute();
             }
+        }
+
+        private IBatch CascadeJoinsDelete<ObjectType>(ObjectType Object, IProperty Property)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IBatch CascadeJoinsSave<ObjectType>(ObjectType Object, IProperty Property)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IBatch CascadeSave<ObjectType>(ObjectType Object, IProperty Property, IGenerator<ObjectType> Generator)
+            where ObjectType : class,new()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CascadeUpdateIDs<ObjectType>(ObjectType Object, IMapping Mapping, IEnumerable<IEnumerable<dynamic>> Results)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IBatch JoinsDelete<ObjectType>(ObjectType Object, IProperty Property)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IBatch JoinsSave<ObjectType>(ObjectType Object, IProperty Property)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateID<ObjectType>(ObjectType Object, dynamic enumerable)
+        {
+            enumerable.CopyTo(Object);
         }
     }
 }

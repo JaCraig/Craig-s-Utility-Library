@@ -146,6 +146,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             return ExecuteCommands(FinalSQLCommand, FinalParameters);
         }
 
+        /// <summary>
+        /// Removes duplicate commands from the batch
+        /// </summary>
+        /// <returns>This</returns>
+        public IBatch RemoveDuplicateCommands()
+        {
+            Commands = Commands.Distinct().ToList();
+            return this;
+        }
+
         private static IEnumerable<dynamic> GetValues(DbDataReader TempReader)
         {
             Contract.Requires<ArgumentNullException>(TempReader != null, "TempReader");

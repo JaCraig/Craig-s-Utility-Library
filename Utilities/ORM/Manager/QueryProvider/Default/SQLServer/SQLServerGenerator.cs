@@ -195,10 +195,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             }
             return QueryProvider.Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                    "INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [ID]",
+                    "INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [{3}]",
                     Mapping.TableName,
                     ParameterList,
-                    ValueList),
+                    ValueList,
+                    Mapping.IDProperties.FirstOrDefault().Name),
                 CommandType.Text,
                 Mapping.Properties.Concat(Mapping.IDProperties)
                         .Where(x => !x.AutoIncrement)

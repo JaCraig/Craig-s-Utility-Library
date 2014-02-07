@@ -76,5 +76,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// </summary>
         /// <returns>The results of the batched commands</returns>
         IEnumerable<IEnumerable<dynamic>> Execute();
+
+        /// <summary>
+        /// Removes duplicate commands from the batch
+        /// </summary>
+        /// <returns>This</returns>
+        IBatch RemoveDuplicateCommands();
     }
 }
