@@ -82,19 +82,20 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return QueryProvider.Batch(Source);
             return QueryProvider.Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                    "SELECT * FROM {0}{1}",
+                    "SELECT {0} FROM {1}{2}",
+                    GetColumns(Mapping),
                     Mapping.TableName,
                     Parameters != null && Parameters.Length > 0 ? " WHERE " + Parameters.ToString(x => x.ToString(), " AND ") : ""),
                 CommandType.Text,
                 Parameters);
         }
 
-        /// <summary>
-        /// Generates a batch that will get all items for the given type the parameters specified
-        /// </summary>
-        /// <param name="Parameters">Parameters</param>
-        /// <param name="Limit">Max number of items to return</param>
-        /// <returns>Batch with the appropriate commands</returns>
+                /// <summary>
+                /// Generates a batch that will get all items for the given type the parameters specified
+                /// </summary>
+                /// <param name="Parameters">Parameters</param>
+                /// <param name="Limit">Max number of items to return</param>
+                /// <returns>Batch with the appropriate commands</returns>
         public IBatch All(int Limit, params IParameter[] Parameters)
         {
             if (Limit < 1)
@@ -103,8 +104,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return QueryProvider.Batch(Source);
             return QueryProvider.Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                    "SELECT TOP {0} * FROM {1}{2}",
+                    "SELECT TOP {0} {1} FROM {2}{3}",
                     Limit,
+                    GetColumns(Mapping),
                     Mapping.TableName,
                     Parameters != null && Parameters.Length > 0 ? " WHERE " + Parameters.ToString(x => x.ToString(), " AND ") : ""),
                 CommandType.Text,
@@ -274,8 +276,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             return QueryProvider
                 .Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                    "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {0}) AS Row, Query.* FROM (SELECT * FROM {1} {2}) as Query) AS Paged WHERE Row>{3} AND Row<={4}",
+                    "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {0}) AS Row, Query.* FROM (SELECT {1} FROM {2} {3}) as Query) AS Paged WHERE Row>{4} AND Row<={5}",
                     OrderBy,
+                    GetColumns(Mapping),
                     Mapping.TableName,
                     WhereCommand,
                     PageStart,
@@ -309,7 +312,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 Param1 = new StringEqualParameter(IDValue.ToString(), IDProperty.FieldName, IDValue.ToString().Length, Source.ParameterPrefix);
             else
                 Param1 = new EqualParameter<PrimaryKeyType>(IDValue, IDProperty.FieldName, Source.ParameterPrefix);
-            if (Any(Param1).Execute().FirstOrDefault().FirstOrDefault() == null)
+            if (Any(Param1).Execute()[0].Count > 0)
             {
                 return TempBatch.AddCommand(Insert(Object));
             }
@@ -328,7 +331,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 IMapping ForeignMapping = Property.ForeignMapping;
                 if (ForeignMapping.TableName == Mapping.TableName)
                 {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @"2.*
+                    string.Format("SELECT {0}2
+                                FROM " + ForeignMapping.TableName + @" AS " + ForeignMapping.TableName + @"2
+                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + Property.FieldName + "=" + ForeignMapping.TableName + "2." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
+                                WHERE " + Mapping.TableName + "." + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID
+                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @"2.
                                 FROM " + ForeignMapping.TableName + @" AS " + ForeignMapping.TableName + @"2
                                 INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + Property.FieldName + "=" + ForeignMapping.TableName + "2." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
                                 WHERE " + Mapping.TableName + "." + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
@@ -537,6 +544,14 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 TempBatch.AddCommand(Update(Object));
             }
             return TempBatch;
+        }
+
+        private static string GetColumns(IMapping Mapping)
+        {
+            return Mapping.Properties
+                          .Where(x=>(x as IReference)!=null)
+                          .Concat(Mapping.IDProperties)
+                          .ToString(x => x.TableName+"."+ x.FieldName + " AS [" + x.Name + "]");
         }
     }
 }

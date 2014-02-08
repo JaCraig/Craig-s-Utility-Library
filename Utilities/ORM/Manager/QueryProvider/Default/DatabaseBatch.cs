@@ -138,7 +138,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// Executes the commands and returns the results
         /// </summary>
         /// <returns>The results of the batched commands</returns>
-        public IEnumerable<IEnumerable<dynamic>> Execute()
+        public IList<IList<dynamic>> Execute()
         {
             List<IParameter> FinalParameters = new List<IParameter>();
             string FinalSQLCommand = "";
@@ -156,7 +156,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             return this;
         }
 
-        private static IEnumerable<dynamic> GetValues(DbDataReader TempReader)
+        private static IList<dynamic> GetValues(DbDataReader TempReader)
         {
             Contract.Requires<ArgumentNullException>(TempReader != null, "TempReader");
             List<dynamic> ReturnValue = new List<dynamic>();
@@ -217,9 +217,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             }
         }
 
-        private IEnumerable<IEnumerable<dynamic>> ExecuteCommands(string FinalSQLCommand, List<IParameter> FinalParameters)
+        private IList<IList<dynamic>> ExecuteCommands(string FinalSQLCommand, List<IParameter> FinalParameters)
         {
-            List<IEnumerable<dynamic>> ReturnValue = new List<IEnumerable<dynamic>>();
+            IList<IList<dynamic>> ReturnValue = new List<IList<dynamic>>();
             if (string.IsNullOrEmpty(FinalSQLCommand))
             {
                 ReturnValue.Add(new List<dynamic>());

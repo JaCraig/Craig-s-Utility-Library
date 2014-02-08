@@ -48,6 +48,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             : base(Expression, Mapping)
         {
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            SetTableName(Mapping.TableName);
             SetFieldName(Name + "_");
         }
 
