@@ -85,7 +85,7 @@ namespace Utilities.ORM.Manager
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
-                foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source).All(Parameters).Execute().FirstOrDefault())
+                foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source).All(Parameters).Execute()[0])
                 {
                     ObjectType Temp = Item;
                     IProperty<ObjectType> IDProperty = (IProperty<ObjectType>)Mapping.IDProperties.FirstOrDefault();
@@ -114,7 +114,7 @@ namespace Utilities.ORM.Manager
             ObjectType ReturnValue = null;
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
-                dynamic Value = QueryProvider.Generate<ObjectType>(Source).Any(Parameters).Execute().FirstOrDefault().FirstOrDefault();
+                dynamic Value = QueryProvider.Generate<ObjectType>(Source).Any(Parameters).Execute()[0].FirstOrDefault();
                 if (ReturnValue == null)
                     ReturnValue = Value;
                 else
@@ -160,8 +160,7 @@ namespace Utilities.ORM.Manager
                 {
                     foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source)
                         .LoadProperty(Object, (IProperty<ObjectType, DataType>)Property)
-                        .Execute()
-                        .FirstOrDefault())
+                        .Execute()[0])
                     {
                         DataType Temp = Item;
                         IProperty<DataType> IDProperty = (IProperty<DataType>)Property.Mapping.IDProperties.FirstOrDefault();
@@ -215,8 +214,7 @@ namespace Utilities.ORM.Manager
             {
                 int Count = QueryProvider.Generate<ObjectType>(Source)
                     .PageCount(PageSize, Parameters)
-                    .Execute()
-                    .FirstOrDefault()
+                    .Execute()[0]
                     .FirstOrDefault()
                     .Total;
                 if (Count > 0)
@@ -241,8 +239,7 @@ namespace Utilities.ORM.Manager
             {
                 foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source)
                     .Paged(PageSize, CurrentPage, Parameters)
-                    .Execute()
-                    .FirstOrDefault())
+                    .Execute()[0])
                 {
                     ObjectType Temp = Item;
                     IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
@@ -292,7 +289,7 @@ namespace Utilities.ORM.Manager
 
                 TempBatch = QueryProvider.Batch(Source);
                 TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
-                //UpdateID(Object, Mapping, TempBatch.Execute().FirstOrDefault().FirstOrDefault());
+                //UpdateID(Object, Mapping, TempBatch.Execute()[0].FirstOrDefault());
 
                 TempBatch = QueryProvider.Batch(Source);
                 foreach (IProperty Property in Mapping.Properties)
