@@ -90,12 +90,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 Parameters);
         }
 
-                /// <summary>
-                /// Generates a batch that will get all items for the given type the parameters specified
-                /// </summary>
-                /// <param name="Parameters">Parameters</param>
-                /// <param name="Limit">Max number of items to return</param>
-                /// <returns>Batch with the appropriate commands</returns>
+        /// <summary>
+        /// Generates a batch that will get all items for the given type the parameters specified
+        /// </summary>
+        /// <param name="Parameters">Parameters</param>
+        /// <param name="Limit">Max number of items to return</param>
+        /// <returns>Batch with the appropriate commands</returns>
         public IBatch All(int Limit, params IParameter[] Parameters)
         {
             if (Limit < 1)
@@ -329,24 +329,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping.TableName == Mapping.TableName)
-                {
-                    string.Format("SELECT {0}2
-                                FROM " + ForeignMapping.TableName + @" AS " + ForeignMapping.TableName + @"2
-                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + Property.FieldName + "=" + ForeignMapping.TableName + "2." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Mapping.TableName + "." + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @"2.
-                                FROM " + ForeignMapping.TableName + @" AS " + ForeignMapping.TableName + @"2
-                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + Property.FieldName + "=" + ForeignMapping.TableName + "2." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Mapping.TableName + "." + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
-                else
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Mapping.TableName + " ON " + Mapping.TableName + "." + Property.FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Mapping.TableName + "." + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} AS {1}2 INNER JOIN {2} ON {2}.{3}={1}2.{4} WHERE {2}.{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{3}={1}.{4} WHERE {2}.{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Mapping.TableName,
+                    Property.FieldName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
             }
         }
 
@@ -361,20 +353,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
-                else
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
             }
         }
 
@@ -389,20 +377,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
-                else
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
             }
         }
 
@@ -417,20 +401,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
-                else
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
             }
         }
 
@@ -445,20 +425,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@ID", CommandType.Text);
-                }
-                else
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}2=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
             }
         }
 
@@ -473,20 +449,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (string.IsNullOrEmpty(Property.LoadCommand))
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
-                if (ForeignMapping == Mapping)
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
-                else
-                {
-                    Property.SetLoadUsingCommand(@"SELECT " + ForeignMapping.TableName + @".*
-                                FROM " + ForeignMapping.TableName + @"
-                                INNER JOIN " + Property.TableName + " ON " + Property.TableName + "." + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "=" + ForeignMapping.TableName + "." + ForeignMapping.IDProperties.FirstOrDefault().FieldName + @"
-                                WHERE " + Property.TableName + "." + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@ID", CommandType.Text);
-                }
+                Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}2={1}.{3} WHERE {2}.{4}{5}=@0" :
+                        "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{1}{3}={1}.{3} WHERE {2}.{4}{5}=@0",
+                    GetColumns(ForeignMapping),
+                    ForeignMapping.TableName,
+                    Property.TableName,
+                    ForeignMapping.IDProperties.FirstOrDefault().FieldName,
+                    Mapping.TableName,
+                    Mapping.IDProperties.FirstOrDefault().FieldName),
+                CommandType.Text);
             }
         }
 
@@ -549,9 +521,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         private static string GetColumns(IMapping Mapping)
         {
             return Mapping.Properties
-                          .Where(x=>(x as IReference)!=null)
+                          .Where(x => (x as IReference) != null)
                           .Concat(Mapping.IDProperties)
-                          .ToString(x => x.TableName+"."+ x.FieldName + " AS [" + x.Name + "]");
+                          .ToString(x => x.TableName + "." + x.FieldName + " AS [" + x.Name + "]");
         }
     }
 }

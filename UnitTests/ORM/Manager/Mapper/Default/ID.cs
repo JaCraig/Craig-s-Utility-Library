@@ -20,6 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Data;
+using UnitTests.DataTypes.DataMapper.Default;
+using Utilities.ORM.BaseClasses;
+using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
@@ -30,7 +33,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int> TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.A, null);
+            Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int> TestObject = new Utilities.ORM.Manager.Mapper.Default.ID<TestClass, int>(x => x.A, new TestClassMapping());
             Assert.False(TestObject.AutoIncrement);
             Assert.False(TestObject.Cascade);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -41,18 +44,58 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             Assert.Equal("A_", TestObject.FieldName);
             Assert.Null(TestObject.ForeignMapping);
             Assert.False(TestObject.Index);
-            Assert.Null(TestObject.Mapping);
+            Assert.NotNull(TestObject.Mapping);
             Assert.Equal(0, TestObject.MaxLength);
             Assert.Equal("A", TestObject.Name);
             Assert.False(TestObject.NotNull);
-            Assert.Equal(null, TestObject.TableName);
+            Assert.Equal("TestClass_", TestObject.TableName);
             Assert.Equal(typeof(int), TestObject.Type);
             Assert.False(TestObject.Unique);
+        }
+
+        private class Database : IDatabase
+        {
+            public bool Audit
+            {
+                get { return false; }
+            }
+
+            public string Name
+            {
+                get { return "IDTest"; }
+            }
+
+            public int Order
+            {
+                get { return 0; }
+            }
+
+            public bool Readable
+            {
+                get { return false; }
+            }
+
+            public bool Update
+            {
+                get { return false; }
+            }
+
+            public bool Writable
+            {
+                get { return false; }
+            }
         }
 
         private class TestClass
         {
             public int A { get; set; }
+        }
+
+        private class TestClassMapping : MappingBaseClass<TestClass, Database>
+        {
+            public TestClassMapping()
+            {
+            }
         }
     }
 }

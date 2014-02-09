@@ -292,7 +292,7 @@ namespace Utilities.ORM.Manager
 
                 TempBatch = QueryProvider.Batch(Source);
                 TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
-                UpdateID(Object, Mapping, TempBatch.Execute().FirstOrDefault().FirstOrDefault());
+                //UpdateID(Object, Mapping, TempBatch.Execute().FirstOrDefault().FirstOrDefault());
 
                 TempBatch = QueryProvider.Batch(Source);
                 foreach (IProperty Property in Mapping.Properties)
