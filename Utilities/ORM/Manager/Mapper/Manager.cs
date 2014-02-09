@@ -24,8 +24,10 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -59,6 +61,14 @@ namespace Utilities.ORM.Manager.Mapper
         /// <param name="Key">The object type</param>
         /// <returns>The mapping specified</returns>
         public IEnumerable<IMapping> this[Type Key] { get { return Mappings.GetValue(Key); } }
+
+        /// <summary>
+        /// Gets the mapping specified by the object type and source
+        /// </summary>
+        /// <param name="Key">The object type</param>
+        /// <param name="Source">Source information</param>
+        /// <returns>The mapping specified</returns>
+        public IMapping this[Type Key, ISourceInfo Source] { get { return Mappings.GetValue(Key).FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType()); } }
 
         /// <summary>
         /// Gets the enumerator for the mappings

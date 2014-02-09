@@ -53,7 +53,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             this.QueryProvider = QueryProvider;
             this.Source = Source;
             Mapper.Manager MappingManager = Utilities.IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
-            this.Mapping = MappingManager[typeof(T)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+            this.Mapping = MappingManager[typeof(T), Source];
         }
 
         /// <summary>

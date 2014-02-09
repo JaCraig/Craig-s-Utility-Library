@@ -84,7 +84,7 @@ namespace Utilities.ORM.Manager
             List<ObjectType> ReturnValue = new List<ObjectType>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
-                IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source).All(Parameters).Execute()[0])
                 {
                     ObjectType Temp = Item;
@@ -154,7 +154,7 @@ namespace Utilities.ORM.Manager
             System.Collections.Generic.List<DataType> ReturnValue = new System.Collections.Generic.List<DataType>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
-                IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
                 if (Mapping != null && Property != null)
                 {
@@ -242,7 +242,7 @@ namespace Utilities.ORM.Manager
                     .Execute()[0])
                 {
                     ObjectType Temp = Item;
-                    IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+                    IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                     IProperty<ObjectType> IDProperty = (IProperty<ObjectType>)Mapping.IDProperties.FirstOrDefault();
                     object IDValue = IDProperty.GetValue(Temp);
                     ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
@@ -275,7 +275,7 @@ namespace Utilities.ORM.Manager
         {
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
             {
-                IMapping Mapping = MapperProvider[typeof(ObjectType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source);
                 IBatch TempBatch = QueryProvider.Batch(Source);
                 foreach (IProperty Property in Mapping.Properties)
@@ -289,7 +289,7 @@ namespace Utilities.ORM.Manager
 
                 TempBatch = QueryProvider.Batch(Source);
                 TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
-                //UpdateID(Object, Mapping, TempBatch.Execute()[0].FirstOrDefault());
+                UpdateID(Object, TempBatch.Execute()[0][0]);
 
                 TempBatch = QueryProvider.Batch(Source);
                 foreach (IProperty Property in Mapping.Properties)
