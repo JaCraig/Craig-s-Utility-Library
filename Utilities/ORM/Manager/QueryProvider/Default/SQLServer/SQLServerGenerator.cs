@@ -81,7 +81,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
             return QueryProvider.Batch(Source)
-                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
                     "{0}{1}",
                     Mapping.SelectAllCommand,
                     Parameters != null && Parameters.Length > 0 ? " WHERE " + Parameters.ToString(x => x.ToString(), " AND ") : ""),
@@ -102,7 +102,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
             return QueryProvider.Batch(Source)
-                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
                     "SELECT TOP {0} {1} FROM {2}{3}",
                     Limit,
                     GetColumns(Mapping),
@@ -122,7 +122,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
             return QueryProvider.Batch(Source)
-                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
                     "{0}{1}",
                     Mapping.SelectAnyCommand,
                     Parameters != null && Parameters.Length > 0 ? " WHERE " + Parameters.ToString(x => x.ToString(), " AND ") : ""),
@@ -139,7 +139,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         {
             return QueryProvider
                 .Batch(Source)
-                .AddCommand(Mapping.DeleteCommand,
+                .AddCommand(null, null,
+                            Mapping.DeleteCommand,
                             Mapping.DeleteCommandType,
                             Mapping.IDProperties.ToArray(x => ((IProperty<T>)x).GetValue(Object)));
         }
@@ -167,7 +168,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         public IBatch Insert(T Object)
         {
             return QueryProvider.Batch(Source)
-                                .AddCommand(Mapping.InsertCommand,
+                                .AddCommand((x, y) => y[0].CopyTo(x),
+                                            Object,
+                                            Mapping.InsertCommand,
                                             Mapping.InsertCommandType,
                                             Mapping.Properties
                                                    .Concat(Mapping.IDProperties)
@@ -200,7 +203,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         public IBatch LoadProperty<P>(T Object, IProperty<T, P> Property)
         {
             return QueryProvider.Batch(Source)
-                .AddCommand(Property.LoadCommand,
+                .AddCommand(null, null,
+                            Property.LoadCommand,
                             Property.LoadCommandType,
                             ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
         }
@@ -219,7 +223,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
             return QueryProvider
                 .Batch(Source)
-                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
                     "SELECT COUNT(*) as Total FROM (SELECT {0} FROM {1} {2}) as Query",
                     Mapping.IDProperties.ToString(x => x.FieldName),
                     Mapping.TableName,
@@ -244,7 +248,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
             return QueryProvider
                 .Batch(Source)
-                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
                     "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {0}) AS Row, Query.* FROM (SELECT {1} FROM {2} {3}) as Query) AS Paged WHERE Row>{4} AND Row<={5}",
                     OrderBy,
                     GetColumns(Mapping),
@@ -281,7 +285,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 Param1 = new StringEqualParameter(IDValue.ToString(), IDProperty.FieldName, IDValue.ToString().Length, Source.ParameterPrefix);
             else
                 Param1 = new EqualParameter<PrimaryKeyType>(IDValue, IDProperty.FieldName, Source.ParameterPrefix);
-            if (Any(Param1).Execute()[0].Count > 0)
+            if (Any(Param1).Execute()[0].Count == 0)
             {
                 return TempBatch.AddCommand(Insert(Object));
             }
@@ -452,7 +456,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         public IBatch Update(T Object)
         {
             return QueryProvider.Batch(Source)
-                .AddCommand(Mapping.UpdateCommand, Mapping.UpdateCommandType,
+                .AddCommand(null, null, Mapping.UpdateCommand, Mapping.UpdateCommandType,
                 Mapping.Properties
                         .Where(x => !x.AutoIncrement)
                         .Concat(Mapping.IDProperties)

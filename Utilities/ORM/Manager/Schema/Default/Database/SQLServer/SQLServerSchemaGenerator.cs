@@ -190,7 +190,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
             return Provider.Batch(Source)
-                           .AddCommand(Command, CommandType.Text, Value)
+                           .AddCommand(null, null, Command, CommandType.Text, Value)
                            .Execute()[0]
                            .Count() > 0;
         }
@@ -443,7 +443,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
             IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                  .AddCommand(CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
+                                                  .AddCommand(null, null, CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
                                                   .Execute()[0];
             foreach (dynamic Item in Values)
             {
@@ -505,7 +505,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
             IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                      .AddCommand(CommandType.Text,
+                                                      .AddCommand(null, null, CommandType.Text,
                                                             "SELECT SPECIFIC_NAME as NAME,ROUTINE_DEFINITION as DEFINITION FROM INFORMATION_SCHEMA.ROUTINES WHERE INFORMATION_SCHEMA.ROUTINES.ROUTINE_TYPE='FUNCTION'")
                                                       .Execute()[0];
             foreach (dynamic Item in Values)
@@ -518,7 +518,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
             IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                      .AddCommand(CommandType.Text,
+                                                      .AddCommand(null, null, CommandType.Text,
                                                             "SELECT sys.procedures.name as NAME,OBJECT_DEFINITION(sys.procedures.object_id) as DEFINITION FROM sys.procedures")
                                                       .Execute()[0];
             foreach (dynamic Item in Values)
@@ -528,7 +528,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             foreach (StoredProcedure Procedure in Temp.StoredProcedures)
             {
                 Values = Provider.Batch(Source)
-                                .AddCommand(@"SELECT sys.systypes.name as TYPE,sys.parameters.name as NAME,sys.parameters.max_length as LENGTH,sys.parameters.default_value as [DEFAULT VALUE] FROM sys.procedures INNER JOIN sys.parameters on sys.procedures.object_id=sys.parameters.object_id INNER JOIN sys.systypes on sys.systypes.xusertype=sys.parameters.system_type_id WHERE sys.procedures.name=@0 AND (sys.systypes.xusertype <> 256)",
+                                .AddCommand(null, null, @"SELECT sys.systypes.name as TYPE,sys.parameters.name as NAME,sys.parameters.max_length as LENGTH,sys.parameters.default_value as [DEFAULT VALUE] FROM sys.procedures INNER JOIN sys.parameters on sys.procedures.object_id=sys.parameters.object_id INNER JOIN sys.systypes on sys.systypes.xusertype=sys.parameters.system_type_id WHERE sys.procedures.name=@0 AND (sys.systypes.xusertype <> 256)",
                                         CommandType.Text,
                                         Procedure.Name)
                                 .Execute()[0];
@@ -551,7 +551,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             foreach (Table Table in Temp.Tables)
             {
                 IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                      .AddCommand(@"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
+                                                      .AddCommand(null, null, @"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
                                                                 sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE],
                                                                 sys.columns.is_identity as [IS_IDENTITY], sys.index_columns.index_id as [IS_INDEX],
                                                                 key_constraints.name as [PRIMARY_KEY], key_constraints_1.name as [UNIQUE],
@@ -585,7 +585,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
             Values = Provider.Batch(Source)
-                             .AddCommand(@"SELECT sys.triggers.name as Name,sys.trigger_events.type as Type,
+                             .AddCommand(null, null, @"SELECT sys.triggers.name as Name,sys.trigger_events.type as Type,
                                                 OBJECT_DEFINITION(sys.triggers.object_id) as Definition 
                                                 FROM sys.triggers 
                                                 INNER JOIN sys.trigger_events ON sys.triggers.object_id=sys.trigger_events.object_id 
@@ -609,13 +609,13 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             foreach (View View in Temp.Views)
             {
                 IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                      .AddCommand(@"SELECT OBJECT_DEFINITION(sys.views.object_id) as Definition FROM sys.views WHERE sys.views.name=@0",
+                                                      .AddCommand(null, null, @"SELECT OBJECT_DEFINITION(sys.views.object_id) as Definition FROM sys.views WHERE sys.views.name=@0",
                                                                 CommandType.Text,
                                                                 View.Name)
                                                       .Execute()[0];
                 View.Definition = Values.First().Definition;
                 Values = Provider.Batch(Source)
-                                 .AddCommand(@"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
+                                 .AddCommand(null, null, @"SELECT sys.columns.name AS [Column], sys.systypes.name AS [COLUMN_TYPE],
                                                         sys.columns.max_length as [MAX_LENGTH], sys.columns.is_nullable as [IS_NULLABLE] 
                                                         FROM sys.views 
                                                         INNER JOIN sys.columns on sys.columns.object_id=sys.views.object_id 

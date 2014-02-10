@@ -37,7 +37,7 @@ namespace UnitTests.ORM.Parameters
             Assert.Equal("@", TestObject.ParameterStarter);
             Assert.Equal("ID=@ID", TestObject.ToString());
             IBatch Batch = new Utilities.ORM.Manager.QueryProvider.Manager().Batch(TestDatabaseSource);
-            Assert.DoesNotThrow(() => Batch.AddCommand("SELECT * FROM TestTable", CommandType.Text, TestObject).Execute());
+            Assert.DoesNotThrow(() => Batch.AddCommand(null, null, "SELECT * FROM TestTable", CommandType.Text, TestObject).Execute());
         }
     }
 }

@@ -282,16 +282,10 @@ namespace Utilities.ORM.Manager
                 {
                     if (Property.Cascade)
                     {
-                        TempBatch.AddCommand(CascadeSave(Object, Property, Generator));
+                        TempBatch.AddCommand(Property.CascadeSaveToBatch(Object));
                     }
                 }
-                CascadeUpdateIDs(Object, Mapping, TempBatch.Execute());
-
-                TempBatch = QueryProvider.Batch(Source);
                 TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
-                UpdateID(Object, TempBatch.Execute()[0][0]);
-
-                TempBatch = QueryProvider.Batch(Source);
                 foreach (IProperty Property in Mapping.Properties)
                 {
                     if (!Property.Cascade &&
@@ -301,11 +295,11 @@ namespace Utilities.ORM.Manager
                             || Property is IListManyToMany
                             || Property is IListManyToOne))
                     {
-                        TempBatch.AddCommand(JoinsDelete(Object, Property));
+                        TempBatch.AddCommand(Property.JoinsDelete(Object));
                     }
                     if (Property.Cascade)
                     {
-                        TempBatch.AddCommand(CascadeJoinsDelete(Object, Property));
+                        TempBatch.AddCommand(Property.CascadeJoinsDelete(Object));
                     }
                 }
                 foreach (IProperty Property in Mapping.Properties)
@@ -317,51 +311,15 @@ namespace Utilities.ORM.Manager
                             || Property is IListManyToMany
                             || Property is IListManyToOne))
                     {
-                        TempBatch.AddCommand(JoinsSave(Object, Property));
+                        TempBatch.AddCommand(Property.JoinsSave(Object));
                     }
                     if (Property.Cascade)
                     {
-                        TempBatch.AddCommand(CascadeJoinsSave(Object, Property));
+                        TempBatch.AddCommand(Property.CascadeJoinsSave(Object));
                     }
                 }
                 TempBatch.RemoveDuplicateCommands().Execute();
             }
-        }
-
-        private IBatch CascadeJoinsDelete<ObjectType>(ObjectType Object, IProperty Property)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IBatch CascadeJoinsSave<ObjectType>(ObjectType Object, IProperty Property)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IBatch CascadeSave<ObjectType>(ObjectType Object, IProperty Property, IGenerator<ObjectType> Generator)
-            where ObjectType : class,new()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CascadeUpdateIDs<ObjectType>(ObjectType Object, IMapping Mapping, IEnumerable<IEnumerable<dynamic>> Results)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IBatch JoinsDelete<ObjectType>(ObjectType Object, IProperty Property)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IBatch JoinsSave<ObjectType>(ObjectType Object, IProperty Property)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void UpdateID<ObjectType>(ObjectType Object, dynamic enumerable)
-        {
-            enumerable.CopyTo(Object);
         }
     }
 }

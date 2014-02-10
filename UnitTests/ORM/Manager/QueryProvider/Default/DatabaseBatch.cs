@@ -41,7 +41,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public void AddCommand()
         {
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
-            Temp.AddCommand("SELECT * FROM A", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
+            Temp.AddCommand(null, null, "SELECT * FROM A", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
             Assert.Equal(1, Temp.CommandCount);
         }
 
@@ -58,7 +58,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         {
             Guid TempGuid = Guid.NewGuid();
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
-            Temp.AddCommand("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
+            Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
                 "Test String",
                 12345,
@@ -71,7 +71,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
 
             Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             bool Found = false;
-            foreach (dynamic Item in Temp.AddCommand(CommandType.Text, "SELECT * FROM TestTable")
+            foreach (dynamic Item in Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestTable")
                 .Execute()
                 .First())
             {
@@ -92,7 +92,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
 
             Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
             Found = false;
-            foreach (dynamic Item in Temp.AddCommand(CommandType.Text, "SELECT COUNT(*) as [ItemCount] FROM TestTable")
+            foreach (dynamic Item in Temp.AddCommand(null, null, CommandType.Text, "SELECT COUNT(*) as [ItemCount] FROM TestTable")
                 .Execute()
                 .First())
             {
@@ -110,7 +110,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         {
             Guid TempGuid = Guid.NewGuid();
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
-            Temp.AddCommand("insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
+            Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
                 "",
                 12345,
@@ -122,7 +122,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
                 .Execute();
 
             bool Found = false;
-            foreach (dynamic Item in Temp.AddCommand(CommandType.Text, "SELECT * FROM TestTable")
+            foreach (dynamic Item in Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestTable")
                 .Execute()
                 .First())
             {
@@ -146,7 +146,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public void MBDBug()
         {
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
-            int DbID = Temp.AddCommand("SELECT database_id FROM Master.sys.Databases WHERE name=@0", CommandType.Text, "TestDatabase")
+            int DbID = Temp.AddCommand(null, null, "SELECT database_id FROM Master.sys.Databases WHERE name=@0", CommandType.Text, "TestDatabase")
                 .Execute()
                 .First()
                 .First()

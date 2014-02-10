@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -43,11 +44,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="SQLCommand">SQL Command</param>
         /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters</param>
-        public Command(string SQLCommand, CommandType CommandType, IParameter[] Parameters)
+        /// <param name="CallBack">Called when command has been executed</param>
+        /// <param name="Object">Object</param>
+        public Command(Action<object, IList<dynamic>> CallBack, object Object, string SQLCommand, CommandType CommandType, IParameter[] Parameters)
         {
             this.SQLCommand = SQLCommand;
             this.CommandType = CommandType;
+            this.CallBack = CallBack.Check((x, y) => { });
+            this.Object = Object;
             this.Parameters = Parameters.Check(new IParameter[0]);
+            this.Finalizable = SQLCommand.Check("").ToUpperInvariant().Contains("SELECT");
         }
 
         /// <summary>
@@ -57,11 +63,16 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="CommandType">Command type</param>
         /// <param name="Parameters">Parameters</param>
         /// <param name="ParameterStarter">Parameter starter</param>
-        public Command(string SQLCommand, CommandType CommandType, string ParameterStarter, object[] Parameters)
+        /// <param name="CallBack">Called when command has been executed</param>
+        /// <param name="Object">Object</param>
+        public Command(Action<object, IList<dynamic>> CallBack, object Object, string SQLCommand, CommandType CommandType, string ParameterStarter, object[] Parameters)
         {
             this.SQLCommand = SQLCommand;
             this.CommandType = CommandType;
             this.Parameters = new List<IParameter>();
+            this.CallBack = CallBack.Check((x, y) => { });
+            this.Object = Object;
+            this.Finalizable = SQLCommand.Check("").ToUpperInvariant().Contains("SELECT");
             if (Parameters != null)
             {
                 foreach (object Parameter in Parameters)
@@ -78,9 +89,24 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         }
 
         /// <summary>
+        /// Call back
+        /// </summary>
+        public Action<object, IList<dynamic>> CallBack { get; private set; }
+
+        /// <summary>
         /// Command type
         /// </summary>
         public CommandType CommandType { get; set; }
+
+        /// <summary>
+        /// Used to determine if Finalize should be called.
+        /// </summary>
+        public bool Finalizable { get; private set; }
+
+        /// <summary>
+        /// Object
+        /// </summary>
+        public object Object { get; private set; }
 
         /// <summary>
         /// Parameters
@@ -117,6 +143,15 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                     return false;
 
             return true;
+        }
+
+        /// <summary>
+        /// Called after the command is run
+        /// </summary>
+        /// <param name="Result">Result of the command</param>
+        public void Finalize(IList<dynamic> Result)
+        {
+            CallBack(Object, Result);
         }
 
         /// <summary>

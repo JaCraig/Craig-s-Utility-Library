@@ -227,6 +227,16 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         bool Unique { get; }
 
+        QueryProvider.Interfaces.IBatch CascadeJoinsDelete(object Object);
+
+        QueryProvider.Interfaces.IBatch CascadeJoinsSave(object Object);
+
+        QueryProvider.Interfaces.IBatch CascadeSaveToBatch(object Object);
+
+        QueryProvider.Interfaces.IBatch JoinsDelete(object Object);
+
+        QueryProvider.Interfaces.IBatch JoinsSave(object Object);
+
         /// <summary>
         /// Sets up the property (used internally)
         /// </summary>

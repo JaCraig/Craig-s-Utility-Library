@@ -221,7 +221,7 @@ namespace Utilities.ORM.Manager
                                 Batch.Execute();
                                 Batch = QueryProvider.Batch(SourceProvider.GetSource(Key.Name));
                             }
-                            Batch.AddCommand(CommandType.Text, Commands[x]);
+                            Batch.AddCommand(null, null, CommandType.Text, Commands[x]);
                             if (x < Commands.Count - 1)
                             {
                                 Batch.Execute();
@@ -230,7 +230,7 @@ namespace Utilities.ORM.Manager
                         }
                         else
                         {
-                            Batch.AddCommand(CommandType.Text, Commands[x]);
+                            Batch.AddCommand(null, null, CommandType.Text, Commands[x]);
                         }
                     }
                     Batch.Execute();

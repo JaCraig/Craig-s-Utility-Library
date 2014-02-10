@@ -408,12 +408,10 @@ namespace Utilities.DataTypes
         /// <summary>
         /// Copies data from here to another object
         /// </summary>
-        /// <typeparam name="ObjectType">Object type</typeparam>
         /// <param name="result">Result</param>
-        public void CopyTo<ObjectType>(ObjectType result)
+        public void CopyTo(object result)
         {
-            Type TempType = typeof(ObjectType);
-            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), TempType)
+            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), result.GetType())
                 .AutoMap()
                 .Copy(this, result);
         }
