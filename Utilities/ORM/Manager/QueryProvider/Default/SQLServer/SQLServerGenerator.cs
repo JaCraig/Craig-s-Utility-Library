@@ -48,12 +48,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
-        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source)
+        /// <param name="Mapping">Mapping info</param>
+        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping)
         {
             this.QueryProvider = QueryProvider;
             this.Source = Source;
-            Mapper.Manager MappingManager = Utilities.IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
-            this.Mapping = MappingManager[typeof(T), Source];
+            this.Mapping = Mapping;
         }
 
         /// <summary>
@@ -82,11 +82,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return QueryProvider.Batch(Source);
             return QueryProvider.Batch(Source)
                 .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                    "SELECT {0} FROM {1}{2}",
-                    GetColumns(Mapping),
-                    Mapping.TableName,
+                    "{0}{1}",
+                    Mapping.SelectAllCommand,
                     Parameters != null && Parameters.Length > 0 ? " WHERE " + Parameters.ToString(x => x.ToString(), " AND ") : ""),
-                CommandType.Text,
+                    Parameters != null && Parameters.Length > 0 ? CommandType.Text : Mapping.SelectAllCommandType,
                 Parameters);
         }
 
@@ -120,7 +119,15 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Any(params IParameter[] Parameters)
         {
-            return All(1, Parameters);
+            if (Mapping == null)
+                return QueryProvider.Batch(Source);
+            return QueryProvider.Batch(Source)
+                .AddCommand(string.Format(CultureInfo.InvariantCulture,
+                    "{0}{1}",
+                    Mapping.SelectAnyCommand,
+                    Parameters != null && Parameters.Length > 0 ? " WHERE " + Parameters.ToString(x => x.ToString(), " AND ") : ""),
+                    Parameters != null && Parameters.Length > 0 ? CommandType.Text : Mapping.SelectAnyCommandType,
+                Parameters);
         }
 
         /// <summary>
@@ -130,23 +137,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Delete(T Object)
         {
-            string IDProperties = "";
-            int Count = 0;
-            string Separator = "";
-            foreach (IProperty Property in Mapping.IDProperties)
-            {
-                IDProperties += Separator + Property.FieldName + "=@" + Count;
-                Separator = " AND ";
-                ++Count;
-            }
             return QueryProvider
                 .Batch(Source)
-                .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                    "DELETE FROM {0} WHERE {1}",
-                    Mapping.TableName,
-                    IDProperties),
-                CommandType.Text,
-                Mapping.IDProperties.ToArray(x => ((IProperty<T>)x).GetValue(Object)));
+                .AddCommand(Mapping.DeleteCommand,
+                            Mapping.DeleteCommandType,
+                            Mapping.IDProperties.ToArray(x => ((IProperty<T>)x).GetValue(Object)));
         }
 
         /// <summary>
@@ -171,41 +166,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Insert(T Object)
         {
-            string ParameterList = "";
-            string ValueList = "";
-            string Splitter = "";
-            int Counter = 0;
-            foreach (IProperty Property in Mapping.Properties)
-            {
-                if (!Property.AutoIncrement)
-                {
-                    ParameterList += Splitter + Property.FieldName;
-                    ValueList += Splitter + "@" + Counter;
-                    Splitter = ",";
-                    ++Counter;
-                }
-            }
-            foreach (IProperty Property in Mapping.IDProperties)
-            {
-                if (!Property.AutoIncrement)
-                {
-                    ParameterList += Splitter + Property.FieldName;
-                    ValueList += Splitter + "@" + Counter;
-                    Splitter = ",";
-                    ++Counter;
-                }
-            }
             return QueryProvider.Batch(Source)
-                .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                    "INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [{3}]",
-                    Mapping.TableName,
-                    ParameterList,
-                    ValueList,
-                    Mapping.IDProperties.FirstOrDefault().Name),
-                CommandType.Text,
-                Mapping.Properties.Concat(Mapping.IDProperties)
-                        .Where(x => !x.AutoIncrement)
-                        .ToArray(x => ((IProperty<T>)x).GetValue(Object)));
+                                .AddCommand(Mapping.InsertCommand,
+                                            Mapping.InsertCommandType,
+                                            Mapping.Properties
+                                                   .Concat(Mapping.IDProperties)
+                                                   .Where(x => !x.AutoIncrement)
+                                                   .ToArray(x => ((IProperty<T>)x).GetValue(Object)));
         }
 
         /// <summary>
@@ -233,7 +200,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         public IBatch LoadProperty<P>(T Object, IProperty<T, P> Property)
         {
             return QueryProvider.Batch(Source)
-                .AddCommand(Property.LoadCommand, Property.LoadCommandType, ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
+                .AddCommand(Property.LoadCommand,
+                            Property.LoadCommandType,
+                            ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
         }
 
         /// <summary>
@@ -317,6 +286,19 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return TempBatch.AddCommand(Insert(Object));
             }
             return TempBatch.AddCommand(Update(Object));
+        }
+
+        /// <summary>
+        /// Sets up the various default commands for the mapping
+        /// </summary>
+        /// <param name="Mapping"></param>
+        public void SetupCommands(IMapping<T> Mapping)
+        {
+            SetupUpdate(Mapping);
+            SetupInsert(Mapping);
+            SetupDelete(Mapping);
+            SetupAllSelect(Mapping);
+            SetupAnySelect(Mapping);
         }
 
         /// <summary>
@@ -469,34 +451,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Update(T Object)
         {
-            string ParameterList = "";
-            string IDProperties = "";
-            int Count = 0;
-            string Separator = "";
-            foreach (IProperty Property in Mapping.IDProperties)
-            {
-                IDProperties += Separator + Property.FieldName + "=@" + Count;
-                Separator = " AND ";
-                ++Count;
-            }
-            string Splitter = "";
-            Count = 0;
-            foreach (IProperty Property in Mapping.Properties)
-            {
-                if (!Property.AutoIncrement)
-                {
-                    ParameterList += Splitter + Property.FieldName + "=@" + Count;
-                    Splitter = ",";
-                    ++Count;
-                }
-            }
             return QueryProvider.Batch(Source)
-                .AddCommand(string.Format(CultureInfo.InvariantCulture,
-                    "UPDATE {0} SET {1} WHERE {2}",
-                    Mapping.TableName,
-                    ParameterList,
-                    IDProperties),
-                CommandType.Text,
+                .AddCommand(Mapping.UpdateCommand, Mapping.UpdateCommandType,
                 Mapping.Properties
                         .Where(x => !x.AutoIncrement)
                         .Concat(Mapping.IDProperties)
@@ -524,6 +480,118 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                           .Where(x => (x as IReference) != null)
                           .Concat(Mapping.IDProperties)
                           .ToString(x => x.TableName + "." + x.FieldName + " AS [" + x.Name + "]");
+        }
+
+        private static void SetupUpdate(IMapping<T> Mapping)
+        {
+            if (!string.IsNullOrEmpty(Mapping.UpdateCommand))
+                return;
+            string ParameterList = "";
+            string IDProperties = "";
+            int Count = 0;
+            string Separator = "";
+            string Splitter = "";
+            foreach (IProperty Property in Mapping.Properties)
+            {
+                if (!Property.AutoIncrement)
+                {
+                    ParameterList += Splitter + Property.FieldName + "=@" + Count;
+                    Splitter = ",";
+                    ++Count;
+                }
+            }
+            foreach (IProperty Property in Mapping.IDProperties)
+            {
+                IDProperties += Separator + Property.FieldName + "=@" + Count;
+                Separator = " AND ";
+                ++Count;
+            }
+
+            Mapping.SetUpdateCommand(string.Format(CultureInfo.InvariantCulture,
+                    "UPDATE {0} SET {1} WHERE {2}",
+                    Mapping.TableName,
+                    ParameterList,
+                    IDProperties),
+                CommandType.Text);
+        }
+
+        private void SetupAllSelect(IMapping<T> Mapping)
+        {
+            if (!string.IsNullOrEmpty(Mapping.SelectAllCommand))
+                return;
+            Mapping.SetSelectAllCommand(string.Format(CultureInfo.InvariantCulture,
+                    "SELECT {0} FROM {1}",
+                    GetColumns(Mapping),
+                    Mapping.TableName),
+                CommandType.Text);
+        }
+
+        private void SetupAnySelect(IMapping<T> Mapping)
+        {
+            if (!string.IsNullOrEmpty(Mapping.SelectAnyCommand))
+                return;
+            Mapping.SetSelectAnyCommand(string.Format(CultureInfo.InvariantCulture,
+                    "SELECT TOP 1 {0} FROM {1}",
+                    GetColumns(Mapping),
+                    Mapping.TableName),
+                CommandType.Text);
+        }
+
+        private void SetupDelete(IMapping<T> Mapping)
+        {
+            if (!string.IsNullOrEmpty(Mapping.DeleteCommand))
+                return;
+            string IDProperties = "";
+            int Count = 0;
+            string Separator = "";
+            foreach (IProperty Property in Mapping.IDProperties)
+            {
+                IDProperties += Separator + Property.FieldName + "=@" + Count;
+                Separator = " AND ";
+                ++Count;
+            }
+            Mapping.SetDeleteCommand(string.Format(CultureInfo.InvariantCulture,
+                    "DELETE FROM {0} WHERE {1}",
+                    Mapping.TableName,
+                    IDProperties),
+                CommandType.Text);
+        }
+
+        private void SetupInsert(IMapping<T> Mapping)
+        {
+            if (!string.IsNullOrEmpty(Mapping.InsertCommand))
+                return;
+            string ParameterList = "";
+            string ValueList = "";
+            string Splitter = "";
+            int Counter = 0;
+            foreach (IProperty Property in Mapping.Properties)
+            {
+                if (!Property.AutoIncrement)
+                {
+                    ParameterList += Splitter + Property.FieldName;
+                    ValueList += Splitter + "@" + Counter;
+                    Splitter = ",";
+                    ++Counter;
+                }
+            }
+            foreach (IProperty Property in Mapping.IDProperties)
+            {
+                if (!Property.AutoIncrement)
+                {
+                    ParameterList += Splitter + Property.FieldName;
+                    ValueList += Splitter + "@" + Counter;
+                    Splitter = ",";
+                    ++Counter;
+                }
+            }
+            Mapping.SetInsertCommand(string.Format(CultureInfo.InvariantCulture,
+                    "INSERT INTO {0}({1}) VALUES({2}) SELECT scope_identity() as [{3}]",
+                    Mapping.TableName,
+                    ParameterList,
+                    ValueList,
+                    Mapping.IDProperties.Count > 0 ? Mapping.IDProperties.FirstOrDefault().Name : "ID"),
+                CommandType.Text);
         }
     }
 }

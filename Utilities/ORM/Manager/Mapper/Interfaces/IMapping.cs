@@ -23,8 +23,10 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using Utilities.ORM.Manager.Mapper.Default;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -34,7 +36,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
     /// Class mapping interface
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
-    public interface IMapping<ClassType>
+    public interface IMapping<ClassType> : IMapping
         where ClassType : class,new()
     {
         /// <summary>
@@ -119,9 +121,29 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         Type DatabaseConfigType { get; }
 
         /// <summary>
+        /// Delete command
+        /// </summary>
+        string DeleteCommand { get; }
+
+        /// <summary>
+        /// Delete command type
+        /// </summary>
+        CommandType DeleteCommandType { get; }
+
+        /// <summary>
         /// ID properties
         /// </summary>
         ICollection<IProperty> IDProperties { get; }
+
+        /// <summary>
+        /// Insert command
+        /// </summary>
+        string InsertCommand { get; }
+
+        /// <summary>
+        /// Insert command type
+        /// </summary>
+        CommandType InsertCommandType { get; }
 
         /// <summary>
         /// The object type associated with the mapping
@@ -144,6 +166,26 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         ICollection<IProperty> Properties { get; }
 
         /// <summary>
+        /// Select all command
+        /// </summary>
+        string SelectAllCommand { get; }
+
+        /// <summary>
+        /// Select all command type
+        /// </summary>
+        CommandType SelectAllCommandType { get; }
+
+        /// <summary>
+        /// Select any command
+        /// </summary>
+        string SelectAnyCommand { get; }
+
+        /// <summary>
+        /// Select any command type
+        /// </summary>
+        CommandType SelectAnyCommandType { get; }
+
+        /// <summary>
         /// Suffix used for defining properties/table name
         /// </summary>
         string Suffix { get; }
@@ -152,5 +194,62 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Table name
         /// </summary>
         string TableName { get; }
+
+        /// <summary>
+        /// Update command
+        /// </summary>
+        string UpdateCommand { get; }
+
+        /// <summary>
+        /// Update command type
+        /// </summary>
+        CommandType UpdateCommandType { get; }
+
+        /// <summary>
+        /// Sets the default delete command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        IMapping SetDeleteCommand(string Command, CommandType CommandType);
+
+        /// <summary>
+        /// Sets the default insert command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        IMapping SetInsertCommand(string Command, CommandType CommandType);
+
+        /// <summary>
+        /// Sets the default select all command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        IMapping SetSelectAllCommand(string Command, CommandType CommandType);
+
+        /// <summary>
+        /// Sets the default select any command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        IMapping SetSelectAnyCommand(string Command, CommandType CommandType);
+
+        /// <summary>
+        /// Sets up the mapping
+        /// </summary>
+        /// <param name="Source">Source info</param>
+        /// <param name="QueryProvider">Query provider</param>
+        void Setup(ISourceInfo Source, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider);
+
+        /// <summary>
+        /// Sets the default update command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        IMapping SetUpdateCommand(string Command, CommandType CommandType);
     }
 }

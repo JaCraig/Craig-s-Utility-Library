@@ -367,6 +367,14 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
+
+            foreach (IDatabase Database in Mappings.Keys)
+            {
+                foreach (IMapping Mapping in Mappings[Database])
+                {
+                    Mapping.Setup(SourceProvider.GetSource(Database.GetType()), QueryProvider);
+                }
+            }
         }
 
         private void SetupTables(IDatabase Key, Schema.Default.Database.Database TempDatabase)

@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -67,8 +68,9 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Source">Source info</param>
+        /// <param name="Mapping">Mapping info</param>
         /// <returns>A generator class</returns>
-        public abstract IGenerator<T> Generate<T>(ISourceInfo Source)
+        public abstract IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
             where T : class,new();
     }
 }

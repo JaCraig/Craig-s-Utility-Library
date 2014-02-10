@@ -121,6 +121,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         IBatch Save<PrimaryKeyType>(T Object);
 
         /// <summary>
+        /// Sets up the commands for the mapping
+        /// </summary>
+        /// <param name="Mapping">Mapping to set up</param>
+        void SetupCommands(IMapping<T> Mapping);
+
+        /// <summary>
         /// Sets up the default load command for a map property
         /// </summary>
         /// <typeparam name="D">Data type</typeparam>

@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
+using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
@@ -70,12 +71,13 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// </summary>
         /// <typeparam name="T">Class type the generator uses</typeparam>
         /// <param name="Source">Source to use</param>
+        /// <param name="Mapping">Mapping info</param>
         /// <returns>The generator object</returns>
-        public IGenerator<T> Generate<T>(ISourceInfo Source)
+        public IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
             where T : class,new()
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Generate<T>(Source) : null;
+            return Providers.ContainsKey(Source.SourceType) ? Providers[Source.SourceType].Generate<T>(Source, Mapping) : null;
         }
 
         /// <summary>

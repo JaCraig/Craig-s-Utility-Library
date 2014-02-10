@@ -45,7 +45,7 @@ namespace UnitTests.ORM.Manager.QueryProvider
         [Fact]
         public void Generate()
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<TestClass>(TestDatabaseSource));
+            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<TestClass>(TestDatabaseSource, null));
         }
 
         public class TestClass

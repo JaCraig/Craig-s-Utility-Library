@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -57,10 +58,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Source">Source information</param>
+        /// <param name="Mapping">Mapping information</param>
         /// <returns>A generator class</returns>
-        public override IGenerator<T> Generate<T>(ISourceInfo Source)
+        public override IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
         {
-            return new SQLServerGenerator<T>(this, Source);
+            return new SQLServerGenerator<T>(this, Source, Mapping);
         }
     }
 }

@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Default;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -68,9 +69,29 @@ namespace Utilities.ORM.BaseClasses
         public Type DatabaseConfigType { get { return typeof(DatabaseType); } }
 
         /// <summary>
+        /// Delete command
+        /// </summary>
+        public string DeleteCommand { get; private set; }
+
+        /// <summary>
+        /// Delete command type
+        /// </summary>
+        public System.Data.CommandType DeleteCommandType { get; private set; }
+
+        /// <summary>
         /// ID Properties
         /// </summary>
         public ICollection<IProperty> IDProperties { get; private set; }
+
+        /// <summary>
+        /// Insert command
+        /// </summary>
+        public string InsertCommand { get; private set; }
+
+        /// <summary>
+        /// Insert command type
+        /// </summary>
+        public System.Data.CommandType InsertCommandType { get; private set; }
 
         /// <summary>
         /// Object type
@@ -94,6 +115,26 @@ namespace Utilities.ORM.BaseClasses
         public ICollection<IProperty> Properties { get; private set; }
 
         /// <summary>
+        /// Select all command
+        /// </summary>
+        public string SelectAllCommand { get; private set; }
+
+        /// <summary>
+        /// Select all command type
+        /// </summary>
+        public System.Data.CommandType SelectAllCommandType { get; private set; }
+
+        /// <summary>
+        /// Select any command
+        /// </summary>
+        public string SelectAnyCommand { get; private set; }
+
+        /// <summary>
+        /// Select any command type
+        /// </summary>
+        public System.Data.CommandType SelectAnyCommandType { get; private set; }
+
+        /// <summary>
         /// Suffix used to define names of properties/table name
         /// </summary>
         public string Suffix { get; private set; }
@@ -102,6 +143,16 @@ namespace Utilities.ORM.BaseClasses
         /// Table name
         /// </summary>
         public string TableName { get; private set; }
+
+        /// <summary>
+        /// Update command
+        /// </summary>
+        public string UpdateCommand { get; private set; }
+
+        /// <summary>
+        /// Update command type
+        /// </summary>
+        public System.Data.CommandType UpdateCommandType { get; private set; }
 
         /// <summary>
         /// Creates an ID object
@@ -227,6 +278,82 @@ namespace Utilities.ORM.BaseClasses
             Reference<ClassType, DataType> ReturnValue = new Reference<ClassType, DataType>(Expression, this);
             Properties.Add(ReturnValue);
             return ReturnValue;
+        }
+
+        /// <summary>
+        /// Sets the default delete command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        public IMapping SetDeleteCommand(string Command, System.Data.CommandType CommandType)
+        {
+            DeleteCommand = Command;
+            DeleteCommandType = CommandType;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the default insert command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        public IMapping SetInsertCommand(string Command, System.Data.CommandType CommandType)
+        {
+            InsertCommand = Command;
+            InsertCommandType = CommandType;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the default select all command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        public IMapping SetSelectAllCommand(string Command, System.Data.CommandType CommandType)
+        {
+            SelectAllCommand = Command;
+            SelectAllCommandType = CommandType;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the default select any command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        public IMapping SetSelectAnyCommand(string Command, System.Data.CommandType CommandType)
+        {
+            SelectAnyCommand = Command;
+            SelectAnyCommandType = CommandType;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets up the mapping
+        /// </summary>
+        /// <param name="Source">Source info</param>
+        /// <param name="QueryProvider">Query provider</param>
+        public void Setup(ISourceInfo Source, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider)
+        {
+            QueryProvider.Generate<ClassType>(Source, this)
+                         .SetupCommands(this);
+        }
+
+        /// <summary>
+        /// Sets the default update command
+        /// </summary>
+        /// <param name="Command">Command</param>
+        /// <param name="CommandType">Command type</param>
+        /// <returns>This</returns>
+        public IMapping SetUpdateCommand(string Command, System.Data.CommandType CommandType)
+        {
+            UpdateCommand = Command;
+            UpdateCommandType = CommandType;
+            return this;
         }
 
         /// <summary>

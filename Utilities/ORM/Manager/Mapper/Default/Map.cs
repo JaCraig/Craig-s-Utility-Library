@@ -66,7 +66,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
         {
             ForeignMapping = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>()[Type].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
             ISourceInfo Source = IoC.Manager.Bootstrapper.Resolve<SourceProvider.Manager>().GetSource(Mapping.DatabaseConfigType);
-            IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>().Generate<ClassType>(Source).SetupLoadCommands(this);
+            IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>().Generate<ClassType>(Source, Mapping).SetupLoadCommands(this);
         }
     }
 }
