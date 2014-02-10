@@ -242,7 +242,8 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         /// <param name="Source">Source info</param>
         /// <param name="QueryProvider">Query provider</param>
-        void Setup(ISourceInfo Source, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider);
+        /// <param name="MappingProvider">Mapping provider</param>
+        void Setup(ISourceInfo Source, Utilities.ORM.Manager.Mapper.Manager MappingProvider, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider);
 
         /// <summary>
         /// Sets the default update command

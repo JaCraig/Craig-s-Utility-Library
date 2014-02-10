@@ -25,6 +25,7 @@ using System;
 using System.Data;
 using System.Linq.Expressions;
 using Utilities.DataTypes.Patterns;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -229,6 +230,9 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
-        void Setup();
+        /// <param name="MappingProvider">Mapping provider</param>
+        /// <param name="QueryProvider">Query provider</param>
+        /// <param name="Source">Source to use</param>
+        void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider);
     }
 }

@@ -337,10 +337,19 @@ namespace Utilities.ORM.BaseClasses
         /// </summary>
         /// <param name="Source">Source info</param>
         /// <param name="QueryProvider">Query provider</param>
-        public void Setup(ISourceInfo Source, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider)
+        /// <param name="MappingProvider">Mapping provider</param>
+        public void Setup(ISourceInfo Source, Utilities.ORM.Manager.Mapper.Manager MappingProvider, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider)
         {
             QueryProvider.Generate<ClassType>(Source, this)
                          .SetupCommands(this);
+
+            foreach (IProperty Property in Properties)
+            {
+                if (Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne)
+                {
+                    Property.Setup(Source, MappingProvider, QueryProvider);
+                }
+            }
         }
 
         /// <summary>

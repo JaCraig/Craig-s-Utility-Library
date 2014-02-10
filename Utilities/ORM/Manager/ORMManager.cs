@@ -357,22 +357,11 @@ namespace Utilities.ORM.Manager
                 Mappings.Add(Databases.FirstOrDefault(x => x.GetType() == Mapping.DatabaseConfigType), Mapping);
             }
 
-            foreach (IMapping Mapping in MapperProvider.OrderBy(x => x.Order))
-            {
-                foreach (IProperty Property in Mapping.Properties)
-                {
-                    if (Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne)
-                    {
-                        Property.Setup();
-                    }
-                }
-            }
-
             foreach (IDatabase Database in Mappings.Keys)
             {
                 foreach (IMapping Mapping in Mappings[Database])
                 {
-                    Mapping.Setup(SourceProvider.GetSource(Database.GetType()), QueryProvider);
+                    Mapping.Setup(SourceProvider.GetSource(Database.GetType()), MapperProvider, QueryProvider);
                 }
             }
         }

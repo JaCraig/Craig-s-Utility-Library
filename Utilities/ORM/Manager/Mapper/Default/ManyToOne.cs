@@ -63,11 +63,13 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <summary>
         /// Sets up the property
         /// </summary>
-        public override void Setup()
+        /// <param name="MappingProvider">Mapping provider</param>
+        /// <param name="QueryProvider">Query provider</param>
+        /// <param name="Source">Source info</param>
+        public override void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider)
         {
-            ForeignMapping = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>()[Type].FirstOrDefault(x => x.DatabaseConfigType == Mapping.DatabaseConfigType);
-            ISourceInfo Source = IoC.Manager.Bootstrapper.Resolve<SourceProvider.Manager>().GetSource(Mapping.DatabaseConfigType);
-            IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>().Generate<ClassType>(Source, Mapping).SetupLoadCommands(this);
+            ForeignMapping = MappingProvider[Type, Source];
+            QueryProvider.Generate<ClassType>(Source, Mapping).SetupLoadCommands(this);
         }
     }
 }

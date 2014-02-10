@@ -349,7 +349,10 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Sets up the property, is used internally
         /// </summary>
-        public abstract void Setup();
+        /// <param name="MappingProvider">Mapping provider</param>
+        /// <param name="QueryProvider">Query provider</param>
+        /// <param name="Source">Source info</param>
+        public abstract void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider);
 
         /// <summary>
         /// Gets the property as a string

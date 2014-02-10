@@ -26,6 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
 
@@ -55,7 +56,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <summary>
         /// Sets up the property
         /// </summary>
-        public override void Setup()
+        /// <param name="MappingProvider">Mapping provider</param>
+        /// <param name="QueryProvider">Query provider</param>
+        /// <param name="Source">Source info</param>
+        public override void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider)
         {
         }
     }
