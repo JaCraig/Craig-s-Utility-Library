@@ -26,6 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
@@ -51,6 +52,78 @@ namespace Utilities.ORM.Manager.Mapper.Default
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             SetTableName(Mapping.TableName);
             SetFieldName(Name + "_");
+        }
+
+        /// <summary>
+        /// Does a cascade delete of an object for this property
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source)
+        {
+            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            return Provider.Batch(Source);
+        }
+
+        /// <summary>
+        /// Called to create a batch that deletes items from the joining tables
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source)
+        {
+            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            return Provider.Batch(Source);
+        }
+
+        /// <summary>
+        /// Called to create a batch that saves items from the joining tables
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source)
+        {
+            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            return Provider.Batch(Source);
+        }
+
+        /// <summary>
+        /// Does a cascade save of an object for this property
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public override IBatch CascadeSave(ClassType Object, ISourceInfo Source)
+        {
+            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            return Provider.Batch(Source);
+        }
+
+        /// <summary>
+        /// Called to create a batch that deletes items from the joining table
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public override IBatch JoinsDelete(ClassType Object, ISourceInfo Source)
+        {
+            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            return Provider.Batch(Source);
+        }
+
+        /// <summary>
+        /// Called to create a batch that saves items from the joining table
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public override IBatch JoinsSave(ClassType Object, ISourceInfo Source)
+        {
+            QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
+            return Provider.Batch(Source);
         }
 
         /// <summary>

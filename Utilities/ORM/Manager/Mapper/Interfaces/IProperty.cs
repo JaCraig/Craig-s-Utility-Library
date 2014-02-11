@@ -25,6 +25,7 @@ using System;
 using System.Data;
 using System.Linq.Expressions;
 using Utilities.DataTypes.Patterns;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
@@ -140,11 +141,60 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         where ClassType : class,new()
     {
         /// <summary>
+        /// Does a cascade delete of an object for this property
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        IBatch CascadeDelete(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
+        /// Called to create a batch that deletes items from the joining tables
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
+        /// Called to create a batch that saves items from the joining tables
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
+        /// Does a cascade save of an object for this property
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        IBatch CascadeSave(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
+        /// <param name="Source">Source info</param>
         /// <returns>The value of the property</returns>
         object GetValue(ClassType Object);
+
+        /// <summary>
+        /// Called to create a batch that deletes items from the joining table
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        IBatch JoinsDelete(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
+        /// Called to create a batch that saves items from the joining table
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        IBatch JoinsSave(ClassType Object, ISourceInfo Source);
     }
 
     /// <summary>
@@ -226,16 +276,6 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Unique
         /// </summary>
         bool Unique { get; }
-
-        QueryProvider.Interfaces.IBatch CascadeJoinsDelete(object Object);
-
-        QueryProvider.Interfaces.IBatch CascadeJoinsSave(object Object);
-
-        QueryProvider.Interfaces.IBatch CascadeSaveToBatch(object Object);
-
-        QueryProvider.Interfaces.IBatch JoinsDelete(object Object);
-
-        QueryProvider.Interfaces.IBatch JoinsSave(object Object);
 
         /// <summary>
         /// Sets up the property (used internally)

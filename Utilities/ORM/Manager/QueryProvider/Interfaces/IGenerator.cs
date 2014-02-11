@@ -87,6 +87,24 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         IBatch Insert(IEnumerable<T> Objects);
 
         /// <summary>
+        /// Deletes items from the joining table for the property
+        /// </summary>
+        /// <param name="Property">Property</param>
+        /// <param name="Object">Object</param>
+        /// <typeparam name="P">Property type</typeparam>
+        /// <returns>The batch with the appropriate commands</returns>
+        IBatch JoinsDelete<P>(IProperty<T, P> Property, T Object);
+
+        /// <summary>
+        /// Saves items to the joining table for the property
+        /// </summary>
+        /// <param name="Property">Property</param>
+        /// <param name="Object">Object</param>
+        /// <typeparam name="P">Property type</typeparam>
+        /// <returns>The batch with the appropriate commands</returns>
+        IBatch JoinsSave<P>(IProperty<T, P> Property, T Object);
+
+        /// <summary>
         /// Generates a batch that will get the specific property for the object
         /// </summary>
         /// <typeparam name="P">Property type</typeparam>

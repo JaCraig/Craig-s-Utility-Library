@@ -28,6 +28,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
@@ -208,6 +209,38 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         }
 
         /// <summary>
+        /// Does a cascade delete of an object for this property
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public abstract IBatch CascadeDelete(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
+        /// Called to create a batch that deletes items from the joining tables
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public abstract IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
+        /// Called to create a batch that saves items from the joining tables
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public abstract IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
+        /// Does a cascade save of an object for this property
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public abstract IBatch CascadeSave(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
         /// Determines if the two objects are equal and returns true if they are, false otherwise
         /// </summary>
         /// <param name="obj">Object to compare to</param>
@@ -238,6 +271,22 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         {
             return CompiledExpression(Object);
         }
+
+        /// <summary>
+        /// Called to create a batch that deletes items from the joining table
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public abstract IBatch JoinsDelete(ClassType Object, ISourceInfo Source);
+
+        /// <summary>
+        /// Called to create a batch that saves items from the joining table
+        /// </summary>
+        /// <param name="Object">Object</param>
+        /// <param name="Source">Source info</param>
+        /// <returns>Batch object with the appropriate commands</returns>
+        public abstract IBatch JoinsSave(ClassType Object, ISourceInfo Source);
 
         /// <summary>
         /// Turns on autoincrement for this property

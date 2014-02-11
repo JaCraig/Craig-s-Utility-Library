@@ -282,7 +282,7 @@ namespace Utilities.ORM.Manager
                 {
                     if (Property.Cascade)
                     {
-                        TempBatch.AddCommand(Property.CascadeSaveToBatch(Object));
+                        TempBatch.AddCommand(Property.CascadeSave(Object));
                     }
                 }
                 TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));

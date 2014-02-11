@@ -21,10 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager.Mapper.Interfaces;
@@ -191,6 +193,126 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 TempBatch.AddCommand(Insert(Object));
             }
             return TempBatch;
+        }
+
+        /// <summary>
+        /// Deletes items from the joining table for the property
+        /// </summary>
+        /// <param name="Property">Property</param>
+        /// <param name="Object">Object</param>
+        /// <typeparam name="P">Property type</typeparam>
+        /// <returns>The batch with the appropriate commands</returns>
+        public IBatch JoinsDelete<P>(IProperty<T, P> Property, T Object)
+        {
+            IBatch ReturnValue = QueryProvider.Batch(Source);
+
+            if (Object == null)
+                return ReturnValue;
+            P List = (P)Property.GetValue(Object);
+            if (List == null)
+                return ReturnValue;
+            object CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
+
+            IMapping ForeignMapping = Property.ForeignMapping;
+            if (ForeignMapping == Mapping && Property as IManyToOne != null)
+            {
+                ReturnValue.AddCommand(null,
+                        Object,
+                        "DELETE FROM " + Property.TableName + " WHERE " + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "2=@0",
+                        CommandType.Text,
+                        CurrentID);
+            }
+            else
+            {
+                ReturnValue.AddCommand(null,
+                        Object,
+                        "DELETE FROM " + Property.TableName + " WHERE " + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "=@0",
+                        CommandType.Text,
+                        CurrentID);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Saves items to the joining table for the property
+        /// </summary>
+        /// <param name="Property">Property</param>
+        /// <param name="Object">Object</param>
+        /// <typeparam name="P">Property type</typeparam>
+        /// <returns>The batch with the appropriate commands</returns>
+        public IBatch JoinsSave<P>(IProperty<T, P> Property, T Object)
+        {
+            IBatch ReturnValue = QueryProvider.Batch(Source);
+
+            if (Object == null)
+                return ReturnValue;
+            if (Property as IManyToOne != null)
+            {
+                P Item = (P)Property.GetValue(Object);
+                if (Item == null)
+                    return ReturnValue;
+
+                object CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
+                IMapping ForeignMapping = Property.ForeignMapping;
+                object ForeignID = ((IProperty<P>)ForeignMapping.IDProperties.FirstOrDefault()).GetValue(Item);
+                string Parameters = "";
+                object[] Values = new object[2];
+                if (ForeignMapping == Mapping)
+                {
+                    Parameters = Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2";
+                    Values[1] = CurrentID;
+                    Values[0] = ForeignID;
+                }
+                else if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) <= 0)
+                {
+                    Parameters = Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName;
+                    Values[0] = CurrentID;
+                    Values[1] = ForeignID;
+                }
+                else
+                {
+                    Parameters = ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "," + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName;
+                    Values[1] = CurrentID;
+                    Values[0] = ForeignID;
+                }
+                ReturnValue.AddCommand(null, Object,
+                        "INSERT INTO " + Property.TableName + "(" + Parameters + ") VALUES (@0,@1)",
+                        CommandType.Text,
+                        Values);
+                return ReturnValue;
+            }
+            IEnumerable<P> List = (IEnumerable<P>)Property.GetValue(Object);
+            if (List == null)
+                return ReturnValue;
+            foreach (P Item in List)
+            {
+                if (Item != null)
+                {
+                    object CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
+                    IMapping ForeignMapping = Property.ForeignMapping;
+                    object ForeignID = ((IProperty<P>)ForeignMapping.IDProperties.FirstOrDefault()).GetValue(Item);
+                    string Parameters = "";
+                    object[] Values = new object[2];
+                    if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) <= 0)
+                    {
+                        Parameters = Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                        Values[0] = CurrentID;
+                        Values[1] = ForeignID;
+                    }
+                    else
+                    {
+                        Parameters = ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "," + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                        Values[1] = CurrentID;
+                        Values[0] = ForeignID;
+                    }
+                    ReturnValue.AddCommand(null,
+                            Object,
+                            "INSERT INTO " + Property.TableName + "(" + Parameters + ") VALUES (@0,@1)",
+                            CommandType.Text,
+                            Values);
+                }
+            }
+            return ReturnValue;
         }
 
         /// <summary>
