@@ -107,7 +107,7 @@ namespace Utilities.ORM.Manager.SourceProvider
         /// <returns>The source information as a string</returns>
         public override string ToString()
         {
-            return Sources.ToString(x => x.Key);
+            return Sources.Where(x => !x.Key.Contains("Data Source")).ToString(x => x.Key);
         }
     }
 }

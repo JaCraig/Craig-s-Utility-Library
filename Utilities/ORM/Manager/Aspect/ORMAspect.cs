@@ -109,11 +109,11 @@ namespace Utilities.ORM.Aspect
                     if (Property != null)
                     {
                         if (Property is IManyToOne || Property is IMap)
-                            Builder.AppendLine(SetupSingleProperty(Method, BaseType, ReturnValueName, Property, Mapping));
+                            Builder.AppendLine(SetupSingleProperty(ReturnValueName, Property));
                         else if (Property is IIEnumerableManyToOne || Property is IManyToMany)
-                            Builder.AppendLine(SetupIEnumerableProperty(Method, BaseType, ReturnValueName, Property, Mapping));
+                            Builder.AppendLine(SetupIEnumerableProperty(ReturnValueName, Property));
                         else if (Property is IListManyToMany || Property is IListManyToOne)
-                            Builder.AppendLine(SetupListProperty(Method, BaseType, ReturnValueName, Property, Mapping));
+                            Builder.AppendLine(SetupListProperty(ReturnValueName, Property));
                         return Builder.ToString();
                     }
                 }
@@ -168,37 +168,37 @@ namespace Utilities.ORM.Aspect
             return Builder.ToString();
         }
 
-        private static string SetupIEnumerableProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
+        private static string SetupIEnumerableProperty(string ReturnValueName, IProperty Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperties(this,\"{1}\");", Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}={1}=Session0.LoadProperties(this,\"{2}\");", ReturnValueName, Property.DerivedFieldName, Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();
         }
 
-        private static string SetupListProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
+        private static string SetupListProperty(string ReturnValueName, IProperty Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperties(this,\"{1}\");", Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}={1}=Session0.LoadProperties(this,\"{2}\");", ReturnValueName, Property.DerivedFieldName, Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();
         }
 
-        private static string SetupSingleProperty(MethodInfo Method, Type BaseType, string ReturnValueName, IProperty Property, IMapping Mapping)
+        private static string SetupSingleProperty(string ReturnValueName, IProperty Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperty(this,\"{1}\");", Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}={1}=Session0.LoadProperty(this,\"{2}\");", ReturnValueName, Property.DerivedFieldName, Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();

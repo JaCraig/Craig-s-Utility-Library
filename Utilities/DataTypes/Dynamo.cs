@@ -760,8 +760,9 @@ namespace Utilities.DataTypes
                 ChangeLog.SetValue(PropertyName, new Change(this[PropertyName], NewValue));
             else
                 ChangeLog.SetValue(PropertyName, new Change(NewValue, NewValue));
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
+            var Handler = PropertyChanged;
+            if (Handler != null)
+                Handler(this, new PropertyChangedEventArgs(PropertyName));
         }
 
         #endregion Events

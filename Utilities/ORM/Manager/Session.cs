@@ -278,47 +278,59 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]);
                 IBatch TempBatch = QueryProvider.Batch(Source);
-                foreach (IProperty Property in Mapping.Properties)
-                {
-                    if (Property.Cascade)
-                    {
-                        TempBatch.AddCommand(((IProperty<ObjectType>)Property).CascadeSave(Object, Source));
-                    }
-                }
+                CascadeSave<ObjectType>(Object, Source, Mapping, TempBatch);
                 TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
-                foreach (IProperty<ObjectType> Property in Mapping.Properties)
-                {
-                    if (!Property.Cascade &&
-                        (Property is IManyToMany
-                            || Property is IManyToOne
-                            || Property is IIEnumerableManyToOne
-                            || Property is IListManyToMany
-                            || Property is IListManyToOne))
-                    {
-                        TempBatch.AddCommand(Property.JoinsDelete(Object, Source));
-                    }
-                    if (Property.Cascade)
-                    {
-                        TempBatch.AddCommand(Property.CascadeJoinsDelete(Object, Source));
-                    }
-                }
-                foreach (IProperty<ObjectType> Property in Mapping.Properties)
-                {
-                    if (!Property.Cascade &&
-                        (Property is IManyToMany
-                            || Property is IManyToOne
-                            || Property is IIEnumerableManyToOne
-                            || Property is IListManyToMany
-                            || Property is IListManyToOne))
-                    {
-                        TempBatch.AddCommand(Property.JoinsSave(Object, Source));
-                    }
-                    if (Property.Cascade)
-                    {
-                        TempBatch.AddCommand(Property.CascadeJoinsSave(Object, Source));
-                    }
-                }
+                JoinsDelete<ObjectType>(Object, Source, Mapping, TempBatch);
+                JoinsSave<ObjectType>(Object, Source, Mapping, TempBatch);
                 TempBatch.RemoveDuplicateCommands().Execute();
+            }
+        }
+
+        private static void CascadeSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
+        {
+            foreach (IProperty<ObjectType> Property in Mapping.Properties.Where(x => x.Cascade))
+            {
+                TempBatch.AddCommand(Property.CascadeSave(Object, Source));
+            }
+        }
+
+        private static void JoinsDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
+        {
+            foreach (IProperty<ObjectType> Property in Mapping.Properties)
+            {
+                if (!Property.Cascade &&
+                    (Property is IManyToMany
+                        || Property is IManyToOne
+                        || Property is IIEnumerableManyToOne
+                        || Property is IListManyToMany
+                        || Property is IListManyToOne))
+                {
+                    TempBatch.AddCommand(Property.JoinsDelete(Object, Source));
+                }
+                else if (Property.Cascade)
+                {
+                    TempBatch.AddCommand(Property.CascadeJoinsDelete(Object, Source));
+                }
+            }
+        }
+
+        private static void JoinsSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
+        {
+            foreach (IProperty<ObjectType> Property in Mapping.Properties)
+            {
+                if (!Property.Cascade &&
+                    (Property is IManyToMany
+                        || Property is IManyToOne
+                        || Property is IIEnumerableManyToOne
+                        || Property is IListManyToMany
+                        || Property is IListManyToOne))
+                {
+                    TempBatch.AddCommand(Property.JoinsSave(Object, Source));
+                }
+                else if (Property.Cascade)
+                {
+                    TempBatch.AddCommand(Property.CascadeJoinsSave(Object, Source));
+                }
             }
         }
     }

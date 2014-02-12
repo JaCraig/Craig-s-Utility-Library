@@ -29,6 +29,13 @@ namespace UnitTests.ORM.Manager.Mapper.Default
     public class IEnumerableManyToOne
     {
         [Fact]
+        public void CascadeDelete()
+        {
+            Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass>(x => x.A, null);
+            TestObject.CascadeDelete(new TestClass(),Source
+        }
+
+        [Fact]
         public void Create()
         {
             Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass>(x => x.A, null);

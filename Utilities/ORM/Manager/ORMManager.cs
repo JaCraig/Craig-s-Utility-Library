@@ -26,6 +26,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
@@ -85,6 +86,20 @@ namespace Utilities.ORM.Manager
         /// Source provider
         /// </summary>
         private SourceProvider.Manager SourceProvider { get; set; }
+
+        /// <summary>
+        /// Outputs information from the manager
+        /// </summary>
+        /// <returns>String version of the ORMManager</returns>
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.CurrentCulture,
+                "Sources: {0}\r\nSchema Providers: {1}\r\nQuery Providers: {2}\r\nMappings: {3}",
+                SourceProvider.ToString(),
+                SchemaProvider.ToString(),
+                QueryProvider.ToString(),
+                MapperProvider.ToString());
+        }
 
         private static ITable SetupAuditTables(ITable Table)
         {
