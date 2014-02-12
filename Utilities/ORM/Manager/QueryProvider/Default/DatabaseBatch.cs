@@ -162,6 +162,15 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             return this;
         }
 
+        /// <summary>
+        /// Converts the batch to a string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return Commands.ToString(x => x.ToString(), System.Environment.NewLine);
+        }
+
         private static IList<dynamic> GetValues(DbDataReader TempReader)
         {
             Contract.Requires<ArgumentNullException>(TempReader != null, "TempReader");

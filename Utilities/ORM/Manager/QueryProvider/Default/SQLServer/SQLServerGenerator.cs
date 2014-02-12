@@ -254,7 +254,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 
                 object CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
                 IMapping ForeignMapping = Property.ForeignMapping;
-                object ForeignID = ((IProperty<P>)ForeignMapping.IDProperties.FirstOrDefault()).GetValue(Item);
+                object ForeignID = ForeignMapping.IDProperties.FirstOrDefault().GetValue(Item);
                 string Parameters = "";
                 object[] Values = new object[2];
                 if (ForeignMapping == Mapping)
@@ -290,7 +290,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 {
                     object CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
                     IMapping ForeignMapping = Property.ForeignMapping;
-                    object ForeignID = ((IProperty<P>)ForeignMapping.IDProperties.FirstOrDefault()).GetValue(Item);
+                    object ForeignID = ForeignMapping.IDProperties.FirstOrDefault().GetValue(Item);
                     string Parameters = "";
                     object[] Values = new object[2];
                     if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) <= 0)
@@ -608,40 +608,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                           .ToString(x => x.TableName + "." + x.FieldName + " AS [" + x.Name + "]");
         }
 
-        private static void SetupUpdate(IMapping<T> Mapping)
-        {
-            if (!string.IsNullOrEmpty(Mapping.UpdateCommand))
-                return;
-            string ParameterList = "";
-            string IDProperties = "";
-            int Count = 0;
-            string Separator = "";
-            string Splitter = "";
-            foreach (IProperty Property in Mapping.Properties)
-            {
-                if (!Property.AutoIncrement)
-                {
-                    ParameterList += Splitter + Property.FieldName + "=@" + Count;
-                    Splitter = ",";
-                    ++Count;
-                }
-            }
-            foreach (IProperty Property in Mapping.IDProperties)
-            {
-                IDProperties += Separator + Property.FieldName + "=@" + Count;
-                Separator = " AND ";
-                ++Count;
-            }
-
-            Mapping.SetUpdateCommand(string.Format(CultureInfo.InvariantCulture,
-                    "UPDATE {0} SET {1} WHERE {2}",
-                    Mapping.TableName,
-                    ParameterList,
-                    IDProperties),
-                CommandType.Text);
-        }
-
-        private void SetupAllSelect(IMapping<T> Mapping)
+        private static void SetupAllSelect(IMapping<T> Mapping)
         {
             if (!string.IsNullOrEmpty(Mapping.SelectAllCommand))
                 return;
@@ -652,7 +619,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private void SetupAnySelect(IMapping<T> Mapping)
+        private static void SetupAnySelect(IMapping<T> Mapping)
         {
             if (!string.IsNullOrEmpty(Mapping.SelectAnyCommand))
                 return;
@@ -663,7 +630,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private void SetupDelete(IMapping<T> Mapping)
+        private static void SetupDelete(IMapping<T> Mapping)
         {
             if (!string.IsNullOrEmpty(Mapping.DeleteCommand))
                 return;
@@ -683,7 +650,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 CommandType.Text);
         }
 
-        private void SetupInsert(IMapping<T> Mapping)
+        private static void SetupInsert(IMapping<T> Mapping)
         {
             if (!string.IsNullOrEmpty(Mapping.InsertCommand))
                 return;
@@ -717,6 +684,39 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                     ParameterList,
                     ValueList,
                     Mapping.IDProperties.Count > 0 ? Mapping.IDProperties.FirstOrDefault().Name : "ID"),
+                CommandType.Text);
+        }
+
+        private static void SetupUpdate(IMapping<T> Mapping)
+        {
+            if (!string.IsNullOrEmpty(Mapping.UpdateCommand))
+                return;
+            string ParameterList = "";
+            string IDProperties = "";
+            int Count = 0;
+            string Separator = "";
+            string Splitter = "";
+            foreach (IProperty Property in Mapping.Properties)
+            {
+                if (!Property.AutoIncrement)
+                {
+                    ParameterList += Splitter + Property.FieldName + "=@" + Count;
+                    Splitter = ",";
+                    ++Count;
+                }
+            }
+            foreach (IProperty Property in Mapping.IDProperties)
+            {
+                IDProperties += Separator + Property.FieldName + "=@" + Count;
+                Separator = " AND ";
+                ++Count;
+            }
+
+            Mapping.SetUpdateCommand(string.Format(CultureInfo.InvariantCulture,
+                    "UPDATE {0} SET {1} WHERE {2}",
+                    Mapping.TableName,
+                    ParameterList,
+                    IDProperties),
                 CommandType.Text);
         }
     }

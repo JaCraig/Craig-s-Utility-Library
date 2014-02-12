@@ -282,11 +282,11 @@ namespace Utilities.ORM.Manager
                 {
                     if (Property.Cascade)
                     {
-                        TempBatch.AddCommand(Property.CascadeSave(Object));
+                        TempBatch.AddCommand(((IProperty<ObjectType>)Property).CascadeSave(Object, Source));
                     }
                 }
                 TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
-                foreach (IProperty Property in Mapping.Properties)
+                foreach (IProperty<ObjectType> Property in Mapping.Properties)
                 {
                     if (!Property.Cascade &&
                         (Property is IManyToMany
@@ -295,14 +295,14 @@ namespace Utilities.ORM.Manager
                             || Property is IListManyToMany
                             || Property is IListManyToOne))
                     {
-                        TempBatch.AddCommand(Property.JoinsDelete(Object));
+                        TempBatch.AddCommand(Property.JoinsDelete(Object, Source));
                     }
                     if (Property.Cascade)
                     {
-                        TempBatch.AddCommand(Property.CascadeJoinsDelete(Object));
+                        TempBatch.AddCommand(Property.CascadeJoinsDelete(Object, Source));
                     }
                 }
-                foreach (IProperty Property in Mapping.Properties)
+                foreach (IProperty<ObjectType> Property in Mapping.Properties)
                 {
                     if (!Property.Cascade &&
                         (Property is IManyToMany
@@ -311,11 +311,11 @@ namespace Utilities.ORM.Manager
                             || Property is IListManyToMany
                             || Property is IListManyToOne))
                     {
-                        TempBatch.AddCommand(Property.JoinsSave(Object));
+                        TempBatch.AddCommand(Property.JoinsSave(Object, Source));
                     }
                     if (Property.Cascade)
                     {
-                        TempBatch.AddCommand(Property.CascadeJoinsSave(Object));
+                        TempBatch.AddCommand(Property.CascadeJoinsSave(Object, Source));
                     }
                 }
                 TempBatch.RemoveDuplicateCommands().Execute();

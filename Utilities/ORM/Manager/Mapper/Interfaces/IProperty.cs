@@ -176,7 +176,6 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
-        /// <param name="Source">Source info</param>
         /// <returns>The value of the property</returns>
         object GetValue(ClassType Object);
 
@@ -276,6 +275,13 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// Unique
         /// </summary>
         bool Unique { get; }
+
+        /// <summary>
+        /// Gets the property's value from the object sent in
+        /// </summary>
+        /// <param name="Object">Object to get the value from</param>
+        /// <returns>The value of the property</returns>
+        object GetValue(object Object);
 
         /// <summary>
         /// Sets up the property (used internally)

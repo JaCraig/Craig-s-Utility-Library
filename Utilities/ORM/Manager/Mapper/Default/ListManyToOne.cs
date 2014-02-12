@@ -116,7 +116,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             {
                 if (Item != null)
                 {
-                    foreach (IProperty Property in PropertyMapping.Properties)
+                    foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                     {
                         if (!Property.Cascade
                             && (Property is IManyToMany
@@ -125,11 +125,11 @@ namespace Utilities.ORM.Manager.Mapper.Default
                                 || Property is IListManyToMany
                                 || Property is IListManyToOne))
                         {
-                            Batch.AddCommand(((IProperty<DataType>)Property).JoinsDelete(Item, Source));
+                            Batch.AddCommand(Property.JoinsDelete(Item, Source));
                         }
                         else if (Property.Cascade)
                         {
-                            Batch.AddCommand(((IProperty<DataType>)Property).CascadeJoinsDelete(Item, Source));
+                            Batch.AddCommand(Property.CascadeJoinsDelete(Item, Source));
                         }
                     }
                     Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object));
@@ -159,7 +159,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             {
                 if (Item != null)
                 {
-                    foreach (IProperty Property in PropertyMapping.Properties)
+                    foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                     {
                         if (!Property.Cascade
                             && (Property is IManyToMany
@@ -168,11 +168,11 @@ namespace Utilities.ORM.Manager.Mapper.Default
                                 || Property is IListManyToMany
                                 || Property is IListManyToOne))
                         {
-                            Batch.AddCommand(((IProperty<DataType>)Property).JoinsSave(Item, Source));
+                            Batch.AddCommand(Property.JoinsSave(Item, Source));
                         }
                         else if (Property.Cascade)
                         {
-                            Batch.AddCommand(((IProperty<DataType>)Property).CascadeJoinsSave(Item, Source));
+                            Batch.AddCommand(Property.CascadeJoinsSave(Item, Source));
                         }
                     }
                     Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsSave(this, Object));

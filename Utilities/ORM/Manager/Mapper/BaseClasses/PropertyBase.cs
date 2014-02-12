@@ -269,7 +269,19 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <returns>The value of the property</returns>
         public object GetValue(ClassType Object)
         {
+            if (Object == default(ClassType))
+                return null;
             return CompiledExpression(Object);
+        }
+
+        /// <summary>
+        /// Gets the property's value from the object sent in
+        /// </summary>
+        /// <param name="Object">Object to get the value from</param>
+        /// <returns>The value of the property</returns>
+        public object GetValue(object Object)
+        {
+            return GetValue(Object as ClassType);
         }
 
         /// <summary>
