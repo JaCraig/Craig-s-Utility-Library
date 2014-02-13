@@ -43,7 +43,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TestClass TempObject = new TestClass();
             TempObject.A = "ASDF";
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string> TestObject = new Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string>(x => x.A, null);
+            Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string> TestObject = new Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string>(x => x.A, new TestClassMapping());
             IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"));
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());

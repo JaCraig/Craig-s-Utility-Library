@@ -43,7 +43,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TestClass TempObject = new TestClass();
             TempObject.A = new TestClass();
             TempObject.ID = 1;
-            Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass>(x => x.A, null);
+            Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass>(x => x.A, new TestClassMapping());
             IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("MapTest"));
             Assert.NotNull(Result);
             Assert.Equal("DELETE FROM TestClass_ WHERE ID=@0", Result.ToString());

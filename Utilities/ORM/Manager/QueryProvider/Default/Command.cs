@@ -172,7 +172,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns>The string representation of the command</returns>
         public override string ToString()
         {
-            return SQLCommand;
+            return SQLCommand.Check("");
         }
     }
 }

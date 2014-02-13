@@ -175,6 +175,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                                             Mapping.InsertCommand,
                                             Mapping.InsertCommandType,
                                             Mapping.Properties
+                                                   .Where(x => x is IMap || x is IReference)
                                                    .Concat(Mapping.IDProperties)
                                                    .Where(x => !x.AutoIncrement)
                                                    .ToArray(x => ((IProperty<T>)x).GetValue(Object)));
@@ -588,6 +589,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             return QueryProvider.Batch(Source)
                 .AddCommand(null, null, Mapping.UpdateCommand, Mapping.UpdateCommandType,
                 Mapping.Properties
+                        .Where(x => x is IMap || x is IReference)
                         .Where(x => !x.AutoIncrement)
                         .Concat(Mapping.IDProperties)
                         .ToArray(x => ((IProperty<T>)x).GetValue(Object)));
@@ -666,7 +668,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             string ValueList = "";
             string Splitter = "";
             int Counter = 0;
-            foreach (IProperty Property in Mapping.Properties)
+            foreach (IProperty Property in Mapping.Properties.Where(x => x is IMap || x is IReference))
             {
                 if (!Property.AutoIncrement)
                 {
@@ -704,7 +706,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             int Count = 0;
             string Separator = "";
             string Splitter = "";
-            foreach (IProperty Property in Mapping.Properties)
+            foreach (IProperty Property in Mapping.Properties.Where(x => x is IMap || x is IReference))
             {
                 if (!Property.AutoIncrement)
                 {
