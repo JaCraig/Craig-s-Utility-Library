@@ -23,13 +23,74 @@ using System.Collections.Generic;
 using System.Data;
 using Utilities.ORM.BaseClasses;
 using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.Mapper.Default
 {
-    public class Map
+    public class Map : DatabaseBaseClass
     {
+        public Map()
+            : base()
+        {
+            //var Temp = Utilities.IoC.Manager.Bootstrapper;
+        }
+
+        [Fact]
+        public void CascadeDelete()
+        {
+            TestClass TempObject = new TestClass();
+            TempObject.A = new TestClass();
+            TempObject.ID = 1;
+            Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass>(x => x.A, null);
+            IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("MapTest"));
+            Assert.NotNull(Result);
+            Assert.Equal("DELETE FROM TestClass_ WHERE ID=@0", Result.ToString());
+            Assert.Equal(1, Result.CommandCount);
+        }
+
+        [Fact]
+        public void CascadeJoinsDelete()
+        {
+            TestClass TempObject = new TestClass();
+            TempObject.A = new TestClass();
+            TempObject.ID = 1;
+            Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            TestObject.ForeignMapping = new TestClassMapping();
+            IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("MapTest"));
+            Assert.NotNull(Result);
+            Assert.Equal("", Result.ToString());
+            Assert.Equal(0, Result.CommandCount);
+        }
+
+        [Fact]
+        public void CascadeJoinsSave()
+        {
+            TestClass TempObject = new TestClass();
+            TempObject.A = new TestClass();
+            TempObject.ID = 1;
+            Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            TestObject.ForeignMapping = new TestClassMapping();
+            IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("MapTest"));
+            Assert.NotNull(Result);
+            Assert.Equal("", Result.ToString());
+            Assert.Equal(0, Result.CommandCount);
+        }
+
+        [Fact]
+        public void CascadeSave()
+        {
+            TestClass TempObject = new TestClass();
+            TempObject.A = new TestClass();
+            TempObject.ID = 1;
+            Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.Map<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("MapTest"));
+            Assert.NotNull(Result);
+            Assert.Equal("INSERT INTO TestClass_(TestClass_A_ID) VALUES(@0) SELECT scope_identity() as [ID]", Result.ToString());
+            Assert.Equal(1, Result.CommandCount);
+        }
+
         [Fact]
         public void Create()
         {
@@ -89,12 +150,16 @@ namespace UnitTests.ORM.Manager.Mapper.Default
         private class TestClass
         {
             public TestClass A { get; set; }
+
+            public int ID { get; set; }
         }
 
         private class TestClassMapping : MappingBaseClass<TestClass, Database>
         {
             public TestClassMapping()
             {
+                Map(x => x.A).SetCascade();
+                ID(x => x.ID).SetFieldName("ID").SetAutoIncrement();
             }
         }
     }

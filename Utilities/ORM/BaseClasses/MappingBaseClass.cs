@@ -155,6 +155,51 @@ namespace Utilities.ORM.BaseClasses
         public System.Data.CommandType UpdateCommandType { get; private set; }
 
         /// <summary>
+        /// Determines if the two items are not equal
+        /// </summary>
+        /// <param name="Item1">Item 1</param>
+        /// <param name="Item2">Item 2</param>
+        /// <returns>True if they are not equal, false otherwise</returns>
+        public static bool operator !=(MappingBaseClass<ClassType, DatabaseType> Item1, MappingBaseClass<ClassType, DatabaseType> Item2)
+        {
+            return !(Item1 == Item2);
+        }
+
+        /// <summary>
+        /// Determines if the two items are equal
+        /// </summary>
+        /// <param name="Item1">Item 1</param>
+        /// <param name="Item2">Item 2</param>
+        /// <returns>True if they are equal, false otherwise</returns>
+        public static bool operator ==(MappingBaseClass<ClassType, DatabaseType> Item1, MappingBaseClass<ClassType, DatabaseType> Item2)
+        {
+            return Item1.Equals(Item2);
+        }
+
+        /// <summary>
+        /// determines if the mappings are equal
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            var Object2 = obj as MappingBaseClass<ClassType, DatabaseType>;
+            if ((object)Object2 == null)
+                return false;
+            return string.Equals(TableName, Object2.TableName, StringComparison.Ordinal)
+                && DatabaseConfigType == Object2.DatabaseConfigType;
+        }
+
+        /// <summary>
+        /// Gets the mapping's hash code
+        /// </summary>
+        /// <returns>Hash code for the mapping</returns>
+        public override int GetHashCode()
+        {
+            return (TableName.GetHashCode() * DatabaseConfigType.GetHashCode()) % int.MaxValue;
+        }
+
+        /// <summary>
         /// Creates an ID object
         /// </summary>
         /// <typeparam name="DataType">Data type</typeparam>

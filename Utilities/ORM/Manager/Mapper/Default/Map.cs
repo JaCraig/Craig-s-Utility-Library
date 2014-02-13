@@ -77,10 +77,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
             DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return Batch;
-            foreach (IProperty Property in PropertyMapping.Properties)
+            foreach (IProperty<DataType> Property in PropertyMapping.Properties)
             {
                 if (Property.Cascade)
-                    Batch.AddCommand(((IProperty<DataType>)Property).CascadeDelete(Item, Source));
+                    Batch.AddCommand(Property.CascadeDelete(Item, Source));
             }
             Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
             return Batch;
@@ -175,10 +175,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
             DataType Item = CompiledExpression(Object);
             if (Item == null)
                 return Batch;
-            foreach (IProperty Property in PropertyMapping.Properties)
+            foreach (IProperty<DataType> Property in PropertyMapping.Properties)
             {
                 if (Property.Cascade)
-                    Batch.AddCommand(((IProperty<DataType>)Property).CascadeSave(Item, Source));
+                    Batch.AddCommand(Property.CascadeSave(Item, Source));
             }
             Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source));
             return Batch;

@@ -101,8 +101,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <param name="Property">Property</param>
         /// <param name="Object">Object</param>
         /// <typeparam name="P">Property type</typeparam>
+        /// <typeparam name="ItemType">Item type</typeparam>
         /// <returns>The batch with the appropriate commands</returns>
-        IBatch JoinsSave<P>(IProperty<T, P> Property, T Object);
+        IBatch JoinsSave<P, ItemType>(IProperty<T, P> Property, T Object);
 
         /// <summary>
         /// Generates a batch that will get the specific property for the object

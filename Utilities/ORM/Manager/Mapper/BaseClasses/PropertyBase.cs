@@ -98,7 +98,7 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         /// <summary>
         /// Foreign mapping
         /// </summary>
-        public Utilities.ORM.Manager.Mapper.Interfaces.IMapping ForeignMapping { get; protected set; }
+        public Utilities.ORM.Manager.Mapper.Interfaces.IMapping ForeignMapping { get; set; }
 
         /// <summary>
         /// Index

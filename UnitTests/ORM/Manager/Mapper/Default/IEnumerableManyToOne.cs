@@ -21,24 +21,80 @@ THE SOFTWARE.*/
 
 using System.Collections.Generic;
 using System.Data;
+using Utilities.ORM.BaseClasses;
+using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.Mapper.Default
 {
-    public class IEnumerableManyToOne
+    public class IEnumerableManyToOne : DatabaseBaseClass
     {
+        public IEnumerableManyToOne()
+            : base()
+        {
+            //var Temp = Utilities.IoC.Manager.Bootstrapper;
+        }
+
         [Fact]
         public void CascadeDelete()
         {
+            TestClass TempObject = new TestClass();
+            TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
+            TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass>(x => x.A, null);
-            TestObject.CascadeDelete(new TestClass(),Source
+            IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase4;Integrated Security=SSPI;Pooling=false"));
+            Assert.NotNull(Result);
+            Assert.Equal("DELETE FROM TestClass_ WHERE ID=@0\r\nDELETE FROM TestClass_ WHERE ID=@0\r\nDELETE FROM TestClass_ WHERE ID=@0", Result.ToString());
+            Assert.Equal(3, Result.CommandCount);
+        }
+
+        [Fact]
+        public void CascadeJoinsDelete()
+        {
+            TestClass TempObject = new TestClass();
+            TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
+            TempObject.ID = 1;
+            Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            TestObject.ForeignMapping = new TestClassMapping();
+            IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase4;Integrated Security=SSPI;Pooling=false"));
+            Assert.NotNull(Result);
+            Assert.Equal("DELETE FROM TestClass_TestClass WHERE TestClass_ID=@0", Result.ToString());
+            Assert.Equal(1, Result.CommandCount);
+        }
+
+        [Fact]
+        public void CascadeJoinsSave()
+        {
+            TestClass TempObject = new TestClass();
+            TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
+            TempObject.ID = 1;
+            Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            TestObject.ForeignMapping = new TestClassMapping();
+            IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase4;Integrated Security=SSPI;Pooling=false"));
+            Assert.NotNull(Result);
+            Assert.Equal("INSERT INTO TestClass_TestClass(TestClass_ID,TestClass_ID2) VALUES (@0,@1)\r\nINSERT INTO TestClass_TestClass(TestClass_ID,TestClass_ID2) VALUES (@0,@1)\r\nINSERT INTO TestClass_TestClass(TestClass_ID,TestClass_ID2) VALUES (@0,@1)", Result.ToString());
+            Assert.Equal(3, Result.CommandCount);
+        }
+
+        [Fact]
+        public void CascadeSave()
+        {
+            TestClass TempObject = new TestClass();
+            TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
+            TempObject.ID = 1;
+            Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
+            IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase4;Integrated Security=SSPI;Pooling=false"));
+            Assert.NotNull(Result);
+            Assert.Equal("INSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]\r\nINSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]\r\nINSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]", Result.ToString());
+            Assert.Equal(3, Result.CommandCount);
         }
 
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass>(x => x.A, null);
+            Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.IEnumerableManyToOne<TestClass, TestClass>(x => x.A, new TestClassMapping());
             Assert.False(TestObject.AutoIncrement);
             Assert.False(TestObject.Cascade);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -49,7 +105,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             Assert.Equal(null, TestObject.FieldName);
             Assert.Null(TestObject.ForeignMapping);
             Assert.False(TestObject.Index);
-            Assert.Null(TestObject.Mapping);
+            Assert.Equal("TestClass_", TestObject.Mapping.TableName);
             Assert.Equal(0, TestObject.MaxLength);
             Assert.Equal("A", TestObject.Name);
             Assert.False(TestObject.NotNull);
@@ -58,9 +114,54 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             Assert.False(TestObject.Unique);
         }
 
-        private class TestClass
+        public class TestClass
         {
             public IEnumerable<TestClass> A { get; set; }
+
+            public int ID { get; set; }
+        }
+
+        public class TestClassDatabase : IDatabase
+        {
+            public bool Audit
+            {
+                get { return false; }
+            }
+
+            public string Name
+            {
+                get { return "Data Source=localhost;Initial Catalog=TestDatabase4;Integrated Security=SSPI;Pooling=false"; }
+            }
+
+            public int Order
+            {
+                get { return 0; }
+            }
+
+            public bool Readable
+            {
+                get { return true; }
+            }
+
+            public bool Update
+            {
+                get { return false; }
+            }
+
+            public bool Writable
+            {
+                get { return false; }
+            }
+        }
+
+        public class TestClassMapping : MappingBaseClass<TestClass, TestClassDatabase>
+        {
+            public TestClassMapping()
+                : base()
+            {
+                ID(x => x.ID).SetFieldName("ID").SetAutoIncrement();
+                ManyToOne(x => x.A).SetCascade();
+            }
         }
     }
 }

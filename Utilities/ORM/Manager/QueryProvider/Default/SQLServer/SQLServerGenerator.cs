@@ -211,10 +211,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             P List = (P)Property.GetValue(Object);
             if (List == null)
                 return ReturnValue;
-            object CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
+            object CurrentID = Mapping.IDProperties.FirstOrDefault().GetValue(Object);
 
             IMapping ForeignMapping = Property.ForeignMapping;
-            if (ForeignMapping == Mapping && Property as IManyToOne != null)
+            if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.Ordinal) == 0
+                && Property as IManyToOne != null)
             {
                 ReturnValue.AddCommand(null,
                         Object,
@@ -239,8 +240,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="Property">Property</param>
         /// <param name="Object">Object</param>
         /// <typeparam name="P">Property type</typeparam>
+        /// <typeparam name="ItemType">Item type</typeparam>
         /// <returns>The batch with the appropriate commands</returns>
-        public IBatch JoinsSave<P>(IProperty<T, P> Property, T Object)
+        public IBatch JoinsSave<P, ItemType>(IProperty<T, P> Property, T Object)
         {
             IBatch ReturnValue = QueryProvider.Batch(Source);
 
@@ -257,7 +259,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 object ForeignID = ForeignMapping.IDProperties.FirstOrDefault().GetValue(Item);
                 string Parameters = "";
                 object[] Values = new object[2];
-                if (ForeignMapping == Mapping)
+                if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) == 0)
                 {
                     Parameters = Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2";
                     Values[1] = CurrentID;
@@ -281,27 +283,33 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                         Values);
                 return ReturnValue;
             }
-            IEnumerable<P> List = (IEnumerable<P>)Property.GetValue(Object);
+            IEnumerable<ItemType> List = (IEnumerable<ItemType>)Property.GetValue(Object);
             if (List == null)
                 return ReturnValue;
-            foreach (P Item in List)
+            foreach (ItemType Item in List)
             {
                 if (Item != null)
                 {
-                    object CurrentID = ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object);
+                    object CurrentID = Mapping.IDProperties.FirstOrDefault().GetValue(Object);
                     IMapping ForeignMapping = Property.ForeignMapping;
                     object ForeignID = ForeignMapping.IDProperties.FirstOrDefault().GetValue(Item);
                     string Parameters = "";
                     object[] Values = new object[2];
-                    if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) <= 0)
+                    if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) < 0)
                     {
-                        Parameters = Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                        Parameters = Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName;
+                        Values[0] = CurrentID;
+                        Values[1] = ForeignID;
+                    }
+                    else if (string.Compare(Mapping.TableName, ForeignMapping.TableName, StringComparison.InvariantCulture) == 0)
+                    {
+                        Parameters = Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + "," + ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "2";
                         Values[0] = CurrentID;
                         Values[1] = ForeignID;
                     }
                     else
                     {
-                        Parameters = ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "," + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName + ((ForeignMapping == Mapping) ? "2" : "");
+                        Parameters = ForeignMapping.TableName + ForeignMapping.IDProperties.FirstOrDefault().FieldName + "," + Mapping.TableName + Mapping.IDProperties.FirstOrDefault().FieldName;
                         Values[1] = CurrentID;
                         Values[0] = ForeignID;
                     }

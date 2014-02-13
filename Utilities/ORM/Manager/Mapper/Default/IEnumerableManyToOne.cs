@@ -84,10 +84,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
             {
                 if (Item != null)
                 {
-                    foreach (IProperty Property in PropertyMapping.Properties)
+                    foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                     {
                         if (Property.Cascade)
-                            Batch.AddCommand(((IProperty<DataType>)Property).CascadeDelete(Item, Source));
+                            Batch.AddCommand(Property.CascadeDelete(Item, Source));
                     }
                     Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
                 }
@@ -132,9 +132,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
                             Batch.AddCommand(Property.CascadeJoinsDelete(Item, Source));
                         }
                     }
-                    Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object));
                 }
             }
+            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object));
             return Batch;
         }
 
@@ -175,9 +175,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
                             Batch.AddCommand(Property.CascadeJoinsSave(Item, Source));
                         }
                     }
-                    Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsSave(this, Object));
                 }
             }
+            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsSave<IEnumerable<DataType>, DataType>(this, Object));
             return Batch;
         }
 
@@ -202,10 +202,10 @@ namespace Utilities.ORM.Manager.Mapper.Default
             {
                 if (Item != null)
                 {
-                    foreach (IProperty Property in PropertyMapping.Properties)
+                    foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                     {
                         if (Property.Cascade)
-                            Batch.AddCommand(((IProperty<DataType>)Property).CascadeSave(Item, Source));
+                            Batch.AddCommand(Property.CascadeSave(Item, Source));
                     }
                     Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source));
                 }
@@ -238,7 +238,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             if (Object == null)
                 return Provider.Batch(Source);
-            return Provider.Generate<ClassType>(Source, Mapping).JoinsSave(this, Object);
+            return Provider.Generate<ClassType>(Source, Mapping).JoinsSave<IEnumerable<DataType>, DataType>(this, Object);
         }
 
         /// <summary>

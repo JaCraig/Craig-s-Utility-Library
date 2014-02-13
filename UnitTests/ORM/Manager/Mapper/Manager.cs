@@ -31,7 +31,7 @@ namespace UnitTests.ORM.Manager.Mapper
         public void Create()
         {
             Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Mapper.Manager());
-            Assert.Equal("TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_", new Utilities.ORM.Manager.Mapper.Manager().ToString());
+            Assert.Equal("TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_", new Utilities.ORM.Manager.Mapper.Manager().ToString());
         }
     }
 }
