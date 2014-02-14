@@ -195,7 +195,10 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <returns>The hash code</returns>
         public override int GetHashCode()
         {
-            return (ID.GetHashCode() * 23 + Value.GetHashCode()) * 23 + DatabaseType.GetHashCode();
+            unchecked
+            {
+                return (ID.GetHashCode() * 23 + (new GenericEqualityComparer<DataType>().Equals(Value, default(DataType)) ? 0 : Value.GetHashCode())) * 23 + DatabaseType.GetHashCode();
+            }
         }
 
         /// <summary>

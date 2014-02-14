@@ -64,43 +64,55 @@ namespace UnitTests.ORM.Manager
         public void Save()
         {
             Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
-            //Utilities.SQL.SQLHelper.Database("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
-            //Utilities.SQL.SQLHelper.Map<ObjectClass1>("TestTable", "ID_", Database: "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false")
-            //        .Map(x => x.ID, "ID_")
-            //        .Map(x => x.StringValue, "StringValue_")
-            //        .Map(x => x.FloatValue, "FloatValue_")
-            //        .Map(x => x.BoolValue, "BoolValue_")
-            //        .Map(x => x.LongValue, "LongValue_");
-            //ObjectClass1 TempObject = new ObjectClass1();
-            //using (Utilities.SQL.SQLHelper ORM = new Utilities.SQL.SQLHelper("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            //{
-            //    TempObject.StringValue = "Test";
-            //    TempObject.BoolValue = false;
-            //    TempObject.FloatValue = 1.5f;
-            //    TempObject.LongValue = 12;
-            //    ORM.Save<ObjectClass1, int>(TempObject);
-            //    TempObject.StringValue = "Test String";
-            //    TempObject.BoolValue = true;
-            //    TempObject.FloatValue = 1234.5f;
-            //    TempObject.LongValue = 12345;
-            //    ORM.Save<ObjectClass1, int>(TempObject);
-            //}
-            //using (Utilities.SQL.SQLHelper Helper = new Utilities.SQL.SQLHelper("SELECT * FROM TestTable", CommandType.Text, "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false"))
-            //{
-            //    Helper.ExecuteReader();
-            //    if (Helper.Read())
-            //    {
-            //        Assert.Equal("Test String", Helper.GetParameter<string>("StringValue_", ""));
-            //        Assert.Equal(1234.5f, Helper.GetParameter<float>("FloatValue_", 0));
-            //        Assert.Equal(true, Helper.GetParameter<bool>("BoolValue_", false));
-            //        Assert.Equal(12345, Helper.GetParameter<long>("LongValue_", 0));
-            //        Assert.Equal(TempObject.ID, Helper.GetParameter<int>("ID_", 0));
-            //    }
-            //    else
-            //    {
-            //        Assert.False(true, "Nothing was inserted");
-            //    }
-            //}
+            TestClass TempObject = new TestClass();
+            TempObject.BoolReference = true;
+            TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            TempObject.ByteReference = 12;
+            TempObject.CharReference = 'v';
+            TempObject.DecimalReference = 1.4213m;
+            TempObject.DoubleReference = 1.32645d;
+            TempObject.EnumReference = TestEnum.Value2;
+            TempObject.FloatReference = 1234.5f;
+            TempObject.GuidReference = Guid.NewGuid();
+            TempObject.IntReference = 145145;
+            TempObject.LongReference = 763421;
+            TempObject.ManyToManyIEnumerable = new TestClass[] { new TestClass(), new TestClass() };
+            TempObject.ManyToManyList = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
+            TempObject.ManyToOneIEnumerable = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
+            TempObject.ManyToOneItem = new TestClass();
+            TempObject.ManyToOneList = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
+            TempObject.Map = new TestClass();
+            TempObject.NullStringReference = null;
+            TempObject.ShortReference = 5423;
+            TempObject.StringReference = "agsdpghasdg";
+            TestObject.Save<TestClass, int>(TempObject);
+
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+
+            TestClass Item = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_")
+                .Execute()
+                .First()
+                .First();
+            Assert.Equal(true, Item.BoolReference);
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+            Assert.Equal(12, Item.ByteReference);
+            Assert.Equal('v', Item.CharReference);
+            Assert.Equal(1.4213m, Item.DecimalReference);
+            Assert.Equal(1.32645d, Item.DoubleReference);
+            Assert.Equal(TestEnum.Value2, Item.EnumReference);
+            Assert.Equal(1234.5f, Item.FloatReference);
+            Assert.Equal(Item.GuidReference, TempObject.GuidReference);
+            Assert.Equal(145145, TempObject.IntReference);
+            Assert.Equal(763421, TempObject.LongReference);
+            Assert.Equal(2, TempObject.ManyToManyIEnumerable.Count());
+            Assert.Equal(3, TempObject.ManyToManyList.Count);
+            Assert.Equal(3, TempObject.ManyToOneIEnumerable.Count());
+            Assert.NotNull(TempObject.ManyToOneItem);
+            Assert.Equal(4, TempObject.ManyToOneList.Count);
+            Assert.NotNull(TempObject.Map);
+            Assert.Equal(null, TempObject.NullStringReference);
+            Assert.Equal(5423, TempObject.ShortReference);
+            Assert.Equal("agsdpghasdg", TempObject.StringReference);
         }
 
         public enum TestEnum
@@ -201,7 +213,7 @@ namespace UnitTests.ORM.Manager
                 ManyToOne(x => x.ManyToOneItem).SetTableName("ManyToOneList");
                 Map(x => x.Map).SetCascade();
                 Reference(x => x.BoolReference);
-                Reference(x => x.ByteArrayReference);
+                Reference(x => x.ByteArrayReference).SetMaxLength(100);
                 Reference(x => x.ByteReference);
                 Reference(x => x.CharReference);
                 Reference(x => x.DecimalReference);

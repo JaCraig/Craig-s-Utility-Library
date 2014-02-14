@@ -160,10 +160,17 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns>The hash code for the object</returns>
         public override int GetHashCode()
         {
-            int ParameterTotal = Parameters.Sum(x => x.GetHashCode());
-            if (ParameterTotal > 0)
-                return (SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode()) * 23 + ParameterTotal;
-            return SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode();
+            unchecked
+            {
+                int ParameterTotal = 0;
+                foreach (IParameter Parameter in Parameters)
+                {
+                    ParameterTotal += Parameter.GetHashCode();
+                }
+                if (ParameterTotal > 0)
+                    return (SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode()) * 23 + ParameterTotal;
+                return SQLCommand.GetHashCode() * 23 + CommandType.GetHashCode();
+            }
         }
 
         /// <summary>
