@@ -416,6 +416,7 @@ namespace Utilities.DataTypes
         /// <param name="result">Result</param>
         public void CopyTo(object result)
         {
+            Contract.Requires<ArgumentNullException>(result != null, "result");
             IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), result.GetType())
                 .AutoMap()
                 .Copy(this, result);

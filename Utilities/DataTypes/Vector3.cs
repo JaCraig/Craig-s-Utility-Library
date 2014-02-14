@@ -81,7 +81,7 @@ namespace Utilities.DataTypes
         public override bool Equals(object obj)
         {
             Vector3 Tempobj = obj as Vector3;
-            return Tempobj != null && this == Tempobj;
+            return (object)Tempobj != null && this == Tempobj;
         }
 
         /// <summary>

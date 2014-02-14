@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -612,6 +613,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 
         private static string GetColumns(IMapping Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             return Mapping.Properties
                           .Where(x => (x as IReference) != null)
                           .Concat(Mapping.IDProperties)
@@ -620,6 +622,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 
         private static void SetupAllSelect(IMapping<T> Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.SelectAllCommand))
                 return;
             Mapping.SetSelectAllCommand(string.Format(CultureInfo.InvariantCulture,
@@ -631,6 +634,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 
         private static void SetupAnySelect(IMapping<T> Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.SelectAnyCommand))
                 return;
             Mapping.SetSelectAnyCommand(string.Format(CultureInfo.InvariantCulture,
@@ -642,6 +646,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 
         private static void SetupDelete(IMapping<T> Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.DeleteCommand))
                 return;
             string IDProperties = "";
@@ -662,6 +667,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 
         private static void SetupInsert(IMapping<T> Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.InsertCommand))
                 return;
             string ParameterList = "";
@@ -699,6 +705,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
 
         private static void SetupUpdate(IMapping<T> Mapping)
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (!string.IsNullOrEmpty(Mapping.UpdateCommand))
                 return;
             string ParameterList = "";

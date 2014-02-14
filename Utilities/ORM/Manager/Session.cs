@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
@@ -288,6 +289,7 @@ namespace Utilities.ORM.Manager
 
         private static void CascadeSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             foreach (IProperty<ObjectType> Property in Mapping.Properties.Where(x => x.Cascade))
             {
                 TempBatch.AddCommand(Property.CascadeSave(Object, Source));
@@ -296,6 +298,7 @@ namespace Utilities.ORM.Manager
 
         private static void JoinsDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
                 if (!Property.Cascade &&
@@ -316,6 +319,7 @@ namespace Utilities.ORM.Manager
 
         private static void JoinsSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
         {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
                 if (!Property.Cascade &&

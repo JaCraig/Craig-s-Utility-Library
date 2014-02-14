@@ -87,7 +87,6 @@ namespace Utilities.DataTypes
         public static T AddAndReturn<T>(this ICollection<T> Collection, T Item)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
-            Contract.Requires<ArgumentNullException>(Item != null, "Item");
             Collection.Add(Item);
             return Item;
         }
@@ -110,7 +109,8 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Items != null, "Items");
+            if (Items == null)
+                return true;
             bool ReturnValue = false;
             foreach (T Item in Items)
             {
@@ -137,7 +137,8 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            Contract.Requires<ArgumentNullException>(Items != null, "Items");
+            if (Items == null)
+                return true;
             return Collection.AddIf(Predicate, Items.ToArray());
         }
 
@@ -155,6 +156,8 @@ namespace Utilities.DataTypes
         public static bool AddIfUnique<T>(this ICollection<T> Collection, params T[] Items)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            if (Items == null)
+                return true;
             return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 
@@ -173,6 +176,8 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            if (Items == null)
+                return true;
             return Collection.AddIf(x => !Collection.Any(y => Predicate(x, y)), Items);
         }
 
@@ -186,6 +191,8 @@ namespace Utilities.DataTypes
         public static bool AddIfUnique<T>(this ICollection<T> Collection, IEnumerable<T> Items)
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
+            if (Items == null)
+                return true;
             return Collection.AddIf(x => !Collection.Contains(x), Items);
         }
 
@@ -204,6 +211,8 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Collection != null, "Collection");
             Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            if (Items == null)
+                return true;
             return Collection.AddIf(x => !Collection.Any(y => Predicate(x, y)), Items);
         }
 

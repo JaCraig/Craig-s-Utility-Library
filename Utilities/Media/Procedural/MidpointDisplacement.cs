@@ -53,6 +53,8 @@ namespace Utilities.Media.Procedural
             int MaxChange, int MaxLength, int Seed)
         {
             Contract.Requires<ArgumentException>(NumberOfCracks >= 0, "Number of cracks should be greater than 0");
+            Contract.Requires<ArgumentException>(Width >= 0, "Width must be greater than or equal to 0");
+            Contract.Requires<ArgumentException>(Height >= 0, "Height must be greater than or equal to 0");
             Bitmap ReturnValue = new Bitmap(Width, Height);
             List<Line> Lines = GenerateLines(Width, Height, NumberOfCracks, Iterations, MaxChange, MaxLength, Seed);
             using (Graphics ReturnGraphic = Graphics.FromImage(ReturnValue))

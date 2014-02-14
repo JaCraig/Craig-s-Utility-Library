@@ -50,6 +50,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             : base(Expression, Mapping)
         {
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             SetTableName(Mapping.TableName);
             SetFieldName(Name + "_");
         }

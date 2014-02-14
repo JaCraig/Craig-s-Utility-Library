@@ -54,6 +54,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
             : base(Expression, Mapping)
         {
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             if (typeof(DataType).Is(typeof(IEnumerable)))
                 throw new ArgumentException("Expression is an IEnumerable, use ManyToOne or ManyToMany instead");
             SetTableName(Mapping.TableName);

@@ -96,6 +96,8 @@ namespace Utilities.DataTypes
         /// <returns>An HTML formatted string</returns>
         public static string GetInformation(this IEnumerable<Process> Processes, bool HTMLFormat = true)
         {
+            if (Processes == null)
+                return "";
             StringBuilder Builder = new StringBuilder();
             Processes.ForEach(x => Builder.Append(x.GetInformation(HTMLFormat)));
             return Builder.ToString();

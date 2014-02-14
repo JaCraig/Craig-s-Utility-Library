@@ -151,6 +151,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Action != null, "Action");
+            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
             foreach (T Item in List.ElementsBetween(Start, End + 1))
                 Action(Item);
             return List;
@@ -171,6 +172,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
             List<R> ReturnValues = new List<R>();
             foreach (T Item in List.ElementsBetween(Start, End + 1))
                 ReturnValues.Add(Function(Item));
@@ -282,6 +284,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Action != null, "Action");
+            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
             Parallel.For(Start, End + 1, new Action<int>(x => Action(List.ElementAt(x))));
             return List;
         }
@@ -300,6 +303,7 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(List != null, "List");
             Contract.Requires<ArgumentNullException>(Function != null, "Function");
+            Contract.Requires<ArgumentException>(End + 1 - Start >= 0, "End must be greater than start");
             R[] Results = new R[(End + 1) - Start];
             Parallel.For(Start, End + 1, new Action<int>(x => Results[x - Start] = Function(List.ElementAt(x))));
             return Results;
