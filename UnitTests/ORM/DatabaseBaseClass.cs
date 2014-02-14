@@ -38,12 +38,16 @@ namespace UnitTests.ORM
             MasterDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false");
             TestDatabaseSource = new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false");
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(DatabaseSource);
-            Temp.AddCommand(null, null, CommandType.Text, "Create Database TestDatabase")
-                .Execute();
+            try
+            {
+                Temp.AddCommand(null, null, CommandType.Text, "Create Database TestDatabase")
+                    .Execute();
 
-            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
-            Temp.AddCommand(null, null, CommandType.Text, "Create Table TestTable(ID INT PRIMARY KEY IDENTITY,StringValue1 NVARCHAR(100),StringValue2 NVARCHAR(MAX),BigIntValue BIGINT,BitValue BIT,DecimalValue DECIMAL(12,6),FloatValue FLOAT,DateTimeValue DATETIME,GUIDValue UNIQUEIDENTIFIER)")
-                .Execute();
+                Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+                Temp.AddCommand(null, null, CommandType.Text, "Create Table TestTable(ID INT PRIMARY KEY IDENTITY,StringValue1 NVARCHAR(100),StringValue2 NVARCHAR(MAX),BigIntValue BIGINT,BitValue BIT,DecimalValue DECIMAL(12,6),FloatValue FLOAT,DateTimeValue DATETIME,GUIDValue UNIQUEIDENTIFIER)")
+                    .Execute();
+            }
+            catch { }
         }
 
         protected ISourceInfo DatabaseSource { get; set; }
@@ -52,13 +56,17 @@ namespace UnitTests.ORM
 
         protected ISourceInfo TestDatabaseSource { get; set; }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
-            Temp.AddCommand(null, null, CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
-                    .AddCommand(null, null, CommandType.Text, "ALTER DATABASE TestDatabase SET ONLINE")
-                    .AddCommand(null, null, CommandType.Text, "DROP DATABASE TestDatabase")
-                    .Execute();
+            try
+            {
+                Temp.AddCommand(null, null, CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
+                        .AddCommand(null, null, CommandType.Text, "ALTER DATABASE TestDatabase SET ONLINE")
+                        .AddCommand(null, null, CommandType.Text, "DROP DATABASE TestDatabase")
+                        .Execute();
+            }
+            catch { }
         }
     }
 }

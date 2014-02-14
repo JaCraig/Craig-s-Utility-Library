@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System.Collections.Generic;
+using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
@@ -33,6 +34,11 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
     /// </summary>
     public interface ISchemaGenerator
     {
+        /// <summary>
+        /// IoC container
+        /// </summary>
+        IBootstrapper Bootstrapper { get; set; }
+
         /// <summary>
         /// Provider name associated with the schema generator
         /// </summary>

@@ -214,7 +214,7 @@ namespace Utilities.DataTypes
         /// Constructor
         /// </summary>
         public Dynamo()
-            : this(new { })
+            : this((object)null)
         {
         }
 
@@ -230,7 +230,12 @@ namespace Utilities.DataTypes
             ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
             IDictionary<string, object> DictItem = Item as IDictionary<string, object>;
             if (Item == null)
+            {
+                if (Extensions == null)
+                    Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
+                Extensions.ForEach(x => x.Extend(this));
                 return;
+            }
             if (Item is string || Item.GetType().IsValueType)
                 SetValue("Value", Item);
             else if (DictItem != null)

@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
+using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -51,6 +52,11 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         }
 
         /// <summary>
+        /// IoC container
+        /// </summary>
+        public IBootstrapper Bootstrapper { get; set; }
+
+        /// <summary>
         /// Provider name associated with the schema generator
         /// </summary>
         public string ProviderName { get { return "System.Data.SqlClient"; } }
@@ -58,7 +64,12 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <summary>
         /// Query provider object
         /// </summary>
-        protected static QueryProvider.Manager Provider { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>(); } }
+        protected QueryProvider.Manager Provider { get { return Bootstrapper.Resolve<QueryProvider.Manager>(); } }
+
+        /// <summary>
+        /// Source provider object
+        /// </summary>
+        protected SourceProvider.Manager SourceProvider { get { return Bootstrapper.Resolve<SourceProvider.Manager>(); } }
 
         /// <summary>
         /// Generates a list of commands used to modify the source. If it does not exist prior, the
@@ -82,7 +93,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         public ISource GetSourceStructure(ISourceInfo Source)
         {
             string DatabaseName = Regex.Match(Source.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", "");
-            if (!SourceExists(DatabaseName, Source))
+            ISourceInfo DatabaseSource = SourceProvider.GetSource(Regex.Replace(Source.Connection, "Initial Catalog=(.*?;)", ""));
+            if (!SourceExists(DatabaseName, DatabaseSource))
                 return null;
             Database Temp = new Database(DatabaseName);
             GetTables(Source, Temp);
@@ -184,15 +196,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                 Commands.Add(CurrentStoredProcedure != null ? GetAlterStoredProcedure(StoredProcedure, CurrentStoredProcedure) : GetStoredProcedure(StoredProcedure));
             }
             return Commands;
-        }
-
-        private static bool Exists(string Command, string Value, ISourceInfo Source)
-        {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            return Provider.Batch(Source)
-                           .AddCommand(null, null, Command, CommandType.Text, Value)
-                           .Execute()[0]
-                           .Count() > 0;
         }
 
         private static IEnumerable<string> GetAlterFunctionCommand(Function Function, Function CurrentFunction)
@@ -439,23 +442,6 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             return ReturnValue;
         }
 
-        private static void GetTables(ISourceInfo Source, Database Temp)
-        {
-            Contract.Requires<ArgumentNullException>(Source != null, "Source");
-            IEnumerable<dynamic> Values = Provider.Batch(Source)
-                                                  .AddCommand(null, null, CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
-                                                  .Execute()[0];
-            foreach (dynamic Item in Values)
-            {
-                string TableName = Item.TABLE_NAME;
-                string TableType = Item.TABLE_TYPE;
-                if (TableType == "BASE TABLE")
-                    Temp.AddTable(TableName);
-                else if (TableType == "VIEW")
-                    Temp.AddView(TableName);
-            }
-        }
-
         private static IEnumerable<string> GetTriggerCommand(Table Table)
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
@@ -501,7 +487,33 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private static void SetupFunctions(ISourceInfo Source, Database Temp)
+        private bool Exists(string Command, string Value, ISourceInfo Source)
+        {
+            Contract.Requires<ArgumentNullException>(Source != null, "Source");
+            return Provider.Batch(Source)
+                           .AddCommand(null, null, Command, CommandType.Text, Value)
+                           .Execute()[0]
+                           .Count() > 0;
+        }
+
+        private void GetTables(ISourceInfo Source, Database Temp)
+        {
+            Contract.Requires<ArgumentNullException>(Source != null, "Source");
+            IEnumerable<dynamic> Values = Provider.Batch(Source)
+                                                  .AddCommand(null, null, CommandType.Text, "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES")
+                                                  .Execute()[0];
+            foreach (dynamic Item in Values)
+            {
+                string TableName = Item.TABLE_NAME;
+                string TableType = Item.TABLE_TYPE;
+                if (TableType == "BASE TABLE")
+                    Temp.AddTable(TableName);
+                else if (TableType == "VIEW")
+                    Temp.AddView(TableName);
+            }
+        }
+
+        private void SetupFunctions(ISourceInfo Source, Database Temp)
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
             IEnumerable<dynamic> Values = Provider.Batch(Source)
@@ -514,7 +526,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private static void SetupStoredProcedures(ISourceInfo Source, Database Temp)
+        private void SetupStoredProcedures(ISourceInfo Source, Database Temp)
         {
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
             IEnumerable<dynamic> Values = Provider.Batch(Source)
@@ -545,7 +557,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private static void SetupTables(ISourceInfo Source, Database Temp)
+        private void SetupTables(ISourceInfo Source, Database Temp)
         {
             Contract.Requires<ArgumentNullException>(Temp != null, "Temp");
             foreach (Table Table in Temp.Tables)
@@ -580,7 +592,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private static void SetupTriggers(ISourceInfo Source, Table Table, IEnumerable<dynamic> Values)
+        private void SetupTriggers(ISourceInfo Source, Table Table, IEnumerable<dynamic> Values)
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             Contract.Requires<ArgumentNullException>(Source != null, "Source");
@@ -603,7 +615,7 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
         }
 
-        private static void SetupViews(ISourceInfo Source, Database Temp)
+        private void SetupViews(ISourceInfo Source, Database Temp)
         {
             Contract.Requires<ArgumentNullException>(Temp != null, "Temp");
             foreach (View View in Temp.Views)

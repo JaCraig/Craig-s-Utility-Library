@@ -35,14 +35,14 @@ namespace UnitTests.ORM.Manager.Schema
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Schema.Manager());
-            Assert.Equal("System.Data.SqlClient", new Utilities.ORM.Manager.Schema.Manager().ToString());
+            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper));
+            Assert.Equal("System.Data.SqlClient", new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper).ToString());
         }
 
         [Fact]
         public void GenerateSchema()
         {
-            Assert.Empty(new Utilities.ORM.Manager.Schema.Manager().GenerateSchema(new Database("TestDatabase"), TestDatabaseSource));
+            Assert.Empty(new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper).GenerateSchema(new Database("TestDatabase"), TestDatabaseSource));
         }
     }
 }

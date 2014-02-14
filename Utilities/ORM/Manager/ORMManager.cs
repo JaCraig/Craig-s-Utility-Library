@@ -29,6 +29,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.IoC.Interfaces;
 using Utilities.ORM.Interfaces;
@@ -215,7 +216,7 @@ namespace Utilities.ORM.Manager
             {
                 if (Key.Update)
                 {
-                    Utilities.ORM.Manager.Schema.Default.Database.Database TempDatabase = new Schema.Default.Database.Database(Key.Name);
+                    Utilities.ORM.Manager.Schema.Default.Database.Database TempDatabase = new Schema.Default.Database.Database(Regex.Match(Key.Name, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
                     SetupTables(Key, TempDatabase);
                     SetupJoiningTables(Key, TempDatabase);
                     SetupAuditTables(Key, TempDatabase);
@@ -229,7 +230,11 @@ namespace Utilities.ORM.Manager
                     IBatch Batch = QueryProvider.Batch(SourceProvider.GetSource(Key.Name));
                     for (int x = 0; x < Commands.Count; ++x)
                     {
-                        if (Commands[x].Contains("CREATE TRIGGER") || Commands[x].Contains("CREATE FUNCTION"))
+                        if (Commands[x].ToUpperInvariant().Contains("CREATE DATABASE"))
+                        {
+                            QueryProvider.Batch(SourceProvider.GetSource(Regex.Replace(SourceProvider.GetSource(Key.Name).Connection, "Initial Catalog=(.*?;)", ""))).AddCommand(null, null, CommandType.Text, Commands[x]).Execute();
+                        }
+                        else if (Commands[x].Contains("CREATE TRIGGER") || Commands[x].Contains("CREATE FUNCTION"))
                         {
                             if (Batch.CommandCount > 0)
                             {

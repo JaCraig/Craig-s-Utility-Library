@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
+using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
@@ -41,11 +42,12 @@ namespace Utilities.ORM.Manager.Schema
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        public Manager(IBootstrapper Bootstrapper)
         {
             SchemaGenerators = AppDomain.CurrentDomain
                                         .GetAssemblies()
                                         .Objects<ISchemaGenerator>()
+                                        .ForEach<ISchemaGenerator>(x => x.Bootstrapper = Bootstrapper)
                                         .ToDictionary(x => x.ProviderName);
         }
 

@@ -39,6 +39,7 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void Create()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            Temp.Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             Assert.Equal("System.Data.SqlClient", Temp.ProviderName);
         }
 
@@ -46,6 +47,7 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void GenerateSchema()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            Temp.Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
             Source.Tables.First().AddColumn<string>("A", DbType.Int16);
             ITable Table = Source.AddTable("TestTable2");
@@ -60,6 +62,7 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void GetSourceStructure()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            Temp.Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             ISource Source = Temp.GetSourceStructure(TestDatabaseSource);
             Assert.Equal(0, Source.Functions.Count);
             Assert.Equal("TestDatabase", Source.Name);
@@ -77,6 +80,7 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void SourceExists()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            Temp.Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             Assert.True(Temp.SourceExists("TestDatabase", DatabaseSource));
         }
 
@@ -84,6 +88,7 @@ namespace UnitTests.ORM.Manager.Schema.Default.SQLServer
         public void TableExists()
         {
             Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator Temp = new Utilities.ORM.Manager.Schema.Default.Database.SQLServer.SQLServerSchemaGenerator();
+            Temp.Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             Assert.True(Temp.TableExists("TestTable", TestDatabaseSource));
         }
     }
