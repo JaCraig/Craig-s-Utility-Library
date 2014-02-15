@@ -130,7 +130,7 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(3, Item.ManyToManyList.Count);
             Assert.Equal(3, Item.ManyToOneIEnumerable.Count());
             Assert.NotNull(Item.ManyToOneItem);
-            Assert.Equal(4, Item.ManyToOneList.Count);
+            Assert.Equal(3, Item.ManyToOneList.Count);
             Assert.NotNull(Item.Map);
             Assert.Equal(null, Item.NullStringReference);
             Assert.Equal(5423, Item.ShortReference);
@@ -146,47 +146,47 @@ namespace UnitTests.ORM.Manager
 
         public class TestClass
         {
-            public bool BoolReference { get; set; }
+            public virtual bool BoolReference { get; set; }
 
-            public byte[] ByteArrayReference { get; set; }
+            public virtual byte[] ByteArrayReference { get; set; }
 
-            public byte ByteReference { get; set; }
+            public virtual byte ByteReference { get; set; }
 
-            public char CharReference { get; set; }
+            public virtual char CharReference { get; set; }
 
-            public decimal DecimalReference { get; set; }
+            public virtual decimal DecimalReference { get; set; }
 
-            public double DoubleReference { get; set; }
+            public virtual double DoubleReference { get; set; }
 
-            public TestEnum EnumReference { get; set; }
+            public virtual TestEnum EnumReference { get; set; }
 
-            public float FloatReference { get; set; }
+            public virtual float FloatReference { get; set; }
 
-            public Guid GuidReference { get; set; }
+            public virtual Guid GuidReference { get; set; }
 
-            public int ID { get; set; }
+            public virtual int ID { get; set; }
 
-            public int IntReference { get; set; }
+            public virtual int IntReference { get; set; }
 
-            public long LongReference { get; set; }
+            public virtual long LongReference { get; set; }
 
-            public IEnumerable<TestClass> ManyToManyIEnumerable { get; set; }
+            public virtual IEnumerable<TestClass> ManyToManyIEnumerable { get; set; }
 
-            public List<TestClass> ManyToManyList { get; set; }
+            public virtual List<TestClass> ManyToManyList { get; set; }
 
-            public IEnumerable<TestClass> ManyToOneIEnumerable { get; set; }
+            public virtual IEnumerable<TestClass> ManyToOneIEnumerable { get; set; }
 
-            public TestClass ManyToOneItem { get; set; }
+            public virtual TestClass ManyToOneItem { get; set; }
 
-            public List<TestClass> ManyToOneList { get; set; }
+            public virtual List<TestClass> ManyToOneList { get; set; }
 
-            public TestClass Map { get; set; }
+            public virtual TestClass Map { get; set; }
 
-            public string NullStringReference { get; set; }
+            public virtual string NullStringReference { get; set; }
 
-            public short ShortReference { get; set; }
+            public virtual short ShortReference { get; set; }
 
-            public string StringReference { get; set; }
+            public virtual string StringReference { get; set; }
         }
 
         public class TestClassDatabase : IDatabase

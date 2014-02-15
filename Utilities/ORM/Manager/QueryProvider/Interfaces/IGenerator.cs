@@ -112,7 +112,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <param name="Object">Object to get the property for</param>
         /// <param name="Property">Property to get</param>
         /// <returns>Batch with the appropriate commands</returns>
-        IBatch LoadProperty<P>(T Object, IProperty<T, P> Property);
+        IBatch LoadProperty<P>(T Object, IProperty Property);
 
         /// <summary>
         /// Generates a batch that will get the number of pages for a given page size given the

@@ -79,6 +79,7 @@ namespace Utilities.ORM.Aspect
         /// <param name="Object">Object to set up</param>
         public void Setup(object Object)
         {
+            ((IORMObject)Object).Session0 = new Utilities.ORM.Manager.Session();
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace Utilities.ORM.Aspect
         /// <returns>The code used</returns>
         public string SetupExceptionMethod(MethodInfo Method, Type BaseType)
         {
-            return "";
+            return "var Exception=CaughtException;";
         }
 
         /// <summary>
@@ -174,7 +175,12 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}={1}=Session0.LoadProperties(this,\"{2}\");", ReturnValueName, Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}={1}=Session0.LoadProperties<{2},{3}>(this,\"{4}\");",
+                        ReturnValueName,
+                        Property.DerivedFieldName,
+                        Property.Mapping.ObjectType.GetName(),
+                        Property.Type.GetName(),
+                        Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();
@@ -186,7 +192,12 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}={1}=Session0.LoadProperties(this,\"{2}\");", ReturnValueName, Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}={1}=Session0.LoadProperties<{2},{3}>(this,\"{4}\");",
+                        ReturnValueName,
+                        Property.DerivedFieldName,
+                        Property.Mapping.ObjectType.GetName(),
+                        Property.Type.GetName(),
+                        Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();
@@ -198,7 +209,12 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}={1}=Session0.LoadProperty(this,\"{2}\");", ReturnValueName, Property.DerivedFieldName, Property.Name)
+                .AppendLineFormat("{0}={1}=Session0.LoadProperty<{2},{3}>(this,\"{4}\");",
+                        ReturnValueName,
+                        Property.DerivedFieldName,
+                        Property.Mapping.ObjectType.GetName(),
+                        Property.Type.GetName(),
+                        Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
                 .AppendLine("}");
             return Builder.ToString();

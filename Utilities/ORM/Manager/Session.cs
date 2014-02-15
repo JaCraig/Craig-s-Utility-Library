@@ -156,22 +156,25 @@ namespace Utilities.ORM.Manager
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
-                IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
-                if (Mapping != null && Property != null)
+                if (Mapping != null)
                 {
-                    foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source])
-                        .LoadProperty(Object, (IProperty<ObjectType, DataType>)Property)
-                        .Execute()[0])
+                    IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
+                    if (Property != null)
                     {
-                        DataType Temp = Item;
-                        IProperty<DataType> IDProperty = (IProperty<DataType>)Property.Mapping.IDProperties.FirstOrDefault();
-                        object IDValue = IDProperty.GetValue(Temp);
-                        DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
-                        if (Value == default(DataType))
-                            ReturnValue.Add(Temp);
-                        else
+                        foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
+                            .LoadProperty<DataType>(Object, Property)
+                            .Execute()[0])
                         {
-                            Item.CopyTo(Value);
+                            DataType Temp = Item;
+                            IProperty<DataType> IDProperty = (IProperty<DataType>)Property.Mapping.IDProperties.FirstOrDefault();
+                            object IDValue = IDProperty.GetValue(Temp);
+                            DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
+                            if (Value == default(DataType))
+                                ReturnValue.Add(Temp);
+                            else
+                            {
+                                Item.CopyTo(Value);
+                            }
                         }
                     }
                 }

@@ -332,13 +332,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="Object">Object to get the property for</param>
         /// <param name="Property">Property to get</param>
         /// <returns>Batch with the appropriate commands</returns>
-        public IBatch LoadProperty<P>(T Object, IProperty<T, P> Property)
+        public IBatch LoadProperty<P>(T Object, IProperty Property)
         {
             return QueryProvider.Batch(Source)
                 .AddCommand(null, null,
                             Property.LoadCommand,
                             Property.LoadCommandType,
-                            ((IProperty<T>)Mapping.IDProperties.FirstOrDefault()).GetValue(Object));
+                            Mapping.IDProperties.FirstOrDefault().GetValue(Object));
         }
 
         /// <summary>
