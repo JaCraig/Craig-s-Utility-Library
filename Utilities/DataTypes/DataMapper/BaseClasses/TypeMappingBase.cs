@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Utilities.DataTypes.DataMapper.Interfaces;
@@ -214,6 +215,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             {
                 PropertyInfo Property = Properties[x];
                 Expression<Func<Right, object>> RightGet = Properties[x].PropertyGetter<Right>();
+                Action<Right, object> RightSet = RightGet.PropertySetter<Right>().Compile();
                 PropertyInfo LeftProperty = LeftType.GetProperty(Property.Name);
                 if (LeftProperty != null)
                 {
@@ -227,6 +229,9 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                         IDictionary<string, object> Temp = (IDictionary<string, object>)y;
                         if (Temp.ContainsKey(Property.Name))
                             return Temp[Property.Name];
+                        string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
+                        if (!string.IsNullOrEmpty(Key))
+                            return Temp[Key];
                         return null;
                     }),
                     new Action<Left, object>((y, z) =>
@@ -237,7 +242,12 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                         else
                             LeftSide.Add(Property.Name, z);
                     }),
-                    RightGet);
+                    RightGet.Compile(),
+                    new Action<Right, object>((y, z) =>
+                    {
+                        if (z != null)
+                            RightSet(y, z);
+                    }));
                 }
             }
         }
@@ -251,6 +261,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             {
                 PropertyInfo Property = Properties[x];
                 Expression<Func<Left, object>> LeftGet = Property.PropertyGetter<Left>();
+                Action<Left, object> LeftSet = LeftGet.PropertySetter<Left>().Compile();
                 PropertyInfo RightProperty = RightType.GetProperty(Property.Name);
                 if (RightProperty != null)
                 {
@@ -259,12 +270,20 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
                 }
                 else
                 {
-                    this.AddMapping(LeftGet,
+                    this.AddMapping(LeftGet.Compile(),
+                    new Action<Left, object>((y, z) =>
+                    {
+                        if (z != null)
+                            LeftSet(y, z);
+                    }),
                     new Func<Right, object>(y =>
                     {
                         IDictionary<string, object> Temp = (IDictionary<string, object>)y;
                         if (Temp.ContainsKey(Property.Name))
                             return Temp[Property.Name];
+                        string Key = Temp.Keys.FirstOrDefault(z => string.Equals(z.Replace("_", ""), Property.Name, StringComparison.InvariantCultureIgnoreCase));
+                        if (!string.IsNullOrEmpty(Key))
+                            return Temp[Key];
                         return null;
                     }),
                     new Action<Right, object>((y, z) =>

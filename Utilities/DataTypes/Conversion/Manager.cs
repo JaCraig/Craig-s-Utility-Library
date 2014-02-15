@@ -90,6 +90,8 @@ namespace Utilities.DataTypes.Conversion
                 }
                 if (ResultType.IsAssignableFrom(ObjectType))
                     return Item;
+                if (ResultType.IsEnum && ObjectType == ResultType.GetEnumUnderlyingType())
+                    return System.Enum.ToObject(ResultType, Item);
                 TypeConverter Converter = TypeDescriptor.GetConverter(Item);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Item, ResultType);

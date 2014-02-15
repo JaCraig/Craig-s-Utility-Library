@@ -345,6 +345,8 @@ namespace Utilities.DataTypes
             Contract.Requires<ArgumentNullException>(Type != null, "Type");
             if (ObjectType == null)
                 return false;
+            if (Type == typeof(object))
+                return true;
             if (Type == ObjectType || ObjectType.GetInterfaces().Any(x => x == Type))
                 return true;
             if (ObjectType.BaseType == null)

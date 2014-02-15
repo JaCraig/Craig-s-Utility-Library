@@ -243,11 +243,18 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                         Table.Name,
                         Column.Name,
                         Column.DataType.To(SqlDbType.Int).ToString());
-                    if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
+                    if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32)
+                        || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32)
+                        || Column.DataType == SqlDbType.Binary.To(DbType.Int32))
                     {
                         Command += (Column.Length < 0 || Column.Length >= 4000) ?
                                         "(MAX)" :
                                         "(" + Column.Length.ToString(CultureInfo.InvariantCulture) + ")";
+                    }
+                    else if (Column.DataType == SqlDbType.Decimal.To(DbType.Int32))
+                    {
+                        int Precision = (Column.Length * 2).Clamp(38, 18);
+                        Command += "(" + Precision.ToString(CultureInfo.InvariantCulture) + "," + Column.Length.Clamp(38, 0).ToString(CultureInfo.InvariantCulture) + ")";
                     }
                     Command += "'";
                     ReturnValue.Add(Command);
@@ -277,11 +284,18 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                         Table.Name,
                         Column.Name,
                         Column.DataType.To(SqlDbType.Int).ToString());
-                    if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
+                    if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32)
+                        || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32)
+                        || Column.DataType == SqlDbType.Binary.To(DbType.Int32))
                     {
                         Command += (Column.Length < 0 || Column.Length >= 4000) ?
-                            "(MAX)" :
-                            "(" + Column.Length.ToString(CultureInfo.InvariantCulture) + ")";
+                                        "(MAX)" :
+                                        "(" + Column.Length.ToString(CultureInfo.InvariantCulture) + ")";
+                    }
+                    else if (Column.DataType == SqlDbType.Decimal.To(DbType.Int32))
+                    {
+                        int Precision = (Column.Length * 2).Clamp(38, 18);
+                        Command += "(" + Precision.ToString(CultureInfo.InvariantCulture) + "," + Column.Length.Clamp(38, 0).ToString(CultureInfo.InvariantCulture) + ")";
                     }
                     Command += "'";
                     ReturnValue.Add(Command);
@@ -381,16 +395,18 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             foreach (IColumn Column in Table.Columns)
             {
                 Builder.Append(Splitter).Append(Column.Name).Append(" ").Append(Column.DataType.To(SqlDbType.Int).ToString());
-                if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32) || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32))
+                if (Column.DataType == SqlDbType.VarChar.To(DbType.Int32)
+                        || Column.DataType == SqlDbType.NVarChar.To(DbType.Int32)
+                        || Column.DataType == SqlDbType.Binary.To(DbType.Int32))
                 {
-                    if (Column.Length < 0 || Column.Length >= 4000)
-                    {
-                        Builder.Append("(MAX)");
-                    }
-                    else
-                    {
-                        Builder.Append("(").Append(Column.Length.ToString(CultureInfo.InvariantCulture)).Append(")");
-                    }
+                    Builder.Append((Column.Length < 0 || Column.Length >= 4000) ?
+                                    "(MAX)" :
+                                    "(" + Column.Length.ToString(CultureInfo.InvariantCulture) + ")");
+                }
+                else if (Column.DataType == SqlDbType.Decimal.To(DbType.Int32))
+                {
+                    int Precision = (Column.Length * 2).Clamp(38, 18);
+                    Builder.Append("(").Append(Precision).Append(",").Append(Column.Length.Clamp(38, 0)).Append(")");
                 }
                 if (!Column.Nullable)
                 {

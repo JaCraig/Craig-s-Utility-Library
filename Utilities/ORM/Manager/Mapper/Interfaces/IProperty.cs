@@ -277,6 +277,13 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         bool Unique { get; }
 
         /// <summary>
+        /// Gets the property as a parameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="Object">Object to get the parameter from</param>
+        /// <returns>The parameter version of the property</returns>
+        object GetParameter(object Object);
+
+        /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="Object">Object to get the value from</param>

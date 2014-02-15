@@ -466,7 +466,12 @@ namespace Utilities.DataTypes
             foreach (string Key in Keys)
             {
                 if (!this[Key].GetType().Is<Delegate>())
-                    Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
+                {
+                    unchecked
+                    {
+                        Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
+                    }
+                }
             }
             return Value;
         }

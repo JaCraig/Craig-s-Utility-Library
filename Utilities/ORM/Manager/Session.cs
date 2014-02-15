@@ -277,13 +277,20 @@ namespace Utilities.ORM.Manager
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
-                IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]);
-                IBatch TempBatch = QueryProvider.Batch(Source);
-                CascadeSave<ObjectType>(Object, Source, Mapping, TempBatch);
-                TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
-                JoinsDelete<ObjectType>(Object, Source, Mapping, TempBatch);
-                JoinsSave<ObjectType>(Object, Source, Mapping, TempBatch);
-                TempBatch.RemoveDuplicateCommands().Execute();
+                if (Mapping != null)
+                {
+                    IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]);
+                    IBatch TempBatch = QueryProvider.Batch(Source);
+                    CascadeSave<ObjectType>(Object, Source, Mapping, TempBatch);
+                    TempBatch.Execute();
+                    TempBatch = QueryProvider.Batch(Source);
+                    TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
+                    TempBatch.Execute();
+                    TempBatch = QueryProvider.Batch(Source);
+                    JoinsDelete<ObjectType>(Object, Source, Mapping, TempBatch);
+                    JoinsSave<ObjectType>(Object, Source, Mapping, TempBatch);
+                    TempBatch.RemoveDuplicateCommands().Execute();
+                }
             }
         }
 

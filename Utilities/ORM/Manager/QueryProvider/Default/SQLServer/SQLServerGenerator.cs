@@ -145,7 +145,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 .AddCommand(null, null,
                             Mapping.DeleteCommand,
                             Mapping.DeleteCommandType,
-                            Mapping.IDProperties.ToArray(x => ((IProperty<T>)x).GetValue(Object)));
+                            Mapping.IDProperties.ToArray(x => x.GetParameter(Object)));
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                                                    .Where(x => x is IMap || x is IReference)
                                                    .Concat(Mapping.IDProperties)
                                                    .Where(x => !x.AutoIncrement)
-                                                   .ToArray(x => ((IProperty<T>)x).GetValue(Object)));
+                                                   .ToArray(x => x.GetParameter(Object)));
         }
 
         /// <summary>
@@ -593,7 +593,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                         .Where(x => x is IMap || x is IReference)
                         .Where(x => !x.AutoIncrement)
                         .Concat(Mapping.IDProperties)
-                        .ToArray(x => ((IProperty<T>)x).GetValue(Object)));
+                        .ToArray(x => x.GetParameter(Object)));
         }
 
         /// <summary>
