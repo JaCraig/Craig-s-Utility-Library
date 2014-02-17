@@ -384,6 +384,121 @@ namespace UnitTests.ORM.Manager
             Assert.Equal("agsdpghasdg", Item.StringReference);
         }
 
+        [Fact]
+        public void Update()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            TestClass TempObject = new TestClass();
+            TempObject.BoolReference = true;
+            TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            TempObject.ByteReference = 12;
+            TempObject.CharReference = 'v';
+            TempObject.DecimalReference = 1.4213m;
+            TempObject.DoubleReference = 1.32645d;
+            TempObject.EnumReference = TestEnum.Value2;
+            TempObject.FloatReference = 1234.5f;
+            TempObject.GuidReference = TempGuid;
+            TempObject.IntReference = 145145;
+            TempObject.LongReference = 763421;
+            TempObject.ManyToManyIEnumerable = new TestClass[] { new TestClass(), new TestClass() };
+            TempObject.ManyToManyList = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
+            TempObject.ManyToOneIEnumerable = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
+            TempObject.ManyToOneItem = new TestClass();
+            TempObject.ManyToOneList = new TestClass[] { new TestClass(), new TestClass(), new TestClass() }.ToList();
+            TempObject.Map = new TestClass();
+            TempObject.NullStringReference = null;
+            TempObject.ShortReference = 5423;
+            TempObject.StringReference = "agsdpghasdg";
+            TestObject.Save<TestClass, int>(TempObject);
+
+            Assert.Equal(true, TempObject.BoolReference);
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, TempObject.ByteArrayReference);
+            Assert.Equal(12, TempObject.ByteReference);
+            Assert.Equal('v', TempObject.CharReference);
+            Assert.Equal(1.4213m, TempObject.DecimalReference);
+            Assert.Equal(1.32645d, TempObject.DoubleReference);
+            Assert.Equal(TestEnum.Value2, TempObject.EnumReference);
+            Assert.Equal(1234.5f, TempObject.FloatReference);
+            Assert.Equal(TempGuid, TempObject.GuidReference);
+            Assert.Equal(145145, TempObject.IntReference);
+            Assert.Equal(763421, TempObject.LongReference);
+            Assert.Equal(2, TempObject.ManyToManyIEnumerable.Count());
+            Assert.Equal(3, TempObject.ManyToManyList.Count);
+            Assert.Equal(3, TempObject.ManyToOneIEnumerable.Count());
+            Assert.NotNull(TempObject.ManyToOneItem);
+            Assert.Equal(3, TempObject.ManyToOneList.Count);
+            Assert.NotNull(TempObject.Map);
+            Assert.Equal(null, TempObject.NullStringReference);
+            Assert.Equal(5423, TempObject.ShortReference);
+            Assert.Equal("agsdpghasdg", TempObject.StringReference);
+
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+
+            IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
+            TestClass Item = Items.FirstOrDefault(x => x.BoolReference_);
+            ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
+            Assert.Equal(true, Item.BoolReference);
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+            Assert.Equal(12, Item.ByteReference);
+            Assert.Equal('v', Item.CharReference);
+            Assert.Equal(1.4213m, Item.DecimalReference);
+            Assert.Equal(1.32645d, Item.DoubleReference);
+            Assert.Equal(TestEnum.Value2, Item.EnumReference);
+            Assert.Equal(1234.5f, Item.FloatReference);
+            Assert.Equal(TempGuid, Item.GuidReference);
+            Assert.Equal(145145, Item.IntReference);
+            Assert.Equal(763421, Item.LongReference);
+            Assert.Equal(2, Item.ManyToManyIEnumerable.Count());
+            Assert.Equal(3, Item.ManyToManyList.Count);
+            Assert.Equal(3, Item.ManyToOneIEnumerable.Count());
+            Assert.NotNull(Item.ManyToOneItem);
+            Assert.Equal(3, Item.ManyToOneList.Count);
+            Assert.NotNull(Item.Map);
+            Assert.Equal(null, Item.NullStringReference);
+            Assert.Equal(5423, Item.ShortReference);
+            Assert.Equal("agsdpghasdg", Item.StringReference);
+
+            Item.ByteArrayReference = new byte[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110 };
+            Item.ByteReference = 121;
+            Item.CharReference = 'V';
+            Item.DecimalReference = 11.4213m;
+            Item.DoubleReference = 11.32645d;
+            Item.EnumReference = TestEnum.Value3;
+            Item.FloatReference = 14.5f;
+            Item.IntReference = 1451445;
+            Item.LongReference = 7634121;
+            Item.ShortReference = 43;
+            Item.StringReference = "Something";
+            TestObject.Save<TestClass, int>(Item);
+
+            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+
+            Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
+            Item = Items.FirstOrDefault(x => x.BoolReference_);
+            //((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
+            //Assert.Equal(true, Item.BoolReference);
+            //Assert.Equal(new byte[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110 }, Item.ByteArrayReference);
+            //Assert.Equal(121, Item.ByteReference);
+            //Assert.Equal('V', Item.CharReference);
+            //Assert.Equal(11.4213m, Item.DecimalReference);
+            //Assert.Equal(11.32645d, Item.DoubleReference);
+            //Assert.Equal(TestEnum.Value3, Item.EnumReference);
+            //Assert.Equal(14.5f, Item.FloatReference);
+            //Assert.Equal(TempGuid, Item.GuidReference);
+            //Assert.Equal(1451445, Item.IntReference);
+            //Assert.Equal(7634121, Item.LongReference);
+            //Assert.Equal(2, Item.ManyToManyIEnumerable.Count());
+            //Assert.Equal(3, Item.ManyToManyList.Count);
+            //Assert.Equal(3, Item.ManyToOneIEnumerable.Count());
+            //Assert.NotNull(Item.ManyToOneItem);
+            //Assert.Equal(3, Item.ManyToOneList.Count);
+            //Assert.NotNull(Item.Map);
+            //Assert.Equal(null, Item.NullStringReference);
+            //Assert.Equal(43, Item.ShortReference);
+            //Assert.Equal("Something", Item.StringReference);
+        }
+
         public enum TestEnum
         {
             Value1 = 0,

@@ -25,6 +25,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
+using Utilities.ORM.Manager.Aspect.Interfaces;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
@@ -103,7 +104,13 @@ namespace Utilities.ORM.Manager.Mapper.Default
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             if (Object == null)
                 return Provider.Batch(Source);
-            return Provider.Generate<ClassType>(Source, Mapping).Save<DataType>(Object);
+            IORMObject TempObject = (IORMObject)Object;
+            if (TempObject == null || !TempObject.Visited0)
+            {
+                TempObject.Visited0 = true;
+                return Provider.Generate<ClassType>(Source, Mapping).Save<DataType>(Object);
+            }
+            return Provider.Batch(Source);
         }
 
         /// <summary>

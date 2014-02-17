@@ -300,15 +300,26 @@ namespace Utilities.ORM.Manager
                 {
                     IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]);
                     IBatch TempBatch = QueryProvider.Batch(Source);
+                    IORMObject TempObject = Object as IORMObject;
+                    if (TempObject != null)
+                        TempObject.ClearVisited0();
                     CascadeSave<ObjectType>(Object, Source, Mapping, TempBatch);
                     TempBatch.Execute();
+                    if (TempObject != null)
+                        TempObject.ClearVisited0();
                     TempBatch = QueryProvider.Batch(Source);
                     TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
                     TempBatch.Execute();
+                    if (TempObject != null)
+                        TempObject.ClearVisited0();
                     TempBatch = QueryProvider.Batch(Source);
                     JoinsDelete<ObjectType>(Object, Source, Mapping, TempBatch);
+                    if (TempObject != null)
+                        TempObject.ClearVisited0();
                     JoinsSave<ObjectType>(Object, Source, Mapping, TempBatch);
                     TempBatch.RemoveDuplicateCommands().Execute();
+                    if (TempObject != null)
+                        TempObject.ClearVisited0();
                 }
             }
         }

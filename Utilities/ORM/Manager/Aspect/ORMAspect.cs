@@ -79,7 +79,9 @@ namespace Utilities.ORM.Aspect
         /// <param name="Object">Object to set up</param>
         public void Setup(object Object)
         {
-            ((IORMObject)Object).Session0 = new Utilities.ORM.Manager.Session();
+            IORMObject TempObject = (IORMObject)Object;
+            TempObject.Session0 = new Utilities.ORM.Manager.Session();
+            TempObject.Visited0 = false;
         }
 
         /// <summary>
@@ -142,6 +144,10 @@ namespace Utilities.ORM.Aspect
         {
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLine(@"public Session Session0{ get; set; }");
+            Builder.AppendLine(@"public bool Visited0{ get; set; }");
+            Builder.AppendLine(@"public void ClearVisited0(){");
+            Builder.AppendLine(SetupCleared(Type));
+            Builder.AppendLine(@"}");
             Builder.AppendLine(SetupFields(Type));
             return Builder.ToString();
         }
@@ -169,20 +175,55 @@ namespace Utilities.ORM.Aspect
             return Builder.ToString();
         }
 
+        private static string SetupCleared(Type Type)
+        {
+            List<IProperty> PropertiesFinished = new List<IProperty>();
+            StringBuilder Builder = new StringBuilder();
+            if (Mapper[Type] != null)
+            {
+                foreach (IMapping Mapping in Mapper[Type])
+                {
+                    foreach (IProperty Property in Mapping.Properties.Where(x => x.Cascade).Where(x => !PropertiesFinished.Any(y => y.DerivedFieldName == x.DerivedFieldName)))
+                    {
+                        PropertiesFinished.Add(Property);
+                        if (Property is IManyToOne || Property is IMap)
+                        {
+                            Builder.AppendLineFormat("if({0} as IORMObject!=null){", Property.Name);
+                            Builder.AppendLineFormat("((IORMObject){0}).Visited0=false;", Property.Name);
+                            Builder.AppendLineFormat("((IORMObject){0}).ClearVisited0();", Property.Name);
+                            Builder.AppendLine("}");
+                        }
+                        else
+                        {
+                            Builder.AppendLineFormat("foreach(var Item in {0}){", Property.Name);
+                            Builder.AppendLine("if(Item as IORMObject!=null){");
+                            Builder.AppendLine("((IORMObject)Item).Visited0=false;");
+                            Builder.AppendLine("((IORMObject)Item).ClearVisited0();");
+                            Builder.AppendLine("}");
+                            Builder.AppendLine("}");
+                        }
+                    }
+                }
+            }
+            return Builder.ToString();
+        }
+
         private static string SetupIEnumerableProperty(string ReturnValueName, IProperty Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}={1}=Session0.LoadProperties<{2},{3}>(this,\"{4}\");",
-                        ReturnValueName,
+                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
                         Property.DerivedFieldName,
                         Property.Mapping.ObjectType.GetName(),
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
-                .AppendLine("}");
+                .AppendLine("}")
+                .AppendLineFormat("{0}={1};",
+                    ReturnValueName,
+                    Property.DerivedFieldName);
             return Builder.ToString();
         }
 
@@ -192,14 +233,16 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}={1}=Session0.LoadProperties<{2},{3}>(this,\"{4}\");",
-                        ReturnValueName,
+                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
                         Property.DerivedFieldName,
                         Property.Mapping.ObjectType.GetName(),
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
-                .AppendLine("}");
+                .AppendLine("}")
+                .AppendLineFormat("{0}={1};",
+                    ReturnValueName,
+                    Property.DerivedFieldName);
             return Builder.ToString();
         }
 
@@ -209,14 +252,16 @@ namespace Utilities.ORM.Aspect
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}={1}=Session0.LoadProperty<{2},{3}>(this,\"{4}\");",
-                        ReturnValueName,
+                .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",
                         Property.DerivedFieldName,
                         Property.Mapping.ObjectType.GetName(),
                         Property.Type.GetName(),
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.DerivedFieldName + "Loaded")
-                .AppendLine("}");
+                .AppendLine("}")
+                .AppendLineFormat("{0}={1};",
+                    ReturnValueName,
+                    Property.DerivedFieldName);
             return Builder.ToString();
         }
 

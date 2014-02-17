@@ -25,6 +25,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
+using Utilities.ORM.Manager.Aspect.Interfaces;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
@@ -71,19 +72,23 @@ namespace Utilities.ORM.Manager.Mapper.Default
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
-            IMapping PropertyMapping = MappingProvider[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+            IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
             if (Object == null)
                 return Batch;
-            DataType Item = CompiledExpression(Object);
-            if (Item == null)
-                return Batch;
-            foreach (IProperty<DataType> Property in PropertyMapping.Properties)
+            IORMObject TempObject = (IORMObject)Object;
+            if (TempObject == null || !TempObject.Visited0)
             {
-                if (Property.Cascade)
+                TempObject.Visited0 = true;
+                DataType Item = CompiledExpression(Object);
+                if (Item == null)
+                    return Batch;
+                foreach (IProperty<DataType> Property in PropertyMapping.Properties.Where(x => x.Cascade))
+                {
                     Batch.AddCommand(Property.CascadeDelete(Item, Source));
+                }
+                Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
             }
-            Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
             return Batch;
         }
 
@@ -97,30 +102,35 @@ namespace Utilities.ORM.Manager.Mapper.Default
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
-            IMapping PropertyMapping = MappingProvider[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+            IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
             if (Object == null)
                 return Batch;
-            DataType Item = CompiledExpression(Object);
-            if (Item == null)
-                return Batch;
-            foreach (IProperty<DataType> Property in PropertyMapping.Properties)
+            IORMObject TempObject = (IORMObject)Object;
+            if (TempObject == null || !TempObject.Visited0)
             {
-                if (!Property.Cascade
-                    && (Property is IManyToMany
-                        || Property is IManyToOne
-                        || Property is IIEnumerableManyToOne
-                        || Property is IListManyToMany
-                        || Property is IListManyToOne))
+                TempObject.Visited0 = true;
+                DataType Item = CompiledExpression(Object);
+                if (Item == null)
+                    return Batch;
+                foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                 {
-                    Batch.AddCommand(Property.JoinsDelete(Item, Source));
+                    if (!Property.Cascade
+                        && (Property is IManyToMany
+                            || Property is IManyToOne
+                            || Property is IIEnumerableManyToOne
+                            || Property is IListManyToMany
+                            || Property is IListManyToOne))
+                    {
+                        Batch.AddCommand(Property.JoinsDelete(Item, Source));
+                    }
+                    else if (Property.Cascade)
+                    {
+                        Batch.AddCommand(Property.CascadeJoinsDelete(Item, Source));
+                    }
                 }
-                else if (Property.Cascade)
-                {
-                    Batch.AddCommand(Property.CascadeJoinsDelete(Item, Source));
-                }
+                Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object));
             }
-            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object));
             return Batch;
         }
 
@@ -134,30 +144,35 @@ namespace Utilities.ORM.Manager.Mapper.Default
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
-            IMapping PropertyMapping = MappingProvider[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+            IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
             if (Object == null)
                 return Batch;
-            DataType Item = CompiledExpression(Object);
-            if (Item == null)
-                return Batch;
-            foreach (IProperty<DataType> Property in PropertyMapping.Properties)
+            IORMObject TempObject = (IORMObject)Object;
+            if (TempObject == null || !TempObject.Visited0)
             {
-                if (!Property.Cascade
-                    && (Property is IManyToMany
-                        || Property is IManyToOne
-                        || Property is IIEnumerableManyToOne
-                        || Property is IListManyToMany
-                        || Property is IListManyToOne))
+                TempObject.Visited0 = true;
+                DataType Item = CompiledExpression(Object);
+                if (Item == null)
+                    return Batch;
+                foreach (IProperty<DataType> Property in PropertyMapping.Properties)
                 {
-                    Batch.AddCommand(Property.JoinsSave(Item, Source));
+                    if (!Property.Cascade
+                        && (Property is IManyToMany
+                            || Property is IManyToOne
+                            || Property is IIEnumerableManyToOne
+                            || Property is IListManyToMany
+                            || Property is IListManyToOne))
+                    {
+                        Batch.AddCommand(Property.JoinsSave(Item, Source));
+                    }
+                    else if (Property.Cascade)
+                    {
+                        Batch.AddCommand(Property.CascadeJoinsSave(Item, Source));
+                    }
                 }
-                else if (Property.Cascade)
-                {
-                    Batch.AddCommand(Property.CascadeJoinsSave(Item, Source));
-                }
+                Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsSave<DataType, DataType>(this, Object));
             }
-            Batch.AddCommand(Provider.Generate<ClassType>(Source, Mapping).JoinsSave<DataType, DataType>(this, Object));
             return Batch;
         }
 
@@ -171,19 +186,23 @@ namespace Utilities.ORM.Manager.Mapper.Default
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
-            IMapping PropertyMapping = MappingProvider[typeof(DataType)].FirstOrDefault(x => x.DatabaseConfigType == Source.Database.GetType());
+            IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
             if (Object == null)
                 return Batch;
-            DataType Item = CompiledExpression(Object);
-            if (Item == null)
-                return Batch;
-            foreach (IProperty<DataType> Property in PropertyMapping.Properties)
+            IORMObject TempObject = (IORMObject)Object;
+            if (TempObject == null || !TempObject.Visited0)
             {
-                if (Property.Cascade)
+                TempObject.Visited0 = true;
+                DataType Item = CompiledExpression(Object);
+                if (Item == null)
+                    return Batch;
+                foreach (IProperty<DataType> Property in PropertyMapping.Properties.Where(x => x.Cascade))
+                {
                     Batch.AddCommand(Property.CascadeSave(Item, Source));
+                }
+                Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source));
             }
-            Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source));
             return Batch;
         }
 
@@ -208,7 +227,13 @@ namespace Utilities.ORM.Manager.Mapper.Default
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             if (Object == null)
                 return Provider.Batch(Source);
-            return Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object);
+            IORMObject TempObject = (IORMObject)Object;
+            if (TempObject == null || !TempObject.Visited0)
+            {
+                TempObject.Visited0 = true;
+                return Provider.Generate<ClassType>(Source, Mapping).JoinsDelete(this, Object);
+            }
+            return Provider.Batch(Source);
         }
 
         /// <summary>
@@ -222,7 +247,13 @@ namespace Utilities.ORM.Manager.Mapper.Default
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             if (Object == null)
                 return Provider.Batch(Source);
-            return Provider.Generate<ClassType>(Source, Mapping).JoinsSave<DataType, DataType>(this, Object);
+            IORMObject TempObject = (IORMObject)Object;
+            if (TempObject == null || !TempObject.Visited0)
+            {
+                TempObject.Visited0 = true;
+                return Provider.Generate<ClassType>(Source, Mapping).JoinsSave<DataType, DataType>(this, Object);
+            }
+            return Provider.Batch(Source);
         }
 
         /// <summary>
