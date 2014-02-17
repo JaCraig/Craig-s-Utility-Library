@@ -115,11 +115,15 @@ namespace Utilities.ORM.Manager
             ObjectType ReturnValue = null;
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
-                dynamic Value = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]).Any(Parameters).Execute()[0].FirstOrDefault();
-                if (ReturnValue == null)
-                    ReturnValue = Value;
-                else
-                    Value.CopyTo(ReturnValue);
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
+                if (Mapping != null)
+                {
+                    dynamic Value = QueryProvider.Generate<ObjectType>(Source, Mapping).Any(Parameters).Execute()[0].FirstOrDefault();
+                    if (ReturnValue == null)
+                        ReturnValue = Value;
+                    else
+                        Value.CopyTo(ReturnValue);
+                }
             }
             return ReturnValue;
         }
@@ -134,9 +138,13 @@ namespace Utilities.ORM.Manager
         {
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
             {
-                QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source])
-                    .Delete(Object)
-                    .Execute();
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
+                if (Mapping != null)
+                {
+                    QueryProvider.Generate<ObjectType>(Source, Mapping)
+                        .Delete(Object)
+                        .Execute();
+                }
             }
         }
 
@@ -216,13 +224,17 @@ namespace Utilities.ORM.Manager
         {
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
-                int Count = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source])
-                    .PageCount(PageSize, Parameters)
-                    .Execute()[0]
-                    .FirstOrDefault()
-                    .Total;
-                if (Count > 0)
-                    return Count;
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
+                if (Mapping != null)
+                {
+                    int Count = QueryProvider.Generate<ObjectType>(Source, Mapping)
+                        .PageCount(PageSize, Parameters)
+                        .Execute()[0]
+                        .FirstOrDefault()
+                        .Total;
+                    if (Count > 0)
+                        return (Count / PageSize) + (Count % PageSize > 0 ? 1 : 0);
+                }
             }
             return 0;
         }
@@ -241,20 +253,24 @@ namespace Utilities.ORM.Manager
             System.Collections.Generic.List<ObjectType> ReturnValue = new System.Collections.Generic.List<ObjectType>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
-                foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source])
-                    .Paged(PageSize, CurrentPage, Parameters)
-                    .Execute()[0])
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
+                if (Mapping != null)
                 {
-                    ObjectType Temp = Item;
-                    IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
-                    IProperty<ObjectType> IDProperty = (IProperty<ObjectType>)Mapping.IDProperties.FirstOrDefault();
-                    object IDValue = IDProperty.GetValue(Temp);
-                    ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
-                    if (Value == default(ObjectType))
-                        ReturnValue.Add(Temp);
-                    else
+                    IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
+                    if (IDProperty != null)
                     {
-                        Item.CopyTo(Value);
+                        foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
+                            .Paged(PageSize, CurrentPage, Parameters)
+                            .Execute()[0])
+                        {
+                            ObjectType Temp = Item;
+                            object IDValue = IDProperty.GetValue(Temp);
+                            ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
+                            if (Value == default(ObjectType))
+                                ReturnValue.Add(Temp);
+                            else
+                                Item.CopyTo(Value);
+                        }
                     }
                 }
             }

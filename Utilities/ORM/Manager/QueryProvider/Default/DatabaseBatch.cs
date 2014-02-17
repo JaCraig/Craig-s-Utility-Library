@@ -146,10 +146,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns>The results of the batched commands</returns>
         public IList<IList<dynamic>> Execute()
         {
-            List<IParameter> FinalParameters = new List<IParameter>();
-            string FinalSQLCommand = "";
-            BatchCommands(ref FinalParameters, ref FinalSQLCommand);
-            return ExecuteCommands(FinalSQLCommand, FinalParameters);
+            return ExecuteCommands();
         }
 
         /// <summary>
@@ -192,50 +189,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
             return ReturnValue;
         }
 
-        private void BatchCommands(ref List<IParameter> FinalParameters, ref string FinalSQLCommand)
-        {
-            int Count = 0;
-            if (Commands.Count == 1)
-            {
-                FinalSQLCommand = Commands.FirstOrDefault().SQLCommand;
-                FinalParameters = Commands.FirstOrDefault().Parameters.ToList();
-            }
-            else
-            {
-                foreach (ICommand Command in Commands)
-                {
-                    if (Command.CommandType == System.Data.CommandType.Text)
-                    {
-                        FinalSQLCommand += string.IsNullOrEmpty(Command.SQLCommand) ?
-                                            "" :
-                                            ParameterRegex.Replace(Command.SQLCommand, x =>
-                                            {
-                                                if (!x.Value.StartsWith("@@", StringComparison.Ordinal))
-                                                    return x.Value + "Command" + Count.ToString(CultureInfo.InvariantCulture);
-                                                return x.Value;
-                                            }) + System.Environment.NewLine;
-                        foreach (IParameter Parameter in Command.Parameters)
-                        {
-                            FinalParameters.Add(Parameter.CreateCopy("Command" + Count.ToString(CultureInfo.InvariantCulture)));
-                        }
-                    }
-                    else
-                    {
-                        FinalSQLCommand += Command.SQLCommand + System.Environment.NewLine;
-                        foreach (IParameter Parameter in Command.Parameters)
-                        {
-                            FinalParameters.Add(Parameter.CreateCopy(""));
-                        }
-                    }
-                    ++Count;
-                }
-            }
-        }
-
-        private IList<IList<dynamic>> ExecuteCommands(string FinalSQLCommand, List<IParameter> FinalParameters)
+        private IList<IList<dynamic>> ExecuteCommands()
         {
             IList<IList<dynamic>> ReturnValue = new List<IList<dynamic>>();
-            if (string.IsNullOrEmpty(FinalSQLCommand))
+            if (Commands.Count == 0)
             {
                 ReturnValue.Add(new List<dynamic>());
                 return ReturnValue;
@@ -246,24 +203,68 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                 Connection.ConnectionString = Source.Connection;
                 using (DbCommand ExecutableCommand = Factory.CreateCommand())
                 {
-                    ExecutableCommand.CommandText = FinalSQLCommand;
                     ExecutableCommand.Connection = Connection;
                     ExecutableCommand.CommandType = CommandType.Text;
-                    FinalParameters.ForEach(x => x.AddParameter(ExecutableCommand));
                     if (Commands.Count > 1
-                        && !FinalSQLCommand.Contains("ALTER DATABASE")
-                        && !FinalSQLCommand.Contains("CREATE DATABASE"))
+                        && !Commands.Any(x => x.SQLCommand.Contains("ALTER DATABASE"))
+                        && !Commands.Any(x => x.SQLCommand.Contains("CREATE DATABASE")))
                         ExecutableCommand.BeginTransaction();
                     ExecutableCommand.Open();
+
                     try
                     {
-                        using (DbDataReader TempReader = ExecutableCommand.ExecuteReader())
+                        int Count = 0;
+                        while (true)
                         {
-                            ReturnValue.Add(GetValues(TempReader));
-                            while (TempReader.NextResult())
+                            List<IParameter> FinalParameters = new List<IParameter>();
+                            string FinalSQLCommand = "";
+                            int ParameterTotal = 0;
+                            ExecutableCommand.Parameters.Clear();
+                            for (int y = Count; y < Commands.Count; ++y)
+                            {
+                                ICommand Command = Commands[y];
+                                if (ParameterTotal + Command.Parameters.Count > 2100)
+                                    break;
+                                ParameterTotal += Command.Parameters.Count;
+                                if (Command.CommandType == System.Data.CommandType.Text)
+                                {
+                                    FinalSQLCommand += string.IsNullOrEmpty(Command.SQLCommand) ?
+                                                        "" :
+                                                        ParameterRegex.Replace(Command.SQLCommand, x =>
+                                                        {
+                                                            if (!x.Value.StartsWith("@@", StringComparison.Ordinal))
+                                                                return x.Value + "Command" + Count.ToString(CultureInfo.InvariantCulture);
+                                                            return x.Value;
+                                                        }) + System.Environment.NewLine;
+                                    foreach (IParameter Parameter in Command.Parameters)
+                                    {
+                                        FinalParameters.Add(Parameter.CreateCopy("Command" + Count.ToString(CultureInfo.InvariantCulture)));
+                                    }
+                                }
+                                else
+                                {
+                                    FinalSQLCommand += Command.SQLCommand + System.Environment.NewLine;
+                                    foreach (IParameter Parameter in Command.Parameters)
+                                    {
+                                        FinalParameters.Add(Parameter.CreateCopy(""));
+                                    }
+                                }
+                                ++Count;
+                            }
+
+                            ExecutableCommand.CommandText = FinalSQLCommand;
+                            FinalParameters.ForEach(x => x.AddParameter(ExecutableCommand));
+
+                            using (DbDataReader TempReader = ExecutableCommand.ExecuteReader())
                             {
                                 ReturnValue.Add(GetValues(TempReader));
+                                while (TempReader.NextResult())
+                                {
+                                    ReturnValue.Add(GetValues(TempReader));
+                                }
                             }
+                            if (Count >= CommandCount)
+                                break;
                         }
                         ExecutableCommand.Commit();
                     }

@@ -143,6 +143,26 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         }
 
         [Fact]
+        public void LargeBatchInsert()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            for (int x = 0; x < 1000; ++x)
+            {
+                Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
+                    "Test String",
+                    "Test String",
+                    12345,
+                    true,
+                    1234.5678m,
+                    12345.6534f,
+                    new DateTime(1999, 12, 31),
+                    TempGuid);
+            }
+            Temp.Execute();
+        }
+
+        [Fact]
         public void MBDBug()
         {
             Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);

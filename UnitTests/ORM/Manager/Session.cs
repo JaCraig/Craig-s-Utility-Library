@@ -39,12 +39,128 @@ namespace UnitTests.ORM.Manager
             : base()
         {
             var BootLoader = Utilities.IoC.Manager.Bootstrapper;
+            new Utilities.ORM.Manager.ORMManager(BootLoader);
+        }
+
+        [Fact]
+        public void All()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            for (int x = 0; x < 100; ++x)
+            {
+                TestClass TempObject = new TestClass();
+                TempObject.BoolReference = true;
+                TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                TempObject.ByteReference = 12;
+                TempObject.CharReference = 'v';
+                TempObject.DecimalReference = 1.4213m;
+                TempObject.DoubleReference = 1.32645d;
+                TempObject.EnumReference = TestEnum.Value2;
+                TempObject.FloatReference = 1234.5f;
+                TempObject.GuidReference = TempGuid;
+                TempObject.IntReference = 145145;
+                TempObject.LongReference = 763421;
+                TempObject.NullStringReference = null;
+                TempObject.ShortReference = 5423;
+                TempObject.StringReference = "agsdpghasdg";
+                TestObject.Save<TestClass, int>(TempObject);
+            }
+            IEnumerable<TestClass> ItemList = TestObject.All<TestClass>();
+            Assert.Equal(100, ItemList.Count());
+            foreach (TestClass Item in ItemList)
+            {
+                Assert.Equal(true, Item.BoolReference);
+                Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+                Assert.Equal(12, Item.ByteReference);
+                Assert.Equal('v', Item.CharReference);
+                Assert.Equal(1.4213m, Item.DecimalReference);
+                Assert.Equal(1.32645d, Item.DoubleReference);
+                Assert.Equal(TestEnum.Value2, Item.EnumReference);
+                Assert.Equal(1234.5f, Item.FloatReference);
+                Assert.Equal(TempGuid, Item.GuidReference);
+                Assert.Equal(145145, Item.IntReference);
+                Assert.Equal(763421, Item.LongReference);
+                Assert.Equal(null, Item.NullStringReference);
+                Assert.Equal(5423, Item.ShortReference);
+                Assert.Equal("agsdpghasdg", Item.StringReference);
+            }
+        }
+
+        [Fact]
+        public void Any()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            for (int x = 0; x < 100; ++x)
+            {
+                TestClass TempObject = new TestClass();
+                TempObject.BoolReference = true;
+                TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                TempObject.ByteReference = 12;
+                TempObject.CharReference = 'v';
+                TempObject.DecimalReference = 1.4213m;
+                TempObject.DoubleReference = 1.32645d;
+                TempObject.EnumReference = TestEnum.Value2;
+                TempObject.FloatReference = 1234.5f;
+                TempObject.GuidReference = TempGuid;
+                TempObject.IntReference = 145145;
+                TempObject.LongReference = 763421;
+                TempObject.NullStringReference = null;
+                TempObject.ShortReference = 5423;
+                TempObject.StringReference = "agsdpghasdg";
+                TestObject.Save<TestClass, int>(TempObject);
+            }
+            TestClass Item = TestObject.Any<TestClass>();
+            Assert.Equal(true, Item.BoolReference);
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+            Assert.Equal(12, Item.ByteReference);
+            Assert.Equal('v', Item.CharReference);
+            Assert.Equal(1.4213m, Item.DecimalReference);
+            Assert.Equal(1.32645d, Item.DoubleReference);
+            Assert.Equal(TestEnum.Value2, Item.EnumReference);
+            Assert.Equal(1234.5f, Item.FloatReference);
+            Assert.Equal(TempGuid, Item.GuidReference);
+            Assert.Equal(145145, Item.IntReference);
+            Assert.Equal(763421, Item.LongReference);
+            Assert.Equal(null, Item.NullStringReference);
+            Assert.Equal(5423, Item.ShortReference);
+            Assert.Equal("agsdpghasdg", Item.StringReference);
         }
 
         [Fact]
         public void Create()
         {
             Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Session());
+        }
+
+        [Fact]
+        public void Delete()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            for (int x = 0; x < 100; ++x)
+            {
+                TestClass TempObject = new TestClass();
+                TempObject.BoolReference = true;
+                TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                TempObject.ByteReference = 12;
+                TempObject.CharReference = 'v';
+                TempObject.DecimalReference = 1.4213m;
+                TempObject.DoubleReference = 1.32645d;
+                TempObject.EnumReference = TestEnum.Value2;
+                TempObject.FloatReference = 1234.5f;
+                TempObject.GuidReference = TempGuid;
+                TempObject.IntReference = 145145;
+                TempObject.LongReference = 763421;
+                TempObject.NullStringReference = null;
+                TempObject.ShortReference = 5423;
+                TempObject.StringReference = "agsdpghasdg";
+                TestObject.Save<TestClass, int>(TempObject);
+            }
+            TestObject.Delete(TestObject.Any<TestClass>());
+            IEnumerable<TestClass> ItemList = TestObject.All<TestClass>();
+            Assert.Equal(99, ItemList.Count());
         }
 
         public override void Dispose()
@@ -59,6 +175,137 @@ namespace UnitTests.ORM.Manager
                         .Execute();
             }
             catch { }
+        }
+
+        [Fact]
+        public void PageCount()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            for (int x = 0; x < 100; ++x)
+            {
+                TestClass TempObject = new TestClass();
+                TempObject.BoolReference = true;
+                TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                TempObject.ByteReference = 12;
+                TempObject.CharReference = 'v';
+                TempObject.DecimalReference = 1.4213m;
+                TempObject.DoubleReference = 1.32645d;
+                TempObject.EnumReference = TestEnum.Value2;
+                TempObject.FloatReference = 1234.5f;
+                TempObject.GuidReference = TempGuid;
+                TempObject.IntReference = 145145;
+                TempObject.LongReference = 763421;
+                TempObject.NullStringReference = null;
+                TempObject.ShortReference = 5423;
+                TempObject.StringReference = "agsdpghasdg";
+                TestObject.Save<TestClass, int>(TempObject);
+            }
+            Assert.Equal(4, TestObject.PageCount<TestClass>());
+        }
+
+        [Fact]
+        public void Paged()
+        {
+            Guid TempGuid = Guid.NewGuid();
+            Utilities.ORM.Manager.Session TestObject = new Utilities.ORM.Manager.Session();
+            for (int x = 0; x < 100; ++x)
+            {
+                TestClass TempObject = new TestClass();
+                TempObject.BoolReference = true;
+                TempObject.ByteArrayReference = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                TempObject.ByteReference = 12;
+                TempObject.CharReference = 'v';
+                TempObject.DecimalReference = 1.4213m;
+                TempObject.DoubleReference = 1.32645d;
+                TempObject.EnumReference = TestEnum.Value2;
+                TempObject.FloatReference = 1234.5f;
+                TempObject.GuidReference = TempGuid;
+                TempObject.IntReference = 145145;
+                TempObject.LongReference = 763421;
+                TempObject.NullStringReference = null;
+                TempObject.ShortReference = 5423;
+                TempObject.StringReference = "agsdpghasdg";
+                TestObject.Save<TestClass, int>(TempObject);
+            }
+            IEnumerable<TestClass> ItemList = TestObject.Paged<TestClass>();
+            Assert.Equal(25, ItemList.Count());
+            foreach (TestClass Item in ItemList)
+            {
+                Assert.Equal(true, Item.BoolReference);
+                Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+                Assert.Equal(12, Item.ByteReference);
+                Assert.Equal('v', Item.CharReference);
+                Assert.Equal(1.4213m, Item.DecimalReference);
+                Assert.Equal(1.32645d, Item.DoubleReference);
+                Assert.Equal(TestEnum.Value2, Item.EnumReference);
+                Assert.Equal(1234.5f, Item.FloatReference);
+                Assert.Equal(TempGuid, Item.GuidReference);
+                Assert.Equal(145145, Item.IntReference);
+                Assert.Equal(763421, Item.LongReference);
+                Assert.Equal(null, Item.NullStringReference);
+                Assert.Equal(5423, Item.ShortReference);
+                Assert.Equal("agsdpghasdg", Item.StringReference);
+            }
+            ItemList = TestObject.Paged<TestClass>(CurrentPage: 1);
+            Assert.Equal(25, ItemList.Count());
+            foreach (TestClass Item in ItemList)
+            {
+                Assert.Equal(true, Item.BoolReference);
+                Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+                Assert.Equal(12, Item.ByteReference);
+                Assert.Equal('v', Item.CharReference);
+                Assert.Equal(1.4213m, Item.DecimalReference);
+                Assert.Equal(1.32645d, Item.DoubleReference);
+                Assert.Equal(TestEnum.Value2, Item.EnumReference);
+                Assert.Equal(1234.5f, Item.FloatReference);
+                Assert.Equal(TempGuid, Item.GuidReference);
+                Assert.Equal(145145, Item.IntReference);
+                Assert.Equal(763421, Item.LongReference);
+                Assert.Equal(null, Item.NullStringReference);
+                Assert.Equal(5423, Item.ShortReference);
+                Assert.Equal("agsdpghasdg", Item.StringReference);
+            }
+            ItemList = TestObject.Paged<TestClass>(CurrentPage: 2);
+            Assert.Equal(25, ItemList.Count());
+            foreach (TestClass Item in ItemList)
+            {
+                Assert.Equal(true, Item.BoolReference);
+                Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+                Assert.Equal(12, Item.ByteReference);
+                Assert.Equal('v', Item.CharReference);
+                Assert.Equal(1.4213m, Item.DecimalReference);
+                Assert.Equal(1.32645d, Item.DoubleReference);
+                Assert.Equal(TestEnum.Value2, Item.EnumReference);
+                Assert.Equal(1234.5f, Item.FloatReference);
+                Assert.Equal(TempGuid, Item.GuidReference);
+                Assert.Equal(145145, Item.IntReference);
+                Assert.Equal(763421, Item.LongReference);
+                Assert.Equal(null, Item.NullStringReference);
+                Assert.Equal(5423, Item.ShortReference);
+                Assert.Equal("agsdpghasdg", Item.StringReference);
+            }
+            ItemList = TestObject.Paged<TestClass>(CurrentPage: 3);
+            Assert.Equal(25, ItemList.Count());
+            foreach (TestClass Item in ItemList)
+            {
+                Assert.Equal(true, Item.BoolReference);
+                Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+                Assert.Equal(12, Item.ByteReference);
+                Assert.Equal('v', Item.CharReference);
+                Assert.Equal(1.4213m, Item.DecimalReference);
+                Assert.Equal(1.32645d, Item.DoubleReference);
+                Assert.Equal(TestEnum.Value2, Item.EnumReference);
+                Assert.Equal(1234.5f, Item.FloatReference);
+                Assert.Equal(TempGuid, Item.GuidReference);
+                Assert.Equal(145145, Item.IntReference);
+                Assert.Equal(763421, Item.LongReference);
+                Assert.Equal(null, Item.NullStringReference);
+                Assert.Equal(5423, Item.ShortReference);
+                Assert.Equal("agsdpghasdg", Item.StringReference);
+            }
+            ItemList = TestObject.Paged<TestClass>(CurrentPage: 4);
+            Assert.Equal(0, ItemList.Count());
         }
 
         [Fact]

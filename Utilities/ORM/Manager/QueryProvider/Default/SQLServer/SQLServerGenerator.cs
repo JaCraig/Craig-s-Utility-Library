@@ -374,7 +374,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         public IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters)
         {
             string WhereCommand = "";
-            string OrderBy = Mapping.IDProperties.ToString(x => x.FieldName);
+            string OrderBy = Mapping.IDProperties.ToString(x => x.Name);
             int PageStart = CurrentPage * PageSize;
             if (Parameters != null && Parameters.Length > 0)
                 WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
