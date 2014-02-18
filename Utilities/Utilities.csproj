@@ -152,27 +152,27 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -230,7 +230,7 @@
     <Compile Include="DataTypes\DataMapper\Module\DataMapperModule.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
     <Compile Include="DataTypes\Dynamic\BaseClasses\DynamoExtensionBase.cs" />
-    <Compile Include="DataTypes\Dynamic\Default\Randomization.cs" />
+    <Compile Include="Random\Dynamic\Randomization.cs" />
     <Compile Include="DataTypes\Dynamic\Interfaces\IDynamoExtension.cs" />
     <Compile Include="DataTypes\Dynamo.cs" />
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
@@ -394,6 +394,8 @@
     <Compile Include="Media\Procedural\PerlinNoise.cs" />
     <Compile Include="Media\RGBHistogram.cs" />
     <Compile Include="ORM\BaseClasses\MappingBaseClass.cs" />
+    <Compile Include="ORM\BaseClasses\ObjectBaseClass.cs" />
+    <Compile Include="ORM\Interfaces\IObject.cs" />
     <Compile Include="ORM\Manager\Aspect\Interfaces\IORMObject.cs" />
     <Compile Include="ORM\Manager\Aspect\ORMAspect.cs" />
     <Compile Include="ORM\Manager\Mapper\Interfaces\IIEnumerableManyToOne.cs" />
@@ -531,6 +533,13 @@
     <Compile Include="Validation\MinLength.cs" />
     <Compile Include="Validation\NotEmpty.cs" />
     <Compile Include="Validation\NotInRange.cs" />
+    <Compile Include="Web\ExtensionMethods\DictionaryExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\HTMLExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\HTTPContextExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\HTTPRequestExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\IPAddressExtensions.cs" />
+    <Compile Include="Web\ExtensionMethods\NameValueCollectionExtensions.cs" />
+    <Compile Include="Web\Streams\UglyStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
