@@ -141,9 +141,11 @@ namespace Utilities.ORM.Manager
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    QueryProvider.Generate<ObjectType>(Source, Mapping)
-                        .Delete(Object)
-                        .Execute();
+                    IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]);
+                    IBatch TempBatch = QueryProvider.Batch(Source);
+                    CascadeDelete<ObjectType>(Object, Source, Mapping, TempBatch, new List<object>());
+                    TempBatch.AddCommand(Generator.Delete(Object));
+                    TempBatch.Execute();
                 }
             }
         }
@@ -300,40 +302,41 @@ namespace Utilities.ORM.Manager
                 {
                     IGenerator<ObjectType> Generator = QueryProvider.Generate<ObjectType>(Source, MapperProvider[typeof(ObjectType), Source]);
                     IBatch TempBatch = QueryProvider.Batch(Source);
-                    IORMObject TempObject = Object as IORMObject;
-                    if (TempObject != null)
-                        TempObject.ClearVisited0();
-                    CascadeSave<ObjectType>(Object, Source, Mapping, TempBatch);
+                    CascadeSave<ObjectType>(Object, Source, Mapping, TempBatch, new List<object>());
                     TempBatch.Execute();
-                    if (TempObject != null)
-                        TempObject.ClearVisited0();
                     TempBatch = QueryProvider.Batch(Source);
                     TempBatch.AddCommand(Generator.Save<PrimaryKeyType>(Object));
                     TempBatch.Execute();
-                    if (TempObject != null)
-                        TempObject.ClearVisited0();
                     TempBatch = QueryProvider.Batch(Source);
-                    JoinsDelete<ObjectType>(Object, Source, Mapping, TempBatch);
-                    if (TempObject != null)
-                        TempObject.ClearVisited0();
-                    JoinsSave<ObjectType>(Object, Source, Mapping, TempBatch);
+                    JoinsDelete<ObjectType>(Object, Source, Mapping, TempBatch, new List<object>());
+                    JoinsSave<ObjectType>(Object, Source, Mapping, TempBatch, new List<object>());
                     TempBatch.RemoveDuplicateCommands().Execute();
-                    if (TempObject != null)
-                        TempObject.ClearVisited0();
                 }
             }
         }
 
-        private static void CascadeSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
+        private static void CascadeDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
+            where ObjectType : class, new()
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             foreach (IProperty<ObjectType> Property in Mapping.Properties.Where(x => x.Cascade))
             {
-                TempBatch.AddCommand(Property.CascadeSave(Object, Source));
+                TempBatch.AddCommand(Property.CascadeDelete(Object, Source, ObjectsSeen.ToList()));
             }
         }
 
-        private static void JoinsDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
+        private static void CascadeSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
+            where ObjectType : class, new()
+        {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
+            foreach (IProperty<ObjectType> Property in Mapping.Properties.Where(x => x.Cascade))
+            {
+                TempBatch.AddCommand(Property.CascadeSave(Object, Source, ObjectsSeen.ToList()));
+            }
+        }
+
+        private static void JoinsDelete<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
+            where ObjectType : class, new()
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
@@ -345,16 +348,17 @@ namespace Utilities.ORM.Manager
                         || Property is IListManyToMany
                         || Property is IListManyToOne))
                 {
-                    TempBatch.AddCommand(Property.JoinsDelete(Object, Source));
+                    TempBatch.AddCommand(Property.JoinsDelete(Object, Source, ObjectsSeen.ToList()));
                 }
                 else if (Property.Cascade)
                 {
-                    TempBatch.AddCommand(Property.CascadeJoinsDelete(Object, Source));
+                    TempBatch.AddCommand(Property.CascadeJoinsDelete(Object, Source, ObjectsSeen.ToList()));
                 }
             }
         }
 
-        private static void JoinsSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch) where ObjectType : class, new()
+        private static void JoinsSave<ObjectType>(ObjectType Object, ISourceInfo Source, IMapping Mapping, IBatch TempBatch, List<object> ObjectsSeen)
+            where ObjectType : class, new()
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
@@ -366,11 +370,11 @@ namespace Utilities.ORM.Manager
                         || Property is IListManyToMany
                         || Property is IListManyToOne))
                 {
-                    TempBatch.AddCommand(Property.JoinsSave(Object, Source));
+                    TempBatch.AddCommand(Property.JoinsSave(Object, Source, ObjectsSeen.ToList()));
                 }
                 else if (Property.Cascade)
                 {
-                    TempBatch.AddCommand(Property.CascadeJoinsSave(Object, Source));
+                    TempBatch.AddCommand(Property.CascadeJoinsSave(Object, Source, ObjectsSeen.ToList()));
                 }
             }
         }

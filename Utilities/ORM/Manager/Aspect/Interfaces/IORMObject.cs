@@ -34,15 +34,5 @@ namespace Utilities.ORM.Manager.Aspect.Interfaces
         /// ORM session that this item came from (used for lazy loading)
         /// </summary>
         Session Session0 { get; set; }
-
-        /// <summary>
-        /// Used to determine if the item has been visited when doing cascade saving
-        /// </summary>
-        bool Visited0 { get; set; }
-
-        /// <summary>
-        /// Clears the visited
-        /// </summary>
-        void ClearVisited0();
     }
 }

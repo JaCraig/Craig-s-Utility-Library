@@ -44,7 +44,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.A = "ASDF";
             TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string> TestObject = new Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string>(x => x.A, new TestClassMapping());
-            IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"));
+            IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
             Assert.Equal(0, Result.CommandCount);
@@ -58,7 +58,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string> TestObject = new Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string>(x => x.A, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
-            IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"));
+            IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
             Assert.Equal(0, Result.CommandCount);
@@ -72,7 +72,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string> TestObject = new Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string>(x => x.A, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
-            IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"));
+            IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
             Assert.Equal(0, Result.CommandCount);
@@ -85,7 +85,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.A = "ASDF";
             TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string> TestObject = new Utilities.ORM.Manager.Mapper.Default.Reference<TestClass, string>(x => x.A, new TestClassMapping());
-            IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"));
+            IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("ReferenceTest"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("", Result.ToString());
             Assert.Equal(0, Result.CommandCount);

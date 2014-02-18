@@ -81,7 +81,6 @@ namespace Utilities.ORM.Aspect
         {
             IORMObject TempObject = (IORMObject)Object;
             TempObject.Session0 = new Utilities.ORM.Manager.Session();
-            TempObject.Visited0 = false;
         }
 
         /// <summary>
@@ -144,10 +143,6 @@ namespace Utilities.ORM.Aspect
         {
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLine(@"public Session Session0{ get; set; }");
-            Builder.AppendLine(@"public bool Visited0{ get; set; }");
-            Builder.AppendLine(@"public void ClearVisited0(){");
-            Builder.AppendLine(SetupCleared(Type));
-            Builder.AppendLine(@"}");
             Builder.AppendLine(SetupFields(Type));
             return Builder.ToString();
         }
@@ -169,39 +164,6 @@ namespace Utilities.ORM.Aspect
                     if (Fields.Contains(Property))
                     {
                         Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName);
-                    }
-                }
-            }
-            return Builder.ToString();
-        }
-
-        private static string SetupCleared(Type Type)
-        {
-            List<IProperty> PropertiesFinished = new List<IProperty>();
-            StringBuilder Builder = new StringBuilder();
-            if (Mapper[Type] != null)
-            {
-                foreach (IMapping Mapping in Mapper[Type])
-                {
-                    foreach (IProperty Property in Mapping.Properties.Where(x => x.Cascade).Where(x => !PropertiesFinished.Any(y => y.DerivedFieldName == x.DerivedFieldName)))
-                    {
-                        PropertiesFinished.Add(Property);
-                        if (Property is IManyToOne || Property is IMap)
-                        {
-                            Builder.AppendLineFormat("if({0} as IORMObject!=null){", Property.Name);
-                            Builder.AppendLineFormat("((IORMObject){0}).Visited0=false;", Property.Name);
-                            Builder.AppendLineFormat("((IORMObject){0}).ClearVisited0();", Property.Name);
-                            Builder.AppendLine("}");
-                        }
-                        else
-                        {
-                            Builder.AppendLineFormat("foreach(var Item in {0}){", Property.Name);
-                            Builder.AppendLine("if(Item as IORMObject!=null){");
-                            Builder.AppendLine("((IORMObject)Item).Visited0=false;");
-                            Builder.AppendLine("((IORMObject)Item).ClearVisited0();");
-                            Builder.AppendLine("}");
-                            Builder.AppendLine("}");
-                        }
                     }
                 }
             }

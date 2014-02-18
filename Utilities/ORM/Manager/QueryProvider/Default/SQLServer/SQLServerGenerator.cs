@@ -448,7 +448,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             {
                 IMapping ForeignMapping = Property.ForeignMapping;
                 Property.SetLoadUsingCommand(string.Format(CultureInfo.CurrentCulture, ForeignMapping.TableName == Mapping.TableName ?
-                        "SELECT {0} FROM {1} AS {1}2 INNER JOIN {2} ON {2}.{3}={1}2.{4} WHERE {2}.{5}=@0" :
+                        "SELECT {0} FROM {1} AS {1}2 INNER JOIN {2} ON {2}2.{3}={1}.{4} WHERE {2}2.{5}=@0" :
                         "SELECT {0} FROM {1} INNER JOIN {2} ON {2}.{3}={1}.{4} WHERE {2}.{5}=@0",
                     GetColumns(ForeignMapping),
                     ForeignMapping.TableName,

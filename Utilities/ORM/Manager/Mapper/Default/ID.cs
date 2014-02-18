@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
@@ -62,8 +63,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source)
+        public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
@@ -74,8 +76,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source)
+        public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
@@ -86,8 +89,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source)
+        public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
@@ -98,19 +102,14 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch CascadeSave(ClassType Object, ISourceInfo Source)
+        public override IBatch CascadeSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
-            if (Object == null)
+            if (Object == null || ObjectsSeen.Contains(GetValue(Object)))
                 return Provider.Batch(Source);
-            IORMObject TempObject = (IORMObject)Object;
-            if (TempObject == null || !TempObject.Visited0)
-            {
-                TempObject.Visited0 = true;
-                return Provider.Generate<ClassType>(Source, Mapping).Save<DataType>(Object);
-            }
-            return Provider.Batch(Source);
+            return Provider.Generate<ClassType>(Source, Mapping).Save<DataType>(Object);
         }
 
         /// <summary>
@@ -128,8 +127,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch JoinsDelete(ClassType Object, ISourceInfo Source)
+        public override IBatch JoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
@@ -140,8 +140,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch JoinsSave(ClassType Object, ISourceInfo Source)
+        public override IBatch JoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);

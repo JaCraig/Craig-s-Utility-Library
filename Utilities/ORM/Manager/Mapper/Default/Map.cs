@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
@@ -67,28 +68,26 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source)
+        public override IBatch CascadeDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
-            if (Object == null)
+            if (Object == null || (Object as IORMObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
+                return Provider.Batch(Source);
+            if (Object as IORMObject != null)
+                ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
+            DataType Item = CompiledExpression(Object);
+            if (Item == null)
                 return Batch;
-            IORMObject TempObject = (IORMObject)Object;
-            if (TempObject == null || !TempObject.Visited0)
+            foreach (IProperty<DataType> Property in PropertyMapping.Properties.Where(x => x.Cascade))
             {
-                TempObject.Visited0 = true;
-                DataType Item = CompiledExpression(Object);
-                if (Item == null)
-                    return Batch;
-                foreach (IProperty<DataType> Property in PropertyMapping.Properties.Where(x => x.Cascade))
-                {
-                    Batch.AddCommand(Property.CascadeDelete(Item, Source));
-                }
-                Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
+                Batch.AddCommand(Property.CascadeDelete(Item, Source, ObjectsSeen.ToList()));
             }
+            Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
             return Batch;
         }
 
@@ -97,37 +96,35 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source)
+        public override IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
-            if (Object == null)
+            if (Object == null || (Object as IORMObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
+                return Provider.Batch(Source);
+            if (Object as IORMObject != null)
+                ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
+            DataType Item = CompiledExpression(Object);
+            if (Item == null)
                 return Batch;
-            IORMObject TempObject = (IORMObject)Object;
-            if (TempObject == null || !TempObject.Visited0)
+            foreach (IProperty<DataType> Property in PropertyMapping.Properties)
             {
-                TempObject.Visited0 = true;
-                DataType Item = CompiledExpression(Object);
-                if (Item == null)
-                    return Batch;
-                foreach (IProperty<DataType> Property in PropertyMapping.Properties)
+                if (!Property.Cascade
+                    && (Property is IManyToMany
+                        || Property is IManyToOne
+                        || Property is IIEnumerableManyToOne
+                        || Property is IListManyToMany
+                        || Property is IListManyToOne))
                 {
-                    if (!Property.Cascade
-                        && (Property is IManyToMany
-                            || Property is IManyToOne
-                            || Property is IIEnumerableManyToOne
-                            || Property is IListManyToMany
-                            || Property is IListManyToOne))
-                    {
-                        Batch.AddCommand(Property.JoinsDelete(Item, Source));
-                    }
-                    else if (Property.Cascade)
-                    {
-                        Batch.AddCommand(Property.CascadeJoinsDelete(Item, Source));
-                    }
+                    Batch.AddCommand(Property.JoinsDelete(Item, Source, ObjectsSeen.ToList()));
+                }
+                else if (Property.Cascade)
+                {
+                    Batch.AddCommand(Property.CascadeJoinsDelete(Item, Source, ObjectsSeen.ToList()));
                 }
             }
             return Batch;
@@ -138,37 +135,35 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source)
+        public override IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
-            if (Object == null)
+            if (Object == null || (Object as IORMObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
+                return Provider.Batch(Source);
+            if (Object as IORMObject != null)
+                ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
+            DataType Item = CompiledExpression(Object);
+            if (Item == null)
                 return Batch;
-            IORMObject TempObject = (IORMObject)Object;
-            if (TempObject == null || !TempObject.Visited0)
+            foreach (IProperty<DataType> Property in PropertyMapping.Properties)
             {
-                TempObject.Visited0 = true;
-                DataType Item = CompiledExpression(Object);
-                if (Item == null)
-                    return Batch;
-                foreach (IProperty<DataType> Property in PropertyMapping.Properties)
+                if (!Property.Cascade
+                    && (Property is IManyToMany
+                        || Property is IManyToOne
+                        || Property is IIEnumerableManyToOne
+                        || Property is IListManyToMany
+                        || Property is IListManyToOne))
                 {
-                    if (!Property.Cascade
-                        && (Property is IManyToMany
-                            || Property is IManyToOne
-                            || Property is IIEnumerableManyToOne
-                            || Property is IListManyToMany
-                            || Property is IListManyToOne))
-                    {
-                        Batch.AddCommand(Property.JoinsSave(Item, Source));
-                    }
-                    else if (Property.Cascade)
-                    {
-                        Batch.AddCommand(Property.CascadeJoinsSave(Item, Source));
-                    }
+                    Batch.AddCommand(Property.JoinsSave(Item, Source, ObjectsSeen.ToList()));
+                }
+                else if (Property.Cascade)
+                {
+                    Batch.AddCommand(Property.CascadeJoinsSave(Item, Source, ObjectsSeen.ToList()));
                 }
             }
             return Batch;
@@ -179,28 +174,26 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch CascadeSave(ClassType Object, ISourceInfo Source)
+        public override IBatch CascadeSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             Mapper.Manager MappingProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
             IMapping PropertyMapping = MappingProvider[typeof(DataType), Source];
             IBatch Batch = Provider.Batch(Source);
-            if (Object == null)
+            if (Object == null || (Object as IORMObject != null && ObjectsSeen.Contains(Mapping.IDProperties.FirstOrDefault().GetValue(Object))))
+                return Provider.Batch(Source);
+            if (Object as IORMObject != null)
+                ObjectsSeen.Add(Mapping.IDProperties.FirstOrDefault().GetValue(Object));
+            DataType Item = CompiledExpression(Object);
+            if (Item == null)
                 return Batch;
-            IORMObject TempObject = (IORMObject)Object;
-            if (TempObject == null || !TempObject.Visited0)
+            foreach (IProperty<DataType> Property in PropertyMapping.Properties.Where(x => x.Cascade))
             {
-                TempObject.Visited0 = true;
-                DataType Item = CompiledExpression(Object);
-                if (Item == null)
-                    return Batch;
-                foreach (IProperty<DataType> Property in PropertyMapping.Properties.Where(x => x.Cascade))
-                {
-                    Batch.AddCommand(Property.CascadeSave(Item, Source));
-                }
-                Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source));
+                Batch.AddCommand(Property.CascadeSave(Item, Source, ObjectsSeen.ToList()));
             }
+            Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source, ObjectsSeen.ToList()));
             return Batch;
         }
 
@@ -220,8 +213,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch JoinsDelete(ClassType Object, ISourceInfo Source)
+        public override IBatch JoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);
@@ -232,8 +226,9 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects seen thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        public override IBatch JoinsSave(ClassType Object, ISourceInfo Source)
+        public override IBatch JoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen)
         {
             QueryProvider.Manager Provider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             return Provider.Batch(Source);

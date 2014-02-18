@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 using Utilities.DataTypes.Patterns;
@@ -145,32 +146,36 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        IBatch CascadeDelete(ClassType Object, ISourceInfo Source);
+        IBatch CascadeDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
         /// Called to create a batch that deletes items from the joining tables
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source);
+        IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
         /// Called to create a batch that saves items from the joining tables
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source);
+        IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
         /// Does a cascade save of an object for this property
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        IBatch CascadeSave(ClassType Object, ISourceInfo Source);
+        IBatch CascadeSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
         /// Gets the property's value from the object sent in
@@ -184,16 +189,18 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        IBatch JoinsDelete(ClassType Object, ISourceInfo Source);
+        IBatch JoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
         /// Called to create a batch that saves items from the joining table
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Source">Source info</param>
+        /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
-        IBatch JoinsSave(ClassType Object, ISourceInfo Source);
+        IBatch JoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
     }
 
     /// <summary>

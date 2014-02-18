@@ -476,27 +476,27 @@ namespace UnitTests.ORM.Manager
 
             Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
             Item = Items.FirstOrDefault(x => x.BoolReference_);
-            //((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
-            //Assert.Equal(true, Item.BoolReference);
-            //Assert.Equal(new byte[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110 }, Item.ByteArrayReference);
-            //Assert.Equal(121, Item.ByteReference);
-            //Assert.Equal('V', Item.CharReference);
-            //Assert.Equal(11.4213m, Item.DecimalReference);
-            //Assert.Equal(11.32645d, Item.DoubleReference);
-            //Assert.Equal(TestEnum.Value3, Item.EnumReference);
-            //Assert.Equal(14.5f, Item.FloatReference);
-            //Assert.Equal(TempGuid, Item.GuidReference);
-            //Assert.Equal(1451445, Item.IntReference);
-            //Assert.Equal(7634121, Item.LongReference);
-            //Assert.Equal(2, Item.ManyToManyIEnumerable.Count());
-            //Assert.Equal(3, Item.ManyToManyList.Count);
-            //Assert.Equal(3, Item.ManyToOneIEnumerable.Count());
-            //Assert.NotNull(Item.ManyToOneItem);
-            //Assert.Equal(3, Item.ManyToOneList.Count);
-            //Assert.NotNull(Item.Map);
-            //Assert.Equal(null, Item.NullStringReference);
-            //Assert.Equal(43, Item.ShortReference);
-            //Assert.Equal("Something", Item.StringReference);
+            ((IORMObject)Item).Session0 = new Utilities.ORM.Manager.Session();
+            Assert.Equal(true, Item.BoolReference);
+            Assert.Equal(new byte[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110 }, Item.ByteArrayReference);
+            Assert.Equal(121, Item.ByteReference);
+            Assert.Equal('V', Item.CharReference);
+            Assert.Equal(11.4213m, Item.DecimalReference);
+            Assert.Equal(11.32645d, Item.DoubleReference);
+            Assert.Equal(TestEnum.Value3, Item.EnumReference);
+            Assert.Equal(14.5f, Item.FloatReference);
+            Assert.Equal(TempGuid, Item.GuidReference);
+            Assert.Equal(1451445, Item.IntReference);
+            Assert.Equal(7634121, Item.LongReference);
+            Assert.Equal(2, Item.ManyToManyIEnumerable.Count());
+            Assert.Equal(3, Item.ManyToManyList.Count);
+            Assert.Equal(3, Item.ManyToOneIEnumerable.Count());
+            Assert.NotNull(Item.ManyToOneItem);
+            Assert.Equal(3, Item.ManyToOneList.Count);
+            Assert.NotNull(Item.Map);
+            Assert.Equal(null, Item.NullStringReference);
+            Assert.Equal(43, Item.ShortReference);
+            Assert.Equal("Something", Item.StringReference);
         }
 
         public enum TestEnum
