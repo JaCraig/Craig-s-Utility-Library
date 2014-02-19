@@ -25,7 +25,7 @@ using System.Web;
 using System.Web.Mvc;
 #endregion
 
-namespace Batman.MVC.ActionFilters
+namespace Ironman.Core.ActionFilters
 {
     /// <summary>
     /// Require SSL, forcing everything to https unless it's a local call

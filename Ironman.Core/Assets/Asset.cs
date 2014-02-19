@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,20 @@ THE SOFTWARE.*/
 
 #region Usings
 using System;
-using Batman.Core.Bootstrapper.Interfaces;
+using Ironman.Core.Bootstrapper.Interfaces;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using Batman.MVC.Assets.Interfaces;
-using Batman.MVC.Assets.Enums;
-using Batman.Core.FileSystem;
-using Batman.Core.FileSystem.Interfaces;
-using Batman.Core;
-using Batman.Core.Logging.BaseClasses;
-using Batman.Core.Logging;
+using Ironman.Core.Assets.Interfaces;
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.FileSystem;
+using Ironman.Core.FileSystem.Interfaces;
+using Ironman.Core;
+using Ironman.Core.Logging.BaseClasses;
+using Ironman.Core.Logging;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
-namespace Batman.MVC.Assets
+namespace Ironman.Core.Assets
 {
     /// <summary>
     /// Contains data about an individual asset

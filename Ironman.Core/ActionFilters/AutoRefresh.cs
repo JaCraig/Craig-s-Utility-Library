@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ using System;
 using System.Web.Mvc;
 #endregion
 
-namespace Batman.MVC.ActionFilters
+namespace Ironman.Core.ActionFilters
 {
     /// <summary>
     /// Auto refreshes the page after a given number of seconds

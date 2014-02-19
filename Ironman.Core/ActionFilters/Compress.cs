@@ -26,7 +26,7 @@ using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Web.ExtensionMethods;
 #endregion
 
-namespace Batman.MVC.ActionFilters
+namespace Ironman.Core.ActionFilters
 {
     /// <summary>
     /// Compresses the data

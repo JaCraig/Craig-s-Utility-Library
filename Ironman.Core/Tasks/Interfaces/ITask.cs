@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Batman.Core.Tasks.Enums;
+using Ironman.Core.Tasks.Enums;
 #endregion
 
-namespace Batman.Core.Tasks.Interfaces
+namespace Ironman.Core.Tasks.Interfaces
 {
     /// <summary>
     /// Task interface

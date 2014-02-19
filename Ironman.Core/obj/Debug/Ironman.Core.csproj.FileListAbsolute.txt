@@ -41,3 +41,6 @@ C:\dev\Craig-s-Utility-Library\Ironman.Core\bin\Debug\System.Web.WebPages.Razor.
 C:\dev\Craig-s-Utility-Library\Ironman.Core\bin\Debug\Roslyn.Compilers.xml
 C:\dev\Craig-s-Utility-Library\Ironman.Core\bin\Debug\Roslyn.Compilers.CSharp.xml
 C:\dev\Craig-s-Utility-Library\Ironman.Core\obj\Debug\Ironman.Core.csprojResolveAssemblyReference.cache
+C:\Mine\Craig-s-Utility-Library\Ironman.Core\obj\Debug\Ironman.Core.csprojResolveAssemblyReference.cache
+C:\Mine\Craig-s-Utility-Library\Ironman.Core\obj\Debug\Ironman.Core.dll
+C:\Mine\Craig-s-Utility-Library\Ironman.Core\obj\Debug\Ironman.Core.pdb

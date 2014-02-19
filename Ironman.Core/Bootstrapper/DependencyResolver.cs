@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2013 <a href="http://www.gutgames.com">James Craig</a>
+Copyright (c) 2014 <a href="http://www.gutgames.com">James Craig</a>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,21 +20,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Batman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-#endregion
 
-namespace Batman.Core.Bootstrapper
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
+using Utilities.IoC.Interfaces;
+
+#endregion Usings
+
+namespace Ironman.Core.Bootstrapper
 {
     /// <summary>
     /// Dependency resolver base class
     /// </summary>
     public class DependencyResolver : IDependencyResolver
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,18 +43,10 @@ namespace Batman.Core.Bootstrapper
             this.Container = Container;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// The IoC container
         /// </summary>
         protected IBootstrapper Container { get; private set; }
-
-        #endregion
-
-        #region Functions
 
         /// <summary>
         /// Gets the service based on the type specified
@@ -75,7 +67,5 @@ namespace Batman.Core.Bootstrapper
         {
             return Container.ResolveAll(serviceType);
         }
-
-        #endregion
     }
 }

@@ -197,19 +197,17 @@
     <Compile Include="BaseClasses\ControllerBase.cs" />
     <Compile Include="BaseClasses\HttpApplicationBase.cs" />
     <Compile Include="BaseClasses\PageControllerBase.cs" />
-    <Compile Include="BatComputer.cs" />
     <Compile Include="Bootstrapper\AssetModule.cs" />
     <Compile Include="Bootstrapper\DependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\Interfaces\ISerializer.cs" />
-    <Compile Include="Serialization\SerializationManager.cs" />
-    <Compile Include="Startup.cs" />
+    <Compile Include="Serialization\JsonValueProvider.cs" />
+    <Compile Include="AppHelper.cs" />
     <Compile Include="Tasks\Default\AssetBundlerTask.cs" />
     <Compile Include="Tasks\Default\ValueProviderTask.cs" />
     <Compile Include="Tasks\Enums\RunTime.cs" />
     <Compile Include="Tasks\Interfaces\ITask.cs" />
     <Compile Include="Tasks\TaskManager.cs" />
-    <Compile Include="VPFactories\VPFactoryBase.cs" />
+    <Compile Include="Serialization\BaseClasses\VPFactoryBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

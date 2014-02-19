@@ -21,12 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Text;
-using Batman.MVC.ActionFilters;
+using Ironman.Core.ActionFilters;
 using Utilities.DataTypes.ExtensionMethods;
 using Utilities.Web.ExtensionMethods;
 #endregion
 
-namespace Batman.MVC.BaseClasses
+namespace Ironman.Core.BaseClasses
 {
     /// <summary>
     /// Page base class

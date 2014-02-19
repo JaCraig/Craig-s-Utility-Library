@@ -21,13 +21,13 @@ THE SOFTWARE.*/
 
 #region Usings
 using System.Text;
-using Batman.MVC.ActionFilters;
+using Ironman.Core.ActionFilters;
 using Utilities.DataTypes.ExtensionMethods;
 using System;
 using System.Web.Mvc;
 #endregion
 
-namespace Batman.MVC.BaseClasses
+namespace Ironman.Core.BaseClasses
 {
     /// <summary>
     /// API Controller base class

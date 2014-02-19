@@ -80,6 +80,17 @@ namespace Utilities.IO.Serializers
         #region Functions
 
         /// <summary>
+        /// Determines if the system can serialize/deserialize the content type
+        /// </summary>
+        /// <param name="ContentType">Content type</param>
+        /// <returns>True if it can, false otherwise</returns>
+        public bool CanSerialize(string ContentType)
+        {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
+            return Serializers.ContainsKey(ContentType);
+        }
+
+        /// <summary>
         /// Deserializes the data to an object
         /// </summary>
         /// <typeparam name="T">Data type</typeparam>
@@ -103,9 +114,20 @@ namespace Utilities.IO.Serializers
         public object Deserialize<T>(T Data, Type ObjectType, string ContentType = "application/json")
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
             if (!Serializers.ContainsKey(ContentType) || Serializers[ContentType].ReturnType != typeof(T))
                 return null;
             return ((ISerializer<T>)Serializers[ContentType]).Deserialize(ObjectType, Data);
+        }
+
+        /// <summary>
+        /// File type to content type
+        /// </summary>
+        /// <param name="FileType">File type</param>
+        /// <returns>Content type</returns>
+        public string FileTypeToContentType(string FileType)
+        {
+            return Serializers.FirstOrDefault(x => string.Equals(x.Value.FileType, FileType, StringComparison.InvariantCultureIgnoreCase)).Chain(x => x.Value.ContentType, "");
         }
 
         /// <summary>
@@ -132,6 +154,7 @@ namespace Utilities.IO.Serializers
         public T Serialize<T>(object Object, Type ObjectType, string ContentType = "application/json")
         {
             Contract.Requires<ArgumentNullException>(ObjectType != null, "ObjectType");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
             if (!Serializers.ContainsKey(ContentType) || Serializers[ContentType].ReturnType != typeof(T))
                 return default(T);
             return ((ISerializer<T>)Serializers[ContentType]).Serialize(ObjectType, Object);

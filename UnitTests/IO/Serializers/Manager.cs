@@ -28,10 +28,24 @@ namespace UnitTests.IO.Serializers
     public class Manager
     {
         [Fact]
+        public void CanSerialize()
+        {
+            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager();
+            Assert.True(Temp.CanSerialize("application/json"));
+        }
+
+        [Fact]
         public void Creation()
         {
             Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager();
             Assert.NotNull(Temp);
+        }
+
+        [Fact]
+        public void FileTypeToContentType()
+        {
+            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager();
+            Assert.Equal("application/json", Temp.FileTypeToContentType(".json"));
         }
 
         [Fact]

@@ -72,6 +72,15 @@ namespace Utilities.IoC.Default
             return Implementation();
         }
 
+        /// <summary>
+        /// Outputs the string version of whatever object the builder holds
+        /// </summary>
+        /// <returns>The string version of the object this holds</returns>
+        public override string ToString()
+        {
+            return Implementation().ToString();
+        }
+
         #endregion Functions
     }
 }

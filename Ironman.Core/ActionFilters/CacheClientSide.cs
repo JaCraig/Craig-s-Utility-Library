@@ -26,7 +26,7 @@ using System.Web;
 using System.Web.Mvc;
 #endregion
 
-namespace Batman.MVC.ActionFilters
+namespace Ironman.Core.ActionFilters
 {
     /// <summary>
     /// Caches items client side

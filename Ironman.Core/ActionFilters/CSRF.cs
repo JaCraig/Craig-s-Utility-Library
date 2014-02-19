@@ -25,7 +25,7 @@ using System.Web.Mvc;
 using Utilities.DataTypes.ExtensionMethods;
 #endregion
 
-namespace Batman.MVC.ActionFilters
+namespace Ironman.Core.ActionFilters
 {
     /// <summary>
     /// Automatically sets up a cross site request forgery token
