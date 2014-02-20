@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Web.Mvc;
 
-#endregion
+#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -33,16 +34,10 @@ namespace Ironman.Core.ActionFilters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class ContentType : ActionFilterAttribute
     {
-        #region Properties
-
         /// <summary>
         /// Content type to set for this item
         /// </summary>
         public virtual string Type { get; set; }
-
-        #endregion
-
-        #region Functions
 
         /// <summary>
         /// OnActionExecuting
@@ -53,8 +48,5 @@ namespace Ironman.Core.ActionFilters
             filterContext.HttpContext.Response.ContentType = Type;
             base.OnActionExecuting(filterContext);
         }
-
-
-        #endregion
     }
 }

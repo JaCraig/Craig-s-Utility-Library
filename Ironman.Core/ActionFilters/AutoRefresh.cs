@@ -20,9 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Web.Mvc;
-#endregion
+
+#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -32,8 +34,6 @@ namespace Ironman.Core.ActionFilters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class AutoRefresh : ActionFilterAttribute
     {
-        #region Properties
-
         /// <summary>
         /// Duration in seconds
         /// </summary>
@@ -44,10 +44,6 @@ namespace Ironman.Core.ActionFilters
         /// </summary>
         public virtual string URL { get; set; }
 
-        #endregion
-
-        #region Functions
-
         /// <summary>
         /// OnActionExecuted
         /// </summary>
@@ -57,7 +53,5 @@ namespace Ironman.Core.ActionFilters
             filterContext.HttpContext.Response.AppendHeader("Refresh", Duration + ";Url=" + filterContext.HttpContext.Server.UrlEncode(URL));
             base.OnActionExecuted(filterContext);
         }
-
-        #endregion
     }
 }

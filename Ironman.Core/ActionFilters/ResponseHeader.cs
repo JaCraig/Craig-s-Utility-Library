@@ -20,10 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
-using System.Web;
 using System.Web.Mvc;
-#endregion
+
+#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -33,8 +34,6 @@ namespace Ironman.Core.ActionFilters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class ResponseHeader : ActionFilterAttribute
     {
-        #region Properties
-
         /// <summary>
         /// HTTP response header item name
         /// </summary>
@@ -45,10 +44,6 @@ namespace Ironman.Core.ActionFilters
         /// </summary>
         public virtual string Value { get; set; }
 
-        #endregion
-
-        #region Functions
-
         /// <summary>
         /// OnActionExecuting
         /// </summary>
@@ -58,7 +53,5 @@ namespace Ironman.Core.ActionFilters
             filterContext.HttpContext.Response.AppendHeader(Name, Value);
             base.OnActionExecuting(filterContext);
         }
-
-        #endregion
     }
 }

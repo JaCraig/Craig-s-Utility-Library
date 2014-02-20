@@ -20,19 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Interfaces;
+
 using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using Ironman.Core.FileSystem.Interfaces;
-using Ironman.Core;
-using Ironman.Core.Logging.BaseClasses;
-using Ironman.Core.Logging;
-using Utilities.DataTypes.ExtensionMethods;
-#endregion
+using Ironman.Core.Assets.Interfaces;
+using System;
+using System.Collections.Generic;
+using Utilities.IO;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets
 {
@@ -41,8 +36,6 @@ namespace Ironman.Core.Assets
     /// </summary>
     public class Asset : IAsset
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -51,47 +44,13 @@ namespace Ironman.Core.Assets
         {
             this.Path = Path;
             this.Included = new List<IAsset>();
-            this.Manager = BatComputer.Bootstrapper.Resolve<AssetManager>();
+            this.Manager = Utilities.IoC.Manager.Bootstrapper.Resolve<AssetManager>();
             this.Type = Manager.DetermineType(Path);
-            IFile File = BatComputer.Bootstrapper.Resolve<FileManager>().File(Path);
+            FileInfo File = new FileInfo(Path);
             this.LastModified = File.Modified;
             this.Content = File.Read();
             this.Minified = File.FullName.ToUpperInvariant().Contains(".MIN.");
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Asset manager
-        /// </summary>
-        protected AssetManager Manager { get; private set; }
-
-        /// <summary>
-        /// The path to the asset
-        /// </summary>
-        public string Path { get; set; }
-
-        /// <summary>
-        /// URL to the asset
-        /// </summary>
-        public string URL { get; set; }
-
-        /// <summary>
-        /// Asset type
-        /// </summary>
-        public AssetType Type { get; set; }
-
-        /// <summary>
-        /// Is the asset minified
-        /// </summary>
-        public bool Minified { get; set; }
-
-        /// <summary>
-        /// Last date/time the asset was modified
-        /// </summary>
-        public DateTime LastModified { get; set; }
 
         /// <summary>
         /// Content of the asset
@@ -103,9 +62,35 @@ namespace Ironman.Core.Assets
         /// </summary>
         public IList<IAsset> Included { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Last date/time the asset was modified
+        /// </summary>
+        public DateTime LastModified { get; set; }
 
-        #region Functions
+        /// <summary>
+        /// Is the asset minified
+        /// </summary>
+        public bool Minified { get; set; }
+
+        /// <summary>
+        /// The path to the asset
+        /// </summary>
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Asset type
+        /// </summary>
+        public AssetType Type { get; set; }
+
+        /// <summary>
+        /// URL to the asset
+        /// </summary>
+        public string URL { get; set; }
+
+        /// <summary>
+        /// Asset manager
+        /// </summary>
+        protected AssetManager Manager { get; private set; }
 
         /// <summary>
         /// Determines if the two objects are equal
@@ -139,7 +124,5 @@ namespace Ironman.Core.Assets
         {
             return Content;
         }
-
-        #endregion
     }
 }

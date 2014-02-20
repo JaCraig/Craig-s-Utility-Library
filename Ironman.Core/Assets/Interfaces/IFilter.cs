@@ -20,12 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
+
 using Ironman.Core.Assets.Enums;
-#endregion
+using System.Collections.Generic;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Interfaces
 {

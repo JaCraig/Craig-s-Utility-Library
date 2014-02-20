@@ -20,22 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ironman.Core.Bootstrapper.Interfaces;
 
-using Utilities.DataTypes.ExtensionMethods;
-using Ironman.Core.Logging.BaseClasses;
-using Utilities.IO.Logging.Enums;
-using Ironman.Core.Logging;
-using System.IO;
-using Utilities.DataTypes;
 using Ironman.Core.Tasks.Enums;
 using Ironman.Core.Tasks.Interfaces;
-using System.Reflection;
-#endregion
+using System;
+using Utilities.DataTypes;
+using Utilities.IO;
+using Utilities.IO.Logging.Enums;
+
+#endregion Usings
 
 namespace Ironman.Core.Tasks
 {
@@ -44,8 +37,6 @@ namespace Ironman.Core.Tasks
     /// </summary>
     public class TaskManager
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -58,18 +49,10 @@ namespace Ironman.Core.Tasks
             }
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Tasks to run
         /// </summary>
         public ListMapping<RunTime, ITask> Tasks { get; private set; }
-
-        #endregion
-
-        #region Functions
 
         /// <summary>
         /// Runs the tasks associated with the run time specified
@@ -81,18 +64,19 @@ namespace Ironman.Core.Tasks
             {
                 Tasks[TimeToRun].ForEach(x =>
                 {
-                    if (BatComputer.Bootstrapper != null)
-                        BatComputer.Bootstrapper.Resolve<LogBase>(new NullLogger()).LogMessage("Running {0}", MessageType.Info, x.Name);
+                    Log.Get().LogMessage("Running {0}", MessageType.Info, x.Name);
                     x.Run();
                 });
             }
         }
 
+        /// <summary>
+        /// Outputs the task manager as a string
+        /// </summary>
+        /// <returns>string version of the task manager</returns>
         public override string ToString()
         {
-            return Tasks.ToString(x => x.Value.ToString(y => y.Name, "\n"));
+            return Tasks.ToString(x => x.Key.ToString() + " : " + x.Value.ToString(y => y.Name), "\n");
         }
-
-        #endregion
     }
 }

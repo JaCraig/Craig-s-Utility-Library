@@ -20,14 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Enums;
-using System.IO;
-#endregion
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Utils
 {
@@ -36,6 +34,12 @@ namespace Ironman.Core.Assets.Utils
     /// </summary>
     public class FileInfoComparer : IEqualityComparer<FileInfo>
     {
+        /// <summary>
+        /// Determines if two FileInfo objects are equal
+        /// </summary>
+        /// <param name="x">File 1</param>
+        /// <param name="y">File 2</param>
+        /// <returns>True if they are equal, false otherwise</returns>
         public bool Equals(FileInfo x, FileInfo y)
         {
             if (x == y)
@@ -47,6 +51,11 @@ namespace Ironman.Core.Assets.Utils
             return string.Equals(x.FullName, y.FullName, StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Gets the hash code of the file
+        /// </summary>
+        /// <param name="obj">File</param>
+        /// <returns>The hash code</returns>
         public int GetHashCode(FileInfo obj)
         {
             return obj.FullName.GetHashCode();

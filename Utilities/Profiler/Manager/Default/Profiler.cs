@@ -284,10 +284,13 @@ namespace Utilities.Profiler.Manager.Default
         /// <summary>
         /// Stops profiling
         /// </summary>
+        /// <param name="DiscardResults">Discard results</param>
         /// <returns>The root profiler</returns>
-        public IResult StopProfiling()
+        public IResult StopProfiling(bool DiscardResults)
         {
             Root.Stop();
+            if (DiscardResults)
+                Root.Times.Clear();
             return Root;
         }
 

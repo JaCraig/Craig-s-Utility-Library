@@ -22,7 +22,6 @@ THE SOFTWARE.*/
 #region Usings
 
 using Ironman.Core.Assets;
-using Ironman.Core.Serialization;
 using Ironman.Core.Tasks;
 using Utilities.IoC.Interfaces;
 
@@ -33,12 +32,24 @@ namespace Ironman.Core.Bootstrapper
     /// <summary>
     /// Module for registering the asset module
     /// </summary>
-    public class AssetModule : IModule
+    public class IronmanModule : IModule
     {
+        /// <summary>
+        /// Order in which to load it
+        /// </summary>
+        public int Order
+        {
+            get { return 2; }
+        }
+
+        /// <summary>
+        /// Loads the various managers
+        /// </summary>
+        /// <param name="Bootstrapper">Bootstrapper</param>
         public void Load(IBootstrapper Bootstrapper)
         {
             Bootstrapper.Register<AssetManager>(new AssetManager());
-            Bootstrapper.Register<SerializationManager>(new SerializationManager());
+            Bootstrapper.Register<TaskManager>(new TaskManager());
         }
     }
 }

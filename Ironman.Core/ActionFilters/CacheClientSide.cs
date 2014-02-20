@@ -20,11 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-#endregion
+
+#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -34,16 +36,10 @@ namespace Ironman.Core.ActionFilters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class ClientSideCache : ActionFilterAttribute
     {
-        #region Properties
-
         /// <summary>
         /// Days that the item should be cached
         /// </summary>
         public virtual int DaysToCache { get; set; }
-
-        #endregion
-
-        #region Functions
 
         /// <summary>
         /// Action executing
@@ -102,7 +98,5 @@ namespace Ironman.Core.ActionFilters
                 Context.Cache[Context.Request.Path + "date"] = Date;
             return Date;
         }
-
-        #endregion
     }
 }

@@ -20,21 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Interfaces;
+
 using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using Utilities.DataTypes.ExtensionMethods;
+using Ironman.Core.Assets.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.IO;
-using Ironman.Core.FileSystem.Interfaces;
-using Ironman.Core;
-#endregion
+using Utilities.IO;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Filters
 {
@@ -69,7 +63,6 @@ namespace Ironman.Core.Assets.Filters
                 return new List<IAsset>();
             if (Assets.FirstOrDefault().Type != AssetType.CSS)
                 return Assets;
-            FileManager FileSystem = BatComputer.Bootstrapper.Resolve<FileManager>();
             List<IAsset> TempAssets = new List<IAsset>();
             foreach (IAsset Asset in Assets)
             {
@@ -82,17 +75,17 @@ namespace Ironman.Core.Assets.Filters
                         Done = false;
                         string TempFile = Import.Groups["File"].Value;
                         string MatchString = Import.Value;
-                        IFile File = FileSystem.File(TempFile);
-                        File = DetermineFile(File, FileSystem, Asset, TempFile);
-                        if (File == null||!File.Exists)
+                        FileInfo File = new FileInfo(TempFile);
+                        File = DetermineFile(File, Asset, TempFile);
+                        if (File == null || !File.Exists)
                         {
-                            IFile AssetFile = FileSystem.File(Asset.Path);
-                            File = FileSystem.File(AssetFile.Directory.FullName + "\\" + TempFile);
+                            FileInfo AssetFile = new FileInfo(Asset.Path);
+                            File = new FileInfo(AssetFile.Directory.FullName + "\\" + TempFile);
                         }
                         IAsset SubAsset = Assets.FirstOrDefault(x => x.Path.ToUpperInvariant() == File.FullName.ToUpperInvariant());
                         if (SubAsset == null)
                         {
-                            SubAsset = new Asset(File.FullName.Replace(FileSystem.Directory("~/").FullName, "~/").Replace("\\", "/"));
+                            SubAsset = new Asset(File.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/"));
                         }
                         Asset.Included.Add(SubAsset);
                         Asset.Content = Asset.Content.Replace(MatchString, SubAsset.Content);
@@ -110,18 +103,18 @@ namespace Ironman.Core.Assets.Filters
             return Assets;
         }
 
-        private IFile DetermineFile(IFile File, FileManager FileSystem, IAsset Asset, string TempFile)
+        private FileInfo DetermineFile(FileInfo File, IAsset Asset, string TempFile)
         {
             if (File == null || !File.Exists)
             {
-                IFile AssetFile = FileSystem.File(Asset.Path);
-                File = FileSystem.File(AssetFile.Directory.FullName + "\\" + TempFile);
+                FileInfo AssetFile = new FileInfo(Asset.Path);
+                File = new FileInfo(AssetFile.Directory.FullName + "\\" + TempFile);
             }
             if (File == null || !File.Exists)
             {
                 foreach (IAsset SubAsset in Asset.Included)
                 {
-                    IFile Temp = DetermineFile(File, FileSystem, SubAsset, TempFile);
+                    FileInfo Temp = DetermineFile(File, SubAsset, TempFile);
                     if (Temp.Exists)
                         return Temp;
                 }

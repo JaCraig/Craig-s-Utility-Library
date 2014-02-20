@@ -4,5 +4,982 @@
         <name>Ironman.Core</name>
     </assembly>
     <members>
+        <member name="T:Ironman.Core.ActionFilters.AutoRefresh">
+            <summary>
+            Auto refreshes the page after a given number of seconds
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.AutoRefresh.OnActionExecuted(System.Web.Mvc.ActionExecutedContext)">
+            <summary>
+            OnActionExecuted
+            </summary>
+            <param name="filterContext">Filter context</param>
+        </member>
+        <member name="P:Ironman.Core.ActionFilters.AutoRefresh.Duration">
+            <summary>
+            Duration in seconds
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.ActionFilters.AutoRefresh.URL">
+            <summary>
+            URL to refresh
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.ActionFilters.ByPassCRSF">
+            <summary>
+            Bypasses the CRSF protection filter
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.ActionFilters.ClientSideCache">
+            <summary>
+            Caches items client side
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.ClientSideCache.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            Action executing
+            </summary>
+            <param name="filterContext">Filter context</param>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.ClientSideCache.GetETag(System.Web.HttpContextBase)">
+            <summary>
+            Gets the incoming etag
+            </summary>
+            <param name="Context">HTTP context</param>
+            <returns>The string ETag</returns>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.ClientSideCache.GetDateLastModified(System.Web.HttpContextBase)">
+            <summary>
+            Gets the date that file was last modified
+            </summary>
+            <param name="Context">HTTP Context</param>
+            <returns>The date that the file was last modified</returns>
+        </member>
+        <member name="P:Ironman.Core.ActionFilters.ClientSideCache.DaysToCache">
+            <summary>
+            Days that the item should be cached
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.ActionFilters.Compress">
+            <summary>
+            Compresses the data
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.Compress.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.Compress.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            On Action Executing
+            </summary>
+            <param name="filterContext">filter context</param>
+        </member>
+        <member name="P:Ironman.Core.ActionFilters.Compress.Minify">
+            <summary>
+            Should this be minified
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.ActionFilters.Compress.Type">
+            <summary>
+            Minification type
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.ActionFilters.ContentType">
+            <summary>
+            Sets the content type
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.ContentType.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            OnActionExecuting
+            </summary>
+            <param name="filterContext">filter context</param>
+        </member>
+        <member name="P:Ironman.Core.ActionFilters.ContentType.Type">
+            <summary>
+            Content type to set for this item
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.ActionFilters.CSRF">
+            <summary>
+            Automatically sets up a cross site request forgery token
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.CSRF.OnAuthorization(System.Web.Mvc.AuthorizationContext)">
+            <summary>
+            OnAuthorization
+            </summary>
+            <param name="filterContext">filter context</param>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.CSRF.ShouldValidate(System.Web.Mvc.AuthorizationContext)">
+            <summary>
+            Should the cross site request forgery token be set up?
+            </summary>
+            <param name="Context">Context item</param>
+            <returns>True if it should be set up, false otherwise</returns>
+        </member>
+        <member name="T:Ironman.Core.ActionFilters.DoNotCompress">
+            <summary>
+            Bypasses the compression filter
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.ActionFilters.RequireSSL">
+            <summary>
+            Require SSL, forcing everything to https unless it's a local call
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.RequireSSL.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            OnActionExecuting
+            </summary>
+            <param name="filterContext">filter context</param>
+        </member>
+        <member name="T:Ironman.Core.ActionFilters.ResponseHeader">
+            <summary>
+            Sets the content type
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.ActionFilters.ResponseHeader.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            OnActionExecuting
+            </summary>
+            <param name="filterContext">filter context</param>
+        </member>
+        <member name="P:Ironman.Core.ActionFilters.ResponseHeader.Name">
+            <summary>
+            HTTP response header item name
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.ActionFilters.ResponseHeader.Value">
+            <summary>
+            HTTP response header item value
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Asset">
+            <summary>
+            Contains data about an individual asset
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Interfaces.IAsset">
+            <summary>
+            Asset interface
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IAsset.Content">
+            <summary>
+            Content of the asset
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IAsset.Included">
+            <summary>
+            Included assets
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IAsset.LastModified">
+            <summary>
+            Last date/time the asset was modified
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IAsset.Minified">
+            <summary>
+            Is the asset minified
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IAsset.Path">
+            <summary>
+            The path to the asset
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IAsset.Type">
+            <summary>
+            Asset type
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IAsset.URL">
+            <summary>
+            URL to the asset
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Asset.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="Path">Path to the asset</param>
+        </member>
+        <member name="M:Ironman.Core.Assets.Asset.Equals(System.Object)">
+            <summary>
+            Determines if the two objects are equal
+            </summary>
+            <param name="obj">Object to compare to</param>
+            <returns>True if they are the same, false otherwise</returns>
+        </member>
+        <member name="M:Ironman.Core.Assets.Asset.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code for the object</returns>
+        </member>
+        <member name="M:Ironman.Core.Assets.Asset.ToString">
+            <summary>
+            Gets the string version of the asset
+            </summary>
+            <returns>The string version of the asset</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Asset.Content">
+            <summary>
+            Content of the asset
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Asset.Included">
+            <summary>
+            Included assets
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Asset.LastModified">
+            <summary>
+            Last date/time the asset was modified
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Asset.Minified">
+            <summary>
+            Is the asset minified
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Asset.Path">
+            <summary>
+            The path to the asset
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Asset.Type">
+            <summary>
+            Asset type
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Asset.URL">
+            <summary>
+            URL to the asset
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Asset.Manager">
+            <summary>
+            Asset manager
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.AssetManager">
+            <summary>
+            Asset manager class
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.AssetManager.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.AssetManager.CreateBundles">
+            <summary>
+            Auto creates the bundles for the given directory
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.AssetManager.DetermineType(System.String)">
+            <summary>
+            Determines the asset type
+            </summary>
+            <param name="Path">Path to the asset</param>
+            <returns>The asset type</returns>
+        </member>
+        <member name="M:Ironman.Core.Assets.AssetManager.Process(System.Collections.Generic.IList{Ironman.Core.Assets.Interfaces.IAsset},System.Web.Optimization.BundleContext,System.Web.Optimization.BundleResponse)">
+            <summary>
+            Processes the assets
+            </summary>
+            <param name="Assets">Assets to process</param>
+            <param name="Context">The bundle context</param>
+            <param name="Response">The bundle response</param>
+        </member>
+        <member name="M:Ironman.Core.Assets.AssetManager.ToString">
+            <summary>
+            Exports info about the asset manager as a string
+            </summary>
+            <returns>String version of the asset manager</returns>
+        </member>
+        <member name="M:Ironman.Core.Assets.AssetManager.CreateBundles(Utilities.IO.DirectoryInfo)">
+            <summary>
+            Auto creates the bundles for the given directory
+            </summary>
+            <param name="Directory">Directory to create bundles from</param>
+        </member>
+        <member name="P:Ironman.Core.Assets.AssetManager.ContentFilters">
+            <summary>
+            Content filters
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.AssetManager.FileTypes">
+            <summary>
+            File types that the system recognizes
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.AssetManager.Filters">
+            <summary>
+            Filters
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.AssetManager.RunOrder">
+            <summary>
+            Order that the filters are run in
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.AssetManager.Translators">
+            <summary>
+            Translators
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.AssetManager.VirtualFileHack">
+            <summary>
+            Implements virtual files since the asset optimizer uses it
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.AssetManager.VirtualFileHack.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="Location">File location</param>
+        </member>
+        <member name="M:Ironman.Core.Assets.AssetManager.VirtualFileHack.Open">
+            <summary>
+            Opens the file as a stream
+            </summary>
+            <returns>The stream version of the file</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.AssetManager.VirtualFileHack.File">
+            <summary>
+            File object
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Enums.AssetType">
+            <summary>
+            Type that the asset should compile down to
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.AssetType.Unknown">
+            <summary>
+            Unknown type
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.AssetType.CSS">
+            <summary>
+            CSS
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.AssetType.Javascript">
+            <summary>
+            Javascript
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.AssetType.HTML">
+            <summary>
+            HTML
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Enums.RunTime">
+            <summary>
+            Time that the filter should be run
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.RunTime.PreTranslate">
+            <summary>
+            Run initially prior to translation
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.RunTime.PostTranslate">
+            <summary>
+            Run after translation occurs
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.RunTime.PreMinified">
+            <summary>
+            Run prior to minification
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.RunTime.Minify">
+            <summary>
+            Minification phase
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.RunTime.PostMinified">
+            <summary>
+            Run after minification
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Enums.RunTime.PreCombine">
+            <summary>
+            Run prior to combining the assets
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Filters.CSSFixImagesAndFonts">
+            <summary>
+            Embeds the images and fonts that are linked from the CSS file
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Interfaces.IFilter">
+            <summary>
+            Filter interface
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Interfaces.IFilter.Filter(System.Collections.Generic.IList{Ironman.Core.Assets.Interfaces.IAsset})">
+            <summary>
+            Processes a list of assets
+            </summary>
+            <param name="Assets">Assets to process</param>
+            <returns>The processed assets</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IFilter.Name">
+            <summary>
+            Name of the filter
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IFilter.TimeToRun">
+            <summary>
+            When this filter should be run
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Filters.CSSFixImagesAndFonts.ImageRegex">
+            <summary>
+            Used to determine images in the CSS file
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Filters.CSSFixImagesAndFonts.Filter(System.Collections.Generic.IList{Ironman.Core.Assets.Interfaces.IAsset})">
+            <summary>
+            Filters the assets
+            </summary>
+            <param name="Assets">Assets to filter</param>
+            <returns>The filtered assets</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.CSSFixImagesAndFonts.Name">
+            <summary>
+            Filter name
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.CSSFixImagesAndFonts.TimeToRun">
+            <summary>
+            Time to run the filter
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Filters.CSSSetupImports">
+            <summary>
+            Goes through and sets up the asset tree for CSS files
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Filters.CSSSetupImports.FileImportRegex">
+            <summary>
+            Used to determine what files to remove
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Filters.CSSSetupImports.Filter(System.Collections.Generic.IList{Ironman.Core.Assets.Interfaces.IAsset})">
+            <summary>
+            Filters the assets
+            </summary>
+            <param name="Assets">Assets to filter</param>
+            <returns>The filtered assets</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.CSSSetupImports.Name">
+            <summary>
+            Filter name
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.CSSSetupImports.TimeToRun">
+            <summary>
+            Time to run the filter
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Filters.JSSetupImports">
+            <summary>
+            Goes through and sets up the asset tree for JS files
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Filters.JSSetupImports.FileImportRegex">
+            <summary>
+            Used to determine what files to remove
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Filters.JSSetupImports.Filter(System.Collections.Generic.IList{Ironman.Core.Assets.Interfaces.IAsset})">
+            <summary>
+            Filters the assets
+            </summary>
+            <param name="Assets">Assets to filter</param>
+            <returns>The filtered assets</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.JSSetupImports.Name">
+            <summary>
+            Filter name
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.JSSetupImports.TimeToRun">
+            <summary>
+            Time to run the filter
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Filters.RemoveDuplicates">
+            <summary>
+            Filters a list of assets and returns only a unique set of assets
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Filters.RemoveDuplicates.Filter(System.Collections.Generic.IList{Ironman.Core.Assets.Interfaces.IAsset})">
+            <summary>
+            Filters the assets
+            </summary>
+            <param name="Assets">Assets to filter</param>
+            <returns>The filtered assets</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.RemoveDuplicates.Name">
+            <summary>
+            Filter name
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.RemoveDuplicates.TimeToRun">
+            <summary>
+            Time to run the filter
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Filters.RemoveUselessFiles">
+            <summary>
+            Goes through and removes any file deemed unnecessary
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Assets.Filters.RemoveUselessFiles.RemoveRegex">
+            <summary>
+            Used to determine what files to remove
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Filters.RemoveUselessFiles.Filter(System.Collections.Generic.IList{Ironman.Core.Assets.Interfaces.IAsset})">
+            <summary>
+            Filters the assets
+            </summary>
+            <param name="Assets">Assets to filter</param>
+            <returns>The filtered assets</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.RemoveUselessFiles.Name">
+            <summary>
+            Filter name
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Filters.RemoveUselessFiles.TimeToRun">
+            <summary>
+            Time to run the filter
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Interfaces.IContentFilter">
+            <summary>
+            Content filter interface
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Interfaces.IContentFilter.Filter(System.String)">
+            <summary>
+            Processes the content of the assets once combined
+            </summary>
+            <param name="Content">Content to filter</param>
+            <returns>The processed content</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.IContentFilter.Name">
+            <summary>
+            Name of the filter
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Interfaces.ITranslator">
+            <summary>
+            Translator interface
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Interfaces.ITranslator.Translate(System.Collections.Generic.IList{Ironman.Core.Assets.Interfaces.IAsset})">
+            <summary>
+            Processes a list of assets
+            </summary>
+            <param name="Assets">Assets to process</param>
+            <returns>The processed assets</returns>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.ITranslator.FileTypeAccepts">
+            <summary>
+            File type that the translator accepts
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.ITranslator.Name">
+            <summary>
+            Name of the translator
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Assets.Interfaces.ITranslator.TranslatesTo">
+            <summary>
+            The asset type that this translates to
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Transformers.Transformer">
+            <summary>
+            Transformer class used
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Transformers.Transformer.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Transformers.Transformer.Process(System.Web.Optimization.BundleContext,System.Web.Optimization.BundleResponse)">
+            <summary>
+            Processes the bundle
+            </summary>
+            <param name="context">Bundle context</param>
+            <param name="response">Bundle response</param>
+        </member>
+        <member name="P:Ironman.Core.Assets.Transformers.Transformer.Manager">
+            <summary>
+            Manager that loads basic asset stuff
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Assets.Utils.FileInfoComparer">
+            <summary>
+            Compares two file info objects
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Assets.Utils.FileInfoComparer.Equals(System.IO.FileInfo,System.IO.FileInfo)">
+            <summary>
+            Determines if two FileInfo objects are equal
+            </summary>
+            <param name="x">File 1</param>
+            <param name="y">File 2</param>
+            <returns>True if they are equal, false otherwise</returns>
+        </member>
+        <member name="M:Ironman.Core.Assets.Utils.FileInfoComparer.GetHashCode(System.IO.FileInfo)">
+            <summary>
+            Gets the hash code of the file
+            </summary>
+            <param name="obj">File</param>
+            <returns>The hash code</returns>
+        </member>
+        <member name="T:Ironman.Core.BaseClasses.APIControllerBase">
+            <summary>
+            API Controller base class
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.BaseClasses.ControllerBase">
+            <summary>
+            Controller base class
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.ControllerBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.ControllerBase.DirectoryInfo(System.String)">
+            <summary>
+            Gets a directory based on the path entered
+            </summary>
+            <param name="Path">Path to the directory</param>
+            <returns>The directory pointed to by the path</returns>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.ControllerBase.FileInfo(System.String)">
+            <summary>
+            Gets a file based on the path entered
+            </summary>
+            <param name="Path">Path to the file</param>
+            <returns>The file pointed to by the path</returns>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.ControllerBase.Initialize(System.Web.Routing.RequestContext)">
+            <summary>
+            Initializes the controller
+            </summary>
+            <param name="requestContext">Request context</param>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.ControllerBase.Log(System.String,Utilities.IO.Logging.Enums.MessageType,System.Object[])">
+            <summary>
+            Logs a message to the Ironman log file
+            </summary>
+            <param name="Message">Message to log</param>
+            <param name="Type">Message level/type</param>
+            <param name="args">Extra args used to format the message</param>
+            <returns>this</returns>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.ControllerBase.Serialize``1(``0,System.String)">
+            <summary>
+            Serializes the object into an action result
+            </summary>
+            <typeparam name="T">Object type</typeparam>
+            <param name="Object">Object to serialize</param>
+            <param name="ContentType">Content type to serialize it as</param>
+            <returns>Action result</returns>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.ControllerBase.Serialize``1(``0)">
+            <summary>
+            Serializes the object into an action result based on the content type requested by the
+            user (defaults to json)
+            </summary>
+            <typeparam name="T">Object type</typeparam>
+            <param name="Object">Object to serialize</param>
+            <returns>Action result</returns>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.ControllerBase.StartProfiling(System.String)">
+            <summary>
+            Starts profiling the section starting with this call and stopping when the profiler is
+            disposed of
+            </summary>
+            <param name="Name">Name of the section to profile</param>
+            <returns>The profiler object</returns>
+        </member>
+        <member name="P:Ironman.Core.BaseClasses.ControllerBase.Encoding">
+            <summary>
+            Encoding used for the controller (defaults to UTF8)
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.APIControllerBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.BaseClasses.HttpApplicationBase">
+            <summary>
+            HttpApplication base class that auto attaches a couple items (profiler, etc)
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.HttpApplicationBase.Application_AuthenticateRequest(System.Object,System.EventArgs)">
+            <summary>
+            Application authenticate request function
+            </summary>
+            <param name="sender">Sender</param>
+            <param name="e">Event args</param>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.HttpApplicationBase.Application_BeginRequest">
+            <summary>
+            Begin request
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.HttpApplicationBase.Application_EndRequest">
+            <summary>
+            End request
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.HttpApplicationBase.Application_Error">
+            <summary>
+            Application error
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.HttpApplicationBase.UserCanProfile">
+            <summary>
+            Determines if the user can see profiling data
+            </summary>
+            <returns>True if they can see profiling data, false otherwise</returns>
+        </member>
+        <member name="T:Ironman.Core.BaseClasses.PageControllerBase">
+            <summary>
+            Page base class
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.BaseClasses.PageControllerBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Bootstrapper.IronmanModule">
+            <summary>
+            Module for registering the asset module
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Bootstrapper.IronmanModule.Load(Utilities.IoC.Interfaces.IBootstrapper)">
+            <summary>
+            Loads the various managers
+            </summary>
+            <param name="Bootstrapper">Bootstrapper</param>
+        </member>
+        <member name="P:Ironman.Core.Bootstrapper.IronmanModule.Order">
+            <summary>
+            Order in which to load it
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Bootstrapper.DependencyResolver">
+            <summary>
+            Dependency resolver base class
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Bootstrapper.DependencyResolver.#ctor(Utilities.IoC.Interfaces.IBootstrapper)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Bootstrapper.DependencyResolver.GetService(System.Type)">
+            <summary>
+            Gets the service based on the type specified
+            </summary>
+            <param name="serviceType">Service type</param>
+            <returns>The object associated with the type</returns>
+        </member>
+        <member name="M:Ironman.Core.Bootstrapper.DependencyResolver.GetServices(System.Type)">
+            <summary>
+            Gets the services based on the type specified
+            </summary>
+            <param name="serviceType">Service type</param>
+            <returns>The objects associated with the type</returns>
+        </member>
+        <member name="P:Ironman.Core.Bootstrapper.DependencyResolver.Container">
+            <summary>
+            The IoC container
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Serialization.GeneralValueProvider">
+            <summary>
+            General value provider
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Serialization.BaseClasses.VPFactoryBase">
+            <summary>
+            Value provider factory base class
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Serialization.BaseClasses.VPFactoryBase.AddFactory">
+            <summary>
+            Called when starting up to replace/add the factory to the system
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Serialization.GeneralValueProvider.AddFactory">
+            <summary>
+            Adds the factory to the system
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Serialization.GeneralValueProvider.GetValueProvider(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Gets the value provider
+            </summary>
+            <param name="controllerContext">Controller context</param>
+            <returns>The value provider</returns>
+        </member>
+        <member name="T:Ironman.Core.AppHelper">
+            <summary>
+            App helper, used to setup the application
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.AppHelper.Bootstrapper">
+            <summary>
+            Bootstrapper holder
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.AppHelper.End">
+            <summary>
+            End task
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.AppHelper.PostStart">
+            <summary>
+            Post start task
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.AppHelper.PreStart">
+            <summary>
+            Pre start task
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Tasks.AssetBundlerTask">
+            <summary>
+            Asset bundler task
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Tasks.Interfaces.ITask">
+            <summary>
+            Task interface
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Tasks.Interfaces.ITask.Run">
+            <summary>
+            Runs the task
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Tasks.Interfaces.ITask.Name">
+            <summary>
+            Name of the task
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Tasks.Interfaces.ITask.TimeToRun">
+            <summary>
+            Time that the task should be run
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Tasks.AssetBundlerTask.Run">
+            <summary>
+            Runs the task
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Tasks.AssetBundlerTask.Name">
+            <summary>
+            Name of the task
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Tasks.AssetBundlerTask.TimeToRun">
+            <summary>
+            Time to run
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Tasks.ValueProviderTask">
+            <summary>
+            Value provider task
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Tasks.ValueProviderTask.Run">
+            <summary>
+            Runs the task
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Tasks.ValueProviderTask.Name">
+            <summary>
+            Name of the task
+            </summary>
+        </member>
+        <member name="P:Ironman.Core.Tasks.ValueProviderTask.TimeToRun">
+            <summary>
+            Time to run the task
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Tasks.Enums.RunTime">
+            <summary>
+            Run time for the task
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Tasks.Enums.RunTime.PreStart">
+            <summary>
+            Before start is called
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Tasks.Enums.RunTime.PostStart">
+            <summary>
+            After start is called
+            </summary>
+        </member>
+        <member name="F:Ironman.Core.Tasks.Enums.RunTime.End">
+            <summary>
+            When the application is ending
+            </summary>
+        </member>
+        <member name="T:Ironman.Core.Tasks.TaskManager">
+            <summary>
+            Task manager
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Tasks.TaskManager.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Ironman.Core.Tasks.TaskManager.Run(Ironman.Core.Tasks.Enums.RunTime)">
+            <summary>
+            Runs the tasks associated with the run time specified
+            </summary>
+            <param name="TimeToRun">Time to run</param>
+        </member>
+        <member name="M:Ironman.Core.Tasks.TaskManager.ToString">
+            <summary>
+            Outputs the task manager as a string
+            </summary>
+            <returns>string version of the task manager</returns>
+        </member>
+        <member name="P:Ironman.Core.Tasks.TaskManager.Tasks">
+            <summary>
+            Tasks to run
+            </summary>
+        </member>
     </members>
 </doc>

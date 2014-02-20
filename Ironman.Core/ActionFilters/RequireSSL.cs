@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Web;
 using System.Web.Mvc;
-#endregion
+
+#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -33,8 +35,6 @@ namespace Ironman.Core.ActionFilters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class RequireSSL : ActionFilterAttribute
     {
-        #region Functions
-
         /// <summary>
         /// OnActionExecuting
         /// </summary>
@@ -51,7 +51,5 @@ namespace Ironman.Core.ActionFilters
             }
             base.OnActionExecuting(filterContext);
         }
-
-        #endregion
     }
 }

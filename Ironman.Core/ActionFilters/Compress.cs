@@ -20,11 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Web.Mvc;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Web.ExtensionMethods;
-#endregion
+using Utilities.DataTypes;
+using Utilities.IO;
+using Utilities.Web;
+
+#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -34,8 +37,6 @@ namespace Ironman.Core.ActionFilters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class Compress : ActionFilterAttribute
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,10 +46,6 @@ namespace Ironman.Core.ActionFilters
             Type = MinificationType.HTML;
             Minify = true;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Should this be minified
@@ -60,10 +57,6 @@ namespace Ironman.Core.ActionFilters
         /// </summary>
         public virtual MinificationType Type { get; set; }
 
-        #endregion
-
-        #region Functions
-
         /// <summary>
         /// On Action Executing
         /// </summary>
@@ -74,7 +67,5 @@ namespace Ironman.Core.ActionFilters
                 filterContext.HttpContext.HTTPCompress(Minify, Type);
             base.OnActionExecuting(filterContext);
         }
-
-        #endregion
     }
 }

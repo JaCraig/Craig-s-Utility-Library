@@ -21,31 +21,24 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Ironman.Core.Serialization.BaseClasses;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Ironman.Core.Serialization.BaseClasses;
-using Ironman.Core.Tasks;
-using Ironman.Core.Tasks.Enums;
 using Utilities.DataTypes;
 using Utilities.IO;
-using Utilities.IO.Logging.Enums;
 
 #endregion Usings
 
 namespace Ironman.Core.Serialization
 {
     /// <summary>
-    /// JSON Value provider
+    /// General value provider
     /// </summary>
-    public class JsonValueProvider : VPFactoryBase
+    public class GeneralValueProvider : VPFactoryBase
     {
         /// <summary>
         /// Adds the factory to the system
@@ -53,7 +46,7 @@ namespace Ironman.Core.Serialization
         public override void AddFactory()
         {
             ValueProviderFactories.Factories.Remove(ValueProviderFactories.Factories.OfType<JsonValueProviderFactory>().FirstOrDefault());
-            ValueProviderFactories.Factories.Add(new JsonValueProvider());
+            ValueProviderFactories.Factories.Add(new GeneralValueProvider());
         }
 
         /// <summary>
@@ -63,12 +56,15 @@ namespace Ironman.Core.Serialization
         /// <returns>The value provider</returns>
         public override IValueProvider GetValueProvider(ControllerContext controllerContext)
         {
-            Contract.Requires<ArgumentNullException>(controllerContext != null, "controllerContext");
+            if (controllerContext == null)
+                throw new ArgumentNullException("controllerContext");
             HttpRequestBase Request = controllerContext.HttpContext.Request;
-            if (!Request.ContentType.StartsWith("application/json", StringComparison.OrdinalIgnoreCase))
+            if (!Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>().CanSerialize(Request.ContentType))
                 return null;
             string Body = Request.InputStream.ReadAll();
-            return Body.Is(x => string.IsNullOrEmpty(x)) ? null : new DictionaryValueProvider<object>(Body.Deserialize<ExpandoObject, string>(Body), CultureInfo.CurrentCulture);
+            return string.IsNullOrEmpty(Body) ?
+                null :
+                new DictionaryValueProvider<object>(Body.Deserialize<ExpandoObject, string>(Request.ContentType), CultureInfo.CurrentCulture);
         }
     }
 }

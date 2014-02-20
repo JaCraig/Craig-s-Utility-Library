@@ -20,29 +20,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
-using System.Web.Optimization;
-using System.IO;
-using Ironman.Core.Assets.Utils;
 
-using Ironman.Core.FileSystem.Interfaces;
-using System.Web;
-using Utilities.DataTypes;
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using Ironman.Core.Assets.Transformers;
-using Ironman.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Hosting;
-using Ironman.Core.Logging.BaseClasses;
-using Ironman.Core.Logging;
-#endregion
+using System.Web.Mvc;
+using System.Web.Optimization;
+using Utilities.DataTypes;
+using Utilities.IO;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets
 {
@@ -51,8 +44,6 @@ namespace Ironman.Core.Assets
     /// </summary>
     public class AssetManager
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -73,20 +64,6 @@ namespace Ironman.Core.Assets
             RunOrder.Add(RunTime.PreCombine);
         }
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Filters
-        /// </summary>
-        protected IEnumerable<IFilter> Filters { get; private set; }
-
-        /// <summary>
-        /// Translators
-        /// </summary>
-        protected IEnumerable<ITranslator> Translators { get; private set; }
-
         /// <summary>
         /// Content filters
         /// </summary>
@@ -98,18 +75,28 @@ namespace Ironman.Core.Assets
         protected ListMapping<AssetType, string> FileTypes { get; private set; }
 
         /// <summary>
-        /// File manager
+        /// Filters
         /// </summary>
-        protected FileManager FileManager { get { return BatComputer.Bootstrapper.Resolve<FileManager>(); } }
+        protected IEnumerable<IFilter> Filters { get; private set; }
 
         /// <summary>
         /// Order that the filters are run in
         /// </summary>
         protected System.Collections.Generic.List<RunTime> RunOrder { get; private set; }
 
-        #endregion
+        /// <summary>
+        /// Translators
+        /// </summary>
+        protected IEnumerable<ITranslator> Translators { get; private set; }
 
-        #region Functions
+        /// <summary>
+        /// Auto creates the bundles for the given directory
+        /// </summary>
+        public void CreateBundles()
+        {
+            CreateBundles(new DirectoryInfo("~/Scripts"));
+            CreateBundles(new DirectoryInfo("~/Content"));
+        }
 
         /// <summary>
         /// Determines the asset type
@@ -158,7 +145,7 @@ namespace Ironman.Core.Assets
             System.Collections.Generic.List<BundleFile> Files = new System.Collections.Generic.List<BundleFile>();
             foreach (IAsset Asset in Assets)
             {
-                if (Asset.Path.StartsWith("~")||Asset.Path.StartsWith("/"))
+                if (Asset.Path.StartsWith("~") || Asset.Path.StartsWith("/"))
                 {
                     Files.Add(new BundleFile(Asset.Path, new VirtualFileHack(Asset.Path)));
                     Files.Add(Asset.Included.Where(x => x.Path.StartsWith("~") || x.Path.StartsWith("/")).Select(x => new BundleFile(x.Path, new VirtualFileHack(x.Path))));
@@ -171,21 +158,25 @@ namespace Ironman.Core.Assets
         }
 
         /// <summary>
-        /// Auto creates the bundles for the given directory
+        /// Exports info about the asset manager as a string
         /// </summary>
-        public void CreateBundles()
+        /// <returns>String version of the asset manager</returns>
+        public override string ToString()
         {
-            CreateBundles(FileManager.Directory("~/Scripts"));
-            CreateBundles(FileManager.Directory("~/Content"));
+            return new StringBuilder().AppendLine()
+                                      .AppendLineFormat("Filters: {0}", Filters.ToString(x => x.Name))
+                                      .AppendLineFormat("Translators: {0}", Translators.ToString(x => x.Name))
+                                      .AppendFormat("Content Filters: {0}", ContentFilters.ToString(x => x.Name))
+                                      .ToString();
         }
 
         /// <summary>
         /// Auto creates the bundles for the given directory
         /// </summary>
         /// <param name="Directory">Directory to create bundles from</param>
-        private void CreateBundles(IDirectory Directory)
+        private void CreateBundles(DirectoryInfo Directory)
         {
-            string BundleDirectory = Directory.FullName.Replace(FileManager.Directory("~/").FullName, "~/").Replace("\\", "/");
+            string BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
             StyleBundle Bundle = new StyleBundle(BundleDirectory + "/bundle/css");
             Bundle.Transforms.Clear();
             Bundle.Transforms.Add(new Transformer());
@@ -208,36 +199,39 @@ namespace Ironman.Core.Assets
             }
             BundleTable.Bundles.Add(Bundle);
             BundleTable.Bundles.Add(Bundle2);
-            foreach (IDirectory SubDirectory in Directory.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+            foreach (DirectoryInfo SubDirectory in Directory.EnumerateDirectories("*", System.IO.SearchOption.TopDirectoryOnly))
             {
                 CreateBundles(SubDirectory);
             }
         }
 
-        public override string ToString()
+        /// <summary>
+        /// Implements virtual files since the asset optimizer uses it
+        /// </summary>
+        public class VirtualFileHack : VirtualFile
         {
-            return new StringBuilder().AppendLine()
-                                      .AppendLineFormat("Filters: {0}", Filters.ToString(x => x.Name))
-                                      .AppendLineFormat("Translators: {0}", Translators.ToString(x => x.Name))
-                                      .AppendFormat("Content Filters: {0}", ContentFilters.ToString(x => x.Name))
-                                      .ToString();
-        }
-
-        #endregion
-
-        public class VirtualFileHack:VirtualFile
-        {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="Location">File location</param>
             public VirtualFileHack(string Location)
                 : base(Location)
             {
-                this.File = BatComputer.Bootstrapper.Resolve<FileManager>().File(Location);
+                this.File = new FileInfo(Location);
             }
 
-            protected IFile File { get; set; }
+            /// <summary>
+            /// File object
+            /// </summary>
+            protected FileInfo File { get; set; }
 
-            public override Stream Open()
+            /// <summary>
+            /// Opens the file as a stream
+            /// </summary>
+            /// <returns>The stream version of the file</returns>
+            public override System.IO.Stream Open()
             {
-                return new MemoryStream(File.ReadBinary());
+                return new System.IO.MemoryStream(File.ReadBinary());
             }
         }
     }

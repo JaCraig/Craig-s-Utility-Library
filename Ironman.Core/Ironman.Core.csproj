@@ -197,10 +197,10 @@
     <Compile Include="BaseClasses\ControllerBase.cs" />
     <Compile Include="BaseClasses\HttpApplicationBase.cs" />
     <Compile Include="BaseClasses\PageControllerBase.cs" />
-    <Compile Include="Bootstrapper\AssetModule.cs" />
+    <Compile Include="Bootstrapper\IronmanModule.cs" />
     <Compile Include="Bootstrapper\DependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\JsonValueProvider.cs" />
+    <Compile Include="Serialization\GeneralValueProvider.cs" />
     <Compile Include="AppHelper.cs" />
     <Compile Include="Tasks\Default\AssetBundlerTask.cs" />
     <Compile Include="Tasks\Default\ValueProviderTask.cs" />

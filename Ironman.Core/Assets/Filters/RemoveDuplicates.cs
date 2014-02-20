@@ -20,16 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Interfaces;
+
 using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using Utilities.DataTypes.ExtensionMethods;
+using Ironman.Core.Assets.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
-#endregion
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Filters
 {

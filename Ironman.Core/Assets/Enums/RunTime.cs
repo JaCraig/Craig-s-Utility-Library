@@ -20,11 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-#endregion
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Enums
 {
@@ -37,22 +34,27 @@ namespace Ironman.Core.Assets.Enums
         /// Run initially prior to translation
         /// </summary>
         PreTranslate,
+
         /// <summary>
         /// Run after translation occurs
         /// </summary>
         PostTranslate,
+
         /// <summary>
         /// Run prior to minification
         /// </summary>
         PreMinified,
+
         /// <summary>
         /// Minification phase
         /// </summary>
         Minify,
+
         /// <summary>
         /// Run after minification
         /// </summary>
         PostMinified,
+
         /// <summary>
         /// Run prior to combining the assets
         /// </summary>

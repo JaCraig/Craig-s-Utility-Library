@@ -20,12 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
+
 using Ironman.Core.Assets.Enums;
-#endregion
+using System.Collections.Generic;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Interfaces
 {
@@ -35,16 +34,14 @@ namespace Ironman.Core.Assets.Interfaces
     public interface ITranslator
     {
         /// <summary>
+        /// File type that the translator accepts
+        /// </summary>
+        string FileTypeAccepts { get; }
+
+        /// <summary>
         /// Name of the translator
         /// </summary>
         string Name { get; }
-
-        /// <summary>
-        /// Processes a list of assets
-        /// </summary>
-        /// <param name="Assets">Assets to process</param>
-        /// <returns>The processed assets</returns>
-        IList<IAsset> Translate(IList<IAsset> Assets);
 
         /// <summary>
         /// The asset type that this translates to
@@ -52,8 +49,10 @@ namespace Ironman.Core.Assets.Interfaces
         AssetType TranslatesTo { get; }
 
         /// <summary>
-        /// File type that the translator accepts
+        /// Processes a list of assets
         /// </summary>
-        string FileTypeAccepts { get; }
+        /// <param name="Assets">Assets to process</param>
+        /// <returns>The processed assets</returns>
+        IList<IAsset> Translate(IList<IAsset> Assets);
     }
 }

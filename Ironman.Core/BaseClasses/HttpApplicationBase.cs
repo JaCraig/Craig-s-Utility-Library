@@ -20,32 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
-using System.Web.Optimization;
-using System.IO;
-using Ironman.Core.Assets.Utils;
 
-using Ironman.Core.FileSystem.Interfaces;
-using System.Web;
-using Utilities.DataTypes;
-using Ironman.Core.Tasks.Interfaces;
-using Ironman.Core.Assets;
-using Ironman.Core;
-using System.Configuration;
-using Ironman.Core.Communication;
-using Ironman.Core.Communication.Interfaces;
-using Ironman.Core.Logging.BaseClasses;
-using Utilities.IO.Logging.Enums;
-using Ironman.Core.Profiling.Interfaces;
-#endregion
+using System;
+
+#endregion Usings
 
 namespace Ironman.Core.BaseClasses
 {
@@ -54,36 +32,50 @@ namespace Ironman.Core.BaseClasses
     /// </summary>
     public abstract class HttpApplicationBase : System.Web.HttpApplication
     {
-        protected virtual void Application_BeginRequest()
-        {
-            try
-            {
-                DependencyResolver.Current.GetService<IProfiler>().Start();
-            }
-            catch { }
-        }
-
-        protected virtual void Application_EndRequest()
-        {
-            try
-            {
-                DependencyResolver.Current.GetService<IProfiler>().Stop(false);
-            }
-            catch { }
-        }
-
+        /// <summary>
+        /// Application authenticate request function
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
         protected virtual void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
             try
             {
                 if (!UserCanProfile())
                 {
-                    DependencyResolver.Current.GetService<IProfiler>().Stop(true);
+                    Utilities.Profiler.Manager.Manager.StopProfiling(true);
                 }
             }
             catch { }
         }
 
+        /// <summary>
+        /// Begin request
+        /// </summary>
+        protected virtual void Application_BeginRequest()
+        {
+            try
+            {
+                Utilities.Profiler.Manager.Manager.StartProfiling();
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// End request
+        /// </summary>
+        protected virtual void Application_EndRequest()
+        {
+            try
+            {
+                Utilities.Profiler.Manager.Manager.StopProfiling(false);
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Application error
+        /// </summary>
         protected virtual void Application_Error()
         {
             try

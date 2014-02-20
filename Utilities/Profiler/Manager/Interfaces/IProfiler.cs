@@ -48,7 +48,8 @@ namespace Utilities.Profiler.Manager.Interfaces
         /// <summary>
         /// Stops profiling and returns the information captured
         /// </summary>
+        /// <param name="DiscardResults">Determines if the results are kept or discarded</param>
         /// <returns>The results from the profiling</returns>
-        IResult StopProfiling();
+        IResult StopProfiling(bool DiscardResults);
     }
 }

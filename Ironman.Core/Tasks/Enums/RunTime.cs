@@ -20,18 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ironman.Core.Bootstrapper.Interfaces;
 
-using Utilities.DataTypes.ExtensionMethods;
-using Ironman.Core.Logging.BaseClasses;
-using Utilities.IO.Logging.Enums;
-using Ironman.Core.Logging;
-using System.IO;
-#endregion
+#endregion Usings
 
 namespace Ironman.Core.Tasks.Enums
 {
@@ -44,10 +34,12 @@ namespace Ironman.Core.Tasks.Enums
         /// Before start is called
         /// </summary>
         PreStart,
+
         /// <summary>
         /// After start is called
         /// </summary>
         PostStart,
+
         /// <summary>
         /// When the application is ending
         /// </summary>

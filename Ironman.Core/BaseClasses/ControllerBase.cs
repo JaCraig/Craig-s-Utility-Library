@@ -21,22 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Optimization;
-using Ironman.Core;
-using Ironman.Core.Assets;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Utils;
-using Ironman.Core.Serialization;
-using Ironman.Core.Tasks.Interfaces;
 using Utilities.DataTypes;
 using Utilities.IO;
 using Utilities.IO.FileSystem.Interfaces;
@@ -80,7 +67,7 @@ namespace Ironman.Core.BaseClasses
         /// </summary>
         /// <param name="Path">Path to the file</param>
         /// <returns>The file pointed to by the path</returns>
-        protected IFile FileInfo(string Path)
+        protected FileInfo FileInfo(string Path)
         {
             return new Utilities.IO.FileInfo(Path);
         }

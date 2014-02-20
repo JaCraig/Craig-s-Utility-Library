@@ -20,10 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
+
 using System;
 using System.Web.Mvc;
-using Utilities.DataTypes.ExtensionMethods;
-#endregion
+using Utilities.DataTypes;
+
+#endregion Usings
 
 namespace Ironman.Core.ActionFilters
 {
@@ -33,8 +35,6 @@ namespace Ironman.Core.ActionFilters
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class CSRF : FilterAttribute, IAuthorizationFilter
     {
-        #region Functions
-
         /// <summary>
         /// OnAuthorization
         /// </summary>
@@ -56,7 +56,5 @@ namespace Ironman.Core.ActionFilters
                 && Context.ActionDescriptor.Attributes<ValidateAntiForgeryTokenAttribute>().Length == 0
                 && Context.ActionDescriptor.Attributes<ByPassCRSF>().Length == 0);
         }
-
-        #endregion
     }
 }

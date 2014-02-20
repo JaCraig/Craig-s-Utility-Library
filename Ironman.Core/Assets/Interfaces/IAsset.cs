@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
+
 using Ironman.Core.Assets.Enums;
-#endregion
+using System;
+using System.Collections.Generic;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Interfaces
 {
@@ -34,33 +34,6 @@ namespace Ironman.Core.Assets.Interfaces
     /// </summary>
     public interface IAsset
     {
-        #region Properties
-
-        /// <summary>
-        /// The path to the asset
-        /// </summary>
-        string Path { get; set; }
-
-        /// <summary>
-        /// URL to the asset
-        /// </summary>
-        string URL { get; set; }
-
-        /// <summary>
-        /// Asset type
-        /// </summary>
-        AssetType Type { get; set; }
-
-        /// <summary>
-        /// Is the asset minified
-        /// </summary>
-        bool Minified { get; set; }
-
-        /// <summary>
-        /// Last date/time the asset was modified
-        /// </summary>
-        DateTime LastModified { get; set; }
-
         /// <summary>
         /// Content of the asset
         /// </summary>
@@ -71,6 +44,29 @@ namespace Ironman.Core.Assets.Interfaces
         /// </summary>
         IList<IAsset> Included { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Last date/time the asset was modified
+        /// </summary>
+        DateTime LastModified { get; set; }
+
+        /// <summary>
+        /// Is the asset minified
+        /// </summary>
+        bool Minified { get; set; }
+
+        /// <summary>
+        /// The path to the asset
+        /// </summary>
+        string Path { get; set; }
+
+        /// <summary>
+        /// Asset type
+        /// </summary>
+        AssetType Type { get; set; }
+
+        /// <summary>
+        /// URL to the asset
+        /// </summary>
+        string URL { get; set; }
     }
 }

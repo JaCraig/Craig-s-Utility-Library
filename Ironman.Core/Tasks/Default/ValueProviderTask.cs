@@ -20,27 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
-using System.Web.Optimization;
-using System.IO;
-using Ironman.Core.Assets.Utils;
 
-using Ironman.Core.FileSystem.Interfaces;
-using System.Web;
-using Utilities.DataTypes;
+using Ironman.Core.Serialization.BaseClasses;
 using Ironman.Core.Tasks.Interfaces;
-using Ironman.Core.Assets;
-using Ironman.Core;
-using Ironman.Core.VPFactories.BaseClasses;
-#endregion
+using System;
+using Utilities.DataTypes;
+
+#endregion Usings
 
 namespace Ironman.Core.Tasks
 {
@@ -50,19 +36,19 @@ namespace Ironman.Core.Tasks
     public class ValueProviderTask : ITask
     {
         /// <summary>
-        /// Time to run the task
-        /// </summary>
-        public Core.Tasks.Enums.RunTime TimeToRun
-        {
-            get { return Ironman.Core.Tasks.Enums.RunTime.PostStart; }
-        }
-
-        /// <summary>
         /// Name of the task
         /// </summary>
         public string Name
         {
             get { return "Add value providers"; }
+        }
+
+        /// <summary>
+        /// Time to run the task
+        /// </summary>
+        public Core.Tasks.Enums.RunTime TimeToRun
+        {
+            get { return Ironman.Core.Tasks.Enums.RunTime.PostStart; }
         }
 
         /// <summary>

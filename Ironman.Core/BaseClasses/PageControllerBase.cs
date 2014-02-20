@@ -20,11 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System.Text;
+
 using Ironman.Core.ActionFilters;
-using Utilities.DataTypes.ExtensionMethods;
-using Utilities.Web.ExtensionMethods;
-#endregion
+using Utilities.IO;
+
+#endregion Usings
 
 namespace Ironman.Core.BaseClasses
 {
@@ -45,6 +45,6 @@ namespace Ironman.Core.BaseClasses
         {
         }
 
-        #endregion
+        #endregion Constructor
     }
 }

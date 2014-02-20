@@ -20,11 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-#endregion
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Enums
 {
@@ -37,14 +34,17 @@ namespace Ironman.Core.Assets.Enums
         /// Unknown type
         /// </summary>
         Unknown,
+
         /// <summary>
         /// CSS
         /// </summary>
         CSS,
+
         /// <summary>
         /// Javascript
         /// </summary>
         Javascript,
+
         /// <summary>
         /// HTML
         /// </summary>

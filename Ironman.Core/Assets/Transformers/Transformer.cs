@@ -20,20 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
+
 using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using System.Web.Optimization;
-using Utilities.DataTypes.ExtensionMethods;
 using System.Linq;
-using System.IO;
-using Utilities.IO.ExtensionMethods;
-using Ironman.Core;
-#endregion
+using System.Web.Optimization;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Transformers
 {
@@ -42,29 +34,24 @@ namespace Ironman.Core.Assets.Transformers
     /// </summary>
     public class Transformer : IBundleTransform
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
         public Transformer()
         {
-            Manager = BatComputer.Bootstrapper.Resolve<AssetManager>();
+            Manager = Utilities.IoC.Manager.Bootstrapper.Resolve<AssetManager>();
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Manager that loads basic asset stuff
         /// </summary>
         protected AssetManager Manager { get; private set; }
 
-        #endregion
-
-        #region Functions
-
+        /// <summary>
+        /// Processes the bundle
+        /// </summary>
+        /// <param name="context">Bundle context</param>
+        /// <param name="response">Bundle response</param>
         public void Process(BundleContext context, BundleResponse response)
         {
             if (!context.EnableInstrumentation)
@@ -72,7 +59,5 @@ namespace Ironman.Core.Assets.Transformers
                 Manager.Process(response.Files.Select(x => new Asset(x.IncludedVirtualPath)).ToList<IAsset>(), context, response);
             }
         }
-
-        #endregion
     }
 }

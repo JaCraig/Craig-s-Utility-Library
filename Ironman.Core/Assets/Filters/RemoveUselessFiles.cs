@@ -20,17 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Interfaces;
+
 using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using Utilities.DataTypes.ExtensionMethods;
+using Ironman.Core.Assets.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-#endregion
+using Utilities.DataTypes;
+
+#endregion Usings
 
 namespace Ironman.Core.Assets.Filters
 {
@@ -63,12 +61,7 @@ namespace Ironman.Core.Assets.Filters
         {
             if (Assets == null || Assets.Count == 0)
                 return new List<IAsset>();
-            ICollection<IAsset> ReturnValue = Assets.Remove(x => RemoveRegex.IsMatch(x.Path));
-            //foreach (IAsset Asset in ReturnValue)
-            //{
-            //    if(Asset
-            //}
-            return ReturnValue.ToList();
+            return Assets.Remove(x => RemoveRegex.IsMatch(x.Path)).ToList();
         }
     }
 }

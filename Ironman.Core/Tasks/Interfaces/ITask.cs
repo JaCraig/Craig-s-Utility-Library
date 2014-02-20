@@ -20,12 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using Ironman.Core.Tasks.Enums;
-#endregion
+
+#endregion Usings
 
 namespace Ironman.Core.Tasks.Interfaces
 {
@@ -35,14 +33,14 @@ namespace Ironman.Core.Tasks.Interfaces
     public interface ITask
     {
         /// <summary>
-        /// Time that the task should be run
-        /// </summary>
-        RunTime TimeToRun { get; }
-
-        /// <summary>
         /// Name of the task
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Time that the task should be run
+        /// </summary>
+        RunTime TimeToRun { get; }
 
         /// <summary>
         /// Runs the task

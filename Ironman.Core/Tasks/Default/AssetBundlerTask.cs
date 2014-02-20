@@ -20,42 +20,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 #region Usings
-using System;
-using Ironman.Core.Bootstrapper.Interfaces;
-using System.Web.Mvc;
-using System.Collections.Generic;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.FileSystem;
-using Utilities.DataTypes.ExtensionMethods;
-using System.Linq;
-using System.Web.Optimization;
-using System.IO;
-using Ironman.Core.Assets.Utils;
 
-using Ironman.Core.FileSystem.Interfaces;
-using System.Web;
-using Utilities.DataTypes;
-using Ironman.Core.Tasks.Interfaces;
 using Ironman.Core.Assets;
-using Ironman.Core;
-#endregion
+using Ironman.Core.Tasks.Interfaces;
+
+#endregion Usings
 
 namespace Ironman.Core.Tasks
 {
     /// <summary>
     /// Asset bundler task
     /// </summary>
-    public class AssetBundlerTask:ITask
+    public class AssetBundlerTask : ITask
     {
-        /// <summary>
-        /// Time to run
-        /// </summary>
-        public Core.Tasks.Enums.RunTime TimeToRun
-        {
-            get { return Ironman.Core.Tasks.Enums.RunTime.PostStart; }
-        }
-
         /// <summary>
         /// Name of the task
         /// </summary>
@@ -65,11 +42,19 @@ namespace Ironman.Core.Tasks
         }
 
         /// <summary>
+        /// Time to run
+        /// </summary>
+        public Core.Tasks.Enums.RunTime TimeToRun
+        {
+            get { return Ironman.Core.Tasks.Enums.RunTime.PostStart; }
+        }
+
+        /// <summary>
         /// Runs the task
         /// </summary>
         public void Run()
         {
-            BatComputer.Bootstrapper.Resolve<AssetManager>().CreateBundles();
+            AppHelper.Bootstrapper.Resolve<AssetManager>().CreateBundles();
         }
     }
 }
