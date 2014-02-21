@@ -65,6 +65,7 @@ namespace Utilities.DataTypes.AOP
                                                                              && x.HasDefaultConstructor()
                                                                              && !string.IsNullOrEmpty(x.Namespace)
                                                                              && !x.Namespace.StartsWith("system", StringComparison.CurrentCultureIgnoreCase)
+                                                                             && !x.Namespace.StartsWith("microsoft", StringComparison.CurrentCultureIgnoreCase)
                                                                              && !x.Namespace.StartsWith("utilities", StringComparison.CurrentCultureIgnoreCase)))
                 {
                     try
@@ -238,7 +239,12 @@ namespace {1}
                 foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
                 {
                     string MethodAttribute = "public";
-                    if (!MethodsAlreadyDone.Contains(Method.Name) && Method.IsVirtual && !Method.IsFinal && !Method.IsPrivate)
+                    if (!MethodsAlreadyDone.Contains(Method.Name)
+                        && Method.IsVirtual
+                        && !Method.IsFinal
+                        && !Method.IsPrivate
+                        && !Method.Name.StartsWith("add_")
+                        && !Method.Name.StartsWith("remove_"))
                     {
                         AssembliesUsing.AddIfUnique(GetAssemblies(Method.ReturnType));
                         Method.GetParameters().ForEach(x => AssembliesUsing.AddIfUnique(GetAssemblies(x.ParameterType)));
