@@ -379,6 +379,8 @@ namespace Utilities.Web
         /// <returns>Stripped string</returns>
         private static string RemoveDiacritics(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return Input;
             string Normalized = Input.Normalize(NormalizationForm.FormD);
             StringBuilder Builder = new StringBuilder();
             for (int i = 0; i < Normalized.Length; i++)
@@ -397,6 +399,8 @@ namespace Utilities.Web
         /// <returns>Stripped string</returns>
         private static string RemoveExtraHyphen(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+                return Input;
             return new Regex(@"[-]{2,}", RegexOptions.None).Replace(Input, "-");
         }
 

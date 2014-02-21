@@ -15,14 +15,14 @@ namespace UtilitiesSplitter
         {
             var Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             UpdateProjects();
-            //ReversionPackages();
-            //if (args.Length > 0 && args[0] == "Push")
-            //{
-            //    SetupDependencies();
-            //    SetupInternalDependencies();
-            //    CreatePackages();
-            //    PushPackages();
-            //}
+            ReversionPackages();
+            if (args.Length > 0 && args[0] == "Push")
+            {
+                SetupDependencies();
+                SetupInternalDependencies();
+                CreatePackages();
+                PushPackages();
+            }
         }
 
         private static void CreatePackages()
@@ -78,13 +78,13 @@ namespace UtilitiesSplitter
             {
                 string FileContents = File.Read();
                 Match VersionMatch = Regex.Match(FileContents, "<version>(?<VersionNumber>.*)</version>");
-                string[] VersionInfo = VersionMatch.Groups["VersionNumber"].Value.Split('.');
+                string[] VersionInfo = VersionMatch.Groups["VersionNumber"].Value.Replace("-beta", "").Split('.');
                 string NewVersion = VersionInfo[0] + "." + VersionInfo[1] + ".";
                 if (VersionInfo.Length > 2)
                     NewVersion += (int.Parse(VersionInfo[2]) + 1).ToString("D4");
                 else
                     NewVersion += "0001";
-                File.Write(Regex.Replace(FileContents, "<version>(?<VersionNumber>.*)</version>", "<version>" + NewVersion + "</version>"));
+                File.Write(Regex.Replace(FileContents, "<version>(?<VersionNumber>.*)</version>", "<version>" + NewVersion + "-beta</version>"));
             }
         }
 

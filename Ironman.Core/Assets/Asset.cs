@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 using System;
 using System.Collections.Generic;
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using Utilities.IO;
 
 #endregion Usings

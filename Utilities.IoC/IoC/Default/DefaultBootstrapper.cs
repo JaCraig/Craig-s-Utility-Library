@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
 
@@ -247,6 +248,24 @@ namespace Utilities.IoC.Default
         }
 
         #endregion Dispose
+
+        #region ToString
+
+        /// <summary>
+        /// Converts the bootstrapper to a string
+        /// </summary>
+        /// <returns>String version of the bootstrapper</returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            foreach (Tuple<Type, string> Key in AppContainer.Keys)
+            {
+                Builder.Append(AppContainer[Key].ToString());
+            }
+            return Builder.ToString();
+        }
+
+        #endregion ToString
 
         #endregion Functions
     }

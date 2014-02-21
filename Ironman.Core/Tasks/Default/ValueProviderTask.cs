@@ -21,9 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using Ironman.Core.Serialization.BaseClasses;
 using Ironman.Core.Tasks.Interfaces;
-using System;
 using Utilities.DataTypes;
 
 #endregion Usings

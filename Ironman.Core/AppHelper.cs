@@ -6,9 +6,9 @@ namespace Ironman.Core
 {
     #region Usings
 
+    using System.Web.Mvc;
     using Ironman.Core.Tasks;
     using Ironman.Core.Tasks.Enums;
-    using System.Web.Mvc;
     using Utilities.IO;
     using Utilities.IO.Logging.Enums;
     using Utilities.IO.Logging.Interfaces;

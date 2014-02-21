@@ -21,12 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 
 #endregion Usings
 

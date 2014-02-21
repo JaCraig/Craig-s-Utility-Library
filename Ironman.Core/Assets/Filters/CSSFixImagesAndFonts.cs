@@ -21,14 +21,15 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using Utilities.DataTypes;
 using Utilities.IO;
 using Utilities.Media;
@@ -145,6 +146,7 @@ namespace Ironman.Core.Assets.Filters
 
         private FileInfo DetermineFile(FileInfo File, IAsset Asset, string TempFile)
         {
+            Contract.Requires<ArgumentNullException>(Asset != null, "Asset");
             if (File == null || !File.Exists)
             {
                 FileInfo AssetFile = new FileInfo(Asset.Path);

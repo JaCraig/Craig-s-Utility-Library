@@ -81,6 +81,25 @@ namespace Utilities.Profiler.Manager
         }
 
         /// <summary>
+        /// Starts profiling
+        /// </summary>
+        /// <returns>Starts profiling</returns>
+        public static IDisposable StartProfiling()
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Manager>().Profiler.StartProfiling();
+        }
+
+        /// <summary>
+        /// Ends profiling
+        /// </summary>
+        /// <param name="DiscardResults">Determines if the results should be discarded</param>
+        /// <returns>Result of the profiling</returns>
+        public static IResult StopProfiling(bool DiscardResults)
+        {
+            return IoC.Manager.Bootstrapper.Resolve<Manager>().Profiler.StopProfiling(DiscardResults);
+        }
+
+        /// <summary>
         /// Outputs the profiler information as a string
         /// </summary>
         /// <returns>The profiler information as a string</returns>

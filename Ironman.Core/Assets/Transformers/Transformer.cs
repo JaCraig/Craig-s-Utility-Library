@@ -21,9 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Assets.Interfaces;
 using System.Linq;
 using System.Web.Optimization;
+using Ironman.Core.Assets.Interfaces;
 
 #endregion Usings
 

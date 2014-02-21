@@ -21,9 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using Ironman.Core.Tasks.Enums;
 using Ironman.Core.Tasks.Interfaces;
-using System;
 using Utilities.DataTypes;
 using Utilities.IO;
 using Utilities.IO.Logging.Enums;

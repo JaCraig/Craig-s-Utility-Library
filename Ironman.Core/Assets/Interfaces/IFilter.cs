@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Assets.Enums;
 using System.Collections.Generic;
+using Ironman.Core.Assets.Enums;
 
 #endregion Usings
 

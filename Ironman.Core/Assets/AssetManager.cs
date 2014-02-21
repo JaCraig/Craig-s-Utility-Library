@@ -21,9 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Transformers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +29,9 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
+using Ironman.Core.Assets.Transformers;
 using Utilities.DataTypes;
 using Utilities.IO;
 
@@ -176,6 +176,8 @@ namespace Ironman.Core.Assets
         /// <param name="Directory">Directory to create bundles from</param>
         private void CreateBundles(DirectoryInfo Directory)
         {
+            if (Directory == null)
+                return;
             string BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
             StyleBundle Bundle = new StyleBundle(BundleDirectory + "/bundle/css");
             Bundle.Transforms.Clear();
