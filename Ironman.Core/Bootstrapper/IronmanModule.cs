@@ -48,6 +48,8 @@ namespace Ironman.Core.Bootstrapper
         /// <param name="Bootstrapper">Bootstrapper</param>
         public void Load(IBootstrapper Bootstrapper)
         {
+            if (Bootstrapper == null)
+                return;
             Bootstrapper.Register<AssetManager>(new AssetManager());
             Bootstrapper.Register<TaskManager>(new TaskManager());
         }

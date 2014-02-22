@@ -21,9 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Ironman.Core.Assets.Interfaces;
 using System.Linq;
 using System.Web.Optimization;
-using Ironman.Core.Assets.Interfaces;
 
 #endregion Usings
 
@@ -54,9 +54,11 @@ namespace Ironman.Core.Assets.Transformers
         /// <param name="response">Bundle response</param>
         public void Process(BundleContext context, BundleResponse response)
         {
+            if (context == null || response == null)
+                return;
             if (!context.EnableInstrumentation)
             {
-                Manager.Process(response.Files.Select(x => new Asset(x.IncludedVirtualPath)).ToList<IAsset>(), context, response);
+                Manager.Process(response.Files.Select(x => new Asset(x.IncludedVirtualPath)).ToList<IAsset>(), response);
             }
         }
     }

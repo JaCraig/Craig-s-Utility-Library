@@ -63,6 +63,8 @@ namespace Ironman.Core.ActionFilters
         /// <param name="filterContext">filter context</param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (filterContext == null)
+                return;
             if (filterContext.ActionDescriptor.Attributes<DoNotCompress>().Length == 0)
                 filterContext.HttpContext.HTTPCompress(Minify, Type);
             base.OnActionExecuting(filterContext);

@@ -41,6 +41,8 @@ namespace Ironman.Core.ActionFilters
         /// <param name="filterContext">filter context</param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (filterContext == null)
+                return;
             HttpRequestBase Request = filterContext.HttpContext.Request;
             HttpResponseBase Response = filterContext.HttpContext.Response;
             if (!Request.IsSecureConnection && !Request.IsLocal)

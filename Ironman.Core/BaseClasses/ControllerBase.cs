@@ -78,6 +78,8 @@ namespace Ironman.Core.BaseClasses
         /// <param name="requestContext">Request context</param>
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
+            if (requestContext == null)
+                return;
             requestContext.HttpContext.Response.ContentEncoding = Encoding.Check(new UTF8Encoding());
             base.Initialize(requestContext);
         }
@@ -96,36 +98,28 @@ namespace Ironman.Core.BaseClasses
         }
 
         /// <summary>
-        /// Serializes the object into an action result
-        /// </summary>
-        /// <typeparam name="T">Object type</typeparam>
-        /// <param name="Object">Object to serialize</param>
-        /// <param name="ContentType">Content type to serialize it as</param>
-        /// <returns>Action result</returns>
-        protected virtual ActionResult Serialize<T>(T Object, string ContentType)
-        {
-            ContentResult Result = new ContentResult();
-            Result.Content = Object.Serialize<string, T>(ContentType);
-            Result.ContentType = ContentType;
-            return Result;
-        }
-
-        /// <summary>
         /// Serializes the object into an action result based on the content type requested by the
         /// user (defaults to json)
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Object">Object to serialize</param>
+        /// <param name="ContentType">Content type to serialize it as</param>
         /// <returns>Action result</returns>
-        protected virtual ActionResult Serialize<T>(T Object)
+        protected virtual ActionResult Serialize<T>(T Object, string ContentType = "")
         {
             Utilities.IO.Serializers.Manager Manager = Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>();
-            string ContentType = Request.AcceptTypes.Length > 0 ? Request.AcceptTypes.FirstOrDefault(x => Manager.CanSerialize(x)) : "";
             if (string.IsNullOrEmpty(ContentType))
-                ContentType = Manager.FileTypeToContentType(Request.Path.ToUpperInvariant().Right((Request.Path.Length - Request.Path.LastIndexOf('.'))));
-            if (string.IsNullOrEmpty(ContentType))
-                ContentType = "application/json";
-            return Serialize(Object, ContentType);
+            {
+                ContentType = Request.AcceptTypes.Length > 0 ? Request.AcceptTypes.FirstOrDefault(x => Manager.CanSerialize(x)) : "";
+                if (string.IsNullOrEmpty(ContentType))
+                    ContentType = Manager.FileTypeToContentType(Request.Path.ToUpperInvariant().Right((Request.Path.Length - Request.Path.LastIndexOf('.'))));
+                if (string.IsNullOrEmpty(ContentType))
+                    ContentType = "application/json";
+            }
+            ContentResult Result = new ContentResult();
+            Result.Content = Object.Serialize<string, T>(ContentType);
+            Result.ContentType = ContentType;
+            return Result;
         }
 
         /// <summary>

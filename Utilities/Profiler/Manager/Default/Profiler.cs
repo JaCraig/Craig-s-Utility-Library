@@ -48,6 +48,9 @@ namespace Utilities.Profiler.Manager.Default
         /// </summary>
         public Profiler()
         {
+            Times = new List<long>();
+            Function = "";
+            InternalChildren = new Dictionary<string, Profiler>();
         }
 
         /// <summary>

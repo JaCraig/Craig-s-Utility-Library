@@ -40,7 +40,7 @@ namespace Ironman.Core.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public PageControllerBase()
+        protected PageControllerBase()
             : base()
         {
         }

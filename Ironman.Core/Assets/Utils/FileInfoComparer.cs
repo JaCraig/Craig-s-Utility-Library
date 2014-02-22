@@ -58,6 +58,8 @@ namespace Ironman.Core.Assets.Utils
         /// <returns>The hash code</returns>
         public int GetHashCode(FileInfo obj)
         {
+            if (obj == null)
+                return 0;
             return obj.FullName.GetHashCode();
         }
     }

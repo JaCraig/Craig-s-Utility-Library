@@ -21,17 +21,18 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
+using Ironman.Core.Assets.Transformers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Optimization;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Transformers;
 using Utilities.DataTypes;
 using Utilities.IO;
 
@@ -120,8 +121,11 @@ namespace Ironman.Core.Assets
         /// <param name="Assets">Assets to process</param>
         /// <param name="Context">The bundle context</param>
         /// <param name="Response">The bundle response</param>
-        public void Process(IList<IAsset> Assets, BundleContext Context, BundleResponse Response)
+        public void Process(IList<IAsset> Assets, BundleResponse Response)
         {
+            Contract.Requires<ArgumentNullException>(Response != null, "Response");
+            if (Assets == null || Assets.Count == 0)
+                return;
             foreach (IFilter Filter in Filters.Where(x => x.TimeToRun == RunTime.PreTranslate))
             {
                 Assets = Filter.Filter(Assets);
@@ -176,7 +180,7 @@ namespace Ironman.Core.Assets
         /// <param name="Directory">Directory to create bundles from</param>
         private void CreateBundles(DirectoryInfo Directory)
         {
-            if (Directory == null)
+            if (Directory == null || !Directory.Exists)
                 return;
             string BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
             StyleBundle Bundle = new StyleBundle(BundleDirectory + "/bundle/css");
@@ -210,7 +214,7 @@ namespace Ironman.Core.Assets
         /// <summary>
         /// Implements virtual files since the asset optimizer uses it
         /// </summary>
-        public class VirtualFileHack : VirtualFile
+        private class VirtualFileHack : VirtualFile
         {
             /// <summary>
             /// Constructor

@@ -47,6 +47,8 @@ namespace Ironman.Core.ActionFilters
         /// <param name="filterContext">Filter context</param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (filterContext == null)
+                return;
             HttpContextBase Context = filterContext.HttpContext;
             Context.Response.Cache.VaryByHeaders["Accept-Encoding"] = true;
             DateTime Date = GetDateLastModified(Context);
@@ -54,7 +56,8 @@ namespace Ironman.Core.ActionFilters
             string IncomingEtag = Context.Request.Headers["If-None-Match"];
             string ModifiedSince = Context.Request.Headers["If-Modified-Since"];
             DateTime ModifiedSinceDate = DateTime.Now;
-            DateTime.TryParse(ModifiedSince, out ModifiedSinceDate);
+            if (!DateTime.TryParse(ModifiedSince, out ModifiedSinceDate))
+                ModifiedSinceDate = DateTime.Now;
 
             Date = DateTime.Parse(Date.ToString("r"));
 
@@ -75,23 +78,11 @@ namespace Ironman.Core.ActionFilters
         }
 
         /// <summary>
-        /// Gets the incoming etag
-        /// </summary>
-        /// <param name="Context">HTTP context</param>
-        /// <returns>The string ETag</returns>
-        private static string GetETag(HttpContextBase Context)
-        {
-            if (Context == null)
-                return "\"\"";
-            return "\"" + Context.Request.Path.GetHashCode() + "\"";
-        }
-
-        /// <summary>
         /// Gets the date that file was last modified
         /// </summary>
         /// <param name="Context">HTTP Context</param>
         /// <returns>The date that the file was last modified</returns>
-        private DateTime GetDateLastModified(HttpContextBase Context)
+        private static DateTime GetDateLastModified(HttpContextBase Context)
         {
             if (Context == null)
                 return DateTime.Now;
@@ -101,6 +92,18 @@ namespace Ironman.Core.ActionFilters
             else
                 Context.Cache[Context.Request.Path + "date"] = Date;
             return Date;
+        }
+
+        /// <summary>
+        /// Gets the incoming etag
+        /// </summary>
+        /// <param name="Context">HTTP context</param>
+        /// <returns>The string ETag</returns>
+        private static string GetETag(HttpContextBase Context)
+        {
+            if (Context == null)
+                return "\"\"";
+            return "\"" + Context.Request.Path.GetHashCode() + "\"";
         }
     }
 }

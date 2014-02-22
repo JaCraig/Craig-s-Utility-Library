@@ -298,7 +298,7 @@ namespace Utilities.DataTypes
                     Output.Append(ObjectType.Name);
                 }
             }
-            return Output.ToString();
+            return Output.ToString().Replace("&", "");
         }
 
         #endregion GetName

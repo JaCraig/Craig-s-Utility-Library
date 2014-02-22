@@ -50,6 +50,8 @@ namespace Ironman.Core.ActionFilters
         /// <param name="filterContext">Filter context</param>
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
+            if (filterContext == null)
+                return;
             filterContext.HttpContext.Response.AppendHeader("Refresh", Duration + ";Url=" + filterContext.HttpContext.Server.UrlEncode(URL));
             base.OnActionExecuted(filterContext);
         }

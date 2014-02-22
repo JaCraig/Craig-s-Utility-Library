@@ -39,7 +39,7 @@ namespace Ironman.Core.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        public APIControllerBase()
+        protected APIControllerBase()
             : base()
         {
         }

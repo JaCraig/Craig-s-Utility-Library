@@ -50,6 +50,8 @@ namespace Ironman.Core.ActionFilters
         /// <param name="filterContext">filter context</param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (filterContext == null)
+                return;
             filterContext.HttpContext.Response.AppendHeader(Name, Value);
             base.OnActionExecuting(filterContext);
         }

@@ -202,6 +202,7 @@
     <Compile Include="BaseClasses\PageControllerBase.cs" />
     <Compile Include="Bootstrapper\IronmanModule.cs" />
     <Compile Include="Bootstrapper\DependencyResolver.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\GeneralValueProvider.cs" />
     <Compile Include="AppHelper.cs" />
