@@ -119,7 +119,6 @@ namespace Ironman.Core.Assets
         /// Processes the assets
         /// </summary>
         /// <param name="Assets">Assets to process</param>
-        /// <param name="Context">The bundle context</param>
         /// <param name="Response">The bundle response</param>
         public void Process(IList<IAsset> Assets, BundleResponse Response)
         {
