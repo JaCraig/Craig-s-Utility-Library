@@ -122,7 +122,13 @@ namespace UtilitiesSplitter
             foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", System.IO.SearchOption.AllDirectories))
             {
                 string FileContent = File.Read();
-                string CurrentVersion = Regex.Match(FileContent, "<version>(?<VersionNumber>.*)</version>").Groups["VersionNumber"].Value;
+                string[] VersionInfo = Regex.Match(FileContent, "<version>(?<VersionNumber>.*)</version>").Groups["VersionNumber"].Value.Replace("-beta", "").Split('.');
+                string CurrentVersion = "4." + VersionInfo[1] + ".";
+                if (VersionInfo.Length > 2)
+                    CurrentVersion += (int.Parse(VersionInfo[2])).ToString("D4");
+                else
+                    CurrentVersion += "0";
+                CurrentVersion += "-beta";
                 FileContent = Regex.Replace(FileContent,
                                 @"<dependency id=""CraigsUtilityLibrary-(?<Project>[^""]*)"" version=""(?<VersionNumber>[^""]*)"" />",
                                 x => @"<dependency id=""CraigsUtilityLibrary-" + x.Groups["Project"].Value + @""" version=""[" + CurrentVersion + @"]"" />");
