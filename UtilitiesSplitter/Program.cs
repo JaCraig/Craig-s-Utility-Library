@@ -77,6 +77,7 @@ namespace UtilitiesSplitter
                 Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "push \"" + File.FullName + "\"", CreateNoWindow = false });
                 NugetProcess.WaitForExit();
             }
+            new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").Delete();
         }
 
         private static void ReversionPackages()

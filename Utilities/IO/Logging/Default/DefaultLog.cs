@@ -43,14 +43,15 @@ namespace Utilities.IO.Logging.Default
         public DefaultLog(string Name)
             : base(Name)
         {
-            Start = x => new FileInfo(FileName).Write("Logging started at " + DateTime.Now + System.Environment.NewLine);
-            End = x => new FileInfo(FileName).Write("Logging ended at " + DateTime.Now + System.Environment.NewLine, Mode: System.IO.FileMode.Append);
-            Log.Add(MessageType.Debug, x => new FileInfo(FileName).Write(x, Mode: System.IO.FileMode.Append));
-            Log.Add(MessageType.Error, x => new FileInfo(FileName).Write(x, Mode: System.IO.FileMode.Append));
-            Log.Add(MessageType.General, x => new FileInfo(FileName).Write(x, Mode: System.IO.FileMode.Append));
-            Log.Add(MessageType.Info, x => new FileInfo(FileName).Write(x, Mode: System.IO.FileMode.Append));
-            Log.Add(MessageType.Trace, x => new FileInfo(FileName).Write(x, Mode: System.IO.FileMode.Append));
-            Log.Add(MessageType.Warn, x => new FileInfo(FileName).Write(x, Mode: System.IO.FileMode.Append));
+            File = new FileInfo(FileName);
+            Start = x => File.Write("Logging started at " + DateTime.Now + System.Environment.NewLine);
+            End = x => File.Write("Logging ended at " + DateTime.Now + System.Environment.NewLine, Mode: System.IO.FileMode.Append);
+            Log.Add(MessageType.Debug, x => File.Write(x, Mode: System.IO.FileMode.Append));
+            Log.Add(MessageType.Error, x => File.Write(x, Mode: System.IO.FileMode.Append));
+            Log.Add(MessageType.General, x => File.Write(x, Mode: System.IO.FileMode.Append));
+            Log.Add(MessageType.Info, x => File.Write(x, Mode: System.IO.FileMode.Append));
+            Log.Add(MessageType.Trace, x => File.Write(x, Mode: System.IO.FileMode.Append));
+            Log.Add(MessageType.Warn, x => File.Write(x, Mode: System.IO.FileMode.Append));
             FormatMessage = (Message, Type, args) => Type.ToString()
                 + ": " + (args.Length > 0 ? string.Format(CultureInfo.InvariantCulture, Message, args) : Message)
                 + System.Environment.NewLine;
@@ -73,6 +74,11 @@ namespace Utilities.IO.Logging.Default
                 return _FileName;
             }
         }
+
+        /// <summary>
+        /// File object that the log uses
+        /// </summary>
+        protected FileInfo File { get; private set; }
 
         private string _FileName = "";
     }

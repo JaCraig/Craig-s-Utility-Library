@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System.Collections.Generic;
-using System.Linq;
 using Ironman.Core.Assets.Enums;
 using Ironman.Core.Assets.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 using Yahoo.Yui.Compressor;
 
 #endregion Usings

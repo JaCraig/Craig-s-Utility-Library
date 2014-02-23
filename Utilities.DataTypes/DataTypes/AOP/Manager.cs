@@ -237,9 +237,10 @@ namespace {1}
                                                     SetupMethod(Type, GetMethodInfo, true));
                         MethodsAlreadyDone.Add(GetMethodInfo.Name);
                     }
-                    else if (Property.GetIndexParameters().Length != 0)
+                    else
                     {
-                        MethodsAlreadyDone.Add(GetMethodInfo.Name);
+                        if (GetMethodInfo != null)
+                            MethodsAlreadyDone.Add(GetMethodInfo.Name);
                         if (SetMethodInfo != null)
                             MethodsAlreadyDone.Add(SetMethodInfo.Name);
                     }

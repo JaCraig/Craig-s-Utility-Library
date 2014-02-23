@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using StackExchange.Profiling;
 using Utilities.Profiler.Manager.Interfaces;
 
 #endregion Usings
@@ -39,8 +39,7 @@ namespace Batman.Core.Profiling.MiniProfiler
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="CalledFrom">Called from</param>
-        public Profiler([CallerMemberName] string CalledFrom = "")
+        public Profiler()
         {
             this.CalledFrom = CalledFrom;
             Times = new List<long>();
