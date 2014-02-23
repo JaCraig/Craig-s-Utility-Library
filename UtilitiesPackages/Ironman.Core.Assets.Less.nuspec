@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Ironman.Core.Assets.Less</id>
+		<version>1.0.0031-beta</version>
+		<title>Iron Man Framework Less Support</title>
+		<authors>James Craig</authors>
+		<owners>James Craig</owners>
+		<licenseUrl>https://github.com/JaCraig/Craig-s-Utility-Library/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/JaCraig/Craig-s-Utility-Library</projectUrl>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<description>This adds LESS support to the Iron Man Framework.</description>
+		<summary>This adds LESS support to the Iron Man Framework.</summary>
+		<releaseNotes>This version is in beta. Use at your own risk.</releaseNotes>
+		<copyright>Copyright 2014</copyright>
+		<tags>less </tags>
+		<references>
+			<reference file="Ironman.Core.Assets.Less.dll" />
+		</references>
+		<dependencies>
+            <dependency id="CraigsUtilityLibrary" version="[1.0.0031-beta]" />
+			<dependency id="Ironman.Core" version="[1.0.3-beta]" />
+			<dependency id="dotless" version="[1.4.0.0]" />
+        </dependencies>
+	</metadata>
+	<files>
+		<file src="lib\Ironman.Core.Assets.Less.dll" target="lib\net40" />
+		<file src="lib\Ironman.Core.Assets.Less.pdb" target="lib\net40" />
+		<file src="lib\Ironman.Core.Assets.Less.xml" target="lib\net40" />
+	</files>
+</package>

@@ -65,6 +65,7 @@ namespace Utilities.DataTypes.AOP
                                                                              && x.HasDefaultConstructor()
                                                                              && !string.IsNullOrEmpty(x.Namespace)
                                                                              && !x.Namespace.StartsWith("system", StringComparison.CurrentCultureIgnoreCase)
+                                                                             && !x.Namespace.StartsWith("microsoft", StringComparison.CurrentCultureIgnoreCase)
                                                                              && !x.Namespace.StartsWith("utilities", StringComparison.CurrentCultureIgnoreCase)))
                 {
                     try
@@ -192,7 +193,8 @@ namespace {1}
                         && GetMethodInfo.IsVirtual
                         && SetMethodInfo != null
                         && SetMethodInfo.IsPublic
-                        && !GetMethodInfo.IsFinal)
+                        && !GetMethodInfo.IsFinal
+                        && Property.GetIndexParameters().Length == 0)
                     {
                         AssembliesUsing.AddIfUnique(GetAssemblies(Property.PropertyType));
                         Builder.AppendLineFormat(@"
@@ -218,7 +220,8 @@ namespace {1}
                         && GetMethodInfo != null
                         && GetMethodInfo.IsVirtual
                         && SetMethodInfo == null
-                        && !GetMethodInfo.IsFinal)
+                        && !GetMethodInfo.IsFinal
+                        && Property.GetIndexParameters().Length == 0)
                     {
                         AssembliesUsing.AddIfUnique(GetAssemblies(Property.PropertyType));
                         Builder.AppendLineFormat(@"
@@ -234,11 +237,23 @@ namespace {1}
                                                     SetupMethod(Type, GetMethodInfo, true));
                         MethodsAlreadyDone.Add(GetMethodInfo.Name);
                     }
+                    else if (Property.GetIndexParameters().Length != 0)
+                    {
+                        MethodsAlreadyDone.Add(GetMethodInfo.Name);
+                        if (SetMethodInfo != null)
+                            MethodsAlreadyDone.Add(SetMethodInfo.Name);
+                    }
                 }
                 foreach (MethodInfo Method in TempType.GetMethods(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance))
                 {
                     string MethodAttribute = "public";
-                    if (!MethodsAlreadyDone.Contains(Method.Name) && Method.IsVirtual && !Method.IsFinal && !Method.IsPrivate)
+                    if (!MethodsAlreadyDone.Contains(Method.Name)
+                        && Method.IsVirtual
+                        && !Method.IsFinal
+                        && !Method.IsPrivate
+                        && !Method.Name.StartsWith("add_", StringComparison.InvariantCultureIgnoreCase)
+                        && !Method.Name.StartsWith("remove_", StringComparison.InvariantCultureIgnoreCase)
+                        && !Method.IsGenericMethod)
                     {
                         AssembliesUsing.AddIfUnique(GetAssemblies(Method.ReturnType));
                         Method.GetParameters().ForEach(x => AssembliesUsing.AddIfUnique(GetAssemblies(x.ParameterType)));
@@ -250,7 +265,7 @@ namespace {1}
         }}",
                                                     Static + Method.ReturnType.GetName(),
                                                     Method.Name,
-                                                    Method.GetParameters().ToString(x => x.ParameterType.GetName() + " " + x.Name),
+                                                    Method.GetParameters().ToString(x => (x.IsOut ? "out " : "") + x.ParameterType.GetName() + " " + x.Name),
                                                     SetupMethod(Type, Method, false),
                                                     MethodAttribute);
                         MethodsAlreadyDone.Add(Method.Name);
@@ -300,7 +315,7 @@ namespace {1}
             }
             else
             {
-                BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => x.Name) : "";
+                BaseCall += Parameters.Length > 0 ? Parameters.ToString(x => (x.IsOut ? "out " : "") + x.Name) : "";
                 BaseCall += ");\r\n";
             }
             Builder.AppendLineFormat(@"

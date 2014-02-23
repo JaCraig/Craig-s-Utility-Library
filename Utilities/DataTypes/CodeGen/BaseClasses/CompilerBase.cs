@@ -69,10 +69,6 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
                 this.Assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(this.AssemblyName), AssemblyBuilderAccess.RunAndSave, this.AssemblyDirectory);
                 this.Module = Assembly.DefineDynamicModule(this.AssemblyName, this.AssemblyName + ".dll", true);
             }
-            else
-            {
-                System.Reflection.Assembly.Load(new AssemblyName(new FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").FullName)).GetTypes().ForEach(x => this.Classes.Add(x));
-            }
         }
 
         #endregion Constructor

@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary</id>
-		<version>4.0.3-beta</version>
+		<version>4.0.0031-beta</version>
 		<title>Craig's Utility Library</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
-		<licenseUrl>http://cul.codeplex.com/license</licenseUrl>
-		<projectUrl>http://cul.codeplex.com/</projectUrl>
+		<licenseUrl>https://github.com/JaCraig/Craig-s-Utility-Library/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/JaCraig/Craig-s-Utility-Library</projectUrl>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>Craig's Utility Library is one of the largest collections of utility classes and extension methods for .Net. It includes code to help with tasks including encryption, compression, serialization, file management, email, image manipulation, SQL, various file formats (CSV, iCal, etc.), randomization, validation, math related classes, various data types, reflection, code gen, events, code profiling, etc.</description>
 		<summary>One of the largest collections of utility classes and extension methods for .Net</summary>

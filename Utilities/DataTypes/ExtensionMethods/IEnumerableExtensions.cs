@@ -651,6 +651,49 @@ namespace Utilities.DataTypes
 
         #endregion ThrowIfAny
 
+        #region Transverse
+
+        /// <summary>
+        /// Transverses a hierarchy given the child elements getter.
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="collection">The collection hierarchy.</param>
+        /// <param name="property">The child elements getter.</param>
+        /// <returns>The transversed hierarchy.</returns>
+        public static IEnumerable<T> Transverse<T>(this IEnumerable<T> collection, Func<T, IEnumerable<T>> property)
+        {
+            if (collection == null)
+                yield break;
+
+            foreach (T item in collection)
+            {
+                yield return item;
+
+                foreach (T inner in Transverse(property(item), property))
+                    yield return inner;
+            }
+        }
+
+        /// <summary>
+        /// Transverses a hierarchy given the child elements getter.
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="item">The root node of the hierarchy.</param>
+        /// <param name="property">The child elements getter.</param>
+        /// <returns>The transversed hierarchy.</returns>
+        public static IEnumerable<T> Transverse<T>(this T item, Func<T, IEnumerable<T>> property)
+        {
+            if (item == null)
+                yield break;
+
+            yield return item;
+
+            foreach (T inner in Transverse(property(item), property))
+                yield return inner;
+        }
+
+        #endregion Transverse
+
         #endregion Functions
     }
 }

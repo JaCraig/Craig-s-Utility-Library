@@ -1,25 +1,30 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>CraigsUtilityLibrary-Documentation</id>
+		<id>CUL.NLog</id>
 		<version>4.0.0031-beta</version>
-		<title>Craig's Utility Library Documentation</title>
+		<title>Craig's Utility Library NLog Support</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
 		<licenseUrl>https://github.com/JaCraig/Craig-s-Utility-Library/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/JaCraig/Craig-s-Utility-Library</projectUrl>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>Craig's Utility Library is one of the largest collections of utility classes and extension methods for .Net. It includes code to help with tasks including encryption, compression, serialization, file management, email, image manipulation, SQL, various file formats (CSV, iCal, etc.), randomization, validation, math related classes, various data types, reflection, code gen, events, code profiling, etc.</description>
-		<summary>This is the basic documentation for Craig's Utility Library</summary>
+		<summary>This adds support for NLog as the logger that the library uses</summary>
 		<releaseNotes>This version is a complete rewrite of the current system. This will break all of your code, so don't update unless you're a brave soul.</releaseNotes>
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
-		<frameworkAssemblies>
-			<frameworkAssembly assemblyName="System" targetFramework="net40" />
-		</frameworkAssemblies>
+		<references>
+			<reference file="CUL.NLog.dll" />
+		</references>
+		<dependencies>
+            <dependency id="NLog" version="[2.1.0]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.0031-beta]" />
+        </dependencies>
 	</metadata>
 	<files>
-		<file src="content\html\*.*" target="content\Documentation" />
-		<file src="content\html\search\*.*" target="content\Documentation\search\" />
+		<file src="lib\CUL.NLog.dll" target="lib\net40" />
+		<file src="lib\CUL.NLog.pdb" target="lib\net40" />
+		<file src="lib\CUL.NLog.xml" target="lib\net40" />
 	</files>
 </package>

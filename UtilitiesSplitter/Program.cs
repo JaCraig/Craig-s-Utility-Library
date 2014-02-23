@@ -38,12 +38,19 @@ namespace UtilitiesSplitter
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Create();
 
                 new DirectoryInfo("..\\..\\..\\" + File.Name.Replace(".nuspec", "") + "\\bin\\Release").CopyTo(new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib"));
-                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages" });
+                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false });
                 NugetProcess.WaitForExit();
 
-                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Delete();
-                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Delete();
-                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Delete();
+                while (new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Exists)
+                {
+                    try
+                    {
+                        new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Delete();
+                        new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Delete();
+                        new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Delete();
+                    }
+                    catch (System.IO.IOException) { }
+                }
             }
             foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", System.IO.SearchOption.AllDirectories).Where(x => x.Name.Contains("Documentation")))
             {
@@ -51,9 +58,9 @@ namespace UtilitiesSplitter
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Create();
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Create();
 
-                Process DoxygenProcess = new FileInfo("doxygen.exe").Execute(new ProcessStartInfo() { Arguments = "\"" + File.FullName.Replace(".nuspec", ".doxy") + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages" });
+                Process DoxygenProcess = new FileInfo(@"C:\Program Files\doxygen\bin\doxygen.exe").Execute(new ProcessStartInfo() { Arguments = "\"" + File.FullName.Replace(".nuspec", ".doxy") + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages", CreateNoWindow = false });
                 DoxygenProcess.WaitForExit();
-                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages" });
+                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false });
                 NugetProcess.WaitForExit();
 
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib").Delete();
@@ -67,7 +74,7 @@ namespace UtilitiesSplitter
         {
             foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nupkg", System.IO.SearchOption.AllDirectories))
             {
-                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "push \"" + File.FullName + "\"" });
+                Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "push \"" + File.FullName + "\"", CreateNoWindow = false });
                 NugetProcess.WaitForExit();
             }
         }
@@ -119,6 +126,9 @@ namespace UtilitiesSplitter
                 FileContent = Regex.Replace(FileContent,
                                 @"<dependency id=""CraigsUtilityLibrary-(?<Project>[^""]*)"" version=""(?<VersionNumber>[^""]*)"" />",
                                 x => @"<dependency id=""CraigsUtilityLibrary-" + x.Groups["Project"].Value + @""" version=""[" + CurrentVersion + @"]"" />");
+                FileContent = Regex.Replace(FileContent,
+                                @"<dependency id=""CraigsUtilityLibrary"" version=""(?<VersionNumber>[^""]*)"" />",
+                                x => @"<dependency id=""CraigsUtilityLibrary"" version=""[" + CurrentVersion + @"]"" />");
                 File.Write(FileContent);
             }
         }

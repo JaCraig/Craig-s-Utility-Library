@@ -21,10 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System;
-using System.Collections.Generic;
 using Glimpse.AspNet.Extensibility;
 using Glimpse.Core.Extensibility;
+using System;
+using System.Collections.Generic;
 
 #endregion Usings
 
@@ -45,6 +45,11 @@ namespace Glimpse.CUL
         /// </summary>
         public override string Name { get { return "Craig's Utility Library"; } }
 
+        /// <summary>
+        /// Gets data for glimpse
+        /// </summary>
+        /// <param name="context">Tab context</param>
+        /// <returns>A dictionary of information to put in the tab</returns>
         public override object GetData(ITabContext context)
         {
             Dictionary<string, string[]> Return = new Dictionary<string, string[]>();

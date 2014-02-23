@@ -221,6 +221,13 @@ namespace UnitTests.DataTypes.ExtensionMethods
         }
 
         [Fact]
+        public void Transverse()
+        {
+            TraverseClass TestObject = new TraverseClass() { Children = new TraverseClass[] { new TraverseClass(), new TraverseClass(), new TraverseClass(), new TraverseClass() }.ToList() };
+            Assert.Equal(5, TestObject.Transverse(x => x.Children).Count());
+        }
+
+        [Fact]
         public void TryAll()
         {
             List<int> Temp = new int[] { 0, 0, 1, 2, 3 }.ToList();
@@ -280,5 +287,15 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             return base.ToString();
         }
+    }
+
+    public class TraverseClass
+    {
+        public TraverseClass()
+        {
+            Children = new List<TraverseClass>();
+        }
+
+        public List<TraverseClass> Children { get; set; }
     }
 }

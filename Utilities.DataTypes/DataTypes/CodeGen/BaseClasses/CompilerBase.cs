@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Roslyn.Compilers;
+using Roslyn.Compilers.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,8 +30,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
 using Utilities.DataTypes.Patterns.BaseClasses;
 
 #endregion Usings
@@ -68,10 +68,6 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             {
                 this.Assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(this.AssemblyName), AssemblyBuilderAccess.RunAndSave, this.AssemblyDirectory);
                 this.Module = Assembly.DefineDynamicModule(this.AssemblyName, this.AssemblyName + ".dll", true);
-            }
-            else
-            {
-                System.Reflection.Assembly.Load(new AssemblyName(new FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").FullName)).GetTypes().ForEach(x => this.Classes.Add(x));
             }
         }
 
@@ -149,7 +145,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
                                                     References.ForEach(x => new MetadataFileReference(x.Location)).ToArray());
             ReflectionEmitResult Result = CSharpCompiler.Emit(Module);
             if (!Result.Success)
-                throw new Exception(Result.Diagnostics.ToString(x => x.Info.GetMessage(), System.Environment.NewLine));
+                throw new Exception(Code + System.Environment.NewLine + System.Environment.NewLine + Result.Diagnostics.ToString(x => x.Info.GetMessage(), System.Environment.NewLine));
             Type ReturnType = Module.GetTypes().FirstOrDefault(x => x.FullName == ClassName);
             Classes.Add(ReturnType);
             return ReturnType;

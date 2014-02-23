@@ -66,7 +66,6 @@ namespace Utilities.IO.Serializers.Default
         /// <param name="ObjectType">Object type</param>
         /// <param name="Data">Data to deserialize</param>
         /// <returns>The deserialized data</returns>
-        [SecuritySafeCritical]
         public override object Deserialize(Type ObjectType, string Data)
         {
             if (string.IsNullOrEmpty(Data) || ObjectType == null)
@@ -84,7 +83,6 @@ namespace Utilities.IO.Serializers.Default
         /// <param name="ObjectType">Object type</param>
         /// <param name="Data">Data to serialize</param>
         /// <returns>The serialized data</returns>
-        [SecuritySafeCritical]
         public override string Serialize(Type ObjectType, object Data)
         {
             if (Data == null || ObjectType == null)

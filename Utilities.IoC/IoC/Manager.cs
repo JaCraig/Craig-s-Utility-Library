@@ -45,9 +45,22 @@ namespace Utilities.IoC
         /// </summary>
         protected Manager()
         {
-            foreach (FileInfo File in new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly))
+            foreach (FileInfo File in new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("*.dll", SearchOption.TopDirectoryOnly)
+                                                                                              .Where(x => !x.Name.Equals("CULGeneratedTypes.dll", StringComparison.InvariantCultureIgnoreCase)))
             {
-                AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(File.FullName));
+                try
+                {
+                    AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(File.FullName));
+                }
+                catch { }
+            }
+            FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
+            if (GeneratedFile.Exists
+                && AppDomain.CurrentDomain.GetAssemblies()
+                                          .Where(x => !x.FullName.Contains("vshost32"))
+                                          .All(x => new System.IO.FileInfo(x.Location).LastWriteTime <= GeneratedFile.LastWriteTime))
+            {
+                AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(GeneratedFile.FullName));
             }
             List<Type> Bootstrappers = new List<Type>();
             foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
