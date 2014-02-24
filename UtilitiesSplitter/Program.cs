@@ -16,10 +16,10 @@ namespace UtilitiesSplitter
             var Bootstrapper = Utilities.IoC.Manager.Bootstrapper;
             UpdateProjects();
             ReversionPackages();
+            SetupDependencies();
+            SetupInternalDependencies();
             if (args.Length > 0 && args[0] == "Push")
             {
-                SetupDependencies();
-                SetupInternalDependencies();
                 CreatePackages();
                 PushPackages();
             }
@@ -77,7 +77,11 @@ namespace UtilitiesSplitter
                 Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "push \"" + File.FullName + "\"", CreateNoWindow = false });
                 NugetProcess.WaitForExit();
             }
-            new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").Delete();
+            try
+            {
+                new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\Packages\\").Delete();
+            }
+            catch { }
         }
 
         private static void ReversionPackages()
@@ -123,7 +127,8 @@ namespace UtilitiesSplitter
             foreach (FileInfo File in new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\").EnumerateFiles("*.nuspec", System.IO.SearchOption.AllDirectories))
             {
                 string FileContent = File.Read();
-                string[] VersionInfo = Regex.Match(FileContent, "<version>(?<VersionNumber>.*)</version>").Groups["VersionNumber"].Value.Replace("-beta", "").Split('.');
+                string Version = Regex.Match(FileContent, "<version>(?<VersionNumber>.*)</version>").Groups["VersionNumber"].Value;
+                string[] VersionInfo = Version.Replace("-beta", "").Split('.');
                 string CurrentVersion = "4." + VersionInfo[1] + ".";
                 if (VersionInfo.Length > 2)
                     CurrentVersion += (int.Parse(VersionInfo[2])).ToString("D4");
@@ -136,6 +141,9 @@ namespace UtilitiesSplitter
                 FileContent = Regex.Replace(FileContent,
                                 @"<dependency id=""CraigsUtilityLibrary"" version=""(?<VersionNumber>[^""]*)"" />",
                                 x => @"<dependency id=""CraigsUtilityLibrary"" version=""[" + CurrentVersion + @"]"" />");
+                FileContent = Regex.Replace(FileContent,
+                                @"<dependency id=""Ironman\.Core"" version=""(?<VersionNumber>[^""]*)"" />",
+                                x => @"<dependency id=""Ironman.Core"" version=""[" + Version + @"]"" />");
                 File.Write(FileContent);
             }
         }

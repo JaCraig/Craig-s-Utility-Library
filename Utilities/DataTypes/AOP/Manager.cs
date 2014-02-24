@@ -123,7 +123,8 @@ namespace Utilities.DataTypes.AOP
             if (!Classes.ContainsKey(BaseType))
                 Setup(BaseType);
             object ReturnObject = Classes[BaseType].Assembly.CreateInstance(Classes[BaseType].FullName);
-            Aspects.ForEach(x => x.Setup(ReturnObject));
+            if (Classes[BaseType] != BaseType)
+                Aspects.ForEach(x => x.Setup(ReturnObject));
             return ReturnObject;
         }
 
@@ -278,8 +279,14 @@ namespace {1}
             }
             Builder.AppendLine(@"   }
 }");
-
+            //try
+            //{
             Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Namespace + "." + Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
+            //}
+            //catch
+            //{
+            //    Manager.Classes.Add(Type, Type);
+            //}
         }
 
         private static Assembly[] GetAssemblies(Type Type)
@@ -288,8 +295,32 @@ namespace {1}
             Type TempType = Type;
             while (TempType != null)
             {
+                Types.AddIfUnique(TempType.Assembly.GetReferencedAssemblies().ForEach(x => Assembly.Load(x)));
                 Types.AddIfUnique(TempType.Assembly);
-                TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssemblies(x)));
+                TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
+                TempType.GetEvents().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.EventHandlerType)));
+                TempType.GetFields().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.FieldType)));
+                TempType.GetProperties().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.PropertyType)));
+                TempType.GetMethods().ForEach(x =>
+                {
+                    Types.AddIfUnique(GetAssembliesSimple(x.ReturnType));
+                    x.GetParameters().ForEach(y => Types.AddIfUnique(GetAssembliesSimple(y.ParameterType)));
+                });
+                TempType = TempType.BaseType;
+                if (TempType == typeof(object))
+                    break;
+            }
+            return Types.ToArray();
+        }
+
+        private static Assembly[] GetAssembliesSimple(Type Type)
+        {
+            List<Assembly> Types = new List<Assembly>();
+            Type TempType = Type;
+            while (TempType != null)
+            {
+                Types.AddIfUnique(TempType.Assembly);
+                TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
                 TempType = TempType.BaseType;
                 if (TempType == typeof(object))
                     break;
