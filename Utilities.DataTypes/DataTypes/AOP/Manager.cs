@@ -279,14 +279,14 @@ namespace {1}
             }
             Builder.AppendLine(@"   }
 }");
-            //try
-            //{
-            Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Namespace + "." + Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
-            //}
-            //catch
-            //{
-            //    Manager.Classes.Add(Type, Type);
-            //}
+            try
+            {
+                Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Namespace + "." + Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
+            }
+            catch
+            {
+                Manager.Classes.Add(Type, Type);
+            }
         }
 
         private static Assembly[] GetAssemblies(Type Type)
@@ -295,7 +295,17 @@ namespace {1}
             Type TempType = Type;
             while (TempType != null)
             {
-                Types.AddIfUnique(TempType.Assembly.GetReferencedAssemblies().ForEach(x => Assembly.Load(x)));
+                Types.AddIfUnique(TempType.Assembly.GetReferencedAssemblies().ForEach(x =>
+                {
+                    try
+                    {
+                        return Assembly.Load(x);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }).Where(x => x != null));
                 Types.AddIfUnique(TempType.Assembly);
                 TempType.GetInterfaces().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x)));
                 TempType.GetEvents().ForEach(x => Types.AddIfUnique(GetAssembliesSimple(x.EventHandlerType)));

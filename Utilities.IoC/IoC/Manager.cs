@@ -65,11 +65,15 @@ namespace Utilities.IoC
             List<Type> Bootstrappers = new List<Type>();
             foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters
-                                                                        && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
+                try
+                {
+                    Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
+                                                                            && x.IsClass
+                                                                            && !x.IsAbstract
+                                                                            && !x.ContainsGenericParameters
+                                                                            && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
+                }
+                catch (ReflectionTypeLoadException) { }
             }
             if (Bootstrappers.Count == 0)
             {
@@ -80,10 +84,14 @@ namespace Utilities.IoC
             List<Type> Modules = new List<Type>();
             foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters));
+                try
+                {
+                    Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
+                                                                            && x.IsClass
+                                                                            && !x.IsAbstract
+                                                                            && !x.ContainsGenericParameters));
+                }
+                catch (ReflectionTypeLoadException) { }
             }
             List<IModule> ModuleObjects = new List<IModule>();
             foreach (Type Module in Modules)

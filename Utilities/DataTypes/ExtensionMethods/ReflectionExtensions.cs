@@ -1004,7 +1004,14 @@ namespace Utilities.DataTypes
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             List<Type> ReturnValues = new List<Type>();
-            Assemblies.ForEach(y => ReturnValues.AddRange(y.GetTypes()));
+            Assemblies.ForEach(y =>
+            {
+                try
+                {
+                    ReturnValues.AddRange(y.GetTypes());
+                }
+                catch { }
+            });
             return ReturnValues;
         }
 
