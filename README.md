@@ -54,6 +54,41 @@ using Utilities.DataTypes
 
 And you're good to go. This namespace is probably the most generally helpful.
 
+### DataTypes - Dynamo
+The DataTypes namespace comes with a class called Dynamo. This class adds a more robust dynamic object to .Net. The reason for this type is simply that dynamic in .Net isn't really dynamic. This pretty much limited my use of the keyword. I mean there is ExpandoObject which I've used a bunch but mostly for serialization situations. However you can't assign an ExpandoObject to a random type and expect it to convert properly. The Dynamo object, on the other hand, will do this:
+
+```
+public class ExampleClass
+{
+	int A { get; set; }
+	string B { get; set; }
+}
+
+...
+
+dynamic Object1=new Dynamo(new { A = 10, B="Example" });
+ExampleClass Object2=Object1;
+```
+
+The above code will create an ExampleClass object with A equal to 10 and B equal to "Example" and assign that to Object2. Dynamo also has the ability to add functionality using extensions and has change tracking built in. If you're looking for something to compare it to, it's closest to Oak.  If you've ever used Oak, it's similar but is more of an attempt to get duck typing into .Net and not prototyping.
+
+### DataTypes - AOP
+If you use the Dynamo class, you may also be interested in the AOP system. The AOP system allows you to write code that can be added to another class at run time. It does this by creating a child class that derives from the class you specify. At start up, the system will generate these sub classes based on the aspects that you specify. By default there is only the ORM aspect built into the system. This adds lazy loading support. However this system is also used by the Dynamo class. Whenever Dynamo converts to another class type, it attempts to use the AOP system to generate the class. This means that the ExampleClass object above in reality will return an ExampleClassDerived type. This means that you can add any cross cutting code into your types easily.
+
+### DataTypes - Conversion
+One of the nice things with the addition of Dynamo is that a rather robust conversion system was needed. This system lets you convert from one type to another without much thought. Simple types such as int, float, string, enum, etc. are handled easily. More complex types it will attempt to copy all properties from one side to the other. It handles most cases (going from a COM object to managed may throw it off, but all managed classes should be simple enough). In order to tie into the system all you need to do is call the To extension method. This is a generic extension that attaches to all objects:
+
+```
+MyTestClass TestObject = new MyTestClass();
+ExpandoObject Object = TestObject.To<MyTestClass, ExpandoObject>();
+```
+
+The above converts from a MyTestClass to an ExpandoObject. Not the most advanced code in the library, but it comes in quite handy especially when dealing with objects of an unknown type.
+
+### DataTypes - DataMapper
+The above system (the conversion system) is made possible with the data mapper that is built in. It's similar to AutoMapper (minus some functionality) but has the added benefit of being able to map functions to properties. It's mostly used in the back end but can be tied into.
+
+
 ### IO - File System
 The IO namespace is divided into a couple different items. The first is the file system. One of the many issues with .Net is the fact that there are 20 different ways to do the same (or similar) thing. IO falls under that category sadly. FileInfo, VirtualFile, StorageFile, etc. Why can't anyone make up their minds on this stuff? Anyway, the system has a extendable wrapper around the file system that can access not just local files but any sort of file system that you build a plugin for. For instance, it comes with a local file system, relative, and web. It can access C:\ and www.google.com in the same manner. Plus it's extensible so if you want to Sky Drive, Dropbox, Google Drive, etc. then you can fairly easily.
 
@@ -122,7 +157,50 @@ using(EmailMessage Message=new EmailMessage())
 At present there is only the ability to send messages. I would like to change this so that they can be received as well. So it's a bit in flux but it works for now. In order to implement a message/messaging system the key interfaces are Utilities.IO.Messaging.Interfaces.IMessage and Utilities.IO.Messaging.Interfaces.IMessagingSystem. I also mentioned formatters. Formatters are currently not implemented within the system itself but it allows you to specify how a message should be formatted before it is sent out. For instance if you wanted to use Razor to format the email message, you could. However I'm still playing with this so I'm not going to show any code currently.
 
 ### IO - File Formats
-Currently working on
+CUL has a number of built in file formats that it can read and output to: RSS, Excel, INI, VCalendar, VCard, CSV (or any other delimited file), fixed length files, etc. At present there is no common interface for these but that will probably come in some future update. At present though these helper classes can be found in Utilities.IO.FileFormats.
+
+### IO - Compression and Encryption
+If you've used the encryption and compression extension methods and classes from 3.4, not much has changed. Both have been simplified and moved into the IO namespace. There is a bit of work on the back end to make it easier to patch in your own algorithms but otherwise it works about the same.
+
+### Configuration
+CUL comes with a simple system to help with getting information out of various configuration files. For instance, it can get information from the web.config or app.config files (it uses that by default). It also has files to help with XML based or JSON based config files.
+
+### Media
+Years ago I was interested in 2D and 3D graphics. As such I copied a number of old C++ classes that I had created back then and built them into a series of extension methods to help with manipulating images. It contains things such as color to black and white, sharpen, box blur, bump map generation, dilation, edge detection, embossing, etc. It's not extremely fast on large images but if you just need something quick, it will work.
+
+### ORM
+On top of everything else, CUL has a built in ORM. It's still a work in progress and only supports SQL Server currently. However the system has been reworked in such a way that adding different databases or other items, such as AD or WMI, will be possible. Also note that if you were using SQLHelper before, this has been removed. Instead a QueryProvider static class has been added. This class contains a function called Batch. This returns an IBatch type that is used to make combining multiple queries together into one much simpler than before:
+```
+IList<IList<dynamic>> Results = Utilities.ORM.QueryProvider.Batch("ConnectionString")
+                                                     .AddCommand(null, null, CommandType.Text, "SELECT * FROM Table")
+                                                     .AddCommand(null, null, "SELECT * FROM Table WHERE ID=@0", CommandType.Text, 10)
+                                                     .Execute();
+```
+Results in the above code is a list that contains the results from both queries. Each of these results is a list of Dynamo objects which can then be converted to whatever type you need. The Batch command takes either the connection string itself or the name of a connection string from the config file for the application. Note that this is still a work in progress and the interfaces may change as I decide certain things are too difficult or not needed.
+
+### Profiler
+Another system built in to the library is the profiler. By default a simple profiler is provided but other libraries can be substituted such as MiniProfiler. Using the profiler is rather simple:
+```
+using(Utilities.Profiler.Profiler ExampleObject=new Utilities.Profiler.Profiler("FunctionName"))
+{
+	//Code you want to profile
+}
+```
+You can then get the profiler information by calling ToString on the Manager class (Utilities.Profiler.Manager.Manager).
+
+### Random
+The Random namespace is designed to be a bit more robust than the built in System.Random class. Basically it adds the ability to do randomization of names, towns, states, zip codes, phone numbers, email addresses, dates, etc. Basically it's a ton of extension methods and attributes that you can use to help you with randomization of entire classes:
+```
+System.Random Rand = new System.Random();
+RandomTestClass Item = Rand.NextClass<RandomTestClass>();
+```
+You have to use the attributes that come in the Utilities.Random namespace, but it can help quite a bit with testing.
+
+### Validation
+The validation namespace is really just a collection of ValidationAttribute classes. They add basic functionality such as determining if a value is between two values, comparing the value to another property, etc. Nothing too advanced, helpful but rather simple.
+
+### Web
+Web has been slimmed down quite a bit. Some items have been moved into IO and DataTypes. Currently it only holds the extension methods for HttpContext, HttpRequest, etc. 
 
 ### Documentation
 The library itself is documented and comes with the XML generated docs. There is also a download available on Nuget that contains the documentation generated using doxygen (http://www.stack.nl/~dimitri/doxygen/). With version 4.0, the basic info to get you started can be in the document above. Feel free to ask specific questions on the CodePlex (http://cul.codeplex.com) or Github (https://github.com/JaCraig/Craig-s-Utility-Library) pages also.
@@ -135,35 +213,15 @@ The library is available on NuGet in both a single DLL as well as each individua
 
 **Individual namespaces (with command from package manager console):**
 * DataTypes: Install-Package CraigsUtilityLibrary-DataTypes
-* LDAP: Install-Package CraigsUtilityLibrary-LDAP
-* SQL: Install-Package CraigsUtilityLibrary-SQL
-* Encryption: Install-Package CraigsUtilityLibrary-Encryption 
-* Caching: Install-Package CraigsUtilityLibrary-Caching
-* Math: Install-Package CraigsUtilityLibrary-Math
 * Validation: Install-Package CraigsUtilityLibrary-Validation 
-* Environment: Install-Package CraigsUtilityLibrary-Environment
 * Media: Install-Package CraigsUtilityLibrary-Media 
 * Web: Install-Package CraigsUtilityLibrary-Web 
 * ORM: Install-Package CraigsUtilityLibrary-ORM 
-* Compression: Install-Package CraigsUtilityLibrary-Compression 
 * Profiler: Install-Package CraigsUtilityLibrary-Profiler 
-* FileFormats: Install-Package CraigsUtilityLibrary-FileFormats 
 * Configuration: Install-Package CraigsUtilityLibrary-Configuration 
 * Random: Install-Package CraigsUtilityLibrary-Random 
-* DataMapper: Install-Package CraigsUtilityLibrary-DataMapper 
 * IO: Install-Package CraigsUtilityLibrary-IO 
-* Reflection: Install-Package CraigsUtilityLibrary-Reflection
-* AI: Install-Package CraigsUtilityLibrary-AI 
-* IoC: Install-Package CraigsUtilityLibrary-IoC 
-
-**Old namespaces (with command from package manager console):**
-* Cisco: Install-Package CraigsUtilityLibrary-Cisco
-* Error: Install-Package CraigsUtilityLibrary-Error 
-* Classifier: Install-Package CraigsUtilityLibrary-Classifier 
-* Multithreading: Install-Package CraigsUtilityLibrary-Multithreading 
-* Events: Install-Package CraigsUtilityLibrary-Events 
-* CodeGen: Install-Package CraigsUtilityLibrary-CodeGen 
-* Exchange: Install-Package CraigsUtilityLibrary-Exchange 
+* IoC: Install-Package CraigsUtilityLibrary-IoC
 
 ### Contributors/Contributing
 Maintained by [James Craig](https://github.com/JaCraig)
