@@ -176,8 +176,8 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             }
             foreach (Table Table in DesiredStructure.Tables)
             {
-                Commands.Add(GetForeignKeyCommand(Table));
                 ITable CurrentTable = CurrentStructure[Table.Name];
+                Commands.Add((CurrentTable == null) ? GetForeignKeyCommand(Table) : GetForeignKeyCommand(Table, CurrentTable));
                 Commands.Add((CurrentTable == null) ? GetTriggerCommand(Table) : GetAlterTriggerCommand(Table, CurrentTable));
             }
             foreach (Function Function in DesiredStructure.Functions)
@@ -312,7 +312,9 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             {
                 foreach (Trigger Trigger2 in CurrentTable.Triggers)
                 {
-                    if (Trigger.Name == Trigger2.Name && Trigger.Definition != Trigger2.Definition)
+                    string Definition1 = Trigger.Definition;
+                    string Definition2 = Trigger2.Definition.Replace("Command0", "");
+                    if (Trigger.Name == Trigger2.Name && string.Equals(Definition1, Definition2, StringComparison.InvariantCultureIgnoreCase))
                     {
                         ReturnValue.Add(string.Format(CultureInfo.CurrentCulture,
                             "EXEC dbo.sp_executesql @statement = N'DROP TRIGGER {0}'",
@@ -337,6 +339,38 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                     "EXEC dbo.sp_executesql @statement = N'DROP VIEW {0}'",
                     View.Name));
                 ReturnValue.Add(GetViewCommand(View));
+            }
+            return ReturnValue;
+        }
+
+        private static IEnumerable<string> GetForeignKeyCommand(Table Table, ITable CurrentTable)
+        {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            List<string> ReturnValue = new List<string>();
+            foreach (IColumn Column in Table.Columns)
+            {
+                IColumn CurrentColumn = CurrentTable[Column.Name];
+                if (Column.ForeignKey.Count > 0
+                    && (CurrentColumn == null || CurrentColumn.ForeignKey.Count != Column.ForeignKey.Count))
+                {
+                    foreach (IColumn ForeignKey in Column.ForeignKey)
+                    {
+                        string Command = string.Format(CultureInfo.CurrentCulture,
+                            "EXEC dbo.sp_executesql @statement = N'ALTER TABLE {0} ADD FOREIGN KEY ({1}) REFERENCES {2}({3})",
+                            Column.ParentTable.Name,
+                            Column.Name,
+                            ForeignKey.ParentTable.Name,
+                            ForeignKey.Name);
+                        if (Column.OnDeleteCascade)
+                            Command += " ON DELETE CASCADE";
+                        if (Column.OnUpdateCascade)
+                            Command += " ON UPDATE CASCADE";
+                        if (Column.OnDeleteSetNull)
+                            Command += " ON DELETE SET NULL";
+                        Command += "'";
+                        ReturnValue.Add(Command);
+                    }
+                }
             }
             return ReturnValue;
         }

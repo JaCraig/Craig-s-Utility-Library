@@ -105,7 +105,7 @@ namespace Utilities.ORM.Manager
         private static ITable SetupAuditTables(ITable Table)
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
-            ITable AuditTable = Table.Source.AddTable(Table.Name + "Audit");
+            ITable AuditTable = new Schema.Default.Database.Table(Table.Name + "Audit", Table.Source);
             AuditTable.AddColumn("ID", DbType.Int32, 0, false, true, true, true, false, "", "", 0);
             AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.To(DbType.Int32), 1, false, false, false, false, false, "", "", "");
             foreach (IColumn Column in Table.Columns)
@@ -216,7 +216,8 @@ namespace Utilities.ORM.Manager
             {
                 if (Key.Update)
                 {
-                    Utilities.ORM.Manager.Schema.Default.Database.Database TempDatabase = new Schema.Default.Database.Database(Regex.Match(Key.Name, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
+                    ISourceInfo TempSource = SourceProvider.GetSource(Key.Name);
+                    Utilities.ORM.Manager.Schema.Default.Database.Database TempDatabase = new Schema.Default.Database.Database(Regex.Match(TempSource.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
                     SetupTables(Key, TempDatabase);
                     SetupJoiningTables(Key, TempDatabase);
                     SetupAuditTables(Key, TempDatabase);

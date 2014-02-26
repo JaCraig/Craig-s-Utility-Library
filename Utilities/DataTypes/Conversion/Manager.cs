@@ -95,6 +95,8 @@ namespace Utilities.DataTypes.Conversion
                 TypeConverter Converter = TypeDescriptor.GetConverter(Item);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Item, ResultType);
+                if (ResultType.IsEnum && ObjectType == typeof(string))
+                    return System.Enum.Parse(ResultType, Item as string, true);
                 if (Item as IConvertible != null)
                     return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
                 Converter = TypeDescriptor.GetConverter(ResultType);
