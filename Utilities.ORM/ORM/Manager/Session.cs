@@ -89,7 +89,7 @@ namespace Utilities.ORM.Manager
                 foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, Mapping).All(Parameters).Execute()[0])
                 {
                     ObjectType Temp = Item;
-                    IProperty<ObjectType> IDProperty = (IProperty<ObjectType>)Mapping.IDProperties.FirstOrDefault();
+                    IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
                     object IDValue = IDProperty.GetValue(Temp);
                     ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
                     if (Value == default(ObjectType))
@@ -119,10 +119,13 @@ namespace Utilities.ORM.Manager
                 if (Mapping != null)
                 {
                     dynamic Value = QueryProvider.Generate<ObjectType>(Source, Mapping).Any(Parameters).Execute()[0].FirstOrDefault();
-                    if (ReturnValue == null)
-                        ReturnValue = Value;
-                    else
-                        Value.CopyTo(ReturnValue);
+                    if (Value != null)
+                    {
+                        if (ReturnValue == null)
+                            ReturnValue = Value;
+                        else
+                            Value.CopyTo(ReturnValue);
+                    }
                 }
             }
             return ReturnValue;
@@ -176,7 +179,7 @@ namespace Utilities.ORM.Manager
                             .Execute()[0])
                         {
                             DataType Temp = Item;
-                            IProperty<DataType> IDProperty = (IProperty<DataType>)Property.Mapping.IDProperties.FirstOrDefault();
+                            IProperty IDProperty = Property.Mapping.IDProperties.FirstOrDefault();
                             object IDValue = IDProperty.GetValue(Temp);
                             DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
                             if (Value == default(DataType))
