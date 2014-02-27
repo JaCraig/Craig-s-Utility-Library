@@ -220,6 +220,7 @@
     <Compile Include="ORM\Parameters\OrParameter.cs" />
     <Compile Include="ORM\Parameters\StringEqualParamter.cs" />
     <Compile Include="ORM\Parameters\StringNotEqualParameter.cs" />
+    <Compile Include="ORM\QueryProvider.cs" />
     <Compile Include="Profiler\ExtensionMethods\TimerExtensions.cs" />
     <Compile Include="Profiler\Manager\Default\Profiler.cs" />
     <Compile Include="Profiler\Manager\Default\StopWatch.cs" />

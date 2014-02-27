@@ -29,6 +29,7 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager;
@@ -66,6 +67,39 @@ namespace Utilities.ORM
         }
 
         /// <summary>
+        /// Returns all objects based on the parameters provided
+        /// </summary>
+        /// <param name="Parameters">Parameters</param>
+        /// <param name="Command">Command to run</param>
+        /// <param name="ConnectionString">Connection string</param>
+        /// <param name="Type">Command type</param>
+        /// <returns>The list of objects requested</returns>
+        public static IEnumerable<dynamic> All(string Command, CommandType Type, string ConnectionString, params object[] Parameters)
+        {
+            return Batch(ConnectionString)
+                .AddCommand(null, null, Command, Type, Parameters)
+                .Execute()[0];
+        }
+
+        /// <summary>
+        /// Returns all objects based on the parameters provided
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="Parameters">Parameters</param>
+        /// <param name="Command">Command to run</param>
+        /// <param name="ConnectionString">Connection string</param>
+        /// <param name="Type">Command type</param>
+        /// <returns>The list of objects requested</returns>
+        public static IEnumerable<ObjectType> All<ObjectType>(string Command, CommandType Type, string ConnectionString, params object[] Parameters)
+            where ObjectType : class,new()
+        {
+            return Batch(ConnectionString)
+                .AddCommand(null, null, Command, Type, Parameters)
+                .Execute()[0]
+                .ForEach(x => (ObjectType)x);
+        }
+
+        /// <summary>
         /// Returns an object based on the parameters provided
         /// </summary>
         /// <typeparam name="ObjectType">Object type</typeparam>
@@ -75,6 +109,34 @@ namespace Utilities.ORM
             where ObjectType : class,new()
         {
             return new Session().Any<ObjectType>(Parameters);
+        }
+
+        /// <summary>
+        /// Returns all objects based on the parameters provided
+        /// </summary>
+        /// <param name="Parameters">Parameters</param>
+        /// <param name="Command">Command to run</param>
+        /// <param name="ConnectionString">Connection string</param>
+        /// <param name="Type">Command type</param>
+        /// <returns>The list of objects requested</returns>
+        public static dynamic Any(string Command, CommandType Type, string ConnectionString, params object[] Parameters)
+        {
+            return All(Command, Type, ConnectionString, Parameters).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Returns all objects based on the parameters provided
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <param name="Parameters">Parameters</param>
+        /// <param name="Command">Command to run</param>
+        /// <param name="ConnectionString">Connection string</param>
+        /// <param name="Type">Command type</param>
+        /// <returns>The list of objects requested</returns>
+        public static ObjectType Any<ObjectType>(string Command, CommandType Type, string ConnectionString, params object[] Parameters)
+            where ObjectType : class,new()
+        {
+            return (ObjectType)All(Command, Type, ConnectionString, Parameters).FirstOrDefault();
         }
 
         /// <summary>
@@ -99,7 +161,6 @@ namespace Utilities.ORM
             where ObjectType : class,new()
         {
             new Session().Delete<ObjectType>(Object);
-            // new Session().PageCount new Session().Paged
         }
 
         /// <summary>
