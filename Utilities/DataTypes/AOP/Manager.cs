@@ -66,7 +66,8 @@ namespace Utilities.DataTypes.AOP
                                                                              && !string.IsNullOrEmpty(x.Namespace)
                                                                              && !x.Namespace.StartsWith("system", StringComparison.CurrentCultureIgnoreCase)
                                                                              && !x.Namespace.StartsWith("microsoft", StringComparison.CurrentCultureIgnoreCase)
-                                                                             && !x.Namespace.StartsWith("utilities", StringComparison.CurrentCultureIgnoreCase)))
+                                                                             && !x.Namespace.StartsWith("utilities", StringComparison.CurrentCultureIgnoreCase)
+                                                                             && !x.Namespace.StartsWith("glimpse", StringComparison.CurrentCultureIgnoreCase)))
                 {
                     try
                     {
