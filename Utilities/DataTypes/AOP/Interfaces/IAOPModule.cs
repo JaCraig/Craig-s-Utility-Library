@@ -21,39 +21,23 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Utilities.IoC.Interfaces;
-using Utilities.ORM.Aspect;
-using Utilities.ORM.Manager.Mapper.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 #endregion Usings
 
-namespace Utilities.ORM.Manager.Module
+namespace Utilities.DataTypes.AOP.Interfaces
 {
     /// <summary>
-    /// ORM module
+    /// AOP module interface
     /// </summary>
-    public class ORMModule : IModule
+    public interface IAOPModule
     {
         /// <summary>
-        /// Order to run it in
+        /// Used to add a class to the AOP system
         /// </summary>
-        public int Order
-        {
-            get { return 3; }
-        }
-
-        /// <summary>
-        /// Loads the module
-        /// </summary>
-        /// <param name="Bootstrapper">Bootstrapper to register with</param>
-        public void Load(IBootstrapper Bootstrapper)
-        {
-            Bootstrapper.Register(new ORMManager(Bootstrapper));
-            ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
-            foreach (IMapping Mapping in ORMAspect.Mapper)
-            {
-                Bootstrapper.Resolve<Utilities.DataTypes.AOP.Manager>().Setup(Mapping.ObjectType);
-            }
-        }
+        /// <param name="Manager">AOP manager</param>
+        void Setup(Manager Manager);
     }
 }

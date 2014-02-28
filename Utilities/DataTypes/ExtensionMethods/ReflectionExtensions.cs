@@ -1010,7 +1010,7 @@ namespace Utilities.DataTypes
                 {
                     ReturnValues.AddRange(y.GetTypes());
                 }
-                catch { }
+                catch (ReflectionTypeLoadException) { }
             });
             return ReturnValues;
         }

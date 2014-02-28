@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using Utilities.IoC.Interfaces;
 using Utilities.ORM.Aspect;
+using Utilities.ORM.Manager.Mapper.Interfaces;
 
 #endregion Usings
 
@@ -38,7 +39,7 @@ namespace Utilities.ORM.Manager.Module
         /// </summary>
         public int Order
         {
-            get { return 1; }
+            get { return 3; }
         }
 
         /// <summary>
@@ -49,6 +50,10 @@ namespace Utilities.ORM.Manager.Module
         {
             Bootstrapper.Register(new ORMManager(Bootstrapper));
             ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
+            foreach (IMapping Mapping in ORMAspect.Mapper)
+            {
+                Bootstrapper.Resolve<Utilities.DataTypes.AOP.Manager>().Setup(Mapping.ObjectType);
+            }
         }
     }
 }

@@ -51,34 +51,7 @@ namespace Utilities.DataTypes.AOP
             if (Aspects.Count == 0)
                 Aspects.Add(AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>());
             Compiler.Classes.ForEach(x => Classes.Add(x.BaseType, x));
-            if (Classes.Count == 0)
-            {
-                foreach (Type TempType in AppDomain.CurrentDomain.GetAssemblies()
-                                                                 .Types()
-                                                                 .Where(x => !x.ContainsGenericParameters
-                                                                             && !x.IsAbstract
-                                                                             && x.IsClass
-                                                                             && x.IsPublic
-                                                                             && !x.IsSealed
-                                                                             && x.IsVisible
-                                                                             && !x.IsCOMObject
-                                                                             && x.HasDefaultConstructor()
-                                                                             && !string.IsNullOrEmpty(x.Namespace)
-                                                                             && !x.Namespace.StartsWith("system", StringComparison.CurrentCultureIgnoreCase)
-                                                                             && !x.Namespace.StartsWith("microsoft", StringComparison.CurrentCultureIgnoreCase)
-                                                                             && !x.Namespace.StartsWith("utilities", StringComparison.CurrentCultureIgnoreCase)
-                                                                             && !x.Namespace.StartsWith("glimpse", StringComparison.CurrentCultureIgnoreCase)))
-                {
-                    try
-                    {
-                        Setup(TempType);
-                    }
-                    catch
-                    {
-                        throw;
-                    }
-                }
-            }
+            AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>().ForEach(x => x.Setup(this));
         }
 
         #endregion Constructor
@@ -127,6 +100,27 @@ namespace Utilities.DataTypes.AOP
             if (Classes[BaseType] != BaseType)
                 Aspects.ForEach(x => x.Setup(ReturnObject));
             return ReturnObject;
+        }
+
+        /// <summary>
+        /// Sets up all types from the assembly that it can
+        /// </summary>
+        /// <param name="Assembly">Assembly to set up</param>
+        public virtual void Setup(params Assembly[] Assembly)
+        {
+            foreach (Type TempType in Assembly.Types()
+                                              .Where(x => !x.ContainsGenericParameters
+                                                          && !x.IsAbstract
+                                                          && x.IsClass
+                                                          && x.IsPublic
+                                                          && !x.IsSealed
+                                                          && x.IsVisible
+                                                          && !x.IsCOMObject
+                                                          && x.HasDefaultConstructor()
+                                                          && !string.IsNullOrEmpty(x.Namespace)))
+            {
+                Setup(TempType);
+            }
         }
 
         /// <summary>
@@ -284,7 +278,7 @@ namespace {1}
             {
                 Manager.Classes.Add(Type, Manager.Compiler.CreateClass(Namespace + "." + Type.Name + "Derived", Builder.ToString(), Usings, AssembliesUsing.ToArray()));
             }
-            catch
+            catch (Exception)
             {
                 Manager.Classes.Add(Type, Type);
             }

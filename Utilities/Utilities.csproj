@@ -192,6 +192,7 @@
     <Compile Include="Configuration\Manager\Manager.cs" />
     <Compile Include="Configuration\Manager\Module\ConfigModule.cs" />
     <Compile Include="Configuration\XMLConfig.cs" />
+    <Compile Include="DataTypes\AOP\Interfaces\IAOPModule.cs" />
     <Compile Include="DataTypes\Caching\Default\Cache.cs" />
     <Compile Include="DataTypes\Caching\Default\CacheCache.cs" />
     <Compile Include="DataTypes\Caching\Default\ItemCache.cs" />
