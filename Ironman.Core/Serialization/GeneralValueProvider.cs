@@ -21,13 +21,13 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Ironman.Core.Serialization.BaseClasses;
 using System;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Ironman.Core.Serialization.BaseClasses;
 using Utilities.DataTypes;
 using Utilities.IO;
 
@@ -64,6 +64,7 @@ namespace Ironman.Core.Serialization
             if (!Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>().CanSerialize(Request.ContentType))
                 return null;
             string Body = Request.InputStream.ReadAll();
+            Request.InputStream.Seek(0, System.IO.SeekOrigin.Begin);
             return string.IsNullOrEmpty(Body) ?
                 null :
                 new DictionaryValueProvider<object>(Body.Deserialize<ExpandoObject, string>(Request.ContentType), CultureInfo.CurrentCulture);

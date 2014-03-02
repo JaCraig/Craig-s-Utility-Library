@@ -34,7 +34,6 @@ using System.Security;
 using System.Text;
 using System.Xml.Serialization;
 using Utilities.DataTypes.DataMapper;
-using Utilities.DataTypes.Dynamic.Interfaces;
 
 #endregion Usings
 
@@ -230,12 +229,7 @@ namespace Utilities.DataTypes
             ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
             IDictionary<string, object> DictItem = Item as IDictionary<string, object>;
             if (Item == null)
-            {
-                if (Extensions == null)
-                    Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
-                Extensions.ForEach(x => x.Extend(this));
                 return;
-            }
             if (Item is string || Item.GetType().IsValueType)
                 SetValue("Value", Item);
             else if (DictItem != null)
@@ -246,9 +240,6 @@ namespace Utilities.DataTypes
                 IoC.Manager.Bootstrapper.Resolve<Manager>().Map(Item.GetType(), this.GetType())
                                                            .AutoMap()
                                                            .Copy(Item, this);
-            if (Extensions == null)
-                Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
-            Extensions.ForEach(x => x.Extend(this));
         }
 
         /// <summary>
@@ -261,9 +252,6 @@ namespace Utilities.DataTypes
             InternalValues = new Dictionary<string, object>(Dictionary, StringComparer.OrdinalIgnoreCase);
             ChildValues = new Dictionary<string, Func<object>>(StringComparer.OrdinalIgnoreCase);
             ChangeLog = new Dictionary<string, Change>(StringComparer.OrdinalIgnoreCase);
-            if (Extensions == null)
-                Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
-            Extensions.ForEach(x => x.Extend(this));
         }
 
         /// <summary>
@@ -282,9 +270,6 @@ namespace Utilities.DataTypes
             {
                 SetValue(Item.Name, Item.Value);
             }
-            if (Extensions == null)
-                Extensions = AppDomain.CurrentDomain.GetAssemblies().Objects<IDynamoExtension>();
-            Extensions.ForEach(x => x.Extend(this));
         }
 
         #endregion Constructor
@@ -325,11 +310,6 @@ namespace Utilities.DataTypes
         /// Internal key/value dictionary
         /// </summary>
         internal IDictionary<string, object> InternalValues { get; set; }
-
-        /// <summary>
-        /// Extensions for the class
-        /// </summary>
-        private static IEnumerable<IDynamoExtension> Extensions { get; set; }
 
         /// <summary>
         /// Gets the value associated with the key specified
@@ -398,6 +378,32 @@ namespace Utilities.DataTypes
         public bool ContainsKey(string key)
         {
             return InternalValues.ContainsKey(key);
+        }
+
+        /// <summary>
+        /// Copies the properties from an item
+        /// </summary>
+        /// <param name="Item">Item to copy from</param>
+        public void Copy(object Item)
+        {
+            if (Item == null)
+                return;
+            IDictionary<string, object> DictItem = Item as IDictionary<string, object>;
+            if (Item is string || Item.GetType().IsValueType)
+                SetValue("Value", Item);
+            else if (DictItem != null)
+            {
+                foreach (string Key in DictItem.Keys)
+                {
+                    InternalValues.Add(Key, DictItem[Key]);
+                }
+            }
+            else if (Item is IEnumerable)
+                SetValue("Items", Item);
+            else
+                IoC.Manager.Bootstrapper.Resolve<Manager>().Map(Item.GetType(), this.GetType())
+                                                           .AutoMap()
+                                                           .Copy(Item, this);
         }
 
         /// <summary>
@@ -544,6 +550,7 @@ namespace Utilities.DataTypes
             if (Keys == null)
                 return new Dynamo();
             Dynamo ReturnValue = new Dynamo();
+            ReturnValue.Clear();
             foreach (string Key in Keys)
             {
                 ReturnValue.Add(Key, this[Key]);
@@ -571,7 +578,10 @@ namespace Utilities.DataTypes
             foreach (string Key in Keys)
             {
                 object Item = GetValue(Key, typeof(object));
-                Builder.AppendLineFormat("\t{0} {1} = {2}", Item.GetType().GetName(), Key, Item.ToString());
+                if (Item != null)
+                    Builder.AppendLineFormat("\t{0} {1} = {2}", Item.GetType().GetName(), Key, Item.ToString());
+                else
+                    Builder.AppendLineFormat("\t{0} {1} = {2}", "object", Key, "null");
             }
             return Builder.ToString();
         }

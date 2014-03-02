@@ -110,8 +110,9 @@ namespace Ironman.Core.BaseClasses
             Utilities.IO.Serializers.Manager Manager = Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>();
             if (string.IsNullOrEmpty(ContentType))
             {
-                ContentType = Request.AcceptTypes.Length > 0 ? Request.AcceptTypes.FirstOrDefault(x => Manager.CanSerialize(x)) : "";
-                if (string.IsNullOrEmpty(ContentType))
+                if (Request.AcceptTypes != null)
+                    ContentType = Request.AcceptTypes.Length > 0 ? Request.AcceptTypes.FirstOrDefault(x => Manager.CanSerialize(x)) : "";
+                if (string.IsNullOrEmpty(ContentType) && Request.Path.Contains('.'))
                     ContentType = Manager.FileTypeToContentType(Request.Path.ToUpperInvariant().Right((Request.Path.Length - Request.Path.LastIndexOf('.'))));
                 if (string.IsNullOrEmpty(ContentType))
                     ContentType = "application/json";

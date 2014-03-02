@@ -19,30 +19,47 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using Ironman.Core.API.Manager.BaseClasses;
+using Ironman.Core.API.Manager.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Utilities.DataTypes;
 
-using Utilities.DataTypes.Dynamic.Interfaces;
-
-#endregion Usings
-
-namespace Utilities.DataTypes.Dynamic.BaseClasses
+namespace Ironman.Core.API.Manager.Properties
 {
     /// <summary>
-    /// Dynamo extension base class
+    /// Reference class
     /// </summary>
-    public abstract class DynamoExtensionBase : IDynamoExtension
+    /// <typeparam name="ClassType">Class type</typeparam>
+    /// <typeparam name="DataType">Data type</typeparam>
+    public class Reference<ClassType, DataType> : APIPropertyBaseClass<ClassType, DataType>, IReference
+        where ClassType : class,new()
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        protected DynamoExtensionBase()
+        /// <param name="Expression">Expression</param>
+        public Reference(Expression<Func<ClassType, DataType>> Expression)
+            : base(Expression)
         {
         }
 
         /// <summary>
-        /// Extends the given dynamo object
+        /// Gets the value of the property from an object
         /// </summary>
-        /// <param name="Object">Object to extend</param>
-        public abstract void Extend(Dynamo Object);
+        /// <param name="Object">Object to get the property from</param>
+        /// <param name="Mappings">Mappings</param>
+        /// <returns>The property specified</returns>
+        public override dynamic GetValue(MappingHolder Mappings, dynamic Object)
+        {
+            ClassType TempItem = Object;
+            if (TempItem == null)
+                return null;
+            return CompiledExpression(TempItem);
+        }
     }
 }

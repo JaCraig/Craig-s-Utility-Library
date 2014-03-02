@@ -244,6 +244,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting string</returns>
         public static string Left(this string Input, int Length)
         {
+            if (Length < 0)
+                return Input;
             return string.IsNullOrEmpty(Input) ? "" : Input.Substring(0, Input.Length > Length ? Length : Input.Length);
         }
 
@@ -436,6 +438,8 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
+            if (Length < 0)
+                return Input;
             Length = Input.Length > Length ? Length : Input.Length;
             return Input.Substring(Input.Length - Length, Length);
         }

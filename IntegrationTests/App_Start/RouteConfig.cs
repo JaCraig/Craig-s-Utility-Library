@@ -12,6 +12,40 @@ namespace IntegrationTests
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapRoute(
+                name: "API_Save",
+                url: "API/{ModelName}",
+                defaults: new { controller = "APITest", action = "Save" },
+                constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+            );
+
+            routes.MapRoute(
+                name: "API_Save2",
+                url: "API/{ModelName}/{ID}",
+                defaults: new { controller = "APITest", action = "Save" },
+                constraints: new { httpMethod = new HttpMethodConstraint("POST", "PUT", "PATCH") }
+            );
+
+            routes.MapRoute(
+                name: "API_Delete",
+                url: "API/{ModelName}/{ID}",
+                defaults: new { controller = "APITest", action = "Delete" },
+                constraints: new { httpMethod = new HttpMethodConstraint("DELETE") }
+            );
+
+            routes.MapRoute(
+                name: "API_Any",
+                url: "API/{ModelName}/{ID}",
+                defaults: new { controller = "APITest", action = "Any" },
+                constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+            );
+
+            routes.MapRoute(
+                name: "API_All",
+                url: "API/{ModelName}/",
+                defaults: new { controller = "APITest", action = "All" },
+                constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+            );
 
             routes.MapRoute(
                 name: "Default",

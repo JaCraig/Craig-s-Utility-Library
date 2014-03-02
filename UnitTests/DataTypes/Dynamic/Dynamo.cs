@@ -70,6 +70,19 @@ namespace UnitTests.DataTypes.Dynamic
         }
 
         [Fact]
+        public void Copy()
+        {
+            dynamic Temp = new TestClass();
+            Temp.A = "Testing";
+            Temp.B = 1;
+            TestClass2 Temp2 = new TestClass2();
+            Temp2.A = "A";
+            Temp.Copy(Temp2);
+            Assert.Equal("A", Temp.A);
+            Assert.Equal(0, Temp.B);
+        }
+
+        [Fact]
         public void CopyBetweenItems()
         {
             dynamic Temp = new TestClass();

@@ -19,21 +19,41 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using Ironman.Core.API.Manager.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using Utilities.DataTypes;
 
-#endregion Usings
-
-namespace Utilities.DataTypes.Dynamic.Interfaces
+namespace Ironman.Core.API.Manager
 {
     /// <summary>
-    /// Extension for adding functionality to the Dynamo object
+    /// Holds the various mappings for a version
     /// </summary>
-    public interface IDynamoExtension
+    public class MappingHolder
     {
         /// <summary>
-        /// Called when setting up/extending a dynamo object
+        /// Constructor
         /// </summary>
-        /// <param name="Object">Object to extend</param>
-        void Extend(Dynamo Object);
+        public MappingHolder()
+        {
+            this.Mappings = new Dictionary<string, IAPIMapping>();
+        }
+
+        /// <summary>
+        /// Mappings that this holds
+        /// </summary>
+        public IDictionary<string, IAPIMapping> Mappings { get; set; }
+
+        /// <summary>
+        /// Gets the specified mapping
+        /// </summary>
+        /// <param name="Key">Name of the mapped type</param>
+        /// <returns>The mapping specified</returns>
+        public IAPIMapping this[string Key] { get { return Mappings.GetValue(Key); } }
     }
 }

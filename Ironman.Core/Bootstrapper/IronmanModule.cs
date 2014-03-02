@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Ironman.Core.API.Manager;
 using Ironman.Core.Assets;
 using Ironman.Core.Tasks;
 using Utilities.IoC.Interfaces;
@@ -52,6 +53,7 @@ namespace Ironman.Core.Bootstrapper
                 return;
             Bootstrapper.Register<AssetManager>(new AssetManager());
             Bootstrapper.Register<TaskManager>(new TaskManager());
+            Bootstrapper.Register<Manager>(new Manager());
         }
     }
 }

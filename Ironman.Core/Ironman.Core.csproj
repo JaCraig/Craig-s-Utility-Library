@@ -178,9 +178,24 @@
     <Compile Include="ActionFilters\Compress.cs" />
     <Compile Include="ActionFilters\ContentType.cs" />
     <Compile Include="ActionFilters\CSRF.cs" />
+    <Compile Include="ActionFilters\DeserializationFilter.cs" />
     <Compile Include="ActionFilters\DoNotCompress.cs" />
     <Compile Include="ActionFilters\RequireSSL.cs" />
     <Compile Include="ActionFilters\ResponseHeader.cs" />
+    <Compile Include="API\BaseClasses\APIControllerBaseClass.cs" />
+    <Compile Include="API\Manager\BaseClasses\APIMappingBaseClass.cs" />
+    <Compile Include="API\Manager\BaseClasses\APIPropertyBaseClass.cs" />
+    <Compile Include="API\Manager\Interfaces\IMap.cs" />
+    <Compile Include="API\Manager\Interfaces\IID.cs" />
+    <Compile Include="API\Manager\Interfaces\IReference.cs" />
+    <Compile Include="API\Manager\Interfaces\IAPIMapping.cs" />
+    <Compile Include="API\Manager\Interfaces\IAPIProperty.cs" />
+    <Compile Include="API\Manager\Manager.cs" />
+    <Compile Include="API\Manager\MappingHolder.cs" />
+    <Compile Include="API\Manager\Properties\ID.cs" />
+    <Compile Include="API\Manager\Properties\MapList.cs" />
+    <Compile Include="API\Manager\Properties\Map.cs" />
+    <Compile Include="API\Manager\Properties\Reference.cs" />
     <Compile Include="Assets\Asset.cs" />
     <Compile Include="Assets\AssetManager.cs" />
     <Compile Include="Assets\Enums\AssetType.cs" />
@@ -196,7 +211,6 @@
     <Compile Include="Assets\Interfaces\ITranslator.cs" />
     <Compile Include="Assets\Transformers\Transformer.cs" />
     <Compile Include="Assets\Utils\FileInfoComparer.cs" />
-    <Compile Include="BaseClasses\APIControllerBase.cs" />
     <Compile Include="BaseClasses\ControllerBase.cs" />
     <Compile Include="BaseClasses\HttpApplicationBase.cs" />
     <Compile Include="BaseClasses\PageControllerBase.cs" />
@@ -224,6 +238,7 @@
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
