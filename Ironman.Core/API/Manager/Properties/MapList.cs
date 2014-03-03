@@ -38,6 +38,7 @@ namespace Ironman.Core.API.Manager.Properties
     /// <typeparam name="DataType">Data type</typeparam>
     public class MapList<ClassType, DataType> : APIPropertyBaseClass<ClassType, IEnumerable<DataType>>, IMap
         where ClassType : class,new()
+        where DataType : class,new()
     {
         /// <summary>
         /// Constructor
@@ -59,16 +60,19 @@ namespace Ironman.Core.API.Manager.Properties
             ClassType TempItem = Object;
             if (TempItem == null)
                 return null;
-            IAPIMapping Mapping = Mappings[typeof(DataType).Name];
+            IAPIMapping<DataType> Mapping = (IAPIMapping<DataType>)Mappings[typeof(DataType).Name];
             if (Mapping == null)
                 return new Dynamo(CompiledExpression(TempItem));
             List<Dynamo> ReturnValue = new List<Dynamo>();
             foreach (DataType Item in CompiledExpression(TempItem))
             {
-                Dynamo ReturnItem = new Dynamo(Item);
-                ReturnValue.Add(ReturnItem.SubSet(Mapping.Properties.Where(x => x is IReference || x is IID)
-                                                           .Select(x => x.Name)
-                                                           .ToArray()));
+                if (Mapping.CanGet(Item))
+                {
+                    Dynamo ReturnItem = new Dynamo(Item);
+                    ReturnValue.Add(ReturnItem.SubSet(Mapping.Properties.Where(x => x is IReference || x is IID)
+                                                               .Select(x => x.Name)
+                                                               .ToArray()));
+                }
             }
             return ReturnValue;
         }

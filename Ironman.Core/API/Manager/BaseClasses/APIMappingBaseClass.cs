@@ -164,6 +164,36 @@ namespace Ironman.Core.API.Manager.BaseClasses
         }
 
         /// <summary>
+        /// Used to determine if an object can be viewed
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>True if it can, false otherwise</returns>
+        public bool CanDelete(ClassType Value)
+        {
+            return CanDeleteFunc(Value);
+        }
+
+        /// <summary>
+        /// Used to determine if an object can be viewed
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>True if it can, false otherwise</returns>
+        public bool CanGet(ClassType Value)
+        {
+            return CanGetFunc(Value);
+        }
+
+        /// <summary>
+        /// Used to determine if an object can be saved
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>True if it can, false otherwise</returns>
+        public bool CanSave(ClassType Value)
+        {
+            return CanSaveFunc(Value);
+        }
+
+        /// <summary>
         /// Deletes the specified object
         /// </summary>
         /// <param name="ID">ID of the object to delete</param>
@@ -217,6 +247,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>Map property object</returns>
         public IAPIProperty<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression)
+            where DataType : class,new()
         {
             return (IAPIProperty<ClassType, DataType>)Properties.AddAndReturn(new Map<ClassType, DataType>(Expression));
         }
@@ -228,6 +259,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>List Map property object</returns>
         public IAPIProperty<ClassType, IEnumerable<DataType>> MapList<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
+            where DataType : class,new()
         {
             return (IAPIProperty<ClassType, IEnumerable<DataType>>)Properties.AddAndReturn(new MapList<ClassType, DataType>(Expression));
         }

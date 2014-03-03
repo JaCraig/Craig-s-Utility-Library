@@ -33,9 +33,30 @@ namespace Ironman.Core.API.Manager.Interfaces
     /// API mapping interface
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
-    public interface IAPIMapping<ClassType>
+    public interface IAPIMapping<ClassType> : IAPIMapping
         where ClassType : class,new()
     {
+        /// <summary>
+        /// Used to determine if an object can be viewed
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>True if it can, false otherwise</returns>
+        bool CanDelete(ClassType Value);
+
+        /// <summary>
+        /// Used to determine if an object can be viewed
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>True if it can, false otherwise</returns>
+        bool CanGet(ClassType Value);
+
+        /// <summary>
+        /// Used to determine if an object can be saved
+        /// </summary>
+        /// <param name="Value">Value</param>
+        /// <returns>True if it can, false otherwise</returns>
+        bool CanSave(ClassType Value);
+
         /// <summary>
         /// Sets an ID property for the mapping
         /// </summary>
@@ -50,7 +71,8 @@ namespace Ironman.Core.API.Manager.Interfaces
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>Map property object</returns>
-        IAPIProperty<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression);
+        IAPIProperty<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> Expression)
+            where DataType : class,new();
 
         /// <summary>
         /// Sets an Map property that is an IEnumerable for the mapping
@@ -58,7 +80,8 @@ namespace Ironman.Core.API.Manager.Interfaces
         /// <typeparam name="DataType">Data type</typeparam>
         /// <param name="Expression">Expression pointing to the property</param>
         /// <returns>List Map property object</returns>
-        IAPIProperty<ClassType, IEnumerable<DataType>> MapList<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression);
+        IAPIProperty<ClassType, IEnumerable<DataType>> MapList<DataType>(Expression<Func<ClassType, IEnumerable<DataType>>> Expression)
+            where DataType : class,new();
 
         /// <summary>
         /// Sets a Reference property for the mapping
