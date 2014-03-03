@@ -190,7 +190,6 @@
     <Compile Include="Random\StringGenerators\LoremIpsumGenerator.cs" />
     <Compile Include="Random\StringGenerators\PatternGenerator.cs" />
     <Compile Include="Random\StringGenerators\RegexStringGenerator.cs" />
-    <Compile Include="Random\Dynamic\Randomization.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

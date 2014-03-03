@@ -183,6 +183,16 @@ namespace Ironman.Core.API.Manager.Interfaces
         bool Delete(string ID);
 
         /// <summary>
+        /// Gets a specific property from an object
+        /// </summary>
+        /// <param name="ID">ID of the item</param>
+        /// <param name="EmbeddedProperties">Properties to embed</param>
+        /// <param name="Mappings">Mappings</param>
+        /// <param name="Property">Property name</param>
+        /// <returns>The property specified</returns>
+        dynamic GetProperty(string ID, MappingHolder Mappings, string Property, params string[] EmbeddedProperties);
+
+        /// <summary>
         /// Saves the specified object
         /// </summary>
         /// <param name="Object">Object to save</param>

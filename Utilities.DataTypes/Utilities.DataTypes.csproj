@@ -213,8 +213,6 @@
     <Compile Include="DataTypes\DataMapper\Manager.cs" />
     <Compile Include="DataTypes\DataMapper\Module\DataMapperModule.cs" />
     <Compile Include="DataTypes\DateSpan.cs" />
-    <Compile Include="DataTypes\Dynamic\BaseClasses\DynamoExtensionBase.cs" />
-    <Compile Include="DataTypes\Dynamic\Interfaces\IDynamoExtension.cs" />
     <Compile Include="DataTypes\Dynamo.cs" />
     <Compile Include="DataTypes\EventArgs\EventArgs.cs" />
     <Compile Include="DataTypes\ExtensionMethods\ArrayExtensions.cs" />

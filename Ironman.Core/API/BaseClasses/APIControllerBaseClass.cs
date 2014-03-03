@@ -25,6 +25,7 @@ using Ironman.Core.ActionFilters;
 using Ironman.Core.BaseClasses;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Web.Mvc;
 using Utilities.DataTypes;
 using Utilities.IO;
@@ -95,16 +96,30 @@ namespace Ironman.Core.API.BaseClasses
         }
 
         /// <summary>
+        /// Gets the property specified of the item of the specified type, with the specified ID
+        /// GET: {APIRoot}/{ModelName}/{ID}/{PropertyName}
+        /// </summary>
+        /// <param name="ModelName">Model name</param>
+        /// <param name="ID">ID of the object to get</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>The resulting item</returns>
+        [HttpGet]
+        public ActionResult GetProperty(string ModelName, string ID, string PropertyName)
+        {
+            return Serialize(APIManager.GetProperty(Version, ModelName, ID, PropertyName, Request.QueryString.Get("Embedded").Check("").Split(',')));
+        }
+
+        /// <summary>
         /// Saves the specified object
         /// </summary>
         /// <param name="ModelName">Model name</param>
         /// <param name="Model">Model to save</param>
         /// <returns>The result</returns>
         [AcceptVerbs(HttpVerbs.Put | HttpVerbs.Post | HttpVerbs.Patch)]
-        [DeserializationFilter(ObjectType = typeof(ExpandoObject), Parameter = "Model")]
-        public ActionResult Save(string ModelName, ExpandoObject Model)
+        [DeserializationFilter(ObjectType = typeof(IEnumerable<ExpandoObject>), Parameter = "Model")]
+        public ActionResult Save(string ModelName, IEnumerable<ExpandoObject> Model)
         {
-            return Serialize<Dynamo>(APIManager.Save(Version, ModelName, new Dynamo(Model)));
+            return Serialize<Dynamo>(APIManager.Save(Version, ModelName, Model.Select(x => new Dynamo(x))));
         }
     }
 }

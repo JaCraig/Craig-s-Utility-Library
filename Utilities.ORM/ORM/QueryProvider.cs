@@ -112,6 +112,20 @@ namespace Utilities.ORM
         }
 
         /// <summary>
+        /// Returns an object based on the parameters provided
+        /// </summary>
+        /// <typeparam name="ObjectType">Object type</typeparam>
+        /// <typeparam name="IDType">ID type</typeparam>
+        /// <param name="ID">ID of the object to load</param>
+        /// <returns>An object requested</returns>
+        public static ObjectType Any<ObjectType, IDType>(IDType ID)
+            where ObjectType : class,new()
+            where IDType : IComparable
+        {
+            return new Session().Any<ObjectType, IDType>(ID);
+        }
+
+        /// <summary>
         /// Returns all objects based on the parameters provided
         /// </summary>
         /// <param name="Parameters">Parameters</param>

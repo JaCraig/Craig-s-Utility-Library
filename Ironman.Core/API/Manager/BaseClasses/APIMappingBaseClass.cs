@@ -179,6 +179,27 @@ namespace Ironman.Core.API.Manager.BaseClasses
         }
 
         /// <summary>
+        /// Gets a specific property from an object
+        /// </summary>
+        /// <param name="ID">ID of the item</param>
+        /// <param name="EmbeddedProperties">Properties to embed</param>
+        /// <param name="Mappings">Mappings</param>
+        /// <param name="Property">Property name</param>
+        /// <returns>The property specified</returns>
+        public dynamic GetProperty(string ID, MappingHolder Mappings, string Property, params string[] EmbeddedProperties)
+        {
+            if (string.IsNullOrEmpty(ID))
+                throw new ArgumentNullException("ID");
+            IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, Property, StringComparison.InvariantCultureIgnoreCase));
+            if (PropertyObject == null)
+                return null;
+            ClassType Object = AnyFunc(ID);
+            if (!CanGetFunc(Object))
+                return null;
+            return PropertyObject.GetValue(Mappings, Object);
+        }
+
+        /// <summary>
         /// Sets an ID property for the mapping
         /// </summary>
         /// <typeparam name="DataType">Data type</typeparam>

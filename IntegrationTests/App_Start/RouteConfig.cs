@@ -34,6 +34,13 @@ namespace IntegrationTests
             );
 
             routes.MapRoute(
+                name: "API_GetProperty",
+                url: "API/{ModelName}/{ID}/{PropertyName}",
+                defaults: new { controller = "APITest", action = "GetProperty" },
+                constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+            );
+
+            routes.MapRoute(
                 name: "API_Any",
                 url: "API/{ModelName}/{ID}",
                 defaults: new { controller = "APITest", action = "Any" },

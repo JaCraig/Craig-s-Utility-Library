@@ -132,19 +132,46 @@ namespace Ironman.Core.API.Manager
         }
 
         /// <summary>
-        /// Saves an object
+        /// Gets the specified item
         /// </summary>
         /// <param name="Mapping">Mapping name</param>
         /// <param name="Version">API version number</param>
-        /// <param name="Object">Object to save</param>
-        /// <returns>The result</returns>
-        public Dynamo Save(int Version, string Mapping, Dynamo Object)
+        /// <param name="ID">ID of the item to get</param>
+        /// <param name="EmbeddedProperties">Embedded properties</param>
+        /// <param name="Property">Property name</param>
+        /// <returns>The item specified</returns>
+        public dynamic GetProperty(int Version, string Mapping, string ID, string Property, params string[] EmbeddedProperties)
         {
             try
             {
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
-                if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Save(Object))
-                    return Error("Error saving the object");
+                if (!TempMappings.ContainsKey(Mapping))
+                    return Error("Error getting item");
+                return TempMappings[Mapping].GetProperty(ID, Mappings.GetValue(Version), Property, EmbeddedProperties);
+            }
+            catch
+            {
+                return Error("Error saving the object");
+            }
+        }
+
+        /// <summary>
+        /// Saves a list of objects
+        /// </summary>
+        /// <param name="Mapping">Mapping name</param>
+        /// <param name="Version">API version number</param>
+        /// <param name="Objects">Objects to save</param>
+        /// <returns>The result</returns>
+        public Dynamo Save(int Version, string Mapping, IEnumerable<Dynamo> Objects)
+        {
+            try
+            {
+                IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
+                foreach (Dynamo Object in Objects)
+                {
+                    if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Save(Object))
+                        return Error("Error saving the object");
+                }
                 return Success("Object saved successfully");
             }
             catch

@@ -38,6 +38,7 @@ using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
+using Utilities.ORM.Parameters;
 
 #endregion Usings
 
@@ -125,6 +126,43 @@ namespace Utilities.ORM.Manager
                             ReturnValue = Value;
                         else
                             Value.CopyTo(ReturnValue);
+                    }
+                }
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Returns a single item matching the criteria specified
+        /// </summary>
+        /// <typeparam name="ObjectType">Type of the object</typeparam>
+        /// <typeparam name="IDType">ID type for the object</typeparam>
+        /// <param name="ID">ID of the object to load</param>
+        /// <returns>A single object matching the ID</returns>
+        public ObjectType Any<ObjectType, IDType>(IDType ID)
+            where ObjectType : class,new()
+            where IDType : IComparable
+        {
+            ObjectType ReturnValue = null;
+            string StringID = ID.ToString();
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
+                if (Mapping != null)
+                {
+                    IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
+                    if (IDProperty != null)
+                    {
+                        dynamic Value = typeof(IDType) == typeof(string) ?
+                            QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new StringEqualParameter(StringID, IDProperty.FieldName, StringID.Length, Source.ParameterPrefix)).Execute()[0].FirstOrDefault() :
+                            QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new EqualParameter<IDType>(ID, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault();
+                        if (Value != null)
+                        {
+                            if (ReturnValue == null)
+                                ReturnValue = Value;
+                            else
+                                Value.CopyTo(ReturnValue);
+                        }
                     }
                 }
             }
