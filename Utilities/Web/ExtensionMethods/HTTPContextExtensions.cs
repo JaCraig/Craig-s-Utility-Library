@@ -21,9 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Web;
 using Utilities.DataTypes;
@@ -51,6 +53,8 @@ namespace Utilities.Web
         /// <returns>The exported data</returns>
         public static string DumpAllInformation(this HttpContext Context, bool HTMLOutput = false)
         {
+            if (Context == null)
+                return "";
             string HTMLTemplate = "<strong>Request Variables</strong><br />{Request}<br /><br /><strong>Response Variables</strong><br />{Response}<br /><br /><strong>Server Variables</strong><br />{Server}<br /><br /><strong>Session Variables</strong><br />{Session}<br /><br /><strong>Cookie Variables</strong><br />{Cookie}<br /><br /><strong>Cache Variables</strong><br />{Cache}<br /><br /><strong>Application Variables</strong><br />{Application}";
             string NormalTemplate = "Request Variables\r\n{Request}\r\n\r\nResponse Variables\r\n{Response}\r\n\r\nServer Variables\r\n{Server}\r\n\r\nSession Variables\r\n{Session}\r\n\r\nCookie Variables\r\n{Cookie}\r\n\r\nCache Variables\r\n{Cache}\r\n\r\nApplication Variables\r\n{Application}";
             KeyValuePair<string, string>[] Values = new KeyValuePair<string, string>[]{new KeyValuePair<string,string>("{Request}",Context.Request.DumpRequestVariable(HTMLOutput)),
@@ -75,6 +79,7 @@ namespace Utilities.Web
         /// <returns>A string containing the application state information</returns>
         public static string DumpApplicationState(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Application.DumpApplicationState(HTMLOutput);
         }
 
@@ -86,6 +91,8 @@ namespace Utilities.Web
         /// <returns>A string containing the application state information</returns>
         public static string DumpApplicationState(this HttpApplicationState Input, bool HTMLOutput = false)
         {
+            if (Input == null)
+                return "";
             StringBuilder String = new StringBuilder();
             foreach (string Key in Input.Keys)
             {
@@ -110,6 +117,7 @@ namespace Utilities.Web
         /// <returns>A string containing the cache information</returns>
         public static string DumpCache(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Cache.DumpCache(HTMLOutput);
         }
 
@@ -121,6 +129,8 @@ namespace Utilities.Web
         /// <returns>A string containing the cache information</returns>
         public static string DumpCache(this System.Web.Caching.Cache Input, bool HTMLOutput = false)
         {
+            if (Input == null)
+                return "";
             StringBuilder String = new StringBuilder();
             foreach (DictionaryEntry Entry in Input)
             {
@@ -145,6 +155,7 @@ namespace Utilities.Web
         /// <returns>A string containing the cookie information</returns>
         public static string DumpCookies(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Request.Cookies.DumpCookies(HTMLOutput);
         }
 
@@ -197,6 +208,8 @@ namespace Utilities.Web
         /// <returns>a string containing the information</returns>
         public static string DumpRequestVariable(this HttpRequest Request, bool HTMLOutput = false)
         {
+            if (Request == null)
+                return "";
             return Request.ToString(HTMLOutput);
         }
 
@@ -208,6 +221,7 @@ namespace Utilities.Web
         /// <returns>a string containing the information</returns>
         public static string DumpRequestVariable(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Request.ToString(HTMLOutput);
         }
 
@@ -223,6 +237,8 @@ namespace Utilities.Web
         /// <returns>a string containing the information</returns>
         public static string DumpResponseVariable(this HttpResponse Response, bool HTMLOutput = false)
         {
+            if (Response == null)
+                return "";
             return Response.ToString(HTMLOutput);
         }
 
@@ -234,6 +250,7 @@ namespace Utilities.Web
         /// <returns>a string containing the information</returns>
         public static string DumpResponseVariable(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Response.DumpResponseVariable(HTMLOutput);
         }
 
@@ -249,6 +266,8 @@ namespace Utilities.Web
         /// <returns>a string containing an HTML formatted list of the server variables</returns>
         public static string DumpServerVars(this HttpRequest Request, bool HTMLOutput = false)
         {
+            if (Request == null)
+                return "";
             StringBuilder String = new StringBuilder();
             String.Append(HTMLOutput ? "<table><thead><tr><th>Property Name</th><th>Value</th></tr></thead><tbody>" : "Property Name\t\tValue\r\n");
             foreach (string Key in Request.ServerVariables.Keys)
@@ -269,6 +288,7 @@ namespace Utilities.Web
         /// <returns>A string containing an HTML formatted list of the server variables</returns>
         public static string DumpServerVars(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Request.DumpServerVars(HTMLOutput);
         }
 
@@ -284,6 +304,7 @@ namespace Utilities.Web
         /// <returns>A string containing the session information</returns>
         public static string DumpSession(this System.Web.UI.Page Page, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             return Page.Session.DumpSession(HTMLOutput);
         }
 
@@ -295,6 +316,8 @@ namespace Utilities.Web
         /// <returns>A string containing the session information</returns>
         public static string DumpSession(this System.Web.SessionState.HttpSessionState Input, bool HTMLOutput = false)
         {
+            if (Input == null)
+                return "";
             StringBuilder String = new StringBuilder();
             foreach (string Key in Input.Keys)
             {

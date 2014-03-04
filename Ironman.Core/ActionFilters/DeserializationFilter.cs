@@ -53,6 +53,8 @@ namespace Ironman.Core.ActionFilters
         /// <param name="filterContext">Filter context</param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (filterContext == null)
+                return;
             HttpRequestBase Request = filterContext.HttpContext.Request;
             if (string.IsNullOrEmpty(Request.ContentType))
                 return;

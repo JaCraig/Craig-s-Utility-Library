@@ -108,6 +108,7 @@ namespace Utilities.DataTypes.AOP
         /// <param name="Assembly">Assembly to set up</param>
         public virtual void Setup(params Assembly[] Assembly)
         {
+            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
             foreach (Type TempType in Assembly.Types()
                                               .Where(x => !x.ContainsGenericParameters
                                                           && !x.IsAbstract

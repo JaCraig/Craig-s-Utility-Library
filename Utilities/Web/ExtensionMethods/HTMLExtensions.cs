@@ -79,6 +79,7 @@ namespace Utilities.Web
         {
             Contract.Requires<ArgumentNullException>(File != null, "File");
             Contract.Requires<System.IO.FileNotFoundException>(File.Exists, "File does not exist");
+            Contract.Requires<ArgumentNullException>(Page != null, "Page");
             if (!Page.ClientScript.IsClientScriptIncludeRegistered(typeof(System.Web.UI.Page), File.FullName))
                 Page.ClientScript.RegisterClientScriptInclude(typeof(System.Web.UI.Page), File.FullName, File.FullName);
         }

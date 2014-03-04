@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -237,6 +238,7 @@ namespace Utilities.Web.Streams
         /// <returns>The string minus any extra white space</returns>
         protected static string Evaluate(Match Matcher)
         {
+            Contract.Requires<ArgumentNullException>(Matcher != null, "Matcher");
             string MyString = Matcher.ToString();
             MyString = Regex.Replace(MyString, @"\r\n\s*", "");
             return MyString;

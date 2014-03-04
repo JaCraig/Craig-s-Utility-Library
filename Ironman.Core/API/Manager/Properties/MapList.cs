@@ -19,8 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using Ironman.Core.API.Manager.BaseClasses;
-using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,6 +26,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Ironman.Core.API.Manager.BaseClasses;
+using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager.Properties
@@ -60,6 +60,8 @@ namespace Ironman.Core.API.Manager.Properties
         /// <returns>The result</returns>
         public override bool DeleteValue(MappingHolder MappingHolder, dynamic Object, string PropertyID)
         {
+            if (MappingHolder == null)
+                return false;
             ClassType TempItem = Object;
             if (TempItem == null)
                 return false;
@@ -81,6 +83,8 @@ namespace Ironman.Core.API.Manager.Properties
         /// <returns>The property specified</returns>
         public override dynamic GetValue(MappingHolder Mappings, dynamic Object)
         {
+            if (Mappings == null)
+                return false;
             ClassType TempItem = Object;
             if (TempItem == null)
                 return null;
@@ -110,6 +114,8 @@ namespace Ironman.Core.API.Manager.Properties
         /// <returns>True if it is saved, false otherwise</returns>
         public override bool SaveValue(MappingHolder MappingHolder, dynamic Object, IEnumerable<Dynamo> Models)
         {
+            if (MappingHolder == null)
+                return false;
             ClassType TempItem = Object;
             if (TempItem == null)
                 return false;
