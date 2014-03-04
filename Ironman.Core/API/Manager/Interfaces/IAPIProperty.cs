@@ -57,11 +57,29 @@ namespace Ironman.Core.API.Manager.Interfaces
         string Name { get; }
 
         /// <summary>
+        /// Deletes the property item
+        /// </summary>
+        /// <param name="MappingHolder">Mappings holder</param>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyID">Property ID</param>
+        /// <returns>True if it is saved, false otherwise</returns>
+        bool DeleteValue(MappingHolder MappingHolder, dynamic Object, string PropertyID);
+
+        /// <summary>
         /// Gets the property as a Dynamo object or list of dynamo objects
         /// </summary>
         /// <param name="Object">Object</param>
         /// <param name="Mappings">Mappings holder</param>
         /// <returns>The property</returns>
         dynamic GetValue(MappingHolder Mappings, dynamic Object);
+
+        /// <summary>
+        /// Saves the property item
+        /// </summary>
+        /// <param name="MappingHolder">Mapping holder</param>
+        /// <param name="Object">Object</param>
+        /// <param name="Models">Models</param>
+        /// <returns>True if it is saved, false otherwise</returns>
+        bool SaveValue(MappingHolder MappingHolder, dynamic Object, IEnumerable<Dynamo> Models);
     }
 }

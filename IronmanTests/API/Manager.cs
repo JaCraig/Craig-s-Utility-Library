@@ -92,7 +92,7 @@ namespace IronmanTests.API
         public void Save()
         {
             Ironman.Core.API.Manager.Manager TestObject = new Ironman.Core.API.Manager.Manager();
-            Dynamo Object = TestObject.Save(1, "TestClass", new Dynamo());
+            Dynamo Object = TestObject.Save(1, "TestClass", new Dynamo[] { new Dynamo() });
             Assert.Equal("Object saved successfully", Object["Message"]);
             Assert.Equal("Success", Object["Status"]);
         }

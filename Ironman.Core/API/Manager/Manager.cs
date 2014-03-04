@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -132,6 +133,32 @@ namespace Ironman.Core.API.Manager
         }
 
         /// <summary>
+        /// Deletes a property value
+        /// </summary>
+        /// <param name="Version">Version number</param>
+        /// <param name="Mapping">Model name</param>
+        /// <param name="ID">ID of the item to get</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="PropertyID">Property ID</param>
+        /// <returns>The result</returns>
+        public Dynamo DeleteProperty(int Version, string Mapping, string ID, string PropertyName, string PropertyID)
+        {
+            try
+            {
+                IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
+                if (!TempMappings.ContainsKey(Mapping))
+                    return Error("Error deleting item");
+                if (TempMappings[Mapping].DeleteProperty(ID, Mappings.GetValue(Version), PropertyName, PropertyID))
+                    return Success("Object deleted successfully");
+                return Error("Error deleting item");
+            }
+            catch
+            {
+                return Error("Error deleting the object");
+            }
+        }
+
+        /// <summary>
         /// Gets the specified item
         /// </summary>
         /// <param name="Mapping">Mapping name</param>
@@ -164,6 +191,7 @@ namespace Ironman.Core.API.Manager
         /// <returns>The result</returns>
         public Dynamo Save(int Version, string Mapping, IEnumerable<Dynamo> Objects)
         {
+            Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
             try
             {
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
@@ -172,6 +200,30 @@ namespace Ironman.Core.API.Manager
                     if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Save(Object))
                         return Error("Error saving the object");
                 }
+                return Success("Object saved successfully");
+            }
+            catch
+            {
+                return Error("Error saving the object");
+            }
+        }
+
+        /// <summary>
+        /// Saves a property
+        /// </summary>
+        /// <param name="Version">Version</param>
+        /// <param name="Mapping">Model name</param>
+        /// <param name="ID">ID</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Models">Models</param>
+        /// <returns>The result</returns>
+        public Dynamo SaveProperty(int Version, string Mapping, string ID, string PropertyName, IEnumerable<Dynamo> Models)
+        {
+            try
+            {
+                IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
+                if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].SaveProperty(ID, Mappings.GetValue(Version), PropertyName, Models))
+                    return Error("Error saving the object");
                 return Success("Object saved successfully");
             }
             catch

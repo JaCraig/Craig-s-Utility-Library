@@ -23,7 +23,9 @@ THE SOFTWARE.*/
 
 using Ironman.Core.ActionFilters;
 using Ironman.Core.BaseClasses;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.Linq;
 using System.Web.Mvc;
@@ -96,6 +98,20 @@ namespace Ironman.Core.API.BaseClasses
         }
 
         /// <summary>
+        /// Deletes the property item specified
+        /// </summary>
+        /// <param name="ModelName">Model name</param>
+        /// <param name="ID">ID of the object to get</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="PropertyID">Property ID</param>
+        /// <returns>The result</returns>
+        [HttpDelete]
+        public ActionResult DeleteProperty(string ModelName, string ID, string PropertyName, string PropertyID)
+        {
+            return Serialize(APIManager.DeleteProperty(Version, ModelName, ID, PropertyName, PropertyID));
+        }
+
+        /// <summary>
         /// Gets the property specified of the item of the specified type, with the specified ID
         /// GET: {APIRoot}/{ModelName}/{ID}/{PropertyName}
         /// </summary>
@@ -119,7 +135,24 @@ namespace Ironman.Core.API.BaseClasses
         [DeserializationFilter(ObjectType = typeof(IEnumerable<ExpandoObject>), Parameter = "Model")]
         public ActionResult Save(string ModelName, IEnumerable<ExpandoObject> Model)
         {
+            Contract.Requires<ArgumentNullException>(Model != null, "Expression");
             return Serialize<Dynamo>(APIManager.Save(Version, ModelName, Model.Select(x => new Dynamo(x))));
+        }
+
+        /// <summary>
+        /// Saves the specified object as a property
+        /// </summary>
+        /// <param name="ModelName">Model name</param>
+        /// <param name="Model">Model to save</param>
+        /// <param name="ID">Model ID</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <returns>The result</returns>
+        [AcceptVerbs(HttpVerbs.Put | HttpVerbs.Post | HttpVerbs.Patch)]
+        [DeserializationFilter(ObjectType = typeof(IEnumerable<ExpandoObject>), Parameter = "Model")]
+        public ActionResult SaveProperty(string ModelName, string ID, string PropertyName, IEnumerable<ExpandoObject> Model)
+        {
+            Contract.Requires<ArgumentNullException>(Model != null, "Expression");
+            return Serialize<Dynamo>(APIManager.SaveProperty(Version, ModelName, ID, PropertyName, Model.Select(x => new Dynamo(x))));
         }
     }
 }

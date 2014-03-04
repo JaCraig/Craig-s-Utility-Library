@@ -64,6 +64,36 @@ namespace Ironman.Core.API.Manager.BaseClasses
         }
 
         /// <summary>
+        /// All func
+        /// </summary>
+        public Func<IEnumerable<ClassType>> AllFunc { get; private set; }
+
+        /// <summary>
+        /// Any func
+        /// </summary>
+        public Func<string, ClassType> AnyFunc { get; private set; }
+
+        /// <summary>
+        /// Can delete func
+        /// </summary>
+        public Func<ClassType, bool> CanDeleteFunc { get; private set; }
+
+        /// <summary>
+        /// Can get func
+        /// </summary>
+        public Func<ClassType, bool> CanGetFunc { get; private set; }
+
+        /// <summary>
+        /// Can save func
+        /// </summary>
+        public Func<ClassType, bool> CanSaveFunc { get; private set; }
+
+        /// <summary>
+        /// Delete func
+        /// </summary>
+        public Func<ClassType, bool> DeleteFunc { get; private set; }
+
+        /// <summary>
         /// Object type name
         /// </summary>
         public string Name { get; private set; }
@@ -79,25 +109,16 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public ICollection<IAPIProperty> Properties { get; private set; }
 
         /// <summary>
+        /// Save func
+        /// </summary>
+        public Func<ClassType, bool> SaveFunc { get; private set; }
+
+        /// <summary>
         /// List of versions this API mapping is used for
         /// </summary>
         public IEnumerable<int> Versions { get; private set; }
 
         private static Manager APIManager { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<Manager>(); } }
-
-        private Func<IEnumerable<ClassType>> AllFunc { get; set; }
-
-        private Func<string, ClassType> AnyFunc { get; set; }
-
-        private Func<ClassType, bool> CanDeleteFunc { get; set; }
-
-        private Func<ClassType, bool> CanGetFunc { get; set; }
-
-        private Func<ClassType, bool> CanSaveFunc { get; set; }
-
-        private Func<ClassType, bool> DeleteFunc { get; set; }
-
-        private Func<ClassType, bool> SaveFunc { get; set; }
 
         /// <summary>
         /// Gets all items of the mapped type
@@ -118,6 +139,7 @@ namespace Ironman.Core.API.Manager.BaseClasses
                                                                    .Select(x => x.Name)
                                                                    .ToArray());
                     string AbsoluteUri = HttpContext.Current != null ? HttpContext.Current.Request.Url.AbsoluteUri.Left(HttpContext.Current.Request.Url.AbsoluteUri.IndexOf('?')) : "";
+                    AbsoluteUri = AbsoluteUri.Check("");
                     if (!AbsoluteUri.EndsWith("/"))
                         AbsoluteUri += "/";
                     AbsoluteUri += Properties.FirstOrDefault(x => x is IID).GetValue(Mappings, Object).ToString() + "/";
@@ -209,6 +231,27 @@ namespace Ironman.Core.API.Manager.BaseClasses
         }
 
         /// <summary>
+        /// Deletes a specific property item
+        /// </summary>
+        /// <param name="ID">Model ID</param>
+        /// <param name="MappingHolder">Mapping holder</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="PropertyID">Property ID</param>
+        /// <returns>True if it is deleted, false otherwise</returns>
+        public bool DeleteProperty(string ID, MappingHolder MappingHolder, string PropertyName, string PropertyID)
+        {
+            if (string.IsNullOrEmpty(ID))
+                throw new ArgumentNullException("ID");
+            IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, PropertyName, StringComparison.InvariantCultureIgnoreCase));
+            if (PropertyObject == null)
+                return false;
+            ClassType Object = AnyFunc(ID);
+            if (!CanGetFunc(Object))
+                return false;
+            return PropertyObject.DeleteValue(MappingHolder, Object, PropertyID);
+        }
+
+        /// <summary>
         /// Gets a specific property from an object
         /// </summary>
         /// <param name="ID">ID of the item</param>
@@ -296,6 +339,27 @@ namespace Ironman.Core.API.Manager.BaseClasses
                                                                    .ToArray());
             SubSet.CopyTo(Item);
             return SaveFunc(Item);
+        }
+
+        /// <summary>
+        /// Saves an item to a specific property item
+        /// </summary>
+        /// <param name="ID">Model ID</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Models">Models</param>
+        /// <param name="MappingHolder">Mapping holder</param>
+        /// <returns>True if it is saved, false otherwise</returns>
+        public bool SaveProperty(string ID, MappingHolder MappingHolder, string PropertyName, IEnumerable<Dynamo> Models)
+        {
+            if (string.IsNullOrEmpty(ID))
+                throw new ArgumentNullException("ID");
+            IAPIProperty PropertyObject = Properties.FirstOrDefault(x => string.Equals(x.Name, PropertyName, StringComparison.InvariantCultureIgnoreCase));
+            if (PropertyObject == null)
+                return false;
+            ClassType Object = AnyFunc(ID);
+            if (!CanGetFunc(Object))
+                return false;
+            return PropertyObject.SaveValue(MappingHolder, Object, Models);
         }
 
         /// <summary>

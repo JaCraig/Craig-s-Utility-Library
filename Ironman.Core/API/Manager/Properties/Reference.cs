@@ -23,6 +23,7 @@ using Ironman.Core.API.Manager.BaseClasses;
 using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -46,6 +47,19 @@ namespace Ironman.Core.API.Manager.Properties
         public Reference(Expression<Func<ClassType, DataType>> Expression)
             : base(Expression)
         {
+            Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
+        }
+
+        /// <summary>
+        /// Deletes the property item
+        /// </summary>
+        /// <param name="MappingHolder">Mappings holder</param>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyID">Property ID</param>
+        /// <returns>The result</returns>
+        public override bool DeleteValue(MappingHolder MappingHolder, dynamic Object, string PropertyID)
+        {
+            return false;
         }
 
         /// <summary>
@@ -60,6 +74,18 @@ namespace Ironman.Core.API.Manager.Properties
             if (TempItem == null)
                 return null;
             return CompiledExpression(TempItem);
+        }
+
+        /// <summary>
+        /// Saves the property item
+        /// </summary>
+        /// <param name="MappingHolder">Mapping holder</param>
+        /// <param name="Object">Object</param>
+        /// <param name="Models">Models</param>
+        /// <returns>True if it is saved, false otherwise</returns>
+        public override bool SaveValue(MappingHolder MappingHolder, dynamic Object, IEnumerable<Dynamo> Models)
+        {
+            return false;
         }
     }
 }

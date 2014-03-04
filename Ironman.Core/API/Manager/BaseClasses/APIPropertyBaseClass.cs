@@ -49,6 +49,9 @@ namespace Ironman.Core.API.Manager.BaseClasses
             Contract.Requires<ArgumentNullException>(Expression != null, "Expression");
             CompiledExpression = Expression.Compile();
             Name = Expression.PropertyName();
+            Expression<Action<ClassType, DataType>> Assign = Expression.PropertySetter<ClassType, DataType>();
+            if (Assign != null)
+                AssignExpression = Assign.Compile();
         }
 
         /// <summary>
@@ -57,9 +60,23 @@ namespace Ironman.Core.API.Manager.BaseClasses
         public string Name { get; set; }
 
         /// <summary>
+        /// Assign compiled expression
+        /// </summary>
+        protected Action<ClassType, DataType> AssignExpression { get; private set; }
+
+        /// <summary>
         /// Compiled expression
         /// </summary>
         protected Func<ClassType, DataType> CompiledExpression { get; private set; }
+
+        /// <summary>
+        /// Deletes the property item
+        /// </summary>
+        /// <param name="MappingHolder">Mappings holder</param>
+        /// <param name="Object">Object</param>
+        /// <param name="PropertyID">Property ID</param>
+        /// <returns>The result</returns>
+        public abstract bool DeleteValue(MappingHolder MappingHolder, dynamic Object, string PropertyID);
 
         /// <summary>
         /// Gets the value of the property from an object
@@ -68,5 +85,14 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// <param name="Mappings">Mappings</param>
         /// <returns>The property specified</returns>
         public abstract dynamic GetValue(MappingHolder Mappings, dynamic Object);
+
+        /// <summary>
+        /// Saves the property item
+        /// </summary>
+        /// <param name="MappingHolder">Mapping holder</param>
+        /// <param name="Object">Object</param>
+        /// <param name="Models">Models</param>
+        /// <returns>True if it is saved, false otherwise</returns>
+        public abstract bool SaveValue(MappingHolder MappingHolder, dynamic Object, IEnumerable<Dynamo> Models);
     }
 }

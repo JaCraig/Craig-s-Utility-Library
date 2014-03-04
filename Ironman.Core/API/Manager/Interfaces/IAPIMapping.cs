@@ -37,6 +37,41 @@ namespace Ironman.Core.API.Manager.Interfaces
         where ClassType : class,new()
     {
         /// <summary>
+        /// All func
+        /// </summary>
+        Func<IEnumerable<ClassType>> AllFunc { get; }
+
+        /// <summary>
+        /// Any func
+        /// </summary>
+        Func<string, ClassType> AnyFunc { get; }
+
+        /// <summary>
+        /// Can delete func
+        /// </summary>
+        Func<ClassType, bool> CanDeleteFunc { get; }
+
+        /// <summary>
+        /// Can get func
+        /// </summary>
+        Func<ClassType, bool> CanGetFunc { get; }
+
+        /// <summary>
+        /// Can save func
+        /// </summary>
+        Func<ClassType, bool> CanSaveFunc { get; }
+
+        /// <summary>
+        /// Delete func
+        /// </summary>
+        Func<ClassType, bool> DeleteFunc { get; }
+
+        /// <summary>
+        /// Save func
+        /// </summary>
+        Func<ClassType, bool> SaveFunc { get; }
+
+        /// <summary>
         /// Used to determine if an object can be viewed
         /// </summary>
         /// <param name="Value">Value</param>
@@ -206,6 +241,16 @@ namespace Ironman.Core.API.Manager.Interfaces
         bool Delete(string ID);
 
         /// <summary>
+        /// Deletes a specific property item
+        /// </summary>
+        /// <param name="ID">Model ID</param>
+        /// <param name="MappingHolder">Mapping holder</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="PropertyID">Property ID</param>
+        /// <returns>The result from deleting the property</returns>
+        bool DeleteProperty(string ID, MappingHolder MappingHolder, string PropertyName, string PropertyID);
+
+        /// <summary>
         /// Gets a specific property from an object
         /// </summary>
         /// <param name="ID">ID of the item</param>
@@ -221,5 +266,15 @@ namespace Ironman.Core.API.Manager.Interfaces
         /// <param name="Object">Object to save</param>
         /// <returns>True if it is saved, false otherwise</returns>
         bool Save(Dynamo Object);
+
+        /// <summary>
+        /// Saves a property
+        /// </summary>
+        /// <param name="ID">ID</param>
+        /// <param name="PropertyName">Property name</param>
+        /// <param name="Models">Models</param>
+        /// <param name="MappingHolder">Mapping holder</param>
+        /// <returns>The result</returns>
+        bool SaveProperty(string ID, MappingHolder MappingHolder, string PropertyName, IEnumerable<Dynamo> Models);
     }
 }
