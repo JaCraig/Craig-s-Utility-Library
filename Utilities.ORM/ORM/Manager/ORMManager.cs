@@ -106,7 +106,8 @@ namespace Utilities.ORM.Manager
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
             ITable AuditTable = new Schema.Default.Database.Table(Table.Name + "Audit", Table.Source);
-            AuditTable.AddColumn("ID", DbType.Int32, 0, false, true, true, true, false, "", "", 0);
+            string IDName = Table.Columns.Any(x => string.Equals(x.Name, "ID", StringComparison.InvariantCultureIgnoreCase)) ? "AuditID" : "ID";
+            AuditTable.AddColumn(IDName, DbType.Int32, 0, false, true, true, true, false, "", "", 0);
             AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.To(DbType.Int32), 1, false, false, false, false, false, "", "", "");
             foreach (IColumn Column in Table.Columns)
                 AuditTable.AddColumn(Column.Name, Column.DataType, Column.Length, Column.Nullable, false, false, false, false, "", "", "");
