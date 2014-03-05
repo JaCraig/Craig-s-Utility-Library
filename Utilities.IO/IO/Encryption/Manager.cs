@@ -280,7 +280,7 @@ namespace Utilities.IO.Encryption
         {
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("Asymmetric algorithms: {0}", AsymmetricAlgorithms.ToString(x => x.Name));
-            Builder.AppendLineFormat("Hasher algorithms: {0}", HasherAlgorithms.ToString(x => x.Name));
+            Builder.AppendLineFormat("Hashing algorithms: {0}", HasherAlgorithms.ToString(x => x.Name));
             Builder.AppendLineFormat("Shift algorithms: {0}", ShiftAlgorithms.ToString(x => x.Name));
             Builder.AppendLineFormat("Symmetric algorithms: {0}", SymmetricAlgorithms.ToString(x => x.Name));
             return Builder.ToString();

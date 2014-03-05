@@ -85,7 +85,7 @@ namespace Utilities.Configuration.Manager
         /// <returns>The list of config systems that are available</returns>
         public override string ToString()
         {
-            return ConfigSystems.ToString(x => x.Value.Name, System.Environment.NewLine);
+            return "Configuration systems: " + ConfigSystems.ToString(x => x.Value.Name) + "\r\n";
         }
 
         /// <summary>

@@ -167,10 +167,7 @@ namespace Utilities.IO.Serializers
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            foreach (string Key in Serializers.Keys)
-            {
-                Builder.AppendLine(Serializers[Key].Name);
-            }
+            Builder.Append("Serializers: ").AppendLine(Serializers.ToString(x => x.Value.Name));
             return Builder.ToString();
         }
 

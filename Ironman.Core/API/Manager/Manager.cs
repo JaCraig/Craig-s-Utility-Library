@@ -232,6 +232,15 @@ namespace Ironman.Core.API.Manager
             }
         }
 
+        /// <summary>
+        /// Outputs manager info as a string
+        /// </summary>
+        /// <returns>String version of the manager</returns>
+        public override string ToString()
+        {
+            return "API Mappings:\r\n" + Mappings.ToString(x => "Version: " + x.Key + "\r\n" + x.Value.ToString() + "\r\n");
+        }
+
         private static Dynamo Error(string Message)
         {
             if (HttpContext.Current != null)

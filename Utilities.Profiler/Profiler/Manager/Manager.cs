@@ -105,7 +105,7 @@ namespace Utilities.Profiler.Manager
         /// <returns>The profiler information as a string</returns>
         public override string ToString()
         {
-            return Profiler.ToString();
+            return "Profilers: " + Profiler.ToString() + "\r\n";
         }
 
         /// <summary>

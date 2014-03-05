@@ -101,7 +101,7 @@ namespace Utilities.IO.FileSystem
         /// <returns>The list of file systems that are available</returns>
         public override string ToString()
         {
-            return FileSystems.ToString(x => x.Name, System.Environment.NewLine);
+            return "File systems: " + FileSystems.ToString(x => x.Name) + "\r\n";
         }
 
         /// <summary>

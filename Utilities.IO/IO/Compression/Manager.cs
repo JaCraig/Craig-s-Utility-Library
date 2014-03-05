@@ -81,7 +81,7 @@ namespace Utilities.IO.Compression
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.AppendFormat("Compressors: {0}", Compressors.OrderBy(x => x.Key).ToString(x => x.Key, ", "));
+            Builder.AppendLineFormat("Compressors: {0}", Compressors.OrderBy(x => x.Key).ToString(x => x.Key, ", "));
             return Builder.ToString();
         }
     }

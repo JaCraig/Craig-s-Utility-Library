@@ -85,6 +85,15 @@ namespace Utilities.DataTypes.DataMapper
             return DataMapper.Map(Left, Right);
         }
 
+        /// <summary>
+        /// Outputs the string information about the manager
+        /// </summary>
+        /// <returns>The string info about the manager</returns>
+        public override string ToString()
+        {
+            return "Data mapper: " + DataMapper.ToString() + "\r\n";
+        }
+
         #endregion Functions
     }
 }

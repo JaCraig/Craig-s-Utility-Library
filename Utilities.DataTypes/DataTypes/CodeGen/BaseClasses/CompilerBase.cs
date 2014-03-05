@@ -119,6 +119,15 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         #region Functions
 
         /// <summary>
+        /// Outputs basic information about the compiler as a string
+        /// </summary>
+        /// <returns>The string version of the compiler</returns>
+        public override string ToString()
+        {
+            return "Compiler: " + AssemblyName + "\r\n";
+        }
+
+        /// <summary>
         /// Creates an object using the type specified
         /// </summary>
         /// <typeparam name="T">Type to cast to</typeparam>

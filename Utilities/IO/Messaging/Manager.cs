@@ -70,7 +70,7 @@ namespace Utilities.IO.Messaging
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();
-            Builder.AppendFormat("Formatters: {0}\r\nMessaging Systems: {1}", Formatters.ToString(x => x.Name), MessagingSystems.ToString(x => x.Value.Name));
+            Builder.AppendLineFormat("Formatters: {0}\r\nMessaging Systems: {1}", Formatters.ToString(x => x.Name), MessagingSystems.ToString(x => x.Value.Name));
             return Builder.ToString();
         }
     }

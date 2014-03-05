@@ -31,7 +31,7 @@ using System.Collections.Generic;
 namespace Glimpse.CUL
 {
     /// <summary>
-    /// Plugin that displays info from Batman
+    /// Plugin that displays info from CUL
     /// </summary>
     public class Plugin : AspNetTab, IDocumentation
     {

@@ -49,6 +49,11 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         #region Properties
 
         /// <summary>
+        /// The name of the data mapper
+        /// </summary>
+        public abstract string Name { get; }
+
+        /// <summary>
         /// Mappings
         /// </summary>
         protected IDictionary<Tuple<Type, Type>, ITypeMapping> Mappings { get; private set; }
@@ -84,6 +89,15 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
             return Mappings.ContainsKey(Key) ? Mappings[Key]
                                              : Mappings.AddAndReturn(new KeyValuePair<Tuple<Type, Type>, ITypeMapping>(Key, CreateTypeMapping(Left, Right)))
                                                                                   .Value;
+        }
+
+        /// <summary>
+        /// The name of the data mapper
+        /// </summary>
+        /// <returns>The name of the data mapper</returns>
+        public override string ToString()
+        {
+            return Name;
         }
 
         /// <summary>

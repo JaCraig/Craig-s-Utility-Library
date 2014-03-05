@@ -55,5 +55,14 @@ namespace Ironman.Core.API.Manager
         /// <param name="Key">Name of the mapped type</param>
         /// <returns>The mapping specified</returns>
         public IAPIMapping this[string Key] { get { return Mappings.GetValue(Key); } }
+
+        /// <summary>
+        /// Outputs mapping holder info as a string
+        /// </summary>
+        /// <returns>String version of the mapping holder</returns>
+        public override string ToString()
+        {
+            return Mappings.ToString(x => x.Key);
+        }
     }
 }

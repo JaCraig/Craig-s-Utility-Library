@@ -21,9 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System;
 using Ironman.Core.Tasks.Enums;
 using Ironman.Core.Tasks.Interfaces;
+using System;
 using Utilities.DataTypes;
 using Utilities.IO;
 using Utilities.IO.Logging.Enums;
@@ -76,7 +76,7 @@ namespace Ironman.Core.Tasks
         /// <returns>string version of the task manager</returns>
         public override string ToString()
         {
-            return Tasks.ToString(x => x.Key.ToString() + " : " + x.Value.ToString(y => y.Name), "\n");
+            return Tasks.ToString(x => x.Key.ToString() + " Tasks: " + x.Value.ToString(y => y.Name), "\r\n") + "\r\n";
         }
     }
 }

@@ -126,6 +126,15 @@ namespace Utilities.DataTypes.Conversion
             }
         }
 
+        /// <summary>
+        /// Outputs information about the manager as a string
+        /// </summary>
+        /// <returns>The string version of the manager</returns>
+        public override string ToString()
+        {
+            return "Conversion Manager: Default\r\n";
+        }
+
         #endregion Functions
     }
 }

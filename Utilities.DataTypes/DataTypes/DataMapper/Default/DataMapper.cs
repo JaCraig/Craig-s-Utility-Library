@@ -44,6 +44,11 @@ namespace Utilities.DataTypes.DataMapper.Default
         }
 
         /// <summary>
+        /// The name of the data mapper
+        /// </summary>
+        public override string Name { get { return "Default"; } }
+
+        /// <summary>
         /// Used internally to create type mappings
         /// </summary>
         /// <typeparam name="Left">Left type</typeparam>

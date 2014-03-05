@@ -78,7 +78,7 @@ namespace Utilities.IO.Logging
         /// <returns>The logger information</returns>
         public override string ToString()
         {
-            return LoggerUsing.ToString();
+            return "Logger: " + LoggerUsing.ToString() + "\r\n";
         }
 
         /// <summary>

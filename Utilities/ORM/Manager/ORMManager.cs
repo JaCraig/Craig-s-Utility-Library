@@ -94,12 +94,7 @@ namespace Utilities.ORM.Manager
         /// <returns>String version of the ORMManager</returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture,
-                "Sources: {0}\r\nSchema Providers: {1}\r\nQuery Providers: {2}\r\nMappings: {3}",
-                SourceProvider.ToString(),
-                SchemaProvider.ToString(),
-                QueryProvider.ToString(),
-                MapperProvider.ToString());
+            return "ORM Manager";
         }
 
         private static ITable SetupAuditTables(ITable Table)

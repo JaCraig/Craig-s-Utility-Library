@@ -82,6 +82,8 @@ namespace Utilities.Web
         /// <returns>The If-Modified-Since header value expressed as a DateTime object</returns>
         public static DateTime IfModifiedSince(this HttpRequestBase Request)
         {
+            if (Request == null)
+                return DateTime.MinValue;
             DateTime Result = DateTime.MinValue;
             return DateTime.TryParse(Request.Headers["If-Modified-Since"], out Result) ? Result : DateTime.MinValue;
         }
@@ -93,6 +95,8 @@ namespace Utilities.Web
         /// <returns>The If-Modified-Since header value expressed as a DateTime object</returns>
         public static DateTime IfModifiedSince(this HttpRequest Request)
         {
+            if (Request == null)
+                return DateTime.MinValue;
             DateTime Result = DateTime.MinValue;
             return DateTime.TryParse(Request.Headers["If-Modified-Since"], out Result) ? Result : DateTime.MinValue;
         }

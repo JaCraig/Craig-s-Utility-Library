@@ -108,6 +108,7 @@ namespace Utilities.DataTypes.AOP
         /// <param name="Assembly">Assembly to set up</param>
         public virtual void Setup(params Assembly[] Assembly)
         {
+            Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
             foreach (Type TempType in Assembly.Types()
                                               .Where(x => !x.ContainsGenericParameters
                                                           && !x.IsAbstract
@@ -282,6 +283,15 @@ namespace {1}
             {
                 Manager.Classes.Add(Type, Type);
             }
+        }
+
+        /// <summary>
+        /// Outputs manager info as a string
+        /// </summary>
+        /// <returns>String version of the manager</returns>
+        public override string ToString()
+        {
+            return "AOP registered classes: " + Classes.Keys.ToString(x => x.Name) + "\r\n";
         }
 
         private static Assembly[] GetAssemblies(Type Type)

@@ -86,7 +86,7 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// <returns>The provider information as a string</returns>
         public override string ToString()
         {
-            return Providers.ToString(x => x.Key);
+            return "Query providers: " + Providers.ToString(x => x.Key) + "\r\n";
         }
     }
 }

@@ -29,7 +29,7 @@ using Utilities.Profiler.Manager.Interfaces;
 
 #endregion Usings
 
-namespace Batman.Core.Profiling.MiniProfiler
+namespace CUL.Profiling
 {
     /// <summary>
     /// MiniProfiler based profiler
@@ -123,6 +123,13 @@ namespace Batman.Core.Profiling.MiniProfiler
             StackExchange.Profiling.MiniProfiler.Stop(DiscardResults);
             Times.Add((long)StackExchange.Profiling.MiniProfiler.Current.DurationMilliseconds);
             return this;
+        }
+
+        /// <summary></summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "MiniProfiler";
         }
     }
 }

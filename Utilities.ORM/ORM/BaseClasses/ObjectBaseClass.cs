@@ -184,6 +184,8 @@ namespace Utilities.ORM
         /// <param name="Objects">List of objects</param>
         public static void Save(IEnumerable<ObjectType> Objects)
         {
+            if (Objects == null)
+                return;
             Objects.ForEach(x => x.Save());
         }
 

@@ -106,7 +106,7 @@ namespace Utilities.ORM.Manager.Mapper
         /// <returns>The mapping information as a string</returns>
         public override string ToString()
         {
-            return Mappings.ToString(x => x.Value.ToString(y => y.ToString()));
+            return "Mappers: " + Mappings.ToString(x => x.Value.ToString(y => y.ToString())) + "\r\n";
         }
     }
 }

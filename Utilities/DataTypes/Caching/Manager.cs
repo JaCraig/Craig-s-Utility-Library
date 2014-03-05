@@ -92,6 +92,15 @@ namespace Utilities.DataTypes.Caching
         }
 
         /// <summary>
+        /// Outputs the manager as a string
+        /// </summary>
+        /// <returns>String version of the manager</returns>
+        public override string ToString()
+        {
+            return "Caches: " + Caches.ToString(x => x.Key) + "\r\n";
+        }
+
+        /// <summary>
         /// Disposes of the object
         /// </summary>
         /// <param name="Managed">

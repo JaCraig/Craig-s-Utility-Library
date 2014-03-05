@@ -285,6 +285,15 @@ namespace {1}
             }
         }
 
+        /// <summary>
+        /// Outputs manager info as a string
+        /// </summary>
+        /// <returns>String version of the manager</returns>
+        public override string ToString()
+        {
+            return "AOP registered classes: " + Classes.Keys.ToString(x => x.Name) + "\r\n";
+        }
+
         private static Assembly[] GetAssemblies(Type Type)
         {
             List<Assembly> Types = new List<Assembly>();
