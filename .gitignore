@@ -166,3 +166,4 @@ pip-log.txt
 *.suo
 *.nupkg
 .hg/*
+*.log

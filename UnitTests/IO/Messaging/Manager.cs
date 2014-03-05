@@ -32,7 +32,7 @@ namespace UnitTests.IO.Messaging
             Assert.NotNull(Temp);
             Assert.Equal(0, Temp.Formatters.Count);
             Assert.Equal(1, Temp.MessagingSystems.Count);
-            Assert.Equal("Formatters: \r\nMessaging Systems: SMTP", Temp.ToString());
+            Assert.Equal("Formatters: \r\nMessaging Systems: SMTP\r\n", Temp.ToString());
         }
     }
 }

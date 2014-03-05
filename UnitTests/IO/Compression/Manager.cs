@@ -41,7 +41,7 @@ namespace UnitTests.IO.Compression
             Utilities.IO.Compression.Manager Temp = new Utilities.IO.Compression.Manager();
             Assert.NotNull(Temp);
             Assert.Equal(2, Temp.Compressors.Count);
-            Assert.Equal("Compressors: Deflate, GZip", Temp.ToString());
+            Assert.Equal("Compressors: Deflate, GZip\r\n", Temp.ToString());
         }
 
         [Fact]

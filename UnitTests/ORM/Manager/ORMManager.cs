@@ -36,7 +36,7 @@ namespace UnitTests.ORM.Manager
         {
             Utilities.ORM.Manager.ORMManager Temp = new Utilities.ORM.Manager.ORMManager(Utilities.IoC.Manager.Bootstrapper);
             Assert.NotNull(Temp);
-            Assert.Equal("Sources: IDTest,MapTest,ReferenceTest,LocalSqlServer,LocalMySqlServer\r\nSchema Providers: System.Data.SqlClient\r\nQuery Providers: System.Data.SqlClient\r\nMappings: TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_", Temp.ToString());
+            Assert.Equal("ORM Manager\r\n", Temp.ToString());
         }
     }
 }

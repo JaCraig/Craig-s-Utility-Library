@@ -39,7 +39,7 @@ namespace UnitTests.ORM.Manager.QueryProvider
         public void Create()
         {
             Assert.DoesNotThrow(() => new Utilities.ORM.Manager.QueryProvider.Manager());
-            Assert.Equal("System.Data.SqlClient", new Utilities.ORM.Manager.QueryProvider.Manager().ToString());
+            Assert.Equal("Query providers: System.Data.SqlClient\r\n", new Utilities.ORM.Manager.QueryProvider.Manager().ToString());
         }
 
         [Fact]

@@ -94,7 +94,7 @@ namespace Utilities.ORM.Manager
         /// <returns>String version of the ORMManager</returns>
         public override string ToString()
         {
-            return "ORM Manager";
+            return "ORM Manager\r\n";
         }
 
         private static ITable SetupAuditTables(ITable Table)
