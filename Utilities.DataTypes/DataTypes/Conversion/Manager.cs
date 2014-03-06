@@ -81,8 +81,14 @@ namespace Utilities.DataTypes.Conversion
         {
             try
             {
+                if (Item == null)
+                {
+                    if (DefaultValue == null && ResultType.IsValueType)
+                        return Activator.CreateInstance(ResultType);
+                    return DefaultValue;
+                }
                 Type ObjectType = Item.GetType();
-                if (Item == null || ObjectType == typeof(DBNull))
+                if (ObjectType == typeof(DBNull))
                 {
                     if (DefaultValue == null && ResultType.IsValueType)
                         return Activator.CreateInstance(ResultType);
