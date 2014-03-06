@@ -22,9 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Net.Mail;
 using System.Net.Mime;
+using Utilities.DataTypes;
 using Utilities.IO.Messaging.BaseClasses;
 
 #endregion Usings
@@ -96,7 +98,7 @@ namespace Utilities.IO.Messaging.Default
                     message.From = new System.Net.Mail.MailAddress(Message.From);
                 using (AlternateView BodyView = AlternateView.CreateAlternateViewFromString(Message.Body, null, MediaTypeNames.Text.Html))
                 {
-                    foreach (LinkedResource Resource in Message.EmbeddedResources)
+                    foreach (LinkedResource Resource in Message.EmbeddedResources.Check(new List<LinkedResource>()))
                     {
                         BodyView.LinkedResources.Add(Resource);
                     }
@@ -105,7 +107,7 @@ namespace Utilities.IO.Messaging.Default
                     message.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
                     message.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
                     message.IsBodyHtml = true;
-                    foreach (Attachment TempAttachment in Message.Attachments)
+                    foreach (Attachment TempAttachment in Message.Attachments.Check(new List<Attachment>()))
                     {
                         message.Attachments.Add(TempAttachment);
                     }

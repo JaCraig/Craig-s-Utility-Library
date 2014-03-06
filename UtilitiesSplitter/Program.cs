@@ -37,7 +37,8 @@ namespace UtilitiesSplitter
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\tools").Create();
                 new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\content").Create();
 
-                new DirectoryInfo("..\\..\\..\\" + File.Name.Replace(".nuspec", "") + "\\bin\\Release").CopyTo(new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib"));
+                if (!File.Name.Contains("Ironman.Default"))
+                    new DirectoryInfo("..\\..\\..\\" + File.Name.Replace(".nuspec", "") + "\\bin\\Release").CopyTo(new DirectoryInfo("..\\..\\..\\UtilitiesPackages\\lib"));
                 Process NugetProcess = new FileInfo("..\\..\\..\\.nuget\\nuget.exe").Execute(new ProcessStartInfo() { Arguments = "pack \"" + File.FullName + "\"", WorkingDirectory = "..\\..\\..\\UtilitiesPackages\\Packages", CreateNoWindow = false });
                 NugetProcess.WaitForExit();
 
