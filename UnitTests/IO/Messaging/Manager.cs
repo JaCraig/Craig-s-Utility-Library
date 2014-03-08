@@ -30,9 +30,9 @@ namespace UnitTests.IO.Messaging
         {
             Utilities.IO.Messaging.Manager Temp = new Utilities.IO.Messaging.Manager();
             Assert.NotNull(Temp);
-            Assert.Equal(0, Temp.Formatters.Count);
+            Assert.Equal(1, Temp.Formatters.Count);
             Assert.Equal(1, Temp.MessagingSystems.Count);
-            Assert.Equal("Formatters: \r\nMessaging Systems: SMTP\r\n", Temp.ToString());
+            Assert.Equal("Formatters: Default\r\nMessaging Systems: SMTP\r\n", Temp.ToString());
         }
     }
 }

@@ -168,6 +168,7 @@
     <Compile Include="IO\Logging\Default\DefaultLog.cs" />
     <Compile Include="IO\Logging\Default\DefaultLogger.cs" />
     <Compile Include="IO\Logging\Manager.cs" />
+    <Compile Include="IO\Messaging\Default\DefaultFormatter.cs" />
     <Compile Include="IO\Messaging\Default\SMTPSystem.cs" />
     <Compile Include="IO\Messaging\Manager.cs" />
     <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />

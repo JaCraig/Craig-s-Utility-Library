@@ -26,32 +26,31 @@ using Xunit;
 
 namespace UnitTests.IO.Messaging.Default
 {
-    public class SMTPSystem
+    public class DefaultFormatter
     {
         [Fact]
-        public void Creation()
+        public void Create()
         {
-            Utilities.IO.Messaging.Default.SMTPSystem Temp = new Utilities.IO.Messaging.Default.SMTPSystem();
-            Assert.NotNull(Temp);
-            Assert.Equal(0, Temp.Formatters.Count());
-            Assert.Equal(typeof(Utilities.IO.EmailMessage), Temp.MessageType);
-            Assert.Equal("SMTP", Temp.Name);
+            Assert.DoesNotThrow(() => new Utilities.IO.Messaging.Default.DefaultFormatter());
+            Assert.Equal("Default", new Utilities.IO.Messaging.Default.DefaultFormatter().Name);
         }
 
         [Fact]
-        public void NullSend()
+        public void Format()
         {
-            Utilities.IO.Messaging.Default.SMTPSystem Temp = new Utilities.IO.Messaging.Default.SMTPSystem();
-            Assert.NotNull(Temp);
-            Assert.DoesNotThrow(() => { Temp.Send(null, new Temp()).Wait(); });
+            Utilities.IO.Messaging.Default.DefaultFormatter TestObject = new Utilities.IO.Messaging.Default.DefaultFormatter();
+            Utilities.IO.EmailMessage TestMessage = new Utilities.IO.EmailMessage() { Body = "There are {A} items in the {B}" };
+            TestObject.Format(TestMessage, new TestClass() { A = 2, B = "class" });
+            Assert.Equal("There are 2 items in the class", TestMessage.Body);
+            TestObject.Format(TestMessage, "Testing this out");
+            Assert.Equal("Testing this out", TestMessage.Body);
         }
 
-        [Serializable]
-        [DataContract]
-        protected class Temp
+        public class TestClass
         {
-            [DataMember(Name = "A", Order = 1)]
             public int A { get; set; }
+
+            public string B { get; set; }
         }
     }
 }

@@ -367,6 +367,7 @@
     <Compile Include="IO\Messaging\BaseClasses\MessageBase.cs" />
     <Compile Include="IO\Messaging\BaseClasses\MessagingSystemBase.cs" />
     <Compile Include="IO\EmailMessage.cs" />
+    <Compile Include="IO\Messaging\Default\DefaultFormatter.cs" />
     <Compile Include="IO\Messaging\Default\SMTPSystem.cs" />
     <Compile Include="IO\Messaging\Interfaces\IFormatter.cs" />
     <Compile Include="IO\Messaging\Interfaces\IMessage.cs" />
