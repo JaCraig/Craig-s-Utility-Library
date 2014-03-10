@@ -217,7 +217,7 @@ namespace Utilities.ORM.Manager
                             .Execute()[0])
                         {
                             DataType Temp = Item;
-                            IProperty IDProperty = Property.Mapping.IDProperties.FirstOrDefault();
+                            IProperty IDProperty = Property.ForeignMapping.IDProperties.FirstOrDefault();
                             object IDValue = IDProperty.GetValue(Temp);
                             DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
                             if (Value == default(DataType))
