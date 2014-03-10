@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Ironman.Core.Assets.Less</id>
-		<version>1.0.0085-beta</version>
+		<version>1.0.0090-beta</version>
 		<title>Iron Man Framework Less Support</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -18,8 +18,8 @@
 			<reference file="Ironman.Core.Assets.Less.dll" />
 		</references>
 		<dependencies>
-            <dependency id="CraigsUtilityLibrary" version="[4.0.0085-beta]" />
-			<dependency id="Ironman.Core" version="[1.0.0085-beta]" />
+            <dependency id="CraigsUtilityLibrary" version="[4.0.0090-beta]" />
+			<dependency id="Ironman.Core" version="[1.0.0090-beta]" />
 			<dependency id="dotless" version="[1.4.0.0]" />
         </dependencies>
 	</metadata>

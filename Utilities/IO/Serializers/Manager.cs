@@ -127,7 +127,7 @@ namespace Utilities.IO.Serializers
         /// <returns>Content type</returns>
         public string FileTypeToContentType(string FileType)
         {
-            return Serializers.FirstOrDefault(x => string.Equals(x.Value.FileType, FileType, StringComparison.InvariantCultureIgnoreCase)).Chain(x => x.Value.ContentType, "");
+            return Serializers.FirstOrDefault(x => string.Equals(x.Value.FileType, FileType, StringComparison.InvariantCultureIgnoreCase)).Chain(x => x.Value).Chain(x => x.ContentType, "");
         }
 
         /// <summary>

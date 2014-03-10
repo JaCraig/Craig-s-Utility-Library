@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
 using Utilities.IO.Messaging.BaseClasses;
+using Utilities.IO.Messaging.Default;
 using Utilities.IO.Messaging.Interfaces;
 
 #endregion Usings
@@ -43,7 +44,8 @@ namespace Utilities.IO.Messaging
         /// </summary>
         public Manager()
         {
-            Formatters = AppDomain.CurrentDomain.GetAssemblies().Objects<IFormatter>().ToList();
+            IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().Types<IFormatter>().Where(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            Formatters = Types.Count() == 0 ? new IFormatter[] { new DefaultFormatter() }.ToList() : Types.Create<IFormatter>().ToList();
             MessagingSystems = new Dictionary<Type, IMessagingSystem>();
             IEnumerable<IMessagingSystem> TempSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IMessagingSystem>();
             TempSystems.ForEach(x =>

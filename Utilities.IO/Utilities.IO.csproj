@@ -258,6 +258,7 @@
     <Compile Include="IO\Serializers\Interfaces\ISerializer.cs" />
     <Compile Include="IO\Serializers\Manager.cs" />
     <Compile Include="IO\Serializers\Module\SerializationModule.cs" />
+    <Compile Include="IO\Messaging\Default\DefaultFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

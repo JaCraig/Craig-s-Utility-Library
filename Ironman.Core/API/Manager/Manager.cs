@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,6 +27,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager
@@ -106,7 +106,7 @@ namespace Ironman.Core.API.Manager
             }
             catch
             {
-                return Error("Error saving the object");
+                return new Dynamo();
             }
         }
 
@@ -128,7 +128,7 @@ namespace Ironman.Core.API.Manager
             }
             catch
             {
-                return Error("Error saving the object");
+                return Error("Error deleting the object");
             }
         }
 
@@ -178,7 +178,7 @@ namespace Ironman.Core.API.Manager
             }
             catch
             {
-                return Error("Error saving the object");
+                return Error("Error getting the object");
             }
         }
 
