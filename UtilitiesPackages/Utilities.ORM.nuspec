@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-ORM</id>
-		<version>4.0.0091-beta</version>
+		<version>4.0.0092-beta</version>
 		<title>Craig's Utility Library ORM Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -15,9 +15,9 @@
 		<copyright>Copyright 2011</copyright>
 		<tags>utility utilities</tags>
 		<dependencies>
-			<dependency id="CraigsUtilityLibrary-DataTypes" version="[4.0.0091-beta]" />
-			<dependency id="CraigsUtilityLibrary-IoC" version="[4.0.0091-beta]" />
-			<dependency id="CraigsUtilityLibrary-Validation" version="[4.0.0091-beta]" />
+			<dependency id="CraigsUtilityLibrary-DataTypes" version="[4.0.0092-beta]" />
+			<dependency id="CraigsUtilityLibrary-IoC" version="[4.0.0092-beta]" />
+			<dependency id="CraigsUtilityLibrary-Validation" version="[4.0.0092-beta]" />
 		</dependencies>
 		<references>
 			<reference file="Utilities.ORM.dll" />
