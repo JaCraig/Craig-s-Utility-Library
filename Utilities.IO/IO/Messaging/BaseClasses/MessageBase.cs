@@ -74,7 +74,7 @@ namespace Utilities.IO.Messaging.BaseClasses
         /// <typeparam name="T">Model type</typeparam>
         /// <param name="Model">Model object</param>
         /// <returns>The async task object</returns>
-        public Task Send<T>(T Model = default(T))
+        public virtual Task Send<T>(T Model = default(T))
             where T : class
         {
             return MessagingSystem.Send(this, Model);
@@ -84,7 +84,7 @@ namespace Utilities.IO.Messaging.BaseClasses
         /// Send a message
         /// </summary>
         /// <returns>The async task object</returns>
-        public Task Send()
+        public virtual Task Send()
         {
             return MessagingSystem.Send(this);
         }
