@@ -87,17 +87,20 @@ namespace Utilities.ORM.Manager
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
-                foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, Mapping).All(Parameters).Execute()[0])
+                if (Mapping != null)
                 {
-                    ObjectType Temp = Item;
-                    IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
-                    object IDValue = IDProperty.GetValue(Temp);
-                    ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
-                    if (Value == default(ObjectType))
-                        ReturnValue.Add(Temp);
-                    else
+                    foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, Mapping).All(Parameters).Execute()[0])
                     {
-                        Item.CopyTo(Value);
+                        ObjectType Temp = Item;
+                        IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
+                        object IDValue = IDProperty.GetValue(Temp);
+                        ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+                        if (Value == default(ObjectType))
+                            ReturnValue.Add(Temp);
+                        else
+                        {
+                            Item.CopyTo(Value);
+                        }
                     }
                 }
             }
@@ -219,7 +222,7 @@ namespace Utilities.ORM.Manager
                             DataType Temp = Item;
                             IProperty IDProperty = Property.ForeignMapping.IDProperties.FirstOrDefault();
                             object IDValue = IDProperty.GetValue(Temp);
-                            DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
+                            DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
                             if (Value == default(DataType))
                                 ReturnValue.Add(Temp);
                             else
@@ -230,7 +233,39 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping ObjectMapping = MapperProvider[typeof(ObjectType), Source];
+                IMapping Mapping = MapperProvider[typeof(DataType), Source];
+                if (Mapping != null)
+                {
+                    IProperty ObjectProperty = ObjectMapping == null ? null : ObjectMapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
+                    if (ObjectProperty == null)
+                    {
+                        IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
+                        IParameter Parameter = null;
+                        foreach (DataType Item in ReturnValue)
+                        {
+                            if (Parameter == null)
+                                Parameter = new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName);
+                            else
+                                Parameter = new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName));
+                        }
+                        foreach (dynamic Item in QueryProvider.Generate<DataType>(Source, Mapping).All(Parameter).Execute()[0])
+                        {
+                            DataType Temp = Item;
+                            object IDValue = IDProperty.GetValue(Temp);
+                            DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+                            if (Value == default(DataType))
+                                ReturnValue.Add(Temp);
+                            else
+                            {
+                                Item.CopyTo(Value);
+                            }
+                        }
+                    }
+                }
+            }
             foreach (IORMObject TempItem in ReturnValue)
             {
                 if (TempItem != null)
@@ -308,7 +343,7 @@ namespace Utilities.ORM.Manager
                         {
                             ObjectType Temp = Item;
                             object IDValue = IDProperty.GetValue(Temp);
-                            ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x) == IDValue);
+                            ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
                             if (Value == default(ObjectType))
                                 ReturnValue.Add(Temp);
                             else
