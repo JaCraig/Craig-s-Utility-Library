@@ -2,7 +2,9 @@
 
 Have you ever thought about why Batman is as effective as he is? I mean sure he's rich, in better shape than any of us will ever be, and is a master at martial arts, but what almost always wins the day for him is that utility belt. It's the never ending supply of gadgets and utilities that he can use in the appropriate situation that really saves the day. And Craig's Utility Library is the same for programmers.
 
-With .Net we have a number of built in classes and functions to help make a programmer's life easier, but let's face facts, they didn't think of everything. Craig's Utility Library tries to fill in some of those gaps (or at least the ones that I've run into). It comes with a couple hundred extension methods, built in data types such as a BTree, priority queue, ring buffer, etc. And that's just the DataTypes namespace. When you add it all up, Craig's Utility Library is one of the largest set of utilities for .Net out there.
+With .Net we have a number of built in classes and functions to help make a programmer's life easier, but let's face facts, they didn't think of everything. Craig's Utility Library tries to fill in some of those gaps (or at least the ones that I've run into). It comes with a couple hundred extension methods, built in data types such as a BTree, priority queue, ring buffer, etc. And that's just the DataTypes namespace. When you add it all up, Craig's Utility Library is one of the largest set of utilities for .Net out there...
+
+OK, enough of the self aggrandizing rhetoric. The library is rather large so I'm going to break this down in the [wiki](https://github.com/JaCraig)
 
 ### IoC container
 At the heart of the latest version of Craig's Utility Library is the IoC container. Unlike versions past, the system is designed to allow 3rd party libraries to be used instead of the built in components. This includes the IoC container itself which can be replaced with any container you prefer.
