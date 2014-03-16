@@ -46,7 +46,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             Utilities.ORM.Manager.Mapper.Default.ManyToOne<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ManyToOne<TestClass, TestClass>(x => x.A, null);
             IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase8;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
-            Assert.Equal("DELETE FROM TestClass_ WHERE ID=@0", Result.ToString());
+            Assert.Equal("DELETE FROM TestClass_ WHERE ID=0", Result.ToString());
             Assert.Equal(1, Result.CommandCount);
         }
 
@@ -60,7 +60,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TestObject.ForeignMapping = new TestClassMapping();
             IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase8;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
-            Assert.Equal("DELETE FROM TestClass_TestClass WHERE TestClass_ID2=@0", Result.ToString());
+            Assert.Equal("DELETE FROM TestClass_TestClass WHERE TestClass_ID2=1", Result.ToString());
             Assert.Equal(1, Result.CommandCount);
         }
 
@@ -74,7 +74,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TestObject.ForeignMapping = new TestClassMapping();
             IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase8;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
-            Assert.Equal("INSERT INTO TestClass_TestClass(TestClass_ID,TestClass_ID2) VALUES (@0,@1)", Result.ToString());
+            Assert.Equal("INSERT INTO TestClass_TestClass(TestClass_ID,TestClass_ID2) VALUES (0,1)", Result.ToString());
             Assert.Equal(1, Result.CommandCount);
         }
 

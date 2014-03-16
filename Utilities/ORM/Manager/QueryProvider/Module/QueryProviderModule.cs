@@ -46,7 +46,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager());
+            Bootstrapper.Register(new Manager(Bootstrapper));
         }
     }
 }

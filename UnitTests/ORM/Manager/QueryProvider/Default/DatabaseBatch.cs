@@ -40,7 +40,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void AddCommand()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             Temp.AddCommand(null, null, "SELECT * FROM A", CommandType.Text, "@", new object[] { 1, "ASDF", 2.0f, Guid.NewGuid() });
             Assert.Equal(1, Temp.CommandCount);
         }
@@ -48,7 +48,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             Assert.NotNull(Temp);
             Assert.Equal(0, Temp.CommandCount);
         }
@@ -57,7 +57,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public void Insert()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
                 "Test String",
@@ -69,7 +69,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
                 TempGuid)
                 .Execute();
 
-            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             bool Found = false;
             foreach (dynamic Item in Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestTable")
                 .Execute()
@@ -90,7 +90,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
                 Assert.False(true, "Nothing was inserted");
             }
 
-            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             Found = false;
             foreach (dynamic Item in Temp.AddCommand(null, null, CommandType.Text, "SELECT COUNT(*) as [ItemCount] FROM TestTable")
                 .Execute()
@@ -109,7 +109,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public void InsertNullString()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
                 "",
@@ -146,7 +146,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public void LargeBatchInsert()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             for (int x = 0; x < 1000; ++x)
             {
                 Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
@@ -165,7 +165,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         [Fact]
         public void MBDBug()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             int DbID = Temp.AddCommand(null, null, "SELECT database_id FROM Master.sys.Databases WHERE name=@0", CommandType.Text, "TestDatabase")
                 .Execute()
                 .First()

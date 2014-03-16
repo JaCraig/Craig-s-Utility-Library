@@ -32,20 +32,20 @@ namespace UnitTests.ORM.Manager.QueryProvider
         [Fact]
         public void Batch()
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Batch(TestDatabaseSource));
+            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper).Batch(TestDatabaseSource));
         }
 
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.QueryProvider.Manager());
-            Assert.Equal("Query providers: System.Data.SqlClient\r\n", new Utilities.ORM.Manager.QueryProvider.Manager().ToString());
+            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper));
+            Assert.Equal("Query providers: System.Data.SqlClient\r\n", new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper).ToString());
         }
 
         [Fact]
         public void Generate()
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager().Generate<TestClass>(TestDatabaseSource, null));
+            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper).Generate<TestClass>(TestDatabaseSource, null));
         }
 
         public class TestClass

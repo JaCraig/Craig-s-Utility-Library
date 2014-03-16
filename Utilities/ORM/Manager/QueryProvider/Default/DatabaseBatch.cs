@@ -31,6 +31,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Caching.Interfaces;
+using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
@@ -46,18 +48,21 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        public DatabaseBatch()
+        /// <param name="Bootstrapper">Bootstrapper</param>
+        public DatabaseBatch(IBootstrapper Bootstrapper)
             : base()
         {
             this.Commands = new List<Command>();
+            this.Bootstrapper = Bootstrapper;
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="Source">Source info</param>
-        public DatabaseBatch(ISourceInfo Source)
-            : this()
+        /// <param name="Bootstrapper">Bootstrapper</param>
+        public DatabaseBatch(ISourceInfo Source, IBootstrapper Bootstrapper)
+            : this(Bootstrapper)
         {
             this.Source = Source;
         }
@@ -66,6 +71,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// Command count
         /// </summary>
         public int CommandCount { get { return Commands.Count; } }
+
+        /// <summary>
+        /// Bootstrapper
+        /// </summary>
+        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Commands to batch
@@ -90,7 +100,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="CallBack">Callback action</param>
         /// <param name="Object">Object used in the callback action</param>
         /// <returns>This</returns>
-        public IBatch AddCommand(Action<object, IList<dynamic>> CallBack, object Object, CommandType CommandType, string Command)
+        public IBatch AddCommand(Action<Command, IList<dynamic>> CallBack, object Object, CommandType CommandType, string Command)
         {
             Commands.Add(new Command(CallBack, Object, Command, CommandType, null));
             return this;
@@ -105,7 +115,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="CallBack">Callback action</param>
         /// <param name="Object">Object used in the callback action</param>
         /// <returns>This</returns>
-        public IBatch AddCommand(Action<object, IList<dynamic>> CallBack, object Object, string Command, CommandType CommandType, params object[] Parameters)
+        public IBatch AddCommand(Action<Command, IList<dynamic>> CallBack, object Object, string Command, CommandType CommandType, params object[] Parameters)
         {
             Commands.Add(new Command(CallBack, Object, Command, CommandType, Source.ParameterPrefix, Parameters));
             return this;
@@ -120,7 +130,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="CallBack">Callback action</param>
         /// <param name="Object">Object used in the callback action</param>
         /// <returns>This</returns>
-        public IBatch AddCommand(Action<object, IList<dynamic>> CallBack, object Object, string Command, CommandType CommandType, params IParameter[] Parameters)
+        public IBatch AddCommand(Action<Command, IList<dynamic>> CallBack, object Object, string Command, CommandType CommandType, params IParameter[] Parameters)
         {
             Commands.Add(new Command(CallBack, Object, Command, CommandType, Parameters));
             return this;
@@ -272,10 +282,15 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
                     finally { ExecutableCommand.Close(); }
                 }
             }
-            List<Command> UpdateCommands = Commands.Where(x => x.Finalizable).ToList();
-            for (int x = 0; x < UpdateCommands.Count; ++x)
+            for (int x = 0, y = 0; x < Commands.Count(); ++x)
             {
-                UpdateCommands[x].Finalize(ReturnValue[x]);
+                if (Commands[x].Finalizable)
+                {
+                    Commands[x].Finalize(ReturnValue[y]);
+                    ++y;
+                }
+                else
+                    Commands[x].Finalize(new List<dynamic>());
             }
             return ReturnValue;
         }

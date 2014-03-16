@@ -67,6 +67,13 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         void AddParameter(DbCommand Helper);
 
         /// <summary>
+        /// Finds itself in the string command and adds the value
+        /// </summary>
+        /// <param name="Command">Command to add to</param>
+        /// <returns>The resulting string</returns>
+        string AddParameter(string Command);
+
+        /// <summary>
         /// Creates a copy of the parameter
         /// </summary>
         /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>

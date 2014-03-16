@@ -504,11 +504,12 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Assembly">Assembly to search within</param>
+        /// <param name="Args">Args used to create the object</param>
         /// <returns>A list of objects that are of the type specified</returns>
-        public static IEnumerable<ClassType> Objects<ClassType>(this Assembly Assembly)
+        public static IEnumerable<ClassType> Objects<ClassType>(this Assembly Assembly, params object[] Args)
         {
             Contract.Requires<ArgumentNullException>(Assembly != null, "Assembly");
-            return Assembly.Types<ClassType>().Where(x => !x.ContainsGenericParameters).Create<ClassType>();
+            return Assembly.Types<ClassType>().Where(x => !x.ContainsGenericParameters).Create<ClassType>(Args);
         }
 
         /// <summary>
@@ -517,13 +518,14 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Assemblies">Assemblies to search within</param>
+        /// <param name="Args">Args used to create the object</param>
         /// <returns>A list of objects that are of the type specified</returns>
-        public static IEnumerable<ClassType> Objects<ClassType>(this IEnumerable<Assembly> Assemblies)
+        public static IEnumerable<ClassType> Objects<ClassType>(this IEnumerable<Assembly> Assemblies, params object[] Args)
         {
             Contract.Requires<ArgumentNullException>(Assemblies != null, "Assemblies");
             List<ClassType> ReturnValues = new List<ClassType>();
             foreach (Assembly Assembly in Assemblies)
-                ReturnValues.AddRange(Assembly.Objects<ClassType>());
+                ReturnValues.AddRange(Assembly.Objects<ClassType>(Args));
             return ReturnValues;
         }
 
@@ -534,11 +536,12 @@ namespace Utilities.DataTypes
         /// <typeparam name="ClassType">Base type/interface searching for</typeparam>
         /// <param name="Directory">Directory to search within</param>
         /// <param name="Recursive">Should this be recursive</param>
+        /// <param name="Args">Args used to create the object</param>
         /// <returns>A list of objects that are of the type specified</returns>
-        public static IEnumerable<ClassType> Objects<ClassType>(this DirectoryInfo Directory, bool Recursive = false)
+        public static IEnumerable<ClassType> Objects<ClassType>(this DirectoryInfo Directory, bool Recursive, params object[] Args)
         {
             Contract.Requires<ArgumentNullException>(Directory != null, "Directory");
-            return Directory.LoadAssemblies(Recursive).Objects<ClassType>();
+            return Directory.LoadAssemblies(Recursive).Objects<ClassType>(Args);
         }
 
         #endregion Objects

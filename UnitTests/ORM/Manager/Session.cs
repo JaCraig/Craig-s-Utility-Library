@@ -208,7 +208,7 @@ namespace UnitTests.ORM.Manager
         public override void Dispose()
         {
             base.Dispose();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(MasterDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             try
             {
                 Temp.AddCommand(null, null, CommandType.Text, "ALTER DATABASE SessionTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE")
@@ -399,7 +399,7 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(5423, TempObject.ShortReference);
             Assert.Equal("agsdpghasdg", TempObject.StringReference);
 
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"), Utilities.IoC.Manager.Bootstrapper);
 
             IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
             TestClass Item = Items.FirstOrDefault(x => x.BoolReference_);
@@ -475,7 +475,7 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(5423, TempObject.ShortReference);
             Assert.Equal("agsdpghasdg", TempObject.StringReference);
 
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"), Utilities.IoC.Manager.Bootstrapper);
 
             IList<dynamic> Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
             TestClass Item = Items.FirstOrDefault(x => x.BoolReference_);
@@ -514,7 +514,7 @@ namespace UnitTests.ORM.Manager
             Item.StringReference = "Something";
             TestObject.Save<TestClass, int>(Item);
 
-            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"));
+            Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=SessionTestDatabase;Integrated Security=SSPI;Pooling=false"), Utilities.IoC.Manager.Bootstrapper);
 
             Items = Temp.AddCommand(null, null, CommandType.Text, "SELECT * FROM TestClass_").Execute().First();
             Item = Items.FirstOrDefault(x => x.BoolReference_);

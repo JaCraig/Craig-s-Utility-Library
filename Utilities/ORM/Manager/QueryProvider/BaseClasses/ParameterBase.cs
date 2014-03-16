@@ -168,6 +168,19 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         public abstract void AddParameter(DbCommand Helper);
 
         /// <summary>
+        /// Finds itself in the string command and adds the value
+        /// </summary>
+        /// <param name="Command">Command to add to</param>
+        /// <returns>The resulting string</returns>
+        public string AddParameter(string Command)
+        {
+            if (string.IsNullOrEmpty(Command))
+                return "";
+            string StringValue = Value == null ? "NULL" : Value.ToString();
+            return Command.Replace(ParameterStarter + ID, typeof(DataType) == typeof(string) ? "'" + StringValue + "'" : StringValue);
+        }
+
+        /// <summary>
         /// Creates a copy of the parameter
         /// </summary>
         /// <param name="Suffix">Suffix to add to the parameter (for batching purposes)</param>

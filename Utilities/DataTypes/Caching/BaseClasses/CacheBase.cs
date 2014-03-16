@@ -165,7 +165,8 @@ namespace Utilities.DataTypes.Caching.BaseClasses
                 return ReturnValue;
             foreach (string Key in TagMappings[Tag])
             {
-                ReturnValue.Add(this[Key]);
+                if (ContainsKey(Key))
+                    ReturnValue.Add(this[Key]);
             }
             return ReturnValue;
         }
@@ -199,6 +200,7 @@ namespace Utilities.DataTypes.Caching.BaseClasses
             if (!TagMappings.ContainsKey(Tag))
                 return;
             TagMappings[Tag].ForEach(x => Remove(x));
+            TagMappings.Remove(Tag);
         }
 
         /// <summary>

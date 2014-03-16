@@ -35,7 +35,7 @@ namespace UnitTests.ORM
         public void All()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
                 "Test String",
@@ -73,7 +73,7 @@ namespace UnitTests.ORM
         public void Any()
         {
             Guid TempGuid = Guid.NewGuid();
-            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource);
+            Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch Temp = new Utilities.ORM.Manager.QueryProvider.Default.DatabaseBatch(TestDatabaseSource, Utilities.IoC.Manager.Bootstrapper);
             Temp.AddCommand(null, null, "insert into TestTable(StringValue1,StringValue2,BigIntValue,BitValue,DecimalValue,FloatValue,DateTimeValue,GUIDValue) VALUES (@0,@1,@2,@3,@4,@5,@6,@7)", CommandType.Text,
                 "Test String",
                 "Test String",

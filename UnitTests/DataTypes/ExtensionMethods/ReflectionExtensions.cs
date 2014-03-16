@@ -95,7 +95,7 @@ namespace UnitTests.Reflection.ExtensionMethods
         [Fact]
         public void GetObjectsTest()
         {
-            Assert.Equal(2, new DirectoryInfo(@".\").Objects<TestInterface>()
+            Assert.Equal(2, new DirectoryInfo(@".\").Objects<TestInterface>(false)
                                                     .Count());
         }
 
