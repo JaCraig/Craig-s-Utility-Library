@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Ironman.Default</id>
-        <version>1.0.0100-beta</version>
+        <version>1.0.0106-beta</version>
         <title>Ironman Framework Default Setup</title>
         <authors>James Craig</authors>
         <owners>James Craig</owners>

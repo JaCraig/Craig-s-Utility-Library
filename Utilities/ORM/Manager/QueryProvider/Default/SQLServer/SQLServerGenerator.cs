@@ -92,7 +92,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         {
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
-            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
+            Parameters = Parameters.Check(new IParameter[] { });
             return QueryProvider.Batch(Source)
                 .AddCommand(null,
                     null, string.Format(CultureInfo.InvariantCulture,
@@ -115,7 +115,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return All(Parameters);
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
-            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
+            Parameters = Parameters.Check(new IParameter[] { });
             return QueryProvider.Batch(Source)
                 .AddCommand(null,
                     null, string.Format(CultureInfo.InvariantCulture,
@@ -137,7 +137,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         {
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
-            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
+            Parameters = Parameters.Check(new IParameter[] { });
             return QueryProvider.Batch(Source)
                 .AddCommand(null,
                     null, string.Format(CultureInfo.InvariantCulture,
@@ -155,7 +155,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Delete(T Object)
         {
-            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider
                 .Batch(Source)
                 .AddCommand(null,
@@ -187,7 +186,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Insert(T Object)
         {
-            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
                                 .AddCommand((x, y) => y[0].CopyTo(x.Object),
                                             Object,
@@ -391,7 +389,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters)
         {
-            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             string WhereCommand = "";
             string OrderBy = Mapping.IDProperties.ToString(x => x.Name);
             int PageStart = CurrentPage * PageSize;
@@ -607,7 +604,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Update(T Object)
         {
-            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
                 .AddCommand(null,
                 null, Mapping.UpdateCommand, Mapping.UpdateCommandType,

@@ -26,6 +26,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
@@ -90,6 +91,7 @@ namespace Utilities.ORM.Manager
         public IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters)
             where ObjectType : class,new()
         {
+            Parameters = Parameters.Check(new IParameter[] { });
             List<Dynamo> ReturnValue = new List<Dynamo>();
             if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_")))
             {
@@ -128,6 +130,7 @@ namespace Utilities.ORM.Manager
         public ObjectType Any<ObjectType>(params IParameter[] Parameters)
             where ObjectType : class,new()
         {
+            Parameters = Parameters.Check(new IParameter[] { });
             Dynamo ReturnValue = null;
             if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_")))
             {
@@ -261,6 +264,8 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
+            if (ReturnValue.Count == 0)
+                return new List<DataType>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping ObjectMapping = MapperProvider[typeof(ObjectType), Source];
@@ -274,16 +279,22 @@ namespace Utilities.ORM.Manager
                         IParameter Parameter = null;
                         foreach (Dynamo Item in ReturnValue)
                         {
-                            if (Parameter == null)
-                                Parameter = new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName);
-                            else
-                                Parameter = new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName));
+                            if (IDProperty.GetParameter(Item) != null)
+                            {
+                                if (Parameter == null)
+                                    Parameter = new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName);
+                                else
+                                    Parameter = new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName));
+                            }
                         }
-                        foreach (Dynamo Item in QueryProvider.Generate<DataType>(Source, Mapping).All(Parameter).Execute()[0])
+                        if (Parameter != null)
                         {
-                            object IDValue = IDProperty.GetValue(Item);
-                            Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                            Item.CopyTo(Value);
+                            foreach (Dynamo Item in QueryProvider.Generate<DataType>(Source, Mapping).All(Parameter).Execute()[0])
+                            {
+                                object IDValue = IDProperty.GetValue(Item);
+                                Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+                                Item.CopyTo(Value);
+                            }
                         }
                     }
                 }
@@ -316,9 +327,10 @@ namespace Utilities.ORM.Manager
         public int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters)
             where ObjectType : class,new()
         {
-            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_")))
+            Parameters = Parameters.Check(new IParameter[] { });
+            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_")))
             {
-                return (int)Cache[typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_")];
+                return (int)Cache[typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_")];
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -333,7 +345,7 @@ namespace Utilities.ORM.Manager
                     if (Count > 0)
                     {
                         int ReturnValue = (Count / PageSize) + (Count % PageSize > 0 ? 1 : 0);
-                        Cache.Add(typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_"),
+                        Cache.Add(typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_"),
                             ReturnValue,
                             new string[] { typeof(ObjectType).GetName() });
                         return ReturnValue;
@@ -354,10 +366,11 @@ namespace Utilities.ORM.Manager
         public IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters)
             where ObjectType : class,new()
         {
+            Parameters = Parameters.Check(new IParameter[] { });
             System.Collections.Generic.List<Dynamo> ReturnValue = new System.Collections.Generic.List<Dynamo>();
-            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString() + "_" + CurrentPage.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_")))
+            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + CurrentPage.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_")))
             {
-                ReturnValue = (List<Dynamo>)Cache[typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString() + "_" + CurrentPage.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_")];
+                ReturnValue = (List<Dynamo>)Cache[typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + CurrentPage.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_")];
                 return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
@@ -382,7 +395,7 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            Cache.Add(typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString() + "_" + CurrentPage.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_"),
+            Cache.Add(typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + CurrentPage.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_"),
                 ReturnValue,
                 new string[] { typeof(ObjectType).GetName() });
             return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });

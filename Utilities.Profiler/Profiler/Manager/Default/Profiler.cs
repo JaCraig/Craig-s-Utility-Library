@@ -79,7 +79,7 @@ namespace Utilities.Profiler.Manager.Default
             {
                 Current = Child;
             }
-            Child.Start();
+            Start();
         }
 
         #endregion Constructors
@@ -206,6 +206,23 @@ namespace Utilities.Profiler.Manager.Default
         }
 
         /// <summary>
+        /// Starts the timer
+        /// </summary>
+        public static void Start()
+        {
+            if (Current == null)
+                return;
+            if (Current.Running)
+            {
+                Current.Running = false;
+                Current.StopWatch.Stop();
+                Current.Times.Add(Current.StopWatch.ElapsedTime);
+            }
+            Current.Running = true;
+            Current.StopWatch.Start();
+        }
+
+        /// <summary>
         /// Disposes the object
         /// </summary>
         public void Dispose()
@@ -244,23 +261,6 @@ namespace Utilities.Profiler.Manager.Default
         public IDisposable Profile(string Name)
         {
             return new Profiler(Name);
-        }
-
-        /// <summary>
-        /// Starts the timer
-        /// </summary>
-        public void Start()
-        {
-            if (Current == null)
-                return;
-            if (Current.Running)
-            {
-                Current.Running = false;
-                Current.StopWatch.Stop();
-                Current.Times.Add(Current.StopWatch.ElapsedTime);
-            }
-            Current.Running = true;
-            Current.StopWatch.Start();
         }
 
         /// <summary>
