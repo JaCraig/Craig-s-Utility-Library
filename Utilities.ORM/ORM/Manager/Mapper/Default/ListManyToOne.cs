@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.Aspect.Interfaces;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
@@ -93,6 +94,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 }
                 Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
             }
+            Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
         }
 
@@ -213,6 +215,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 }
                 Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source, ObjectsSeen.ToList()));
             }
+            Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
         }
 

@@ -89,6 +89,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 Batch.AddCommand(Property.CascadeDelete(Item, Source, ObjectsSeen.ToList()));
             }
             Batch.AddCommand(Provider.Generate<DataType>(Source, PropertyMapping).Delete(Item));
+            Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
         }
 
@@ -198,6 +199,7 @@ namespace Utilities.ORM.Manager.Mapper.Default
                 Batch.AddCommand(Property.CascadeSave(Item, Source, ObjectsSeen.ToList()));
             }
             Batch.AddCommand(((IProperty<DataType>)PropertyMapping.IDProperties.FirstOrDefault()).CascadeSave(Item, Source, ObjectsSeen.ToList()));
+            Utilities.IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache().RemoveByTag(typeof(DataType).GetName());
             return Batch;
         }
 
