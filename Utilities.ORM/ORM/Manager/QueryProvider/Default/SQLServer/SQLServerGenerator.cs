@@ -29,7 +29,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.DataTypes.Comparison;
+using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -52,12 +54,19 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
         /// <param name="Mapping">Mapping info</param>
-        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping)
+        /// <param name="Bootstrapper">Bootstrapper</param>
+        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping, IBootstrapper Bootstrapper)
         {
             this.QueryProvider = QueryProvider;
             this.Source = Source;
             this.Mapping = Mapping;
+            this.Bootstrapper = Bootstrapper;
         }
+
+        /// <summary>
+        /// Bootstrapper
+        /// </summary>
+        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Mapping that the generator uses
@@ -83,8 +92,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         {
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
+            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null,
+                    null, string.Format(CultureInfo.InvariantCulture,
                     "{0}{1}",
                     Mapping.SelectAllCommand,
                     Parameters != null && Parameters.Length > 0 ? " WHERE " + Parameters.ToString(x => x.ToString(), " AND ") : ""),
@@ -104,8 +115,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return All(Parameters);
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
+            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null,
+                    null, string.Format(CultureInfo.InvariantCulture,
                     "SELECT TOP {0} {1} FROM {2}{3}",
                     Limit,
                     GetColumns(Mapping),
@@ -124,8 +137,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         {
             if (Mapping == null)
                 return QueryProvider.Batch(Source);
+            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null,
+                    null, string.Format(CultureInfo.InvariantCulture,
                     "{0}{1}",
                     Mapping.SelectAnyCommand,
                     Parameters != null && Parameters.Length > 0 ? " WHERE " + Parameters.ToString(x => x.ToString(), " AND ") : ""),
@@ -140,9 +155,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Delete(T Object)
         {
+            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider
                 .Batch(Source)
-                .AddCommand(null, null,
+                .AddCommand(null,
+                            null,
                             Mapping.DeleteCommand,
                             Mapping.DeleteCommandType,
                             Mapping.IDProperties.ToArray(x => x.GetParameter(Object)));
@@ -170,8 +187,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Insert(T Object)
         {
+            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                                .AddCommand((x, y) => y[0].CopyTo(x),
+                                .AddCommand((x, y) => y[0].CopyTo(x.Object),
                                             Object,
                                             Mapping.InsertCommand,
                                             Mapping.InsertCommandType,
@@ -373,6 +391,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Paged(int PageSize, int CurrentPage, params IParameter[] Parameters)
         {
+            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             string WhereCommand = "";
             string OrderBy = Mapping.IDProperties.ToString(x => x.Name);
             int PageStart = CurrentPage * PageSize;
@@ -380,7 +399,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
             return QueryProvider
                 .Batch(Source)
-                .AddCommand(null, null, string.Format(CultureInfo.InvariantCulture,
+                .AddCommand(null,
+                    null, string.Format(CultureInfo.InvariantCulture,
                     "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {0}) AS Row, Query.* FROM (SELECT {1} FROM {2} {3}) as Query) AS Paged WHERE Row>{4} AND Row<={5}",
                     OrderBy,
                     GetColumns(Mapping),
@@ -587,8 +607,10 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>Batch with the appropriate commands</returns>
         public IBatch Update(T Object)
         {
+            ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                .AddCommand(null, null, Mapping.UpdateCommand, Mapping.UpdateCommandType,
+                .AddCommand(null,
+                null, Mapping.UpdateCommand, Mapping.UpdateCommandType,
                 Mapping.Properties
                         .Where(x => x is IMap || x is IReference)
                         .Where(x => !x.AutoIncrement)

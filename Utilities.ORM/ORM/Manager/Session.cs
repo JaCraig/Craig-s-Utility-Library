@@ -29,6 +29,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.IoC.Interfaces;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Aspect.Interfaces;
@@ -57,7 +58,13 @@ namespace Utilities.ORM.Manager
             QueryProvider = IoC.Manager.Bootstrapper.Resolve<QueryProvider.Manager>();
             SourceProvider = IoC.Manager.Bootstrapper.Resolve<SourceProvider.Manager>();
             MapperProvider = IoC.Manager.Bootstrapper.Resolve<Mapper.Manager>();
+            Cache = IoC.Manager.Bootstrapper.Resolve<DataTypes.Caching.Manager>().Cache();
         }
+
+        /// <summary>
+        /// Cache that is used
+        /// </summary>
+        private ICache Cache { get; set; }
 
         /// <summary>
         /// Mapper provider
@@ -83,28 +90,33 @@ namespace Utilities.ORM.Manager
         public IEnumerable<ObjectType> All<ObjectType>(params IParameter[] Parameters)
             where ObjectType : class,new()
         {
-            List<ObjectType> ReturnValue = new List<ObjectType>();
+            List<Dynamo> ReturnValue = new List<Dynamo>();
+            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_")))
+            {
+                ReturnValue = (List<Dynamo>)Cache[typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_")];
+                return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
+            }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, Mapping).All(Parameters).Execute()[0])
+                    foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping).All(Parameters).Execute()[0])
                     {
-                        ObjectType Temp = Item;
                         IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
-                        object IDValue = IDProperty.GetValue(Temp);
-                        ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                        if (Value == default(ObjectType))
-                            ReturnValue.Add(Temp);
+                        object IDValue = IDProperty.GetValue(Item);
+                        Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+                        if (Value == null)
+                            ReturnValue.Add(Item);
                         else
-                        {
                             Item.CopyTo(Value);
-                        }
                     }
                 }
             }
-            return ReturnValue;
+            Cache.Add(typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_"),
+                ReturnValue,
+                new string[] { typeof(ObjectType).GetName() });
+            return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
         }
 
         /// <summary>
@@ -116,13 +128,18 @@ namespace Utilities.ORM.Manager
         public ObjectType Any<ObjectType>(params IParameter[] Parameters)
             where ObjectType : class,new()
         {
-            ObjectType ReturnValue = null;
+            Dynamo ReturnValue = null;
+            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_")))
+            {
+                ReturnValue = (Dynamo)Cache[typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_")];
+                return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
+            }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
                 if (Mapping != null)
                 {
-                    dynamic Value = QueryProvider.Generate<ObjectType>(Source, Mapping).Any(Parameters).Execute()[0].FirstOrDefault();
+                    Dynamo Value = QueryProvider.Generate<ObjectType>(Source, Mapping).Any(Parameters).Execute()[0].FirstOrDefault();
                     if (Value != null)
                     {
                         if (ReturnValue == null)
@@ -132,7 +149,10 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            return ReturnValue;
+            Cache.Add(typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_"),
+                ReturnValue,
+                new string[] { typeof(ObjectType).GetName() });
+            return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
         }
 
         /// <summary>
@@ -146,7 +166,12 @@ namespace Utilities.ORM.Manager
             where ObjectType : class,new()
             where IDType : IComparable
         {
-            ObjectType ReturnValue = null;
+            Dynamo ReturnValue = null;
+            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Any_" + ID.ToString()))
+            {
+                ReturnValue = (Dynamo)Cache[typeof(ObjectType).GetName() + "_Any_" + ID.ToString()];
+                return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
+            }
             string StringID = ID.ToString();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -156,7 +181,7 @@ namespace Utilities.ORM.Manager
                     IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
                     if (IDProperty != null)
                     {
-                        dynamic Value = typeof(IDType) == typeof(string) ?
+                        Dynamo Value = typeof(IDType) == typeof(string) ?
                             QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new StringEqualParameter(StringID, IDProperty.FieldName, StringID.Length, Source.ParameterPrefix)).Execute()[0].FirstOrDefault() :
                             QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new EqualParameter<IDType>(ID, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault();
                         if (Value != null)
@@ -169,7 +194,10 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            return ReturnValue;
+            Cache.Add(typeof(ObjectType).GetName() + "_Any_" + ID.ToString(),
+                ReturnValue,
+                new string[] { typeof(ObjectType).GetName() });
+            return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
         }
 
         /// <summary>
@@ -180,6 +208,7 @@ namespace Utilities.ORM.Manager
         public void Delete<ObjectType>(ObjectType Object)
             where ObjectType : class,new()
         {
+            Cache.RemoveByTag(typeof(ObjectType).GetName());
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
@@ -206,7 +235,7 @@ namespace Utilities.ORM.Manager
             where ObjectType : class,new()
             where DataType : class,new()
         {
-            System.Collections.Generic.List<DataType> ReturnValue = new System.Collections.Generic.List<DataType>();
+            System.Collections.Generic.List<Dynamo> ReturnValue = new System.Collections.Generic.List<Dynamo>();
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
@@ -215,16 +244,15 @@ namespace Utilities.ORM.Manager
                     IProperty Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
                     if (Property != null)
                     {
-                        foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
+                        foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
                             .LoadProperty<DataType>(Object, Property)
                             .Execute()[0])
                         {
-                            DataType Temp = Item;
                             IProperty IDProperty = Property.ForeignMapping.IDProperties.FirstOrDefault();
-                            object IDValue = IDProperty.GetValue(Temp);
-                            DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                            if (Value == default(DataType))
-                                ReturnValue.Add(Temp);
+                            object IDValue = IDProperty.GetValue(Item);
+                            Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+                            if (Value == null)
+                                ReturnValue.Add(Item);
                             else
                             {
                                 Item.CopyTo(Value);
@@ -244,35 +272,23 @@ namespace Utilities.ORM.Manager
                     {
                         IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
                         IParameter Parameter = null;
-                        foreach (DataType Item in ReturnValue)
+                        foreach (Dynamo Item in ReturnValue)
                         {
                             if (Parameter == null)
                                 Parameter = new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName);
                             else
                                 Parameter = new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName));
                         }
-                        foreach (dynamic Item in QueryProvider.Generate<DataType>(Source, Mapping).All(Parameter).Execute()[0])
+                        foreach (Dynamo Item in QueryProvider.Generate<DataType>(Source, Mapping).All(Parameter).Execute()[0])
                         {
-                            DataType Temp = Item;
-                            object IDValue = IDProperty.GetValue(Temp);
-                            DataType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                            if (Value == default(DataType))
-                                ReturnValue.Add(Temp);
-                            else
-                            {
-                                Item.CopyTo(Value);
-                            }
+                            object IDValue = IDProperty.GetValue(Item);
+                            Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+                            Item.CopyTo(Value);
                         }
                     }
                 }
             }
-            foreach (IORMObject TempItem in ReturnValue)
-            {
-                if (TempItem != null)
-                    TempItem.Session0 = this;
-            }
-
-            return ReturnValue;
+            return ReturnValue.Select(x => x.To<DataType>()).ForEach(x => { ((IORMObject)x).Session0 = this; }).ToList();
         }
 
         /// <summary>
@@ -300,6 +316,10 @@ namespace Utilities.ORM.Manager
         public int PageCount<ObjectType>(int PageSize = 25, params IParameter[] Parameters)
             where ObjectType : class,new()
         {
+            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_")))
+            {
+                return (int)Cache[typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_")];
+            }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
@@ -311,7 +331,13 @@ namespace Utilities.ORM.Manager
                         .FirstOrDefault()
                         .Total;
                     if (Count > 0)
-                        return (Count / PageSize) + (Count % PageSize > 0 ? 1 : 0);
+                    {
+                        int ReturnValue = (Count / PageSize) + (Count % PageSize > 0 ? 1 : 0);
+                        Cache.Add(typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_"),
+                            ReturnValue,
+                            new string[] { typeof(ObjectType).GetName() });
+                        return ReturnValue;
+                    }
                 }
             }
             return 0;
@@ -328,7 +354,12 @@ namespace Utilities.ORM.Manager
         public IEnumerable<ObjectType> Paged<ObjectType>(int PageSize = 25, int CurrentPage = 0, params IParameter[] Parameters)
             where ObjectType : class,new()
         {
-            System.Collections.Generic.List<ObjectType> ReturnValue = new System.Collections.Generic.List<ObjectType>();
+            System.Collections.Generic.List<Dynamo> ReturnValue = new System.Collections.Generic.List<Dynamo>();
+            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString() + "_" + CurrentPage.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_")))
+            {
+                ReturnValue = (List<Dynamo>)Cache[typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString() + "_" + CurrentPage.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_")];
+                return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
+            }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
@@ -337,29 +368,24 @@ namespace Utilities.ORM.Manager
                     IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
                     if (IDProperty != null)
                     {
-                        foreach (dynamic Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
+                        foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping)
                             .Paged(PageSize, CurrentPage, Parameters)
                             .Execute()[0])
                         {
-                            ObjectType Temp = Item;
-                            object IDValue = IDProperty.GetValue(Temp);
-                            ObjectType Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
-                            if (Value == default(ObjectType))
-                                ReturnValue.Add(Temp);
+                            object IDValue = IDProperty.GetValue(Item);
+                            Dynamo Value = ReturnValue.FirstOrDefault(x => IDProperty.GetValue(x).Equals(IDValue));
+                            if (Value == null)
+                                ReturnValue.Add(Item);
                             else
                                 Item.CopyTo(Value);
                         }
                     }
                 }
             }
-
-            foreach (IORMObject TempItem in ReturnValue)
-            {
-                if (TempItem != null)
-                    TempItem.Session0 = this;
-            }
-
-            return ReturnValue;
+            Cache.Add(typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString() + "_" + CurrentPage.ToString() + "_" + Parameters.ToString(x => x.ToString(), "_"),
+                ReturnValue,
+                new string[] { typeof(ObjectType).GetName() });
+            return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
         }
 
         /// <summary>
@@ -371,6 +397,7 @@ namespace Utilities.ORM.Manager
         public void Save<ObjectType, PrimaryKeyType>(ObjectType Object)
             where ObjectType : class,new()
         {
+            Cache.RemoveByTag(typeof(ObjectType).GetName());
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Writable).OrderBy(x => x.Order))
             {
                 IMapping Mapping = MapperProvider[typeof(ObjectType), Source];

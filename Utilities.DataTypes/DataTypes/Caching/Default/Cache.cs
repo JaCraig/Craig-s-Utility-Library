@@ -25,6 +25,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities.DataTypes.Caching.BaseClasses;
 using Utilities.DataTypes.Caching.Interfaces;
 
 #endregion Usings
@@ -34,7 +35,7 @@ namespace Utilities.DataTypes.Caching.Default
     /// <summary>
     /// Built in cache
     /// </summary>
-    public class Cache : ICache
+    public class Cache : CacheBase
     {
         #region Constructor
 
@@ -42,6 +43,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// Constructor
         /// </summary>
         public Cache()
+            : base()
         {
             InternalCache = new ConcurrentDictionary<string, object>();
         }
@@ -53,51 +55,27 @@ namespace Utilities.DataTypes.Caching.Default
         /// <summary>
         /// The number of items in the cache
         /// </summary>
-        public int Count { get { return InternalCache.Count; } }
-
-        /// <summary>
-        /// Read only
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
+        public override int Count { get { return InternalCache.Count; } }
 
         /// <summary>
         /// Keys
         /// </summary>
-        public ICollection<string> Keys { get { return InternalCache.Keys; } }
+        public override ICollection<string> Keys { get { return InternalCache.Keys; } }
 
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get { return "Default"; } }
+        public override string Name { get { return "Default"; } }
 
         /// <summary>
         /// Values
         /// </summary>
-        public ICollection<object> Values { get { return InternalCache.Values; } }
+        public override ICollection<object> Values { get { return InternalCache.Values; } }
 
         /// <summary>
         /// Internal cache
         /// </summary>
         protected ConcurrentDictionary<string, object> InternalCache { get; private set; }
-
-        /// <summary>
-        /// Indexer
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>The object specified</returns>
-        public object this[string key]
-        {
-            get
-            {
-                object Value = null;
-                TryGetValue(key, out Value);
-                return Value;
-            }
-            set
-            {
-                Add(key, value);
-            }
-        }
 
         #endregion Properties
 
@@ -108,24 +86,15 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="key">Key of the item</param>
         /// <param name="value">Value to add</param>
-        public void Add(string key, object value)
+        public override void Add(string key, object value)
         {
             InternalCache.AddOrUpdate(key, value, (x, y) => value);
         }
 
         /// <summary>
-        /// Adds an item to the cache
-        /// </summary>
-        /// <param name="item">item to add</param>
-        public void Add(KeyValuePair<string, object> item)
-        {
-            Add(item.Key, item.Value);
-        }
-
-        /// <summary>
         /// Clears the cache
         /// </summary>
-        public void Clear()
+        public override void Clear()
         {
             InternalCache.Clear();
         }
@@ -135,7 +104,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="item">item to check for</param>
         /// <returns></returns>
-        public bool Contains(KeyValuePair<string, object> item)
+        public override bool Contains(KeyValuePair<string, object> item)
         {
             return InternalCache.Contains(item);
         }
@@ -145,7 +114,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="key">Key to check</param>
         /// <returns>True if it is there, false otherwise</returns>
-        public bool ContainsKey(string key)
+        public override bool ContainsKey(string key)
         {
             return InternalCache.ContainsKey(key);
         }
@@ -155,32 +124,16 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="array">Array to copy to</param>
         /// <param name="arrayIndex">Index to start at</param>
-        public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
+        public override void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
             InternalCache.ToArray().CopyTo(array, arrayIndex);
-        }
-
-        /// <summary>
-        /// Disposes the cache
-        /// </summary>
-        public void Dispose()
-        {
-            if (InternalCache != null)
-            {
-                foreach (IDisposable Item in InternalCache.Values.OfType<IDisposable>())
-                {
-                    Item.Dispose();
-                }
-                InternalCache.Clear();
-                InternalCache = null;
-            }
         }
 
         /// <summary>
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+        public override IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
             return InternalCache.GetEnumerator();
         }
@@ -190,7 +143,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="key">key to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(string key)
+        public override bool Remove(string key)
         {
             object Value = null;
             return InternalCache.TryRemove(key, out Value);
@@ -201,19 +154,10 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="item">Item to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(KeyValuePair<string, object> item)
+        public override bool Remove(KeyValuePair<string, object> item)
         {
             object Value = null;
             return InternalCache.TryRemove(item.Key, out Value);
-        }
-
-        /// <summary>
-        /// Gets the enumerator
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return InternalCache.GetEnumerator();
         }
 
         /// <summary>
@@ -222,9 +166,26 @@ namespace Utilities.DataTypes.Caching.Default
         /// <param name="key">Key to get</param>
         /// <param name="value">Value of the item</param>
         /// <returns>True if it is found, false otherwise</returns>
-        public bool TryGetValue(string key, out object value)
+        public override bool TryGetValue(string key, out object value)
         {
             return InternalCache.TryGetValue(key, out value);
+        }
+
+        /// <summary>
+        /// Disposes the cache
+        /// </summary>
+        /// <param name="Managed">Managed objects or just unmanaged</param>
+        protected override void Dispose(bool Managed)
+        {
+            if (InternalCache != null)
+            {
+                foreach (IDisposable Item in InternalCache.Values.OfType<IDisposable>())
+                {
+                    Item.Dispose();
+                }
+                InternalCache.Clear();
+                InternalCache = null;
+            }
         }
 
         #endregion Functions

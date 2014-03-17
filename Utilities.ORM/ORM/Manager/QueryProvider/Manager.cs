@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
+using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -42,13 +43,19 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        public Manager(IBootstrapper Bootstrapper)
         {
             Providers = AppDomain.CurrentDomain
                                  .GetAssemblies()
-                                 .Objects<Interfaces.IQueryProvider>()
+                                 .Objects<Interfaces.IQueryProvider>(Bootstrapper)
                                  .ToDictionary(x => x.ProviderName);
+            this.Bootstrapper = Bootstrapper;
         }
+
+        /// <summary>
+        /// Bootstrapper
+        /// </summary>
+        protected IBootstrapper Bootstrapper { get; set; }
 
         /// <summary>
         /// Providers

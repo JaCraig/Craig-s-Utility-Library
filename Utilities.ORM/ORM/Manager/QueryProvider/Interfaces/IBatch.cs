@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Utilities.ORM.Manager.QueryProvider.Default;
 
 #endregion Usings
 
@@ -47,7 +48,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <param name="CallBack">Callback action</param>
         /// <param name="Object">Object used in the callback action</param>
         /// <returns>This</returns>
-        IBatch AddCommand(Action<object, IList<dynamic>> CallBack, object Object, CommandType CommandType, string Command);
+        IBatch AddCommand(Action<Command, IList<dynamic>> CallBack, object Object, CommandType CommandType, string Command);
 
         /// <summary>
         /// Adds a command to be batched
@@ -58,7 +59,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <param name="CallBack">Callback action</param>
         /// <param name="Object">Object used in the callback action</param>
         /// <returns>This</returns>
-        IBatch AddCommand(Action<object, IList<dynamic>> CallBack, object Object, string Command, CommandType CommandType, params object[] Parameters);
+        IBatch AddCommand(Action<Command, IList<dynamic>> CallBack, object Object, string Command, CommandType CommandType, params object[] Parameters);
 
         /// <summary>
         /// Adds a command to be batched
@@ -69,7 +70,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Interfaces
         /// <param name="CallBack">Callback action</param>
         /// <param name="Object">Object used in the callback action</param>
         /// <returns>This</returns>
-        IBatch AddCommand(Action<object, IList<dynamic>> CallBack, object Object, string Command, CommandType CommandType, params IParameter[] Parameters);
+        IBatch AddCommand(Action<Command, IList<dynamic>> CallBack, object Object, string Command, CommandType CommandType, params IParameter[] Parameters);
 
         /// <summary>
         /// Adds a batch's commands to the current batch

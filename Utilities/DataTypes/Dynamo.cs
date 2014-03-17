@@ -568,6 +568,30 @@ namespace Utilities.DataTypes
         }
 
         /// <summary>
+        /// Converts the object to the type specified
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <returns>The object converted to the type specified</returns>
+        public T To<T>()
+        {
+            return (T)To(typeof(T));
+        }
+
+        /// <summary>
+        /// Converts the object to the type specified
+        /// </summary>
+        /// <param name="ObjectType">Object type</param>
+        /// <returns>The object converted to the type specified</returns>
+        public object To(Type ObjectType)
+        {
+            object Result = IoC.Manager.Bootstrapper.Resolve<AOP.Manager>().Create(ObjectType);
+            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), ObjectType)
+                .AutoMap()
+                .Copy(this, Result);
+            return Result;
+        }
+
+        /// <summary>
         /// Outputs the object graph
         /// </summary>
         /// <returns>The string version of the object</returns>
@@ -594,10 +618,7 @@ namespace Utilities.DataTypes
         /// <returns>True if it is converted, false otherwise</returns>
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
-            result = IoC.Manager.Bootstrapper.Resolve<AOP.Manager>().Create(binder.Type);
-            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), binder.Type)
-                .AutoMap()
-                .Copy(this, result);
+            result = To(binder.Type);
             return true;
         }
 

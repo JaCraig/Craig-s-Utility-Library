@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using Utilities.DataTypes.Patterns.BaseClasses;
+using Utilities.Profiler.Manager.Interfaces;
 
 #endregion Usings
 
@@ -46,6 +47,25 @@ namespace Utilities.Profiler
         /// Profiler Object
         /// </summary>
         private IDisposable ProfilerObject { get; set; }
+
+        /// <summary>
+        /// Starts profiling
+        /// </summary>
+        /// <returns>The profiler object</returns>
+        public static IDisposable StartProfiling()
+        {
+            return Manager.Manager.StartProfiling();
+        }
+
+        /// <summary>
+        /// Stops profiling and returns the result
+        /// </summary>
+        /// <param name="DiscardResults">Determines if the results should be discarded or not</param>
+        /// <returns>Result of the profiling</returns>
+        public static IResult StopProfiling(bool DiscardResults)
+        {
+            return Manager.Manager.StopProfiling(DiscardResults);
+        }
 
         /// <summary>
         /// ToString

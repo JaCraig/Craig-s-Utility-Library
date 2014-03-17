@@ -66,6 +66,13 @@ namespace UnitTests.DataTypes.Dynamic
             Temp2 = Temp;
             Assert.Equal("Testing", Temp2.A);
             Assert.Equal(1, Temp2.B);
+
+            Temp = new Utilities.DataTypes.Dynamo();
+            Temp.A = "Testing";
+            Temp.B = 1;
+            Temp2 = Temp.To<TestClass2>();
+            Assert.Equal("Testing", Temp2.A);
+            Assert.Equal(1, Temp2.B);
         }
 
         [Fact]

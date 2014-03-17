@@ -297,6 +297,16 @@ namespace Utilities.ORM.Manager.Mapper.BaseClasses
         }
 
         /// <summary>
+        /// Gets the property's value from the object sent in
+        /// </summary>
+        /// <param name="Object">Object to get the value from</param>
+        /// <returns>The value of the property</returns>
+        public object GetValue(Dynamo Object)
+        {
+            return Object[this.Name];
+        }
+
+        /// <summary>
         /// Called to create a batch that deletes items from the joining table
         /// </summary>
         /// <param name="Object">Object</param>

@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
+using Utilities.DataTypes.Caching.BaseClasses;
 using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.DataTypes.Patterns.BaseClasses;
 
@@ -35,7 +36,7 @@ namespace Utilities.DataTypes.Caching.Default
     /// <summary>
     /// Cache used in ASP.Net for cache level cache
     /// </summary>
-    public class CacheCache : SafeDisposableBaseClass, ICache
+    public class CacheCache : CacheBase
     {
         #region Constructor
 
@@ -43,6 +44,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// Constructor
         /// </summary>
         public CacheCache()
+            : base()
         {
             InternalKeys = new List<string>();
         }
@@ -54,7 +56,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// <summary>
         /// The number of items in the cache
         /// </summary>
-        public int Count
+        public override int Count
         {
             get
             {
@@ -65,14 +67,9 @@ namespace Utilities.DataTypes.Caching.Default
         }
 
         /// <summary>
-        /// Read only
-        /// </summary>
-        public bool IsReadOnly { get { return false; } }
-
-        /// <summary>
         /// Keys
         /// </summary>
-        public ICollection<string> Keys
+        public override ICollection<string> Keys
         {
             get
             {
@@ -83,12 +80,12 @@ namespace Utilities.DataTypes.Caching.Default
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get { return "Cache"; } }
+        public override string Name { get { return "Cache"; } }
 
         /// <summary>
         /// Values
         /// </summary>
-        public ICollection<object> Values
+        public override ICollection<object> Values
         {
             get
             {
@@ -108,25 +105,6 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         private List<string> InternalKeys { get; set; }
 
-        /// <summary>
-        /// Indexer
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>The object specified</returns>
-        public object this[string key]
-        {
-            get
-            {
-                object Value = null;
-                TryGetValue(key, out Value);
-                return Value;
-            }
-            set
-            {
-                Add(key, value);
-            }
-        }
-
         #endregion Properties
 
         #region Functions
@@ -136,7 +114,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="key">Key of the item</param>
         /// <param name="value">Value to add</param>
-        public void Add(string key, object value)
+        public override void Add(string key, object value)
         {
             if (HttpContext.Current == null)
                 return;
@@ -148,18 +126,9 @@ namespace Utilities.DataTypes.Caching.Default
         }
 
         /// <summary>
-        /// Adds an item to the cache
-        /// </summary>
-        /// <param name="item">item to add</param>
-        public void Add(KeyValuePair<string, object> item)
-        {
-            Add(item.Key, item.Value);
-        }
-
-        /// <summary>
         /// Clears the cache
         /// </summary>
-        public void Clear()
+        public override void Clear()
         {
             List<string> Temp = Keys.ToList();
             foreach (string Key in Temp)
@@ -173,7 +142,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="item">item to check for</param>
         /// <returns></returns>
-        public bool Contains(KeyValuePair<string, object> item)
+        public override bool Contains(KeyValuePair<string, object> item)
         {
             return ContainsKey(item.Key);
         }
@@ -183,7 +152,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="key">Key to check</param>
         /// <returns>True if it is there, false otherwise</returns>
-        public bool ContainsKey(string key)
+        public override bool ContainsKey(string key)
         {
             if (HttpContext.Current == null)
                 return false;
@@ -195,7 +164,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="array">Array to copy to</param>
         /// <param name="arrayIndex">Index to start at</param>
-        public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
+        public override void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
             if (HttpContext.Current == null)
                 return;
@@ -205,7 +174,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// Gets the enumerator
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+        public override IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
             if (HttpContext.Current == null)
                 return new List<KeyValuePair<string, object>>().GetEnumerator();
@@ -222,7 +191,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="key">key to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(string key)
+        public override bool Remove(string key)
         {
             if (HttpContext.Current == null)
                 return false;
@@ -236,20 +205,11 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         /// <param name="item">Item to remove</param>
         /// <returns>True if it is removed, false otherwise</returns>
-        public bool Remove(KeyValuePair<string, object> item)
+        public override bool Remove(KeyValuePair<string, object> item)
         {
             if (HttpContext.Current == null)
                 return false;
             return Remove(item.Key);
-        }
-
-        /// <summary>
-        /// Gets the enumerator
-        /// </summary>
-        /// <returns>The enumerator</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         /// <summary>
@@ -258,7 +218,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// <param name="key">Key to get</param>
         /// <param name="value">Value of the item</param>
         /// <returns>True if it is found, false otherwise</returns>
-        public bool TryGetValue(string key, out object value)
+        public override bool TryGetValue(string key, out object value)
         {
             if (HttpContext.Current == null)
             {

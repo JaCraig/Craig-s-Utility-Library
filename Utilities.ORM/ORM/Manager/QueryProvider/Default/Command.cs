@@ -27,6 +27,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using Utilities.DataTypes;
+using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 
 #endregion Usings
@@ -46,7 +47,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="Parameters">Parameters</param>
         /// <param name="CallBack">Called when command has been executed</param>
         /// <param name="Object">Object</param>
-        public Command(Action<object, IList<dynamic>> CallBack, object Object, string SQLCommand, CommandType CommandType, IParameter[] Parameters)
+        public Command(Action<Command, IList<dynamic>> CallBack, object Object, string SQLCommand, CommandType CommandType, IParameter[] Parameters)
         {
             this.SQLCommand = SQLCommand;
             this.CommandType = CommandType;
@@ -65,7 +66,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="ParameterStarter">Parameter starter</param>
         /// <param name="CallBack">Called when command has been executed</param>
         /// <param name="Object">Object</param>
-        public Command(Action<object, IList<dynamic>> CallBack, object Object, string SQLCommand, CommandType CommandType, string ParameterStarter, object[] Parameters)
+        public Command(Action<Command, IList<dynamic>> CallBack, object Object, string SQLCommand, CommandType CommandType, string ParameterStarter, object[] Parameters)
         {
             this.SQLCommand = SQLCommand;
             this.CommandType = CommandType;
@@ -91,7 +92,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <summary>
         /// Call back
         /// </summary>
-        public Action<object, IList<dynamic>> CallBack { get; private set; }
+        public Action<Command, IList<dynamic>> CallBack { get; private set; }
 
         /// <summary>
         /// Command type
@@ -151,7 +152,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="Result">Result of the command</param>
         public void Finalize(IList<dynamic> Result)
         {
-            CallBack(Object, Result);
+            CallBack(this, Result);
         }
 
         /// <summary>
@@ -179,7 +180,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <returns>The string representation of the command</returns>
         public override string ToString()
         {
-            return SQLCommand.Check("");
+            string TempCommand = SQLCommand.Check("");
+            Parameters.ForEach(x => { TempCommand = x.AddParameter(TempCommand); });
+            return TempCommand;
         }
     }
 }

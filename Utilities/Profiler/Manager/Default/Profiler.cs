@@ -251,14 +251,16 @@ namespace Utilities.Profiler.Manager.Default
         /// </summary>
         public void Start()
         {
-            if (Running)
+            if (Current == null)
+                return;
+            if (Current.Running)
             {
-                Running = false;
-                StopWatch.Stop();
-                Times.Add(StopWatch.ElapsedTime);
+                Current.Running = false;
+                Current.StopWatch.Stop();
+                Current.Times.Add(Current.StopWatch.ElapsedTime);
             }
-            Running = true;
-            StopWatch.Start();
+            Current.Running = true;
+            Current.StopWatch.Start();
         }
 
         /// <summary>
@@ -275,11 +277,13 @@ namespace Utilities.Profiler.Manager.Default
         /// </summary>
         public void Stop()
         {
-            if (Running)
+            if (Current == null)
+                return;
+            if (Current.Running)
             {
-                Running = false;
-                StopWatch.Stop();
-                Times.Add(StopWatch.ElapsedTime);
+                Current.Running = false;
+                Current.StopWatch.Stop();
+                Current.Times.Add(Current.StopWatch.ElapsedTime);
                 Current = Parent;
             }
         }
@@ -291,6 +295,8 @@ namespace Utilities.Profiler.Manager.Default
         /// <returns>The root profiler</returns>
         public IResult StopProfiling(bool DiscardResults)
         {
+            if (Root == null)
+                return null;
             Root.Stop();
             if (DiscardResults)
                 Root.Times.Clear();
@@ -308,7 +314,7 @@ namespace Utilities.Profiler.Manager.Default
             Builder.AppendLineFormat("{0} ({1} ms)", Function, Times.Sum());
             foreach (string Key in Children.Keys)
             {
-                Builder.AppendLineFormat(Children[Key].ToString());
+                Builder.AppendLine(Children[Key].ToString());
             }
             return Builder.ToString();
         }

@@ -43,7 +43,7 @@ namespace Ironman.Core.BaseClasses
             {
                 if (!UserCanProfile())
                 {
-                    Utilities.Profiler.Manager.Manager.StopProfiling(true);
+                    Utilities.Profiler.Profiler.StopProfiling(true);
                 }
             }
             catch { }
@@ -56,7 +56,7 @@ namespace Ironman.Core.BaseClasses
         {
             try
             {
-                Utilities.Profiler.Manager.Manager.StartProfiling();
+                Utilities.Profiler.Profiler.StartProfiling();
             }
             catch { }
         }
@@ -68,7 +68,7 @@ namespace Ironman.Core.BaseClasses
         {
             try
             {
-                Utilities.Profiler.Manager.Manager.StopProfiling(false);
+                Utilities.Profiler.Profiler.StopProfiling(false);
             }
             catch { }
         }

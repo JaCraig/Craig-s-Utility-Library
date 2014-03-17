@@ -94,7 +94,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return QueryProvider.Batch(Source);
             ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                .AddCommand((x, y) => Cache.Add(x.ToString(), y, new string[] { typeof(T).Name, typeof(T).Name + "_All" }),
+                .AddCommand(null,
                     null, string.Format(CultureInfo.InvariantCulture,
                     "{0}{1}",
                     Mapping.SelectAllCommand,
@@ -117,7 +117,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return QueryProvider.Batch(Source);
             ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                .AddCommand((x, y) => Cache.Add(x.ToString(), y, new string[] { typeof(T).Name, typeof(T).Name + "_All" }),
+                .AddCommand(null,
                     null, string.Format(CultureInfo.InvariantCulture,
                     "SELECT TOP {0} {1} FROM {2}{3}",
                     Limit,
@@ -139,7 +139,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return QueryProvider.Batch(Source);
             ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                .AddCommand((x, y) => Cache.Add(x.ToString(), y, new string[] { typeof(T).Name, typeof(T).Name + "_Any_" + Parameters.ToString(z => z.ToString()) }),
+                .AddCommand(null,
                     null, string.Format(CultureInfo.InvariantCulture,
                     "{0}{1}",
                     Mapping.SelectAnyCommand,
@@ -158,7 +158,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
             ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider
                 .Batch(Source)
-                .AddCommand((x, y) => Cache.RemoveByTag(typeof(T).Name),
+                .AddCommand(null,
                             null,
                             Mapping.DeleteCommand,
                             Mapping.DeleteCommandType,
@@ -189,11 +189,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         {
             ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                                .AddCommand((x, y) =>
-                                            {
-                                                y[0].CopyTo(x.Object);
-                                                Cache.RemoveByTag(typeof(T).Name);
-                                            },
+                                .AddCommand((x, y) => y[0].CopyTo(x.Object),
                                             Object,
                                             Mapping.InsertCommand,
                                             Mapping.InsertCommandType,
@@ -403,7 +399,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 WhereCommand += " WHERE " + Parameters.ToString(x => x.ToString(), " AND ");
             return QueryProvider
                 .Batch(Source)
-                .AddCommand((x, y) => Cache.Add(x.ToString(), y, new string[] { typeof(T).Name, typeof(T).Name + "_Paged" }),
+                .AddCommand(null,
                     null, string.Format(CultureInfo.InvariantCulture,
                     "SELECT Paged.* FROM (SELECT ROW_NUMBER() OVER (ORDER BY {0}) AS Row, Query.* FROM (SELECT {1} FROM {2} {3}) as Query) AS Paged WHERE Row>{4} AND Row<={5}",
                     OrderBy,
@@ -613,7 +609,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         {
             ICache Cache = Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache();
             return QueryProvider.Batch(Source)
-                .AddCommand((x, y) => Cache.RemoveByTag(typeof(T).Name),
+                .AddCommand(null,
                 null, Mapping.UpdateCommand, Mapping.UpdateCommandType,
                 Mapping.Properties
                         .Where(x => x is IMap || x is IReference)

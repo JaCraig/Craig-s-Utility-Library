@@ -19,34 +19,45 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Utilities.ORM.Interfaces;
 
-using Utilities.IoC.Interfaces;
-
-#endregion Usings
-
-namespace Utilities.ORM.Manager.QueryProvider.Module
+namespace SpeedTests.Configuration
 {
-    /// <summary>
-    /// Query provider module
-    /// </summary>
-    public class QueryProviderModule : IModule
+    public class DatabaseConfig : IDatabase
     {
-        /// <summary>
-        /// Order to run it in
-        /// </summary>
+        public bool Audit
+        {
+            get { return false; }
+        }
+
+        public string Name
+        {
+            get { return "Data Source=localhost;Initial Catalog=SpeedTest;Integrated Security=SSPI;Pooling=false"; }
+        }
+
         public int Order
         {
             get { return 0; }
         }
 
-        /// <summary>
-        /// Loads the module
-        /// </summary>
-        /// <param name="Bootstrapper">Bootstrapper to register with</param>
-        public void Load(IBootstrapper Bootstrapper)
+        public bool Readable
         {
-            Bootstrapper.Register(new Manager(Bootstrapper));
+            get { return true; }
+        }
+
+        public bool Update
+        {
+            get { return true; }
+        }
+
+        public bool Writable
+        {
+            get { return true; }
         }
     }
 }

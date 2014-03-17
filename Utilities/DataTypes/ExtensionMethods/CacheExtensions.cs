@@ -41,6 +41,8 @@ namespace Utilities.DataTypes
         /// <param name="Cache">Name of the cache to use</param>
         public static void Cache(this object Object, string Key, string Cache = "Default")
         {
+            if (IoC.Manager.Bootstrapper == null)
+                return;
             IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache(Cache).Add(Key, Object);
         }
 
@@ -54,6 +56,8 @@ namespace Utilities.DataTypes
         /// <returns>The object specified or the default value if it is not found</returns>
         public static T GetFromCache<T>(this string Key, T DefaultValue = default(T), string Cache = "Default")
         {
+            if (IoC.Manager.Bootstrapper == null)
+                return DefaultValue;
             object Value = IoC.Manager.Bootstrapper.Resolve<Utilities.DataTypes.Caching.Manager>().Cache(Cache)[Key];
             return Value == null ? DefaultValue : Value.To(DefaultValue);
         }

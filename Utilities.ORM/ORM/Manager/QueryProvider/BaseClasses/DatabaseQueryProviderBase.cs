@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.IoC.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Default;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
@@ -38,15 +39,21 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        protected DatabaseQueryProviderBase()
+        protected DatabaseQueryProviderBase(IBootstrapper Bootstrapper)
             : base()
         {
+            this.Bootstrapper = Bootstrapper;
         }
 
         /// <summary>
         /// Provider name
         /// </summary>
         public abstract string ProviderName { get; }
+
+        /// <summary>
+        /// Bootstrapper
+        /// </summary>
+        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Parameter prefix
@@ -60,7 +67,7 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <returns>Batch object</returns>
         public IBatch Batch(ISourceInfo Source)
         {
-            return new DatabaseBatch(Source);
+            return new DatabaseBatch(Source, Bootstrapper);
         }
 
         /// <summary>

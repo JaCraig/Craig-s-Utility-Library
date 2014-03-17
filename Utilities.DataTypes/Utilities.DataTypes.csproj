@@ -255,6 +255,7 @@
     <Compile Include="DataTypes\TagDictionary.cs" />
     <Compile Include="DataTypes\TaskQueue.cs" />
     <Compile Include="DataTypes\AOP\Interfaces\IAOPModule.cs" />
+    <Compile Include="DataTypes\Caching\BaseClasses\CacheBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

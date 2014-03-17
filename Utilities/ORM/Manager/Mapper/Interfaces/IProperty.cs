@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
+using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -296,6 +297,13 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
         object GetValue(object Object);
+
+        /// <summary>
+        /// Gets the property's value from the object sent in
+        /// </summary>
+        /// <param name="Object">Object to get the value from</param>
+        /// <returns>The value of the property</returns>
+        object GetValue(Dynamo Object);
 
         /// <summary>
         /// Sets up the property (used internally)
