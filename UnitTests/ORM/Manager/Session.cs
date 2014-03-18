@@ -126,6 +126,9 @@ namespace UnitTests.ORM.Manager
             Assert.Equal(null, Item.NullStringReference);
             Assert.Equal(5423, Item.ShortReference);
             Assert.Equal("agsdpghasdg", Item.StringReference);
+
+            Item = TestObject.Any<TestClass>(new Utilities.ORM.Parameters.EqualParameter<int>(1000, "ID_"));
+            Assert.Null(Item);
         }
 
         [Fact]

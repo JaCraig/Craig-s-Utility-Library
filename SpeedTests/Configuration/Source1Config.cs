@@ -28,7 +28,7 @@ using Utilities.ORM.Interfaces;
 
 namespace SpeedTests.Configuration
 {
-    public class DatabaseConfig : IDatabase
+    public class Source1Config : IDatabase
     {
         public bool Audit
         {
@@ -37,7 +37,7 @@ namespace SpeedTests.Configuration
 
         public string Name
         {
-            get { return "DatabaseConfig"; }
+            get { return "Source1Config"; }
         }
 
         public int Order

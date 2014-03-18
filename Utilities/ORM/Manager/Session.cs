@@ -155,6 +155,8 @@ namespace Utilities.ORM.Manager
             Cache.Add(typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_"),
                 ReturnValue,
                 new string[] { typeof(ObjectType).GetName() });
+            if (ReturnValue == null)
+                return default(ObjectType);
             return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
         }
 
@@ -200,6 +202,8 @@ namespace Utilities.ORM.Manager
             Cache.Add(typeof(ObjectType).GetName() + "_Any_" + ID.ToString(),
                 ReturnValue,
                 new string[] { typeof(ObjectType).GetName() });
+            if (ReturnValue == null)
+                return default(ObjectType);
             return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
         }
 

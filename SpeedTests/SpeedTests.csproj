@@ -42,7 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\DatabaseConfig.cs" />
+    <Compile Include="Configuration\Source1Config.cs" />
+    <Compile Include="Configuration\Source2Config.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Employee2.cs" />
+    <Compile Include="Models\Employee3.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

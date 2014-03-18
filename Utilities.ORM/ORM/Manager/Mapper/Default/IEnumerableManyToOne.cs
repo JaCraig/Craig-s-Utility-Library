@@ -230,6 +230,16 @@ namespace Utilities.ORM.Manager.Mapper.Default
         }
 
         /// <summary>
+        /// Gets the property as a parameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="Object">Object to get the parameter from</param>
+        /// <returns>The parameter version of the property</returns>
+        public override object GetParameter(Dynamo Object)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Called to create a batch that deletes items from the joining table
         /// </summary>
         /// <param name="Object">Object</param>

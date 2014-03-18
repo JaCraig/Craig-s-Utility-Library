@@ -41,34 +41,9 @@ namespace SpeedTests
             using (IDisposable StartProfiler = Utilities.Profiler.Profiler.StartProfiling())
             {
                 System.Random Rand = new System.Random();
-                foreach (Employee Employee in 500.Times(x => Rand.NextClass<Employee>()))
-                {
-                    using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Save"))
-                    {
-                        Employee.Save();
-                    }
-                }
-                for (int x = 0; x < 500; ++x)
-                {
-                    using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("All"))
-                    {
-                        Employee.All();
-                    }
-                }
-                for (int x = 0; x < 500; ++x)
-                {
-                    using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Any"))
-                    {
-                        Employee.Any();
-                    }
-                }
-                for (int x = 0; x < 500; ++x)
-                {
-                    using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Paged"))
-                    {
-                        Employee.Paged();
-                    }
-                }
+                SingleSourceCached(Rand);
+                MultipleSourceCached(Rand);
+                MultipleSourceCachedCascade(Rand);
             }
             Console.WriteLine(Utilities.Profiler.Profiler.StopProfiling(false).ToString());
             QueryProvider.Batch("Data Source=localhost;Initial Catalog=SpeedTest;Integrated Security=SSPI;Pooling=false")
@@ -77,6 +52,103 @@ namespace SpeedTests
                         .AddCommand(null, null, CommandType.Text, "DROP DATABASE SpeedTest")
                         .Execute();
             Console.ReadKey();
+        }
+
+        private static void MultipleSourceCached(System.Random Rand)
+        {
+            foreach (Employee2 Employee2 in 100.Times(x => Rand.NextClass<Employee2>()))
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Multiple Source Cached Save"))
+                {
+                    Employee2.Save();
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Multiple Source Cached All"))
+                {
+                    Employee2.All();
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Multiple Source Cached Any"))
+                {
+                    Employee2.Any();
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Multiple Source Cached Paged"))
+                {
+                    Employee2.Paged();
+                }
+            }
+        }
+
+        private static void MultipleSourceCachedCascade(System.Random Rand)
+        {
+            foreach (Employee3 Employee3 in 100.Times(x => Rand.NextClass<Employee3>()))
+            {
+                Employee3.Boss = Rand.NextClass<Employee3>();
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Multiple Source Cached Cascade Save"))
+                {
+                    Employee3.Save();
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Multiple Source Cached Cascade All"))
+                {
+                    Employee3.All().ForEach(y => { var Temp = y.Boss; });
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Multiple Source Cached Cascade Any"))
+                {
+                    var Temp = Employee3.Any().Boss;
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Multiple Source Cached Cascade Paged"))
+                {
+                    Employee3.Paged().ForEach(y => { var Temp = y.Boss; });
+                }
+            }
+        }
+
+        private static void SingleSourceCached(System.Random Rand)
+        {
+            foreach (Employee Employee in 100.Times(x => Rand.NextClass<Employee>()))
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Single Source Cached Save"))
+                {
+                    Employee.Save();
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Single Source Cached All"))
+                {
+                    Employee.All();
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Single Source Cached Any"))
+                {
+                    Employee.Any();
+                }
+            }
+            for (int x = 0; x < 100; ++x)
+            {
+                using (Utilities.Profiler.Profiler Profiler = new Utilities.Profiler.Profiler("Single Source Cached Paged"))
+                {
+                    Employee.Paged();
+                }
+            }
         }
     }
 }

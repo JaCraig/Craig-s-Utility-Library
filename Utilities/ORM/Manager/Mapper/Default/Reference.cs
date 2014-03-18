@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.BaseClasses;
 using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
@@ -114,6 +115,16 @@ namespace Utilities.ORM.Manager.Mapper.Default
         /// <param name="Object">Object to get the parameter from</param>
         /// <returns>The parameter version of the property</returns>
         public override object GetParameter(object Object)
+        {
+            return GetValue(Object);
+        }
+
+        /// <summary>
+        /// Gets the property as a parameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="Object">Object to get the parameter from</param>
+        /// <returns>The parameter version of the property</returns>
+        public override object GetParameter(Dynamo Object)
         {
             return GetValue(Object);
         }
