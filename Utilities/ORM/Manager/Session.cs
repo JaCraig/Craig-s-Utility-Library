@@ -93,9 +93,11 @@ namespace Utilities.ORM.Manager
         {
             Parameters = Parameters.Check(new IParameter[] { });
             List<Dynamo> ReturnValue = new List<Dynamo>();
-            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_")))
+            string KeyName = typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_");
+            Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
+            if (Cache.ContainsKey(KeyName))
             {
-                ReturnValue = (List<Dynamo>)Cache[typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_")];
+                ReturnValue = (List<Dynamo>)Cache[KeyName];
                 return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
@@ -115,9 +117,7 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            Cache.Add(typeof(ObjectType).GetName() + "_All_" + Parameters.ToString(x => x.ToString(), "_"),
-                ReturnValue,
-                new string[] { typeof(ObjectType).GetName() });
+            Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
             return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
         }
 
@@ -132,9 +132,13 @@ namespace Utilities.ORM.Manager
         {
             Parameters = Parameters.Check(new IParameter[] { });
             Dynamo ReturnValue = null;
-            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_")))
+            string KeyName = typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_");
+            Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
+            if (Cache.ContainsKey(KeyName))
             {
-                ReturnValue = (Dynamo)Cache[typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_")];
+                ReturnValue = (Dynamo)Cache[KeyName];
+                if (ReturnValue == null)
+                    return default(ObjectType);
                 return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
@@ -152,9 +156,7 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            Cache.Add(typeof(ObjectType).GetName() + "_Any_" + Parameters.ToString(x => x.ToString(), "_"),
-                ReturnValue,
-                new string[] { typeof(ObjectType).GetName() });
+            Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
             if (ReturnValue == null)
                 return default(ObjectType);
             return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
@@ -172,9 +174,12 @@ namespace Utilities.ORM.Manager
             where IDType : IComparable
         {
             Dynamo ReturnValue = null;
-            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Any_" + ID.ToString()))
+            string KeyName = typeof(ObjectType).GetName() + "_Any_" + ID.ToString();
+            if (Cache.ContainsKey(KeyName))
             {
-                ReturnValue = (Dynamo)Cache[typeof(ObjectType).GetName() + "_Any_" + ID.ToString()];
+                ReturnValue = (Dynamo)Cache[KeyName];
+                if (ReturnValue == null)
+                    return default(ObjectType);
                 return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
             }
             string StringID = ID.ToString();
@@ -199,9 +204,7 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            Cache.Add(typeof(ObjectType).GetName() + "_Any_" + ID.ToString(),
-                ReturnValue,
-                new string[] { typeof(ObjectType).GetName() });
+            Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
             if (ReturnValue == null)
                 return default(ObjectType);
             return ReturnValue.To<ObjectType>().Chain(x => { ((IORMObject)x).Session0 = this; });
@@ -332,9 +335,11 @@ namespace Utilities.ORM.Manager
             where ObjectType : class,new()
         {
             Parameters = Parameters.Check(new IParameter[] { });
-            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_")))
+            string KeyName = typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.InvariantCulture) + "_" + Parameters.ToString(x => x.ToString(), "_");
+            Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
+            if (Cache.ContainsKey(KeyName))
             {
-                return (int)Cache[typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_")];
+                return (int)Cache[KeyName];
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -349,9 +354,7 @@ namespace Utilities.ORM.Manager
                     if (Count > 0)
                     {
                         int ReturnValue = (Count / PageSize) + (Count % PageSize > 0 ? 1 : 0);
-                        Cache.Add(typeof(ObjectType).GetName() + "_PageCount_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_"),
-                            ReturnValue,
-                            new string[] { typeof(ObjectType).GetName() });
+                        Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
                         return ReturnValue;
                     }
                 }
@@ -371,10 +374,12 @@ namespace Utilities.ORM.Manager
             where ObjectType : class,new()
         {
             Parameters = Parameters.Check(new IParameter[] { });
+            string KeyName = typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.InvariantCulture) + "_" + CurrentPage.ToString(CultureInfo.InvariantCulture) + "_" + Parameters.ToString(x => x.ToString(), "_");
+            Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
             System.Collections.Generic.List<Dynamo> ReturnValue = new System.Collections.Generic.List<Dynamo>();
-            if (Cache.ContainsKey(typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + CurrentPage.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_")))
+            if (Cache.ContainsKey(KeyName))
             {
-                ReturnValue = (List<Dynamo>)Cache[typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + CurrentPage.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_")];
+                ReturnValue = (List<Dynamo>)Cache[KeyName];
                 return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
@@ -399,9 +404,7 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            Cache.Add(typeof(ObjectType).GetName() + "_Paged_" + PageSize.ToString(CultureInfo.CurrentCulture) + "_" + CurrentPage.ToString(CultureInfo.CurrentCulture) + "_" + Parameters.ToString(x => x.ToString(), "_"),
-                ReturnValue,
-                new string[] { typeof(ObjectType).GetName() });
+            Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
             return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
         }
 

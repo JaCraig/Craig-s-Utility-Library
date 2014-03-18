@@ -129,6 +129,40 @@ namespace UnitTests.ORM.Manager
 
             Item = TestObject.Any<TestClass>(new Utilities.ORM.Parameters.EqualParameter<int>(1000, "ID_"));
             Assert.Null(Item);
+
+            Item = TestObject.Any<TestClass>(new Utilities.ORM.Parameters.EqualParameter<int>(10, "ID_"));
+            Assert.Equal(true, Item.BoolReference);
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+            Assert.Equal(12, Item.ByteReference);
+            Assert.Equal('v', Item.CharReference);
+            Assert.Equal(1.4213m, Item.DecimalReference);
+            Assert.Equal(1.32645d, Item.DoubleReference);
+            Assert.Equal(TestEnum.Value2, Item.EnumReference);
+            Assert.Equal(1234.5f, Item.FloatReference);
+            Assert.Equal(TempGuid, Item.GuidReference);
+            Assert.Equal(145145, Item.IntReference);
+            Assert.Equal(763421, Item.LongReference);
+            Assert.Equal(null, Item.NullStringReference);
+            Assert.Equal(5423, Item.ShortReference);
+            Assert.Equal("agsdpghasdg", Item.StringReference);
+            Assert.Equal(10, Item.ID);
+
+            Item = TestObject.Any<TestClass>(new Utilities.ORM.Parameters.EqualParameter<int>(20, "ID_"));
+            Assert.Equal(true, Item.BoolReference);
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+            Assert.Equal(12, Item.ByteReference);
+            Assert.Equal('v', Item.CharReference);
+            Assert.Equal(1.4213m, Item.DecimalReference);
+            Assert.Equal(1.32645d, Item.DoubleReference);
+            Assert.Equal(TestEnum.Value2, Item.EnumReference);
+            Assert.Equal(1234.5f, Item.FloatReference);
+            Assert.Equal(TempGuid, Item.GuidReference);
+            Assert.Equal(145145, Item.IntReference);
+            Assert.Equal(763421, Item.LongReference);
+            Assert.Equal(null, Item.NullStringReference);
+            Assert.Equal(5423, Item.ShortReference);
+            Assert.Equal("agsdpghasdg", Item.StringReference);
+            Assert.Equal(20, Item.ID);
         }
 
         [Fact]
@@ -157,6 +191,23 @@ namespace UnitTests.ORM.Manager
             }
             TestClass Item = TestObject.Any<TestClass, int>(10);
             Assert.Equal(10, Item.ID);
+            Assert.Equal(true, Item.BoolReference);
+            Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
+            Assert.Equal(12, Item.ByteReference);
+            Assert.Equal('v', Item.CharReference);
+            Assert.Equal(1.4213m, Item.DecimalReference);
+            Assert.Equal(1.32645d, Item.DoubleReference);
+            Assert.Equal(TestEnum.Value2, Item.EnumReference);
+            Assert.Equal(1234.5f, Item.FloatReference);
+            Assert.Equal(TempGuid, Item.GuidReference);
+            Assert.Equal(145145, Item.IntReference);
+            Assert.Equal(763421, Item.LongReference);
+            Assert.Equal(null, Item.NullStringReference);
+            Assert.Equal(5423, Item.ShortReference);
+            Assert.Equal("agsdpghasdg", Item.StringReference);
+
+            Item = TestObject.Any<TestClass, int>(20);
+            Assert.Equal(20, Item.ID);
             Assert.Equal(true, Item.BoolReference);
             Assert.Equal(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, Item.ByteArrayReference);
             Assert.Equal(12, Item.ByteReference);
