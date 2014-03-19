@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System.Data.Common;
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 
@@ -44,14 +45,21 @@ namespace Utilities.ORM.Parameters
         /// Oracle, etc.)
         /// </param>
         /// <param name="Length">Max length allowed for the string</param>
-        public StringEqualParameter(string Value, string ID, int Length, string ParameterStarter = "@")
+        /// <param name="FieldName">Field name</param>
+        public StringEqualParameter(string Value, string ID, int Length, string FieldName = "", string ParameterStarter = "@")
             : base(ID, Value, System.Data.ParameterDirection.Input, ParameterStarter)
         {
             this.Value = Value;
             this.ID = ID;
             this.Length = Length;
             this.ParameterStarter = ParameterStarter;
+            this.FieldName = string.IsNullOrEmpty(FieldName) ? ID : FieldName;
         }
+
+        /// <summary>
+        /// Field name
+        /// </summary>
+        public string FieldName { get; set; }
 
         /// <summary>
         /// Max length of the string
@@ -74,7 +82,7 @@ namespace Utilities.ORM.Parameters
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return new StringEqualParameter(Value, ID + Suffix, Length, ParameterStarter);
+            return new StringEqualParameter(Value, ID + Suffix, Length, FieldName, ParameterStarter);
         }
 
         /// <summary>
@@ -83,7 +91,7 @@ namespace Utilities.ORM.Parameters
         /// <returns>The param as a string</returns>
         public override string ToString()
         {
-            return ID + "=" + ParameterStarter + ID;
+            return FieldName + "=" + ParameterStarter + ID;
         }
     }
 }

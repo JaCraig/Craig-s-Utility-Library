@@ -192,8 +192,8 @@ namespace Utilities.ORM.Manager
                     if (IDProperty != null)
                     {
                         Dynamo Value = typeof(IDType) == typeof(string) ?
-                            QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new StringEqualParameter(StringID, IDProperty.FieldName, StringID.Length, Source.ParameterPrefix)).Execute()[0].FirstOrDefault() :
-                            QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new EqualParameter<IDType>(ID, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault();
+                            QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new StringEqualParameter(StringID, IDProperty.FieldName, StringID.Length, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault() :
+                            QueryProvider.Generate<ObjectType>(Source, Mapping).Any(new EqualParameter<IDType>(ID, IDProperty.FieldName, IDProperty.FieldName, Source.ParameterPrefix)).Execute()[0].FirstOrDefault();
                         if (Value != null)
                         {
                             if (ReturnValue == null)
@@ -284,14 +284,16 @@ namespace Utilities.ORM.Manager
                     {
                         IProperty IDProperty = Mapping.IDProperties.FirstOrDefault();
                         IParameter Parameter = null;
+                        int Counter = 0;
                         foreach (Dynamo Item in ReturnValue)
                         {
                             if (IDProperty.GetParameter(Item) != null)
                             {
                                 if (Parameter == null)
-                                    Parameter = new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName);
+                                    Parameter = new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix);
                                 else
-                                    Parameter = new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), IDProperty.FieldName));
+                                    Parameter = new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix));
+                                ++Counter;
                             }
                         }
                         if (Parameter != null)

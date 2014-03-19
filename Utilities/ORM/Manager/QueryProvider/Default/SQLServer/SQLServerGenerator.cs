@@ -431,9 +431,9 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
                 return TempBatch.AddCommand(Update(Object));
             }
             if (typeof(PrimaryKeyType).Is(typeof(string)))
-                Param1 = new StringEqualParameter(IDValue.ToString(), IDProperty.FieldName, IDValue.ToString().Length, Source.ParameterPrefix);
+                Param1 = new StringEqualParameter(IDValue.ToString(), IDProperty.FieldName, IDValue.ToString().Length, IDProperty.FieldName, Source.ParameterPrefix);
             else
-                Param1 = new EqualParameter<PrimaryKeyType>(IDValue, IDProperty.FieldName, Source.ParameterPrefix);
+                Param1 = new EqualParameter<PrimaryKeyType>(IDValue, IDProperty.FieldName, IDProperty.FieldName, Source.ParameterPrefix);
             if (Any(Param1).Execute()[0].Count == 0)
             {
                 return TempBatch.AddCommand(Insert(Object));

@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System.Data.Common;
+using Utilities.DataTypes;
 using Utilities.ORM.Manager.QueryProvider.BaseClasses;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 
@@ -44,13 +45,20 @@ namespace Utilities.ORM.Parameters
         /// What the database expects as the parameter starting string ("@" for SQL Server, ":" for
         /// Oracle, etc.)
         /// </param>
-        public EqualParameter(DataType Value, string ID, string ParameterStarter = "@")
+        /// <param name="FieldName">Field name</param>
+        public EqualParameter(DataType Value, string ID, string FieldName = "", string ParameterStarter = "@")
             : base(ID, Value, System.Data.ParameterDirection.Input, ParameterStarter)
         {
             this.Value = Value;
             this.ID = ID;
             this.ParameterStarter = ParameterStarter;
+            this.FieldName = string.IsNullOrEmpty(FieldName) ? ID : FieldName;
         }
+
+        /// <summary>
+        /// Field name
+        /// </summary>
+        public virtual string FieldName { get; private set; }
 
         /// <summary>
         /// Adds the parameter to the SQLHelper
@@ -68,7 +76,7 @@ namespace Utilities.ORM.Parameters
         /// <returns>A copy of the parameter</returns>
         public override IParameter CreateCopy(string Suffix)
         {
-            return new EqualParameter<DataType>(Value, ID + Suffix, ParameterStarter);
+            return new EqualParameter<DataType>(Value, ID + Suffix, FieldName, ParameterStarter);
         }
 
         /// <summary>
@@ -77,7 +85,7 @@ namespace Utilities.ORM.Parameters
         /// <returns>The param as a string</returns>
         public override string ToString()
         {
-            return ID + "=" + ParameterStarter + ID;
+            return FieldName + "=" + ParameterStarter + ID;
         }
     }
 }
