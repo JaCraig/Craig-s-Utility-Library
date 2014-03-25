@@ -88,7 +88,7 @@ namespace Utilities.ORM
         #region Any
 
         /// <summary>
-        /// Loads the item based on the ID
+        /// Loads the item based on the criteria specified
         /// </summary>
         /// <param name="Params">Parameters used to specify what to load</param>
         /// <returns>The specified item</returns>
@@ -101,6 +101,29 @@ namespace Utilities.ORM
             if (!E.Stop)
             {
                 instance = QueryProvider.Any<ObjectType>(Params);
+                if (instance != null)
+                    instance.OnLoaded(new LoadedEventArgs());
+            }
+            return instance;
+        }
+
+        /// <summary>
+        /// Loads the item based on the criteria specified
+        /// </summary>
+        /// <param name="Command">Command to run</param>
+        /// <param name="Type">Command type</param>
+        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <returns>The specified item</returns>
+        public static ObjectType Any(string Command, CommandType Type, string ConnectionString, params IParameter[] Params)
+        {
+            ObjectType instance = new ObjectType();
+            LoadingEventArgs E = new LoadingEventArgs();
+            E.Content = Params;
+            instance.OnLoading(E);
+            if (!E.Stop)
+            {
+                instance = QueryProvider.Any<ObjectType>(Command, Type, ConnectionString, Params);
                 if (instance != null)
                     instance.OnLoaded(new LoadedEventArgs());
             }
@@ -124,6 +147,30 @@ namespace Utilities.ORM
             if (!E.Stop)
             {
                 instance = QueryProvider.All<ObjectType>(Params);
+                foreach (ObjectType Item in instance)
+                {
+                    Item.OnLoaded(new LoadedEventArgs());
+                }
+            }
+            return instance;
+        }
+
+        /// <summary>
+        /// Loads the items based on the criteria specified
+        /// </summary>
+        /// <param name="Command">Command to run</param>
+        /// <param name="Type">Command type</param>
+        /// <param name="ConnectionString">Connection string name</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <returns>The specified items</returns>
+        public static IEnumerable<ObjectType> All(string Command, CommandType Type, string ConnectionString, params IParameter[] Params)
+        {
+            IEnumerable<ObjectType> instance = new List<ObjectType>();
+            LoadingEventArgs E = new LoadingEventArgs();
+            ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
+            if (!E.Stop)
+            {
+                instance = QueryProvider.All<ObjectType>(Command, Type, ConnectionString, Params);
                 foreach (ObjectType Item in instance)
                 {
                     Item.OnLoaded(new LoadedEventArgs());
