@@ -84,7 +84,7 @@ namespace Ironman.Core.ActionFilters
         /// <returns>The date that the file was last modified</returns>
         private static DateTime GetDateLastModified(HttpContextBase Context)
         {
-            if (Context == null)
+            if (Context == null || Context.Cache == null)
                 return DateTime.Now;
             DateTime Date = DateTime.Now;
             if (Context.Cache[Context.Request.Path + "date"] != null)
@@ -101,7 +101,7 @@ namespace Ironman.Core.ActionFilters
         /// <returns>The string ETag</returns>
         private static string GetETag(HttpContextBase Context)
         {
-            if (Context == null)
+            if (Context == null || string.IsNullOrEmpty(Context.Request.Path))
                 return "\"\"";
             return "\"" + Context.Request.Path.GetHashCode() + "\"";
         }

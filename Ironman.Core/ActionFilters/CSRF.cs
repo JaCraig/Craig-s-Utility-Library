@@ -52,7 +52,7 @@ namespace Ironman.Core.ActionFilters
         /// <returns>True if it should be set up, false otherwise</returns>
         private bool ShouldValidate(AuthorizationContext Context)
         {
-            if (Context == null)
+            if (Context == null || Context.HttpContext == null || Context.HttpContext.Request == null)
                 return false;
             return (string.Compare(Context.HttpContext.Request.HttpMethod, System.Net.WebRequestMethods.Http.Post, true) == 0
                 && Context.ActionDescriptor.Attributes<ValidateAntiForgeryTokenAttribute>().Length == 0
