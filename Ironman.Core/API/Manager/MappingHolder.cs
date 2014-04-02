@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,7 +55,14 @@ namespace Ironman.Core.API.Manager
         /// </summary>
         /// <param name="Key">Name of the mapped type</param>
         /// <returns>The mapping specified</returns>
-        public IAPIMapping this[string Key] { get { return Mappings.GetValue(Key); } }
+        public IAPIMapping this[string Key]
+        {
+            get
+            {
+                Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
+                return Mappings.GetValue(Key);
+            }
+        }
 
         /// <summary>
         /// Outputs mapping holder info as a string

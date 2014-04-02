@@ -179,7 +179,7 @@ namespace Ironman.Core.Assets
         /// <param name="Directory">Directory to create bundles from</param>
         private void CreateBundles(DirectoryInfo Directory)
         {
-            if (Directory == null || !Directory.Exists)
+            if (Directory == null || !Directory.Exists || string.IsNullOrEmpty(Directory.FullName))
                 return;
             string BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
             StyleBundle Bundle = new StyleBundle(BundleDirectory + "/bundle/css");

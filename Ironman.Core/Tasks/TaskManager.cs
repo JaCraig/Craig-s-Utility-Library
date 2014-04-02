@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using Ironman.Core.Tasks.Enums;
 using Ironman.Core.Tasks.Interfaces;
 using System;
+using System.Diagnostics.Contracts;
 using Utilities.DataTypes;
 using Utilities.IO;
 using Utilities.IO.Logging.Enums;
@@ -60,6 +61,7 @@ namespace Ironman.Core.Tasks
         /// <param name="TimeToRun">Time to run</param>
         public void Run(RunTime TimeToRun)
         {
+            Contract.Requires<ArgumentNullException>(Tasks != null, "Tasks");
             if (Tasks.ContainsKey(TimeToRun))
             {
                 Tasks[TimeToRun].ForEach(x =>

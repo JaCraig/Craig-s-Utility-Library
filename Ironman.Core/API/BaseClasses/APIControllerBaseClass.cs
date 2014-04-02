@@ -69,6 +69,8 @@ namespace Ironman.Core.API.BaseClasses
         [HttpGet]
         public ActionResult All(string ModelName)
         {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
             return Serialize<IEnumerable<Dynamo>>(APIManager.All(Version, ModelName, Request.QueryString.Get("Embedded").Check("").Split(',')));
         }
 
@@ -82,6 +84,8 @@ namespace Ironman.Core.API.BaseClasses
         [HttpGet]
         public ActionResult Any(string ModelName, string ID)
         {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
             return Serialize<Dynamo>(APIManager.Any(Version, ModelName, ID, Request.QueryString.Get("Embedded").Check("").Split(',')));
         }
 
@@ -122,6 +126,8 @@ namespace Ironman.Core.API.BaseClasses
         [HttpGet]
         public ActionResult GetProperty(string ModelName, string ID, string PropertyName)
         {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
             return Serialize(APIManager.GetProperty(Version, ModelName, ID, PropertyName, Request.QueryString.Get("Embedded").Check("").Split(',')));
         }
 

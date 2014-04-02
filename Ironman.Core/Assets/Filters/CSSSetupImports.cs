@@ -21,11 +21,13 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Ironman.Core.Assets.Enums;
 using Ironman.Core.Assets.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Utilities.IO;
 
 #endregion Usings
@@ -103,8 +105,18 @@ namespace Ironman.Core.Assets.Filters
             return Assets;
         }
 
+        /// <summary>
+        /// Determines the actual location of the file.
+        /// </summary>
+        /// <param name="File">The file.</param>
+        /// <param name="Asset">The asset.</param>
+        /// <param name="TempFile">The temporary file.</param>
+        /// <returns>The actual file location</returns>
         private FileInfo DetermineFile(FileInfo File, IAsset Asset, string TempFile)
         {
+            Contract.Requires<ArgumentNullException>(Asset != null);
+            if (File != null && File.Exists)
+                return File;
             if (File == null || !File.Exists)
             {
                 FileInfo AssetFile = new FileInfo(Asset.Path);
