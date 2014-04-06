@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Ironman.Core.Assets.Yui</id>
-		<version>1.0.0115-beta</version>
+		<version>1.0.0119-beta</version>
 		<title>Iron Man Framework YUI Minifier</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -18,8 +18,8 @@
 			<reference file="Ironman.Core.Assets.Yui.dll" />
 		</references>
 		<dependencies>
-            <dependency id="CraigsUtilityLibrary" version="[4.0.0115-beta]" />
-			<dependency id="Ironman.Core" version="[1.0.0115-beta]" />
+            <dependency id="CraigsUtilityLibrary" version="[4.0.0119-beta]" />
+			<dependency id="Ironman.Core" version="[1.0.0119-beta]" />
 			<dependency id="YUICompressor.NET" version="[2.4.0.0]" />
         </dependencies>
 	</metadata>
