@@ -145,6 +145,15 @@ namespace UtilitiesSplitter
                 FileContent = Regex.Replace(FileContent,
                                 @"<dependency id=""Ironman\.Core"" version=""(?<VersionNumber>[^""]*)"" />",
                                 x => @"<dependency id=""Ironman.Core"" version=""[" + Version + @"]"" />");
+                FileContent = Regex.Replace(FileContent,
+                                @"<dependency id=""Ironman\.Core\.(?<Project>[^""]*)"" version=""(?<VersionNumber>[^""]*)"" />",
+                                x => @"<dependency id=""Ironman.Core." + x.Groups["Project"].Value + @""" version=""[" + Version + @"]"" />");
+                FileContent = Regex.Replace(FileContent,
+                                @"<dependency id=""CUL\.(?<Project>[^""]*)"" version=""(?<VersionNumber>[^""]*)"" />",
+                                x => @"<dependency id=""CUL." + x.Groups["Project"].Value + @""" version=""[" + CurrentVersion + @"]"" />");
+                FileContent = Regex.Replace(FileContent,
+                                @"<dependency id=""Glimpse\.CUL"" version=""(?<VersionNumber>[^""]*)"" />",
+                                x => @"<dependency id=""Glimpse.CUL"" version=""[" + CurrentVersion + @"]"" />");
                 File.Write(FileContent);
             }
         }
