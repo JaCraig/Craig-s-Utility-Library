@@ -94,9 +94,9 @@ namespace UtilitiesSplitter
                 string[] VersionInfo = VersionMatch.Groups["VersionNumber"].Value.Replace("-beta", "").Split('.');
                 string NewVersion = VersionInfo[0] + "." + VersionInfo[1] + ".";
                 if (VersionInfo.Length > 2)
-                    NewVersion += (int.Parse(VersionInfo[2]) + 1).ToString("D4");
+                    NewVersion += (int.Parse(VersionInfo[2]) + 1).ToString();
                 else
-                    NewVersion += "0001";
+                    NewVersion += "1";
                 File.Write(Regex.Replace(FileContents, "<version>(?<VersionNumber>.*)</version>", "<version>" + NewVersion + "-beta</version>"));
             }
         }
@@ -132,7 +132,7 @@ namespace UtilitiesSplitter
                 string[] VersionInfo = Version.Replace("-beta", "").Split('.');
                 string CurrentVersion = "4." + VersionInfo[1] + ".";
                 if (VersionInfo.Length > 2)
-                    CurrentVersion += (int.Parse(VersionInfo[2])).ToString("D4");
+                    CurrentVersion += (int.Parse(VersionInfo[2])).ToString();
                 else
                     CurrentVersion += "0";
                 CurrentVersion += "-beta";

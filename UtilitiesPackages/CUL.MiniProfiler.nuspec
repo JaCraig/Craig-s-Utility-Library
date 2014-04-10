@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CUL.MiniProfiler</id>
-		<version>4.0.0119-beta</version>
+		<version>4.0.123-beta</version>
 		<title>Craig's Utility Library MiniProfiler Support</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -19,7 +19,7 @@
 		</references>
 		<dependencies>
             <dependency id="MiniProfiler" version="[2.1.0]" />
-			<dependency id="CraigsUtilityLibrary" version="[4.0.0119-beta]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.123-beta]" />
         </dependencies>
 	</metadata>
 	<files>
