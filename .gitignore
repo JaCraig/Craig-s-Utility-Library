@@ -167,3 +167,4 @@ pip-log.txt
 *.nupkg
 .hg/*
 *.log
+packages/

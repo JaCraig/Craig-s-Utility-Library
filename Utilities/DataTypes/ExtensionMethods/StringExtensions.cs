@@ -124,9 +124,7 @@ namespace Utilities.DataTypes
         /// Converts base 64 string based on the encoding passed in
         /// </summary>
         /// <param name="Input">Input string</param>
-        /// <param name="EncodingUsing">
-        /// The type of encoding the string is using (defaults to UTF8)
-        /// </param>
+        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
         /// <returns>string in the encoding format</returns>
         public static string FromBase64(this string Input, Encoding EncodingUsing)
         {
@@ -244,8 +242,8 @@ namespace Utilities.DataTypes
         /// <returns>The resulting string</returns>
         public static string Left(this string Input, int Length)
         {
-            if (Length < 0)
-                return Input;
+            if (Length <= 0)
+                return "";
             return string.IsNullOrEmpty(Input) ? "" : Input.Substring(0, Input.Length > Length ? Length : Input.Length);
         }
 
@@ -438,8 +436,8 @@ namespace Utilities.DataTypes
         {
             if (string.IsNullOrEmpty(Input))
                 return "";
-            if (Length < 0)
-                return Input;
+            if (Length <= 0)
+                return "";
             Length = Input.Length > Length ? Length : Input.Length;
             return Input.Substring(Input.Length - Length, Length);
         }
@@ -554,9 +552,7 @@ namespace Utilities.DataTypes
         /// Converts a string to a byte array
         /// </summary>
         /// <param name="Input">input string</param>
-        /// <param name="EncodingUsing">
-        /// The type of encoding the string is using (defaults to UTF8)
-        /// </param>
+        /// <param name="EncodingUsing">The type of encoding the string is using (defaults to UTF8)</param>
         /// <returns>the byte array representing the string</returns>
         public static byte[] ToByteArray(this string Input, Encoding EncodingUsing = null)
         {
@@ -647,9 +643,7 @@ namespace Utilities.DataTypes
         /// </summary>
         /// <param name="Input">Input string</param>
         /// <param name="Format">Format of the output string</param>
-        /// <param name="Provider">
-        /// String formatter provider (defaults to GenericStringFormatter)
-        /// </param>
+        /// <param name="Provider">String formatter provider (defaults to GenericStringFormatter)</param>
         /// <returns>The formatted string</returns>
         public static string ToString(this string Input, string Format, IStringFormatter Provider = null)
         {

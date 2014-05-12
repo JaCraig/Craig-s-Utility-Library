@@ -131,6 +131,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             string Value = "ASDF";
             Assert.Equal("AS", Value.Left(2));
+            Assert.Equal("", Value.Left(-2));
         }
 
         [Fact]
@@ -203,6 +204,7 @@ namespace UnitTests.DataTypes.ExtensionMethods
         {
             string Value = "ASDF";
             Assert.Equal("DF", Value.Right(2));
+            Assert.Equal("", Value.Left(-2));
         }
 
         [Fact]
