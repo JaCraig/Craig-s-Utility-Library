@@ -42,7 +42,7 @@ namespace UnitTests.DataTypes.AOP
         public void Create()
         {
             Utilities.DataTypes.AOP.Manager Test = new Utilities.DataTypes.AOP.Manager(new Compiler());
-            AOPTestClass Item = ((AOPTestClass)Test.Create(typeof(AOPTestClass)));
+            AOPTestClass Item = (AOPTestClass)Test.Create(typeof(AOPTestClass));
             Assert.NotNull(Item);
         }
     }

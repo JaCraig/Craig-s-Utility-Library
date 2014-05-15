@@ -52,6 +52,16 @@ namespace UnitTests.DataTypes.ExtensionMethods
         public virtual int B { get; set; }
     }
 
+    public class MyTestClass2
+    {
+        public MyTestClass2()
+        {
+            B = 20;
+        }
+
+        public virtual int B { get; set; }
+    }
+
     public class TypeConversion
     {
         [Fact]
@@ -118,6 +128,10 @@ namespace UnitTests.DataTypes.ExtensionMethods
             Assert.Equal("2011", (2011).To(""));
             Assert.NotNull(new MyTestClass().To<MyTestClass, IMyTestClass>());
             Assert.NotNull(((object)new MyTestClass()).To<object, IMyTestClass>());
+            Assert.NotNull(new MyTestClass().To<MyTestClass, MyTestClass2>());
+            Assert.NotNull(((object)new MyTestClass()).To<object, MyTestClass2>());
+            MyTestClass2 Result = new MyTestClass().To<MyTestClass, MyTestClass2>();
+            Assert.Equal(10, Result.B);
         }
 
         [Fact]
