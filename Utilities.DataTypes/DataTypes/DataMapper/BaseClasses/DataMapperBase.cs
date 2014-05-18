@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
@@ -41,7 +42,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// </summary>
         protected DataMapperBase()
         {
-            this.Mappings = new Dictionary<Tuple<Type, Type>, ITypeMapping>();
+            this.Mappings = new ConcurrentDictionary<Tuple<Type, Type>, ITypeMapping>();
         }
 
         #endregion Constructor
@@ -56,7 +57,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// Mappings
         /// </summary>
-        protected IDictionary<Tuple<Type, Type>, ITypeMapping> Mappings { get; private set; }
+        protected ConcurrentDictionary<Tuple<Type, Type>, ITypeMapping> Mappings { get; private set; }
 
         #endregion Properties
 
@@ -71,10 +72,10 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         public ITypeMapping<Left, Right> Map<Left, Right>()
         {
             Tuple<Type, Type> Key = new Tuple<Type, Type>(typeof(Left), typeof(Right));
-            return Mappings.ContainsKey(Key) ? (ITypeMapping<Left, Right>)Mappings[Key]
-                                             : (ITypeMapping<Left, Right>)Mappings.AddAndReturn(new KeyValuePair<Tuple<Type, Type>,
-                                                                                                ITypeMapping>(Key, CreateTypeMapping<Left, Right>()))
-                                                                                  .Value;
+            Mappings.AddOrUpdate(Key, CreateTypeMapping<Left, Right>(), (x, y) => y);
+            ITypeMapping ReturnValue = null;
+            Mappings.TryGetValue(Key, out ReturnValue);
+            return (ITypeMapping<Left, Right>)ReturnValue;
         }
 
         /// <summary>
@@ -86,9 +87,10 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         public ITypeMapping Map(Type Left, Type Right)
         {
             Tuple<Type, Type> Key = new Tuple<Type, Type>(Left, Right);
-            return Mappings.ContainsKey(Key) ? Mappings[Key]
-                                             : Mappings.AddAndReturn(new KeyValuePair<Tuple<Type, Type>, ITypeMapping>(Key, CreateTypeMapping(Left, Right)))
-                                                                                  .Value;
+            Mappings.AddOrUpdate(Key, CreateTypeMapping(Left, Right), (x, y) => y);
+            ITypeMapping ReturnValue = null;
+            Mappings.TryGetValue(Key, out ReturnValue);
+            return ReturnValue;
         }
 
         /// <summary>
