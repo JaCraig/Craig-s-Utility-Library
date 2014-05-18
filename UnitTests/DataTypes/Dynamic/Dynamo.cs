@@ -134,6 +134,14 @@ namespace UnitTests.DataTypes.Dynamic
         }
 
         [Fact]
+        public void GetHashCode()
+        {
+            dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });
+            Temp.C = null;
+            Assert.Equal(255206625, Temp.GetHashCode());
+        }
+
+        [Fact]
         public void Initialization()
         {
             dynamic Temp = new Utilities.DataTypes.Dynamo(new { A = "Testing", B = 1 });

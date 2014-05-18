@@ -471,7 +471,8 @@ namespace Utilities.DataTypes
             int Value = 1;
             foreach (string Key in Keys)
             {
-                if (!this[Key].GetType().Is<Delegate>())
+                object TempValue = this[Key];
+                if (TempValue != null && !TempValue.GetType().Is<Delegate>())
                 {
                     unchecked
                     {
