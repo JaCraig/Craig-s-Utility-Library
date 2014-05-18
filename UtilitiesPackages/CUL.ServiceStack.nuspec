@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CUL.ServiceStack</id>
-		<version>4.0.136-beta</version>
+		<version>4.0.139-beta</version>
 		<title>Craig's Utility Library ServiceStack.Text Support</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -18,8 +18,8 @@
 			<reference file="CUL.ServiceStack.dll" />
 		</references>
 		<dependencies>
-            <dependency id="ServiceStack.Text.Signed" version="[4.0.19]" />
-			<dependency id="CraigsUtilityLibrary" version="[4.0.136-beta]" />
+            <dependency id="ServiceStack.Text.Signed" version="[4.0.20]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.139-beta]" />
         </dependencies>
 	</metadata>
 	<files>
