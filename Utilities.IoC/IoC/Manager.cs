@@ -57,7 +57,7 @@ namespace Utilities.IoC
             FileInfo GeneratedFile = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\CULGeneratedTypes.dll");
             if (GeneratedFile.Exists
                 && AppDomain.CurrentDomain.GetAssemblies()
-                                          .Where(x => !x.FullName.Contains("vshost32"))
+                                          .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic)
                                           .All(x => new System.IO.FileInfo(x.Location).LastWriteTime <= GeneratedFile.LastWriteTime))
             {
                 AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(GeneratedFile.FullName));

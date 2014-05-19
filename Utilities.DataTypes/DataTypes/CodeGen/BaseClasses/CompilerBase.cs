@@ -60,7 +60,7 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             System.IO.FileInfo CurrentFile = new System.IO.FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll");
             this.RegenerateAssembly = (!CurrentFile.Exists
                                       || AppDomain.CurrentDomain.GetAssemblies()
-                                                                .Where(x => !x.FullName.Contains("vshost32"))
+                                                                .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic)
                                                                 .Any(x => new System.IO.FileInfo(x.Location).LastWriteTime > CurrentFile.LastWriteTime));
             if (string.IsNullOrEmpty(this.AssemblyDirectory)
                 || !new System.IO.FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").Exists
