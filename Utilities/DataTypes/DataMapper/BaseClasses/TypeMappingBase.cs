@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// </summary>
         protected TypeMappingBase()
         {
-            this.Mappings = new List<IMapping<Left, Right>>();
+            this.Mappings = new ConcurrentBag<IMapping<Left, Right>>();
         }
 
         #endregion Constructor
@@ -55,7 +56,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         /// <summary>
         /// List of mappings
         /// </summary>
-        protected ICollection<IMapping<Left, Right>> Mappings { get; private set; }
+        protected ConcurrentBag<IMapping<Left, Right>> Mappings { get; private set; }
 
         #endregion Properties
 
