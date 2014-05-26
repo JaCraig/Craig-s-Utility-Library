@@ -19,6 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Ironman.Core.API.Manager.BaseClasses;
+using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -26,8 +28,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Ironman.Core.API.Manager.BaseClasses;
-using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager.Properties
@@ -117,9 +117,7 @@ namespace Ironman.Core.API.Manager.Properties
                 return false;
             IAPIMapping<DataType> Mapping = (IAPIMapping<DataType>)MappingHolder[typeof(DataType).Name];
             IAPIMapping<ClassType> ClassMapping = (IAPIMapping<ClassType>)MappingHolder[typeof(ClassType).Name];
-            if (Mapping == null)
-                return false;
-            if (Models == null)
+            if (Mapping == null || ClassMapping == null || Models == null)
                 return false;
             Dynamo Model = Models.FirstOrDefault();
             if (Model == null)

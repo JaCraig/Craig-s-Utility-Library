@@ -21,10 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System;
-using System.Collections.Generic;
 using Ironman.Core.Assets.Enums;
 using Ironman.Core.Assets.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Utilities.IO;
 
 #endregion Usings
@@ -40,11 +41,13 @@ namespace Ironman.Core.Assets
         /// Constructor
         /// </summary>
         /// <param name="Path">Path to the asset</param>
-        public Asset(string Path)
+        /// <param name="Bootstrapper">The bootstrapper.</param>
+        public Asset(string Path, Utilities.IoC.Interfaces.IBootstrapper Bootstrapper)
         {
+            Contract.Requires<ArgumentNullException>(Bootstrapper != null, "Bootstrapper");
             this.Path = Path;
             this.Included = new List<IAsset>();
-            this.Manager = Utilities.IoC.Manager.Bootstrapper.Resolve<AssetManager>();
+            this.Manager = Bootstrapper.Resolve<AssetManager>();
             this.Type = Manager.DetermineType(Path);
             FileInfo File = new FileInfo(Path);
             this.LastModified = File.Modified;

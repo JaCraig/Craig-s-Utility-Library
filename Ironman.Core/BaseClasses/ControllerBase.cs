@@ -107,7 +107,10 @@ namespace Ironman.Core.BaseClasses
         /// <returns>Action result</returns>
         protected virtual ActionResult Serialize<T>(T Object, string ContentType = "")
         {
-            Utilities.IO.Serializers.Manager Manager = Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>();
+            Utilities.IO.Serializers.Manager Manager = Utilities.IoC.Manager.Bootstrapper == null ? null : Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>();
+            ContentResult Result = new ContentResult();
+            if (Manager == null)
+                return Result;
             if (string.IsNullOrEmpty(ContentType))
             {
                 if (Request.AcceptTypes != null)
@@ -117,7 +120,6 @@ namespace Ironman.Core.BaseClasses
                 if (string.IsNullOrEmpty(ContentType))
                     ContentType = "application/json";
             }
-            ContentResult Result = new ContentResult();
             Result.Content = Object.Serialize<string, T>(ContentType);
             Result.ContentType = ContentType;
             return Result;

@@ -88,8 +88,11 @@ namespace Ironman.Core
             Log.LogMessage("Starting pre start tasks", MessageType.Info);
             Bootstrapper.Resolve<TaskManager>().Run(RunTime.PreStart);
             DependencyResolver.SetResolver(new Bootstrapper.DependencyResolver(Bootstrapper));
-            ViewEngines.Engines.Clear();
-            ViewEngines.Engines.Add(new RazorViewEngine());
+            if (ViewEngines.Engines != null)
+            {
+                ViewEngines.Engines.Clear();
+                ViewEngines.Engines.Add(new RazorViewEngine());
+            }
         }
     }
 }

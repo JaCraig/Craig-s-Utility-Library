@@ -58,7 +58,8 @@ namespace CUL.Logging
                 Logs.Add(Name, new Log(Name));
             else
             {
-                Logs[Name].Dispose();
+                if (Logs[Name] != null)
+                    Logs[Name].Dispose();
                 Logs[Name] = new Log(Name);
             }
         }

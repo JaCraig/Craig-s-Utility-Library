@@ -51,7 +51,7 @@ namespace Ironman.Core.Bootstrapper
         {
             if (Bootstrapper == null)
                 return;
-            Bootstrapper.Register<AssetManager>(new AssetManager());
+            Bootstrapper.Register<AssetManager>(new AssetManager(Bootstrapper));
             Bootstrapper.Register<TaskManager>(new TaskManager());
             Bootstrapper.Register<Manager>(new Manager());
         }

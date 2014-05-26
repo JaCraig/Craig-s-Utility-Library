@@ -53,7 +53,8 @@ namespace Ironman.Core.API.BaseClasses
         /// <summary>
         /// API manager class
         /// </summary>
-        protected static Manager.Manager APIManager { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<Manager.Manager>(); } }
+        /// <value>The API manager.</value>
+        protected static Manager.Manager APIManager { get { return Utilities.IoC.Manager.Bootstrapper == null ? null : Utilities.IoC.Manager.Bootstrapper.Resolve<Manager.Manager>(); } }
 
         /// <summary>
         /// Version number for this API endpoint
@@ -67,7 +68,7 @@ namespace Ironman.Core.API.BaseClasses
         /// <param name="ModelName">Model name</param>
         /// <returns>The resulting list of items</returns>
         [HttpGet]
-        public ActionResult All(string ModelName)
+        public virtual ActionResult All(string ModelName)
         {
             Contract.Requires<ArgumentNullException>(Request != null, "Request");
             Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
@@ -82,7 +83,7 @@ namespace Ironman.Core.API.BaseClasses
         /// <param name="ID">ID of the object to get</param>
         /// <returns>The resulting item</returns>
         [HttpGet]
-        public ActionResult Any(string ModelName, string ID)
+        public virtual ActionResult Any(string ModelName, string ID)
         {
             Contract.Requires<ArgumentNullException>(Request != null, "Request");
             Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
@@ -96,7 +97,7 @@ namespace Ironman.Core.API.BaseClasses
         /// <param name="ID">ID of the object to delete</param>
         /// <returns>The result</returns>
         [HttpDelete]
-        public ActionResult Delete(string ModelName, string ID)
+        public virtual ActionResult Delete(string ModelName, string ID)
         {
             return Serialize<Dynamo>(APIManager.Delete(Version, ModelName, ID));
         }
@@ -110,7 +111,7 @@ namespace Ironman.Core.API.BaseClasses
         /// <param name="PropertyID">Property ID</param>
         /// <returns>The result</returns>
         [HttpDelete]
-        public ActionResult DeleteProperty(string ModelName, string ID, string PropertyName, string PropertyID)
+        public virtual ActionResult DeleteProperty(string ModelName, string ID, string PropertyName, string PropertyID)
         {
             return Serialize(APIManager.DeleteProperty(Version, ModelName, ID, PropertyName, PropertyID));
         }
@@ -124,7 +125,7 @@ namespace Ironman.Core.API.BaseClasses
         /// <param name="PropertyName">Property name</param>
         /// <returns>The resulting item</returns>
         [HttpGet]
-        public ActionResult GetProperty(string ModelName, string ID, string PropertyName)
+        public virtual ActionResult GetProperty(string ModelName, string ID, string PropertyName)
         {
             Contract.Requires<ArgumentNullException>(Request != null, "Request");
             Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
@@ -139,7 +140,7 @@ namespace Ironman.Core.API.BaseClasses
         /// <returns>The result</returns>
         [AcceptVerbs(HttpVerbs.Put | HttpVerbs.Post | HttpVerbs.Patch)]
         [DeserializationFilter(ObjectType = typeof(IEnumerable<ExpandoObject>), Parameter = "Model")]
-        public ActionResult Save(string ModelName, IEnumerable<ExpandoObject> Model)
+        public virtual ActionResult Save(string ModelName, IEnumerable<ExpandoObject> Model)
         {
             Contract.Requires<ArgumentNullException>(Model != null, "Expression");
             return Serialize<Dynamo>(APIManager.Save(Version, ModelName, Model.Select(x => new Dynamo(x))));
@@ -155,7 +156,7 @@ namespace Ironman.Core.API.BaseClasses
         /// <returns>The result</returns>
         [AcceptVerbs(HttpVerbs.Put | HttpVerbs.Post | HttpVerbs.Patch)]
         [DeserializationFilter(ObjectType = typeof(IEnumerable<ExpandoObject>), Parameter = "Model")]
-        public ActionResult SaveProperty(string ModelName, string ID, string PropertyName, IEnumerable<ExpandoObject> Model)
+        public virtual ActionResult SaveProperty(string ModelName, string ID, string PropertyName, IEnumerable<ExpandoObject> Model)
         {
             Contract.Requires<ArgumentNullException>(Model != null, "Expression");
             return Serialize<Dynamo>(APIManager.SaveProperty(Version, ModelName, ID, PropertyName, Model.Select(x => new Dynamo(x))));

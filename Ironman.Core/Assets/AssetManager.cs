@@ -35,6 +35,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using Utilities.DataTypes;
 using Utilities.IO;
+using Utilities.IoC.Interfaces;
 
 #endregion Usings
 
@@ -48,8 +49,10 @@ namespace Ironman.Core.Assets
         /// <summary>
         /// Constructor
         /// </summary>
-        public AssetManager()
+        public AssetManager(IBootstrapper Bootstrapper)
         {
+            Contract.Requires<ArgumentNullException>(Bootstrapper != null, "Bootstrapper");
+            this.Bootstrapper = Bootstrapper;
             Filters = AppDomain.CurrentDomain.GetAssemblies().Objects<IFilter>();
             ContentFilters = AppDomain.CurrentDomain.GetAssemblies().Objects<IContentFilter>();
             Translators = AppDomain.CurrentDomain.GetAssemblies().Objects<ITranslator>();
@@ -64,6 +67,12 @@ namespace Ironman.Core.Assets
             RunOrder.Add(RunTime.PostMinified);
             RunOrder.Add(RunTime.PreCombine);
         }
+
+        /// <summary>
+        /// Gets the bootstrapper.
+        /// </summary>
+        /// <value>The bootstrapper.</value>
+        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Content filters
@@ -184,7 +193,7 @@ namespace Ironman.Core.Assets
             string BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
             StyleBundle Bundle = new StyleBundle(BundleDirectory + "/bundle/css");
             Bundle.Transforms.Clear();
-            Bundle.Transforms.Add(new Transformer());
+            Bundle.Transforms.Add(new Transformer(Bootstrapper));
             if (Directory.Exists)
             {
                 foreach (string Value in FileTypes[AssetType.CSS])
@@ -194,7 +203,7 @@ namespace Ironman.Core.Assets
             }
             ScriptBundle Bundle2 = new ScriptBundle(BundleDirectory + "/bundle/js");
             Bundle2.Transforms.Clear();
-            Bundle2.Transforms.Add(new Transformer());
+            Bundle2.Transforms.Add(new Transformer(Bootstrapper));
             if (Directory.Exists)
             {
                 foreach (string Value in FileTypes[AssetType.Javascript])

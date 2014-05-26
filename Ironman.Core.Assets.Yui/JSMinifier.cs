@@ -64,7 +64,7 @@ namespace Ironman.Core.Assets.Yui
             if (Processable.FirstOrDefault() == null)
                 return Assets;
             JavaScriptCompressor Minifier = new JavaScriptCompressor();
-            foreach (IAsset Asset in Processable)
+            foreach (IAsset Asset in Processable.Where(x => x != null))
             {
                 try
                 {

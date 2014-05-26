@@ -69,7 +69,10 @@ namespace CUL.Serialization
         {
             if (Data == null)
                 return null;
-            using (MemoryStream Stream = new MemoryStream(Data.ToByteArray()))
+            byte[] Result = Data.ToByteArray();
+            if (Result == null)
+                return null;
+            using (MemoryStream Stream = new MemoryStream(Result))
             {
                 return ServiceStack.Text.JsonSerializer.DeserializeFromString(Data, ObjectType);
             }
@@ -86,8 +89,10 @@ namespace CUL.Serialization
             if (Data == null)
                 return "";
             string ReturnValue = ServiceStack.Text.JsonSerializer.SerializeToString(Data, ObjectType);
-            HttpRequest Request = HttpContext.Current.Request;
-            if (!string.IsNullOrEmpty(Request.QueryString["callback"]) || !string.IsNullOrEmpty(Request.QueryString["jsonp"]))
+            HttpRequest Request = HttpContext.Current.Chain(x => x.Request);
+            if (Request != null &&
+                (!string.IsNullOrEmpty(Request.QueryString["callback"]) ||
+                !string.IsNullOrEmpty(Request.QueryString["jsonp"])))
             {
                 string Callback = Request.QueryString["callback"] ?? Request.QueryString["jsonp"];
                 ReturnValue = string.Format("{0}({1});", Callback, ReturnValue);

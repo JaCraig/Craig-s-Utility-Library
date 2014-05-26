@@ -22,8 +22,11 @@ THE SOFTWARE.*/
 #region Usings
 
 using Ironman.Core.Assets.Interfaces;
+using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web.Optimization;
+using Utilities.IoC.Interfaces;
 
 #endregion Usings
 
@@ -37,14 +40,22 @@ namespace Ironman.Core.Assets.Transformers
         /// <summary>
         /// Constructor
         /// </summary>
-        public Transformer()
+        public Transformer(Utilities.IoC.Interfaces.IBootstrapper Bootstrapper)
         {
-            Manager = Utilities.IoC.Manager.Bootstrapper.Resolve<AssetManager>();
+            Contract.Requires<ArgumentNullException>(Bootstrapper != null, "Bootstrapper");
+            Manager = Bootstrapper.Resolve<AssetManager>();
         }
+
+        /// <summary>
+        /// Gets the bootstrapper.
+        /// </summary>
+        /// <value>The bootstrapper.</value>
+        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Manager that loads basic asset stuff
         /// </summary>
+        /// <value>The manager.</value>
         protected AssetManager Manager { get; private set; }
 
         /// <summary>
@@ -58,7 +69,7 @@ namespace Ironman.Core.Assets.Transformers
                 return;
             if (!context.EnableInstrumentation)
             {
-                Manager.Process(response.Files.Select(x => new Asset(x.IncludedVirtualPath)).ToList<IAsset>(), response);
+                Manager.Process(response.Files.Select(x => new Asset(x.IncludedVirtualPath, Bootstrapper)).ToList<IAsset>(), response);
             }
         }
     }

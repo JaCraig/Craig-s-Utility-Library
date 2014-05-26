@@ -21,11 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 
 #endregion Usings
 
@@ -69,7 +69,7 @@ namespace Ironman.Core.Assets.Less
             IEnumerable<IAsset> Processable = Assets.Where(x => x.Path.EndsWith("less", StringComparison.OrdinalIgnoreCase));
             if (Processable.FirstOrDefault() == null)
                 return Assets;
-            foreach (IAsset Asset in Processable)
+            foreach (IAsset Asset in Processable.Where(x => x != null))
             {
                 try
                 {

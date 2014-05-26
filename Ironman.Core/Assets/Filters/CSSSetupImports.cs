@@ -87,7 +87,7 @@ namespace Ironman.Core.Assets.Filters
                         IAsset SubAsset = Assets.FirstOrDefault(x => x.Path.ToUpperInvariant() == File.FullName.ToUpperInvariant());
                         if (SubAsset == null)
                         {
-                            SubAsset = new Asset(File.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/"));
+                            SubAsset = new Asset(File.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/"), Utilities.IoC.Manager.Bootstrapper);
                         }
                         Asset.Included.Add(SubAsset);
                         Asset.Content = Asset.Content.Replace(MatchString, SubAsset.Content);

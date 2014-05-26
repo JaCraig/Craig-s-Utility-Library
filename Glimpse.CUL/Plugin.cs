@@ -25,6 +25,7 @@ using Glimpse.AspNet.Extensibility;
 using Glimpse.Core.Extensibility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 #endregion Usings
 
@@ -46,6 +47,36 @@ namespace Glimpse.CUL
         public override string Name { get { return "Craig's Utility Library"; } }
 
         /// <summary>
+        /// Gets the configuration manager.
+        /// </summary>
+        /// <value>The configuration manager.</value>
+        private Utilities.Configuration.Manager.Manager ConfigurationManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.Configuration.Manager.Manager>(); } }
+
+        /// <summary>
+        /// Gets or sets the container.
+        /// </summary>
+        /// <value>The container.</value>
+        private Utilities.IoC.Interfaces.IBootstrapper Container { get { return Container; } }
+
+        /// <summary>
+        /// Gets the file manager.
+        /// </summary>
+        /// <value>The file manager.</value>
+        private Utilities.IO.FileSystem.Manager FileManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.FileSystem.Manager>(); } }
+
+        /// <summary>
+        /// Gets the logging manager.
+        /// </summary>
+        /// <value>The logging manager.</value>
+        private Utilities.IO.Logging.Manager LoggingManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.Logging.Manager>(); } }
+
+        /// <summary>
+        /// Gets the serialization manager.
+        /// </summary>
+        /// <value>The serialization manager.</value>
+        private Utilities.IO.Serializers.Manager SerializationManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.Serializers.Manager>(); } }
+
+        /// <summary>
         /// Gets data for glimpse
         /// </summary>
         /// <param name="context">Tab context</param>
@@ -53,11 +84,17 @@ namespace Glimpse.CUL
         public override object GetData(ITabContext context)
         {
             Dictionary<string, string[]> Return = new Dictionary<string, string[]>();
-            Return.Add("IoC Container", new string[] { Utilities.IoC.Manager.Bootstrapper.Name });
-            Return.Add("File systems", Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.FileSystem.Manager>().ToString().Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
-            Return.Add("Configuration systems", Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.Configuration.Manager.Manager>().ToString().Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
-            Return.Add("Logging systems", Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Logging.Manager>().ToString().Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
-            Return.Add("Serializers", Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>().ToString().Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+            if (Container == null)
+                return Return;
+            Return.Add("IoC Container", new string[] { Container.Name });
+            if (FileManager != null)
+                Return.Add("File systems", FileManager.ToString().Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+            if (ConfigurationManager != null)
+                Return.Add("Configuration systems", ConfigurationManager.ToString().Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+            if (LoggingManager != null)
+                Return.Add("Logging systems", LoggingManager.ToString().Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+            if (SerializationManager != null)
+                Return.Add("Serializers", SerializationManager.ToString().Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
             return Return;
         }
     }

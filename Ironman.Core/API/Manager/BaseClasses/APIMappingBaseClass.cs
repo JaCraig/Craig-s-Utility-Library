@@ -118,7 +118,11 @@ namespace Ironman.Core.API.Manager.BaseClasses
         /// </summary>
         public IEnumerable<int> Versions { get; private set; }
 
-        private static Manager APIManager { get { return Utilities.IoC.Manager.Bootstrapper.Resolve<Manager>(); } }
+        /// <summary>
+        /// Gets the API manager.
+        /// </summary>
+        /// <value>The API manager.</value>
+        private static Manager APIManager { get { return Utilities.IoC.Manager.Bootstrapper == null ? null : Utilities.IoC.Manager.Bootstrapper.Resolve<Manager>(); } }
 
         /// <summary>
         /// Gets all items of the mapped type

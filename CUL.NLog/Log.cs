@@ -21,8 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System.Globalization;
 using NLog;
+using System.Globalization;
 using Utilities.IO.Logging.BaseClasses;
 using Utilities.IO.Logging.Enums;
 
@@ -45,12 +45,15 @@ namespace CUL.Logging
             this.InternalLogger = LogManager.GetLogger(Name);
             Start = x => InternalLogger.Log(LogLevel.Debug, "Logging started");
             End = x => InternalLogger.Log(LogLevel.Debug, "Logging ended");
-            Log.Add(MessageType.Debug, x => InternalLogger.Log(LogLevel.Debug, x));
-            Log.Add(MessageType.Error, x => InternalLogger.Log(LogLevel.Error, x));
-            Log.Add(MessageType.General, x => InternalLogger.Log(LogLevel.Info, x));
-            Log.Add(MessageType.Info, x => InternalLogger.Log(LogLevel.Info, x));
-            Log.Add(MessageType.Trace, x => InternalLogger.Log(LogLevel.Trace, x));
-            Log.Add(MessageType.Warn, x => InternalLogger.Log(LogLevel.Warn, x));
+            if (Log != null)
+            {
+                Log.Add(MessageType.Debug, x => InternalLogger.Log(LogLevel.Debug, x));
+                Log.Add(MessageType.Error, x => InternalLogger.Log(LogLevel.Error, x));
+                Log.Add(MessageType.General, x => InternalLogger.Log(LogLevel.Info, x));
+                Log.Add(MessageType.Info, x => InternalLogger.Log(LogLevel.Info, x));
+                Log.Add(MessageType.Trace, x => InternalLogger.Log(LogLevel.Trace, x));
+                Log.Add(MessageType.Warn, x => InternalLogger.Log(LogLevel.Warn, x));
+            }
             FormatMessage = (Message, Type, args) => args.Length > 0 ? string.Format(CultureInfo.InvariantCulture, Message, args) : Message;
         }
 

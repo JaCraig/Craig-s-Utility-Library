@@ -69,7 +69,10 @@ namespace CUL.Serialization
         {
             if (Data == null)
                 return null;
-            using (MemoryStream Stream = new MemoryStream(Data.ToByteArray()))
+            byte[] Result = Data.ToByteArray();
+            if (Result == null)
+                return null;
+            using (MemoryStream Stream = new MemoryStream(Result))
             {
                 return ServiceStack.Text.CsvSerializer.DeserializeFromStream(ObjectType, Stream);
             }
