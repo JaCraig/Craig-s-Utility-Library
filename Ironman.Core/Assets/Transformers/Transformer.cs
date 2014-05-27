@@ -43,6 +43,7 @@ namespace Ironman.Core.Assets.Transformers
         public Transformer(Utilities.IoC.Interfaces.IBootstrapper Bootstrapper)
         {
             Contract.Requires<ArgumentNullException>(Bootstrapper != null, "Bootstrapper");
+            this.Bootstrapper = Bootstrapper;
             Manager = Bootstrapper.Resolve<AssetManager>();
         }
 
