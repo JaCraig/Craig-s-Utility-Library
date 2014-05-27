@@ -121,11 +121,13 @@ namespace CUL.Profiling
         public IResult StopProfiling(bool DiscardResults)
         {
             StackExchange.Profiling.MiniProfiler.Stop(DiscardResults);
-            Times.Add((long)StackExchange.Profiling.MiniProfiler.Current.DurationMilliseconds);
+            if (StackExchange.Profiling.MiniProfiler.Current != null)
+                Times.Add((long)StackExchange.Profiling.MiniProfiler.Current.DurationMilliseconds);
             return this;
         }
 
-        /// <summary></summary>
+        /// <summary>
+        /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
