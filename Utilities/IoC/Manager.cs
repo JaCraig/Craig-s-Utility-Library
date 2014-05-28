@@ -50,7 +50,7 @@ namespace Utilities.IoC
             {
                 try
                 {
-                    AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(File.FullName));
+                    LoadAssemblies(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(File.FullName)).GetReferencedAssemblies());
                 }
                 catch { }
             }
@@ -60,7 +60,7 @@ namespace Utilities.IoC
                                           .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic)
                                           .All(x => new System.IO.FileInfo(x.Location).LastWriteTime <= GeneratedFile.LastWriteTime))
             {
-                AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(GeneratedFile.FullName));
+                LoadAssemblies(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(GeneratedFile.FullName)).GetReferencedAssemblies());
             }
             List<Type> Bootstrappers = new List<Type>();
             foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -101,6 +101,17 @@ namespace Utilities.IoC
             foreach (IModule Module in ModuleObjects.OrderBy(x => x.Order))
             {
                 Module.Load(InternalBootstrapper);
+            }
+        }
+
+        private void LoadAssemblies(params AssemblyName[] assemblyName)
+        {
+            if (assemblyName == null)
+                return;
+            foreach (AssemblyName Name in assemblyName)
+            {
+                if (!AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName == Name.FullName))
+                    LoadAssemblies(AppDomain.CurrentDomain.Load(Name).GetReferencedAssemblies());
             }
         }
 
