@@ -22,7 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -40,8 +43,10 @@ namespace Utilities.IoC.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        protected BootstrapperBase()
+        /// <param name="Assemblies">The assemblies.</param>
+        protected BootstrapperBase(IEnumerable<Assembly> Assemblies)
         {
+            this.Assemblies = Assemblies;
         }
 
         #endregion Constructor
@@ -57,6 +62,12 @@ namespace Utilities.IoC.BaseClasses
         /// The IoC container
         /// </summary>
         protected abstract Container AppContainer { get; }
+
+        /// <summary>
+        /// Gets the assemblies.
+        /// </summary>
+        /// <value>The assemblies.</value>
+        protected IEnumerable<Assembly> Assemblies { get; private set; }
 
         #endregion Properties
 
@@ -108,12 +119,39 @@ namespace Utilities.IoC.BaseClasses
             where T : class;
 
         /// <summary>
+        /// Registers all objects of a certain type with the bootstrapper
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        public void RegisterAll<T>()
+            where T : class
+        {
+            foreach (Assembly Assembly in Assemblies)
+            {
+                foreach (Type Type in Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(T))
+                                                                        && x.IsClass
+                                                                        && !x.IsAbstract
+                                                                        && !x.ContainsGenericParameters))
+                {
+                    ConstructorInfo[] Constructors = Type.GetConstructors();
+                    ConstructorInfo Constructor = Constructors.FirstOrDefault(x => x.GetParameters().Count() == Constructors.Max(y => y.GetParameters().Count()));
+                    List<object> Params = new List<object>();
+                    foreach (ParameterInfo Parameter in Constructor.GetParameters())
+                    {
+                        if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)))
+                            Params.Add(Resolve(Parameter.ParameterType));
+                        else
+                            Params.Add(Resolve(Parameter.ParameterType));
+                    }
+                    Register<T>((T)Activator.CreateInstance(Type, Params.ToArray()), Type.FullName);
+                }
+            }
+        }
+
+        /// <summary>
         /// Resolves the object based on the type specified
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         public abstract T Resolve<T>(T DefaultObject = default(T))
             where T : class;
@@ -123,9 +161,7 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         public abstract T Resolve<T>(string Name, T DefaultObject = default(T))
             where T : class;
@@ -134,9 +170,7 @@ namespace Utilities.IoC.BaseClasses
         /// Resolves the object based on the type specified
         /// </summary>
         /// <param name="ObjectType">Object type</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         public abstract object Resolve(Type ObjectType, object DefaultObject = null);
 
@@ -145,9 +179,7 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         public abstract object Resolve(Type ObjectType, string Name, object DefaultObject = null);
 

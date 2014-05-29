@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace UnitTests.IoC.Default
@@ -10,14 +11,14 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void Creation()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper();
+            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies());
             Assert.Equal("Default bootstrapper", Temp.Name);
         }
 
         [Fact]
         public void Register()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper();
+            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies());
             Temp.Register(new TestClass() { A = 12 });
             Assert.Equal(12, Temp.Resolve<TestClass>().A);
             Temp.Register<TestClass>();
@@ -33,9 +34,18 @@ namespace UnitTests.IoC.Default
         }
 
         [Fact]
+        public void RegisterAll()
+        {
+            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(new Assembly[] { typeof(DefaultBootstrapper).Assembly });
+            Temp.RegisterAll<ITestClass>();
+            Assert.Null(Temp.Resolve<ITestClass>());
+            Assert.Equal(1, Temp.ResolveAll<ITestClass>().Count());
+        }
+
+        [Fact]
         public void Resolve()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper();
+            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies());
             Temp.Register(new TestClass() { A = 12 });
             Assert.Equal(12, Temp.Resolve<TestClass>().A);
             Assert.Equal(12, Temp.Resolve<TestClass>("").A);
@@ -45,7 +55,7 @@ namespace UnitTests.IoC.Default
         [Fact]
         public void ResolveAll()
         {
-            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper();
+            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies());
             Temp.Register(new TestClass() { A = 12 });
             Temp.Register(new TestClass() { A = 13 }, "A");
             Temp.Register(new TestClass() { A = 14 }, "B");

@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
@@ -42,8 +43,9 @@ namespace Utilities.IoC.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        public DefaultBootstrapper()
-            : base()
+        /// <param name="Assemblies">The assemblies.</param>
+        public DefaultBootstrapper(IEnumerable<Assembly> Assemblies)
+            : base(Assemblies)
         {
             _AppContainer = new Dictionary<Tuple<Type, string>, ITypeBuilder>();
         }

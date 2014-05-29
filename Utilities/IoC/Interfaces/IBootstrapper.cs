@@ -82,15 +82,24 @@ namespace Utilities.IoC.Interfaces
 
         #endregion Register
 
+        #region RegisterAll
+
+        /// <summary>
+        /// Registers all objects of a certain type with the bootstrapper
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        void RegisterAll<T>()
+            where T : class;
+
+        #endregion RegisterAll
+
         #region Resolve
 
         /// <summary>
         /// Resolves the object based on the type specified
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         T Resolve<T>(T DefaultObject = default(T))
             where T : class;
@@ -100,9 +109,7 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         T Resolve<T>(string Name, T DefaultObject = default(T))
             where T : class;
@@ -111,9 +118,7 @@ namespace Utilities.IoC.Interfaces
         /// Resolves the object based on the type specified
         /// </summary>
         /// <param name="ObjectType">Object type</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         object Resolve(Type ObjectType, object DefaultObject = null);
 
@@ -122,9 +127,7 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         object Resolve(Type ObjectType, string Name, object DefaultObject = null);
 
