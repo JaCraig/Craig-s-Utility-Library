@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Registration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -62,42 +64,68 @@ namespace Utilities.IoC
             {
                 LoadAssemblies(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(GeneratedFile.FullName)).GetReferencedAssemblies());
             }
-            List<Type> Bootstrappers = new List<Type>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                try
-                {
-                    Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
-                                                                            && x.IsClass
-                                                                            && !x.IsAbstract
-                                                                            && !x.ContainsGenericParameters
-                                                                            && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
-                }
-                catch (ReflectionTypeLoadException) { }
-            }
-            if (Bootstrappers.Count == 0)
-            {
-                Bootstrappers.Add(typeof(DefaultBootstrapper));
-            }
-            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0]);
 
-            List<Type> Modules = new List<Type>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
+            RegistrationBuilder Builder = new RegistrationBuilder();
+            Builder.ForTypesDerivedFrom<IBootstrapper>()
+                .Export<IBootstrapper>();
+            Builder.ForTypesDerivedFrom<IModule>()
+                .Export<IModule>();
+
+            AggregateCatalog Catalog = new AggregateCatalog();
+            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x =>
             {
                 try
                 {
-                    Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
-                                                                            && x.IsClass
-                                                                            && !x.IsAbstract
-                                                                            && !x.ContainsGenericParameters));
+                    x.GetTypes();
                 }
-                catch (ReflectionTypeLoadException) { }
-            }
-            List<IModule> ModuleObjects = new List<IModule>();
-            foreach (Type Module in Modules)
+                catch (ReflectionTypeLoadException) { return false; }
+                return true;
+            }))
             {
-                ModuleObjects.Add(((IModule)Activator.CreateInstance(Module)));
+                Catalog.Catalogs.Add(new AssemblyCatalog(Assembly, Builder));
             }
+            CompositionContainer Container = new CompositionContainer(Catalog, CompositionOptions.IsThreadSafe);
+            IEnumerable<IBootstrapper> Test = Container.GetExportedValues<IBootstrapper>();
+            InternalBootstrapper = Test.FirstOrDefault(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            if (InternalBootstrapper == null)
+                InternalBootstrapper = Test.First();
+
+            //List<Type> Bootstrappers = new List<Type>();
+            //foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
+            //{
+            //    try
+            //    {
+            //        Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
+            //                                                                && x.IsClass
+            //                                                                && !x.IsAbstract
+            //                                                                && !x.ContainsGenericParameters
+            //                                                                && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
+            //    }
+            //    catch (ReflectionTypeLoadException) { }
+            //}
+            //if (Bootstrappers.Count == 0)
+            //{
+            //    Bootstrappers.Add(typeof(DefaultBootstrapper));
+            //}
+            //InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0]);
+
+            //List<Type> Modules = new List<Type>();
+            //foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
+            //{
+            //    try
+            //    {
+            //        Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
+            //                                                                && x.IsClass
+            //                                                                && !x.IsAbstract
+            //                                                                && !x.ContainsGenericParameters));
+            //    }
+            //    catch (ReflectionTypeLoadException) { }
+            //}
+            IEnumerable<IModule> ModuleObjects = Container.GetExportedValues<IModule>();
+            //foreach (Type Module in Modules)
+            //{
+            //    ModuleObjects.Add(((IModule)Activator.CreateInstance(Module)));
+            //}
             foreach (IModule Module in ModuleObjects.OrderBy(x => x.Order))
             {
                 Module.Load(InternalBootstrapper);
