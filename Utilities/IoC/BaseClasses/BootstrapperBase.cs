@@ -138,9 +138,16 @@ namespace Utilities.IoC.BaseClasses
                     foreach (ParameterInfo Parameter in Constructor.GetParameters())
                     {
                         if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)))
-                            Params.Add(Resolve(Parameter.ParameterType));
+                        {
+                            foreach (object Item in ResolveAll(Parameter.ParameterType.GetGenericArguments().First()))
+                            {
+                                Params.Add(Item);
+                            }
+                        }
                         else
+                        {
                             Params.Add(Resolve(Parameter.ParameterType));
+                        }
                     }
                     Register<T>((T)Activator.CreateInstance(Type, Params.ToArray()), Type.FullName);
                 }
