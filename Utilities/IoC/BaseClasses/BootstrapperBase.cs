@@ -96,7 +96,7 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="Name">Name associated with the object</param>
         public abstract void Register<T1, T2>(string Name = "")
-            where T2 : class,T1, new()
+            where T2 : class,T1
             where T1 : class;
 
         /// <summary>

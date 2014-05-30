@@ -44,7 +44,8 @@ namespace Utilities.IoC.Interfaces
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="Object">Object to register</param>
         /// <param name="Name">Name associated with the object</param>
-        void Register<T>(T Object, string Name = "");
+        void Register<T>(T Object, string Name = "")
+            where T : class;
 
         /// <summary>
         /// Registers a type with the default constructor
@@ -61,7 +62,7 @@ namespace Utilities.IoC.Interfaces
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="Name">Name associated with the object</param>
         void Register<T1, T2>(string Name = "")
-            where T2 : class,T1, new()
+            where T2 : class,T1
             where T1 : class;
 
         /// <summary>

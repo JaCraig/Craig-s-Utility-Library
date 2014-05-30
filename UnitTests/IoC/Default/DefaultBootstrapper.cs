@@ -108,6 +108,10 @@ namespace UnitTests.IoC.Default
 
         protected class TestClass3
         {
+            public TestClass3()
+            {
+            }
+
             public TestClass3(IEnumerable<ITestClass> Classes)
             {
                 this.Classes = Classes;
@@ -118,6 +122,10 @@ namespace UnitTests.IoC.Default
 
         protected class TestClass4
         {
+            public TestClass4()
+            {
+            }
+
             public TestClass4(TestClass3 Class)
             {
                 this.Class = Class;
