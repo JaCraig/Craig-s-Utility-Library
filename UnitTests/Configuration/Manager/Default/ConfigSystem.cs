@@ -19,6 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
+using Utilities.Configuration.Manager.Interfaces;
+using Utilities.DataTypes;
 using Xunit;
 
 namespace UnitTests.Configuration.Manager.Default
@@ -28,7 +31,7 @@ namespace UnitTests.Configuration.Manager.Default
         [Fact]
         public void Create()
         {
-            Utilities.Configuration.Manager.Default.ConfigSystem Temp = new Utilities.Configuration.Manager.Default.ConfigSystem();
+            Utilities.Configuration.Manager.Default.ConfigSystem Temp = new Utilities.Configuration.Manager.Default.ConfigSystem(AppDomain.CurrentDomain.GetAssemblies().Objects<IConfig>());
             Assert.Equal("Default", Temp.Name);
             Assert.True(Temp.ContainsConfigFile<Utilities.Configuration.Manager.Default.SystemConfig>("Default"));
         }
@@ -36,7 +39,7 @@ namespace UnitTests.Configuration.Manager.Default
         [Fact]
         public void GetConfig()
         {
-            Utilities.Configuration.Manager.Default.ConfigSystem Temp = new Utilities.Configuration.Manager.Default.ConfigSystem();
+            Utilities.Configuration.Manager.Default.ConfigSystem Temp = new Utilities.Configuration.Manager.Default.ConfigSystem(AppDomain.CurrentDomain.GetAssemblies().Objects<IConfig>());
             Utilities.Configuration.Manager.Default.SystemConfig ConfigObject = Temp.Config<Utilities.Configuration.Manager.Default.SystemConfig>("Default");
             Assert.NotNull(ConfigObject);
             Assert.Equal(1, ConfigObject.AppSettings.Count);

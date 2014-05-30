@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -130,6 +131,79 @@ namespace Utilities.IoC.Default
         }
 
         #endregion Register
+
+        #region RegisterAll
+
+        /// <summary>
+        /// Registers all objects of a certain type with the bootstrapper
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        public override void RegisterAll<T>()
+        {
+            List<Type> Types = new List<Type>();
+            foreach (Assembly Assembly in Assemblies)
+            {
+                Types.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(T))
+                                                                        && x.IsClass
+                                                                        && !x.IsAbstract
+                                                                        && !x.ContainsGenericParameters));
+            }
+            foreach (Type Type in Types)
+            {
+                ConstructorInfo[] Constructors = Type.GetConstructors();
+                ConstructorInfo Constructor = null;
+                foreach (ConstructorInfo TempConstructor in Constructors.OrderByDescending(x => x.GetParameters().Length))
+                {
+                    bool Found = true;
+                    foreach (ParameterInfo Parameter in TempConstructor.GetParameters())
+                    {
+                        Type ParameterType = Parameter.ParameterType;
+                        if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)))
+                        {
+                            ParameterType = Parameter.ParameterType.GetGenericArguments().First();
+                            if (!AppContainer.Keys.Any(x => x.Item1 == ParameterType))
+                            {
+                                Found = false;
+                                break;
+                            }
+                        }
+                        else if (!this.AppContainer.Keys.Contains(new Tuple<Type, string>(ParameterType, "")))
+                        {
+                            Found = false;
+                            break;
+                        }
+                    }
+                    if (Found)
+                    {
+                        Constructor = TempConstructor;
+                        break;
+                    }
+                }
+                if (Constructor != null)
+                {
+                    List<object> Params = new List<object>();
+                    foreach (ParameterInfo Parameter in Constructor.GetParameters())
+                    {
+                        if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)))
+                        {
+                            Type GenericParamType = Parameter.ParameterType.GetGenericArguments().First();
+                            MethodInfo ResolveAllMethod = GetType().GetMethod("ResolveAll", new Type[] { }).MakeGenericMethod(GenericParamType);
+                            Params.Add(ResolveAllMethod.Invoke(this, new object[] { }));
+                        }
+                        else
+                        {
+                            Type GenericParamType = Parameter.ParameterType.GetGenericArguments().First();
+                            MethodInfo ResolveMethod = GetType().GetMethod("Resolve", new Type[] { GenericParamType }).MakeGenericMethod(GenericParamType);
+                            Params.Add(ResolveMethod.Invoke(this, new object[] { null }));
+                            //Params.Add(Resolve(Parameter.ParameterType, "", null));
+                        }
+                    }
+                    Register<T>(() => (T)Activator.CreateInstance(Type, Params.ToArray()), Types.Count == 1 ? "" : Type.FullName);
+                }
+            }
+        }
+
+        #endregion RegisterAll
 
         #region Resolve
 

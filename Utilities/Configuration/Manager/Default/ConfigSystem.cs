@@ -41,9 +41,10 @@ namespace Utilities.Configuration.Manager.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        public ConfigSystem()
+        /// <param name="Configs">The configs.</param>
+        public ConfigSystem(IEnumerable<IConfig> Configs)
         {
-            ConfigFiles = AppDomain.CurrentDomain.GetAssemblies().Objects<IConfig>().ToDictionary(x => x.Name, x => (IConfig)x);
+            ConfigFiles = Configs.ToDictionary(x => x.Name, x => (IConfig)x);
         }
 
         #endregion Constructor

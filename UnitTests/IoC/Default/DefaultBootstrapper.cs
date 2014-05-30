@@ -9,10 +9,34 @@ namespace UnitTests.IoC.Default
     public class DefaultBootstrapper
     {
         [Fact]
+        public void CascadeConstructor()
+        {
+            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies());
+            Temp.RegisterAll<ITestClass>();
+            Temp.Register<TestClass3>();
+            Temp.Register<TestClass4>();
+            TestClass4 Object = Temp.Resolve<TestClass4>();
+            Assert.NotNull(Object);
+            Assert.NotNull(Object.Class);
+            Assert.Equal(2, Object.Class.Classes.Count());
+        }
+
+        [Fact]
         public void Creation()
         {
             Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies());
             Assert.Equal("Default bootstrapper", Temp.Name);
+        }
+
+        [Fact]
+        public void IEnumerableConstructor()
+        {
+            Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(AppDomain.CurrentDomain.GetAssemblies());
+            Temp.RegisterAll<ITestClass>();
+            Temp.Register<TestClass3>();
+            TestClass3 Object = Temp.Resolve<TestClass3>();
+            Assert.NotNull(Object);
+            Assert.Equal(2, Object.Classes.Count());
         }
 
         [Fact]
@@ -39,7 +63,7 @@ namespace UnitTests.IoC.Default
             Utilities.IoC.Default.DefaultBootstrapper Temp = new Utilities.IoC.Default.DefaultBootstrapper(new Assembly[] { typeof(DefaultBootstrapper).Assembly });
             Temp.RegisterAll<ITestClass>();
             Assert.Null(Temp.Resolve<ITestClass>());
-            Assert.Equal(1, Temp.ResolveAll<ITestClass>().Count());
+            Assert.Equal(2, Temp.ResolveAll<ITestClass>().Count());
         }
 
         [Fact]
@@ -75,6 +99,31 @@ namespace UnitTests.IoC.Default
         protected class TestClass : ITestClass
         {
             public int A { get; set; }
+        }
+
+        protected class TestClass2 : ITestClass
+        {
+            public int A { get; set; }
+        }
+
+        protected class TestClass3
+        {
+            public TestClass3(IEnumerable<ITestClass> Classes)
+            {
+                this.Classes = Classes;
+            }
+
+            public IEnumerable<ITestClass> Classes { get; set; }
+        }
+
+        protected class TestClass4
+        {
+            public TestClass4(TestClass3 Class)
+            {
+                this.Class = Class;
+            }
+
+            public TestClass3 Class { get; set; }
         }
     }
 }

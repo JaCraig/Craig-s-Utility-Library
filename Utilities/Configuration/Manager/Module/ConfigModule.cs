@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System.Linq;
+using Utilities.Configuration.Manager.Interfaces;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -46,7 +48,9 @@ namespace Utilities.Configuration.Manager.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager());
+            Bootstrapper.RegisterAll<IConfig>();
+            Bootstrapper.RegisterAll<IConfigSystem>();
+            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<IConfigSystem>()));
         }
     }
 }

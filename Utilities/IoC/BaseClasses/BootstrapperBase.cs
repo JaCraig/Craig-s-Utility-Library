@@ -38,8 +38,6 @@ namespace Utilities.IoC.BaseClasses
     /// <typeparam name="Container">The actual IoC object</typeparam>
     public abstract class BootstrapperBase<Container> : IBootstrapper
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -48,10 +46,6 @@ namespace Utilities.IoC.BaseClasses
         {
             this.Assemblies = Assemblies;
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Name of the bootstrapper
@@ -68,10 +62,6 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <value>The assemblies.</value>
         protected IEnumerable<Assembly> Assemblies { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Disposes of the object
@@ -122,37 +112,8 @@ namespace Utilities.IoC.BaseClasses
         /// Registers all objects of a certain type with the bootstrapper
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
-        public void RegisterAll<T>()
-            where T : class
-        {
-            foreach (Assembly Assembly in Assemblies)
-            {
-                foreach (Type Type in Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(T))
-                                                                        && x.IsClass
-                                                                        && !x.IsAbstract
-                                                                        && !x.ContainsGenericParameters))
-                {
-                    ConstructorInfo[] Constructors = Type.GetConstructors();
-                    ConstructorInfo Constructor = Constructors.FirstOrDefault(x => x.GetParameters().Count() == Constructors.Max(y => y.GetParameters().Count()));
-                    List<object> Params = new List<object>();
-                    foreach (ParameterInfo Parameter in Constructor.GetParameters())
-                    {
-                        if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)))
-                        {
-                            foreach (object Item in ResolveAll(Parameter.ParameterType.GetGenericArguments().First()))
-                            {
-                                Params.Add(Item);
-                            }
-                        }
-                        else
-                        {
-                            Params.Add(Resolve(Parameter.ParameterType));
-                        }
-                    }
-                    Register<T>((T)Activator.CreateInstance(Type, Params.ToArray()), Type.FullName);
-                }
-            }
-        }
+        public abstract void RegisterAll<T>()
+            where T : class;
 
         /// <summary>
         /// Resolves the object based on the type specified
@@ -222,7 +183,5 @@ namespace Utilities.IoC.BaseClasses
         {
             Dispose(false);
         }
-
-        #endregion Functions
     }
 }
