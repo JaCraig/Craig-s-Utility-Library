@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.IO.FileSystem.Interfaces;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -46,7 +47,8 @@ namespace Utilities.IO.FileSystem.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager());
+            Bootstrapper.RegisterAll<IFileSystem>();
+            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<IFileSystem>()));
         }
     }
 }

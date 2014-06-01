@@ -19,7 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
 using UnitTests.DataTypes.DataMapper.Default;
+using Utilities.DataTypes;
+using Utilities.DataTypes.DataMapper.Interfaces;
 using Xunit;
 
 namespace UnitTests.DataTypes.DataMapper
@@ -30,14 +33,14 @@ namespace UnitTests.DataTypes.DataMapper
         public void CreationTest()
         {
             Utilities.DataTypes.DataMapper.Manager TestObject = null;
-            Assert.DoesNotThrow(() => TestObject = new Utilities.DataTypes.DataMapper.Manager());
+            Assert.DoesNotThrow(() => TestObject = new Utilities.DataTypes.DataMapper.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IDataMapper>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>()));
             Assert.NotNull(TestObject);
         }
 
         [Fact]
         public void TypeMappingTest()
         {
-            Utilities.DataTypes.DataMapper.Manager TestObject = new Utilities.DataTypes.DataMapper.Manager();
+            Utilities.DataTypes.DataMapper.Manager TestObject = new Utilities.DataTypes.DataMapper.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IDataMapper>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>());
             Assert.NotNull(TestObject.Map<MappingA, MappingB>());
             Assert.IsType<Utilities.DataTypes.DataMapper.Default.TypeMapping<MappingA, MappingB>>(TestObject.Map<MappingA, MappingB>());
         }

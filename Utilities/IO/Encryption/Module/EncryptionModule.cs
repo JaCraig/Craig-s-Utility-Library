@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.IO.Encryption.Interfaces;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -46,7 +47,14 @@ namespace Utilities.IO.Encryption.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager());
+            Bootstrapper.RegisterAll<IAsymmetric>();
+            Bootstrapper.RegisterAll<IHasher>();
+            Bootstrapper.RegisterAll<IShift>();
+            Bootstrapper.RegisterAll<ISymmetric>();
+            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<IAsymmetric>(),
+                Bootstrapper.ResolveAll<IHasher>(),
+                Bootstrapper.ResolveAll<IShift>(),
+                Bootstrapper.ResolveAll<ISymmetric>()));
         }
     }
 }

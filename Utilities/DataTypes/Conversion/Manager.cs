@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
@@ -35,22 +36,17 @@ namespace Utilities.DataTypes.Conversion
     /// </summary>
     public class Manager
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Converters">The converters.</param>
+        public Manager(IEnumerable<IConverter> Converters)
         {
-            foreach (IConverter TypeConverter in AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>())
+            foreach (IConverter TypeConverter in Converters)
             {
                 TypeDescriptor.AddAttributes(TypeConverter.AssociatedType, new TypeConverterAttribute(TypeConverter.GetType()));
             }
         }
-
-        #endregion Constructor
-
-        #region Functions
 
         /// <summary>
         /// Converts item from type T to R
@@ -58,9 +54,7 @@ namespace Utilities.DataTypes.Conversion
         /// <typeparam name="T">Incoming type</typeparam>
         /// <typeparam name="R">Resulting type</typeparam>
         /// <param name="Item">Incoming object</param>
-        /// <param name="DefaultValue">
-        /// Default return value if the item is null or can not be converted
-        /// </param>
+        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
         /// <returns>The value converted to the specified type</returns>
         public static R To<T, R>(T Item, R DefaultValue = default(R))
         {
@@ -73,9 +67,7 @@ namespace Utilities.DataTypes.Conversion
         /// <typeparam name="T">Incoming type</typeparam>
         /// <param name="Item">Incoming object</param>
         /// <param name="ResultType">Result type</param>
-        /// <param name="DefaultValue">
-        /// Default return value if the item is null or can not be converted
-        /// </param>
+        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
         /// <returns>The value converted to the specified type</returns>
         public static object To<T>(T Item, Type ResultType, object DefaultValue = null)
         {
@@ -140,7 +132,5 @@ namespace Utilities.DataTypes.Conversion
         {
             return "Conversion Manager: Default\r\n";
         }
-
-        #endregion Functions
     }
 }

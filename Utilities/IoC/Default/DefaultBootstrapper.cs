@@ -145,6 +145,8 @@ namespace Utilities.IoC.Default
             {
                 MethodInfo RegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2).MakeGenericMethod(typeof(T), Type);
                 RegisterMethod.Invoke(this, new object[] { Types.Count == 1 ? "" : Type.FullName });
+                RegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2).MakeGenericMethod(Type, Type);
+                RegisterMethod.Invoke(this, new object[] { "" });
             }
         }
 

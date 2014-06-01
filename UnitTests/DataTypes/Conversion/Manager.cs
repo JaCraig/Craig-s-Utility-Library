@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 using System;
 using System.Data;
+using Utilities.DataTypes;
+using Utilities.DataTypes.Conversion.Converters.Interfaces;
 using Xunit;
 
 namespace UnitTests.DataTypes.Conversion
@@ -30,14 +32,14 @@ namespace UnitTests.DataTypes.Conversion
         [Fact]
         public void Create()
         {
-            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager();
+            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
             Assert.NotNull(TestObject);
         }
 
         [Fact]
         public void To()
         {
-            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager();
+            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
             Assert.Equal(10, Utilities.DataTypes.Conversion.Manager.To(10.0f, 5));
             Assert.Equal(5.0f, Utilities.DataTypes.Conversion.Manager.To(5, 10.0f));
             Assert.Equal(5.0f, Utilities.DataTypes.Conversion.Manager.To("5", 10.0f));
@@ -49,7 +51,7 @@ namespace UnitTests.DataTypes.Conversion
         [Fact]
         public void ToClasses()
         {
-            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager();
+            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
             TestA Object1 = new TestA() { A = 10, B = "ASDF" };
             TestB Object2 = new TestB() { A = 20, B = "ZXCV" };
             TestB Result1 = Utilities.DataTypes.Conversion.Manager.To<TestA, TestB>(Object1, null);

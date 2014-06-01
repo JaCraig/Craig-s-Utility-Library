@@ -44,14 +44,17 @@ namespace Utilities.DataTypes.AOP
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager(Compiler Compiler)
+        /// <param name="Compiler">The compiler.</param>
+        /// <param name="Aspects">The aspects.</param>
+        /// <param name="Modules">The modules.</param>
+        public Manager(Compiler Compiler, IEnumerable<IAspect> Aspects, IEnumerable<IAOPModule> Modules)
         {
             Contract.Requires<ArgumentNullException>(Compiler != null, "Compiler");
             Manager.Compiler = Compiler;
-            if (Aspects.Count == 0)
-                Aspects.Add(AppDomain.CurrentDomain.GetAssemblies().Objects<IAspect>());
+            if (Manager.Aspects.Count == 0)
+                Manager.Aspects.Add(Aspects);
             Compiler.Classes.ForEach(x => Classes.Add(x.BaseType, x));
-            AppDomain.CurrentDomain.GetAssemblies().Objects<IAOPModule>().ForEach(x => x.Setup(this));
+            Modules.ForEach(x => x.Setup(this));
         }
 
         #endregion Constructor

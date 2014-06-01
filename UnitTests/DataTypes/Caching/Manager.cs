@@ -19,6 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
+using Utilities.DataTypes;
 using Utilities.DataTypes.Caching.Interfaces;
 using Xunit;
 
@@ -29,7 +31,7 @@ namespace UnitTests.DataTypes.Caching
         [Fact]
         public void Create()
         {
-            using (Utilities.DataTypes.Caching.Manager Test = new Utilities.DataTypes.Caching.Manager())
+            using (Utilities.DataTypes.Caching.Manager Test = new Utilities.DataTypes.Caching.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ICache>()))
             {
                 ICache Temp = Test.Cache();
                 Assert.NotNull(Temp);

@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.DataTypes.AOP.Interfaces;
 using Utilities.DataTypes.CodeGen;
 using Utilities.IoC.Interfaces;
 
@@ -47,7 +48,9 @@ namespace Utilities.DataTypes.AOP.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager(Bootstrapper.Resolve<Compiler>()));
+            Bootstrapper.RegisterAll<IAspect>();
+            Bootstrapper.RegisterAll<IAOPModule>();
+            Bootstrapper.Register(new Manager(Bootstrapper.Resolve<Compiler>(), Bootstrapper.ResolveAll<IAspect>(), Bootstrapper.ResolveAll<IAOPModule>()));
         }
     }
 }

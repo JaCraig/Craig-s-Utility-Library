@@ -43,10 +43,12 @@ namespace Utilities.IO.Logging
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Loggers">The loggers.</param>
+        public Manager(IEnumerable<ILogger> Loggers)
         {
-            IEnumerable<Type> Loggers = AppDomain.CurrentDomain.GetAssemblies().Types<ILogger>().Where(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
-            LoggerUsing = Loggers.Count() == 0 ? (ILogger)Activator.CreateInstance(typeof(DefaultLogger)) : (ILogger)Activator.CreateInstance(Loggers.First());
+            LoggerUsing = Loggers.FirstOrDefault(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            if (LoggerUsing == null)
+                LoggerUsing = new DefaultLogger();
         }
 
         #endregion Constructor

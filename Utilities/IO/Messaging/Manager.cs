@@ -42,16 +42,18 @@ namespace Utilities.IO.Messaging
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Formatters">The formatters.</param>
+        /// <param name="MessagingSystems">The messaging systems.</param>
+        public Manager(IEnumerable<IFormatter> Formatters, IEnumerable<IMessagingSystem> MessagingSystems)
         {
-            IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().Types<IFormatter>().Where(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
-            Formatters = Types.Count() == 0 ? new IFormatter[] { new DefaultFormatter() }.ToList() : Types.Create<IFormatter>().ToList();
-            MessagingSystems = new Dictionary<Type, IMessagingSystem>();
-            IEnumerable<IMessagingSystem> TempSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IMessagingSystem>();
-            TempSystems.ForEach(x =>
+            this.Formatters = Formatters.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).ToList();
+            if (this.Formatters.Count() == 0)
+                this.Formatters = Formatters.Where(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).ToList();
+            this.MessagingSystems = new Dictionary<Type, IMessagingSystem>();
+            MessagingSystems.ForEach(x =>
             {
                 ((MessagingSystemBase)x).Initialize(Formatters);
-                MessagingSystems.Add(x.MessageType, x);
+                this.MessagingSystems.Add(x.MessageType, x);
             });
         }
 

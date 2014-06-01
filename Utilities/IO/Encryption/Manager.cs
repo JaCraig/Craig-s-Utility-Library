@@ -41,12 +41,16 @@ namespace Utilities.IO.Encryption
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Asymmetric">The asymmetric.</param>
+        /// <param name="Hashers">The hashers.</param>
+        /// <param name="Shifts">The shifts.</param>
+        /// <param name="Symmetric">The symmetric.</param>
+        public Manager(IEnumerable<IAsymmetric> Asymmetric, IEnumerable<IHasher> Hashers, IEnumerable<IShift> Shifts, IEnumerable<ISymmetric> Symmetric)
         {
-            AsymmetricAlgorithms = AppDomain.CurrentDomain.GetAssemblies().Objects<IAsymmetric>();
-            HasherAlgorithms = AppDomain.CurrentDomain.GetAssemblies().Objects<IHasher>();
-            ShiftAlgorithms = AppDomain.CurrentDomain.GetAssemblies().Objects<IShift>();
-            SymmetricAlgorithms = AppDomain.CurrentDomain.GetAssemblies().Objects<ISymmetric>();
+            AsymmetricAlgorithms = Asymmetric;
+            HasherAlgorithms = Hashers;
+            ShiftAlgorithms = Shifts;
+            SymmetricAlgorithms = Symmetric;
         }
 
         /// <summary>

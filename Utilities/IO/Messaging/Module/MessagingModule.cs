@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.IO.Messaging.Interfaces;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -46,7 +47,9 @@ namespace Utilities.IO.Messaging.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager());
+            Bootstrapper.RegisterAll<IFormatter>();
+            Bootstrapper.RegisterAll<IMessagingSystem>();
+            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<IFormatter>(), Bootstrapper.ResolveAll<IMessagingSystem>()));
         }
     }
 }

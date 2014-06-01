@@ -19,7 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
 using System.Data;
+using Utilities.DataTypes;
+using Utilities.DataTypes.Conversion.Converters.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
@@ -30,7 +33,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default
         public Parameter()
             : base()
         {
-            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager();
+            Utilities.DataTypes.Conversion.Manager TestObject = new Utilities.DataTypes.Conversion.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>());
         }
 
         [Fact]

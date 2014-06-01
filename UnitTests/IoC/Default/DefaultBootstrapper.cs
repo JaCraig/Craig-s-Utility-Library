@@ -64,6 +64,8 @@ namespace UnitTests.IoC.Default
             Temp.RegisterAll<ITestClass>();
             Assert.Null(Temp.Resolve<ITestClass>());
             Assert.Equal(2, Temp.ResolveAll<ITestClass>().Count());
+            Assert.NotNull(Temp.Resolve<TestClass>());
+            Assert.NotNull(Temp.Resolve<TestClass2>());
         }
 
         [Fact]
