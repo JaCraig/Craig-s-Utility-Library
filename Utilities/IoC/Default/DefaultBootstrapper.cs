@@ -288,7 +288,7 @@ namespace Utilities.IoC.Default
                 foreach (ParameterInfo Parameter in TempConstructor.GetParameters())
                 {
                     Type ParameterType = Parameter.ParameterType;
-                    if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)))
+                    if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
                     {
                         ParameterType = Parameter.ParameterType.GetGenericArguments().First();
                         if (!AppContainer.Keys.Any(x => x.Item1 == ParameterType))
@@ -322,7 +322,7 @@ namespace Utilities.IoC.Default
             List<object> Params = new List<object>();
             foreach (ParameterInfo Parameter in Constructor.GetParameters())
             {
-                if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)))
+                if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
                 {
                     Type GenericParamType = Parameter.ParameterType.GetGenericArguments().First();
                     MethodInfo ResolveAllMethod = GetType().GetMethod("ResolveAll", new Type[] { }).MakeGenericMethod(GenericParamType);

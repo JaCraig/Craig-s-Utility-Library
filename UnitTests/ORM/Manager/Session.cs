@@ -39,7 +39,10 @@ namespace UnitTests.ORM.Manager
             : base()
         {
             var BootLoader = Utilities.IoC.Manager.Bootstrapper;
-            new Utilities.ORM.Manager.ORMManager(BootLoader);
+            new Utilities.ORM.Manager.ORMManager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.Mapper.Manager>(),
+                Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(),
+                Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.Schema.Manager>(),
+                Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
         }
 
         [Fact]

@@ -433,7 +433,6 @@
     <Compile Include="ORM\Manager\Mapper\Interfaces\IMapping.cs" />
     <Compile Include="ORM\Manager\Mapper\Interfaces\IProperty.cs" />
     <Compile Include="ORM\Manager\Mapper\Manager.cs" />
-    <Compile Include="ORM\Manager\Mapper\Module\MapperModule.cs" />
     <Compile Include="ORM\Manager\QueryProvider\BaseClasses\DatabaseQueryProviderBase.cs" />
     <Compile Include="ORM\Manager\QueryProvider\BaseClasses\ParameterBase.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />

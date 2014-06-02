@@ -51,14 +51,13 @@ namespace Utilities.ORM.Manager
         /// <summary>
         /// Constructor
         /// </summary>
-        public ORMManager(IBootstrapper Bootstrapper)
+        public ORMManager(Mapper.Manager MapperProvider, QueryProvider.Manager QueryProvider, Schema.Manager SchemaProvider, SourceProvider.Manager SourceProvider)
         {
-            Contract.Requires<ArgumentNullException>(Bootstrapper != null, "Bootstrapper");
             this.Mappings = new ListMapping<IDatabase, IMapping>();
-            MapperProvider = Bootstrapper.Resolve<Mapper.Manager>();
-            QueryProvider = Bootstrapper.Resolve<QueryProvider.Manager>();
-            SchemaProvider = Bootstrapper.Resolve<Schema.Manager>();
-            SourceProvider = Bootstrapper.Resolve<SourceProvider.Manager>();
+            this.MapperProvider = MapperProvider;
+            this.QueryProvider = QueryProvider;
+            this.SchemaProvider = SchemaProvider;
+            this.SourceProvider = SourceProvider;
             SetupMappings();
             SetupDatabases();
         }

@@ -48,7 +48,14 @@ namespace Utilities.ORM.Manager.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new ORMManager(Bootstrapper));
+            Bootstrapper.RegisterAll<IMapping>();
+            Bootstrapper.Register(new Mapper.Manager(Bootstrapper.ResolveAll<IMapping>()));
+
+            Bootstrapper.Register(new ORMManager(Bootstrapper.Resolve<Mapper.Manager>(),
+                Bootstrapper.Resolve<QueryProvider.Manager>(),
+                Bootstrapper.Resolve<Schema.Manager>(),
+                Bootstrapper.Resolve<SourceProvider.Manager>()));
+
             ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
             foreach (IMapping Mapping in ORMAspect.Mapper)
             {
