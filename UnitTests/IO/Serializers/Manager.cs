@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 using System;
 using System.Runtime.Serialization;
+using Utilities.DataTypes;
+using Utilities.IO.Serializers.Interfaces;
 using Xunit;
 
 namespace UnitTests.IO.Serializers
@@ -30,28 +32,28 @@ namespace UnitTests.IO.Serializers
         [Fact]
         public void CanSerialize()
         {
-            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager();
+            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ISerializer>());
             Assert.True(Temp.CanSerialize("application/json"));
         }
 
         [Fact]
         public void Creation()
         {
-            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager();
+            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ISerializer>());
             Assert.NotNull(Temp);
         }
 
         [Fact]
         public void FileTypeToContentType()
         {
-            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager();
+            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ISerializer>());
             Assert.Equal("application/json", Temp.FileTypeToContentType(".json"));
         }
 
         [Fact]
         public void SerializeDeserialize()
         {
-            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager();
+            Utilities.IO.Serializers.Manager Temp = new Utilities.IO.Serializers.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ISerializer>());
             Assert.Equal("{\"A\":10}", Temp.Serialize<string>(new Temp() { A = 10 }, typeof(Temp)));
             Assert.Equal(new Temp() { A = 10 }.A, ((Temp)Temp.Deserialize<string>("{\"A\":10}", typeof(Temp))).A);
         }

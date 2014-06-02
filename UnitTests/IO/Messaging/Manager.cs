@@ -19,6 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using System;
+using Utilities.DataTypes;
+using Utilities.IO.Messaging.Interfaces;
 using Xunit;
 
 namespace UnitTests.IO.Messaging
@@ -28,7 +31,7 @@ namespace UnitTests.IO.Messaging
         [Fact]
         public void Creation()
         {
-            Utilities.IO.Messaging.Manager Temp = new Utilities.IO.Messaging.Manager();
+            Utilities.IO.Messaging.Manager Temp = new Utilities.IO.Messaging.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<IFormatter>(), AppDomain.CurrentDomain.GetAssemblies().Objects<IMessagingSystem>());
             Assert.NotNull(Temp);
             Assert.Equal(1, Temp.Formatters.Count);
             Assert.Equal(1, Temp.MessagingSystems.Count);

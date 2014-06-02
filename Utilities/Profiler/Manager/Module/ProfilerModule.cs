@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using Utilities.IoC.Interfaces;
+using Utilities.Profiler.Manager.Interfaces;
 
 #endregion Usings
 
@@ -46,7 +47,8 @@ namespace Utilities.Profiler.Manager.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager());
+            Bootstrapper.RegisterAll<IProfiler>();
+            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<IProfiler>()));
         }
     }
 }

@@ -20,7 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using Utilities.DataTypes;
 using Utilities.IO.Logging.Enums;
+using Utilities.IO.Logging.Interfaces;
 using Xunit;
 
 namespace UnitTests.IO.Logging
@@ -30,7 +32,7 @@ namespace UnitTests.IO.Logging
         [Fact]
         public void Creation()
         {
-            using (Utilities.IO.Logging.Manager Temp = new Utilities.IO.Logging.Manager())
+            using (Utilities.IO.Logging.Manager Temp = new Utilities.IO.Logging.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ILogger>()))
             {
                 Assert.NotNull(Temp);
             }
@@ -40,7 +42,7 @@ namespace UnitTests.IO.Logging
         [Fact]
         public void Log()
         {
-            using (Utilities.IO.Logging.Manager Temp = new Utilities.IO.Logging.Manager())
+            using (Utilities.IO.Logging.Manager Temp = new Utilities.IO.Logging.Manager(AppDomain.CurrentDomain.GetAssemblies().Objects<ILogger>()))
             {
                 Utilities.IO.Logging.Default.DefaultLog File = (Utilities.IO.Logging.Default.DefaultLog)Temp.GetLog();
                 Assert.Equal("Default", File.Name);
