@@ -39,8 +39,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <summary>
         /// Constructor
         /// </summary>
-        public SQLServerQueryProvider(IBootstrapper Bootstrapper)
-            : base(Bootstrapper)
+        public SQLServerQueryProvider()
+            : base()
         {
         }
 
@@ -63,7 +63,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <returns>A generator class</returns>
         public override IGenerator<T> Generate<T>(ISourceInfo Source, IMapping Mapping)
         {
-            return new SQLServerGenerator<T>(this, Source, Mapping, Bootstrapper);
+            return new SQLServerGenerator<T>(this, Source, Mapping);
         }
     }
 }

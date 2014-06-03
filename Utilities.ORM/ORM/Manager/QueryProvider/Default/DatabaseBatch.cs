@@ -48,22 +48,11 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Bootstrapper">Bootstrapper</param>
-        public DatabaseBatch(IBootstrapper Bootstrapper)
+        /// <param name="Source">Source info</param>
+        public DatabaseBatch(ISourceInfo Source)
             : base()
         {
             this.Commands = new List<Command>();
-            this.Bootstrapper = Bootstrapper;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Source">Source info</param>
-        /// <param name="Bootstrapper">Bootstrapper</param>
-        public DatabaseBatch(ISourceInfo Source, IBootstrapper Bootstrapper)
-            : this(Bootstrapper)
-        {
             this.Source = Source;
         }
 
@@ -71,11 +60,6 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// Command count
         /// </summary>
         public int CommandCount { get { return Commands.Count; } }
-
-        /// <summary>
-        /// Bootstrapper
-        /// </summary>
-        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Commands to batch

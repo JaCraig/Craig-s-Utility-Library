@@ -62,36 +62,37 @@ namespace Utilities.IoC
             {
                 LoadAssemblies(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(GeneratedFile.FullName)).GetReferencedAssemblies());
             }
-            List<Type> Bootstrappers = new List<Type>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
+            IEnumerable<Assembly> Assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x =>
             {
                 try
                 {
-                    Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
-                                                                            && x.IsClass
-                                                                            && !x.IsAbstract
-                                                                            && !x.ContainsGenericParameters
-                                                                            && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
+                    x.GetTypes();
                 }
-                catch (ReflectionTypeLoadException) { }
+                catch (ReflectionTypeLoadException) { return false; }
+                return true;
+            });
+
+            List<Type> Bootstrappers = new List<Type>();
+            foreach (Assembly Assembly in Assemblies)
+            {
+                Bootstrappers.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBootstrapper))
+                                                                        && x.IsClass
+                                                                        && !x.IsAbstract
+                                                                        && !x.ContainsGenericParameters
+                                                                        && !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)));
             }
             if (Bootstrappers.Count == 0)
             {
                 Bootstrappers.Add(typeof(DefaultBootstrapper));
             }
-            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0]);
-
+            InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], Assemblies);
             List<Type> Modules = new List<Type>();
-            foreach (Assembly Assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (Assembly Assembly in Assemblies)
             {
-                try
-                {
-                    Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
-                                                                            && x.IsClass
-                                                                            && !x.IsAbstract
-                                                                            && !x.ContainsGenericParameters));
-                }
-                catch (ReflectionTypeLoadException) { }
+                Modules.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IModule))
+                                                                        && x.IsClass
+                                                                        && !x.IsAbstract
+                                                                        && !x.ContainsGenericParameters));
             }
             List<IModule> ModuleObjects = new List<IModule>();
             foreach (Type Module in Modules)

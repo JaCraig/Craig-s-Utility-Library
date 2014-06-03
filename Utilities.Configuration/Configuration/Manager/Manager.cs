@@ -38,19 +38,14 @@ namespace Utilities.Configuration.Manager
     /// </summary>
     public class Manager : SafeDisposableBaseClass
     {
-        #region Constructor
-
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="Manager" /> class.
         /// </summary>
-        public Manager()
+        /// <param name="ConfigSystems">The configuration systems.</param>
+        public Manager(IEnumerable<IConfigSystem> ConfigSystems)
         {
-            ConfigSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IConfigSystem>().ToDictionary(x => x.Name);
+            this.ConfigSystems = ConfigSystems.ToDictionary(x => x.Name);
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Config systems that the library can use
@@ -63,10 +58,6 @@ namespace Utilities.Configuration.Manager
         /// <param name="Name">Name of the config system</param>
         /// <returns>The config system specified</returns>
         public IConfigSystem this[string Name] { get { return Get(Name); } }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Gets the config system specified
@@ -105,7 +96,5 @@ namespace Utilities.Configuration.Manager
                 ConfigSystems = null;
             }
         }
-
-        #endregion Functions
     }
 }

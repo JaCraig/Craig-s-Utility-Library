@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.DataTypes.DataMapper.Interfaces;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -46,7 +47,9 @@ namespace Utilities.DataTypes.DataMapper.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager());
+            Bootstrapper.RegisterAll<IDataMapper>();
+            Bootstrapper.RegisterAll<IMapperModule>();
+            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<IDataMapper>(), Bootstrapper.ResolveAll<IMapperModule>()));
         }
     }
 }

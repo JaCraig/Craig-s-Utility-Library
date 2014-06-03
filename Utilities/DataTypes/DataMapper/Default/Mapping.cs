@@ -36,8 +36,6 @@ namespace Utilities.DataTypes.DataMapper.Default
     /// <typeparam name="Right">Right type</typeparam>
     public class Mapping<Left, Right> : MappingBase<Left, Right>
     {
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -95,10 +93,6 @@ namespace Utilities.DataTypes.DataMapper.Default
             this.RightSet = RightSet.Check((x, y) => { });
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         /// <summary>
         /// Left get function
         /// </summary>
@@ -118,10 +112,6 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// Right set function
         /// </summary>
         protected Action<Right, object> RightSet { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Copies the source to the destination
@@ -168,7 +158,5 @@ namespace Utilities.DataTypes.DataMapper.Default
             if (RightGet == null) return;
             LeftSet(Destination, RightGet(Source));
         }
-
-        #endregion Functions
     }
 }

@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -41,20 +42,12 @@ namespace Utilities.Profiler.Manager
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Profilers">The profilers.</param>
+        public Manager(IEnumerable<IProfiler> Profilers)
         {
-            Type TempType = AppDomain.CurrentDomain.GetAssemblies()
-                                                   .Types<IProfiler>()
-                                                   .Where(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
-                                                   .FirstOrDefault();
-            if (TempType == null)
-            {
-                TempType = AppDomain.CurrentDomain.GetAssemblies()
-                                                  .Types<IProfiler>()
-                                                  .Where(x => x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
-                                                  .FirstOrDefault();
-            }
-            Profiler = TempType.Create<IProfiler>();
+            Profiler = Profilers.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            if (Profiler == null)
+                Profiler = Profilers.Where(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
         }
 
         #endregion Constructor

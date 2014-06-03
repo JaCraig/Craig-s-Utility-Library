@@ -22,7 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -35,18 +38,14 @@ namespace Utilities.IoC.BaseClasses
     /// <typeparam name="Container">The actual IoC object</typeparam>
     public abstract class BootstrapperBase<Container> : IBootstrapper
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        protected BootstrapperBase()
+        /// <param name="Assemblies">The assemblies.</param>
+        protected BootstrapperBase(IEnumerable<Assembly> Assemblies)
         {
+            this.Assemblies = Assemblies;
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Name of the bootstrapper
@@ -58,9 +57,11 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         protected abstract Container AppContainer { get; }
 
-        #endregion Properties
-
-        #region Functions
+        /// <summary>
+        /// Gets the assemblies.
+        /// </summary>
+        /// <value>The assemblies.</value>
+        protected IEnumerable<Assembly> Assemblies { get; private set; }
 
         /// <summary>
         /// Disposes of the object
@@ -95,7 +96,7 @@ namespace Utilities.IoC.BaseClasses
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="Name">Name associated with the object</param>
         public abstract void Register<T1, T2>(string Name = "")
-            where T2 : class,T1, new()
+            where T2 : class,T1
             where T1 : class;
 
         /// <summary>
@@ -108,12 +109,17 @@ namespace Utilities.IoC.BaseClasses
             where T : class;
 
         /// <summary>
+        /// Registers all objects of a certain type with the bootstrapper
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        public abstract void RegisterAll<T>()
+            where T : class;
+
+        /// <summary>
         /// Resolves the object based on the type specified
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         public abstract T Resolve<T>(T DefaultObject = default(T))
             where T : class;
@@ -123,9 +129,7 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         public abstract T Resolve<T>(string Name, T DefaultObject = default(T))
             where T : class;
@@ -134,9 +138,7 @@ namespace Utilities.IoC.BaseClasses
         /// Resolves the object based on the type specified
         /// </summary>
         /// <param name="ObjectType">Object type</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         public abstract object Resolve(Type ObjectType, object DefaultObject = null);
 
@@ -145,9 +147,7 @@ namespace Utilities.IoC.BaseClasses
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         public abstract object Resolve(Type ObjectType, string Name, object DefaultObject = null);
 
@@ -183,7 +183,5 @@ namespace Utilities.IoC.BaseClasses
         {
             Dispose(false);
         }
-
-        #endregion Functions
     }
 }

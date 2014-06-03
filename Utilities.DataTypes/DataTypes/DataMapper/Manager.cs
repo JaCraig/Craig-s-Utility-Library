@@ -35,33 +35,23 @@ namespace Utilities.DataTypes.DataMapper
     /// </summary>
     public class Manager
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="DataMappers">The data mappers.</param>
+        /// <param name="MapperModules">The mapper modules.</param>
+        public Manager(IEnumerable<IDataMapper> DataMappers, IEnumerable<IMapperModule> MapperModules)
         {
-            IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().Types<IDataMapper>();
-            Type Type = Types.FirstOrDefault(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
-            if (Type == null)
-                Type = Types.FirstOrDefault(x => x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
-            DataMapper = Type.Create<IDataMapper>();
-            AppDomain.CurrentDomain.GetAssemblies().Objects<IMapperModule>().ForEach(x => x.Map(this));
+            DataMapper = DataMappers.FirstOrDefault(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            if (DataMapper == null)
+                DataMapper = DataMappers.FirstOrDefault(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
+            MapperModules.ForEach(x => x.Map(this));
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Data mapper
         /// </summary>
         private IDataMapper DataMapper { get; set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Adds or returns a mapping between two types
@@ -93,7 +83,5 @@ namespace Utilities.DataTypes.DataMapper
         {
             return "Data mapper: " + DataMapper.ToString() + "\r\n";
         }
-
-        #endregion Functions
     }
 }

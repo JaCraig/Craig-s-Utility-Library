@@ -38,43 +38,30 @@ namespace Utilities.DataTypes.Caching
     /// </summary>
     public class Manager : SafeDisposableBaseClass
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        public Manager(IEnumerable<ICache> Caches)
         {
-            Caches = AppDomain.CurrentDomain.GetAssemblies()
-                                            .Types<ICache>()
-                                            .Where(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
-                                            .Create<ICache>()
-                                            .ToDictionary(x => x.Name);
-            if (!Caches.ContainsKey("Default"))
-                Caches.Add("Default", new Cache());
+            this.Caches = Caches.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+                                .ToDictionary(x => x.Name);
+            if (!this.Caches.ContainsKey("Default"))
+                this.Caches.Add("Default", new Cache());
             if (HttpContext.Current != null)
             {
-                if (!Caches.ContainsKey("Cache"))
-                    Caches.Add("Cache", new CacheCache());
-                if (!Caches.ContainsKey("Session"))
-                    Caches.Add("Session", new SessionCache());
-                if (!Caches.ContainsKey("Item"))
-                    Caches.Add("Item", new ItemCache());
+                if (!this.Caches.ContainsKey("Cache"))
+                    this.Caches.Add("Cache", new CacheCache());
+                if (!this.Caches.ContainsKey("Session"))
+                    this.Caches.Add("Session", new SessionCache());
+                if (!this.Caches.ContainsKey("Item"))
+                    this.Caches.Add("Item", new ItemCache());
             }
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Caches
         /// </summary>
         protected IDictionary<string, ICache> Caches { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Gets the specified cache
@@ -114,7 +101,5 @@ namespace Utilities.DataTypes.Caching
                 Caches.Clear();
             }
         }
-
-        #endregion Functions
     }
 }

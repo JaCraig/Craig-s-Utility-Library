@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Utilities.DataTypes.Caching.Interfaces;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -46,7 +47,8 @@ namespace Utilities.DataTypes.Caching.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new Manager());
+            Bootstrapper.RegisterAll<ICache>();
+            Bootstrapper.Register(new Manager(Bootstrapper.ResolveAll<ICache>()));
         }
     }
 }

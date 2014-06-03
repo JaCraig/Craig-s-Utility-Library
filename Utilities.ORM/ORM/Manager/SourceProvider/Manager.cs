@@ -42,17 +42,15 @@ namespace Utilities.ORM.Manager.SourceProvider
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Sources">The sources.</param>
+        public Manager(IEnumerable<IDatabase> Sources)
         {
-            Sources = AppDomain.CurrentDomain
-                                 .GetAssemblies()
-                                 .Objects<IDatabase>()
-                                 .OrderBy(x => x.Order)
-                                 .ToDictionary(x => x.Name, x => (ISourceInfo)new SourceInfo("", x.Name, "", "", x.Writable, x.Readable, x));
+            this.Sources = Sources.OrderBy(x => x.Order)
+                             .ToDictionary(x => x.Name, x => (ISourceInfo)new SourceInfo("", x.Name, "", "", x.Writable, x.Readable, x));
             foreach (ConnectionStringSettings ConnectionString in ConfigurationManager.ConnectionStrings)
             {
-                if (!Sources.ContainsKey(ConnectionString.Name))
-                    Sources.Add(ConnectionString.Name, new SourceInfo(ConnectionString.ConnectionString, ConnectionString.Name, "", "", true, true));
+                if (!this.Sources.ContainsKey(ConnectionString.Name))
+                    this.Sources.Add(ConnectionString.Name, new SourceInfo(ConnectionString.ConnectionString, ConnectionString.Name, "", "", true, true));
             }
         }
 

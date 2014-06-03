@@ -67,7 +67,7 @@ namespace Utilities.DataTypes.DataMapper.Default
         /// <returns>A mapping object for the two types specified</returns>
         protected override ITypeMapping CreateTypeMapping(Type Left, Type Right)
         {
-            return (ITypeMapping)AppDomain.CurrentDomain.GetAssemblies().Types<ITypeMapping>().First().MakeGenericType(Left, Right).Create();
+            return (ITypeMapping)typeof(TypeMapping<,>).MakeGenericType(Left, Right).Create();
         }
     }
 }

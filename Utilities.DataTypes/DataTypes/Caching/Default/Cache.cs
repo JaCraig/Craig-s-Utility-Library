@@ -37,8 +37,6 @@ namespace Utilities.DataTypes.Caching.Default
     /// </summary>
     public class Cache : CacheBase
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -47,10 +45,6 @@ namespace Utilities.DataTypes.Caching.Default
         {
             InternalCache = new ConcurrentDictionary<string, object>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// The number of items in the cache
@@ -77,10 +71,6 @@ namespace Utilities.DataTypes.Caching.Default
         /// </summary>
         protected ConcurrentDictionary<string, object> InternalCache { get; private set; }
 
-        #endregion Properties
-
-        #region Functions
-
         /// <summary>
         /// Add item to the cache
         /// </summary>
@@ -88,7 +78,7 @@ namespace Utilities.DataTypes.Caching.Default
         /// <param name="value">Value to add</param>
         public override void Add(string key, object value)
         {
-            InternalCache.AddOrUpdate(key, value, (x, y) => value);
+            InternalCache.AddOrUpdate(key, x => value, (x, y) => value);
         }
 
         /// <summary>
@@ -187,7 +177,5 @@ namespace Utilities.DataTypes.Caching.Default
                 InternalCache = null;
             }
         }
-
-        #endregion Functions
     }
 }

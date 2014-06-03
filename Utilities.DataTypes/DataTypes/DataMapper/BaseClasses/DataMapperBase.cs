@@ -72,7 +72,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         public ITypeMapping<Left, Right> Map<Left, Right>()
         {
             Tuple<Type, Type> Key = new Tuple<Type, Type>(typeof(Left), typeof(Right));
-            Mappings.AddOrUpdate(Key, CreateTypeMapping<Left, Right>(), (x, y) => y);
+            Mappings.AddOrUpdate(Key, x => CreateTypeMapping<Left, Right>(), (x, y) => y);
             ITypeMapping ReturnValue = null;
             Mappings.TryGetValue(Key, out ReturnValue);
             return (ITypeMapping<Left, Right>)ReturnValue;
@@ -87,7 +87,7 @@ namespace Utilities.DataTypes.DataMapper.BaseClasses
         public ITypeMapping Map(Type Left, Type Right)
         {
             Tuple<Type, Type> Key = new Tuple<Type, Type>(Left, Right);
-            Mappings.AddOrUpdate(Key, CreateTypeMapping(Left, Right), (x, y) => y);
+            Mappings.AddOrUpdate(Key, x => CreateTypeMapping(x.Item1, x.Item2), (x, y) => y);
             ITypeMapping ReturnValue = null;
             Mappings.TryGetValue(Key, out ReturnValue);
             return ReturnValue;

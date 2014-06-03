@@ -41,13 +41,10 @@ namespace Utilities.ORM.Manager.Mapper
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        public Manager(IEnumerable<IMapping> Mappings)
         {
-            Mappings = new ListMapping<Type, IMapping>();
-            AppDomain.CurrentDomain
-                        .GetAssemblies()
-                        .Objects<IMapping>()
-                        .ForEach(x => Mappings.Add(x.ObjectType, x));
+            this.Mappings = new ListMapping<Type, IMapping>();
+            Mappings.ForEach(x => this.Mappings.Add(x.ObjectType, x));
         }
 
         /// <summary>

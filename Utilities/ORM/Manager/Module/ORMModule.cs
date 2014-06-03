@@ -66,7 +66,8 @@ namespace Utilities.ORM.Manager.Module
             Bootstrapper.Register(new ORMManager(Bootstrapper.Resolve<Mapper.Manager>(),
                 Bootstrapper.Resolve<QueryProvider.Manager>(),
                 Bootstrapper.Resolve<Schema.Manager>(),
-                Bootstrapper.Resolve<SourceProvider.Manager>()));
+                Bootstrapper.Resolve<SourceProvider.Manager>(),
+                Bootstrapper.ResolveAll<IDatabase>()));
 
             ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
             foreach (IMapping Mapping in ORMAspect.Mapper)

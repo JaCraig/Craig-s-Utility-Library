@@ -35,11 +35,6 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
     public interface ISchemaGenerator
     {
         /// <summary>
-        /// IoC container
-        /// </summary>
-        IBootstrapper Bootstrapper { get; set; }
-
-        /// <summary>
         /// Provider name associated with the schema generator
         /// </summary>
         string ProviderName { get; }

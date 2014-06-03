@@ -23,7 +23,10 @@ THE SOFTWARE.*/
 
 using Utilities.IoC.Interfaces;
 using Utilities.ORM.Aspect;
+using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
+using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
@@ -48,7 +51,24 @@ namespace Utilities.ORM.Manager.Module
         /// <param name="Bootstrapper">Bootstrapper to register with</param>
         public void Load(IBootstrapper Bootstrapper)
         {
-            Bootstrapper.Register(new ORMManager(Bootstrapper));
+            Bootstrapper.RegisterAll<IMapping>();
+            Bootstrapper.Register(new Mapper.Manager(Bootstrapper.ResolveAll<IMapping>()));
+
+            Bootstrapper.RegisterAll<IQueryProvider>();
+            Bootstrapper.Register(new QueryProvider.Manager(Bootstrapper.ResolveAll<IQueryProvider>()));
+
+            Bootstrapper.RegisterAll<IDatabase>();
+            Bootstrapper.Register(new SourceProvider.Manager(Bootstrapper.ResolveAll<IDatabase>()));
+
+            Bootstrapper.RegisterAll<ISchemaGenerator>();
+            Bootstrapper.Register(new Schema.Manager(Bootstrapper.ResolveAll<ISchemaGenerator>()));
+
+            Bootstrapper.Register(new ORMManager(Bootstrapper.Resolve<Mapper.Manager>(),
+                Bootstrapper.Resolve<QueryProvider.Manager>(),
+                Bootstrapper.Resolve<Schema.Manager>(),
+                Bootstrapper.Resolve<SourceProvider.Manager>(),
+                Bootstrapper.ResolveAll<IDatabase>()));
+
             ORMAspect.Mapper = Bootstrapper.Resolve<Mapper.Manager>();
             foreach (IMapping Mapping in ORMAspect.Mapper)
             {

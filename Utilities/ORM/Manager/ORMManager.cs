@@ -51,14 +51,23 @@ namespace Utilities.ORM.Manager
         /// <summary>
         /// Constructor
         /// </summary>
-        public ORMManager(Mapper.Manager MapperProvider, QueryProvider.Manager QueryProvider, Schema.Manager SchemaProvider, SourceProvider.Manager SourceProvider)
+        /// <param name="MapperProvider">The mapper provider.</param>
+        /// <param name="QueryProvider">The query provider.</param>
+        /// <param name="SchemaProvider">The schema provider.</param>
+        /// <param name="SourceProvider">The source provider.</param>
+        /// <param name="Databases">The databases.</param>
+        public ORMManager(Mapper.Manager MapperProvider,
+            QueryProvider.Manager QueryProvider,
+            Schema.Manager SchemaProvider,
+            SourceProvider.Manager SourceProvider,
+            IEnumerable<IDatabase> Databases)
         {
             this.Mappings = new ListMapping<IDatabase, IMapping>();
             this.MapperProvider = MapperProvider;
             this.QueryProvider = QueryProvider;
             this.SchemaProvider = SchemaProvider;
             this.SourceProvider = SourceProvider;
-            SetupMappings();
+            SetupMappings(Databases);
             SetupDatabases();
         }
 
@@ -363,11 +372,8 @@ namespace Utilities.ORM.Manager
             }
         }
 
-        private void SetupMappings()
+        private void SetupMappings(IEnumerable<IDatabase> Databases)
         {
-            IEnumerable<IDatabase> Databases = AppDomain.CurrentDomain
-                                                         .GetAssemblies()
-                                                         .Objects<IDatabase>();
             foreach (IMapping Mapping in MapperProvider)
             {
                 Mappings.Add(Databases.FirstOrDefault(x => x.GetType() == Mapping.DatabaseConfigType), Mapping);

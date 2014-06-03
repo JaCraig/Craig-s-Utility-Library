@@ -54,19 +54,12 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source info</param>
         /// <param name="Mapping">Mapping info</param>
-        /// <param name="Bootstrapper">Bootstrapper</param>
-        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping, IBootstrapper Bootstrapper)
+        public SQLServerGenerator(SQLServerQueryProvider QueryProvider, ISourceInfo Source, IMapping Mapping)
         {
             this.QueryProvider = QueryProvider;
             this.Source = Source;
             this.Mapping = Mapping;
-            this.Bootstrapper = Bootstrapper;
         }
-
-        /// <summary>
-        /// Bootstrapper
-        /// </summary>
-        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Mapping that the generator uses

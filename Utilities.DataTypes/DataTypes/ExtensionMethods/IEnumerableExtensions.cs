@@ -136,6 +136,25 @@ namespace Utilities.DataTypes
 
         #endregion ElementsBetween
 
+        #region Except
+
+        /// <summary>
+        /// Removes values from a list that meet the criteria set forth by the predicate
+        /// </summary>
+        /// <typeparam name="T">Value type</typeparam>
+        /// <param name="Value">List to cull items from</param>
+        /// <param name="Predicate">Predicate that determines what items to remove</param>
+        /// <returns>An IEnumerable with the objects that meet the criteria removed</returns>
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> Value, Func<T, bool> Predicate)
+        {
+            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
+            if (Value == null)
+                return Value;
+            return Value.Where(x => !Predicate(x));
+        }
+
+        #endregion Except
+
         #region For
 
         /// <summary>
@@ -439,25 +458,6 @@ namespace Utilities.DataTypes
         }
 
         #endregion PositionOf
-
-        #region Remove
-
-        /// <summary>
-        /// Removes values from a list that meet the criteria set forth by the predicate
-        /// </summary>
-        /// <typeparam name="T">Value type</typeparam>
-        /// <param name="Value">List to cull items from</param>
-        /// <param name="Predicate">Predicate that determines what items to remove</param>
-        /// <returns>An IEnumerable with the objects that meet the criteria removed</returns>
-        public static IEnumerable<T> Remove<T>(this IEnumerable<T> Value, Func<T, bool> Predicate)
-        {
-            Contract.Requires<ArgumentNullException>(Predicate != null, "Predicate");
-            if (Value == null)
-                return Value;
-            return Value.Where(x => !Predicate(x));
-        }
-
-        #endregion Remove
 
         #region ToArray
 

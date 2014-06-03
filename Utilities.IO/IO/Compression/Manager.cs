@@ -40,11 +40,10 @@ namespace Utilities.IO.Compression
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Compressors">The compressors.</param>
+        public Manager(IEnumerable<ICompressor> Compressors)
         {
-            Compressors = AppDomain.CurrentDomain.GetAssemblies()
-                                                 .Objects<ICompressor>()
-                                                 .ToDictionary(x => x.Name);
+            this.Compressors = Compressors.ToDictionary(x => x.Name);
         }
 
         /// <summary>

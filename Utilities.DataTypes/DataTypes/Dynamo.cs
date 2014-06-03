@@ -237,9 +237,9 @@ namespace Utilities.DataTypes
             else if (Item is IEnumerable)
                 SetValue("Items", Item);
             else
-                IoC.Manager.Bootstrapper.Resolve<Manager>().Map(Item.GetType(), this.GetType())
-                                                           .AutoMap()
-                                                           .Copy(Item, this);
+                DataMapper.Map(Item.GetType(), this.GetType())
+                          .AutoMap()
+                          .Copy(Item, this);
         }
 
         /// <summary>
@@ -310,6 +310,18 @@ namespace Utilities.DataTypes
         /// Internal key/value dictionary
         /// </summary>
         internal IDictionary<string, object> InternalValues { get; set; }
+
+        /// <summary>
+        /// Gets or sets the aop manager.
+        /// </summary>
+        /// <value>The aop manager.</value>
+        private static AOP.Manager AOPManager { get { return IoC.Manager.Bootstrapper.Resolve<AOP.Manager>(); } }
+
+        /// <summary>
+        /// Gets or sets the data mapper.
+        /// </summary>
+        /// <value>The data mapper.</value>
+        private static Manager DataMapper { get { return IoC.Manager.Bootstrapper.Resolve<Manager>(); } }
 
         /// <summary>
         /// Gets the value associated with the key specified
@@ -401,9 +413,9 @@ namespace Utilities.DataTypes
             else if (Item is IEnumerable)
                 SetValue("Items", Item);
             else
-                IoC.Manager.Bootstrapper.Resolve<Manager>().Map(Item.GetType(), this.GetType())
-                                                           .AutoMap()
-                                                           .Copy(Item, this);
+                DataMapper.Map(Item.GetType(), this.GetType())
+                          .AutoMap()
+                          .Copy(Item, this);
         }
 
         /// <summary>
@@ -423,9 +435,9 @@ namespace Utilities.DataTypes
         public void CopyTo(object result)
         {
             Contract.Requires<ArgumentNullException>(result != null, "result");
-            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), result.GetType())
-                .AutoMap()
-                .Copy(this, result);
+            DataMapper.Map(this.GetType(), result.GetType())
+                      .AutoMap()
+                      .Copy(this, result);
         }
 
         /// <summary>
@@ -585,10 +597,10 @@ namespace Utilities.DataTypes
         /// <returns>The object converted to the type specified</returns>
         public object To(Type ObjectType)
         {
-            object Result = IoC.Manager.Bootstrapper.Resolve<AOP.Manager>().Create(ObjectType);
-            IoC.Manager.Bootstrapper.Resolve<Manager>().Map(this.GetType(), ObjectType)
-                .AutoMap()
-                .Copy(this, Result);
+            object Result = AOPManager.Create(ObjectType);
+            DataMapper.Map(this.GetType(), ObjectType)
+                      .AutoMap()
+                      .Copy(this, Result);
             return Result;
         }
 

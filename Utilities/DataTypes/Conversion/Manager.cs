@@ -75,33 +75,35 @@ namespace Utilities.DataTypes.Conversion
             {
                 if (Item == null)
                 {
-                    if (DefaultValue == null && ResultType.IsValueType)
-                        return Activator.CreateInstance(ResultType);
-                    return DefaultValue;
+                    return (DefaultValue == null && ResultType.IsValueType) ?
+                        Activator.CreateInstance(ResultType) :
+                        DefaultValue;
                 }
                 Type ObjectType = Item.GetType();
                 if (ObjectType == typeof(DBNull))
                 {
-                    if (DefaultValue == null && ResultType.IsValueType)
-                        return Activator.CreateInstance(ResultType);
-                    return DefaultValue;
+                    return (DefaultValue == null && ResultType.IsValueType) ?
+                        Activator.CreateInstance(ResultType) :
+                        DefaultValue;
                 }
                 if (ResultType.IsAssignableFrom(ObjectType))
                     return Item;
-                if (ResultType.IsEnum && ObjectType == ResultType.GetEnumUnderlyingType())
-                    return System.Enum.ToObject(ResultType, Item);
+                if (Item as IConvertible != null && !ObjectType.IsEnum && !ResultType.IsEnum)
+                    return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
+                if (ResultType.IsEnum)
+                {
+                    if (ObjectType == ResultType.GetEnumUnderlyingType())
+                        return System.Enum.ToObject(ResultType, Item);
+                    if (ObjectType == typeof(string))
+                        return System.Enum.Parse(ResultType, Item as string, true);
+                }
                 TypeConverter Converter = TypeDescriptor.GetConverter(Item);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Item, ResultType);
-                if (ResultType.IsEnum && ObjectType == typeof(string))
-                    return System.Enum.Parse(ResultType, Item as string, true);
-                if (Item as IConvertible != null)
-                    return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
                 Converter = TypeDescriptor.GetConverter(ResultType);
                 if (Converter.CanConvertFrom(ObjectType))
                     return Converter.ConvertFrom(Item);
-                string ObjectValue = Item as string;
-                if (string.IsNullOrEmpty(ObjectValue))
+                if (ResultType.IsClass)
                 {
                     object ReturnValue = Activator.CreateInstance(ResultType);
 
@@ -110,18 +112,13 @@ namespace Utilities.DataTypes.Conversion
                         .Copy(Item, ReturnValue);
                     return ReturnValue;
                 }
-                if (ResultType.IsEnum)
-                    return System.Enum.Parse(ResultType, ObjectValue, true);
-                if (DefaultValue == null && ResultType.IsValueType)
-                    return Activator.CreateInstance(ResultType);
-                return DefaultValue;
             }
             catch
             {
-                if (DefaultValue == null && ResultType.IsValueType)
-                    return Activator.CreateInstance(ResultType);
-                return DefaultValue;
             }
+            return (DefaultValue == null && ResultType.IsValueType) ?
+                Activator.CreateInstance(ResultType) :
+                DefaultValue;
         }
 
         /// <summary>

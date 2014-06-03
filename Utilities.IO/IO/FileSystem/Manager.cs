@@ -42,9 +42,10 @@ namespace Utilities.IO.FileSystem
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="FileSystems">The file systems.</param>
+        public Manager(IEnumerable<IFileSystem> FileSystems)
         {
-            FileSystems = AppDomain.CurrentDomain.GetAssemblies().Objects<IFileSystem>();
+            this.FileSystems = FileSystems;
         }
 
         #endregion Constructor

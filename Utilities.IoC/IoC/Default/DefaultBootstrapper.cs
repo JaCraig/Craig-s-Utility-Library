@@ -22,8 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Utilities.IoC.BaseClasses;
 using Utilities.IoC.Default.Interfaces;
@@ -37,20 +39,15 @@ namespace Utilities.IoC.Default
     /// </summary>
     public class DefaultBootstrapper : BootstrapperBase<IDictionary<Tuple<Type, string>, ITypeBuilder>>
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public DefaultBootstrapper()
-            : base()
+        /// <param name="Assemblies">The assemblies.</param>
+        public DefaultBootstrapper(IEnumerable<Assembly> Assemblies)
+            : base(Assemblies)
         {
             _AppContainer = new Dictionary<Tuple<Type, string>, ITypeBuilder>();
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Name of the bootstrapper
@@ -70,12 +67,6 @@ namespace Utilities.IoC.Default
 
         private IDictionary<Tuple<Type, string>, ITypeBuilder> _AppContainer = null;
 
-        #endregion Properties
-
-        #region Functions
-
-        #region Register
-
         /// <summary>
         /// Registers an object
         /// </summary>
@@ -84,7 +75,7 @@ namespace Utilities.IoC.Default
         /// <param name="Name">Name to associate with it</param>
         public override void Register<T>(T Object, string Name = "")
         {
-            Register(() => Object, Name);
+            Register<T>(() => Object, Name);
         }
 
         /// <summary>
@@ -94,7 +85,7 @@ namespace Utilities.IoC.Default
         /// <param name="Name">Name to associate with it</param>
         public override void Register<T>(string Name = "")
         {
-            Register(() => new T(), Name);
+            Register<T, T>(Name);
         }
 
         /// <summary>
@@ -105,7 +96,16 @@ namespace Utilities.IoC.Default
         /// <param name="Name">Name to associate with it</param>
         public override void Register<T1, T2>(string Name = "")
         {
-            Register<T1>(() => new T2(), Name);
+            Type Type = typeof(T2);
+            Register<T1>(() =>
+            {
+                ConstructorInfo Constructor = FindConstructor(Type);
+                if (Constructor != null)
+                {
+                    return (T1)Activator.CreateInstance(Type, GetParameters(Constructor).ToArray());
+                }
+                return null;
+            }, Name);
         }
 
         /// <summary>
@@ -127,9 +127,28 @@ namespace Utilities.IoC.Default
             }
         }
 
-        #endregion Register
-
-        #region Resolve
+        /// <summary>
+        /// Registers all objects of a certain type with the bootstrapper
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        public override void RegisterAll<T>()
+        {
+            List<Type> Types = new List<Type>();
+            foreach (Assembly Assembly in Assemblies)
+            {
+                Types.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(T))
+                                                                        && x.IsClass
+                                                                        && !x.IsAbstract
+                                                                        && !x.ContainsGenericParameters));
+            }
+            foreach (Type Type in Types)
+            {
+                MethodInfo RegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2).MakeGenericMethod(typeof(T), Type);
+                RegisterMethod.Invoke(this, new object[] { Types.Count == 1 ? "" : Type.FullName });
+                RegisterMethod = GetType().GetMethods().First(x => x.Name == "Register" && x.GetGenericArguments().Count() == 2).MakeGenericMethod(Type, Type);
+                RegisterMethod.Invoke(this, new object[] { "" });
+            }
+        }
 
         /// <summary>
         /// Resolves an object based on the type specified
@@ -179,14 +198,11 @@ namespace Utilities.IoC.Default
                 Tuple<Type, string> Key = new Tuple<Type, string>(ObjectType, Name);
                 if (!AppContainer.ContainsKey(Key))
                     return DefaultObject;
+
                 return AppContainer[Key].Create();
             }
             catch { return DefaultObject; }
         }
-
-        #endregion Resolve
-
-        #region ResolveAll
 
         /// <summary>
         /// Resolves all objects of the type specified
@@ -225,9 +241,19 @@ namespace Utilities.IoC.Default
             return ReturnValues;
         }
 
-        #endregion ResolveAll
-
-        #region Dispose
+        /// <summary>
+        /// Converts the bootstrapper to a string
+        /// </summary>
+        /// <returns>String version of the bootstrapper</returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            foreach (Tuple<Type, string> Key in AppContainer.Keys)
+            {
+                Builder.Append(AppContainer[Key].ToString());
+            }
+            return Builder.ToString();
+        }
 
         /// <summary>
         /// Disposes of the object
@@ -247,26 +273,68 @@ namespace Utilities.IoC.Default
             base.Dispose(Managed);
         }
 
-        #endregion Dispose
-
-        #region ToString
-
         /// <summary>
-        /// Converts the bootstrapper to a string
+        /// Finds the constructor.
         /// </summary>
-        /// <returns>String version of the bootstrapper</returns>
-        public override string ToString()
+        /// <param name="Type">The type.</param>
+        /// <returns>The constructor that should be used</returns>
+        private ConstructorInfo FindConstructor(Type Type)
         {
-            StringBuilder Builder = new StringBuilder();
-            foreach (Tuple<Type, string> Key in AppContainer.Keys)
+            ConstructorInfo[] Constructors = Type.GetConstructors();
+            ConstructorInfo Constructor = null;
+            foreach (ConstructorInfo TempConstructor in Constructors.OrderByDescending(x => x.GetParameters().Length))
             {
-                Builder.Append(AppContainer[Key].ToString());
+                bool Found = true;
+                foreach (ParameterInfo Parameter in TempConstructor.GetParameters())
+                {
+                    Type ParameterType = Parameter.ParameterType;
+                    if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
+                    {
+                        ParameterType = Parameter.ParameterType.GetGenericArguments().First();
+                        if (!AppContainer.Keys.Any(x => x.Item1 == ParameterType))
+                        {
+                            Found = false;
+                            break;
+                        }
+                    }
+                    else if (!this.AppContainer.Keys.Contains(new Tuple<Type, string>(ParameterType, "")))
+                    {
+                        Found = false;
+                        break;
+                    }
+                }
+                if (Found)
+                {
+                    Constructor = TempConstructor;
+                    break;
+                }
             }
-            return Builder.ToString();
+            return Constructor;
         }
 
-        #endregion ToString
-
-        #endregion Functions
+        /// <summary>
+        /// Gets the parameters.
+        /// </summary>
+        /// <param name="Constructor">The constructor.</param>
+        /// <returns>The parameters</returns>
+        private List<object> GetParameters(ConstructorInfo Constructor)
+        {
+            List<object> Params = new List<object>();
+            foreach (ParameterInfo Parameter in Constructor.GetParameters())
+            {
+                if (Parameter.ParameterType.GetInterfaces().Contains(typeof(IEnumerable)) && Parameter.ParameterType.IsGenericType)
+                {
+                    Type GenericParamType = Parameter.ParameterType.GetGenericArguments().First();
+                    MethodInfo ResolveAllMethod = GetType().GetMethod("ResolveAll", new Type[] { }).MakeGenericMethod(GenericParamType);
+                    Params.Add(ResolveAllMethod.Invoke(this, new object[] { }));
+                }
+                else
+                {
+                    MethodInfo ResolveMethod = GetType().GetMethods().FirstOrDefault(x => x.Name == "Resolve" && x.IsGenericMethod && x.GetParameters().Length == 1).MakeGenericMethod(Parameter.ParameterType);
+                    Params.Add(ResolveMethod.Invoke(this, new object[] { Parameter.ParameterType.IsValueType ? Activator.CreateInstance(Parameter.ParameterType) : null }));
+                }
+            }
+            return Params;
+        }
     }
 }

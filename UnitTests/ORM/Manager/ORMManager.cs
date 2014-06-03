@@ -23,6 +23,7 @@ using System;
 using System.Data;
 using System.Linq;
 using Utilities.DataTypes;
+using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -38,7 +39,8 @@ namespace UnitTests.ORM.Manager
             Utilities.ORM.Manager.ORMManager Temp = new Utilities.ORM.Manager.ORMManager(Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.Mapper.Manager>(),
                 Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.QueryProvider.Manager>(),
                 Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.Schema.Manager>(),
-                Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>());
+                Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.ORM.Manager.SourceProvider.Manager>(),
+                Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>());
             Assert.NotNull(Temp);
             Assert.Equal("ORM Manager\r\n", Temp.ToString());
         }

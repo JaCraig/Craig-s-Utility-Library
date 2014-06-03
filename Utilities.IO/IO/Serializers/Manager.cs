@@ -38,46 +38,26 @@ namespace Utilities.IO.Serializers
     /// </summary>
     public class Manager
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Serializers">The serializers.</param>
+        public Manager(IEnumerable<ISerializer> Serializers)
         {
-            Serializers = new Dictionary<string, ISerializer>();
-            AppDomain.CurrentDomain.GetAssemblies()
-                                   .Types<ISerializer>()
-                                   .Where(x => !x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
-                                   .Create<ISerializer>()
-                                   .ForEach(x =>
-                                   {
-                                       if (!Serializers.ContainsKey(x.ContentType))
-                                           Serializers.Add(x.ContentType, x);
-                                   });
-            AppDomain.CurrentDomain.GetAssemblies()
-                                   .Types<ISerializer>()
-                                   .Where(x => x.Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
-                                   .Create<ISerializer>()
-                                   .ForEach(x =>
-                                   {
-                                       if (!Serializers.ContainsKey(x.ContentType))
-                                           Serializers.Add(x.ContentType, x);
-                                   });
+            this.Serializers = Serializers.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+                                          .ToDictionary(x => x.ContentType);
+            Serializers.Where(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
+                       .ForEach(x =>
+                       {
+                           if (!this.Serializers.ContainsKey(x.ContentType))
+                               this.Serializers.Add(x.ContentType, x);
+                       });
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Serializers
         /// </summary>
         protected IDictionary<string, ISerializer> Serializers { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Determines if the system can serialize/deserialize the content type
@@ -170,7 +150,5 @@ namespace Utilities.IO.Serializers
             Builder.Append("Serializers: ").AppendLine(Serializers.ToString(x => x.Value.Name));
             return Builder.ToString();
         }
-
-        #endregion Functions
     }
 }

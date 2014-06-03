@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -49,11 +50,11 @@ namespace UnitTests.DataTypes.ExtensionMethods
         [Fact]
         public void ForEachParallelTest()
         {
-            StringBuilder Builder = new StringBuilder(30);
+            ConcurrentBag<int> Builder = new ConcurrentBag<int>();
             int[] Temp = new int[] { 0, 0, 1, 2, 3 };
-            Temp.ForEachParallel(x => Builder.Append(x));
-            Assert.Equal(5, Builder.ToString().Length);
-            string OrderedString = new string(Builder.ToString().OrderBy(x => x).ToArray());
+            Temp.ForEachParallel(x => Builder.Add(x));
+            Assert.Equal(5, Builder.Count);
+            string OrderedString = new string(Builder.OrderBy(x => x).ToString(x => x.ToString(), "").ToArray());
             Assert.Equal("00123", OrderedString);
         }
 

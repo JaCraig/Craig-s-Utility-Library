@@ -173,7 +173,6 @@
     <Compile Include="ORM\Manager\Session.cs" />
     <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
     <Compile Include="ORM\Manager\SourceProvider\Manager.cs" />
-    <Compile Include="ORM\Manager\SourceProvider\Module\SourceProviderModule.cs" />
     <Compile Include="ORM\Manager\SourceProvider\SourceInfo.cs" />
     <Compile Include="ORM\Manager\SourceProvider\Interfaces\ISourceInfo.cs" />
     <Compile Include="ORM\Parameters\BetweenParameter.cs" />
@@ -195,7 +194,6 @@
     <Compile Include="ORM\Manager\Mapper\Interfaces\IMapping.cs" />
     <Compile Include="ORM\Manager\Mapper\Interfaces\IProperty.cs" />
     <Compile Include="ORM\Manager\Mapper\Manager.cs" />
-    <Compile Include="ORM\Manager\Mapper\Module\MapperModule.cs" />
     <Compile Include="ORM\Manager\QueryProvider\BaseClasses\DatabaseQueryProviderBase.cs" />
     <Compile Include="ORM\Manager\QueryProvider\BaseClasses\ParameterBase.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Default\Command.cs" />
@@ -210,7 +208,6 @@
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IParameter.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Interfaces\IQueryProvider.cs" />
     <Compile Include="ORM\Manager\QueryProvider\Manager.cs" />
-    <Compile Include="ORM\Manager\QueryProvider\Module\QueryProviderModule.cs" />
     <Compile Include="ORM\Manager\Schema\BaseClasses\SourceBase.cs" />
     <Compile Include="ORM\Manager\Schema\BaseClasses\TableBase.cs" />
     <Compile Include="ORM\Manager\Schema\Default\Database\Column.cs" />
@@ -229,7 +226,6 @@
     <Compile Include="ORM\Manager\Schema\Interfaces\ITable.cs" />
     <Compile Include="ORM\Manager\Schema\Interfaces\ITrigger.cs" />
     <Compile Include="ORM\Manager\Schema\Manager.cs" />
-    <Compile Include="ORM\Manager\Schema\Module\SchemaModule.cs" />
     <Compile Include="ORM\Parameters\NotEqualParameter.cs" />
     <Compile Include="ORM\Parameters\OrParameter.cs" />
     <Compile Include="ORM\Parameters\StringEqualParameter.cs" />

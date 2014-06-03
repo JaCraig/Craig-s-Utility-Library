@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
@@ -35,22 +36,17 @@ namespace Utilities.DataTypes.Conversion
     /// </summary>
     public class Manager
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        /// <param name="Converters">The converters.</param>
+        public Manager(IEnumerable<IConverter> Converters)
         {
-            foreach (IConverter TypeConverter in AppDomain.CurrentDomain.GetAssemblies().Objects<IConverter>())
+            foreach (IConverter TypeConverter in Converters)
             {
                 TypeDescriptor.AddAttributes(TypeConverter.AssociatedType, new TypeConverterAttribute(TypeConverter.GetType()));
             }
         }
-
-        #endregion Constructor
-
-        #region Functions
 
         /// <summary>
         /// Converts item from type T to R
@@ -58,9 +54,7 @@ namespace Utilities.DataTypes.Conversion
         /// <typeparam name="T">Incoming type</typeparam>
         /// <typeparam name="R">Resulting type</typeparam>
         /// <param name="Item">Incoming object</param>
-        /// <param name="DefaultValue">
-        /// Default return value if the item is null or can not be converted
-        /// </param>
+        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
         /// <returns>The value converted to the specified type</returns>
         public static R To<T, R>(T Item, R DefaultValue = default(R))
         {
@@ -73,9 +67,7 @@ namespace Utilities.DataTypes.Conversion
         /// <typeparam name="T">Incoming type</typeparam>
         /// <param name="Item">Incoming object</param>
         /// <param name="ResultType">Result type</param>
-        /// <param name="DefaultValue">
-        /// Default return value if the item is null or can not be converted
-        /// </param>
+        /// <param name="DefaultValue">Default return value if the item is null or can not be converted</param>
         /// <returns>The value converted to the specified type</returns>
         public static object To<T>(T Item, Type ResultType, object DefaultValue = null)
         {
@@ -83,33 +75,35 @@ namespace Utilities.DataTypes.Conversion
             {
                 if (Item == null)
                 {
-                    if (DefaultValue == null && ResultType.IsValueType)
-                        return Activator.CreateInstance(ResultType);
-                    return DefaultValue;
+                    return (DefaultValue == null && ResultType.IsValueType) ?
+                        Activator.CreateInstance(ResultType) :
+                        DefaultValue;
                 }
                 Type ObjectType = Item.GetType();
                 if (ObjectType == typeof(DBNull))
                 {
-                    if (DefaultValue == null && ResultType.IsValueType)
-                        return Activator.CreateInstance(ResultType);
-                    return DefaultValue;
+                    return (DefaultValue == null && ResultType.IsValueType) ?
+                        Activator.CreateInstance(ResultType) :
+                        DefaultValue;
                 }
                 if (ResultType.IsAssignableFrom(ObjectType))
                     return Item;
-                if (ResultType.IsEnum && ObjectType == ResultType.GetEnumUnderlyingType())
-                    return System.Enum.ToObject(ResultType, Item);
+                if (Item as IConvertible != null && !ObjectType.IsEnum && !ResultType.IsEnum)
+                    return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
+                if (ResultType.IsEnum)
+                {
+                    if (ObjectType == ResultType.GetEnumUnderlyingType())
+                        return System.Enum.ToObject(ResultType, Item);
+                    if (ObjectType == typeof(string))
+                        return System.Enum.Parse(ResultType, Item as string, true);
+                }
                 TypeConverter Converter = TypeDescriptor.GetConverter(Item);
                 if (Converter.CanConvertTo(ResultType))
                     return Converter.ConvertTo(Item, ResultType);
-                if (ResultType.IsEnum && ObjectType == typeof(string))
-                    return System.Enum.Parse(ResultType, Item as string, true);
-                if (Item as IConvertible != null)
-                    return Convert.ChangeType(Item, ResultType, CultureInfo.InvariantCulture);
                 Converter = TypeDescriptor.GetConverter(ResultType);
                 if (Converter.CanConvertFrom(ObjectType))
                     return Converter.ConvertFrom(Item);
-                string ObjectValue = Item as string;
-                if (string.IsNullOrEmpty(ObjectValue))
+                if (ResultType.IsClass)
                 {
                     object ReturnValue = Activator.CreateInstance(ResultType);
 
@@ -118,18 +112,13 @@ namespace Utilities.DataTypes.Conversion
                         .Copy(Item, ReturnValue);
                     return ReturnValue;
                 }
-                if (ResultType.IsEnum)
-                    return System.Enum.Parse(ResultType, ObjectValue, true);
-                if (DefaultValue == null && ResultType.IsValueType)
-                    return Activator.CreateInstance(ResultType);
-                return DefaultValue;
             }
             catch
             {
-                if (DefaultValue == null && ResultType.IsValueType)
-                    return Activator.CreateInstance(ResultType);
-                return DefaultValue;
             }
+            return (DefaultValue == null && ResultType.IsValueType) ?
+                Activator.CreateInstance(ResultType) :
+                DefaultValue;
         }
 
         /// <summary>
@@ -140,7 +129,5 @@ namespace Utilities.DataTypes.Conversion
         {
             return "Conversion Manager: Default\r\n";
         }
-
-        #endregion Functions
     }
 }

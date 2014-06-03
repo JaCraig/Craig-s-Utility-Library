@@ -98,7 +98,12 @@ namespace Utilities.ORM.Manager
             if (Cache.ContainsKey(KeyName))
             {
                 ReturnValue = (List<Dynamo>)Cache[KeyName];
-                return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
+                return ReturnValue.ForEachParallel(x =>
+                {
+                    ObjectType Value = x.To<ObjectType>();
+                    ((IORMObject)Value).Session0 = this;
+                    return Value;
+                });
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -118,7 +123,12 @@ namespace Utilities.ORM.Manager
                 }
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
-            return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
+            return ReturnValue.ForEachParallel(x =>
+            {
+                ObjectType Value = x.To<ObjectType>();
+                ((IORMObject)Value).Session0 = this;
+                return Value;
+            });
         }
 
         /// <summary>
@@ -308,7 +318,12 @@ namespace Utilities.ORM.Manager
                     }
                 }
             }
-            return ReturnValue.Select(x => x.To<DataType>()).ForEach(x => { ((IORMObject)x).Session0 = this; }).ToList();
+            return ReturnValue.ForEachParallel(x =>
+            {
+                DataType Value = x.To<DataType>();
+                ((IORMObject)Value).Session0 = this;
+                return Value;
+            }).ToList();
         }
 
         /// <summary>
@@ -382,7 +397,12 @@ namespace Utilities.ORM.Manager
             if (Cache.ContainsKey(KeyName))
             {
                 ReturnValue = (List<Dynamo>)Cache[KeyName];
-                return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
+                return ReturnValue.ForEachParallel(x =>
+                {
+                    ObjectType Value = x.To<ObjectType>();
+                    ((IORMObject)Value).Session0 = this;
+                    return Value;
+                });
             }
             foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
             {
@@ -407,7 +427,12 @@ namespace Utilities.ORM.Manager
                 }
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(ObjectType).GetName() });
-            return ReturnValue.Select(x => x.To<ObjectType>()).ForEach(x => { ((IORMObject)x).Session0 = this; });
+            return ReturnValue.ForEachParallel(x =>
+            {
+                ObjectType Value = x.To<ObjectType>();
+                ((IORMObject)Value).Session0 = this;
+                return Value;
+            });
         }
 
         /// <summary>

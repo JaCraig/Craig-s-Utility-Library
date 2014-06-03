@@ -33,16 +33,10 @@ namespace Utilities.IoC.Interfaces
     /// </summary>
     public interface IBootstrapper : IDisposable
     {
-        #region Properties
-
         /// <summary>
         /// Name of the bootstrapper
         /// </summary>
         string Name { get; }
-
-        #endregion Properties
-
-        #region Register
 
         /// <summary>
         /// Registers an object with the bootstrapper
@@ -68,7 +62,7 @@ namespace Utilities.IoC.Interfaces
         /// <typeparam name="T2">Child class type</typeparam>
         /// <param name="Name">Name associated with the object</param>
         void Register<T1, T2>(string Name = "")
-            where T2 : class,T1, new()
+            where T2 : class,T1
             where T1 : class;
 
         /// <summary>
@@ -80,17 +74,18 @@ namespace Utilities.IoC.Interfaces
         void Register<T>(Func<T> Function, string Name = "")
             where T : class;
 
-        #endregion Register
-
-        #region Resolve
+        /// <summary>
+        /// Registers all objects of a certain type with the bootstrapper
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        void RegisterAll<T>()
+            where T : class;
 
         /// <summary>
         /// Resolves the object based on the type specified
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         T Resolve<T>(T DefaultObject = default(T))
             where T : class;
@@ -100,9 +95,7 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         T Resolve<T>(string Name, T DefaultObject = default(T))
             where T : class;
@@ -111,9 +104,7 @@ namespace Utilities.IoC.Interfaces
         /// Resolves the object based on the type specified
         /// </summary>
         /// <param name="ObjectType">Object type</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         object Resolve(Type ObjectType, object DefaultObject = null);
 
@@ -122,15 +113,9 @@ namespace Utilities.IoC.Interfaces
         /// </summary>
         /// <param name="ObjectType">Object type</param>
         /// <param name="Name">Name associated with the object</param>
-        /// <param name="DefaultObject">
-        /// Default object to return if the type can not be resolved
-        /// </param>
+        /// <param name="DefaultObject">Default object to return if the type can not be resolved</param>
         /// <returns>An object of the specified type</returns>
         object Resolve(Type ObjectType, string Name, object DefaultObject = null);
-
-        #endregion Resolve
-
-        #region ResolveAll
 
         /// <summary>
         /// Resolves the objects based on the type specified
@@ -146,7 +131,5 @@ namespace Utilities.IoC.Interfaces
         /// <param name="ObjectType">Object type</param>
         /// <returns>A list of objects of the specified type</returns>
         IEnumerable<object> ResolveAll(Type ObjectType);
-
-        #endregion ResolveAll
     }
 }
