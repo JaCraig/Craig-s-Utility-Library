@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 using System.Data;
 using Utilities.ORM.BaseClasses;
 using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
@@ -32,20 +33,20 @@ namespace UnitTests.ORM.Manager.QueryProvider
         [Fact]
         public void Batch()
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper).Batch(TestDatabaseSource));
+            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()).Batch(TestDatabaseSource));
         }
 
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper));
-            Assert.Equal("Query providers: System.Data.SqlClient\r\n", new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper).ToString());
+            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()));
+            Assert.Equal("Query providers: System.Data.SqlClient\r\n", new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()).ToString());
         }
 
         [Fact]
         public void Generate()
         {
-            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper).Generate<TestClass>(TestDatabaseSource, null));
+            Assert.NotNull(new Utilities.ORM.Manager.QueryProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IQueryProvider>()).Generate<TestClass>(TestDatabaseSource, null));
         }
 
         public class TestClass

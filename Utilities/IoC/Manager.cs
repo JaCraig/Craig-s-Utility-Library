@@ -86,7 +86,6 @@ namespace Utilities.IoC
                 Bootstrappers.Add(typeof(DefaultBootstrapper));
             }
             InternalBootstrapper = (IBootstrapper)Activator.CreateInstance(Bootstrappers[0], Assemblies);
-
             List<Type> Modules = new List<Type>();
             foreach (Assembly Assembly in Assemblies)
             {

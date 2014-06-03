@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
 using System.Data;
+using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
 
@@ -30,8 +31,8 @@ namespace UnitTests.ORM.Manager.Mapper
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Mapper.Manager());
-            Assert.Equal("Mappers: TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_\r\n", new Utilities.ORM.Manager.Mapper.Manager().ToString());
+            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()));
+            Assert.Equal("Mappers: TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_,TestClass_\r\n", new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>()).ToString());
         }
     }
 }

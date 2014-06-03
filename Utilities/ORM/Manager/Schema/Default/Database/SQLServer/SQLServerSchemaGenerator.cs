@@ -47,14 +47,11 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <summary>
         /// Constructor
         /// </summary>
-        public SQLServerSchemaGenerator()
+        public SQLServerSchemaGenerator(QueryProvider.Manager Provider, SourceProvider.Manager SourceProvider)
         {
+            this.Provider = Provider;
+            this.SourceProvider = SourceProvider;
         }
-
-        /// <summary>
-        /// IoC container
-        /// </summary>
-        public IBootstrapper Bootstrapper { get; set; }
 
         /// <summary>
         /// Provider name associated with the schema generator
@@ -64,12 +61,12 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
         /// <summary>
         /// Query provider object
         /// </summary>
-        protected QueryProvider.Manager Provider { get { return Bootstrapper.Resolve<QueryProvider.Manager>(); } }
+        protected QueryProvider.Manager Provider { get; private set; }
 
         /// <summary>
         /// Source provider object
         /// </summary>
-        protected SourceProvider.Manager SourceProvider { get { return Bootstrapper.Resolve<SourceProvider.Manager>(); } }
+        protected SourceProvider.Manager SourceProvider { get; private set; }
 
         /// <summary>
         /// Generates a list of commands used to modify the source. If it does not exist prior, the

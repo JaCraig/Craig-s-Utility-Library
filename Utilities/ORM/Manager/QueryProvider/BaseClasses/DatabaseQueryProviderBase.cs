@@ -39,21 +39,15 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <summary>
         /// Constructor
         /// </summary>
-        protected DatabaseQueryProviderBase(IBootstrapper Bootstrapper)
+        protected DatabaseQueryProviderBase()
             : base()
         {
-            this.Bootstrapper = Bootstrapper;
         }
 
         /// <summary>
         /// Provider name
         /// </summary>
         public abstract string ProviderName { get; }
-
-        /// <summary>
-        /// Bootstrapper
-        /// </summary>
-        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Parameter prefix
@@ -67,7 +61,7 @@ namespace Utilities.ORM.Manager.QueryProvider.BaseClasses
         /// <returns>Batch object</returns>
         public IBatch Batch(ISourceInfo Source)
         {
-            return new DatabaseBatch(Source, Bootstrapper);
+            return new DatabaseBatch(Source);
         }
 
         /// <summary>

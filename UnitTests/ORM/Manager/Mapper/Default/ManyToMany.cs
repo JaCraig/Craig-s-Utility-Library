@@ -44,7 +44,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
             TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.ManyToMany<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ManyToMany<TestClass, TestClass>(x => x.A, null);
-            IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase7;Integrated Security=SSPI;Pooling=false"), new List<object>());
+            IBatch Result = TestObject.CascadeDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase7;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("DELETE FROM TestClass_ WHERE ID=0\r\nDELETE FROM TestClass_ WHERE ID=0\r\nDELETE FROM TestClass_ WHERE ID=0", Result.ToString());
             Assert.Equal(3, Result.CommandCount);
@@ -58,7 +58,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.ManyToMany<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ManyToMany<TestClass, TestClass>(x => x.A, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
-            IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase7;Integrated Security=SSPI;Pooling=false"), new List<object>());
+            IBatch Result = TestObject.CascadeJoinsDelete(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase7;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("DELETE FROM TestClass_TestClass WHERE TestClass_ID=1", Result.ToString());
             Assert.Equal(1, Result.CommandCount);
@@ -72,7 +72,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.ManyToMany<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ManyToMany<TestClass, TestClass>(x => x.A, new TestClassMapping());
             TestObject.ForeignMapping = new TestClassMapping();
-            IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase7;Integrated Security=SSPI;Pooling=false"), new List<object>());
+            IBatch Result = TestObject.CascadeJoinsSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase7;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("INSERT INTO TestClass_TestClass(TestClass_ID,TestClass_ID2) VALUES (1,0)\r\nINSERT INTO TestClass_TestClass(TestClass_ID,TestClass_ID2) VALUES (1,0)\r\nINSERT INTO TestClass_TestClass(TestClass_ID,TestClass_ID2) VALUES (1,0)", Result.ToString());
             Assert.Equal(3, Result.CommandCount);
@@ -85,7 +85,7 @@ namespace UnitTests.ORM.Manager.Mapper.Default
             TempObject.A = new TestClass[] { new TestClass(), new TestClass(), new TestClass() };
             TempObject.ID = 1;
             Utilities.ORM.Manager.Mapper.Default.ManyToMany<TestClass, TestClass> TestObject = new Utilities.ORM.Manager.Mapper.Default.ManyToMany<TestClass, TestClass>(x => x.A, new TestClassMapping());
-            IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager().GetSource("Data Source=localhost;Initial Catalog=TestDatabase7;Integrated Security=SSPI;Pooling=false"), new List<object>());
+            IBatch Result = TestObject.CascadeSave(TempObject, new Utilities.ORM.Manager.SourceProvider.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IDatabase>()).GetSource("Data Source=localhost;Initial Catalog=TestDatabase7;Integrated Security=SSPI;Pooling=false"), new List<object>());
             Assert.NotNull(Result);
             Assert.Equal("INSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]\r\nINSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]\r\nINSERT INTO TestClass_() VALUES() SELECT scope_identity() as [ID]", Result.ToString());
             Assert.Equal(3, Result.CommandCount);

@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 using System.Data;
 using Utilities.ORM.Manager.Schema.Default.Database;
+using Utilities.ORM.Manager.Schema.Interfaces;
 using Xunit;
 
 namespace UnitTests.ORM.Manager.Schema
@@ -35,14 +36,14 @@ namespace UnitTests.ORM.Manager.Schema
         [Fact]
         public void Create()
         {
-            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper));
-            Assert.Equal("Schema Providers: System.Data.SqlClient\r\n", new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper).ToString());
+            Assert.DoesNotThrow(() => new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<ISchemaGenerator>()));
+            Assert.Equal("Schema Providers: System.Data.SqlClient\r\n", new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<ISchemaGenerator>()).ToString());
         }
 
         [Fact]
         public void GenerateSchema()
         {
-            Assert.Empty(new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper).GenerateSchema(new Database("TestDatabase"), TestDatabaseSource));
+            Assert.Empty(new Utilities.ORM.Manager.Schema.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<ISchemaGenerator>()).GenerateSchema(new Database("TestDatabase"), TestDatabaseSource));
         }
     }
 }

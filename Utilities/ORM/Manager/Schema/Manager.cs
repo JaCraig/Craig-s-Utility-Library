@@ -42,13 +42,10 @@ namespace Utilities.ORM.Manager.Schema
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager(IBootstrapper Bootstrapper)
+        /// <param name="SchemaGenerators">The schema generators.</param>
+        public Manager(IEnumerable<ISchemaGenerator> SchemaGenerators)
         {
-            SchemaGenerators = AppDomain.CurrentDomain
-                                        .GetAssemblies()
-                                        .Objects<ISchemaGenerator>()
-                                        .ForEach<ISchemaGenerator>(x => x.Bootstrapper = Bootstrapper)
-                                        .ToDictionary(x => x.ProviderName);
+            this.SchemaGenerators = SchemaGenerators.ToDictionary(x => x.ProviderName);
         }
 
         /// <summary>

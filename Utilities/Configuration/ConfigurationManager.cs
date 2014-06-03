@@ -35,20 +35,28 @@ namespace Utilities.Configuration
     public static class ConfigurationManager
     {
         /// <summary>
+        /// Gets or sets the configuration manager.
+        /// </summary>
+        /// <value>The configuration manager.</value>
+        private static Utilities.Configuration.Manager.Manager ConfigManager { get; set; }
+
+        /// <summary>
         /// Gets the config file specified
         /// </summary>
         /// <typeparam name="T">The config type</typeparam>
+        /// <param name="System">Configuration system to pull from</param>
         /// <param name="Name">
         /// Name of the config file (Defaults to "Default" which is the web.config/app.config file
         /// if using the default config system)
         /// </param>
-        /// <param name="System">Configuration system to pull from</param>
         /// <returns>The config file specified</returns>
         public static T Get<T>(ConfigurationSystem System, string Name = "Default")
             where T : IConfig, new()
         {
             Contract.Requires<ArgumentNullException>(System != null, "The config system can not be null.");
-            return IoC.Manager.Bootstrapper.Resolve<Utilities.Configuration.Manager.Manager>().Get(System).Config<T>(Name);
+            if (ConfigManager == null)
+                ConfigManager = IoC.Manager.Bootstrapper.Resolve<Utilities.Configuration.Manager.Manager>();
+            return ConfigManager.Get(System).Config<T>(Name);
         }
 
         /// <summary>
@@ -63,7 +71,7 @@ namespace Utilities.Configuration
         public static T Get<T>(string Name = "Default")
             where T : IConfig, new()
         {
-            return IoC.Manager.Bootstrapper.Resolve<Utilities.Configuration.Manager.Manager>().Get(ConfigurationSystem.Default).Config<T>(Name);
+            return Get<T>(ConfigurationSystem.Default, Name);
         }
     }
 
@@ -84,8 +92,13 @@ namespace Utilities.Configuration
         /// <summary>
         /// Default
         /// </summary>
+        /// <value>The default.</value>
         public static ConfigurationSystem Default { get { return new ConfigurationSystem("Default"); } }
 
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>The name.</value>
         private string Name { get; set; }
 
         /// <summary>

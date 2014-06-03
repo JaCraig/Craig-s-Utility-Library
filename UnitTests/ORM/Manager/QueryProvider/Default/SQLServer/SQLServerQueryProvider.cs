@@ -24,6 +24,7 @@ using System.Data;
 using System.Linq;
 using Utilities.ORM.BaseClasses;
 using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Default.Database;
 using Xunit;
@@ -40,7 +41,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         [Fact]
         public void Batch()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider(Utilities.IoC.Manager.Bootstrapper);
+            Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
             IBatch Batch = Temp.Batch(TestDatabaseSource);
             Assert.Equal(0, Batch.CommandCount);
             Assert.Equal(0, Batch.Execute().First().Count());
@@ -50,7 +51,7 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         [Fact]
         public void Create()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider(Utilities.IoC.Manager.Bootstrapper);
+            Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
             Assert.NotNull(Temp);
             Assert.Equal("System.Data.SqlClient", Temp.ProviderName);
         }
@@ -58,8 +59,8 @@ namespace UnitTests.ORM.Manager.QueryProvider.Default.SQLServer
         [Fact]
         public void Generate()
         {
-            Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider(Utilities.IoC.Manager.Bootstrapper);
-            IGenerator<TestClass> Generator = Temp.Generate<TestClass>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager()[typeof(TestClass), TestDatabaseSource]);
+            Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider Temp = new Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerQueryProvider();
+            IGenerator<TestClass> Generator = Temp.Generate<TestClass>(TestDatabaseSource, new Utilities.ORM.Manager.Mapper.Manager(Utilities.IoC.Manager.Bootstrapper.ResolveAll<IMapping>())[typeof(TestClass), TestDatabaseSource]);
             Assert.Equal(typeof(Utilities.ORM.Manager.QueryProvider.Default.SQLServer.SQLServerGenerator<TestClass>), Generator.GetType());
         }
 

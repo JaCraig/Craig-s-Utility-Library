@@ -23,7 +23,10 @@ THE SOFTWARE.*/
 
 using Utilities.IoC.Interfaces;
 using Utilities.ORM.Aspect;
+using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
+using Utilities.ORM.Manager.Schema.Interfaces;
 
 #endregion Usings
 
@@ -50,6 +53,15 @@ namespace Utilities.ORM.Manager.Module
         {
             Bootstrapper.RegisterAll<IMapping>();
             Bootstrapper.Register(new Mapper.Manager(Bootstrapper.ResolveAll<IMapping>()));
+
+            Bootstrapper.RegisterAll<IQueryProvider>();
+            Bootstrapper.Register(new QueryProvider.Manager(Bootstrapper.ResolveAll<IQueryProvider>()));
+
+            Bootstrapper.RegisterAll<IDatabase>();
+            Bootstrapper.Register(new SourceProvider.Manager(Bootstrapper.ResolveAll<IDatabase>()));
+
+            Bootstrapper.RegisterAll<ISchemaGenerator>();
+            Bootstrapper.Register(new Schema.Manager(Bootstrapper.ResolveAll<ISchemaGenerator>()));
 
             Bootstrapper.Register(new ORMManager(Bootstrapper.Resolve<Mapper.Manager>(),
                 Bootstrapper.Resolve<QueryProvider.Manager>(),
