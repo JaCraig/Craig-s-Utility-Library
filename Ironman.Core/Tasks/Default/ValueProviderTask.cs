@@ -21,9 +21,10 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using System;
 using Ironman.Core.Serialization.BaseClasses;
 using Ironman.Core.Tasks.Interfaces;
+using System;
+using System.Collections.Generic;
 using Utilities.DataTypes;
 
 #endregion Usings
@@ -35,6 +36,15 @@ namespace Ironman.Core.Tasks
     /// </summary>
     public class ValueProviderTask : ITask
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValueProviderTask" /> class.
+        /// </summary>
+        /// <param name="Factories">The factories.</param>
+        public ValueProviderTask(IEnumerable<VPFactoryBase> Factories)
+        {
+            this.Factories = Factories;
+        }
+
         /// <summary>
         /// Name of the task
         /// </summary>
@@ -52,11 +62,17 @@ namespace Ironman.Core.Tasks
         }
 
         /// <summary>
+        /// Gets or sets the factories.
+        /// </summary>
+        /// <value>The factories.</value>
+        private IEnumerable<VPFactoryBase> Factories { get; set; }
+
+        /// <summary>
         /// Runs the task
         /// </summary>
         public void Run()
         {
-            AppDomain.CurrentDomain.GetAssemblies().Objects<VPFactoryBase>().ForEach(x => x.AddFactory());
+            Factories.ForEach(x => x.AddFactory());
         }
     }
 }

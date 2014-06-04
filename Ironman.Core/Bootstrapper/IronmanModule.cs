@@ -23,7 +23,10 @@ THE SOFTWARE.*/
 
 using Ironman.Core.API.Manager;
 using Ironman.Core.Assets;
+using Ironman.Core.Assets.Interfaces;
+using Ironman.Core.Serialization.BaseClasses;
 using Ironman.Core.Tasks;
+using Ironman.Core.Tasks.Interfaces;
 using Utilities.IoC.Interfaces;
 
 #endregion Usings
@@ -51,8 +54,13 @@ namespace Ironman.Core.Bootstrapper
         {
             if (Bootstrapper == null)
                 return;
-            Bootstrapper.Register<AssetManager>(new AssetManager(Bootstrapper));
-            Bootstrapper.Register<TaskManager>(new TaskManager());
+            Bootstrapper.ResolveAll<IFilter>();
+            Bootstrapper.ResolveAll<IContentFilter>();
+            Bootstrapper.ResolveAll<ITranslator>();
+            Bootstrapper.Register<AssetManager>(new AssetManager(Bootstrapper.ResolveAll<IFilter>(), Bootstrapper.ResolveAll<IContentFilter>(), Bootstrapper.ResolveAll<ITranslator>()));
+            Bootstrapper.RegisterAll<VPFactoryBase>();
+            Bootstrapper.RegisterAll<ITask>();
+            Bootstrapper.Register<TaskManager>(new TaskManager(Bootstrapper.ResolveAll<ITask>()));
             Bootstrapper.Register<Manager>(new Manager());
         }
     }

@@ -49,13 +49,14 @@ namespace Ironman.Core.Assets
         /// <summary>
         /// Constructor
         /// </summary>
-        public AssetManager(IBootstrapper Bootstrapper)
+        /// <param name="Filters">The filters.</param>
+        /// <param name="ContentFilters">The content filters.</param>
+        /// <param name="Translators">The translators.</param>
+        public AssetManager(IEnumerable<IFilter> Filters, IEnumerable<IContentFilter> ContentFilters, IEnumerable<ITranslator> Translators)
         {
-            Contract.Requires<ArgumentNullException>(Bootstrapper != null, "Bootstrapper");
-            this.Bootstrapper = Bootstrapper;
-            Filters = AppDomain.CurrentDomain.GetAssemblies().Objects<IFilter>();
-            ContentFilters = AppDomain.CurrentDomain.GetAssemblies().Objects<IContentFilter>();
-            Translators = AppDomain.CurrentDomain.GetAssemblies().Objects<ITranslator>();
+            this.Filters = Filters;
+            this.ContentFilters = ContentFilters;
+            this.Translators = Translators;
             FileTypes = new ListMapping<AssetType, string>();
             RunOrder = new System.Collections.Generic.List<RunTime>();
             Translators.ForEach(x => FileTypes.Add(x.TranslatesTo, x.FileTypeAccepts));
@@ -67,12 +68,6 @@ namespace Ironman.Core.Assets
             RunOrder.Add(RunTime.PostMinified);
             RunOrder.Add(RunTime.PreCombine);
         }
-
-        /// <summary>
-        /// Gets the bootstrapper.
-        /// </summary>
-        /// <value>The bootstrapper.</value>
-        protected IBootstrapper Bootstrapper { get; private set; }
 
         /// <summary>
         /// Content filters

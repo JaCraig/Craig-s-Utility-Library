@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using Ironman.Core.Tasks.Enums;
 using Ironman.Core.Tasks.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Utilities.DataTypes;
 using Utilities.IO;
@@ -41,13 +42,10 @@ namespace Ironman.Core.Tasks
         /// <summary>
         /// Constructor
         /// </summary>
-        public TaskManager()
+        public TaskManager(IEnumerable<ITask> Tasks)
         {
-            Tasks = new ListMapping<RunTime, ITask>();
-            foreach (ITask Task in AppDomain.CurrentDomain.GetAssemblies().Objects<ITask>())
-            {
-                Tasks.Add(Task.TimeToRun, Task);
-            }
+            this.Tasks = new ListMapping<RunTime, ITask>();
+            Tasks.ForEach(x => this.Tasks.Add(x.TimeToRun, x));
         }
 
         /// <summary>

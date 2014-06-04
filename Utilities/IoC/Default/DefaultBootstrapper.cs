@@ -136,10 +136,15 @@ namespace Utilities.IoC.Default
             List<Type> Types = new List<Type>();
             foreach (Assembly Assembly in Assemblies)
             {
-                Types.AddRange(Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(T))
+                IEnumerable<Type> TempTypes = Assembly.GetTypes();
+                Types.AddRange(TempTypes.Where(x => x.GetInterfaces().Contains(typeof(T))
                                                                         && x.IsClass
                                                                         && !x.IsAbstract
                                                                         && !x.ContainsGenericParameters));
+                Types.AddRange(TempTypes.Where(x => IsOfType(x, typeof(T))
+                                                            && x.IsClass
+                                                            && !x.IsAbstract
+                                                            && !x.ContainsGenericParameters));
             }
             foreach (Type Type in Types)
             {
@@ -335,6 +340,15 @@ namespace Utilities.IoC.Default
                 }
             }
             return Params;
+        }
+
+        private bool IsOfType(Type x, Type type)
+        {
+            if (x == typeof(object) || x == null)
+                return false;
+            if (x == type)
+                return true;
+            return IsOfType(x.BaseType, type);
         }
     }
 }

@@ -34,6 +34,15 @@ namespace Ironman.Core.Tasks
     public class AssetBundlerTask : ITask
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AssetBundlerTask" /> class.
+        /// </summary>
+        /// <param name="Manager">The manager.</param>
+        public AssetBundlerTask(AssetManager Manager)
+        {
+            this.Manager = Manager;
+        }
+
+        /// <summary>
         /// Name of the task
         /// </summary>
         public string Name
@@ -50,11 +59,17 @@ namespace Ironman.Core.Tasks
         }
 
         /// <summary>
+        /// Gets or sets the manager.
+        /// </summary>
+        /// <value>The manager.</value>
+        private AssetManager Manager { get; set; }
+
+        /// <summary>
         /// Runs the task
         /// </summary>
         public void Run()
         {
-            AppHelper.Bootstrapper.Resolve<AssetManager>().CreateBundles();
+            Manager.CreateBundles();
         }
     }
 }

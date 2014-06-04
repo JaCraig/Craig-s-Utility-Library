@@ -41,12 +41,28 @@ namespace Ironman.Core.Serialization
     public class GeneralValueProvider : VPFactoryBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="GeneralValueProvider" /> class.
+        /// </summary>
+        /// <param name="Manager">The manager.</param>
+        public GeneralValueProvider(Utilities.IO.Serializers.Manager Manager)
+            : base()
+        {
+            this.Manager = Manager;
+        }
+
+        /// <summary>
+        /// Gets or sets the manager.
+        /// </summary>
+        /// <value>The manager.</value>
+        private Utilities.IO.Serializers.Manager Manager { get; set; }
+
+        /// <summary>
         /// Adds the factory to the system
         /// </summary>
         public override void AddFactory()
         {
             ValueProviderFactories.Factories.Remove(ValueProviderFactories.Factories.OfType<JsonValueProviderFactory>().FirstOrDefault());
-            ValueProviderFactories.Factories.Add(new GeneralValueProvider());
+            ValueProviderFactories.Factories.Add(this);
         }
 
         /// <summary>
@@ -61,7 +77,7 @@ namespace Ironman.Core.Serialization
             HttpRequestBase Request = controllerContext.HttpContext.Request;
             if (string.IsNullOrEmpty(Request.ContentType))
                 return null;
-            if (!Utilities.IoC.Manager.Bootstrapper.Resolve<Utilities.IO.Serializers.Manager>().CanSerialize(Request.ContentType))
+            if (!Manager.CanSerialize(Request.ContentType))
                 return null;
             string Body = Request.InputStream.ReadAll();
             Request.InputStream.Seek(0, System.IO.SeekOrigin.Begin);
