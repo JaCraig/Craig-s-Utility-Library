@@ -48,7 +48,7 @@ namespace Utilities.Validation
         {
             if (Object == null)
                 return true;
-            return Validator.TryValidateObject(Object, new ValidationContext(Object, null, null), Results);
+            return Validator.TryValidateObject(Object, new ValidationContext(Object, null, null), Results, true);
         }
 
         #endregion TryValidate
