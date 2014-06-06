@@ -21,11 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Glimpse.AspNet.Extensibility;
-using Glimpse.Core.Extensibility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using Glimpse.AspNet.Extensibility;
+using Glimpse.Core.Extensibility;
 
 #endregion Usings
 
@@ -56,7 +56,7 @@ namespace Glimpse.CUL
         /// Gets or sets the container.
         /// </summary>
         /// <value>The container.</value>
-        private Utilities.IoC.Interfaces.IBootstrapper Container { get { return Container; } }
+        private Utilities.IoC.Interfaces.IBootstrapper Container { get { return Utilities.IoC.Manager.Bootstrapper; } }
 
         /// <summary>
         /// Gets the file manager.

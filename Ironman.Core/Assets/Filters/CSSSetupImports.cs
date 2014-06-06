@@ -21,13 +21,13 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
 using Utilities.IO;
 
 #endregion Usings
@@ -87,7 +87,7 @@ namespace Ironman.Core.Assets.Filters
                         IAsset SubAsset = Assets.FirstOrDefault(x => x.Path.ToUpperInvariant() == File.FullName.ToUpperInvariant());
                         if (SubAsset == null)
                         {
-                            SubAsset = new Asset(File.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/"), Utilities.IoC.Manager.Bootstrapper);
+                            SubAsset = new Asset(File.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/"), Utilities.IoC.Manager.Bootstrapper.Resolve<AssetManager>());
                         }
                         Asset.Included.Add(SubAsset);
                         Asset.Content = Asset.Content.Replace(MatchString, SubAsset.Content);

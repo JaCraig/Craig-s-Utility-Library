@@ -21,9 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.Assets.Enums;
-using Ironman.Core.Assets.Interfaces;
-using Ironman.Core.Assets.Transformers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -33,6 +30,9 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using Ironman.Core.Assets.Enums;
+using Ironman.Core.Assets.Interfaces;
+using Ironman.Core.Assets.Transformers;
 using Utilities.DataTypes;
 using Utilities.IO;
 using Utilities.IoC.Interfaces;
@@ -188,7 +188,7 @@ namespace Ironman.Core.Assets
             string BundleDirectory = Directory.FullName.Replace(new DirectoryInfo("~/").FullName, "~/").Replace("\\", "/");
             StyleBundle Bundle = new StyleBundle(BundleDirectory + "/bundle/css");
             Bundle.Transforms.Clear();
-            Bundle.Transforms.Add(new Transformer(Bootstrapper));
+            Bundle.Transforms.Add(new Transformer(this));
             if (Directory.Exists)
             {
                 foreach (string Value in FileTypes[AssetType.CSS])
@@ -198,7 +198,7 @@ namespace Ironman.Core.Assets
             }
             ScriptBundle Bundle2 = new ScriptBundle(BundleDirectory + "/bundle/js");
             Bundle2.Transforms.Clear();
-            Bundle2.Transforms.Add(new Transformer(Bootstrapper));
+            Bundle2.Transforms.Add(new Transformer(this));
             if (Directory.Exists)
             {
                 foreach (string Value in FileTypes[AssetType.Javascript])
