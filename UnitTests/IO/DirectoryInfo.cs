@@ -85,9 +85,9 @@ namespace UnitTests.IO
             Utilities.IO.DirectoryInfo Temp = new Utilities.IO.DirectoryInfo(".");
             Assert.DoesNotThrow(() => { foreach (IFile File in Temp) { } });
             Assert.Equal(0, Temp.EnumerateDirectories().Count());
-            Assert.Equal(25, Temp.EnumerateFiles().Count());
+            Assert.Equal(28, Temp.EnumerateFiles().Count());
             Assert.Equal(0, Temp.EnumerateDirectories(x => x.Created < DateTime.UtcNow).Count());
-            Assert.Equal(25, Temp.EnumerateFiles(x => x.Created < DateTime.UtcNow).Count());
+            Assert.Equal(28, Temp.EnumerateFiles(x => x.Created < DateTime.UtcNow).Count());
         }
 
         [Fact]

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Ironman.Default</id>
-        <version>1.0.159-beta</version>
+        <version>1.0.160-beta</version>
         <title>Ironman Framework Default Setup</title>
         <authors>James Craig</authors>
         <owners>James Craig</owners>
@@ -16,12 +16,12 @@
         <language>en-US</language>
         <tags>utility utilities</tags>
         <dependencies>
-			<dependency id="Ironman.Core.Assets.Yui" version="[1.0.159-beta]" />
-			<dependency id="Ironman.Core.Assets.Less" version="[1.0.159-beta]" />
-			<dependency id="CUL.MiniProfiler" version="[4.0.159-beta]" />
-			<dependency id="CUL.NLog" version="[4.0.159-beta]" />
-			<dependency id="CUL.ServiceStack" version="[4.0.159-beta]" />
-			<dependency id="Glimpse.CUL" version="[4.0.159-beta]" />
+			<dependency id="Ironman.Core.Assets.Yui" version="[1.0.160-beta]" />
+			<dependency id="Ironman.Core.Assets.Less" version="[1.0.160-beta]" />
+			<dependency id="CUL.MiniProfiler" version="[4.0.160-beta]" />
+			<dependency id="CUL.NLog" version="[4.0.160-beta]" />
+			<dependency id="CUL.ServiceStack" version="[4.0.160-beta]" />
+			<dependency id="Glimpse.CUL" version="[4.0.160-beta]" />
 			<dependency id="Elmah.MVC" version="[2.1.1]" />
 			<dependency id="Glimpse.MVC5" version="[1.5.3]" />
 			<dependency id="Glimpse.Elmah" version="[1.1.1]" />

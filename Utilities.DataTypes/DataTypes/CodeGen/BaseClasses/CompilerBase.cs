@@ -21,8 +21,6 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -30,6 +28,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using Utilities.DataTypes.Patterns.BaseClasses;
 
 #endregion Usings
@@ -41,8 +42,6 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
     /// </summary>
     public abstract class CompilerBase : SafeDisposableBaseClass
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -60,24 +59,19 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
             System.IO.FileInfo CurrentFile = new System.IO.FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll");
             this.RegenerateAssembly = (!CurrentFile.Exists
                                       || AppDomain.CurrentDomain.GetAssemblies()
-                                                                .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic)
+                                                                .Where(x => !x.FullName.Contains("vshost32") && !x.IsDynamic && !string.IsNullOrEmpty(x.Location))
                                                                 .Any(x => new System.IO.FileInfo(x.Location).LastWriteTime > CurrentFile.LastWriteTime));
             if (string.IsNullOrEmpty(this.AssemblyDirectory)
                 || !new System.IO.FileInfo(this.AssemblyDirectory + "\\" + this.AssemblyName + ".dll").Exists
                 || this.RegenerateAssembly)
             {
-                this.Assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(this.AssemblyName), AssemblyBuilderAccess.RunAndSave, this.AssemblyDirectory);
-                this.Module = Assembly.DefineDynamicModule(this.AssemblyName, this.AssemblyName + ".dll", true);
+                AssemblyStream = new MemoryStream();
             }
             else
             {
                 AppDomain.CurrentDomain.Load(System.Reflection.AssemblyName.GetAssemblyName(CurrentFile.FullName)).GetTypes().ForEach(x => Classes.Add(x));
             }
         }
-
-        #endregion Constructor
-
-        #region Properties
 
         /// <summary>
         /// Assembly directory
@@ -95,14 +89,10 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         public ICollection<Type> Classes { get; private set; }
 
         /// <summary>
-        /// Assembly builder
+        /// Gets the assembly stream.
         /// </summary>
-        protected AssemblyBuilder Assembly { get; private set; }
-
-        /// <summary>
-        /// Module builder
-        /// </summary>
-        protected ModuleBuilder Module { get; private set; }
+        /// <value>The assembly stream.</value>
+        protected MemoryStream AssemblyStream { get; private set; }
 
         /// <summary>
         /// Should this be optimized?
@@ -113,10 +103,6 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// Determines if the assembly needs to be regenerated
         /// </summary>
         protected bool RegenerateAssembly { get; private set; }
-
-        #endregion Properties
-
-        #region Functions
 
         /// <summary>
         /// Outputs basic information about the compiler as a string
@@ -150,18 +136,23 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// <returns>This</returns>
         protected Type Add(string ClassName, string Code, IEnumerable<string> Usings, params Assembly[] References)
         {
-            if (Module == null)
+            if (AssemblyStream == null)
                 return null;
-            Compilation CSharpCompiler = Compilation.Create(AssemblyName + ".dll",
-                new CompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: Usings, optimize: Optimize),
-                                                    new SyntaxTree[] { SyntaxTree.ParseText(Code) },
-                                                    References.ForEach(x => new MetadataFileReference(x.Location)).ToArray());
-            ReflectionEmitResult Result = CSharpCompiler.Emit(Module);
-            if (!Result.Success)
-                throw new Exception(Code + System.Environment.NewLine + System.Environment.NewLine + Result.Diagnostics.ToString(x => x.Info.GetMessage(), System.Environment.NewLine));
-            Type ReturnType = Module.GetTypes().FirstOrDefault(x => x.FullName == ClassName);
-            Classes.Add(ReturnType);
-            return ReturnType;
+            CSharpCompilation CSharpCompiler = CSharpCompilation.Create(AssemblyName + ".dll",
+                                                    new SyntaxTree[] { CSharpSyntaxTree.ParseText(Code) },
+                                                    References.ForEach(x => new MetadataFileReference(x.Location)).ToArray(),
+                                                    new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: Usings, optimize: Optimize));
+            using (MemoryStream TempStream = new MemoryStream())
+            {
+                EmitResult Result = CSharpCompiler.Emit(TempStream);
+                if (!Result.Success)
+                    throw new Exception(Code + System.Environment.NewLine + System.Environment.NewLine + Result.Diagnostics.ToString(x => x.GetMessage(), System.Environment.NewLine));
+                byte[] MiniAssembly = TempStream.ToArray();
+                Type ReturnType = AppDomain.CurrentDomain.Load(MiniAssembly).GetTypes().FirstOrDefault(x => x.FullName == ClassName);
+                AssemblyStream.Write(MiniAssembly, 0, MiniAssembly.Length);
+                Classes.Add(ReturnType);
+                return ReturnType;
+            }
         }
 
         /// <summary>
@@ -183,8 +174,11 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         protected override void Dispose(bool Managed)
         {
             Save();
-            Assembly = null;
-            Module = null;
+            if (AssemblyStream != null)
+            {
+                AssemblyStream.Dispose();
+                AssemblyStream = null;
+            }
             Classes = new List<Type>();
         }
 
@@ -193,15 +187,17 @@ namespace Utilities.DataTypes.CodeGen.BaseClasses
         /// </summary>
         protected void Save()
         {
-            if (Assembly != null
+            if (AssemblyStream != null
                 && !string.IsNullOrEmpty(AssemblyDirectory)
                 && (!new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").Exists
                 || RegenerateAssembly))
             {
-                Assembly.Save(AssemblyName + ".dll");
+                using (FileStream TempStream = new FileInfo(AssemblyDirectory + "\\" + AssemblyName + ".dll").OpenWrite())
+                {
+                    byte[] TempArray = AssemblyStream.ToArray();
+                    TempStream.Write(TempArray, 0, TempArray.Length);
+                }
             }
         }
-
-        #endregion Functions
     }
 }
