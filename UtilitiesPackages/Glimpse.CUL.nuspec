@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Glimpse.CUL</id>
-		<version>4.0.160-beta</version>
+		<version>4.0.161-beta</version>
 		<title>Glimpse plugin for Craig's Utility Library</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>
@@ -20,7 +20,7 @@
 		<dependencies>
             <dependency id="Glimpse.AspNet" version="[1.9.0]" />
 			<dependency id="Glimpse" version="[1.8.5]" />
-			<dependency id="CraigsUtilityLibrary" version="[4.0.160-beta]" />
+			<dependency id="CraigsUtilityLibrary" version="[4.0.161-beta]" />
         </dependencies>
 	</metadata>
 	<files>
