@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -499,6 +500,41 @@ namespace Utilities.DataTypes
             Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.FirstOrDefault(z => z.Name == x).PropertyType));
             object[] Row = new object[Columns.Length];
             foreach (T Item in List)
+            {
+                for (int x = 0; x < Row.Length; ++x)
+                {
+                    Row[x] = Properties.FirstOrDefault(z => z.Name == Columns[x]).GetValue(Item, new object[] { });
+                }
+                ReturnValue.Rows.Add(Row);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Converts the IEnumerable to a DataTable
+        /// </summary>
+        /// <param name="List">List to convert</param>
+        /// <param name="Columns">Column names (if empty, uses property names)</param>
+        /// <returns>The list as a DataTable</returns>
+        public static DataTable To(this IEnumerable List, params string[] Columns)
+        {
+            DataTable ReturnValue = new DataTable();
+            ReturnValue.Locale = CultureInfo.CurrentCulture;
+            int Count = 0;
+            foreach (object Item in List)
+            {
+                ++Count;
+            }
+            if (List == null || Count == 0)
+                return ReturnValue;
+            IEnumerator ListEnumerator = List.GetEnumerator();
+            ListEnumerator.MoveNext();
+            PropertyInfo[] Properties = ListEnumerator.Current.GetType().GetProperties();
+            if (Columns.Length == 0)
+                Columns = Properties.ToArray(x => x.Name);
+            Columns.ForEach(x => ReturnValue.Columns.Add(x, Properties.FirstOrDefault(z => z.Name == x).PropertyType));
+            object[] Row = new object[Columns.Length];
+            foreach (object Item in List)
             {
                 for (int x = 0; x < Row.Length; ++x)
                 {

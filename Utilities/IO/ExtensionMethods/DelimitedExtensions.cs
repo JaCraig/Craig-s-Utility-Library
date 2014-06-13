@@ -21,6 +21,7 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,8 +37,6 @@ namespace Utilities.IO
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class FileFormatExtensions
     {
-        #region Functions
-
         /// <summary>
         /// Converts an IEnumerable to a delimited file
         /// </summary>
@@ -46,6 +45,17 @@ namespace Utilities.IO
         /// <param name="Delimiter">Delimiter to use</param>
         /// <returns>The delimited file containing the list</returns>
         public static Utilities.IO.FileFormats.Delimited.Delimited ToDelimitedFile<T>(this IEnumerable<T> List, string Delimiter = "\t")
+        {
+            return List.To().ToDelimitedFile(Delimiter);
+        }
+
+        /// <summary>
+        /// Converts an IEnumerable to a delimited file
+        /// </summary>
+        /// <param name="List">The list to convert</param>
+        /// <param name="Delimiter">Delimiter to use</param>
+        /// <returns>The delimited file containing the list</returns>
+        public static Utilities.IO.FileFormats.Delimited.Delimited ToDelimitedFile(this IEnumerable List, string Delimiter = "\t")
         {
             return List.To().ToDelimitedFile(Delimiter);
         }
@@ -78,7 +88,5 @@ namespace Utilities.IO
             }
             return ReturnValue;
         }
-
-        #endregion Functions
     }
 }

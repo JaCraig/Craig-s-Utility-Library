@@ -368,6 +368,7 @@
     <Compile Include="IO\Messaging\Module\MessagingModule.cs" />
     <Compile Include="IO\Serializers\BaseClasses\SerializerBase.cs" />
     <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />
+    <Compile Include="IO\Serializers\Default\CSVSerializer.cs" />
     <Compile Include="IO\Serializers\Default\JSONSerializer.cs" />
     <Compile Include="IO\Serializers\Default\SOAPSerializer.cs" />
     <Compile Include="IO\Serializers\Default\XMLSerializer.cs" />

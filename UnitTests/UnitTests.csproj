@@ -172,6 +172,7 @@
     <Compile Include="IO\Messaging\Default\SMTPSystem.cs" />
     <Compile Include="IO\Messaging\Manager.cs" />
     <Compile Include="IO\Serializers\Default\BinarySerializer.cs" />
+    <Compile Include="IO\Serializers\Default\CsvSerializer.cs" />
     <Compile Include="IO\Serializers\Default\JSONSerializer.cs" />
     <Compile Include="IO\Serializers\Default\SOAPSerializer.cs" />
     <Compile Include="IO\Serializers\Default\XMLSerializer.cs" />
