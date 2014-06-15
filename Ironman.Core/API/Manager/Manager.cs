@@ -41,17 +41,19 @@ namespace Ironman.Core.API.Manager
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager()
+        public Manager(IEnumerable<IAPIMapping> Mappings)
             : base()
         {
-            Mappings = new Dictionary<int, MappingHolder>();
-            foreach (IAPIMapping Mapping in AppDomain.CurrentDomain.GetAssemblies().Objects<IAPIMapping>())
+            this.Mappings = new Dictionary<int, MappingHolder>();
+            if (Mappings == null)
+                return;
+            foreach (IAPIMapping Mapping in Mappings)
             {
                 foreach (int Version in Mapping.Versions)
                 {
-                    if (!Mappings.ContainsKey(Version))
-                        Mappings.Add(Version, new MappingHolder());
-                    Mappings[Version].Mappings.Add(Mapping.Name, Mapping);
+                    if (!this.Mappings.ContainsKey(Version))
+                        this.Mappings.Add(Version, new MappingHolder());
+                    this.Mappings[Version].Mappings.Add(Mapping.Name, Mapping);
                 }
             }
         }

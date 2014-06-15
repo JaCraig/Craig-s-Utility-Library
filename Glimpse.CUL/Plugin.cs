@@ -21,11 +21,11 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using Glimpse.AspNet.Extensibility;
+using Glimpse.Core.Extensibility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using Glimpse.AspNet.Extensibility;
-using Glimpse.Core.Extensibility;
 
 #endregion Usings
 
@@ -50,31 +50,31 @@ namespace Glimpse.CUL
         /// Gets the configuration manager.
         /// </summary>
         /// <value>The configuration manager.</value>
-        private Utilities.Configuration.Manager.Manager ConfigurationManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.Configuration.Manager.Manager>(); } }
+        private static Utilities.Configuration.Manager.Manager ConfigurationManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.Configuration.Manager.Manager>(); } }
 
         /// <summary>
         /// Gets or sets the container.
         /// </summary>
         /// <value>The container.</value>
-        private Utilities.IoC.Interfaces.IBootstrapper Container { get { return Utilities.IoC.Manager.Bootstrapper; } }
+        private static Utilities.IoC.Interfaces.IBootstrapper Container { get { return Utilities.IoC.Manager.Bootstrapper; } }
 
         /// <summary>
         /// Gets the file manager.
         /// </summary>
         /// <value>The file manager.</value>
-        private Utilities.IO.FileSystem.Manager FileManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.FileSystem.Manager>(); } }
+        private static Utilities.IO.FileSystem.Manager FileManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.FileSystem.Manager>(); } }
 
         /// <summary>
         /// Gets the logging manager.
         /// </summary>
         /// <value>The logging manager.</value>
-        private Utilities.IO.Logging.Manager LoggingManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.Logging.Manager>(); } }
+        private static Utilities.IO.Logging.Manager LoggingManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.Logging.Manager>(); } }
 
         /// <summary>
         /// Gets the serialization manager.
         /// </summary>
         /// <value>The serialization manager.</value>
-        private Utilities.IO.Serializers.Manager SerializationManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.Serializers.Manager>(); } }
+        private static Utilities.IO.Serializers.Manager SerializationManager { get { Contract.Requires<ArgumentNullException>(Container != null, "Container"); return Container.Resolve<Utilities.IO.Serializers.Manager>(); } }
 
         /// <summary>
         /// Gets data for glimpse

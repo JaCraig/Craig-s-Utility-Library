@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using Ironman.Core.API.Manager;
+using Ironman.Core.API.Manager.Interfaces;
 using Ironman.Core.Assets;
 using Ironman.Core.Assets.Interfaces;
 using Ironman.Core.Serialization.BaseClasses;
@@ -61,7 +62,8 @@ namespace Ironman.Core.Bootstrapper
             Bootstrapper.RegisterAll<VPFactoryBase>();
             Bootstrapper.RegisterAll<ITask>();
             Bootstrapper.Register<TaskManager>(new TaskManager(Bootstrapper.ResolveAll<ITask>()));
-            Bootstrapper.Register<Manager>(new Manager());
+            Bootstrapper.RegisterAll<IAPIMapping>();
+            Bootstrapper.Register<Manager>(new Manager(Bootstrapper.ResolveAll<IAPIMapping>()));
         }
     }
 }
