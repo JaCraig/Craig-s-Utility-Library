@@ -62,6 +62,11 @@ namespace Utilities.ORM.Manager
             SourceProvider.Manager SourceProvider,
             IEnumerable<IDatabase> Databases)
         {
+            Contract.Requires<ArgumentNullException>(MapperProvider != null, "MapperProvider");
+            Contract.Requires<ArgumentNullException>(QueryProvider != null, "QueryProvider");
+            Contract.Requires<ArgumentNullException>(SchemaProvider != null, "SchemaProvider");
+            Contract.Requires<ArgumentNullException>(SourceProvider != null, "SourceProvider");
+            Contract.Requires<ArgumentNullException>(Databases != null, "Databases");
             this.Mappings = new ListMapping<IDatabase, IMapping>();
             this.MapperProvider = MapperProvider;
             this.QueryProvider = QueryProvider;
@@ -120,6 +125,8 @@ namespace Utilities.ORM.Manager
         private static void SetupAuditTables(IDatabase Key, Schema.Default.Database.Database TempDatabase)
         {
             Contract.Requires<ArgumentNullException>(Key != null, "Key");
+            Contract.Requires<ArgumentNullException>(TempDatabase != null, "TempDatabase");
+            Contract.Requires<ArgumentNullException>(TempDatabase.Tables != null, "TempDatabase.Tables");
             if (!Key.Audit)
                 return;
             List<ITable> TempTables = new List<ITable>();
@@ -135,6 +142,7 @@ namespace Utilities.ORM.Manager
         private static void SetupDeleteTrigger(ITable Table)
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
             StringBuilder Columns = new StringBuilder();
             StringBuilder Builder = new StringBuilder();
             Builder.Append("CREATE TRIGGER dbo.").Append(Table.Name).Append("_Audit_D ON dbo.")
@@ -156,6 +164,7 @@ namespace Utilities.ORM.Manager
         private static void SetupInsertUpdateTrigger(ITable Table)
         {
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
             StringBuilder Columns = new StringBuilder();
             StringBuilder Builder = new StringBuilder();
             Builder.Append("CREATE TRIGGER dbo.").Append(Table.Name).Append("_Audit_IU ON dbo.")
@@ -180,6 +189,7 @@ namespace Utilities.ORM.Manager
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
             Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            Contract.Requires<ArgumentNullException>(Mapping.IDProperties != null, "Mapping.IDProperties");
             foreach (IProperty Property in Mapping.IDProperties)
             {
                 Table.AddColumn(Property.FieldName,
@@ -215,6 +225,7 @@ namespace Utilities.ORM.Manager
 
         private void SetupDatabases()
         {
+            Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
             List<Schema.Default.Database.Database> Databases = new List<Schema.Default.Database.Database>();
             foreach (IDatabase Key in Mappings.Keys)
             {
@@ -265,6 +276,7 @@ namespace Utilities.ORM.Manager
 
         private void SetupJoiningTables(IDatabase Key, Schema.Default.Database.Database TempDatabase)
         {
+            Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
             foreach (IMapping Mapping in Mappings[Key])
             {
                 foreach (IProperty Property in Mapping.Properties)
@@ -301,6 +313,7 @@ namespace Utilities.ORM.Manager
         private void SetupJoiningTablesEnumerable(IMapping Mapping, IProperty Property, IDatabase Key, Schema.Default.Database.Database TempDatabase)
         {
             Contract.Requires<ArgumentNullException>(TempDatabase != null, "TempDatabase");
+            Contract.Requires<ArgumentNullException>(TempDatabase.Tables != null, "TempDatabase.Tables");
             if (TempDatabase.Tables.FirstOrDefault(x => x.Name == Property.TableName) != null)
                 return;
             IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
@@ -374,6 +387,7 @@ namespace Utilities.ORM.Manager
 
         private void SetupMappings(IEnumerable<IDatabase> Databases)
         {
+            Contract.Requires<NullReferenceException>(MapperProvider != null, "MapperProvider");
             foreach (IMapping Mapping in MapperProvider)
             {
                 Mappings.Add(Databases.FirstOrDefault(x => x.GetType() == Mapping.DatabaseConfigType), Mapping);
@@ -390,6 +404,7 @@ namespace Utilities.ORM.Manager
 
         private void SetupTables(IDatabase Key, Schema.Default.Database.Database TempDatabase)
         {
+            Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
             foreach (IMapping Mapping in Mappings[Key])
             {
                 TempDatabase.AddTable(Mapping.TableName);

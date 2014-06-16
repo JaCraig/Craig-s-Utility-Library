@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
 using Utilities.DataTypes.Caching.Default;
@@ -43,6 +44,7 @@ namespace Utilities.DataTypes.Caching
         /// </summary>
         public Manager(IEnumerable<ICache> Caches)
         {
+            Contract.Requires<ArgumentNullException>(Caches != null, "Caches");
             this.Caches = Caches.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
                                 .ToDictionary(x => x.Name);
             if (!this.Caches.ContainsKey("Default"))

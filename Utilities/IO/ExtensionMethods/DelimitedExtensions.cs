@@ -21,10 +21,12 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Contracts;
 using Utilities.DataTypes;
 
 #endregion Usings
@@ -57,6 +59,7 @@ namespace Utilities.IO
         /// <returns>The delimited file containing the list</returns>
         public static Utilities.IO.FileFormats.Delimited.Delimited ToDelimitedFile(this IEnumerable List, string Delimiter = "\t")
         {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
             return List.To().ToDelimitedFile(Delimiter);
         }
 

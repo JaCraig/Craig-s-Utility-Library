@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.Contracts;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Comparison;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;

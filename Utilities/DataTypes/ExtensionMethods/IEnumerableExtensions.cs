@@ -518,6 +518,7 @@ namespace Utilities.DataTypes
         /// <returns>The list as a DataTable</returns>
         public static DataTable To(this IEnumerable List, params string[] Columns)
         {
+            Contract.Requires<ArgumentNullException>(List != null, "List");
             DataTable ReturnValue = new DataTable();
             ReturnValue.Locale = CultureInfo.CurrentCulture;
             int Count = 0;

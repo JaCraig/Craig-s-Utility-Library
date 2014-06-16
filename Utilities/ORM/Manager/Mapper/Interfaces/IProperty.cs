@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq.Expressions;
 using Utilities.DataTypes;
@@ -149,6 +150,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Source">Source info</param>
         /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         IBatch CascadeDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
@@ -158,6 +160,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Source">Source info</param>
         /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         IBatch CascadeJoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
@@ -167,6 +170,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Source">Source info</param>
         /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         IBatch CascadeJoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
@@ -176,6 +180,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Source">Source info</param>
         /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         IBatch CascadeSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
@@ -183,6 +188,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         object GetValue(ClassType Object);
 
         /// <summary>
@@ -192,6 +198,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Source">Source info</param>
         /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         IBatch JoinsDelete(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
 
         /// <summary>
@@ -201,6 +208,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="Source">Source info</param>
         /// <param name="ObjectsSeen">Objects that have been visited thus far</param>
         /// <returns>Batch object with the appropriate commands</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         IBatch JoinsSave(ClassType Object, ISourceInfo Source, IList<object> ObjectsSeen);
     }
 
@@ -289,6 +297,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         /// <param name="Object">Object to get the parameter from</param>
         /// <returns>The parameter version of the property</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         object GetParameter(object Object);
 
         /// <summary>
@@ -296,6 +305,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         /// <param name="Object">Object to get the parameter from</param>
         /// <returns>The parameter version of the property</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         object GetParameter(Dynamo Object);
 
         /// <summary>
@@ -303,6 +313,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         object GetValue(object Object);
 
         /// <summary>
@@ -310,6 +321,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         object GetValue(Dynamo Object);
 
         /// <summary>
@@ -318,6 +330,7 @@ namespace Utilities.ORM.Manager.Mapper.Interfaces
         /// <param name="MappingProvider">Mapping provider</param>
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="Source">Source to use</param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         void Setup(ISourceInfo Source, Mapper.Manager MappingProvider, QueryProvider.Manager QueryProvider);
     }
 }

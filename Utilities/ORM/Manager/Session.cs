@@ -469,6 +469,7 @@ namespace Utilities.ORM.Manager
             where ObjectType : class, new()
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
+            Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
             foreach (IProperty<ObjectType> Property in Mapping.Properties.Where(x => x.Cascade))
             {
                 TempBatch.AddCommand(Property.CascadeDelete(Object, Source, ObjectsSeen.ToList()));
@@ -479,6 +480,7 @@ namespace Utilities.ORM.Manager
             where ObjectType : class, new()
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
+            Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
             foreach (IProperty<ObjectType> Property in Mapping.Properties.Where(x => x.Cascade))
             {
                 TempBatch.AddCommand(Property.CascadeSave(Object, Source, ObjectsSeen.ToList()));
@@ -489,6 +491,7 @@ namespace Utilities.ORM.Manager
             where ObjectType : class, new()
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
+            Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
                 if (!Property.Cascade &&
@@ -511,6 +514,7 @@ namespace Utilities.ORM.Manager
             where ObjectType : class, new()
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
+            Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
             foreach (IProperty<ObjectType> Property in Mapping.Properties)
             {
                 if (!Property.Cascade &&

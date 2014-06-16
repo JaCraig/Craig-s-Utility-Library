@@ -811,6 +811,7 @@ namespace Utilities.DataTypes
         /// <param name="NewValue">New value for the property</param>
         protected void RaisePropertyChanged(string PropertyName, object NewValue)
         {
+            Contract.Requires<NullReferenceException>(ChangeLog != null, "ChangeLog");
             if (ChangeLog.ContainsKey(PropertyName))
                 ChangeLog.SetValue(PropertyName, new Change(this[PropertyName], NewValue));
             else

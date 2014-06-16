@@ -191,6 +191,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         protected SymmetricAlgorithm GetProvider(string Algorithm)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Algorithm), "Algorithm");
+            Contract.Requires<NullReferenceException>(ImplementedAlgorithms != null, "ImplementedAlgorithms");
             return ImplementedAlgorithms[Algorithm.ToUpperInvariant()]();
         }
     }

@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using Utilities.DataTypes;
@@ -152,6 +153,7 @@ namespace Utilities.ORM.Manager.QueryProvider.Default
         /// <param name="Result">Result of the command</param>
         public void Finalize(IList<dynamic> Result)
         {
+            Contract.Requires<NullReferenceException>(CallBack != null, "CallBack");
             CallBack(this, Result);
         }
 

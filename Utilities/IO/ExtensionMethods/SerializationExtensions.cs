@@ -46,6 +46,7 @@ namespace Utilities.IO
         /// <returns>The deserialized object</returns>
         public static R Deserialize<R, T>(this T Data, string ContentType = "application/json")
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
             return (R)IoC.Manager.Bootstrapper.Resolve<Manager>().Deserialize<T>(Data, typeof(R), ContentType);
         }
 
@@ -74,6 +75,7 @@ namespace Utilities.IO
         /// <returns>The serialized object</returns>
         public static R Serialize<R, T>(this T Object, string ContentType = "application/json")
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
             return IoC.Manager.Bootstrapper.Resolve<Manager>().Serialize<T, R>(Object, ContentType);
         }
 

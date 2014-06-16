@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
@@ -46,6 +47,8 @@ namespace Utilities.IO.Messaging
         /// <param name="MessagingSystems">The messaging systems.</param>
         public Manager(IEnumerable<IFormatter> Formatters, IEnumerable<IMessagingSystem> MessagingSystems)
         {
+            Contract.Requires<ArgumentNullException>(Formatters != null, "Formatters");
+            Contract.Requires<ArgumentNullException>(MessagingSystems != null, "MessagingSystems");
             this.Formatters = Formatters.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).ToList();
             if (this.Formatters.Count() == 0)
                 this.Formatters = Formatters.Where(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).ToList();

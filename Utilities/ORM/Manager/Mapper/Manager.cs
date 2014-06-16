@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.ORM.Manager.Mapper.Interfaces;
@@ -43,6 +44,7 @@ namespace Utilities.ORM.Manager.Mapper
         /// </summary>
         public Manager(IEnumerable<IMapping> Mappings)
         {
+            Contract.Requires<ArgumentNullException>(Mappings != null, "Mappings");
             this.Mappings = new ListMapping<Type, IMapping>();
             Mappings.ForEach(x => this.Mappings.Add(x.ObjectType, x));
         }

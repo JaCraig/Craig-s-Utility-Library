@@ -173,6 +173,8 @@ namespace Utilities.ORM.Aspect
         private static string SetupIEnumerableProperty(string ReturnValueName, IProperty Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
+            Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
@@ -192,6 +194,8 @@ namespace Utilities.ORM.Aspect
         private static string SetupListProperty(string ReturnValueName, IProperty Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
+            Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")
@@ -211,6 +215,8 @@ namespace Utilities.ORM.Aspect
         private static string SetupSingleProperty(string ReturnValueName, IProperty Property)
         {
             Contract.Requires<ArgumentNullException>(Property != null, "Property");
+            Contract.Requires<ArgumentNullException>(Property.Mapping != null, "Property.Mapping");
+            Contract.Requires<ArgumentNullException>(Property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
             StringBuilder Builder = new StringBuilder();
             Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.DerivedFieldName + "Loaded")
                 .AppendLine("{")

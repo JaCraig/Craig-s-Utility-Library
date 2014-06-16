@@ -81,6 +81,7 @@ namespace Utilities.IO.FileFormats
             get
             {
                 Contract.Requires<ArgumentException>(Value >= 0, "Value must be greater than or equal to 0");
+                Contract.Requires<NullReferenceException>(ColumnNames != null, "ColumnNames");
                 return Records[Value][ColumnNames.IndexOf(Name)];
             }
         }

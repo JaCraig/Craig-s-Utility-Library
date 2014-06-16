@@ -251,6 +251,7 @@ namespace Utilities.IO.FileFormats.RSS
         private void Load(IXPathNavigable Document)
         {
             Contract.Requires<ArgumentNullException>(Document != null, "Document");
+            Channels = Channels.Check(new List<Channel>());
             XPathNavigator Navigator = Document.CreateNavigator();
             XmlNamespaceManager NamespaceManager = new XmlNamespaceManager(Navigator.NameTable);
             XPathNodeIterator Nodes = Navigator.Select("./channel", NamespaceManager);

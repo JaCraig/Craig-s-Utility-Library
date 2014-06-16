@@ -22,6 +22,7 @@ THE SOFTWARE.*/
 #region Usings
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Net.Mail;
 using System.Text;
@@ -206,6 +207,7 @@ namespace Utilities.IO.FileFormats
         /// <returns>a string output of the ICalendar item</returns>
         public virtual string GetICalendar()
         {
+            Contract.Requires<NullReferenceException>(!string.IsNullOrEmpty(Description), "Description");
             StringBuilder FileOutput = new StringBuilder();
             FileOutput.AppendLine("BEGIN:VCALENDAR")
                       .AppendLineFormat("METHOD:{0}", Cancel ? "CANCEL" : "REQUEST")
@@ -279,6 +281,7 @@ namespace Utilities.IO.FileFormats
         /// <returns>a string output of the VCalendar item</returns>
         public virtual string GetVCalendar()
         {
+            Contract.Requires<NullReferenceException>(CurrentTimeZone != null, "CurrentTimeZone");
             return new StringBuilder().AppendLine("BEGIN:VCALENDAR")
                       .AppendLine("VERSION:1.0")
                       .AppendLine("BEGIN:VEVENT")

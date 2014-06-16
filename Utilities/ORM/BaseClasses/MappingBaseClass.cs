@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.Mapper.Default;
 using Utilities.ORM.Manager.Mapper.Interfaces;
@@ -383,6 +384,7 @@ namespace Utilities.ORM.BaseClasses
         /// <param name="Source">Source info</param>
         /// <param name="QueryProvider">Query provider</param>
         /// <param name="MappingProvider">Mapping provider</param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void Setup(ISourceInfo Source, Utilities.ORM.Manager.Mapper.Manager MappingProvider, Utilities.ORM.Manager.QueryProvider.Manager QueryProvider)
         {
             QueryProvider.Generate<ClassType>(Source, this)

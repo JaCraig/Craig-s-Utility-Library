@@ -59,6 +59,8 @@ namespace Utilities.IO.Messaging.Default
         /// <returns>The formatted message</returns>
         public void Format<T>(IMessage Message, T Model)
         {
+            Contract.Requires<ArgumentNullException>(Message != null, "Message");
+            Contract.Requires<ArgumentNullException>(Model != null, "Model");
             if (string.IsNullOrEmpty(Message.Body) || Model.Is<string>())
                 Message.Body = Model.ToString();
             else

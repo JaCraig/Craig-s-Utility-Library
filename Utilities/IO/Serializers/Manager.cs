@@ -44,6 +44,7 @@ namespace Utilities.IO.Serializers
         /// <param name="Serializers">The serializers.</param>
         public Manager(IEnumerable<ISerializer> Serializers)
         {
+            Contract.Requires<ArgumentNullException>(Serializers != null, "Serializers");
             this.Serializers = Serializers.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
                                           .ToDictionary(x => x.ContentType);
             Serializers.Where(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase))
@@ -80,6 +81,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The deserialized object</returns>
         public R Deserialize<T, R>(T Data, string ContentType = "application/json")
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
             return (R)Deserialize<T>(Data, typeof(R), ContentType);
         }
 
@@ -120,6 +122,7 @@ namespace Utilities.IO.Serializers
         /// <returns>The serialized object as a string</returns>
         public R Serialize<T, R>(T Object, string ContentType = "application/json")
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ContentType), "ContentType");
             return Serialize<R>(Object, typeof(T), ContentType);
         }
 

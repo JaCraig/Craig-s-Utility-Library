@@ -625,6 +625,8 @@ namespace Utilities.ORM.Manager.QueryProvider.Default.SQLServer
         private static string GetColumns(IMapping Mapping)
         {
             Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
+            Contract.Requires<ArgumentNullException>(Mapping.Properties != null, "Mapping.Properties");
+            Contract.Requires<ArgumentNullException>(Mapping.IDProperties != null, "Mapping.IDProperties");
             return Mapping.Properties
                           .Where(x => (x as IReference) != null)
                           .Concat(Mapping.IDProperties)

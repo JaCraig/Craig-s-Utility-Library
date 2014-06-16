@@ -46,6 +46,7 @@ namespace Utilities.ORM.Manager.QueryProvider
         /// <param name="Providers">The providers.</param>
         public Manager(IEnumerable<Interfaces.IQueryProvider> Providers)
         {
+            Contract.Requires<ArgumentNullException>(Providers != null, "Providers");
             this.Providers = Providers.ToDictionary(x => x.ProviderName);
         }
 
