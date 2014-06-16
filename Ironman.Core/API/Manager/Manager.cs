@@ -41,9 +41,10 @@ namespace Ironman.Core.API.Manager
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager(IEnumerable<IAPIMapping> Mappings)
+        public Manager(IEnumerable<IAPIMapping> Mappings, IEnumerable<IWorkflow> Workflows)
             : base()
         {
+            this.Workflows = Workflows;
             this.Mappings = new Dictionary<int, MappingHolder>();
             if (Mappings == null)
                 return;
@@ -58,7 +59,17 @@ namespace Ironman.Core.API.Manager
             }
         }
 
+        /// <summary>
+        /// Gets or sets the mappings.
+        /// </summary>
+        /// <value>The mappings.</value>
         private IDictionary<int, MappingHolder> Mappings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the workflows.
+        /// </summary>
+        /// <value>The workflows.</value>
+        private IEnumerable<IWorkflow> Workflows { get; set; }
 
         /// <summary>
         /// Gets the specified mapping
@@ -79,10 +90,15 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
+                if (Workflows.Any(x => !x.PreAll(Mapping)))
+                    return new List<Dynamo>();
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return new List<Dynamo>();
-                return TempMappings[Mapping].All(Mappings.GetValue(Version), EmbeddedProperties);
+                IEnumerable<Dynamo> ReturnValue = TempMappings[Mapping].All(Mappings.GetValue(Version), EmbeddedProperties);
+                if (Workflows.Any(x => !x.PostAll(Mapping, ReturnValue)))
+                    return new List<Dynamo>();
+                return ReturnValue;
             }
             catch
             {
@@ -102,10 +118,15 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
+                if (Workflows.Any(x => !x.PreAny(Mapping)))
+                    return Error("Error getting item");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping))
                     return Error("Error getting item");
-                return TempMappings[Mapping].Any(ID, Mappings.GetValue(Version), EmbeddedProperties);
+                Dynamo ReturnValue = TempMappings[Mapping].Any(ID, Mappings.GetValue(Version), EmbeddedProperties);
+                if (Workflows.Any(x => !x.PostAny(Mapping, ReturnValue)))
+                    return Error("Error getting item");
+                return ReturnValue;
             }
             catch
             {
@@ -124,8 +145,12 @@ namespace Ironman.Core.API.Manager
         {
             try
             {
+                if (Workflows.Any(x => !x.PreDelete(Mapping, ID)))
+                    return Error("Error deleting the object");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Delete(ID))
+                    return Error("Error deleting the object");
+                if (Workflows.Any(x => !x.PostDelete(Mapping, ID)))
                     return Error("Error deleting the object");
                 return Success("Object deleted successfully");
             }
@@ -338,12 +363,16 @@ namespace Ironman.Core.API.Manager
             Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
             try
             {
+                if (Workflows.Any(x => !x.PreSave(Mapping, Objects)))
+                    return Error("Error saving the object");
                 IDictionary<string, IAPIMapping> TempMappings = Mappings.GetValue(Version).Mappings;
                 foreach (Dynamo Object in Objects)
                 {
                     if (!TempMappings.ContainsKey(Mapping) || !TempMappings[Mapping].Save(Object))
                         return Error("Error saving the object");
                 }
+                if (Workflows.Any(x => !x.PostSave(Mapping, Objects)))
+                    return Error("Error saving the object");
                 return Success("Object saved successfully");
             }
             catch
@@ -382,7 +411,8 @@ namespace Ironman.Core.API.Manager
         /// <returns>String version of the manager</returns>
         public override string ToString()
         {
-            return "API Mappings:\r\n" + Mappings.ToString(x => "Version: " + x.Key + "\r\n" + x.Value.ToString() + "\r\n");
+            return "API Mappings:\r\n" + Mappings.ToString(x => "Version: " + x.Key + "\r\n" + x.Value.ToString() + "\r\n")
+                + "Workflows:\r\n" + Workflows.ToString(x => x.Name, "\r\n");
         }
 
         private static Dynamo Error(string Message)
