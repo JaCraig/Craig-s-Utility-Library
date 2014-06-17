@@ -167,6 +167,7 @@ namespace Utilities.Web
         /// <returns>A string containing the cookie information</returns>
         public static string DumpCookies(this HttpCookieCollection Input, bool HTMLOutput = false)
         {
+            Contract.Requires<ArgumentNullException>(Input != null, "Input");
             StringBuilder String = new StringBuilder();
             String.Append(HTMLOutput ? "<table><thead><tr><th>Name</th><th>Sub Name</th><th>Value</th></tr></thead><tbody>" : "Name\t\tSub Name\t\tValue\r\n");
             foreach (string Key in Input.Keys)

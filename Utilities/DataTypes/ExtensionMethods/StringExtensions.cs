@@ -556,7 +556,7 @@ namespace Utilities.DataTypes
         /// <returns>the byte array representing the string</returns>
         public static byte[] ToByteArray(this string Input, Encoding EncodingUsing = null)
         {
-            return string.IsNullOrEmpty(Input) ? null : EncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
+            return string.IsNullOrEmpty(Input) ? new byte[0] : EncodingUsing.Check(new UTF8Encoding()).GetBytes(Input);
         }
 
         #endregion ToByteArray

@@ -483,12 +483,12 @@ namespace Utilities.DataTypes
             int Value = 1;
             foreach (string Key in Keys)
             {
-                object TempValue = this[Key];
-                if (TempValue != null && !TempValue.GetType().Is<Delegate>())
+                unchecked
                 {
-                    unchecked
+                    object TempValue = GetValue(Key, typeof(object));
+                    if (TempValue != null && !TempValue.GetType().Is<Delegate>())
                     {
-                        Value = (Value * GetValue(Key, typeof(object)).GetHashCode()) % int.MaxValue;
+                        Value = (Value * TempValue.GetHashCode()) % int.MaxValue;
                     }
                 }
             }

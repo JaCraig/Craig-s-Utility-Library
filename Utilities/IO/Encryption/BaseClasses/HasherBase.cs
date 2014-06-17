@@ -86,8 +86,12 @@ namespace Utilities.IO.Encryption.BaseClasses
                 return null;
             using (HashAlgorithm Hasher = GetAlgorithm(Algorithm))
             {
-                byte[] HashedArray = Hasher.ComputeHash(Data);
-                Hasher.Clear();
+                byte[] HashedArray = new byte[0];
+                if (Hasher != null)
+                {
+                    HashedArray = Hasher.ComputeHash(Data);
+                    Hasher.Clear();
+                }
                 return HashedArray;
             }
         }

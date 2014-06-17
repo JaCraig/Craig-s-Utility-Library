@@ -317,6 +317,8 @@ namespace Utilities.ORM.Manager
             if (TempDatabase.Tables.FirstOrDefault(x => x.Name == Property.TableName) != null)
                 return;
             IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
+            if (MapMapping == null)
+                return;
             if (MapMapping == Mapping)
             {
                 TempDatabase.AddTable(Property.TableName);

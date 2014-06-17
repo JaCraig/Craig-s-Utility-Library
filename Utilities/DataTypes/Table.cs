@@ -213,6 +213,7 @@ namespace Utilities.DataTypes
         public virtual Table AddRow(params object[] Objects)
         {
             Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
+            Contract.Requires<ArgumentNullException>(Rows != null, "Rows");
             this.Rows.Add(new Row(ColumnNameHash, ColumnNames, Objects));
             return this;
         }
