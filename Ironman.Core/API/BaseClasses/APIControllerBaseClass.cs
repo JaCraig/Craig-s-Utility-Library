@@ -21,14 +21,14 @@ THE SOFTWARE.*/
 
 #region Usings
 
-using Ironman.Core.ActionFilters;
-using Ironman.Core.BaseClasses;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Dynamic;
 using System.Linq;
 using System.Web.Mvc;
+using Ironman.Core.ActionFilters;
+using Ironman.Core.BaseClasses;
 using Utilities.DataTypes;
 using Utilities.IO;
 
@@ -160,6 +160,21 @@ namespace Ironman.Core.API.BaseClasses
         {
             Contract.Requires<ArgumentNullException>(Model != null, "Expression");
             return Serialize<Dynamo>(APIManager.SaveProperty(Version, ModelName, ID, PropertyName, Model.Select(x => new Dynamo(x))));
+        }
+
+        /// <summary>
+        /// Calls the service with the specified name
+        /// GET: {APIRoot}/Services/{ServiceName}/
+        /// </summary>
+        /// <param name="ServiceName">Name of the service.</param>
+        /// <param name="Model">The model.</param>
+        /// <returns>The result from the service</returns>
+        [DeserializationFilter(ObjectType = typeof(ExpandoObject), Parameter = "Model")]
+        public virtual ActionResult Services(string ServiceName, ExpandoObject Model)
+        {
+            Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<ArgumentNullException>(Request.QueryString != null, "Request.QueryString");
+            return Serialize<Dynamo>(APIManager.CallService(Version, ServiceName, new Dynamo(Model)));
         }
     }
 }

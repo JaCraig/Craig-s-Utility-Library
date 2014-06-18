@@ -63,8 +63,9 @@ namespace Ironman.Core.Bootstrapper
             Bootstrapper.RegisterAll<ITask>();
             Bootstrapper.Register<TaskManager>(new TaskManager(Bootstrapper.ResolveAll<ITask>()));
             Bootstrapper.RegisterAll<IAPIMapping>();
+            Bootstrapper.RegisterAll<IService>();
             Bootstrapper.RegisterAll<IWorkflow>();
-            Bootstrapper.Register<Manager>(new Manager(Bootstrapper.ResolveAll<IAPIMapping>(), Bootstrapper.ResolveAll<IWorkflow>()));
+            Bootstrapper.Register<Manager>(new Manager(Bootstrapper.ResolveAll<IAPIMapping>(), Bootstrapper.ResolveAll<IWorkflow>(), Bootstrapper.ResolveAll<IService>()));
         }
     }
 }

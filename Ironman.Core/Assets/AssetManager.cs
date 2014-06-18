@@ -54,6 +54,9 @@ namespace Ironman.Core.Assets
         /// <param name="Translators">The translators.</param>
         public AssetManager(IEnumerable<IFilter> Filters, IEnumerable<IContentFilter> ContentFilters, IEnumerable<ITranslator> Translators)
         {
+            Contract.Requires<ArgumentNullException>(Filters != null, "Filters");
+            Contract.Requires<ArgumentNullException>(ContentFilters != null, "ContentFilters");
+            Contract.Requires<ArgumentNullException>(Translators != null, "Translators");
             this.Filters = Filters;
             this.ContentFilters = ContentFilters;
             this.Translators = Translators;

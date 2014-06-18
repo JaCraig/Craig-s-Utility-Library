@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -29,6 +28,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager
@@ -41,10 +41,14 @@ namespace Ironman.Core.API.Manager
         /// <summary>
         /// Constructor
         /// </summary>
-        public Manager(IEnumerable<IAPIMapping> Mappings, IEnumerable<IWorkflow> Workflows)
+        /// <param name="Mappings">The mappings.</param>
+        /// <param name="Workflows">The workflows.</param>
+        /// <param name="Services">The services.</param>
+        public Manager(IEnumerable<IAPIMapping> Mappings, IEnumerable<IWorkflow> Workflows, IEnumerable<IService> Services)
             : base()
         {
             this.Workflows = Workflows;
+            this.Services = new Dictionary<int, ServiceHolder>();
             this.Mappings = new Dictionary<int, MappingHolder>();
             if (Mappings == null)
                 return;
@@ -57,6 +61,17 @@ namespace Ironman.Core.API.Manager
                     this.Mappings[Version].Mappings.Add(Mapping.Name, Mapping);
                 }
             }
+            if (Services == null)
+                return;
+            foreach (IService Service in Services)
+            {
+                foreach (int Version in Service.Versions)
+                {
+                    if (!this.Services.ContainsKey(Version))
+                        this.Services.Add(Version, new ServiceHolder());
+                    this.Services[Version].Services.Add(Service.Name, Service);
+                }
+            }
         }
 
         /// <summary>
@@ -64,6 +79,12 @@ namespace Ironman.Core.API.Manager
         /// </summary>
         /// <value>The mappings.</value>
         private IDictionary<int, MappingHolder> Mappings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the services.
+        /// </summary>
+        /// <value>The services.</value>
+        private IDictionary<int, ServiceHolder> Services { get; set; }
 
         /// <summary>
         /// Gets or sets the workflows.
@@ -126,6 +147,33 @@ namespace Ironman.Core.API.Manager
                 Dynamo ReturnValue = TempMappings[Mapping].Any(ID, Mappings.GetValue(Version), EmbeddedProperties);
                 if (Workflows.Any(x => !x.PostAny(Mapping, ReturnValue)))
                     return Error("Error getting item");
+                return ReturnValue;
+            }
+            catch
+            {
+                return new Dynamo();
+            }
+        }
+
+        /// <summary>
+        /// Runs the specified service
+        /// </summary>
+        /// <param name="Version">API version number</param>
+        /// <param name="Mapping">Mapping name</param>
+        /// <param name="Value">The value.</param>
+        /// <returns>The result from running the service</returns>
+        public Dynamo CallService(int Version, string Mapping, Dynamo Value)
+        {
+            try
+            {
+                if (Workflows.Any(x => !x.PreService(Mapping, Value)))
+                    return Error("Error running service");
+                IDictionary<string, IService> TempMappings = Services.GetValue(Version).Services;
+                if (!TempMappings.ContainsKey(Mapping))
+                    return Error("Error getting item");
+                Dynamo ReturnValue = TempMappings[Mapping].Process(Value);
+                if (Workflows.Any(x => !x.PostService(Mapping, ReturnValue)))
+                    return Error("Error running service");
                 return ReturnValue;
             }
             catch
@@ -223,6 +271,16 @@ namespace Ironman.Core.API.Manager
             AreaName = AreaName.Check(ControllerName);
             foreach (int VersionNumber in Mappings.Keys)
             {
+                routes.MapRoute(
+                    name: "Ironman_API_Service",
+                    url: AreaName + "/v" + VersionNumber + "/Services/{ServiceName}",
+                    defaults: new { controller = ControllerName, action = "Services" }
+                );
+                routes.MapRoute(
+                    name: "Ironman_API_Service_Ending",
+                    url: AreaName + "/v" + VersionNumber + "/Services/{ServiceName}.{ending}",
+                    defaults: new { controller = ControllerName, action = "Services" }
+                );
                 routes.MapRoute(
                     name: "Ironman_API_Save",
                     url: AreaName + "/v" + VersionNumber + "/{ModelName}",

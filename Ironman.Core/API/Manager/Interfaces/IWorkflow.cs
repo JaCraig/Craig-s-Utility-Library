@@ -71,6 +71,14 @@ namespace Ironman.Core.API.Manager.Interfaces
         bool PostSave(string Mapping, IEnumerable<Dynamo> Objects);
 
         /// <summary>
+        /// Called after the service is run
+        /// </summary>
+        /// <param name="Mapping">The mapping.</param>
+        /// <param name="ReturnValue">The return value.</param>
+        /// <returns>True if the call can continue, false otherwise</returns>
+        bool PostService(string Mapping, Dynamo ReturnValue);
+
+        /// <summary>
         /// Called prior to All
         /// </summary>
         /// <param name="Mapping">The mapping.</param>
@@ -99,5 +107,13 @@ namespace Ironman.Core.API.Manager.Interfaces
         /// <param name="Objects">The objects.</param>
         /// <returns>True if the call can continue, false otherwise</returns>
         bool PreSave(string Mapping, IEnumerable<Dynamo> Objects);
+
+        /// <summary>
+        /// Called before the service is run
+        /// </summary>
+        /// <param name="Mapping">The mapping.</param>
+        /// <param name="Value">The value.</param>
+        /// <returns>True if the call can continue, false otherwise</returns>
+        bool PreService(string Mapping, Dynamo Value);
     }
 }

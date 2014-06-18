@@ -19,65 +19,58 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using Ironman.Core.Tasks.Enums;
-using Ironman.Core.Tasks.Interfaces;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
-using Utilities.IO;
-using Utilities.IO.Logging.Enums;
 
-#endregion Usings
-
-namespace Ironman.Core.Tasks
+namespace Ironman.Core.API.Manager
 {
     /// <summary>
-    /// Task manager
+    /// Holds the various services for a version
     /// </summary>
-    public class TaskManager
+    public class ServiceHolder
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        public TaskManager(IEnumerable<ITask> Tasks)
+        public ServiceHolder()
         {
-            Contract.Requires<ArgumentNullException>(Tasks != null, "Tasks");
-            this.Tasks = new ListMapping<RunTime, ITask>();
-            Tasks.ForEach(x => this.Tasks.Add(x.TimeToRun, x));
+            this.Services = new Dictionary<string, IService>();
         }
 
         /// <summary>
-        /// Tasks to run
+        /// Services that this holds
         /// </summary>
-        public ListMapping<RunTime, ITask> Tasks { get; private set; }
+        public IDictionary<string, IService> Services { get; set; }
 
         /// <summary>
-        /// Runs the tasks associated with the run time specified
+        /// Gets the specified Service
         /// </summary>
-        /// <param name="TimeToRun">Time to run</param>
-        public void Run(RunTime TimeToRun)
+        /// <param name="Key">Name of the mapped type</param>
+        /// <returns>The Service specified</returns>
+        public IService this[string Key]
         {
-            Contract.Requires<ArgumentNullException>(Tasks != null, "Tasks");
-            if (Tasks.ContainsKey(TimeToRun))
+            get
             {
-                Tasks[TimeToRun].ForEach(x =>
-                {
-                    Log.Get().LogMessage("Running {0}", MessageType.Info, x.Name);
-                    x.Run();
-                });
+                Contract.Requires<ArgumentNullException>(Services != null, "Services");
+                return Services.GetValue(Key);
             }
         }
 
         /// <summary>
-        /// Outputs the task manager as a string
+        /// Outputs Service holder info as a string
         /// </summary>
-        /// <returns>string version of the task manager</returns>
+        /// <returns>String version of the Service holder</returns>
         public override string ToString()
         {
-            return Tasks.ToString(x => x.Key.ToString() + " Tasks: " + x.Value.ToString(y => y.Name), "\r\n") + "\r\n";
+            return Services.ToString(x => x.Key);
         }
     }
 }
