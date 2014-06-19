@@ -345,6 +345,7 @@ namespace Utilities.IO.FileSystem.Default
         private void SetupData(FtpWebRequest Request, byte[] Data)
         {
             Contract.Requires<ArgumentNullException>(Request != null, "Request");
+            Contract.Requires<NullReferenceException>(!string.IsNullOrEmpty(Name), "Name");
             Request.UsePassive = true;
             Request.KeepAlive = false;
             Request.UseBinary = true;

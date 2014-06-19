@@ -50,6 +50,9 @@ namespace Utilities.DataTypes.AOP
         public Manager(Compiler Compiler, IEnumerable<IAspect> Aspects, IEnumerable<IAOPModule> Modules)
         {
             Contract.Requires<ArgumentNullException>(Compiler != null, "Compiler");
+            Contract.Requires<ArgumentNullException>(Compiler.Classes != null, "Compiler.Classes");
+            Contract.Requires<ArgumentNullException>(Aspects != null, "Aspects");
+            Contract.Requires<ArgumentNullException>(Modules != null, "Modules");
             Manager.Compiler = Compiler;
             if (Manager.Aspects.Count == 0)
                 Manager.Aspects.Add(Aspects);

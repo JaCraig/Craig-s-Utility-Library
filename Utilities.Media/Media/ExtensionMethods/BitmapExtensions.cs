@@ -433,6 +433,7 @@ namespace Utilities.Media
         public static Bitmap Colorize(this Bitmap OriginalImage, Color[] Colors, string FileName = "")
         {
             Contract.Requires<ArgumentNullException>(OriginalImage != null, "OriginalImage");
+            Contract.Requires<ArgumentNullException>(Colors != null, "Colors");
             if (Colors.Length < 256)
                 return new Bitmap(1, 1);
             ImageFormat FormatUsing = FileName.GetImageFormat();

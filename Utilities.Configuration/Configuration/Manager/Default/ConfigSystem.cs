@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.Configuration.Manager.Interfaces;
 using Utilities.DataTypes;
@@ -44,6 +45,7 @@ namespace Utilities.Configuration.Manager.Default
         /// <param name="Configs">The configs.</param>
         public ConfigSystem(IEnumerable<IConfig> Configs)
         {
+            Contract.Requires<ArgumentNullException>(Configs != null, "Configs");
             ConfigFiles = Configs.ToDictionary(x => x.Name, x => (IConfig)x);
         }
 

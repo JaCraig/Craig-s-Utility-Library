@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.*/
 
+using Ironman.Core.API.Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -28,7 +29,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Ironman.Core.API.Manager.Interfaces;
 using Utilities.DataTypes;
 
 namespace Ironman.Core.API.Manager
@@ -178,7 +178,7 @@ namespace Ironman.Core.API.Manager
             }
             catch
             {
-                return new Dynamo();
+                return Error("Error running service");
             }
         }
 

@@ -44,6 +44,7 @@ namespace Utilities.Configuration.Manager
         /// <param name="ConfigSystems">The configuration systems.</param>
         public Manager(IEnumerable<IConfigSystem> ConfigSystems)
         {
+            Contract.Requires<ArgumentNullException>(ConfigSystems != null, "ConfigSystems");
             this.ConfigSystems = ConfigSystems.ToDictionary(x => x.Name);
         }
 

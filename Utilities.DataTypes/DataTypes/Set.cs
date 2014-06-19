@@ -53,6 +53,7 @@ namespace Utilities.DataTypes
         public Set(int InitialSize)
             : base(InitialSize)
         {
+            Contract.Requires<ArgumentOutOfRangeException>(InitialSize >= 0, "InitialSize should be larger than or equal to 0");
         }
 
         #endregion Constructors

@@ -21,6 +21,8 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using Utilities.DataTypes;
 using Utilities.Random.BaseClasses;

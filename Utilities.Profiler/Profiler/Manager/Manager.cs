@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -45,6 +46,7 @@ namespace Utilities.Profiler.Manager
         /// <param name="Profilers">The profilers.</param>
         public Manager(IEnumerable<IProfiler> Profilers)
         {
+            Contract.Requires<ArgumentNullException>(Profilers != null, "Profilers");
             Profiler = Profilers.Where(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
             if (Profiler == null)
                 Profiler = Profilers.Where(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>CraigsUtilityLibrary-IoC</id>
-		<version>4.0.165-beta</version>
+		<version>4.0.167-beta</version>
 		<title>Craig's Utility Library IoC Namespace</title>
 		<authors>James Craig</authors>
 		<owners>James Craig</owners>

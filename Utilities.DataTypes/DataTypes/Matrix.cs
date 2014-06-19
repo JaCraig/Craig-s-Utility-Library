@@ -89,6 +89,7 @@ namespace Utilities.DataTypes
             {
                 Contract.Requires<ArgumentOutOfRangeException>(X >= 0 && X <= Width, "X");
                 Contract.Requires<ArgumentOutOfRangeException>(Y >= 0 && Y <= Height, "Y");
+                Contract.Requires<NullReferenceException>(Values != null, "Values");
                 return Values[X, Y];
             }
 
@@ -96,6 +97,7 @@ namespace Utilities.DataTypes
             {
                 Contract.Requires<ArgumentOutOfRangeException>(X >= 0 && X <= Width, "X");
                 Contract.Requires<ArgumentOutOfRangeException>(Y >= 0 && Y <= Height, "Y");
+                Contract.Requires<NullReferenceException>(Values != null, "Values");
                 Values[X, Y] = value;
             }
         }

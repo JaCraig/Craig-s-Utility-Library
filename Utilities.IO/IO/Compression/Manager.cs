@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Utilities.DataTypes;
@@ -43,6 +44,7 @@ namespace Utilities.IO.Compression
         /// <param name="Compressors">The compressors.</param>
         public Manager(IEnumerable<ICompressor> Compressors)
         {
+            Contract.Requires<ArgumentNullException>(Compressors != null, "Compressors");
             this.Compressors = Compressors.ToDictionary(x => x.Name);
         }
 
@@ -59,6 +61,7 @@ namespace Utilities.IO.Compression
         /// <returns>The compressed data</returns>
         public byte[] Compress(byte[] Data, string Compressor)
         {
+            Contract.Requires<NullReferenceException>(Compressors != null, "Compressors");
             return Compressors.ContainsKey(Compressor) ? Compressors[Compressor].Compress(Data) : Data;
         }
 
@@ -70,6 +73,7 @@ namespace Utilities.IO.Compression
         /// <returns>The decompressed data</returns>
         public byte[] Decompress(byte[] Data, string Compressor)
         {
+            Contract.Requires<NullReferenceException>(Compressors != null, "Compressors");
             return Compressors.ContainsKey(Compressor) ? Compressors[Compressor].Decompress(Data) : Data;
         }
 

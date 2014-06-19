@@ -86,8 +86,12 @@ namespace Utilities.IO.Encryption.BaseClasses
                 return null;
             using (HashAlgorithm Hasher = GetAlgorithm(Algorithm))
             {
-                byte[] HashedArray = Hasher.ComputeHash(Data);
-                Hasher.Clear();
+                byte[] HashedArray = new byte[0];
+                if (Hasher != null)
+                {
+                    HashedArray = Hasher.ComputeHash(Data);
+                    Hasher.Clear();
+                }
                 return HashedArray;
             }
         }
@@ -100,6 +104,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         protected HashAlgorithm GetAlgorithm(string Algorithm)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Algorithm), "Algorithm");
+            Contract.Requires<NullReferenceException>(ImplementedAlgorithms != null, "ImplementedAlgorithms");
             return ImplementedAlgorithms[Algorithm.ToUpperInvariant()]();
         }
 

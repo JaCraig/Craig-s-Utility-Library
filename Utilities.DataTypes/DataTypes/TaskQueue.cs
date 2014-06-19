@@ -161,6 +161,8 @@ namespace Utilities.DataTypes
         /// </summary>
         private void Process()
         {
+            Contract.Requires<NullReferenceException>(CancellationToken != null, "CancellationToken");
+            Contract.Requires<NullReferenceException>(ProcessItem != null, "ProcessItem");
             while (true)
             {
                 try

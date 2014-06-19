@@ -21,7 +21,9 @@ THE SOFTWARE.*/
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 #endregion Usings
 
@@ -69,6 +71,9 @@ namespace Utilities.Media.Procedural
         /// </summary>
         private void CalculateDistances()
         {
+            Contract.Requires<ArgumentOutOfRangeException>(_Width >= 0, "_Width");
+            Contract.Requires<ArgumentOutOfRangeException>(_Height >= 0, "_Height");
+            Contract.Requires<NullReferenceException>(Points != null, "Points");
             for (int x = 0; x < _Width; ++x)
             {
                 for (int y = 0; y < _Height; ++y)
@@ -85,6 +90,7 @@ namespace Utilities.Media.Procedural
         /// <param name="y">y axis</param>
         private void FindClosestPoint(int x, int y)
         {
+            Contract.Requires<NullReferenceException>(Points != null, "Points");
             float MaxDistance = float.MaxValue;
             int Index = -1;
             for (int z = 0; z < Points.Count; ++z)

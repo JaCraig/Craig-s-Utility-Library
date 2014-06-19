@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes.DataMapper.Interfaces;
 
@@ -42,6 +43,8 @@ namespace Utilities.DataTypes.DataMapper
         /// <param name="MapperModules">The mapper modules.</param>
         public Manager(IEnumerable<IDataMapper> DataMappers, IEnumerable<IMapperModule> MapperModules)
         {
+            Contract.Requires<ArgumentNullException>(DataMappers != null, "DataMappers");
+            Contract.Requires<ArgumentNullException>(MapperModules != null, "MapperModules");
             DataMapper = DataMappers.FirstOrDefault(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
             if (DataMapper == null)
                 DataMapper = DataMappers.FirstOrDefault(x => x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));

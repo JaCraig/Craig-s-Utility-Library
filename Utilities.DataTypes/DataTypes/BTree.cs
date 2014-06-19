@@ -71,6 +71,7 @@ namespace Utilities.DataTypes
             get
             {
                 Contract.Requires<InvalidOperationException>(!IsEmpty, "The tree is empty");
+                Contract.Requires<NullReferenceException>(Root != null, "Root");
                 TreeNode<T> TempNode = Root;
                 while (TempNode.Right != null)
                     TempNode = TempNode.Right;
@@ -86,6 +87,7 @@ namespace Utilities.DataTypes
             get
             {
                 Contract.Requires<InvalidOperationException>(!IsEmpty, "The tree is empty");
+                Contract.Requires<NullReferenceException>(Root != null, "Root");
                 TreeNode<T> TempNode = Root;
                 while (TempNode.Left != null)
                     TempNode = TempNode.Left;
@@ -278,6 +280,7 @@ namespace Utilities.DataTypes
         /// <param name="item">item to insert</param>
         protected virtual void Insert(T item)
         {
+            Contract.Requires<NullReferenceException>(Root != null, "Root");
             TreeNode<T> TempNode = Root;
             bool Found = false;
             while (!Found)

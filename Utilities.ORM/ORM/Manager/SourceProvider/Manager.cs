@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.ORM.Interfaces;
@@ -45,6 +46,7 @@ namespace Utilities.ORM.Manager.SourceProvider
         /// <param name="Sources">The sources.</param>
         public Manager(IEnumerable<IDatabase> Sources)
         {
+            Contract.Requires<ArgumentNullException>(Sources != null, "Sources");
             this.Sources = Sources.OrderBy(x => x.Order)
                              .ToDictionary(x => x.Name, x => (ISourceInfo)new SourceInfo("", x.Name, "", "", x.Writable, x.Readable, x));
             foreach (ConnectionStringSettings ConnectionString in ConfigurationManager.ConnectionStrings)

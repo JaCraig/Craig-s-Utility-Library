@@ -23,6 +23,7 @@ THE SOFTWARE.*/
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.DataTypes.Patterns.BaseClasses;
@@ -46,6 +47,7 @@ namespace Utilities.IO.Logging
         /// <param name="Loggers">The loggers.</param>
         public Manager(IEnumerable<ILogger> Loggers)
         {
+            Contract.Requires<ArgumentNullException>(Loggers != null, "Loggers");
             LoggerUsing = Loggers.FirstOrDefault(x => !x.GetType().Namespace.StartsWith("UTILITIES", StringComparison.OrdinalIgnoreCase));
             if (LoggerUsing == null)
                 LoggerUsing = new DefaultLogger();

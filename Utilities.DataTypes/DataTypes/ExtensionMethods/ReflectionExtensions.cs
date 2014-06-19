@@ -57,7 +57,13 @@ namespace Utilities.DataTypes
         public static T Attribute<T>(this ICustomAttributeProvider Provider, bool Inherit = true) where T : Attribute
         {
             Contract.Requires<ArgumentNullException>(Provider != null, "Provider");
-            return Provider.IsDefined(typeof(T), Inherit) ? Provider.Attributes<T>(Inherit)[0] : default(T);
+            if (Provider.IsDefined(typeof(T), Inherit))
+            {
+                T[] Attributes = Provider.Attributes<T>(Inherit);
+                if (Attributes.Length > 0)
+                    return Attributes[0];
+            }
+            return default(T);
         }
 
         #endregion Attribute
@@ -584,6 +590,8 @@ namespace Utilities.DataTypes
                     return null;
             }
             DestinationProperty = TempObjectType.GetProperty(Properties[Properties.Length - 1]);
+            if (DestinationProperty == null)
+                throw new NullReferenceException("PropertyInfo can't be null");
             return TempObject.Property(DestinationProperty);
         }
 
@@ -630,6 +638,8 @@ namespace Utilities.DataTypes
                     return Object;
             }
             DestinationProperty = TempObjectType.GetProperty(Properties[Properties.Length - 1]);
+            if (DestinationProperty == null)
+                throw new NullReferenceException("PropertyInfo can't be null");
             TempObject.Property(DestinationProperty, Value, Format);
             return Object;
         }
@@ -739,6 +749,8 @@ namespace Utilities.DataTypes
                 for (int x = 1; x < SplitName.Length - 1; ++x)
                 {
                     PropertyInfo = PropertyInfo.PropertyType.GetProperty(SplitName[x]);
+                    if (PropertyInfo == null)
+                        throw new NullReferenceException("PropertyInfo can't be null");
                     PropertyGet = Expression.Property(PropertyGet, PropertyInfo);
                 }
                 PropertyInfo = PropertyInfo.PropertyType.GetProperty(SplitName[SplitName.Length - 1]);

@@ -161,7 +161,8 @@ namespace Utilities.Web.Streams
                 return;
             byte[] Data = FinalString.Minify(Type).ToByteArray();
             Data = Data.Compress(Compression);
-            StreamUsing.Write(Data, 0, Data.Length);
+            if (Data != null)
+                StreamUsing.Write(Data, 0, Data.Length);
             FinalString = "";
         }
 

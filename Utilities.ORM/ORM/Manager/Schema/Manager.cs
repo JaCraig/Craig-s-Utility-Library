@@ -45,6 +45,7 @@ namespace Utilities.ORM.Manager.Schema
         /// <param name="SchemaGenerators">The schema generators.</param>
         public Manager(IEnumerable<ISchemaGenerator> SchemaGenerators)
         {
+            Contract.Requires<ArgumentNullException>(SchemaGenerators != null, "SchemaGenerators");
             this.SchemaGenerators = SchemaGenerators.ToDictionary(x => x.ProviderName);
         }
 

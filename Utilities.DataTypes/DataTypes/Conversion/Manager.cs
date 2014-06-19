@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using Utilities.DataTypes.Conversion.Converters.Interfaces;
 
@@ -42,6 +43,7 @@ namespace Utilities.DataTypes.Conversion
         /// <param name="Converters">The converters.</param>
         public Manager(IEnumerable<IConverter> Converters)
         {
+            Contract.Requires<ArgumentNullException>(Converters != null, "Converters");
             foreach (IConverter TypeConverter in Converters)
             {
                 TypeDescriptor.AddAttributes(TypeConverter.AssociatedType, new TypeConverterAttribute(TypeConverter.GetType()));

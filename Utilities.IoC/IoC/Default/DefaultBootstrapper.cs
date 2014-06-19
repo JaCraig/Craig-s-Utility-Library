@@ -24,6 +24,7 @@ THE SOFTWARE.*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -285,6 +286,7 @@ namespace Utilities.IoC.Default
         /// <returns>The constructor that should be used</returns>
         private ConstructorInfo FindConstructor(Type Type)
         {
+            Contract.Requires<ArgumentNullException>(Type != null, "Type");
             ConstructorInfo[] Constructors = Type.GetConstructors();
             ConstructorInfo Constructor = null;
             foreach (ConstructorInfo TempConstructor in Constructors.OrderByDescending(x => x.GetParameters().Length))
@@ -324,6 +326,7 @@ namespace Utilities.IoC.Default
         /// <returns>The parameters</returns>
         private List<object> GetParameters(ConstructorInfo Constructor)
         {
+            Contract.Requires<ArgumentNullException>(Constructor != null, "Constructor");
             List<object> Params = new List<object>();
             foreach (ParameterInfo Parameter in Constructor.GetParameters())
             {

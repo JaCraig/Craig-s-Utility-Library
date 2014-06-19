@@ -65,7 +65,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         {
             using (AsymmetricAlgorithm Provider = GetProvider())
             {
-                return Provider.ToXmlString(PrivatePublic);
+                return Provider == null ? "" : Provider.ToXmlString(PrivatePublic);
             }
         }
 

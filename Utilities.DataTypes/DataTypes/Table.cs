@@ -82,6 +82,8 @@ namespace Utilities.DataTypes
             get
             {
                 Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(ColumnName), "ColumnName");
+                Contract.Requires<NullReferenceException>(ColumnNameHash != null, "ColumnNameHash");
+                Contract.Requires<NullReferenceException>(ColumnValues != null, "ColumnValues");
                 int Column = (int)ColumnNameHash[ColumnName];//.PositionOf(ColumnName);
                 if (Column <= -1)
                     throw new ArgumentOutOfRangeException(ColumnName + " is not present in the row");
@@ -99,6 +101,7 @@ namespace Utilities.DataTypes
             get
             {
                 Contract.Requires<ArgumentOutOfRangeException>(Column >= 0, "Column");
+                Contract.Requires<NullReferenceException>(ColumnValues != null, "ColumnValues");
                 if (ColumnValues.Length <= Column)
                     return null;
                 return ColumnValues[Column];
@@ -140,6 +143,7 @@ namespace Utilities.DataTypes
         public Table(IDataReader Reader)
         {
             Contract.Requires<ArgumentNullException>(Reader != null, "Reader");
+            Contract.Requires<ArgumentOutOfRangeException>(Reader.FieldCount >= 0, "Reader.FieldCount needs to have at least 0 fields");
             this.ColumnNames = new string[Reader.FieldCount];
             for (int x = 0; x < Reader.FieldCount; ++x)
             {
@@ -192,6 +196,7 @@ namespace Utilities.DataTypes
         {
             get
             {
+                Contract.Requires<NullReferenceException>(Rows != null, "Rows");
                 return Rows.Count > RowNumber ? Rows.ElementAt(RowNumber) : null;
             }
         }
@@ -208,6 +213,7 @@ namespace Utilities.DataTypes
         public virtual Table AddRow(params object[] Objects)
         {
             Contract.Requires<ArgumentNullException>(Objects != null, "Objects");
+            Contract.Requires<ArgumentNullException>(Rows != null, "Rows");
             this.Rows.Add(new Row(ColumnNameHash, ColumnNames, Objects));
             return this;
         }

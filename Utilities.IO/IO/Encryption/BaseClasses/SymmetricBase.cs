@@ -85,19 +85,22 @@ namespace Utilities.IO.Encryption.BaseClasses
                 return null;
             using (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))
             {
-                SymmetricKey.Mode = CipherMode.CBC;
-                byte[] PlainTextBytes = null;
-                using (ICryptoTransform Decryptor = SymmetricKey.CreateDecryptor(Key.GetBytes(KeySize / 8), InitialVector.ToByteArray()))
+                byte[] PlainTextBytes = new byte[0];
+                if (SymmetricKey != null)
                 {
-                    using (MemoryStream MemStream = new MemoryStream(Data))
+                    SymmetricKey.Mode = CipherMode.CBC;
+                    using (ICryptoTransform Decryptor = SymmetricKey.CreateDecryptor(Key.GetBytes(KeySize / 8), InitialVector.ToByteArray()))
                     {
-                        using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
+                        using (MemoryStream MemStream = new MemoryStream(Data))
                         {
-                            PlainTextBytes = CryptoStream.ReadAllBinary();
+                            using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
+                            {
+                                PlainTextBytes = CryptoStream.ReadAllBinary();
+                            }
                         }
                     }
+                    SymmetricKey.Clear();
                 }
-                SymmetricKey.Clear();
                 return PlainTextBytes;
             }
         }
@@ -165,21 +168,24 @@ namespace Utilities.IO.Encryption.BaseClasses
                 return null;
             using (SymmetricAlgorithm SymmetricKey = GetProvider(Algorithm))
             {
-                SymmetricKey.Mode = CipherMode.CBC;
-                byte[] CipherTextBytes = null;
-                using (ICryptoTransform Encryptor = SymmetricKey.CreateEncryptor(Key.GetBytes(KeySize / 8), InitialVector.ToByteArray()))
+                byte[] CipherTextBytes = new byte[0];
+                if (SymmetricKey != null)
                 {
-                    using (MemoryStream MemStream = new MemoryStream())
+                    SymmetricKey.Mode = CipherMode.CBC;
+                    using (ICryptoTransform Encryptor = SymmetricKey.CreateEncryptor(Key.GetBytes(KeySize / 8), InitialVector.ToByteArray()))
                     {
-                        using (CryptoStream CryptoStream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write))
+                        using (MemoryStream MemStream = new MemoryStream())
                         {
-                            CryptoStream.Write(Data, 0, Data.Length);
-                            CryptoStream.FlushFinalBlock();
-                            CipherTextBytes = MemStream.ToArray();
+                            using (CryptoStream CryptoStream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write))
+                            {
+                                CryptoStream.Write(Data, 0, Data.Length);
+                                CryptoStream.FlushFinalBlock();
+                                CipherTextBytes = MemStream.ToArray();
+                            }
                         }
                     }
+                    SymmetricKey.Clear();
                 }
-                SymmetricKey.Clear();
                 return CipherTextBytes;
             }
         }
@@ -191,6 +197,7 @@ namespace Utilities.IO.Encryption.BaseClasses
         protected SymmetricAlgorithm GetProvider(string Algorithm)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(Algorithm), "Algorithm");
+            Contract.Requires<NullReferenceException>(ImplementedAlgorithms != null, "ImplementedAlgorithms");
             return ImplementedAlgorithms[Algorithm.ToUpperInvariant()]();
         }
     }

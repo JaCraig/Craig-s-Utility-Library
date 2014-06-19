@@ -70,8 +70,11 @@ namespace Utilities.IO.Compression.BaseClasses
             {
                 using (Stream ZipStream = GetStream(Stream, CompressionMode.Compress))
                 {
-                    ZipStream.Write(Data, 0, Data.Length);
-                    ZipStream.Close();
+                    if (ZipStream != null)
+                    {
+                        ZipStream.Write(Data, 0, Data.Length);
+                        ZipStream.Close();
+                    }
                     return Stream.ToArray();
                 }
             }
@@ -92,14 +95,17 @@ namespace Utilities.IO.Compression.BaseClasses
                 {
                     using (Stream ZipStream = GetStream(DataStream, CompressionMode.Decompress))
                     {
-                        byte[] Buffer = new byte[4096];
-                        while (true)
+                        if (ZipStream != null)
                         {
-                            int Size = ZipStream.Read(Buffer, 0, Buffer.Length);
-                            if (Size > 0) Stream.Write(Buffer, 0, Size);
-                            else break;
+                            byte[] Buffer = new byte[4096];
+                            while (true)
+                            {
+                                int Size = ZipStream.Read(Buffer, 0, Buffer.Length);
+                                if (Size > 0) Stream.Write(Buffer, 0, Size);
+                                else break;
+                            }
+                            ZipStream.Close();
                         }
-                        ZipStream.Close();
                         return Stream.ToArray();
                     }
                 }
