@@ -22,7 +22,10 @@ THE SOFTWARE.*/
 #region Usings
 
 using System.Collections.Generic;
+using Utilities.DataTypes;
 using Utilities.IoC.Interfaces;
+using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
 #endregion Usings
@@ -55,6 +58,14 @@ namespace Utilities.ORM.Manager.Schema.Interfaces
         /// <param name="Source">Source information</param>
         /// <returns>The source structure</returns>
         ISource GetSourceStructure(ISourceInfo Source);
+
+        /// <summary>
+        /// Sets up the specified database schema
+        /// </summary>
+        /// <param name="Mappings">The mappings.</param>
+        /// <param name="Database">The database.</param>
+        /// <param name="QueryProvider">The query provider.</param>
+        void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider);
 
         /// <summary>
         /// Checks if a source exists

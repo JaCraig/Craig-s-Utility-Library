@@ -400,6 +400,8 @@
     <Compile Include="ORM\Manager\Mapper\Interfaces\IReference.cs" />
     <Compile Include="ORM\Manager\Module\ORMModule.cs" />
     <Compile Include="ORM\Manager\ORMManager.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemQueryProvider.cs" />
     <Compile Include="ORM\Manager\Session.cs" />
     <Compile Include="ORM\Manager\SourceProvider\DefaultDatabase.cs" />
     <Compile Include="ORM\Manager\SourceProvider\Manager.cs" />

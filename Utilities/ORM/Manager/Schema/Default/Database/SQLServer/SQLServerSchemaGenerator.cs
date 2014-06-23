@@ -31,6 +31,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities.DataTypes;
 using Utilities.IoC.Interfaces;
+using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.Mapper.Interfaces;
+using Utilities.ORM.Manager.QueryProvider.Interfaces;
 using Utilities.ORM.Manager.Schema.Enums;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
@@ -100,6 +103,55 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             SetupStoredProcedures(Source, Temp);
             SetupFunctions(Source, Temp);
             return Temp;
+        }
+
+        /// <summary>
+        /// Sets up the specified database schema
+        /// </summary>
+        /// <param name="Mappings">The mappings.</param>
+        /// <param name="Database">The database.</param>
+        /// <param name="QueryProvider">The query provider.</param>
+        public void Setup(ListMapping<IDatabase, IMapping> Mappings, IDatabase Database, QueryProvider.Manager QueryProvider)
+        {
+            Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
+            ISourceInfo TempSource = SourceProvider.GetSource(Database.Name);
+            Utilities.ORM.Manager.Schema.Default.Database.Database TempDatabase = new Schema.Default.Database.Database(Regex.Match(TempSource.Connection, "Initial Catalog=(.*?;)").Value.Replace("Initial Catalog=", "").Replace(";", ""));
+            SetupTables(Mappings, Database, TempDatabase);
+            SetupJoiningTables(Mappings, Database, TempDatabase);
+            SetupAuditTables(Database, TempDatabase);
+
+            foreach (ITable Table in TempDatabase.Tables)
+            {
+                Table.SetupForeignKeys();
+            }
+            List<string> Commands = GenerateSchema(TempDatabase, SourceProvider.GetSource(Database.Name)).ToList();
+            IBatch Batch = QueryProvider.Batch(SourceProvider.GetSource(Database.Name));
+            for (int x = 0; x < Commands.Count; ++x)
+            {
+                if (Commands[x].ToUpperInvariant().Contains("CREATE DATABASE"))
+                {
+                    QueryProvider.Batch(SourceProvider.GetSource(Regex.Replace(SourceProvider.GetSource(Database.Name).Connection, "Initial Catalog=(.*?;)", ""))).AddCommand(null, null, CommandType.Text, Commands[x]).Execute();
+                }
+                else if (Commands[x].Contains("CREATE TRIGGER") || Commands[x].Contains("CREATE FUNCTION"))
+                {
+                    if (Batch.CommandCount > 0)
+                    {
+                        Batch.Execute();
+                        Batch = QueryProvider.Batch(SourceProvider.GetSource(Database.Name));
+                    }
+                    Batch.AddCommand(null, null, CommandType.Text, Commands[x]);
+                    if (x < Commands.Count - 1)
+                    {
+                        Batch.Execute();
+                        Batch = QueryProvider.Batch(SourceProvider.GetSource(Database.Name));
+                    }
+                }
+                else
+                {
+                    Batch.AddCommand(null, null, CommandType.Text, Commands[x]);
+                }
+            }
+            Batch.Execute();
         }
 
         /// <summary>
@@ -520,6 +572,35 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
             return new string[] { Definition.Replace("\n", " ").Replace("\r", " ") };
         }
 
+        private static ITable SetupAuditTables(ITable Table)
+        {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            ITable AuditTable = new Schema.Default.Database.Table(Table.Name + "Audit", Table.Source);
+            string IDName = Table.Columns.Any(x => string.Equals(x.Name, "ID", StringComparison.InvariantCultureIgnoreCase)) ? "AuditID" : "ID";
+            AuditTable.AddColumn(IDName, DbType.Int32, 0, false, true, true, true, false, "", "", 0);
+            AuditTable.AddColumn("AuditType", SqlDbType.NVarChar.To(DbType.Int32), 1, false, false, false, false, false, "", "", "");
+            foreach (IColumn Column in Table.Columns)
+                AuditTable.AddColumn(Column.Name, Column.DataType, Column.Length, Column.Nullable, false, false, false, false, "", "", "");
+            return AuditTable;
+        }
+
+        private static void SetupAuditTables(IDatabase Key, Schema.Default.Database.Database TempDatabase)
+        {
+            Contract.Requires<ArgumentNullException>(Key != null, "Key");
+            Contract.Requires<ArgumentNullException>(TempDatabase != null, "TempDatabase");
+            Contract.Requires<ArgumentNullException>(TempDatabase.Tables != null, "TempDatabase.Tables");
+            if (!Key.Audit)
+                return;
+            List<ITable> TempTables = new List<ITable>();
+            foreach (ITable Table in TempDatabase.Tables)
+            {
+                TempTables.Add(SetupAuditTables(Table));
+                SetupInsertUpdateTrigger(Table);
+                SetupDeleteTrigger(Table);
+            }
+            TempDatabase.Tables.Add(TempTables);
+        }
+
         private static void SetupColumns(Table Table, IEnumerable<dynamic> Values)
         {
             Contract.Requires<ArgumentNullException>(Values != null, "Values");
@@ -543,6 +624,213 @@ namespace Utilities.ORM.Manager.Schema.Default.Database.SQLServer
                         Item.FOREIGN_KEY_COLUMN,
                         Item.DEFAULT_VALUE);
                 }
+            }
+        }
+
+        private static void SetupDeleteTrigger(ITable Table)
+        {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
+            StringBuilder Columns = new StringBuilder();
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("CREATE TRIGGER dbo.").Append(Table.Name).Append("_Audit_D ON dbo.")
+                .Append(Table.Name).Append(" FOR DELETE AS IF @@rowcount=0 RETURN")
+                .Append(" INSERT INTO dbo.").Append(Table.Name).Append("Audit").Append("(");
+            string Splitter = "";
+            foreach (IColumn Column in Table.Columns)
+            {
+                Columns.Append(Splitter).Append(Column.Name);
+                Splitter = ",";
+            }
+            Builder.Append(Columns.ToString());
+            Builder.Append(",AuditType) SELECT ");
+            Builder.Append(Columns.ToString());
+            Builder.Append(",'D' FROM deleted");
+            Table.AddTrigger(Table.Name + "_Audit_D", Builder.ToString(), TriggerType.Delete);
+        }
+
+        private static void SetupInsertUpdateTrigger(ITable Table)
+        {
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            Contract.Requires<ArgumentNullException>(Table.Columns != null, "Table.Columns");
+            StringBuilder Columns = new StringBuilder();
+            StringBuilder Builder = new StringBuilder();
+            Builder.Append("CREATE TRIGGER dbo.").Append(Table.Name).Append("_Audit_IU ON dbo.")
+                .Append(Table.Name).Append(" FOR INSERT,UPDATE AS IF @@rowcount=0 RETURN declare @AuditType")
+                .Append(" char(1) declare @DeletedCount int SELECT @DeletedCount=count(*) FROM DELETED IF @DeletedCount=0")
+                .Append(" BEGIN SET @AuditType='I' END ELSE BEGIN SET @AuditType='U' END")
+                .Append(" INSERT INTO dbo.").Append(Table.Name).Append("Audit").Append("(");
+            string Splitter = "";
+            foreach (IColumn Column in Table.Columns)
+            {
+                Columns.Append(Splitter).Append(Column.Name);
+                Splitter = ",";
+            }
+            Builder.Append(Columns.ToString());
+            Builder.Append(",AuditType) SELECT ");
+            Builder.Append(Columns.ToString());
+            Builder.Append(",@AuditType FROM inserted");
+            Table.AddTrigger(Table.Name + "_Audit_IU", Builder.ToString(), TriggerType.Insert);
+        }
+
+        private static void SetupJoiningTables(ListMapping<IDatabase, IMapping> Mappings, IDatabase Key, Schema.Default.Database.Database TempDatabase)
+        {
+            Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
+            foreach (IMapping Mapping in Mappings[Key])
+            {
+                foreach (IProperty Property in Mapping.Properties)
+                {
+                    if (Property is IMap)
+                    {
+                        IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
+                        foreach (IProperty IDProperty in MapMapping.IDProperties)
+                        {
+                            TempDatabase[Mapping.TableName].AddColumn(Property.FieldName,
+                                IDProperty.Type.To(DbType.Int32),
+                                IDProperty.MaxLength,
+                                !Property.NotNull,
+                                false,
+                                Property.Index,
+                                false,
+                                false,
+                                MapMapping.TableName,
+                                IDProperty.FieldName,
+                                "",
+                                false,
+                                false,
+                                Mapping.Properties.Count(x => x.Type == Property.Type) == 1 && Mapping.ObjectType != Property.Type);
+                        }
+                    }
+                    else if (Property is IManyToOne || Property is IManyToMany || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne)
+                    {
+                        SetupJoiningTablesEnumerable(Mappings, Mapping, Property, Key, TempDatabase);
+                    }
+                }
+            }
+        }
+
+        private static void SetupJoiningTablesEnumerable(ListMapping<IDatabase, IMapping> Mappings, IMapping Mapping, IProperty Property, IDatabase Key, Schema.Default.Database.Database TempDatabase)
+        {
+            Contract.Requires<ArgumentNullException>(TempDatabase != null, "TempDatabase");
+            Contract.Requires<ArgumentNullException>(TempDatabase.Tables != null, "TempDatabase.Tables");
+            if (TempDatabase.Tables.FirstOrDefault(x => x.Name == Property.TableName) != null)
+                return;
+            IMapping MapMapping = Mappings[Key].FirstOrDefault(x => x.ObjectType == Property.Type);
+            if (MapMapping == null)
+                return;
+            if (MapMapping == Mapping)
+            {
+                TempDatabase.AddTable(Property.TableName);
+                TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
+                TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperties.First().FieldName,
+                    Mapping.IDProperties.First().Type.To(DbType.Int32),
+                    Mapping.IDProperties.First().MaxLength,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    Mapping.TableName,
+                    Mapping.IDProperties.First().FieldName,
+                    "",
+                    false,
+                    false,
+                    false);
+                TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperties.First().FieldName + "2",
+                    MapMapping.IDProperties.First().Type.To(DbType.Int32),
+                    MapMapping.IDProperties.First().MaxLength,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    MapMapping.TableName,
+                    MapMapping.IDProperties.First().FieldName,
+                    "",
+                    false,
+                    false,
+                    false);
+            }
+            else
+            {
+                TempDatabase.AddTable(Property.TableName);
+                TempDatabase[Property.TableName].AddColumn("ID_", DbType.Int32, 0, false, true, true, true, false, "", "", "");
+                TempDatabase[Property.TableName].AddColumn(Mapping.TableName + Mapping.IDProperties.First().FieldName,
+                    Mapping.IDProperties.First().Type.To(DbType.Int32),
+                    Mapping.IDProperties.First().MaxLength,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    Mapping.TableName,
+                    Mapping.IDProperties.First().FieldName,
+                    "",
+                    true,
+                    false,
+                    false);
+                TempDatabase[Property.TableName].AddColumn(MapMapping.TableName + MapMapping.IDProperties.First().FieldName,
+                    MapMapping.IDProperties.First().Type.To(DbType.Int32),
+                    MapMapping.IDProperties.First().MaxLength,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    MapMapping.TableName,
+                    MapMapping.IDProperties.First().FieldName,
+                    "",
+                    true,
+                    false,
+                    false);
+            }
+        }
+
+        private static void SetupProperties(ITable Table, IMapping Mapping)
+        {
+            Contract.Requires<ArgumentNullException>(Mapping != null, "Mapping");
+            Contract.Requires<ArgumentNullException>(Table != null, "Table");
+            Contract.Requires<ArgumentNullException>(Mapping.IDProperties != null, "Mapping.IDProperties");
+            foreach (IProperty Property in Mapping.IDProperties)
+            {
+                Table.AddColumn(Property.FieldName,
+                    Property.Type.To(DbType.Int32),
+                    Property.MaxLength,
+                    Property.NotNull,
+                    Property.AutoIncrement,
+                    Property.Index,
+                    true,
+                    Property.Unique,
+                    "",
+                    "",
+                    "");
+            }
+            foreach (IProperty Property in Mapping.Properties)
+            {
+                if (!(Property is IManyToMany || Property is IManyToOne || Property is IMap || Property is IIEnumerableManyToOne || Property is IListManyToMany || Property is IListManyToOne))
+                {
+                    Table.AddColumn(Property.FieldName,
+                    Property.Type.To(DbType.Int32),
+                    Property.MaxLength,
+                    !Property.NotNull,
+                    Property.AutoIncrement,
+                    Property.Index,
+                    false,
+                    Property.Unique,
+                    "",
+                    "",
+                    "");
+                }
+            }
+        }
+
+        private static void SetupTables(ListMapping<IDatabase, IMapping> Mappings, IDatabase Key, Schema.Default.Database.Database TempDatabase)
+        {
+            Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
+            foreach (IMapping Mapping in Mappings[Key])
+            {
+                TempDatabase.AddTable(Mapping.TableName);
+                SetupProperties(TempDatabase[Mapping.TableName], Mapping);
             }
         }
 

@@ -29,6 +29,7 @@ using Utilities.DataTypes;
 using Utilities.DataTypes.EventArgs;
 using Utilities.ORM.Interfaces;
 using Utilities.ORM.Manager.QueryProvider.Interfaces;
+using Utilities.Random.DefaultClasses;
 using Utilities.Validation;
 
 #endregion Usings
@@ -45,8 +46,6 @@ namespace Utilities.ORM
         where ObjectType : ObjectBaseClass<ObjectType, IDType>, new()
         where IDType : IComparable
     {
-        #region Constructor
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -57,82 +56,60 @@ namespace Utilities.ORM
             this.DateModified = DateTime.Now;
         }
 
-        #endregion Constructor
-
-        #region IObject Members
-
         /// <summary>
         /// Is the object active?
         /// </summary>
+        [BoolGenerator]
         public virtual bool Active { get; set; }
 
         /// <summary>
         /// Date object was created
         /// </summary>
+        [Between("1/1/1900", "1/1/2100")]
+        [DateTimeGenerator]
         public virtual DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Date last modified
         /// </summary>
+        [Between("1/1/1900", "1/1/2100")]
+        [DateTimeGenerator]
         public virtual DateTime DateModified { get; set; }
+
+        /// <summary>
+        /// Called when the object is deleted
+        /// </summary>
+        public EventHandler<DeletedEventArgs> Deleted { get; set; }
+
+        /// <summary>
+        /// Called prior to an object is deleting
+        /// </summary>
+        public EventHandler<DeletingEventArgs> Deleting { get; set; }
 
         /// <summary>
         /// ID for the object
         /// </summary>
         public virtual IDType ID { get; set; }
 
-        #endregion IObject Members
-
-        #region Static Functions
-
-        #region Any
+        /// <summary>
+        /// Called prior to an object being loaded
+        /// </summary>
+        public EventHandler<LoadedEventArgs> Loaded { get; set; }
 
         /// <summary>
-        /// Loads the item based on the criteria specified
+        /// Called when the object is saved
         /// </summary>
-        /// <param name="Params">Parameters used to specify what to load</param>
-        /// <returns>The specified item</returns>
-        public static ObjectType Any(params IParameter[] Params)
-        {
-            ObjectType instance = new ObjectType();
-            LoadingEventArgs E = new LoadingEventArgs();
-            E.Content = Params;
-            instance.OnLoading(E);
-            if (!E.Stop)
-            {
-                instance = QueryProvider.Any<ObjectType>(Params);
-                if (instance != null)
-                    instance.OnLoaded(new LoadedEventArgs());
-            }
-            return instance;
-        }
+        public EventHandler<SavedEventArgs> Saved { get; set; }
 
         /// <summary>
-        /// Loads the item based on the criteria specified
+        /// Called prior to an object is saving
         /// </summary>
-        /// <param name="Command">Command to run</param>
-        /// <param name="Type">Command type</param>
-        /// <param name="ConnectionString">Connection string name</param>
-        /// <param name="Params">Parameters used to specify what to load</param>
-        /// <returns>The specified item</returns>
-        public static ObjectType Any(string Command, CommandType Type, string ConnectionString, params IParameter[] Params)
-        {
-            ObjectType instance = new ObjectType();
-            LoadingEventArgs E = new LoadingEventArgs();
-            E.Content = Params;
-            instance.OnLoading(E);
-            if (!E.Stop)
-            {
-                instance = QueryProvider.Any<ObjectType>(Command, Type, ConnectionString, Params);
-                if (instance != null)
-                    instance.OnLoaded(new LoadedEventArgs());
-            }
-            return instance;
-        }
+        public EventHandler<SavingEventArgs> Saving { get; set; }
 
-        #endregion Any
-
-        #region All
+        /// <summary>
+        /// Called prior to an object is loading
+        /// </summary>
+        public static EventHandler<LoadingEventArgs> Loading;
 
         /// <summary>
         /// Loads the items based on type
@@ -179,113 +156,48 @@ namespace Utilities.ORM
             return instance;
         }
 
-        #endregion All
-
-        #region Paged
-
         /// <summary>
-        /// Loads the items based on type
+        /// Loads the item based on the criteria specified
         /// </summary>
-        /// <param name="PageSize">Page size</param>
-        /// <param name="CurrentPage">Current page (0 based)</param>
         /// <param name="Params">Parameters used to specify what to load</param>
-        /// <returns>All items that fit the specified query</returns>
-        public static IEnumerable<ObjectType> Paged(int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
+        /// <returns>The specified item</returns>
+        public static ObjectType Any(params IParameter[] Params)
         {
-            IEnumerable<ObjectType> instance = new List<ObjectType>();
+            ObjectType instance = new ObjectType();
             LoadingEventArgs E = new LoadingEventArgs();
-            ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
+            E.Content = Params;
+            instance.OnLoading(E);
             if (!E.Stop)
             {
-                instance = QueryProvider.Paged<ObjectType>(PageSize, CurrentPage, Params);
-                foreach (ObjectType Item in instance)
-                {
-                    Item.OnLoaded(new LoadedEventArgs());
-                }
+                instance = QueryProvider.Any<ObjectType>(Params);
+                if (instance != null)
+                    instance.OnLoaded(new LoadedEventArgs());
             }
             return instance;
         }
 
-        #endregion Paged
-
-        #region PageCount
-
         /// <summary>
-        /// Gets the page count based on page size
+        /// Loads the item based on the criteria specified
         /// </summary>
-        /// <param name="PageSize">Page size</param>
+        /// <param name="Command">Command to run</param>
+        /// <param name="Type">Command type</param>
+        /// <param name="ConnectionString">Connection string name</param>
         /// <param name="Params">Parameters used to specify what to load</param>
-        /// <returns>All items that fit the specified query</returns>
-        public static int PageCount(int PageSize = 25, params IParameter[] Params)
+        /// <returns>The specified item</returns>
+        public static ObjectType Any(string Command, CommandType Type, string ConnectionString, params IParameter[] Params)
         {
-            return QueryProvider.PageCount<ObjectType>(PageSize, Params);
-        }
-
-        #endregion PageCount
-
-        #region Save
-
-        /// <summary>
-        /// Saves a list of objects
-        /// </summary>
-        /// <param name="Objects">List of objects</param>
-        public static void Save(IEnumerable<ObjectType> Objects)
-        {
-            if (Objects == null)
-                return;
-            Objects.ForEach(x => x.Save());
-        }
-
-        #endregion Save
-
-        #endregion Static Functions
-
-        #region Functions
-
-        /// <summary>
-        /// Deletes the item
-        /// </summary>
-        public virtual void Delete()
-        {
-            DeletingEventArgs E = new DeletingEventArgs();
-            OnDeleting(E);
+            ObjectType instance = new ObjectType();
+            LoadingEventArgs E = new LoadingEventArgs();
+            E.Content = Params;
+            instance.OnLoading(E);
             if (!E.Stop)
             {
-                QueryProvider.Delete<ObjectType>((ObjectType)this);
-                DeletedEventArgs X = new DeletedEventArgs();
-                OnDeleted(X);
+                instance = QueryProvider.Any<ObjectType>(Command, Type, ConnectionString, Params);
+                if (instance != null)
+                    instance.OnLoaded(new LoadedEventArgs());
             }
+            return instance;
         }
-
-        /// <summary>
-        /// Saves the item (if it already exists, it updates the item. Otherwise it inserts the item)
-        /// </summary>
-        public virtual void Save()
-        {
-            SavingEventArgs E = new SavingEventArgs();
-            OnSaving(E);
-
-            if (!E.Stop)
-            {
-                SetupObject();
-                this.Validate();
-                QueryProvider.Save<ObjectType, IDType>((ObjectType)this);
-                SavedEventArgs X = new SavedEventArgs();
-                OnSaved(X);
-            }
-        }
-
-        /// <summary>
-        /// Sets up the object for saving purposes
-        /// </summary>
-        public virtual void SetupObject()
-        {
-            DateModified = DateTime.Now;
-        }
-
-        #endregion Functions
-
-        #region Overridden Functions
 
         /// <summary>
         /// != operator
@@ -346,6 +258,88 @@ namespace Utilities.ORM
         }
 
         /// <summary>
+        /// Gets the page count based on page size
+        /// </summary>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <returns>All items that fit the specified query</returns>
+        public static int PageCount(int PageSize = 25, params IParameter[] Params)
+        {
+            return QueryProvider.PageCount<ObjectType>(PageSize, Params);
+        }
+
+        /// <summary>
+        /// Loads the items based on type
+        /// </summary>
+        /// <param name="PageSize">Page size</param>
+        /// <param name="CurrentPage">Current page (0 based)</param>
+        /// <param name="Params">Parameters used to specify what to load</param>
+        /// <returns>All items that fit the specified query</returns>
+        public static IEnumerable<ObjectType> Paged(int PageSize = 25, int CurrentPage = 0, params IParameter[] Params)
+        {
+            IEnumerable<ObjectType> instance = new List<ObjectType>();
+            LoadingEventArgs E = new LoadingEventArgs();
+            ObjectBaseClass<ObjectType, IDType>.OnLoading(null, E);
+            if (!E.Stop)
+            {
+                instance = QueryProvider.Paged<ObjectType>(PageSize, CurrentPage, Params);
+                foreach (ObjectType Item in instance)
+                {
+                    Item.OnLoaded(new LoadedEventArgs());
+                }
+            }
+            return instance;
+        }
+
+        /// <summary>
+        /// Saves a list of objects
+        /// </summary>
+        /// <param name="Objects">List of objects</param>
+        public static void Save(IEnumerable<ObjectType> Objects)
+        {
+            if (Objects == null)
+                return;
+            Objects.ForEach(x => x.Save());
+        }
+
+        /// <summary>
+        /// Compares the object to another object
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
+        public int CompareTo(object obj)
+        {
+            if (obj is ObjectBaseClass<ObjectType, IDType>)
+                return CompareTo((ObjectType)obj);
+            return -1;
+        }
+
+        /// <summary>
+        /// Compares the object to another object
+        /// </summary>
+        /// <param name="other">Object to compare to</param>
+        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
+        public virtual int CompareTo(ObjectType other)
+        {
+            return other.ID.CompareTo(ID);
+        }
+
+        /// <summary>
+        /// Deletes the item
+        /// </summary>
+        public virtual void Delete()
+        {
+            DeletingEventArgs E = new DeletingEventArgs();
+            OnDeleting(E);
+            if (!E.Stop)
+            {
+                QueryProvider.Delete<ObjectType>((ObjectType)this);
+                DeletedEventArgs X = new DeletedEventArgs();
+                OnDeleted(X);
+            }
+        }
+
+        /// <summary>
         /// Determines if two items are equal
         /// </summary>
         /// <param name="obj">The object to compare this to</param>
@@ -366,39 +360,31 @@ namespace Utilities.ORM
             return this.ID.GetHashCode();
         }
 
-        #endregion Overridden Functions
+        /// <summary>
+        /// Saves the item (if it already exists, it updates the item. Otherwise it inserts the item)
+        /// </summary>
+        public virtual void Save()
+        {
+            SavingEventArgs E = new SavingEventArgs();
+            OnSaving(E);
 
-        #region Events
+            if (!E.Stop)
+            {
+                SetupObject();
+                this.Validate();
+                QueryProvider.Save<ObjectType, IDType>((ObjectType)this);
+                SavedEventArgs X = new SavedEventArgs();
+                OnSaved(X);
+            }
+        }
 
         /// <summary>
-        /// Called when the object is deleted
+        /// Sets up the object for saving purposes
         /// </summary>
-        public EventHandler<DeletedEventArgs> Deleted { get; set; }
-
-        /// <summary>
-        /// Called prior to an object is deleting
-        /// </summary>
-        public EventHandler<DeletingEventArgs> Deleting { get; set; }
-
-        /// <summary>
-        /// Called prior to an object being loaded
-        /// </summary>
-        public EventHandler<LoadedEventArgs> Loaded { get; set; }
-
-        /// <summary>
-        /// Called when the object is saved
-        /// </summary>
-        public EventHandler<SavedEventArgs> Saved { get; set; }
-
-        /// <summary>
-        /// Called prior to an object is saving
-        /// </summary>
-        public EventHandler<SavingEventArgs> Saving { get; set; }
-
-        /// <summary>
-        /// Called prior to an object is loading
-        /// </summary>
-        public static EventHandler<LoadingEventArgs> Loading;
+        public virtual void SetupObject()
+        {
+            DateModified = DateTime.Now;
+        }
 
         /// <summary>
         /// Called when the item is Loading
@@ -463,33 +449,5 @@ namespace Utilities.ORM
         {
             Saving.Raise(this, e);
         }
-
-        #endregion Events
-
-        #region IComparable Functions
-
-        /// <summary>
-        /// Compares the object to another object
-        /// </summary>
-        /// <param name="obj">Object to compare to</param>
-        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public int CompareTo(object obj)
-        {
-            if (obj is ObjectBaseClass<ObjectType, IDType>)
-                return CompareTo((ObjectType)obj);
-            return -1;
-        }
-
-        /// <summary>
-        /// Compares the object to another object
-        /// </summary>
-        /// <param name="other">Object to compare to</param>
-        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public virtual int CompareTo(ObjectType other)
-        {
-            return other.ID.CompareTo(ID);
-        }
-
-        #endregion IComparable Functions
     }
 }
