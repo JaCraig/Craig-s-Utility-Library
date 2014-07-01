@@ -27,6 +27,8 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using Utilities.DataTypes;
 using Utilities.IoC.Interfaces;
+using Utilities.ORM.Interfaces;
+using Utilities.ORM.Manager.Mapper.Interfaces;
 using Utilities.ORM.Manager.Schema.Interfaces;
 using Utilities.ORM.Manager.SourceProvider.Interfaces;
 
@@ -68,6 +70,19 @@ namespace Utilities.ORM.Manager.Schema
             return SchemaGenerators.ContainsKey(Source.SourceType) ?
                 SchemaGenerators[Source.SourceType].GenerateSchema(DesiredStructure, Source) :
                 new List<string>();
+        }
+
+        /// <summary>
+        /// Sets up the specified databases
+        /// </summary>
+        /// <param name="Mappings">The mappings.</param>
+        /// <param name="QueryProvider">The query provider.</param>
+        /// <param name="Database">The database.</param>
+        /// <param name="Source">The source.</param>
+        public void Setup(ListMapping<IDatabase, IMapping> Mappings, QueryProvider.Manager QueryProvider, IDatabase Database, ISourceInfo Source)
+        {
+            Contract.Requires<NullReferenceException>(Mappings != null, "Mappings");
+            SchemaGenerators[Source.SourceType].Setup(Mappings, Database, QueryProvider);
         }
 
         /// <summary>

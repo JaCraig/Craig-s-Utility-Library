@@ -33,6 +33,7 @@ namespace Utilities.DataTypes
     /// </summary>
     /// <typeparam name="T1">Key value</typeparam>
     /// <typeparam name="T2">Type that the list should contain</typeparam>
+    [Serializable]
     public class ListMapping<T1, T2> : IDictionary<T1, ICollection<T2>>
     {
         #region Constructors

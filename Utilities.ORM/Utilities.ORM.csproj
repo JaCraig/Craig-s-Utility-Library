@@ -231,6 +231,8 @@
     <Compile Include="ORM\Parameters\StringEqualParameter.cs" />
     <Compile Include="ORM\Parameters\StringNotEqualParameter.cs" />
     <Compile Include="ORM\QueryProvider.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemGenerator.cs" />
+    <Compile Include="ORM\Manager\QueryProvider\Default\FileSystem\FileSystemQueryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
@@ -244,6 +246,10 @@
     <ProjectReference Include="..\Utilities.IoC\Utilities.IoC.csproj">
       <Project>{55b9e604-6c35-410d-80d8-86eca3bd20fb}</Project>
       <Name>Utilities.IoC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities.Random\Utilities.Random.csproj">
+      <Project>{c98fb416-28e2-4876-a3f6-02c89533c9af}</Project>
+      <Name>Utilities.Random</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities.Validation\Utilities.Validation.csproj">
       <Project>{6026bba0-4253-4e5b-91f6-ce3099c97b97}</Project>
